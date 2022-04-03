@@ -7,12 +7,18 @@ public class Package {
 	private String path;
 	private Package parent;
 	private List<Package> children;
+	private List<String> leafs;
 	private boolean isValid;
 	
 	public Package(String path) {
 		this.path = path;
 		this.isValid = false;
 		children = new ArrayList<Package>();
+		leafs = new ArrayList<String>();
+	}
+	
+	public void addLeafNode(String leafsPath) {
+		leafs.add(leafsPath);
 	}
 	
 	public void addChild(Package p) {
@@ -34,6 +40,12 @@ public class Package {
 	public void printChildren() {
 		for (Package p: children) {
 			System.out.println(p.getPath());
+		}
+	}
+	
+	public void printLeafs() {
+		for (String l: leafs) {
+			System.out.println(l);
 		}
 	}
 

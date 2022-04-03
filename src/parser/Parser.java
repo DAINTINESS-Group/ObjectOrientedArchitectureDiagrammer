@@ -26,8 +26,9 @@ public class Parser {
 		File folder = new File(currentPackage.getPath());
 		for (File file: folder.listFiles()) {
 			if (!file.isDirectory()) {
-				if (getFilesExtension(file.getAbsolutePath()).equals(".java")) {
+				if (isExtensionJava(file.getAbsolutePath())) {
 					currentPackage.setValid();
+					currentPackage.addLeafNode(file.getAbsolutePath());
 				}
 			}
 			else {
@@ -40,13 +41,17 @@ public class Parser {
 		}
 	}
 
-	private String getChildrensPath(Package currentPackage, File file) {
-		return currentPackage.getPath() + "\\" + file.getName();
+	private boolean isExtensionJava(String filePath) {
+		return getFilesExtension(filePath).equals(".java");
 	}
 
 	private String getFilesExtension(String filePath) {
 		return filePath.substring(filePath.lastIndexOf("\\"))
 				.substring(filePath.substring(filePath.lastIndexOf("\\")).indexOf("."));
+	}
+	
+	private String getChildrensPath(Package currentPackage, File file) {
+		return currentPackage.getPath() + "\\" + file.getName();
 	}
 	
 	private void printPackageTree() {
@@ -55,6 +60,8 @@ public class Parser {
 			System.out.println("Path: " + p.getPath());
 			System.out.println("Children: ");
 			p.printChildren();
+			System.out.println("Leafs: ");
+			p.printLeafs();
 			System.out.println("Parent: " + p.getParent());
 			System.out.println("Is Package valid: " + p.isValid());
 		}
