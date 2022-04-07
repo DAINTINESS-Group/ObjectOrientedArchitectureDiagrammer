@@ -18,6 +18,10 @@ public class LeafNode {
 		this.parentNode = p;
 	}
 	
+	public PackageNode getParentNode() {
+		return parentNode;
+	}
+	
 	public String getName() {
 		return name;
 	}

@@ -72,6 +72,7 @@ class ParserTest {
 				leafNodes = p.getLeafNodes();
 				for (LeafNode l: leafNodes) {
 					testingLeafNodes.add(l.getPath());
+					assertEquals(l.getParentNode().getNodesPath(), "C:\\Users\\user\\Java-workspace\\UMLDiagramTool\\src\\test\\resources\\src\\controller");
 				}
 				Collections.sort(testingLeafNodes);
 				Collections.sort(commandsLeafNodes);
@@ -88,6 +89,7 @@ class ParserTest {
 				leafNodes = p.getLeafNodes();
 				for (LeafNode l: leafNodes) {
 					testingLeafNodes.add(l.getPath());
+					assertEquals(l.getParentNode().getNodesPath(), "C:\\Users\\user\\Java-workspace\\UMLDiagramTool\\src\\test\\resources\\src\\controller\\commands");
 				}
 				Collections.sort(testingLeafNodes);
 				Collections.sort(commandsLeafNodes);
@@ -103,6 +105,7 @@ class ParserTest {
 				assertEquals("C:\\Users\\user\\Java-workspace\\UMLDiagramTool\\src\\test\\resources\\src\\model\\strategies", subNodes.get(0).getNodesPath(), "message");
 				leafNodes = p.getLeafNodes();
 				for (LeafNode l: leafNodes) {
+					assertEquals(l.getParentNode().getNodesPath(), "C:\\Users\\user\\Java-workspace\\UMLDiagramTool\\src\\test\\resources\\src\\model");
 					testingLeafNodes.add(l.getPath());
 				}
 				Collections.sort(testingLeafNodes);
@@ -119,6 +122,7 @@ class ParserTest {
 				assertEquals(0, subNodes.size(), "message");
 				leafNodes = p.getLeafNodes();
 				for (LeafNode l: leafNodes) {
+					assertEquals(l.getParentNode().getNodesPath(), "C:\\Users\\user\\Java-workspace\\UMLDiagramTool\\src\\test\\resources\\src\\model\\strategies");
 					testingLeafNodes.add(l.getPath());
 				}
 				Collections.sort(testingLeafNodes);
@@ -135,6 +139,7 @@ class ParserTest {
 				assertEquals(0, subNodes.size(), "message");
 				leafNodes = p.getLeafNodes();
 				for (LeafNode l: leafNodes) {
+					assertEquals(l.getParentNode().getNodesPath(), "C:\\Users\\user\\Java-workspace\\UMLDiagramTool\\src\\test\\resources\\src\\view");
 					testingLeafNodes.add(l.getPath());
 				}
 				Collections.sort(testingLeafNodes);
