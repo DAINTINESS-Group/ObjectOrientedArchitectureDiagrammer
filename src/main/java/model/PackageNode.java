@@ -30,7 +30,11 @@ public class PackageNode {
 	}
 
 	public PackageNode getParentNode() {
-		return parentNode;
+		if (parentNode != null) {
+			return parentNode;
+		}else {
+			return new PackageNode("");
+		}
 	}
 	
 	public String getNodesPath() {

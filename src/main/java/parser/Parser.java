@@ -15,6 +15,7 @@ public class Parser {
 	public Parser(String sourcePath) {
 		packageNodes = new ArrayList<PackageNode>();
 		rootPackageNode = new PackageNode(sourcePath);
+		packageNodes.add(rootPackageNode);
 		try {
 			parseFolder(rootPackageNode);
 		}catch (ParseException e) {
