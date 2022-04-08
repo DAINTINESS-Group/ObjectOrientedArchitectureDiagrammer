@@ -1,11 +1,17 @@
 package parser;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.eclipse.jface.text.BadLocationException;
+import org.eclipse.text.edits.MalformedTreeException;
+
 import model.LeafNode;
 import model.PackageNode;
+import model.RecursiveFileVisitor;
 
 public class Parser {
 	private List<PackageNode> packageNodes;
@@ -21,15 +27,27 @@ public class Parser {
 		}catch (ParseException e) {
 			e.printStackTrace();
 		};
+		File [] root = new File[1];
+		root[0] = new File("src\\test\\resources\\LatexEditor\\src");
+		RecursiveFileVisitor visitor = new RecursiveFileVisitor (); 
+		try {
+			visitor.visitAllFiles(root);
+		}catch (MalformedTreeException m) {
+			m.printStackTrace();
+		}catch (IOException i ) {
+			i.printStackTrace();
+		}catch (BadLocationException b) {
+			b.printStackTrace();
+		}
 	}
 
 	public void parseFolder(PackageNode currentNode) throws ParseException{
 		File folder = new File(currentNode.getNodesPath());
 		for (File file: folder.listFiles()) {
 			if (!file.isDirectory()) {
-				if (isExtensionJava(file.getAbsolutePath())) {
+				if (isExtensionJava(file.getPath())) {
 					currentNode.setValid();
-					LeafNode leafNode = new LeafNode(file.getAbsolutePath());
+					LeafNode leafNode = new LeafNode(file.getPath());
 					currentNode.addLeafNode(leafNode);
 					leafNode.setParrentNode(currentNode);
 				}

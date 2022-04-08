@@ -11,7 +11,7 @@ import model.PackageNode;
 import parser.Parser;
 
 class ParserTest {
-	private Parser parser = new Parser("C:\\Users\\user\\Java-workspace\\UMLDiagramTool\\src\\test\\resources\\src");
+	private Parser parser = new Parser("src\\test\\resources\\LatexEditor\\src");
 	private List<PackageNode> packageNodes = new ArrayList<PackageNode>();
 	private List<PackageNode> subNodes = new ArrayList<PackageNode>();
 	private List<LeafNode> leafNodes = new ArrayList<LeafNode>();
@@ -24,55 +24,55 @@ class ParserTest {
 	@Test
 	void test() {
 		sourcesSubPackages = new ArrayList<>(Arrays.asList(
-				"C:\\Users\\user\\Java-workspace\\UMLDiagramTool\\src\\test\\resources\\src\\controller",
-				"C:\\Users\\user\\Java-workspace\\UMLDiagramTool\\src\\test\\resources\\src\\model",
-				"C:\\Users\\user\\Java-workspace\\UMLDiagramTool\\src\\test\\resources\\src\\view"));
+				"src\\test\\resources\\LatexEditor\\src\\controller",
+				"src\\test\\resources\\LatexEditor\\src\\model",
+				"src\\test\\resources\\LatexEditor\\src\\view"));
 		viewsLeafNodes = new ArrayList<>(Arrays.asList(
-				"C:\\Users\\user\\Java-workspace\\UMLDiagramTool\\src\\test\\resources\\src\\view\\ChooseTemplate.java",
-				"C:\\Users\\user\\Java-workspace\\UMLDiagramTool\\src\\test\\resources\\src\\view\\LatexEditorView.java",
-				"C:\\Users\\user\\Java-workspace\\UMLDiagramTool\\src\\test\\resources\\src\\view\\MainWindow.java",
-				"C:\\Users\\user\\Java-workspace\\UMLDiagramTool\\src\\test\\resources\\src\\view\\OpeningWindow.java"
+				"src\\test\\resources\\LatexEditor\\src\\view\\ChooseTemplate.java",
+				"src\\test\\resources\\LatexEditor\\src\\view\\LatexEditorView.java",
+				"src\\test\\resources\\LatexEditor\\src\\view\\MainWindow.java",
+				"src\\test\\resources\\LatexEditor\\src\\view\\OpeningWindow.java"
 				));
 		controllersLeafNodes = new ArrayList<>(Arrays.asList(
-				"C:\\Users\\user\\Java-workspace\\UMLDiagramTool\\src\\test\\resources\\src\\controller\\LatexEditorController.java"
+				"src\\test\\resources\\LatexEditor\\src\\controller\\LatexEditorController.java"
 				));
 		strategiesLeafNodes = new ArrayList<>(Arrays.asList(
-				"C:\\Users\\user\\Java-workspace\\UMLDiagramTool\\src\\test\\resources\\src\\model\\strategies\\StableVersionsStrategy.java",
-				"C:\\Users\\user\\Java-workspace\\UMLDiagramTool\\src\\test\\resources\\src\\model\\strategies\\VersionsStrategy.java",
-				"C:\\Users\\user\\Java-workspace\\UMLDiagramTool\\src\\test\\resources\\src\\model\\strategies\\VolatileVersionsStrategy.java",
-				"C:\\Users\\user\\Java-workspace\\UMLDiagramTool\\src\\test\\resources\\src\\model\\strategies\\VersionsStrategyFactory.java"
+				"src\\test\\resources\\LatexEditor\\src\\model\\strategies\\StableVersionsStrategy.java",
+				"src\\test\\resources\\LatexEditor\\src\\model\\strategies\\VersionsStrategy.java",
+				"src\\test\\resources\\LatexEditor\\src\\model\\strategies\\VolatileVersionsStrategy.java",
+				"src\\test\\resources\\LatexEditor\\src\\model\\strategies\\VersionsStrategyFactory.java"
 				));
 		modelsLeafNodes = new ArrayList<>(Arrays.asList(
-				"C:\\Users\\user\\Java-workspace\\UMLDiagramTool\\src\\test\\resources\\src\\model\\Document.java",
-				"C:\\Users\\user\\Java-workspace\\UMLDiagramTool\\src\\test\\resources\\src\\model\\DocumentManager.java",
-				"C:\\Users\\user\\Java-workspace\\UMLDiagramTool\\src\\test\\resources\\src\\model\\VersionsManager.java"
+				"src\\test\\resources\\LatexEditor\\src\\model\\Document.java",
+				"src\\test\\resources\\LatexEditor\\src\\model\\DocumentManager.java",
+				"src\\test\\resources\\LatexEditor\\src\\model\\VersionsManager.java"
 				));
 		commandsLeafNodes = new ArrayList<>(Arrays.asList(
-				"C:\\Users\\user\\Java-workspace\\UMLDiagramTool\\src\\test\\resources\\src\\controller\\commands\\AddLatexCommand.java",
-				"C:\\Users\\user\\Java-workspace\\UMLDiagramTool\\src\\test\\resources\\src\\controller\\commands\\Command.java",
-				"C:\\Users\\user\\Java-workspace\\UMLDiagramTool\\src\\test\\resources\\src\\controller\\commands\\CommandFactory.java",
-				"C:\\Users\\user\\Java-workspace\\UMLDiagramTool\\src\\test\\resources\\src\\controller\\commands\\CreateCommand.java",
-				"C:\\Users\\user\\Java-workspace\\UMLDiagramTool\\src\\test\\resources\\src\\controller\\commands\\EditCommand.java",
-				"C:\\Users\\user\\Java-workspace\\UMLDiagramTool\\src\\test\\resources\\src\\controller\\commands\\LoadCommand.java",
-				"C:\\Users\\user\\Java-workspace\\UMLDiagramTool\\src\\test\\resources\\src\\controller\\commands\\SaveCommand.java",
-				"C:\\Users\\user\\Java-workspace\\UMLDiagramTool\\src\\test\\resources\\src\\controller\\commands\\ChangeVersionsStrategyCommand.java",
-				"C:\\Users\\user\\Java-workspace\\UMLDiagramTool\\src\\test\\resources\\src\\controller\\commands\\DisableVersionsManagementCommand.java",
-				"C:\\Users\\user\\Java-workspace\\UMLDiagramTool\\src\\test\\resources\\src\\controller\\commands\\EnableVersionsManagementCommand.java",
-				"C:\\Users\\user\\Java-workspace\\UMLDiagramTool\\src\\test\\resources\\src\\controller\\commands\\RollbackToPreviousVersionCommand.java"
+				"src\\test\\resources\\LatexEditor\\src\\controller\\commands\\AddLatexCommand.java",
+				"src\\test\\resources\\LatexEditor\\src\\controller\\commands\\Command.java",
+				"src\\test\\resources\\LatexEditor\\src\\controller\\commands\\CommandFactory.java",
+				"src\\test\\resources\\LatexEditor\\src\\controller\\commands\\CreateCommand.java",
+				"src\\test\\resources\\LatexEditor\\src\\controller\\commands\\EditCommand.java",
+				"src\\test\\resources\\LatexEditor\\src\\controller\\commands\\LoadCommand.java",
+				"src\\test\\resources\\LatexEditor\\src\\controller\\commands\\SaveCommand.java",
+				"src\\test\\resources\\LatexEditor\\src\\controller\\commands\\ChangeVersionsStrategyCommand.java",
+				"src\\test\\resources\\LatexEditor\\src\\controller\\commands\\DisableVersionsManagementCommand.java",
+				"src\\test\\resources\\LatexEditor\\src\\controller\\commands\\EnableVersionsManagementCommand.java",
+				"src\\test\\resources\\LatexEditor\\src\\controller\\commands\\RollbackToPreviousVersionCommand.java"
 				));
 		packageNodes = parser.getPackageNodes();
 		for (PackageNode p: packageNodes) {
 			if (p.getName().equals("controller")) {
 				List<String> testingLeafNodes = new ArrayList<String>();
-				assertEquals("C:\\Users\\user\\Java-workspace\\UMLDiagramTool\\src\\test\\resources\\src\\controller", p.getNodesPath(), "message");
-				assertEquals("C:\\Users\\user\\Java-workspace\\UMLDiagramTool\\src\\test\\resources\\src", p.getParentNode().getNodesPath(), "message");
+				assertEquals("src\\test\\resources\\LatexEditor\\src\\controller", p.getNodesPath(), "message");
+				assertEquals("src\\test\\resources\\LatexEditor\\src", p.getParentNode().getNodesPath(), "message");
 				assertEquals(true, p.isValid(), "message");
 				subNodes = p.getSubNodes();
-				assertEquals("C:\\Users\\user\\Java-workspace\\UMLDiagramTool\\src\\test\\resources\\src\\controller\\commands", subNodes.get(0).getNodesPath(), "message");
+				assertEquals("src\\test\\resources\\LatexEditor\\src\\controller\\commands", subNodes.get(0).getNodesPath(), "message");
 				leafNodes = p.getLeafNodes();
 				for (LeafNode l: leafNodes) {
 					testingLeafNodes.add(l.getPath());
-					assertEquals(l.getParentNode().getNodesPath(), "C:\\Users\\user\\Java-workspace\\UMLDiagramTool\\src\\test\\resources\\src\\controller");
+					assertEquals(l.getParentNode().getNodesPath(), "src\\test\\resources\\LatexEditor\\src\\controller");
 				}
 				Collections.sort(testingLeafNodes);
 				Collections.sort(commandsLeafNodes);
@@ -81,15 +81,15 @@ class ParserTest {
 						&& testingLeafNodes.containsAll(controllersLeafNodes));
 			}else if (p.getName().equals("commands")) {
 				List<String> testingLeafNodes = new ArrayList<String>();
-				assertEquals("C:\\Users\\user\\Java-workspace\\UMLDiagramTool\\src\\test\\resources\\src\\controller\\commands", p.getNodesPath(), "message");
-				assertEquals("C:\\Users\\user\\Java-workspace\\UMLDiagramTool\\src\\test\\resources\\src\\controller", p.getParentNode().getNodesPath(), "message");
+				assertEquals("src\\test\\resources\\LatexEditor\\src\\controller\\commands", p.getNodesPath(), "message");
+				assertEquals("src\\test\\resources\\LatexEditor\\src\\controller", p.getParentNode().getNodesPath(), "message");
 				assertEquals(true, p.isValid(), "message");
 				subNodes = p.getSubNodes();
 				assertEquals(0, subNodes.size(), "message");
 				leafNodes = p.getLeafNodes();
 				for (LeafNode l: leafNodes) {
 					testingLeafNodes.add(l.getPath());
-					assertEquals(l.getParentNode().getNodesPath(), "C:\\Users\\user\\Java-workspace\\UMLDiagramTool\\src\\test\\resources\\src\\controller\\commands");
+					assertEquals(l.getParentNode().getNodesPath(), "src\\test\\resources\\LatexEditor\\src\\controller\\commands");
 				}
 				Collections.sort(testingLeafNodes);
 				Collections.sort(commandsLeafNodes);
@@ -98,14 +98,14 @@ class ParserTest {
 						&& testingLeafNodes.containsAll(commandsLeafNodes));
 			}else if (p.getName().equals("model")) {
 				List<String> testingLeafNodes = new ArrayList<String>();
-				assertEquals("C:\\Users\\user\\Java-workspace\\UMLDiagramTool\\src\\test\\resources\\src\\model", p.getNodesPath(), "message");
-				assertEquals("C:\\Users\\user\\Java-workspace\\UMLDiagramTool\\src\\test\\resources\\src", p.getParentNode().getNodesPath(), "message");
+				assertEquals("src\\test\\resources\\LatexEditor\\src\\model", p.getNodesPath(), "message");
+				assertEquals("src\\test\\resources\\LatexEditor\\src", p.getParentNode().getNodesPath(), "message");
 				assertEquals(true, p.isValid(), "message");
 				subNodes = p.getSubNodes();
-				assertEquals("C:\\Users\\user\\Java-workspace\\UMLDiagramTool\\src\\test\\resources\\src\\model\\strategies", subNodes.get(0).getNodesPath(), "message");
+				assertEquals("src\\test\\resources\\LatexEditor\\src\\model\\strategies", subNodes.get(0).getNodesPath(), "message");
 				leafNodes = p.getLeafNodes();
 				for (LeafNode l: leafNodes) {
-					assertEquals(l.getParentNode().getNodesPath(), "C:\\Users\\user\\Java-workspace\\UMLDiagramTool\\src\\test\\resources\\src\\model");
+					assertEquals(l.getParentNode().getNodesPath(), "src\\test\\resources\\LatexEditor\\src\\model");
 					testingLeafNodes.add(l.getPath());
 				}
 				Collections.sort(testingLeafNodes);
@@ -115,14 +115,14 @@ class ParserTest {
 						&& testingLeafNodes.containsAll(modelsLeafNodes));
 			}else if (p.getName().equals("strategies")) {
 				List<String> testingLeafNodes = new ArrayList<String>();
-				assertEquals("C:\\Users\\user\\Java-workspace\\UMLDiagramTool\\src\\test\\resources\\src\\model\\strategies", p.getNodesPath(), "message");
-				assertEquals("C:\\Users\\user\\Java-workspace\\UMLDiagramTool\\src\\test\\resources\\src\\model", p.getParentNode().getNodesPath(), "message");
+				assertEquals("src\\test\\resources\\LatexEditor\\src\\model\\strategies", p.getNodesPath(), "message");
+				assertEquals("src\\test\\resources\\LatexEditor\\src\\model", p.getParentNode().getNodesPath(), "message");
 				assertEquals(true, p.isValid(), "message");
 				subNodes = p.getSubNodes();
 				assertEquals(0, subNodes.size(), "message");
 				leafNodes = p.getLeafNodes();
 				for (LeafNode l: leafNodes) {
-					assertEquals(l.getParentNode().getNodesPath(), "C:\\Users\\user\\Java-workspace\\UMLDiagramTool\\src\\test\\resources\\src\\model\\strategies");
+					assertEquals(l.getParentNode().getNodesPath(), "src\\test\\resources\\LatexEditor\\src\\model\\strategies");
 					testingLeafNodes.add(l.getPath());
 				}
 				Collections.sort(testingLeafNodes);
@@ -132,14 +132,14 @@ class ParserTest {
 						&& testingLeafNodes.containsAll(strategiesLeafNodes));
 			}else if (p.getName().equals("view")) {
 				List<String> testingLeafNodes = new ArrayList<String>();
-				assertEquals("C:\\Users\\user\\Java-workspace\\UMLDiagramTool\\src\\test\\resources\\src\\view", p.getNodesPath(), "message");
-				assertEquals("C:\\Users\\user\\Java-workspace\\UMLDiagramTool\\src\\test\\resources\\src", p.getParentNode().getNodesPath(), "message");
+				assertEquals("src\\test\\resources\\LatexEditor\\src\\view", p.getNodesPath(), "message");
+				assertEquals("src\\test\\resources\\LatexEditor\\src", p.getParentNode().getNodesPath(), "message");
 				assertEquals(true, p.isValid(), "message");
 				subNodes = p.getSubNodes();
 				assertEquals(0, subNodes.size(), "message");
 				leafNodes = p.getLeafNodes();
 				for (LeafNode l: leafNodes) {
-					assertEquals(l.getParentNode().getNodesPath(), "C:\\Users\\user\\Java-workspace\\UMLDiagramTool\\src\\test\\resources\\src\\view");
+					assertEquals(l.getParentNode().getNodesPath(), "src\\test\\resources\\LatexEditor\\src\\view");
 					testingLeafNodes.add(l.getPath());
 				}
 				Collections.sort(testingLeafNodes);
@@ -149,7 +149,7 @@ class ParserTest {
 						&& testingLeafNodes.containsAll(viewsLeafNodes));
 			}else if (p.getName().equals("src")) {
 				List<String> testingSubPackages = new ArrayList<String>();
-				assertEquals("C:\\Users\\user\\Java-workspace\\UMLDiagramTool\\src\\test\\resources\\src", p.getNodesPath(), "message");
+				assertEquals("src\\test\\resources\\LatexEditor\\src", p.getNodesPath(), "message");
 				assertEquals("", p.getParentNode().getNodesPath(), "message");
 				assertEquals(false, p.isValid(), "message");
 				subNodes = p.getSubNodes();
