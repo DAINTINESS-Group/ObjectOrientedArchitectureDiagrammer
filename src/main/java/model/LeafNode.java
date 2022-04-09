@@ -8,20 +8,8 @@ public class LeafNode {
 	private PackageNode parentNode;
 	private String name;
 	private List<String> methodReturnTypes;
-	public List<String> getMethodReturnTypes() {
-		return methodReturnTypes;
-	}
-
 	private List<String> fieldTypes;
-	public List<String> getFieldTypes() {
-		return fieldTypes;
-	}
-
 	private List<List<String>> methodParameterTypes;
-
-	public List<List<String>> getMethodParameterTypes() {
-		return methodParameterTypes;
-	}
 
 	public LeafNode(String path) {
 		methodReturnTypes = new ArrayList<String>();
@@ -62,4 +50,17 @@ public class LeafNode {
 	public String getPath() {
 		return path;
 	}
+	
+	public List<String> getMethodReturnTypes() {
+		return methodReturnTypes;
+	}
+	
+	public List<String> getFieldTypes() {
+		return fieldTypes;
+	}
+	
+	public List<List<String>> getMethodParameterTypes() {
+		return methodParameterTypes;
+	}
+
 }

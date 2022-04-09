@@ -27,9 +27,10 @@ class ParserTest {
 	private List<String> modelsLeafNodes = new ArrayList<String>();
 	private List<String> commandsLeafNodes = new ArrayList<String>();
 	private List<String> controllersLeafNodes = new ArrayList<String>();
+	private Parser parser;
 	@Test
 	void test() throws IOException, MalformedTreeException, BadLocationException, ParseException{
-		Parser parser = new Parser("src\\test\\resources\\LatexEditor\\src");
+		parser = new Parser("src\\test\\resources\\LatexEditor\\src");
 		sourcesSubPackages = new ArrayList<>(Arrays.asList(
 				"src\\test\\resources\\LatexEditor\\src\\controller",
 				"src\\test\\resources\\LatexEditor\\src\\model",
@@ -82,7 +83,7 @@ class ParserTest {
 					assertEquals(l.getParentNode().getNodesPath(), "src\\test\\resources\\LatexEditor\\src\\controller");
 				}
 				Collections.sort(testingLeafNodes);
-				Collections.sort(commandsLeafNodes);
+				Collections.sort(controllersLeafNodes);
 				assertTrue(testingLeafNodes.size() == controllersLeafNodes.size() 
 						&& controllersLeafNodes.containsAll(testingLeafNodes) 
 						&& testingLeafNodes.containsAll(controllersLeafNodes));
