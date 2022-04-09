@@ -1,17 +1,23 @@
 package parsertests;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import org.eclipse.jface.text.BadLocationException;
+import org.eclipse.text.edits.MalformedTreeException;
 import org.junit.jupiter.api.Test;
 import model.LeafNode;
 import model.PackageNode;
 import parser.Parser;
 
 class ParserTest {
-	private Parser parser = new Parser("src\\test\\resources\\LatexEditor\\src");
+	
 	private List<PackageNode> packageNodes = new ArrayList<PackageNode>();
 	private List<PackageNode> subNodes = new ArrayList<PackageNode>();
 	private List<LeafNode> leafNodes = new ArrayList<LeafNode>();
@@ -22,7 +28,8 @@ class ParserTest {
 	private List<String> commandsLeafNodes = new ArrayList<String>();
 	private List<String> controllersLeafNodes = new ArrayList<String>();
 	@Test
-	void test() {
+	void test() throws IOException, MalformedTreeException, BadLocationException, ParseException{
+		Parser parser = new Parser("src\\test\\resources\\LatexEditor\\src");
 		sourcesSubPackages = new ArrayList<>(Arrays.asList(
 				"src\\test\\resources\\LatexEditor\\src\\controller",
 				"src\\test\\resources\\LatexEditor\\src\\model",

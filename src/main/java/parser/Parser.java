@@ -14,34 +14,20 @@ import model.PackageNode;
 import model.RecursiveFileVisitor;
 
 public class Parser {
+	private RecursiveFileVisitor fileVisitor;
 	private List<PackageNode> packageNodes;
 	private PackageNode subNode;
 	private PackageNode rootPackageNode;
 	
-	public Parser(String sourcePath) {
+	public Parser(String sourcePath) throws IOException, MalformedTreeException, BadLocationException, ParseException{
+		fileVisitor = new RecursiveFileVisitor ();
 		packageNodes = new ArrayList<PackageNode>();
 		rootPackageNode = new PackageNode(sourcePath);
 		packageNodes.add(rootPackageNode);
-		try {
-			parseFolder(rootPackageNode);
-		}catch (ParseException e) {
-			e.printStackTrace();
-		};
-		File [] root = new File[1];
-		root[0] = new File("src\\test\\resources\\LatexEditor\\src");
-		RecursiveFileVisitor visitor = new RecursiveFileVisitor (); 
-		try {
-			visitor.visitAllFiles(root);
-		}catch (MalformedTreeException m) {
-			m.printStackTrace();
-		}catch (IOException i ) {
-			i.printStackTrace();
-		}catch (BadLocationException b) {
-			b.printStackTrace();
-		}
+		parseFolder(rootPackageNode);
 	}
 
-	public void parseFolder(PackageNode currentNode) throws ParseException{
+	public void parseFolder(PackageNode currentNode) throws ParseException, IOException, MalformedTreeException, BadLocationException{
 		File folder = new File(currentNode.getNodesPath());
 		for (File file: folder.listFiles()) {
 			if (!file.isDirectory()) {
@@ -50,6 +36,7 @@ public class Parser {
 					LeafNode leafNode = new LeafNode(file.getPath());
 					currentNode.addLeafNode(leafNode);
 					leafNode.setParrentNode(currentNode);
+					fileVisitor.processJavaFile(file, leafNode);
 				}
 			}
 			else {
@@ -63,12 +50,7 @@ public class Parser {
 	}
 
 	private boolean isExtensionJava(String filePath) {
-		return getFilesExtension(filePath).equals(".java");
-	}
-
-	private String getFilesExtension(String filePath) {
-		return filePath.substring(filePath.lastIndexOf("\\"))
-				.substring(filePath.substring(filePath.lastIndexOf("\\")).indexOf("."));
+		return filePath.toLowerCase().endsWith(".java");
 	}
 	
 	private String getSubNodesPath(PackageNode currentPackage, File file) {
@@ -78,4 +60,5 @@ public class Parser {
 	public List<PackageNode> getPackageNodes() {
 		return packageNodes;
 	}
+	
 }

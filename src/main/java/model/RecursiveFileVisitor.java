@@ -36,13 +36,14 @@ public class RecursiveFileVisitor {
             } else {
             	String filePath = file.getAbsolutePath();
                 System.out.println("\n\nFile: " + filePath + "***");
-                if (filePath.toLowerCase().endsWith("java"))
-                	processJavaFile(file);
+                //if (filePath.toLowerCase().endsWith("java"))
+                	//processJavaFile(file);
             }
         }
     }//end ShowFiles
     
-    private  void processJavaFile(File file) throws IOException, MalformedTreeException, BadLocationException {
+    public  void processJavaFile(File file, LeafNode leafNode) throws IOException, MalformedTreeException, BadLocationException {
+    	System.out.println("File: " + file.getPath());
 	    ASTParser parser = ASTParser.newParser(AST.JLS8);
 	    parser.setSource(ReadFileToCharArray(file.getAbsolutePath()));
 	    CompilationUnit unit = (CompilationUnit)parser.createAST(null);
@@ -58,7 +59,7 @@ public class RecursiveFileVisitor {
 	            List<BodyDeclaration> bodies = type.bodyDeclarations();
 	            for (BodyDeclaration body : bodies) {
 	            	
-	            	if (body.getNodeType() == ASTNode.FIELD_DECLARATION) {
+	            	if (isField(body)) {
 	            		FieldDeclaration field = (FieldDeclaration)body;
 	            		//field.getJavadoc();	            		
 	            		List<VariableDeclarationFragment> fragments= field.fragments();
@@ -70,11 +71,11 @@ public class RecursiveFileVisitor {
 		            				System.out.println(key + " : " + map.get(key).toString());
 		            		}
 		            	}
-	            		
+	            		leafNode.addFieldType(field.getType().toString());
             			System.out.println("   modifiers: " + field.modifiers() );
             			System.out.println("   type: " + field.getType() );
 	            	}
-	                if (body.getNodeType() == ASTNode.METHOD_DECLARATION) {
+	                if (isMethod(body)) {
 	                    MethodDeclaration method = (MethodDeclaration)body;
 	                    String methodName = method.getName().getFullyQualifiedName();
 	                    Type returnType = method.getReturnType2();
@@ -94,9 +95,8 @@ public class RecursiveFileVisitor {
 	                        parameters.add(vrblType);
 	                    }
 
-	                    
-	                    
-	                    
+	                    leafNode.addMethodParameterType(parameters);
+	                    leafNode.addMethodReturnType(returnTypeName);
 	                    System.out.println(" method: " + methodName + " --> " + returnTypeName );
 	                    System.out.println("   modifiers: " + method.modifiers() );
 	                    System.out.println("   parameters: " + parameters );
@@ -105,7 +105,14 @@ public class RecursiveFileVisitor {
 	        }
 	    }
 	}//end processJavaFile
-    
+
+	private boolean isMethod(BodyDeclaration body) {
+		return body.getNodeType() == ASTNode.METHOD_DECLARATION;
+	}
+
+	private boolean isField(BodyDeclaration body) {
+		return body.getNodeType() == ASTNode.FIELD_DECLARATION;
+	}
     
 	private char[] ReadFileToCharArray(String filePath) throws IOException {
 		StringBuilder fileData = new StringBuilder(1000);
