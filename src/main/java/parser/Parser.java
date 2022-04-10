@@ -27,26 +27,32 @@ public class Parser {
 		parseFolder(rootPackageNode);
 	}
 
-	public void parseFolder(PackageNode currentNode) throws ParseException, IOException, MalformedTreeException, BadLocationException{
+	private void parseFolder(PackageNode currentNode) throws ParseException, IOException, MalformedTreeException, BadLocationException{
 		File folder = new File(currentNode.getNodesPath());
 		for (File file: folder.listFiles()) {
-			if (!file.isDirectory()) {
-				if (isExtensionJava(file.getPath())) {
-					currentNode.setValid();
-					LeafNode leafNode = new LeafNode(file.getPath());
-					currentNode.addLeafNode(leafNode);
-					leafNode.setParrentNode(currentNode);
-					fileVisitor.processJavaFile(file, leafNode);
-				}
+			if (!file.isDirectory() && isExtensionJava(file.getPath())) {
+				createLeafNode(currentNode, file);
 			}
 			else {
-				subNode = new PackageNode(getSubNodesPath(currentNode, file));
-				packageNodes.add(subNode);
-				currentNode.addSubNode(subNode);
-				subNode.setParentNode(currentNode);
-				parseFolder(subNode);
+				createPackageNode(currentNode, file);
 			}
 		}
+	}
+
+	private void createPackageNode(PackageNode currentNode, File file) throws ParseException, IOException, BadLocationException {
+		subNode = new PackageNode(getSubNodesPath(currentNode, file));
+		packageNodes.add(subNode);
+		currentNode.addSubNode(subNode);
+		subNode.setParentNode(currentNode);
+		parseFolder(subNode);
+	}
+
+	private void createLeafNode(PackageNode currentNode, File file) throws IOException, BadLocationException {
+		currentNode.setValid();
+		LeafNode leafNode = new LeafNode(file.getPath());
+		currentNode.addLeafNode(leafNode);
+		leafNode.setParrentNode(currentNode);
+		fileVisitor.processJavaFile(file, leafNode);
 	}
 
 	private boolean isExtensionJava(String filePath) {
