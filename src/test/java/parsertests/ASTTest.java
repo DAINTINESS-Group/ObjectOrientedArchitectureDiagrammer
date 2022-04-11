@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 
 import parser.Parser;
 import model.PackageNode;
+import model.LeafBranch;
 import model.LeafNode;
 
 class ASTTest {
@@ -25,6 +26,7 @@ class ASTTest {
 	private List<String> methodParameterTypes;
 	@Test
 	void test() throws IOException, MalformedTreeException, BadLocationException, ParseException{
+		//TODO add tests for branches
 		parser = new Parser("src\\test\\resources\\LatexEditor\\src\\controller\\commands");
 		packages = parser.getPackageNodes();
 		methodReturnTypes = new ArrayList<>(Arrays.asList("Constructor", "void"));
@@ -56,6 +58,10 @@ class ASTTest {
 						assertTrue(methodParameterTypesTest.size() == methodParameterTypes.size() 
 								&& methodParameterTypes.containsAll(methodParameterTypesTest) 
 								&& methodParameterTypes.containsAll(methodParameterTypesTest));
+					}
+					if ( l.getName().equals("CommandFactory") ) {
+						assertEquals("CommandFactory", l.getLeafBranches().get(0).getStartingLeafNode().getName(), "message");
+						assertEquals("Command", l.getLeafBranches().get(0).getEndingLeafNode().getName(), "message");
 					}
 				}
 			}

@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class LeafNodeRelation {
@@ -8,16 +9,17 @@ public class LeafNodeRelation {
 	
 	public LeafNodeRelation (List<PackageNode> packageNodes) {
 		this.packageNodes = packageNodes;
-		iteratePackages();
+		allLeafNodes = new ArrayList<LeafNode>();
+		populateLeafNodes();
+		findLeafNodesRelations();
 	}
 	
-	private void iteratePackages() {
+	private void populateLeafNodes() {
 		for (PackageNode p: packageNodes) {
 			for (LeafNode l: p.getLeafNodes()) {
 				allLeafNodes.add(l);
 			}
 		}
-		findLeafNodesRelations();
 	}
 	
 	private void findLeafNodesRelations() {
@@ -36,8 +38,7 @@ public class LeafNodeRelation {
 	private boolean branchExists(int i, int j) {
 		return (doesBranchExist(allLeafNodes.get(i).getMethodParameterTypes(), allLeafNodes.get(j).getName()) || 
 				doesBranchExist(allLeafNodes.get(i).getFieldTypes(), allLeafNodes.get(j).getName()) ||
-				doesBranchExist(allLeafNodes.get(i).getMethodReturnTypes(), allLeafNodes.get(j).getName())
-				);
+				doesBranchExist(allLeafNodes.get(i).getMethodReturnTypes(), allLeafNodes.get(j).getName()));
 	}
 	
 	private boolean doesBranchExist(List<String> leafNodesTypes, String leafNodesName) {
@@ -50,7 +51,8 @@ public class LeafNodeRelation {
 	}
 	
 	private void createBranch(int i, int j) {
-		LeafBranch leafBranch = new LeafBranch(allLeafNodes.get(i), allLeafNodes.get(j));
+		allLeafNodes.get(i).addLeafBranch(new LeafBranch(allLeafNodes.get(i), allLeafNodes.get(j)));
+		System.out.println(allLeafNodes.get(i).getName() + "  " + allLeafNodes.get(j).getName());
 	}
-	
+
 }

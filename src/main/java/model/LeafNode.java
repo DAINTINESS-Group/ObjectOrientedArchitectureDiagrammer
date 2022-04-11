@@ -10,11 +10,13 @@ public class LeafNode {
 	private List<String> methodsReturnTypes;
 	private List<String> fieldTypes;
 	private List<String> methodsParameterTypes;
+	private List<LeafBranch> leafBranches;
 
 	public LeafNode(String path) {
 		methodsReturnTypes = new ArrayList<String>();
 		methodsParameterTypes = new ArrayList<String>();
 		fieldTypes = new ArrayList<String>();
+		leafBranches = new ArrayList<LeafBranch>();
 		this.path = path;
 		setName();
 	}
@@ -31,6 +33,10 @@ public class LeafNode {
 		for (String s: parameterTypes) {
 			methodsParameterTypes.add(s);
 		}
+	}
+	
+	public void addLeafBranch(LeafBranch l) {
+		leafBranches.add(l);
 	}
 	
 	public void addMethodReturnType(String returnType) {
@@ -63,6 +69,10 @@ public class LeafNode {
 	
 	public List<String> getMethodParameterTypes() {
 		return methodsParameterTypes;
+	}
+
+	public List<LeafBranch> getLeafBranches() {
+		return leafBranches;
 	}
 
 }
