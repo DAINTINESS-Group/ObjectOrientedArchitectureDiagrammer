@@ -55,7 +55,7 @@ public class Parser {
 		currentNode.setValid();
 		currentNode.addLeafNode(leafNode);
 		leafNode.setParrentNode(currentNode);
-		fileVisitor.processJavaFile(file, leafNode);
+		fileVisitor.createAST(file, leafNode, packageNodes);
 	}
 	
 	private boolean isExtensionJava(String filePath) {

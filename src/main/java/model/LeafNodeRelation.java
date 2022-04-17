@@ -25,20 +25,19 @@ public class LeafNodeRelation {
 	private void findLeafNodesRelations() {
 		for (int i = 0; i < allLeafNodes.size(); i++) {
 			  for (int j = i+1; j < allLeafNodes.size(); j++) {
-				  if (branchExists(i, j)) {
-					  createBranch(i, j);
-				  }
-				  if (branchExists(j, i)) {
-					  createBranch(j, i);
-				  }
+				  checkRelation(i, j);
+				  checkRelation(j, i);
 			  }
 		}
 	}
 	
-	private boolean branchExists(int i, int j) {
-		return (doesBranchExist(allLeafNodes.get(i).getMethodParameterTypes(), allLeafNodes.get(j).getName()) || 
-				doesBranchExist(allLeafNodes.get(i).getFieldTypes(), allLeafNodes.get(j).getName()) ||
-				doesBranchExist(allLeafNodes.get(i).getMethodReturnTypes(), allLeafNodes.get(j).getName()));
+	private void checkRelation(int i, int j) {
+		if (doesBranchExist(allLeafNodes.get(i).getMethodParameterTypes(), allLeafNodes.get(j).getName()) ||
+				doesBranchExist(allLeafNodes.get(i).getMethodReturnTypes(), allLeafNodes.get(j).getName())) {
+			createBranch(i, j, "dependency");
+		}else if (doesBranchExist(allLeafNodes.get(i).getFieldTypes(), allLeafNodes.get(j).getName())) {
+			createBranch(i, j, "association");
+		}
 	}
 	
 	private boolean doesBranchExist(List<String> leafNodesTypes, String leafNodesName) {
@@ -50,9 +49,8 @@ public class LeafNodeRelation {
 		return false;
 	}
 	
-	private void createBranch(int i, int j) {
-		allLeafNodes.get(i).addLeafBranch(new LeafBranch(allLeafNodes.get(i), allLeafNodes.get(j)));
-		System.out.println(allLeafNodes.get(i).getName() + "  " + allLeafNodes.get(j).getName());
+	private void createBranch(int i, int j, String branchType) {
+		allLeafNodes.get(i).addLeafBranch(new LeafBranch(allLeafNodes.get(i), allLeafNodes.get(j), branchType));
 	}
 
 }

@@ -7,6 +7,7 @@ public class LeafNode {
 	private String path;
 	private PackageNode parentNode;
 	private String name;
+	private String type;
 	private List<String> methodsReturnTypes;
 	private List<String> fieldTypes;
 	private List<String> methodsParameterTypes;
@@ -23,6 +24,10 @@ public class LeafNode {
 	
 	private void setName() {
 		this.name = path.substring(path.lastIndexOf("\\") + 1, path.lastIndexOf("."));
+	}
+	
+	public void setType() {
+		//TODO type can be Class, Interface, Enum
 	}
 	
 	public void setParrentNode(PackageNode p) {

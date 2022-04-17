@@ -16,6 +16,7 @@ import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
+import org.eclipse.jdt.core.dom.PackageDeclaration;
 import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.jdt.core.dom.Type;
@@ -27,6 +28,9 @@ import org.eclipse.text.edits.MalformedTreeException;
 
 public class RecursiveFileVisitor {
 
+	private CompilationUnit unit;
+	private LeafNode leafNode;
+	
     public void visitAllFiles(File[] files) throws MalformedTreeException, IOException, BadLocationException {
         for (File file : files) {
             if (file.isDirectory()) {
@@ -42,12 +46,32 @@ public class RecursiveFileVisitor {
         }
     }//end ShowFiles
     
-    public  void processJavaFile(File file, LeafNode leafNode) throws IOException, MalformedTreeException, BadLocationException {
+    public void createAST(File file, LeafNode leafNode, List<PackageNode> packageNodes) throws IOException, MalformedTreeException, BadLocationException {
     	System.out.println("File: " + file.getPath());
-	    ASTParser parser = ASTParser.newParser(AST.JLS8);
+    	ASTParser parser = ASTParser.newParser(AST.JLS8);
 	    parser.setSource(ReadFileToCharArray(file.getAbsolutePath()));
-	    CompilationUnit unit = (CompilationUnit)parser.createAST(null);
+	    this.unit = (CompilationUnit)parser.createAST(null);
+	    this.leafNode = leafNode;
+	    validatePackageDeclaration(packageNodes);
+	    processJavaFile();
+    }
+    
+    private void validatePackageDeclaration(List<PackageNode> packageNodes) throws IOException, MalformedTreeException, BadLocationException {
+	    if (!isPackageValid()) {
+	    	for(PackageNode p: packageNodes) {
+	    		if (p.getName().equals(unit.getPackage().getName().toString())) {
+	    			leafNode.setParrentNode(p);
+	    		}
+	    	}
+	    }
+    }
 
+	private boolean isPackageValid() {
+		return unit.getPackage().getName().toString().equals(leafNode.getParentNode().getName());
+	}
+    
+    private  void processJavaFile() throws IOException, MalformedTreeException, BadLocationException {
+    	//TODO check for inheritance
 	    // to iterate through methods
 	    List<AbstractTypeDeclaration> types = unit.types();
 	    for (AbstractTypeDeclaration type : types) {
@@ -94,6 +118,8 @@ public class RecursiveFileVisitor {
 	                        }
 	                        parameters.add(vrblType);
 	                    }
+	                    
+	                    
 
 	                    leafNode.addMethodParameterType(parameters);
 	                    leafNode.addMethodReturnType(returnTypeName);
@@ -113,7 +139,7 @@ public class RecursiveFileVisitor {
 	private boolean isField(BodyDeclaration body) {
 		return body.getNodeType() == ASTNode.FIELD_DECLARATION;
 	}
-    
+	
 	private char[] ReadFileToCharArray(String filePath) throws IOException {
 		StringBuilder fileData = new StringBuilder(1000);
 		BufferedReader reader = new BufferedReader(new FileReader(filePath));

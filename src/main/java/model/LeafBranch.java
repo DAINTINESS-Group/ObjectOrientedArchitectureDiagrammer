@@ -5,13 +5,14 @@ public class LeafBranch {
 	private LeafNode endingLeafNode;
 	private String branchType;
 	
-	public LeafBranch (LeafNode startingLeafNode, LeafNode endingLeafNode) {
+	public LeafBranch (LeafNode startingLeafNode, LeafNode endingLeafNode, String branchType) {
 		this.startingLeafNode = startingLeafNode;
 		this.endingLeafNode = endingLeafNode;
+		this.branchType = branchType;
 	}
 	
-	public void setBranchType() {
-		
+	public String getBranchType() {
+		return branchType;
 	}
 	
 	public LeafNode getEndingLeafNode() {
