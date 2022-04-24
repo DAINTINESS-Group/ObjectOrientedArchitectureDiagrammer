@@ -8,6 +8,7 @@ public class LeafNode {
 	private PackageNode parentNode;
 	private String name;
 	private String type;
+	private String inheritanceLine[];
 	private List<String> methodsReturnTypes;
 	private List<String> fieldTypes;
 	private List<String> methodsParameterTypes;
@@ -27,7 +28,21 @@ public class LeafNode {
 	}
 	
 	public void setType() {
-		//TODO type can be Class, Interface, Enum
+		if (String.join(" ", inheritanceLine).contains("enum")) {
+			this.type = "enum";
+		}else if (String.join(" ", inheritanceLine).contains("interface")) {
+			this.type = "interface";
+		}else {
+			this.type = "class";
+		}
+	}
+
+	public void setInheritanceLine(String[] inheritanceLine) {
+		this.inheritanceLine = inheritanceLine;
+	}
+	
+	public String[] getInheritanceLine() {
+		return inheritanceLine;
 	}
 	
 	public void setParrentNode(PackageNode p) {
@@ -78,6 +93,10 @@ public class LeafNode {
 
 	public List<LeafBranch> getLeafBranches() {
 		return leafBranches;
+	}
+
+	public String getType() {
+		return type;
 	}
 
 }

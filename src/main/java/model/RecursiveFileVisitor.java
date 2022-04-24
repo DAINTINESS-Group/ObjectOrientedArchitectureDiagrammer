@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -30,26 +31,13 @@ public class RecursiveFileVisitor {
 
 	private CompilationUnit unit;
 	private LeafNode leafNode;
+	private String sourceFile[];
 	
-    public void visitAllFiles(File[] files) throws MalformedTreeException, IOException, BadLocationException {
-        for (File file : files) {
-            if (file.isDirectory()) {
-                System.out.println("\n\n\n"
-                		+ "Directory: " + file.getAbsolutePath());
-                visitAllFiles(file.listFiles()); // Calls same method again.
-            } else {
-            	String filePath = file.getAbsolutePath();
-                System.out.println("\n\nFile: " + filePath + "***");
-                //if (filePath.toLowerCase().endsWith("java"))
-                	//processJavaFile(file);
-            }
-        }
-    }//end ShowFiles
-    
     public void createAST(File file, LeafNode leafNode, List<PackageNode> packageNodes) throws IOException, MalformedTreeException, BadLocationException {
     	System.out.println("File: " + file.getPath());
     	ASTParser parser = ASTParser.newParser(AST.JLS8);
-	    parser.setSource(ReadFileToCharArray(file.getAbsolutePath()));
+    	this.sourceFile = ReadFileToCharArray(file.getAbsolutePath()).split("\\n");
+	    parser.setSource(ReadFileToCharArray(file.getAbsolutePath()).toCharArray());
 	    this.unit = (CompilationUnit)parser.createAST(null);
 	    this.leafNode = leafNode;
 	    validatePackageDeclaration(packageNodes);
@@ -67,6 +55,9 @@ public class RecursiveFileVisitor {
     }
 
 	private boolean isPackageValid() {
+		if (leafNode.getParentNode().getName().equals("src")) {
+			return true;
+		}
 		return unit.getPackage().getName().toString().equals(leafNode.getParentNode().getName());
 	}
     
@@ -77,12 +68,12 @@ public class RecursiveFileVisitor {
 	    for (AbstractTypeDeclaration type : types) {
 	        if (type.getNodeType() == ASTNode.TYPE_DECLARATION) {
 	        	SimpleName typeName = type.getName();
+	        	leafNode.setInheritanceLine(Arrays.copyOfRange(getInheritanceLine(type), 1, getInheritanceLine(type).length));
+	        	leafNode.setType();
 	        	System.out.println("Type name: " + typeName); 
     			System.out.println("   Type modifiers: " + type.modifiers() );
-
 	            List<BodyDeclaration> bodies = type.bodyDeclarations();
 	            for (BodyDeclaration body : bodies) {
-	            	
 	            	if (isField(body)) {
 	            		FieldDeclaration field = (FieldDeclaration)body;
 	            		//field.getJavadoc();	            		
@@ -119,8 +110,6 @@ public class RecursiveFileVisitor {
 	                        parameters.add(vrblType);
 	                    }
 	                    
-	                    
-
 	                    leafNode.addMethodParameterType(parameters);
 	                    leafNode.addMethodReturnType(returnTypeName);
 	                    System.out.println(" method: " + methodName + " --> " + returnTypeName );
@@ -132,6 +121,10 @@ public class RecursiveFileVisitor {
 	    }
 	}//end processJavaFile
 
+	private String[] getInheritanceLine(AbstractTypeDeclaration type) {
+		return sourceFile[unit.getLineNumber(type.getName().getStartPosition())-1].replace(type.modifiers().get(0).toString() + " class " + type.getName().toString(), "").split(" ");
+	}
+
 	private boolean isMethod(BodyDeclaration body) {
 		return body.getNodeType() == ASTNode.METHOD_DECLARATION;
 	}
@@ -140,7 +133,7 @@ public class RecursiveFileVisitor {
 		return body.getNodeType() == ASTNode.FIELD_DECLARATION;
 	}
 	
-	private char[] ReadFileToCharArray(String filePath) throws IOException {
+	private String ReadFileToCharArray(String filePath) throws IOException {
 		StringBuilder fileData = new StringBuilder(1000);
 		BufferedReader reader = new BufferedReader(new FileReader(filePath));
  
@@ -154,9 +147,7 @@ public class RecursiveFileVisitor {
  
 		reader.close();
  
-		return  fileData.toString().toCharArray();	
+		return  fileData.toString();	
 	}//end ReadFileToCharArray
-	
-	
 	
 }

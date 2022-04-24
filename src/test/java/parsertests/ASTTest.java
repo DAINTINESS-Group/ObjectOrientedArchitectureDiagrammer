@@ -15,7 +15,6 @@ import org.junit.jupiter.api.Test;
 
 import parser.Parser;
 import model.PackageNode;
-import model.LeafBranch;
 import model.LeafNode;
 
 class ASTTest {
@@ -26,7 +25,7 @@ class ASTTest {
 	private List<String> methodParameterTypes;
 	@Test
 	void test() throws IOException, MalformedTreeException, BadLocationException, ParseException{
-		//TODO add tests for branches
+		//TODO add tests for multiple implentations
 		parser = new Parser("src\\test\\resources\\LatexEditor\\src");
 		packages = parser.getPackageNodes();
 		methodReturnTypes = new ArrayList<>(Arrays.asList("Constructor", "void"));
@@ -57,11 +56,15 @@ class ASTTest {
 						assertTrue(methodParameterTypesTest.size() == methodParameterTypes.size() 
 								&& methodParameterTypes.containsAll(methodParameterTypesTest) 
 								&& methodParameterTypes.containsAll(methodParameterTypesTest));
+						assertEquals("AddLatexCommand", l.getLeafBranches().get(1).getStartingLeafNode().getName());
+						assertEquals("VersionsManager", l.getLeafBranches().get(1).getEndingLeafNode().getName());
+						assertEquals("dependency", l.getLeafBranches().get(1).getBranchType());
 						assertEquals("AddLatexCommand", l.getLeafBranches().get(0).getStartingLeafNode().getName());
-						assertEquals("VersionsManager", l.getLeafBranches().get(0).getEndingLeafNode().getName());
-						assertEquals("dependency", l.getLeafBranches().get(0).getBranchType());
+						assertEquals("Command", l.getLeafBranches().get(0).getEndingLeafNode().getName());
+						assertEquals("implementation", l.getLeafBranches().get(0).getBranchType());
+						assertEquals("class", l.getType());
 					}
-					if ( l.getName().equals("CommandFactory") ) {
+					else if ( l.getName().equals("CommandFactory") ) {
 						assertEquals("CommandFactory", l.getLeafBranches().get(0).getStartingLeafNode().getName(), "message");
 						assertEquals("Command", l.getLeafBranches().get(0).getEndingLeafNode().getName(), "message");
 						assertEquals("dependency", l.getLeafBranches().get(0).getBranchType(), "message");
@@ -69,6 +72,8 @@ class ASTTest {
 						assertEquals("association", l.getLeafBranches().get(1).getBranchType(), "message");
 						assertEquals("VersionsManager", l.getLeafBranches().get(2).getEndingLeafNode().getName(), "message");
 						assertEquals("dependency", l.getLeafBranches().get(2).getBranchType(), "message");
+					}else if (l.getName().equals("Command")) {
+						assertEquals("interface", l.getType());
 					}
 				}
 			}
