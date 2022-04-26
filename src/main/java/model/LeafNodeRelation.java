@@ -86,7 +86,7 @@ public class LeafNodeRelation {
 				}
 			}
 		}else if (allLeafNodes.get(i).getInheritanceLine().length > 3 && allLeafNodes.get(i).getInheritanceLine()[2].equals("implements")) {
-			for (int l = 3; l < allLeafNodes.get(i).getInheritanceLine().length-1; l++) {
+			for (int l = 3; l < allLeafNodes.get(i).getInheritanceLine().length; l++) {
 				if (allLeafNodes.get(i).getInheritanceLine()[l].equals(allLeafNodes.get(j).getName())) {
 					return true;
 				}

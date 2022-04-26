@@ -62,13 +62,12 @@ public class RecursiveFileVisitor {
 	}
     
     private  void processJavaFile() throws IOException, MalformedTreeException, BadLocationException {
-    	//TODO check for inheritance
 	    // to iterate through methods
 	    List<AbstractTypeDeclaration> types = unit.types();
 	    for (AbstractTypeDeclaration type : types) {
 	        if (type.getNodeType() == ASTNode.TYPE_DECLARATION) {
 	        	SimpleName typeName = type.getName();
-	        	leafNode.setInheritanceLine(Arrays.copyOfRange(getInheritanceLine(type), 1, getInheritanceLine(type).length));
+	        	leafNode.setInheritanceLine(convertInheritanceLine(type));
 	        	leafNode.setType();
 	        	System.out.println("Type name: " + typeName); 
     			System.out.println("   Type modifiers: " + type.modifiers() );
@@ -120,6 +119,18 @@ public class RecursiveFileVisitor {
 	        }
 	    }
 	}//end processJavaFile
+
+	private String[] convertInheritanceLine(AbstractTypeDeclaration type) {
+		String inheritanceLine[] = Arrays.copyOfRange(getInheritanceLine(type), 1, getInheritanceLine(type).length);
+		for (int i = 0; i < inheritanceLine.length; i++) {
+			inheritanceLine[i] = inheritanceLine[i].trim();
+			if ( inheritanceLine.length > 3) {
+			inheritanceLine[i] = inheritanceLine[i].replace(",", "");
+			inheritanceLine[i] = inheritanceLine[i].replace("{", "");
+			}
+		}
+		return inheritanceLine;
+	}
 
 	private String[] getInheritanceLine(AbstractTypeDeclaration type) {
 		return sourceFile[unit.getLineNumber(type.getName().getStartPosition())-1].replace(type.modifiers().get(0).toString() + " class " + type.getName().toString(), "").split(" ");

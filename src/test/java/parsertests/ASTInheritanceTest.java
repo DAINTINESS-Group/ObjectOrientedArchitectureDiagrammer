@@ -29,12 +29,17 @@ class ASTInheritanceTest {
 			if ( p.getName().equals("src") ) {
 				for (LeafNode l: p.getLeafNodes()) {
 					if ( l.getName().equals("ImplementingClass") ) {
-						for (LeafBranch lb: l.getLeafBranches()) {
-							System.out.println(lb.getStartingLeafNode().getName());
-							System.out.println(lb.getEndingLeafNode().getName());
-							System.out.println(lb.getBranchType());
-							
-						}
+						assertEquals("ImplementingClass", l.getLeafBranches().get(0).getStartingLeafNode().getName());
+						assertEquals("ExtensionClass", l.getLeafBranches().get(0).getEndingLeafNode().getName());
+						assertEquals("extension", l.getLeafBranches().get(0).getBranchType());
+						
+						assertEquals("ImplementingClass", l.getLeafBranches().get(1).getStartingLeafNode().getName());
+						assertEquals("TestingInterface", l.getLeafBranches().get(1).getEndingLeafNode().getName());
+						assertEquals("implementation", l.getLeafBranches().get(1).getBranchType());
+						
+						assertEquals("ImplementingClass", l.getLeafBranches().get(2).getStartingLeafNode().getName());
+						assertEquals("TestingInterface2", l.getLeafBranches().get(2).getEndingLeafNode().getName());
+						assertEquals("implementation", l.getLeafBranches().get(2).getBranchType());
 					}
 				}
 			}
