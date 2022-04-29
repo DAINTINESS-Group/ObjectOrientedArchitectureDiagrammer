@@ -11,7 +11,7 @@ import parser.Parser;
 public class Client {
 
 	public static void main(String[] args) throws IOException, MalformedTreeException, BadLocationException, ParseException{
-		Parser parser = new Parser(args[0]);
+		new Parser(args[0]);
 	}
 
 }

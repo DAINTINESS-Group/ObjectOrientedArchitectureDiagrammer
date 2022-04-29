@@ -1,28 +1,32 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
+/* This class is responsible for the implementation of a package node in the tree.
+ * Each has node has a parent node(the parent package), the path of the package folder,
+ * the nodes children(the sub packages), the nodes leafs(the Java source files inside the
+ * current package), a flag to identify if a package is empty or not  */
 public class PackageNode {
 	private String path;
 	private PackageNode parentNode;
-	private List<PackageNode> subNodes;
-	private List<LeafNode> leafNodes;
+	private Map<String, PackageNode> subNodes;
+	private Map<String, LeafNode> leafNodes;
 	private boolean isValid;
 	
 	public PackageNode(String path) {
 		this.path = path;
 		this.isValid = false;
-		subNodes = new ArrayList<PackageNode>();
-		leafNodes = new ArrayList<LeafNode>();
+		subNodes = new HashMap<String, PackageNode>();
+		leafNodes = new HashMap<String, LeafNode>();
 	}
 	
 	public void addLeafNode(LeafNode leafNode) {
-		leafNodes.add(leafNode);
+		leafNodes.put(leafNode.getName(), leafNode);
 	}
 	
 	public void addSubNode(PackageNode p) {
-		subNodes.add(p);
+		subNodes.put(p.getName(), p);
 	}
 	
 	public void setParentNode(PackageNode p) {
@@ -49,11 +53,11 @@ public class PackageNode {
 		return isValid;
 	}
 	
-	public List<PackageNode> getSubNodes() {
+	public Map<String, PackageNode> getSubNodes() {
 		return subNodes;
 	}
 
-	public List<LeafNode> getLeafNodes() {
+	public Map<String, LeafNode> getLeafNodes() {
 		return leafNodes;
 	}
 	

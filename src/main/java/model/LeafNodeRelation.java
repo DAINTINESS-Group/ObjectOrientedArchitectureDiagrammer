@@ -1,14 +1,19 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
+/* This class is responsible for the creation of the branches between the Java 
+ * source files. The branches have a type, e.g., inheritance, implementation.
+ * The branches are also directed with a starting and an ending node*/
 public class LeafNodeRelation {
-	private List<PackageNode> packageNodes;
+	private Map<String, PackageNode> packageNodes;
 	private List<LeafNode> allLeafNodes;
 	
-	public LeafNodeRelation (List<PackageNode> packageNodes) {
+	/* This method is responsible for retrieving the leaf nodes that have been created
+	 * and then creating the branches between them. */
+	public LeafNodeRelation (Map<String, PackageNode> packageNodes) {
 		this.packageNodes = packageNodes;
 		allLeafNodes = new ArrayList<LeafNode>();
 		populateLeafNodes();
@@ -16,8 +21,8 @@ public class LeafNodeRelation {
 	}
 	
 	private void populateLeafNodes() {
-		for (PackageNode p: packageNodes) {
-			for (LeafNode l: p.getLeafNodes()) {
+		for (PackageNode p: packageNodes.values()) {
+			for (LeafNode l: p.getLeafNodes().values()) {
 				allLeafNodes.add(l);
 			}
 		}
@@ -64,13 +69,13 @@ public class LeafNodeRelation {
 	}
 	
 	private boolean isInheritance(int i) {
-		return allLeafNodes.get(i).getInheritanceLine().length > 0;
+		return allLeafNodes.get(i).getInheritanceLine().length > 2;
 	}
 	
 	private boolean isExtension(int i, int j) {
-		if ( allLeafNodes.get(i).getInheritanceLine()[0].equals("extends") ) {
+		if ( allLeafNodes.get(i).getInheritanceLine()[2].equals("extends") ) {
 			for (int k = 0; k < allLeafNodes.size(); k++) {
-				if (allLeafNodes.get(i).getInheritanceLine()[1].equals(allLeafNodes.get(j).getName())) {
+				if (allLeafNodes.get(i).getInheritanceLine()[3].equals(allLeafNodes.get(j).getName())) {
 					return true;
 				}
 			}
@@ -79,14 +84,14 @@ public class LeafNodeRelation {
 	}
 	
 	private boolean isImplementation(int i, int j) {
-		if ( allLeafNodes.get(i).getInheritanceLine()[0].equals("implements") ) {
-			for (int l = 1; l < allLeafNodes.get(i).getInheritanceLine().length-1; l++) {
+		if ( allLeafNodes.get(i).getInheritanceLine()[2].equals("implements") ) {
+			for (int l = 3; l < allLeafNodes.get(i).getInheritanceLine().length; l++) {
 				if (allLeafNodes.get(i).getInheritanceLine()[l].equals(allLeafNodes.get(j).getName())) {
 					return true;
 				}
 			}
-		}else if (allLeafNodes.get(i).getInheritanceLine().length > 3 && allLeafNodes.get(i).getInheritanceLine()[2].equals("implements")) {
-			for (int l = 3; l < allLeafNodes.get(i).getInheritanceLine().length; l++) {
+		}else if (allLeafNodes.get(i).getInheritanceLine().length > 5 && allLeafNodes.get(i).getInheritanceLine()[4].equals("implements")) {
+			for (int l = 5; l < allLeafNodes.get(i).getInheritanceLine().length; l++) {
 				if (allLeafNodes.get(i).getInheritanceLine()[l].equals(allLeafNodes.get(j).getName())) {
 					return true;
 				}

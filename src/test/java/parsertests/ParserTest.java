@@ -7,7 +7,9 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.text.edits.MalformedTreeException;
@@ -18,9 +20,8 @@ import parser.Parser;
 
 class ParserTest {
 	
-	private List<PackageNode> packageNodes = new ArrayList<PackageNode>();
-	private List<PackageNode> subNodes = new ArrayList<PackageNode>();
-	private List<LeafNode> leafNodes = new ArrayList<LeafNode>();
+	private Map<String, PackageNode> packageNodes;
+	private Map<String, PackageNode> subNodes = new HashMap<String, PackageNode>();
 	private List<String> sourcesSubPackages = new ArrayList<String>();
 	private List<String> viewsLeafNodes = new ArrayList<String>();
 	private List<String> strategiesLeafNodes = new ArrayList<String>();
@@ -69,109 +70,108 @@ class ParserTest {
 				"src\\test\\resources\\LatexEditor\\src\\controller\\commands\\RollbackToPreviousVersionCommand.java"
 				));
 		packageNodes = parser.getPackageNodes();
-		for (PackageNode p: packageNodes) {
-			if (p.getName().equals("controller")) {
-				List<String> testingLeafNodes = new ArrayList<String>();
-				assertEquals("src\\test\\resources\\LatexEditor\\src\\controller", p.getNodesPath(), "message");
-				assertEquals("src\\test\\resources\\LatexEditor\\src", p.getParentNode().getNodesPath(), "message");
-				assertEquals(true, p.isValid(), "message");
-				subNodes = p.getSubNodes();
-				assertEquals("src\\test\\resources\\LatexEditor\\src\\controller\\commands", subNodes.get(0).getNodesPath(), "message");
-				leafNodes = p.getLeafNodes();
-				for (LeafNode l: leafNodes) {
-					testingLeafNodes.add(l.getPath());
-					assertEquals(l.getParentNode().getNodesPath(), "src\\test\\resources\\LatexEditor\\src\\controller");
-				}
-				Collections.sort(testingLeafNodes);
-				Collections.sort(controllersLeafNodes);
-				assertTrue(testingLeafNodes.size() == controllersLeafNodes.size() 
-						&& controllersLeafNodes.containsAll(testingLeafNodes) 
-						&& testingLeafNodes.containsAll(controllersLeafNodes));
-			}else if (p.getName().equals("commands")) {
-				List<String> testingLeafNodes = new ArrayList<String>();
-				assertEquals("src\\test\\resources\\LatexEditor\\src\\controller\\commands", p.getNodesPath(), "message");
-				assertEquals("src\\test\\resources\\LatexEditor\\src\\controller", p.getParentNode().getNodesPath(), "message");
-				assertEquals(true, p.isValid(), "message");
-				subNodes = p.getSubNodes();
-				assertEquals(0, subNodes.size(), "message");
-				leafNodes = p.getLeafNodes();
-				for (LeafNode l: leafNodes) {
-					testingLeafNodes.add(l.getPath());
-					assertEquals(l.getParentNode().getNodesPath(), "src\\test\\resources\\LatexEditor\\src\\controller\\commands");
-				}
-				Collections.sort(testingLeafNodes);
-				Collections.sort(commandsLeafNodes);
-				assertTrue(testingLeafNodes.size() == commandsLeafNodes.size() 
-						&& commandsLeafNodes.containsAll(testingLeafNodes) 
-						&& testingLeafNodes.containsAll(commandsLeafNodes));
-			}else if (p.getName().equals("model")) {
-				List<String> testingLeafNodes = new ArrayList<String>();
-				assertEquals("src\\test\\resources\\LatexEditor\\src\\model", p.getNodesPath(), "message");
-				assertEquals("src\\test\\resources\\LatexEditor\\src", p.getParentNode().getNodesPath(), "message");
-				assertEquals(true, p.isValid(), "message");
-				subNodes = p.getSubNodes();
-				assertEquals("src\\test\\resources\\LatexEditor\\src\\model\\strategies", subNodes.get(0).getNodesPath(), "message");
-				leafNodes = p.getLeafNodes();
-				for (LeafNode l: leafNodes) {
-					assertEquals(l.getParentNode().getNodesPath(), "src\\test\\resources\\LatexEditor\\src\\model");
-					testingLeafNodes.add(l.getPath());
-				}
-				Collections.sort(testingLeafNodes);
-				Collections.sort(modelsLeafNodes);
-				assertTrue(testingLeafNodes.size() == modelsLeafNodes.size() 
-						&& modelsLeafNodes.containsAll(testingLeafNodes) 
-						&& testingLeafNodes.containsAll(modelsLeafNodes));
-			}else if (p.getName().equals("strategies")) {
-				List<String> testingLeafNodes = new ArrayList<String>();
-				assertEquals("src\\test\\resources\\LatexEditor\\src\\model\\strategies", p.getNodesPath(), "message");
-				assertEquals("src\\test\\resources\\LatexEditor\\src\\model", p.getParentNode().getNodesPath(), "message");
-				assertEquals(true, p.isValid(), "message");
-				subNodes = p.getSubNodes();
-				assertEquals(0, subNodes.size(), "message");
-				leafNodes = p.getLeafNodes();
-				for (LeafNode l: leafNodes) {
-					assertEquals(l.getParentNode().getNodesPath(), "src\\test\\resources\\LatexEditor\\src\\model\\strategies");
-					testingLeafNodes.add(l.getPath());
-				}
-				Collections.sort(testingLeafNodes);
-				Collections.sort(strategiesLeafNodes);
-				assertTrue(testingLeafNodes.size() == strategiesLeafNodes.size() 
-						&& strategiesLeafNodes.containsAll(testingLeafNodes) 
-						&& testingLeafNodes.containsAll(strategiesLeafNodes));
-			}else if (p.getName().equals("view")) {
-				List<String> testingLeafNodes = new ArrayList<String>();
-				assertEquals("src\\test\\resources\\LatexEditor\\src\\view", p.getNodesPath(), "message");
-				assertEquals("src\\test\\resources\\LatexEditor\\src", p.getParentNode().getNodesPath(), "message");
-				assertEquals(true, p.isValid(), "message");
-				subNodes = p.getSubNodes();
-				assertEquals(0, subNodes.size(), "message");
-				leafNodes = p.getLeafNodes();
-				for (LeafNode l: leafNodes) {
-					assertEquals(l.getParentNode().getNodesPath(), "src\\test\\resources\\LatexEditor\\src\\view");
-					testingLeafNodes.add(l.getPath());
-				}
-				Collections.sort(testingLeafNodes);
-				Collections.sort(viewsLeafNodes);
-				assertTrue(testingLeafNodes.size() == viewsLeafNodes.size() 
-						&& viewsLeafNodes.containsAll(testingLeafNodes) 
-						&& testingLeafNodes.containsAll(viewsLeafNodes));
-			}else if (p.getName().equals("src")) {
-				List<String> testingSubPackages = new ArrayList<String>();
-				assertEquals("src\\test\\resources\\LatexEditor\\src", p.getNodesPath(), "message");
-				assertEquals("", p.getParentNode().getNodesPath(), "message");
-				assertEquals(false, p.isValid(), "message");
-				subNodes = p.getSubNodes();
-				for (PackageNode subP: subNodes) {
-					testingSubPackages.add(subP.getNodesPath());
-				}
-				Collections.sort(testingSubPackages);
-				Collections.sort(sourcesSubPackages);
-				assertTrue(testingSubPackages.size() == sourcesSubPackages.size() 
-						&& sourcesSubPackages.containsAll(testingSubPackages) 
-						&& testingSubPackages.containsAll(sourcesSubPackages));
-				leafNodes = p.getLeafNodes();
-				assertEquals(0, leafNodes.size(), "message");
-			}
+		
+		PackageNode controllerPackage = packageNodes.get("controller");
+		List<String> testingLeafNodes = new ArrayList<String>();
+		assertEquals("src\\test\\resources\\LatexEditor\\src\\controller", controllerPackage.getNodesPath());
+		assertEquals("src\\test\\resources\\LatexEditor\\src", controllerPackage.getParentNode().getNodesPath());
+		assertEquals(true, controllerPackage.isValid(), "message");
+		subNodes = controllerPackage.getSubNodes();
+		assertEquals("src\\test\\resources\\LatexEditor\\src\\controller\\commands", subNodes.get("commands").getNodesPath());
+		
+		for (LeafNode l: controllerPackage.getLeafNodes().values()) {
+			testingLeafNodes.add(l.getPath());
+			assertEquals(l.getParentNode().getNodesPath(), "src\\test\\resources\\LatexEditor\\src\\controller");
 		}
+		Collections.sort(testingLeafNodes);
+		Collections.sort(controllersLeafNodes);
+		assertTrue(testingLeafNodes.size() == controllersLeafNodes.size() 
+				&& controllersLeafNodes.containsAll(testingLeafNodes) 
+				&& testingLeafNodes.containsAll(controllersLeafNodes));
+		testingLeafNodes.clear();
+		
+		PackageNode commandsPackage = packageNodes.get("commands");
+		assertEquals("src\\test\\resources\\LatexEditor\\src\\controller\\commands", commandsPackage.getNodesPath());
+		assertEquals("src\\test\\resources\\LatexEditor\\src\\controller", commandsPackage.getParentNode().getNodesPath());
+		assertEquals(true, commandsPackage.isValid());
+		subNodes = commandsPackage.getSubNodes();
+		assertEquals(0, subNodes.size());
+		for (LeafNode l: commandsPackage.getLeafNodes().values()) {
+			testingLeafNodes.add(l.getPath());
+			assertEquals(l.getParentNode().getNodesPath(), "src\\test\\resources\\LatexEditor\\src\\controller\\commands");
+		}
+		Collections.sort(testingLeafNodes);
+		Collections.sort(commandsLeafNodes);
+		assertTrue(testingLeafNodes.size() == commandsLeafNodes.size() 
+				&& commandsLeafNodes.containsAll(testingLeafNodes) 
+				&& testingLeafNodes.containsAll(commandsLeafNodes));
+		testingLeafNodes.clear();
+		
+		PackageNode modelPackage = packageNodes.get("model");
+		assertEquals("src\\test\\resources\\LatexEditor\\src\\model", modelPackage.getNodesPath());
+		assertEquals("src\\test\\resources\\LatexEditor\\src", modelPackage.getParentNode().getNodesPath());
+		assertEquals(true, modelPackage.isValid());
+		subNodes = modelPackage.getSubNodes();
+		assertEquals("src\\test\\resources\\LatexEditor\\src\\model\\strategies", subNodes.get("strategies").getNodesPath());
+		for (LeafNode l: modelPackage.getLeafNodes().values()) {
+			assertEquals(l.getParentNode().getNodesPath(), "src\\test\\resources\\LatexEditor\\src\\model");
+			testingLeafNodes.add(l.getPath());
+		}
+		Collections.sort(testingLeafNodes);
+		Collections.sort(modelsLeafNodes);
+		assertTrue(testingLeafNodes.size() == modelsLeafNodes.size() 
+				&& modelsLeafNodes.containsAll(testingLeafNodes) 
+				&& testingLeafNodes.containsAll(modelsLeafNodes));
+		testingLeafNodes.clear();
+		
+		PackageNode strategiesPackage = packageNodes.get("strategies");
+		assertEquals("src\\test\\resources\\LatexEditor\\src\\model\\strategies", strategiesPackage.getNodesPath());
+		assertEquals("src\\test\\resources\\LatexEditor\\src\\model", strategiesPackage.getParentNode().getNodesPath());
+		assertEquals(true, strategiesPackage.isValid());
+		subNodes = strategiesPackage.getSubNodes();
+		assertEquals(0, subNodes.size());
+		for (LeafNode l: strategiesPackage.getLeafNodes().values()) {
+			assertEquals(l.getParentNode().getNodesPath(), "src\\test\\resources\\LatexEditor\\src\\model\\strategies");
+			testingLeafNodes.add(l.getPath());
+		}
+		Collections.sort(testingLeafNodes);
+		Collections.sort(strategiesLeafNodes);
+		assertTrue(testingLeafNodes.size() == strategiesLeafNodes.size() 
+				&& strategiesLeafNodes.containsAll(testingLeafNodes) 
+				&& testingLeafNodes.containsAll(strategiesLeafNodes));
+		testingLeafNodes.clear();
+		
+		PackageNode viewPackage = packageNodes.get("view");
+		assertEquals("src\\test\\resources\\LatexEditor\\src\\view", viewPackage.getNodesPath());
+		assertEquals("src\\test\\resources\\LatexEditor\\src", viewPackage.getParentNode().getNodesPath());
+		assertEquals(true, viewPackage.isValid());
+		subNodes = viewPackage.getSubNodes();
+		assertEquals(0, subNodes.size());
+		for (LeafNode l: viewPackage.getLeafNodes().values()) {
+			assertEquals(l.getParentNode().getNodesPath(), "src\\test\\resources\\LatexEditor\\src\\view");
+			testingLeafNodes.add(l.getPath());
+		}
+		Collections.sort(testingLeafNodes);
+		Collections.sort(viewsLeafNodes);
+		assertTrue(testingLeafNodes.size() == viewsLeafNodes.size() 
+				&& viewsLeafNodes.containsAll(testingLeafNodes) 
+				&& testingLeafNodes.containsAll(viewsLeafNodes));
+		testingLeafNodes.clear();
+		
+		PackageNode sourcePackage = packageNodes.get("src");
+		assertEquals("src\\test\\resources\\LatexEditor\\src", sourcePackage.getNodesPath());
+		assertEquals("", sourcePackage.getParentNode().getNodesPath());
+		assertEquals(false, sourcePackage.isValid());
+		subNodes = sourcePackage.getSubNodes();
+		List<String> testingSubPackages = new ArrayList<String>();
+		for (PackageNode subP: subNodes.values()) {
+			testingSubPackages.add(subP.getNodesPath());
+		}
+		Collections.sort(testingSubPackages);
+		Collections.sort(sourcesSubPackages);
+		assertTrue(testingSubPackages.size() == sourcesSubPackages.size() 
+				&& sourcesSubPackages.containsAll(testingSubPackages) 
+				&& testingSubPackages.containsAll(sourcesSubPackages));
+		assertEquals(0, sourcePackage.getLeafNodes().size());
 	}
 }

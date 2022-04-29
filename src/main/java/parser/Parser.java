@@ -3,32 +3,33 @@ package parser;
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.text.edits.MalformedTreeException;
 
-import model.LeafBranch;
 import model.LeafNode;
 import model.LeafNodeRelation;
 import model.PackageNode;
-import model.RecursiveFileVisitor;
 
+
+/* This class is responsible for the parsing of a Java project. While parsing the project
+ * it creates a tree where nodes are the packages and leafs are the Java source files.
+ * In order to create the tree it uses the ASTNode API from the JDT library */
 public class Parser {
-	private RecursiveFileVisitor fileVisitor;
-	private LeafNodeRelation leafNodeRelation;
-	private List<PackageNode> packageNodes;
-	private List<LeafBranch> leafBranches;
+	private Map<String, PackageNode> packageNodes;
 	private PackageNode rootPackageNode;
 	
+	/* This method creates the root of the tree, from the source package, calls the
+	 * parseFolder method thats responsible for the parsing and then creates an object
+	 * of the LeafNodeRelation class with the created nodes in order to create the branches */
 	public Parser(String sourcePath) throws IOException, MalformedTreeException, BadLocationException, ParseException{
-		fileVisitor = new RecursiveFileVisitor ();
-		packageNodes = new ArrayList<PackageNode>();
+		packageNodes = new HashMap<String, PackageNode>();
 		rootPackageNode = new PackageNode(sourcePath);
-		packageNodes.add(rootPackageNode);
+		packageNodes.put(rootPackageNode.getName(), rootPackageNode);
 		parseFolder(rootPackageNode);
-		leafNodeRelation = new LeafNodeRelation(packageNodes);
+		new LeafNodeRelation(packageNodes);
 		
 	}
 
@@ -45,7 +46,7 @@ public class Parser {
 	}
 
 	private void createPackageSubNode(PackageNode currentNode, PackageNode subNode) throws ParseException, IOException, BadLocationException {
-		packageNodes.add(subNode);
+		packageNodes.put(subNode.getName(), subNode);
 		currentNode.addSubNode(subNode);
 		subNode.setParentNode(currentNode);
 		parseFolder(subNode);
@@ -55,7 +56,7 @@ public class Parser {
 		currentNode.setValid();
 		currentNode.addLeafNode(leafNode);
 		leafNode.setParrentNode(currentNode);
-		fileVisitor.createAST(file, leafNode, packageNodes);
+		new FileVisitor(file, leafNode, packageNodes);
 	}
 	
 	private boolean isExtensionJava(String filePath) {
@@ -66,12 +67,10 @@ public class Parser {
 		return currentPackage.getNodesPath() + "\\" + file.getName();
 	}
 	
-	public List<PackageNode> getPackageNodes() {
+	/* This method returns the map with keys the name of the package and values 
+	 * the object of type PackageNode */
+	public Map<String, PackageNode> getPackageNodes() {
 		return packageNodes;
 	}
 	 
-	public List<LeafBranch> getLeafBranches() {
-		return leafBranches;
-	}
-	
 }
