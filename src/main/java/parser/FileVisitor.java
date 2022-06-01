@@ -40,8 +40,12 @@ public class FileVisitor {
 	
 	/* This method calls the createAST method thats responsible for the creation 
 	 * of the AST */
-	public FileVisitor(File file, LeafNode leafNode, Map<String, PackageNode> packageNodes) throws IOException, MalformedTreeException, BadLocationException{
-		createAST(file, leafNode, packageNodes);
+	public FileVisitor(File file, LeafNode leafNode, Map<String, PackageNode> packageNodes){
+		try {
+			createAST(file, leafNode, packageNodes);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 	}
 	
     private void createAST(File file, LeafNode leafNode, Map<String, PackageNode> packageNodes) throws IOException, MalformedTreeException, BadLocationException {

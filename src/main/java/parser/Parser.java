@@ -1,13 +1,9 @@
 package parser;
 
 import java.io.File;
-import java.io.IOException;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.eclipse.jface.text.BadLocationException;
-import org.eclipse.text.edits.MalformedTreeException;
 
 import model.LeafNode;
 import model.LeafNodeRelation;
@@ -24,35 +20,39 @@ public class Parser {
 	/* This method creates the root of the tree, from the source package, calls the
 	 * parseFolder method thats responsible for the parsing and then creates an object
 	 * of the LeafNodeRelation class with the created nodes in order to create the branches */
-	public Parser(String sourcePath) throws IOException, MalformedTreeException, BadLocationException, ParseException{
+	public Parser(String sourcePackagePath) {
 		packageNodes = new HashMap<String, PackageNode>();
-		rootPackageNode = new PackageNode(sourcePath);
+		rootPackageNode = new PackageNode(sourcePackagePath);
 		packageNodes.put(rootPackageNode.getName(), rootPackageNode);
-		parseFolder(rootPackageNode);
+		try {
+			parseFolder(rootPackageNode);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 		new LeafNodeRelation(packageNodes);
 		
 	}
 
-	private void parseFolder(PackageNode currentNode) throws ParseException, IOException, MalformedTreeException, BadLocationException{
+	private void parseFolder(PackageNode currentNode) throws ParseException{
 		File folder = new File(currentNode.getNodesPath());
 		for (File file: folder.listFiles()) {
-			if (!file.isDirectory() && isExtensionJava(file.getPath())) {
-				createLeafNode(currentNode, new LeafNode(file.getPath()), file);
-			}
-			else {
+			if (file.isDirectory()) {
 				createPackageSubNode(currentNode, new PackageNode(getSubNodesPath(currentNode, file)));
+			}
+			else if (isExtensionJava(file.getPath())){
+				createLeafNode(currentNode, new LeafNode(file.getPath()), file);
 			}
 		}
 	}
 
-	private void createPackageSubNode(PackageNode currentNode, PackageNode subNode) throws ParseException, IOException, BadLocationException {
+	private void createPackageSubNode(PackageNode currentNode, PackageNode subNode) throws ParseException{
 		packageNodes.put(subNode.getName(), subNode);
 		currentNode.addSubNode(subNode);
 		subNode.setParentNode(currentNode);
 		parseFolder(subNode);
 	}
 
-	private void createLeafNode(PackageNode currentNode, LeafNode leafNode, File file) throws IOException, BadLocationException {
+	private void createLeafNode(PackageNode currentNode, LeafNode leafNode, File file) {
 		currentNode.setValid();
 		currentNode.addLeafNode(leafNode);
 		leafNode.setParrentNode(currentNode);
