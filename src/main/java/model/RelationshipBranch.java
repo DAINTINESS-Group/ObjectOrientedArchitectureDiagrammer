@@ -1,11 +1,11 @@
 package model;
 
-public class LeafBranch {
+public class RelationshipBranch {
 	private LeafNode startingLeafNode;
 	private LeafNode endingLeafNode;
 	private String branchType;
 	
-	public LeafBranch (LeafNode startingLeafNode, LeafNode endingLeafNode, String branchType) {
+	public RelationshipBranch (LeafNode startingLeafNode, LeafNode endingLeafNode, String branchType) {
 		this.startingLeafNode = startingLeafNode;
 		this.endingLeafNode = endingLeafNode;
 		this.branchType = branchType;

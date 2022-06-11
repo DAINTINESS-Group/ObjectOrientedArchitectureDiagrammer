@@ -13,14 +13,14 @@ public class LeafNode {
 	private List<String> methodsReturnTypes;
 	private List<String> fieldTypes;
 	private List<String> methodsParameterTypes;
-	private List<LeafBranch> leafBranches;
+	private List<RelationshipBranch> leafBranches;
 	
 	/* This method is responsible for initializing the nodes structs */
 	public LeafNode(String path) {
 		methodsReturnTypes = new ArrayList<String>();
 		methodsParameterTypes = new ArrayList<String>();
 		fieldTypes = new ArrayList<String>();
-		leafBranches = new ArrayList<LeafBranch>();
+		leafBranches = new ArrayList<RelationshipBranch>();
 		this.path = path;
 	}
 	
@@ -44,7 +44,7 @@ public class LeafNode {
 	
 	/* This method is responsible for adding a leaf branch that starts from the 
 	 * current node */
-	public void addLeafBranch(LeafBranch l) {
+	public void addLeafBranch(RelationshipBranch l) {
 		leafBranches.add(l);
 	}
 	
@@ -86,7 +86,7 @@ public class LeafNode {
 		return methodsParameterTypes;
 	}
 
-	public List<LeafBranch> getLeafBranches() {
+	public List<RelationshipBranch> getLeafBranches() {
 		return leafBranches;
 	}
 

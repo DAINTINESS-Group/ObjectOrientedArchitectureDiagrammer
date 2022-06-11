@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import model.LeafNode;
-import model.LeafNodeRelation;
+import model.LeafNodeRelationship;
 import model.PackageNode;
 
 
@@ -29,7 +29,7 @@ public class Parser {
         } catch (Exception e) {
             e.printStackTrace();
         }
-		new LeafNodeRelation(packageNodes);
+		new LeafNodeRelationship(packageNodes);
 		
 	}
 

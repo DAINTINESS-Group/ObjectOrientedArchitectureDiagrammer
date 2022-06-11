@@ -7,13 +7,13 @@ import java.util.Map;
 /* This class is responsible for the creation of the branches between the Java 
  * source files. The branches have a type, e.g., inheritance, implementation.
  * The branches are also directed with a starting and an ending node*/
-public class LeafNodeRelation {
+public class LeafNodeRelationship {
 	private Map<String, PackageNode> packageNodes;
 	private List<LeafNode> allLeafNodes;
 	
 	/* This method is responsible for retrieving the leaf nodes that have been created
 	 * and then creating the branches between them. */
-	public LeafNodeRelation (Map<String, PackageNode> packageNodes) {
+	public LeafNodeRelationship (Map<String, PackageNode> packageNodes) {
 		this.packageNodes = packageNodes;
 		allLeafNodes = new ArrayList<LeafNode>();
 		populateLeafNodes();
@@ -143,7 +143,7 @@ public class LeafNodeRelation {
 	}
 	
 	private void createBranch(int i, int j, String branchType) {
-		allLeafNodes.get(i).addLeafBranch(new LeafBranch(allLeafNodes.get(i), allLeafNodes.get(j), branchType));
+		allLeafNodes.get(i).addLeafBranch(new RelationshipBranch(allLeafNodes.get(i), allLeafNodes.get(j), branchType));
 	}
 
 }
