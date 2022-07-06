@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+
 /* This class is responsible for the creation of the branches between the Java 
  * source files. The branches have a type, e.g., inheritance, implementation.
  * The branches are also directed with a starting and an ending node*/
@@ -22,9 +23,7 @@ public class LeafNodeRelationship {
 	
 	private void populateLeafNodes() {
 		for (PackageNode p: packageNodes.values()) {
-			for (LeafNode l: p.getLeafNodes().values()) {
-				allLeafNodes.add(l);
-			}
+			allLeafNodes.addAll(p.getLeafNodes().values());
 		}
 	}
 	
@@ -57,15 +56,15 @@ public class LeafNodeRelationship {
 	
 	private boolean isDependency(int i, int j) {
 		return doesDependencyBranchExist(allLeafNodes.get(i).getMethodParameterTypes(), allLeafNodes.get(j).getName()) ||
-				doesDependencyBranchExist(allLeafNodes.get(i).getMethodReturnTypes(), allLeafNodes.get(j).getName());
+				doesDependencyBranchExist(allLeafNodes.get(i).getMethodsReturnTypes(), allLeafNodes.get(j).getName());
 	}
 
 	private boolean isAssociation(int i, int j) {
-		return doesAssociationBranchExist(allLeafNodes.get(i).getFieldTypes(), allLeafNodes.get(j).getName());
+		return doesAssociationBranchExist(allLeafNodes.get(i).getFieldsTypes(), allLeafNodes.get(j).getName());
 	}
 	
 	private boolean isAggregation(int i, int j) {
-		return doesAggregationBranchExist(allLeafNodes.get(i).getFieldTypes(), allLeafNodes.get(j).getName());
+		return doesAggregationBranchExist(allLeafNodes.get(i).getFieldsTypes(), allLeafNodes.get(j).getName());
 	}
 	
 	private boolean isInheritance(int i) {
@@ -101,8 +100,8 @@ public class LeafNodeRelationship {
 	}
 	
 	private boolean doesDependencyBranchExist(List<String> leafNodesTypes, String leafNodesName) {
-		for (int i = 0; i < leafNodesTypes.size(); i++) {
-			if (leafNodesTypes.get(i).equals(leafNodesName)) {
+		for (String leafNodesType : leafNodesTypes) {
+			if (leafNodesType.equals(leafNodesName)) {
 				return true;
 			}
 		}
@@ -110,8 +109,8 @@ public class LeafNodeRelationship {
 	}
 	
 	private boolean doesAssociationBranchExist(List<String> leafNodesTypes, String leafNodesName) {
-		for (int i = 0; i < leafNodesTypes.size(); i++) {
-			if (isFieldOfTypeClassObject(leafNodesTypes.get(i), leafNodesName)) {
+		for (String leafNodesType : leafNodesTypes) {
+			if (isFieldOfTypeClassObject(leafNodesType, leafNodesName)) {
 				return true;
 			}
 		}
@@ -132,10 +131,7 @@ public class LeafNodeRelationship {
 	}
 	
 	private boolean isListOfTypeClassObject(String fieldType, String leafNodesName) {
-		if (leafNodesName.contains(fieldType)) {
-			return true;
-		}
-		return false;
+		return leafNodesName.contains(fieldType);
 	}
 
 	private boolean isFieldOfTypeList(String s, String leafNodesName) {

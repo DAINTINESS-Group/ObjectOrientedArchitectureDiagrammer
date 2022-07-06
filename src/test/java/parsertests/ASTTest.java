@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.text.edits.MalformedTreeException;
@@ -41,8 +42,8 @@ class ASTTest {
 		List<String> fieldTypesTest = new ArrayList<>();
 		List<String> methodParameterTypesTest = new ArrayList<String>();
 		methodParameterTypesTest = addLatexCommandLeaf.getMethodParameterTypes();
-		fieldTypesTest = addLatexCommandLeaf.getFieldTypes();
-		methodReturnTypesTest = addLatexCommandLeaf.getMethodReturnTypes();
+		fieldTypesTest = addLatexCommandLeaf.getFieldsTypes();
+		methodReturnTypesTest = addLatexCommandLeaf.getMethodsReturnTypes();
 		Collections.sort(methodReturnTypesTest);
 		Collections.sort(methodReturnTypes);
 		assertTrue(methodReturnTypesTest.size() == methodReturnTypes.size() 

@@ -55,7 +55,7 @@ public class Parser {
 	private void createLeafNode(PackageNode currentNode, LeafNode leafNode, File file) {
 		currentNode.setValid();
 		currentNode.addLeafNode(leafNode);
-		leafNode.setParrentNode(currentNode);
+		leafNode.setParentNode(currentNode);
 		new FileVisitor(file, leafNode, packageNodes);
 	}
 	

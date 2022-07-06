@@ -63,7 +63,7 @@ public class FileVisitor {
 	    if (!isPackageValid()) {
 	    	for(PackageNode p: packageNodes.values()) {
 	    		if (p.getName().equals(unit.getPackage().getName().toString())) {
-	    			leafNode.setParrentNode(p);
+	    			leafNode.setParentNode(p);
 	    		}
 	    	}
 	    }
@@ -94,6 +94,7 @@ public class FileVisitor {
 	        	}
 	            for (BodyDeclaration body : bodies) {
 	            	if (isField(body)) {
+						String fieldName = "";
 	            		FieldDeclaration field = (FieldDeclaration)body;
 	            		List<VariableDeclarationFragment> fragments = new ArrayList<VariableDeclarationFragment>();
 	    	        	for (Object o: field.fragments()) {
@@ -101,6 +102,7 @@ public class FileVisitor {
 	    	        	}
 	            		for(VariableDeclarationFragment fragment: fragments) {
 		            		System.out.println(" field name: " + fragment.getName().toString());
+							fieldName = fragment.getName().toString();
 		            		Map<Object, Object> map = new HashMap<Object, Object>();
 		            		for (Object ob: fragment.properties().keySet()) {
 		            			map.put(ob, map.get(ob));
@@ -110,7 +112,7 @@ public class FileVisitor {
 		            				System.out.println(key + " : " + map.get(key).toString());
 		            		}
 		            	}
-	            		leafNode.addFieldType(field.getType().toString());
+	            		leafNode.addField(fieldName , field.getType().toString());
             			System.out.println("   modifiers: " + field.modifiers() );
             			System.out.println("   type: " + field.getType() );
 	            	}
@@ -134,8 +136,8 @@ public class FileVisitor {
 	                        parameters.add(vrblType);
 	                    }
 	                    
-	                    leafNode.addMethodParameterType(parameters);
-	                    leafNode.addMethodReturnType(returnTypeName);
+	                    leafNode.addMethodParametersTypes(parameters);
+	                    leafNode.addMethod(methodName, returnTypeName);
 	                    System.out.println(" method: " + methodName + " --> " + returnTypeName );
 	                    System.out.println("   modifiers: " + method.modifiers() );
 	                    System.out.println("   parameters: " + parameters );

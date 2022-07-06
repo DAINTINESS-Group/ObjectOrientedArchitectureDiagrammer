@@ -1,7 +1,9 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /* This class is responsible for the implementation of a leaf node in the tree.
  * Each has node has a parent node(the parent package), the path of the source file,
@@ -10,16 +12,16 @@ public class LeafNode {
 	private String path;
 	private PackageNode parentNode;
 	private String inheritanceLine[];
-	private List<String> methodsReturnTypes;
-	private List<String> fieldTypes;
-	private List<String> methodsParameterTypes;
+	private Map<String, String> fields;
+	private Map<String, String> methods;
+	private List<String> methodsParametersTypes;
 	private List<RelationshipBranch> leafBranches;
 	
 	/* This method is responsible for initializing the nodes structs */
 	public LeafNode(String path) {
-		methodsReturnTypes = new ArrayList<String>();
-		methodsParameterTypes = new ArrayList<String>();
-		fieldTypes = new ArrayList<String>();
+		methodsParametersTypes = new ArrayList<String>();
+		fields = new HashMap<String, String>();
+		methods = new HashMap<String, String>();
 		leafBranches = new ArrayList<RelationshipBranch>();
 		this.path = path;
 	}
@@ -31,15 +33,13 @@ public class LeafNode {
 	}
 	
 	/* This method is responsible for setting the nodes parent node, the parent package */
-	public void setParrentNode(PackageNode p) {
+	public void setParentNode(PackageNode p) {
 		this.parentNode = p;
 	}
 	
-	/* This method is responsible for adding to the nodes method parameter types */
-	public void addMethodParameterType(List<String> parameterTypes) {
-		for (String s: parameterTypes) {
-			methodsParameterTypes.add(s);
-		}
+	/* This method is responsible for adding to the nodes' method parameter types */
+	public void addMethodParametersTypes(List<String> parameterTypes) {
+		methodsParametersTypes.addAll(parameterTypes);
 	}
 	
 	/* This method is responsible for adding a leaf branch that starts from the 
@@ -48,16 +48,17 @@ public class LeafNode {
 		leafBranches.add(l);
 	}
 	
-	/* This method is responsible for adding to the nodes method return types */
-	public void addMethodReturnType(String returnType) {
-		methodsReturnTypes.add(returnType);
+	/* This method is responsible for adding to the nodes' method return types */
+	public void addMethod(String methodName, String methodReturnType) {
+		methods.put(methodName, methodReturnType);
+		//methodsReturnTypes.add(returnType);
 	}
-	
-	/* This method is responsible for adding to the nodes field types */
-	public void addFieldType(String fieldType) {
-		fieldTypes.add(fieldType);
+
+	/* This method is responsible for adding to the nodes' field types */
+	public void addField(String fieldName, String fieldType) {
+		fields.put(fieldName, fieldType);
 	}
-	
+
 	public PackageNode getParentNode() {
 		return parentNode;
 	}
@@ -74,21 +75,25 @@ public class LeafNode {
 		return path;
 	}
 	
-	public List<String> getMethodReturnTypes() {
-		return methodsReturnTypes;
+	public Map<String, String> getMethods() {
+		return methods;
 	}
 	
-	public List<String> getFieldTypes() {
-		return fieldTypes;
+	public Map<String, String> getFields() {
+		return fields;
 	}
 	
 	public List<String> getMethodParameterTypes() {
-		return methodsParameterTypes;
+		return methodsParametersTypes;
 	}
 
 	public List<RelationshipBranch> getLeafBranches() {
 		return leafBranches;
 	}
+
+	public List<String> getMethodsReturnTypes() { return new ArrayList<>(getMethods().values());}
+
+	public List<String> getFieldsTypes(){ return new ArrayList<>(getFields().values());}
 
 	public String getType() {
 		if (inheritanceLine[0].equals("enum")) {

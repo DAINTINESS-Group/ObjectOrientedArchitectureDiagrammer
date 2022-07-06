@@ -1,6 +1,10 @@
 package controller;
 
+import manager.diagram.DiagramManager;
+import model.PackageNode;
 import parser.Parser;
+
+import java.util.Map;
 
 public class Controller {
 	
@@ -9,6 +13,11 @@ public class Controller {
 	}
 	
 	private void createTree(String sourcePackagePath) {
-		new Parser(sourcePackagePath);
+		Parser parser = new Parser(sourcePackagePath);
+		createDiagram(parser.getPackageNodes());
+	}
+
+	private void createDiagram(Map<String, PackageNode> packageNodes) {
+		new DiagramManager(packageNodes);
 	}
 }
