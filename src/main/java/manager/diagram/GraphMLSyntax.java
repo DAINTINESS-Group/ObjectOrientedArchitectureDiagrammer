@@ -6,10 +6,6 @@ public class GraphMLSyntax {
 
     private static GraphMLSyntax instance;
 
-    public GraphMLSyntax(){
-
-    }
-
     public String getGraphMLPrefix(){
         return "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n" +
                 "<graphml xmlns=\"http://graphml.graphdrawing.org/xmlns\" xmlns:java=\"http://www.yworks.com/xml/yfiles-common/1.0/java\" xmlns:sys=\"http://www.yworks.com/xml/yfiles-common/markup/primitives/2.0\" xmlns:x=\"http://www.yworks.com/xml/yfiles-common/markup/2.0\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:y=\"http://www.yworks.com/xml/graphml\" xmlns:yed=\"http://www.yworks.com/xml/yed/3\" xsi:schemaLocation=\"http://graphml.graphdrawing.org/xmlns http://www.yworks.com/xml/schema/graphml/1.1/ygraphml.xsd\">\n" +
@@ -38,6 +34,7 @@ public class GraphMLSyntax {
     }
 
     public String getGraphMLNodesSyntax(List<String> nodesDescription) {
+        //TODO add the node's geometry
         return java.text.MessageFormat.format("    <node id=\"n{0}\">\n" +
                 "      <data key=\"d4\" xml:space=\"preserve\"/>\n" +
                 "      <data key=\"d5\"/>\n" +
@@ -68,7 +65,7 @@ public class GraphMLSyntax {
                 "        </y:PolyLineEdge>\n" +
                 "      </data>\n" +
                 "    </edge>\n", new String[]{edgesDescription.get(0), edgesDescription.get(1), edgesDescription.get(2),
-                edgesDescription.get(3), edgesDescription.get(4)});
+                edgesDescription.get(3), edgesDescription.get(4), edgesDescription.get(5)});
     }
 
     public static GraphMLSyntax getInstance(){

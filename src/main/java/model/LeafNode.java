@@ -9,20 +9,20 @@ import java.util.Map;
  * Each has node has a parent node(the parent package), the path of the source file,
  * the branches that start from that node and also the field/method/method parameter types */
 public class LeafNode {
-	private String path;
+	private final String path;
 	private PackageNode parentNode;
 	private String inheritanceLine[];
-	private Map<String, String> fields;
-	private Map<String, String> methods;
-	private List<String> methodsParametersTypes;
-	private List<RelationshipBranch> leafBranches;
+	private final Map<String, String> fields;
+	private final Map<String, String> methods;
+	private final List<String> methodsParametersTypes;
+	private final List<RelationshipBranch> leafBranches;
 	
 	/* This method is responsible for initializing the nodes structs */
 	public LeafNode(String path) {
-		methodsParametersTypes = new ArrayList<String>();
-		fields = new HashMap<String, String>();
-		methods = new HashMap<String, String>();
-		leafBranches = new ArrayList<RelationshipBranch>();
+		methodsParametersTypes = new ArrayList<>();
+		fields = new HashMap<>();
+		methods = new HashMap<>();
+		leafBranches = new ArrayList<>();
 		this.path = path;
 	}
 	

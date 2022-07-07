@@ -5,6 +5,7 @@ import model.PackageNode;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class GraphMLNode {
@@ -12,28 +13,32 @@ public class GraphMLNode {
     private static final String CLASS_COLOR = "#FF9900";
     private static final String INTERFACE_COLOR = "#3366FF";
 
-    private Map<LeafNode, Integer> graphMLNodes;
+    private final Map<LeafNode, Integer> graphMLNodes;
     private String graphMLFile;
+    private int nodeCounter;
 
-    public GraphMLNode(PackageNode currentPackage, String graphMLFile) {
-        this.graphMLFile = graphMLFile;
-        parseLeafNodes(currentPackage);
+    public GraphMLNode() {
+        graphMLNodes = new HashMap<>();
+        nodeCounter = 0;
+        graphMLFile = "";
     }
 
-    private void parseLeafNodes(PackageNode currentPackage) {
-        int nodeCounter = 0;
-        graphMLNodes = new HashMap<>();
+    public void populateGraphMLNodes(PackageNode currentPackage) {
         for(LeafNode l: currentPackage.getLeafNodes().values()) {
             graphMLNodes.put(l, nodeCounter);
-            generateNode(l, nodeCounter);
             nodeCounter++;
         }
     }
 
-    private void generateNode(LeafNode l, int nodeId) {
-        //TODO geometry -> method arrangeDiagram (force directed algorithm)
-        graphMLFile += GraphMLSyntax.getInstance().getGraphMLNodesSyntax(Arrays.asList(String.valueOf(nodeId), getNodesColor(l), l.getName(),
-                getNodesFields(l), getNodesMethods(l)));
+    public void parseGraphMLNodes(Map<Integer, List<Double>> nodesGeometry){
+        for (Map.Entry<LeafNode, Integer> entry: graphMLNodes.entrySet()) {
+            generateNode(entry.getKey(), entry.getValue(), nodesGeometry.get(entry.getValue()));
+        }
+    }
+
+    private void generateNode(LeafNode l, int nodeId, List<Double> nodeGeometry) {
+        graphMLFile += GraphMLSyntax.getInstance().getGraphMLNodesSyntax(Arrays.asList(String.valueOf(nodeId), getNodesColor(l),
+                l.getName(), getNodesFields(l), getNodesMethods(l), String.valueOf(nodeGeometry.get(0)), String.valueOf(nodeGeometry.get(1))));
     }
 
     private String getNodesMethods(LeafNode l) {

@@ -1,22 +1,56 @@
 package manager.diagram;
 
+import edu.uci.ics.jung.algorithms.layout.AbstractLayout;
+import edu.uci.ics.jung.algorithms.layout.SpringLayout;
+import edu.uci.ics.jung.graph.Graph;
+import edu.uci.ics.jung.graph.SparseGraph;
+import edu.uci.ics.jung.graph.util.EdgeType;
 import model.PackageNode;
 
+import java.awt.*;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 import java.io.File;
+import java.util.List;
 
 public class DiagramManager {
 
-    private GraphMLNode graphMLNode;
-    private GraphMLEdge graphMLEdge;
-    private Map<String, PackageNode> packages;
+    private final GraphMLNode graphMLNode;
+    private final GraphMLEdge graphMLEdge;
+    private FileWriter graphMLWriter;
+    private final Map<String, PackageNode> packages;
+    private final Map<Integer, List<Double>> nodesGeometry;
     private String graphMLFile;
 
     public DiagramManager (Map<String, PackageNode> packageNodes) {
         this.packages = packageNodes;
-        parsePackages();
+        graphMLNode = new GraphMLNode();
+        graphMLEdge = new GraphMLEdge();
+        nodesGeometry = new HashMap<>();
+        try {
+            createGraphMLFile();
+            parsePackages();
+            arrangeDiagram();
+            generateGraphMLGraph();
+            closeGraphMLFile();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        printFile();
+    }
+
+    private void createGraphMLFile() throws IOException {
+        new File("all_packages.graphml");
+        graphMLWriter = new FileWriter("all_packages.graphml");
+        graphMLFile = "";
+        graphMLFile += GraphMLSyntax.getInstance().getGraphMLPrefix();
+    }
+
+    private void closeGraphMLFile() throws IOException {
+        graphMLFile += GraphMLSyntax.getInstance().getGraphMLSuffix();
+        graphMLWriter.write(graphMLFile);
+        graphMLWriter.close();
     }
 
     private void parsePackages() {
@@ -25,39 +59,40 @@ public class DiagramManager {
             if (!p.isValid()) {
                 continue;
             }
-            createGraphMLFile();
-            parseLeafNodes(p.getLeafNodes());
-            writeSuffixToFile();
-            printFile();
-            break;
+            convertToGraphML(p);
         }
          */
-        try {
-            createGraphMLFile(packages.get("commands"));
-        } catch (IOException e) {
-            e.printStackTrace();
+        populateNodesAndEdges(packages.get("commands"));
+    }
+
+    private void arrangeDiagram(){
+        Graph<Integer, String> graph = new SparseGraph<>();
+        for (Integer i: graphMLNode.getGraphMLNodes().values()) {
+            graph.addVertex(i);
+        }
+        for (Map.Entry<Integer, Integer> entry: graphMLEdge.getGraphEdges().entrySet()) {
+            graph.addEdge(entry.getKey() + " " + entry.getValue(), entry.getKey(), entry.getValue(), EdgeType.DIRECTED);
+        }
+        AbstractLayout<Integer, String> layout = new SpringLayout(graph);
+        layout.setSize(new Dimension(800,600));
+        populateNodesGeometry(layout);
+    }
+
+    private void populateNodesAndEdges(PackageNode currentPackage) {
+        graphMLNode.populateGraphMLNodes(currentPackage);
+        graphMLEdge.populateGraphMLEdges(currentPackage, graphMLNode.getGraphMLNodes());
+    }
+
+    private void populateNodesGeometry(AbstractLayout<Integer, String> layout) {
+        for (Integer i: graphMLNode.getGraphMLNodes().values()){
+            nodesGeometry.put(i, Arrays.asList(layout.getX(i), layout.getY(i)));
         }
     }
 
-    private void createGraphMLFile(PackageNode currentPackage) throws IOException {
-        new File(String.format("%s.graphml", currentPackage.getName()));
-        FileWriter graphMLWriter = new FileWriter(String.format("%s.graphml", currentPackage.getName()));
-        graphMLFile = "";
-        graphMLFile += GraphMLSyntax.getInstance().getGraphMLPrefix();
-        convertToGraphML(currentPackage);
-        graphMLFile += GraphMLSyntax.getInstance().getGraphMLSuffix();
-        graphMLWriter.write(graphMLFile);
-        graphMLWriter.close();
-
-        printFile();
-    }
-
-    private void convertToGraphML(PackageNode currentPackage) {
-        graphMLNode = new GraphMLNode(currentPackage, graphMLFile);
-        graphMLFile = graphMLNode.getGraphMLFile();
-
-        graphMLEdge = new GraphMLEdge(currentPackage, graphMLFile, graphMLNode.getGraphMLNodes());
-        graphMLFile = graphMLEdge.getGraphMLFile();
+    private void generateGraphMLGraph(){
+        graphMLNode.parseGraphMLNodes(nodesGeometry);
+        graphMLFile += graphMLNode.getGraphMLFile();
+        graphMLFile += graphMLEdge.getGraphMLFile();
     }
 
     private void printFile() {

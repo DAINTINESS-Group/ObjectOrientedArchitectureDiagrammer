@@ -8,17 +8,17 @@ import java.util.Map;
  * the nodes children(the sub packages), the nodes leafs(the Java source files inside the
  * current package), a flag to identify if a package is empty or not  */
 public class PackageNode {
-	private String path;
+	private final String path;
 	private PackageNode parentNode;
-	private Map<String, PackageNode> subNodes;
-	private Map<String, LeafNode> leafNodes;
+	private final Map<String, PackageNode> subNodes;
+	private final Map<String, LeafNode> leafNodes;
 	private boolean isValid;
 	
 	public PackageNode(String path) {
 		this.path = path;
 		this.isValid = false;
-		subNodes = new HashMap<String, PackageNode>();
-		leafNodes = new HashMap<String, LeafNode>();
+		subNodes = new HashMap<>();
+		leafNodes = new HashMap<>();
 	}
 	
 	public void addLeafNode(LeafNode leafNode) {

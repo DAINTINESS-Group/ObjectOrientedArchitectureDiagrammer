@@ -14,15 +14,14 @@ import model.PackageNode;
  * it creates a tree where nodes are the packages and leafs are the Java source files.
  * In order to create the tree it uses the ASTNode API from the JDT library */
 public class Parser {
-	private Map<String, PackageNode> packageNodes;
-	private PackageNode rootPackageNode;
-	
+	private final Map<String, PackageNode> packageNodes;
+
 	/* This method creates the root of the tree, from the source package, calls the
 	 * parseFolder method thats responsible for the parsing and then creates an object
 	 * of the LeafNodeRelation class with the created nodes in order to create the branches */
 	public Parser(String sourcePackagePath) {
-		packageNodes = new HashMap<String, PackageNode>();
-		rootPackageNode = new PackageNode(sourcePackagePath);
+		packageNodes = new HashMap<>();
+		PackageNode rootPackageNode = new PackageNode(sourcePackagePath);
 		packageNodes.put(rootPackageNode.getName(), rootPackageNode);
 		try {
 			parseFolder(rootPackageNode);

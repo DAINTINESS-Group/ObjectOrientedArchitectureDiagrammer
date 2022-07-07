@@ -9,14 +9,14 @@ import java.util.Map;
  * source files. The branches have a type, e.g., inheritance, implementation.
  * The branches are also directed with a starting and an ending node*/
 public class LeafNodeRelationship {
-	private Map<String, PackageNode> packageNodes;
-	private List<LeafNode> allLeafNodes;
+	private final Map<String, PackageNode> packageNodes;
+	private final List<LeafNode> allLeafNodes;
 	
 	/* This method is responsible for retrieving the leaf nodes that have been created
 	 * and then creating the branches between them. */
 	public LeafNodeRelationship (Map<String, PackageNode> packageNodes) {
 		this.packageNodes = packageNodes;
-		allLeafNodes = new ArrayList<LeafNode>();
+		allLeafNodes = new ArrayList<>();
 		populateLeafNodes();
 		findLeafNodesRelations();
 	}
