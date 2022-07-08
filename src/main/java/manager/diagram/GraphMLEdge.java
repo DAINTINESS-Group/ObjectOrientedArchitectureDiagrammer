@@ -13,12 +13,12 @@ public class GraphMLEdge {
 
     private Map<LeafNode, Integer> graphMLNodes;
     private final Map<Integer, Integer> graphEdges;
-    private String graphMLFile;
+    private final StringBuffer graphMLBuffer;
     private int edgeCounter;
 
     public GraphMLEdge() {
         graphEdges = new HashMap<>();
-        graphMLFile = "";
+        graphMLBuffer = new StringBuffer();
         edgeCounter = 0;
     }
 
@@ -35,9 +35,7 @@ public class GraphMLEdge {
             if (isEndingLeafNodeInDifferentPackage(branch, currentPackage)) {
                 continue;
             }
-            graphMLFile += GraphMLSyntax.getInstance().getGraphMLEdgesSyntax(Arrays.asList(String.valueOf(edgeCounter),
-                    String.valueOf(graphMLNodes.get(branch.getStartingLeafNode())), String.valueOf(graphMLNodes.get(branch.getEndingLeafNode())),
-                    identifyEdgeType(branch).get(0), identifyEdgeType(branch).get(1), identifyEdgeType(branch).get(2)));
+            graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLEdgesSyntax(getEdgesDescription(branch)));
             graphEdges.put(graphMLNodes.get(branch.getStartingLeafNode()), graphMLNodes.get(branch.getEndingLeafNode()));
             edgeCounter++;
         }
@@ -45,6 +43,12 @@ public class GraphMLEdge {
 
     private boolean isEndingLeafNodeInDifferentPackage(RelationshipBranch branch, PackageNode currentPackage) {
         return !currentPackage.getLeafNodes().containsKey(branch.getEndingLeafNode().getName());
+    }
+
+    private List<String> getEdgesDescription(RelationshipBranch branch) {
+        return Arrays.asList(String.valueOf(edgeCounter), String.valueOf(graphMLNodes.get(branch.getStartingLeafNode())),
+                String.valueOf(graphMLNodes.get(branch.getEndingLeafNode())), identifyEdgeType(branch).get(0),
+                identifyEdgeType(branch).get(1), identifyEdgeType(branch).get(2));
     }
 
     private List<String> identifyEdgeType(RelationshipBranch branch){
@@ -62,9 +66,7 @@ public class GraphMLEdge {
         }
     }
 
-    public String getGraphMLFile() {
-        return graphMLFile;
-    }
+    public String getGraphMLBuffer() { return graphMLBuffer.toString();}
 
     public Map<Integer, Integer> getGraphEdges() {
         return graphEdges;

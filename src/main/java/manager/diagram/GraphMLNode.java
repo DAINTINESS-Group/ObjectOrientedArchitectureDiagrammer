@@ -14,13 +14,13 @@ public class GraphMLNode {
     private static final String INTERFACE_COLOR = "#3366FF";
 
     private final Map<LeafNode, Integer> graphMLNodes;
-    private String graphMLFile;
+    private final StringBuffer graphMLBuffer;
     private int nodeCounter;
 
     public GraphMLNode() {
         graphMLNodes = new HashMap<>();
         nodeCounter = 0;
-        graphMLFile = "";
+        graphMLBuffer = new StringBuffer();
     }
 
     public void populateGraphMLNodes(PackageNode currentPackage) {
@@ -37,8 +37,12 @@ public class GraphMLNode {
     }
 
     private void generateNode(LeafNode l, int nodeId, List<Double> nodeGeometry) {
-        graphMLFile += GraphMLSyntax.getInstance().getGraphMLNodesSyntax(Arrays.asList(String.valueOf(nodeId), getNodesColor(l),
-                l.getName(), getNodesFields(l), getNodesMethods(l), String.valueOf(nodeGeometry.get(0)), String.valueOf(nodeGeometry.get(1))));
+        graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLNodesSyntax(getNodesDescription(l, nodeId, nodeGeometry)));
+    }
+
+    private List<String> getNodesDescription(LeafNode l, int nodeId, List<Double> nodeGeometry) {
+        return Arrays.asList(String.valueOf(nodeId), getNodesColor(l), l.getName(), getNodesFields(l), getNodesMethods(l),
+                String.valueOf(nodeGeometry.get(0)), String.valueOf(nodeGeometry.get(1)));
     }
 
     private String getNodesMethods(LeafNode l) {
@@ -70,9 +74,7 @@ public class GraphMLNode {
         return CLASS_COLOR;
     }
 
-    public String getGraphMLFile() {
-        return graphMLFile;
-    }
+    public String getGraphMLBuffer(){ return graphMLBuffer.toString(); }
 
     public Map<LeafNode, Integer> getGraphMLNodes() {
         return graphMLNodes;

@@ -21,7 +21,7 @@ public class DiagramManager {
     private FileWriter graphMLWriter;
     private final Map<String, PackageNode> packages;
     private final Map<Integer, List<Double>> nodesGeometry;
-    private String graphMLFile;
+    private StringBuffer graphMLBuffer;
 
     public DiagramManager (Map<String, PackageNode> packageNodes) {
         this.packages = packageNodes;
@@ -43,13 +43,13 @@ public class DiagramManager {
     private void createGraphMLFile() throws IOException {
         new File("all_packages.graphml");
         graphMLWriter = new FileWriter("all_packages.graphml");
-        graphMLFile = "";
-        graphMLFile += GraphMLSyntax.getInstance().getGraphMLPrefix();
+        graphMLBuffer = new StringBuffer();
+        graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLPrefix());
     }
 
     private void closeGraphMLFile() throws IOException {
-        graphMLFile += GraphMLSyntax.getInstance().getGraphMLSuffix();
-        graphMLWriter.write(graphMLFile);
+        graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLSuffix());
+        graphMLWriter.write(graphMLBuffer.toString());
         graphMLWriter.close();
     }
 
@@ -74,7 +74,7 @@ public class DiagramManager {
             graph.addEdge(entry.getKey() + " " + entry.getValue(), entry.getKey(), entry.getValue(), EdgeType.DIRECTED);
         }
         AbstractLayout<Integer, String> layout = new SpringLayout(graph);
-        layout.setSize(new Dimension(800,600));
+        layout.setSize(new Dimension(1500,1000));
         populateNodesGeometry(layout);
     }
 
@@ -91,11 +91,11 @@ public class DiagramManager {
 
     private void generateGraphMLGraph(){
         graphMLNode.parseGraphMLNodes(nodesGeometry);
-        graphMLFile += graphMLNode.getGraphMLFile();
-        graphMLFile += graphMLEdge.getGraphMLFile();
+        graphMLBuffer.append(graphMLNode.getGraphMLBuffer());
+        graphMLBuffer.append(graphMLEdge.getGraphMLBuffer());
     }
 
     private void printFile() {
-        System.out.println(graphMLFile);
+        System.out.println(graphMLBuffer);
     }
 }

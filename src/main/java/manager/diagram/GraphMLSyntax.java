@@ -4,6 +4,19 @@ import java.util.List;
 
 public class GraphMLSyntax {
 
+    private static final int NODE_ID = 0;
+    private static final int NODE_COLOR = 1;
+    private static final int NODE_NAME = 2;
+    private static final int NODE_FIELDS = 3;
+    private static final int NODE_METHODS = 4;
+    private static final int NODE_X_COORDINATE = 5;
+    private static final int NODE_Y_COORDINATE = 6;
+    private static final int EDGE_ID = 0;
+    private static final int EDGE_SOURCE = 1;
+    private static final int EDGE_TARGET = 2;
+    private static final int EDGE_TYPE = 3;
+    private static final int EDGES_ARROW_SOURCE_TYPE = 4;
+    private static final int EDGES_ARROW_TARGET_TYPE = 5;
     private static GraphMLSyntax instance;
 
     public String getGraphMLPrefix(){
@@ -40,7 +53,7 @@ public class GraphMLSyntax {
                 "      <data key=\"d5\"/>\n" +
                 "      <data key=\"d6\">\n" +
                 "        <y:UMLClassNode>\n" +
-                "          <y:Geometry height=\"100.0\" width=\"150.0\" x=\"100.0\" y=\"100.0\"/>\n" +
+                "          <y:Geometry height=\"100.0\" width=\"150.0\" x=\"{5}\" y=\"{6}\"/>\n" +
                 "          <y:Fill color=\"{1}\" transparent=\"false\"/>\n" +
                 "          <y:BorderStyle color=\"#000000\" type=\"line\" width=\"1.0\"/>\n" +
                 "          <y:NodeLabel alignment=\"center\" autoSizePolicy=\"content\" fontFamily=\"Dialog\" fontSize=\"13\" fontStyle=\"bold\" hasBackgroundColor=\"false\" hasLineColor=\"false\" height=\"19.92626953125\" horizontalTextPosition=\"center\" iconTextGap=\"4\" modelName=\"custom\" textColor=\"#000000\" verticalTextPosition=\"bottom\" visible=\"true\" width=\"79.14990234375\" x=\"10.425048828125\" xml:space=\"preserve\" y=\"3.0\">{2}<y:LabelModel><y:SmartNodeLabelModel distance=\"4.0\"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX=\"0.0\" labelRatioY=\"0.0\" nodeRatioX=\"0.0\" nodeRatioY=\"0.0\" offsetX=\"0.0\" offsetY=\"0.0\" upX=\"0.0\" upY=\"-1.0\"/></y:ModelParameter></y:NodeLabel>\n" +
@@ -50,8 +63,8 @@ public class GraphMLSyntax {
                 "          </y:UML>\n" +
                 "        </y:UMLClassNode>\n" +
                 "      </data>\n" +
-                "    </node>\n", new String[]{nodesDescription.get(0), nodesDescription.get(1), nodesDescription.get(2),
-                nodesDescription.get(3), nodesDescription.get(4)});
+                "    </node>\n", new String[]{nodesDescription.get(NODE_ID), nodesDescription.get(NODE_COLOR), nodesDescription.get(NODE_NAME),
+                nodesDescription.get(NODE_FIELDS), nodesDescription.get(NODE_METHODS), nodesDescription.get(NODE_X_COORDINATE), nodesDescription.get(NODE_Y_COORDINATE)});
     }
 
     public String getGraphMLEdgesSyntax(List<String> edgesDescription) {
@@ -64,8 +77,8 @@ public class GraphMLSyntax {
                 "          <y:BendStyle smoothed=\"false\"/>\n" +
                 "        </y:PolyLineEdge>\n" +
                 "      </data>\n" +
-                "    </edge>\n", new String[]{edgesDescription.get(0), edgesDescription.get(1), edgesDescription.get(2),
-                edgesDescription.get(3), edgesDescription.get(4), edgesDescription.get(5)});
+                "    </edge>\n", new String[]{edgesDescription.get(EDGE_ID), edgesDescription.get(EDGE_SOURCE), edgesDescription.get(EDGE_TARGET),
+                edgesDescription.get(EDGE_TYPE), edgesDescription.get(EDGES_ARROW_SOURCE_TYPE), edgesDescription.get(EDGES_ARROW_TARGET_TYPE)});
     }
 
     public static GraphMLSyntax getInstance(){
