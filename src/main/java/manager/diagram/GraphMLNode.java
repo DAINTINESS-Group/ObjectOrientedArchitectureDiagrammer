@@ -14,13 +14,13 @@ public class GraphMLNode {
     private static final String INTERFACE_COLOR = "#3366FF";
 
     private final Map<LeafNode, Integer> graphMLNodes;
-    private final StringBuffer graphMLBuffer;
+    private final StringBuilder graphMLBuffer;
     private int nodeCounter;
 
     public GraphMLNode() {
         graphMLNodes = new HashMap<>();
         nodeCounter = 0;
-        graphMLBuffer = new StringBuffer();
+        graphMLBuffer = new StringBuilder();
     }
 
     public void populateGraphMLNodes(PackageNode currentPackage) {

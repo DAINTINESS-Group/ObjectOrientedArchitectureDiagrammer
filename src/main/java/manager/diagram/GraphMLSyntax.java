@@ -47,38 +47,38 @@ public class GraphMLSyntax {
     }
 
     public String getGraphMLNodesSyntax(List<String> nodesDescription) {
-        //TODO add the node's geometry
-        return java.text.MessageFormat.format("    <node id=\"n{0}\">\n" +
+        return String.format("    <node id=\"n%s\">\n" +
                 "      <data key=\"d4\" xml:space=\"preserve\"/>\n" +
                 "      <data key=\"d5\"/>\n" +
                 "      <data key=\"d6\">\n" +
                 "        <y:UMLClassNode>\n" +
-                "          <y:Geometry height=\"100.0\" width=\"150.0\" x=\"{5}\" y=\"{6}\"/>\n" +
-                "          <y:Fill color=\"{1}\" transparent=\"false\"/>\n" +
+                "          <y:Geometry height=\"100.0\" width=\"150.0\" x=\"%s\" y=\"%s\"/>\n" +
+                "          <y:Fill color=\"%s\" transparent=\"false\"/>\n" +
                 "          <y:BorderStyle color=\"#000000\" type=\"line\" width=\"1.0\"/>\n" +
-                "          <y:NodeLabel alignment=\"center\" autoSizePolicy=\"content\" fontFamily=\"Dialog\" fontSize=\"13\" fontStyle=\"bold\" hasBackgroundColor=\"false\" hasLineColor=\"false\" height=\"19.92626953125\" horizontalTextPosition=\"center\" iconTextGap=\"4\" modelName=\"custom\" textColor=\"#000000\" verticalTextPosition=\"bottom\" visible=\"true\" width=\"79.14990234375\" x=\"10.425048828125\" xml:space=\"preserve\" y=\"3.0\">{2}<y:LabelModel><y:SmartNodeLabelModel distance=\"4.0\"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX=\"0.0\" labelRatioY=\"0.0\" nodeRatioX=\"0.0\" nodeRatioY=\"0.0\" offsetX=\"0.0\" offsetY=\"0.0\" upX=\"0.0\" upY=\"-1.0\"/></y:ModelParameter></y:NodeLabel>\n" +
+                "          <y:NodeLabel alignment=\"center\" autoSizePolicy=\"content\" fontFamily=\"Dialog\" fontSize=\"13\" fontStyle=\"bold\" hasBackgroundColor=\"false\" hasLineColor=\"false\" height=\"19.92626953125\" horizontalTextPosition=\"center\" iconTextGap=\"4\" modelName=\"custom\" textColor=\"#000000\" verticalTextPosition=\"bottom\" visible=\"true\" width=\"79.14990234375\" x=\"10.425048828125\" xml:space=\"preserve\" y=\"3.0\">%s<y:LabelModel><y:SmartNodeLabelModel distance=\"4.0\"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX=\"0.0\" labelRatioY=\"0.0\" nodeRatioX=\"0.0\" nodeRatioY=\"0.0\" offsetX=\"0.0\" offsetY=\"0.0\" upX=\"0.0\" upY=\"-1.0\"/></y:ModelParameter></y:NodeLabel>\n" +
                 "          <y:UML clipContent=\"true\" constraint=\"\" hasDetailsColor=\"false\" omitDetails=\"false\" stereotype=\"\" use3DEffect=\"true\">\n" +
-                "            <y:AttributeLabel xml:space=\"preserve\">{3}</y:AttributeLabel>\n" +
-                "            <y:MethodLabel xml:space=\"preserve\">{4}</y:MethodLabel>\n" +
+                "            <y:AttributeLabel xml:space=\"preserve\">%s</y:AttributeLabel>\n" +
+                "            <y:MethodLabel xml:space=\"preserve\">%s</y:MethodLabel>\n" +
                 "          </y:UML>\n" +
                 "        </y:UMLClassNode>\n" +
                 "      </data>\n" +
-                "    </node>\n", new String[]{nodesDescription.get(NODE_ID), nodesDescription.get(NODE_COLOR), nodesDescription.get(NODE_NAME),
-                nodesDescription.get(NODE_FIELDS), nodesDescription.get(NODE_METHODS), nodesDescription.get(NODE_X_COORDINATE), nodesDescription.get(NODE_Y_COORDINATE)});
+                "    </node>\n", nodesDescription.get(NODE_ID), nodesDescription.get(NODE_X_COORDINATE),
+                nodesDescription.get(NODE_Y_COORDINATE), nodesDescription.get(NODE_COLOR), nodesDescription.get(NODE_NAME),
+                nodesDescription.get(NODE_FIELDS), nodesDescription.get(NODE_METHODS));
     }
 
     public String getGraphMLEdgesSyntax(List<String> edgesDescription) {
-        return java.text.MessageFormat.format("<edge id=\"e{0}\" source=\"n{1}\" target=\"n{2}\">\n" +
+        return String.format("<edge id=\"e%s\" source=\"n%s\" target=\"n%s\">\n" +
                 "      <data key=\"d10\">\n" +
                 "        <y:PolyLineEdge>\n" +
                 "          <y:Path sx=\"0.0\" sy=\"0.0\" tx=\"0.0\" ty=\"0.0\"/>\n" +
-                "          <y:LineStyle color=\"#000000\" type=\"{3}\" width=\"1.0\"/>\n" +
-                "          <y:Arrows source=\"{4}\" target=\"{5}\"/>\n" +
+                "          <y:LineStyle color=\"#000000\" type=\"%s\" width=\"1.0\"/>\n" +
+                "          <y:Arrows source=\"%s\" target=\"%s\"/>\n" +
                 "          <y:BendStyle smoothed=\"false\"/>\n" +
                 "        </y:PolyLineEdge>\n" +
                 "      </data>\n" +
-                "    </edge>\n", new String[]{edgesDescription.get(EDGE_ID), edgesDescription.get(EDGE_SOURCE), edgesDescription.get(EDGE_TARGET),
-                edgesDescription.get(EDGE_TYPE), edgesDescription.get(EDGES_ARROW_SOURCE_TYPE), edgesDescription.get(EDGES_ARROW_TARGET_TYPE)});
+                "    </edge>\n", edgesDescription.get(EDGE_ID), edgesDescription.get(EDGE_SOURCE), edgesDescription.get(EDGE_TARGET),
+                edgesDescription.get(EDGE_TYPE), edgesDescription.get(EDGES_ARROW_SOURCE_TYPE), edgesDescription.get(EDGES_ARROW_TARGET_TYPE));
     }
 
     public static GraphMLSyntax getInstance(){

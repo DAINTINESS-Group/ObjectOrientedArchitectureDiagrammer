@@ -12,13 +12,13 @@ import java.util.Map;
 public class GraphMLEdge {
 
     private Map<LeafNode, Integer> graphMLNodes;
-    private final Map<Integer, Integer> graphEdges;
-    private final StringBuffer graphMLBuffer;
+    private final Map<Integer, Integer> graphMLEdges;
+    private final StringBuilder graphMLBuffer;
     private int edgeCounter;
 
     public GraphMLEdge() {
-        graphEdges = new HashMap<>();
-        graphMLBuffer = new StringBuffer();
+        graphMLEdges = new HashMap<>();
+        graphMLBuffer = new StringBuilder();
         edgeCounter = 0;
     }
 
@@ -36,7 +36,7 @@ public class GraphMLEdge {
                 continue;
             }
             graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLEdgesSyntax(getEdgesDescription(branch)));
-            graphEdges.put(graphMLNodes.get(branch.getStartingLeafNode()), graphMLNodes.get(branch.getEndingLeafNode()));
+            graphMLEdges.put(graphMLNodes.get(branch.getStartingLeafNode()), graphMLNodes.get(branch.getEndingLeafNode()));
             edgeCounter++;
         }
     }
@@ -68,7 +68,7 @@ public class GraphMLEdge {
 
     public String getGraphMLBuffer() { return graphMLBuffer.toString();}
 
-    public Map<Integer, Integer> getGraphEdges() {
-        return graphEdges;
+    public Map<Integer, Integer> getGraphMLEdges() {
+        return graphMLEdges;
     }
 }

@@ -17,7 +17,5 @@ public class Controller {
 		createDiagram(parser.getPackageNodes());
 	}
 
-	private void createDiagram(Map<String, PackageNode> packageNodes) {
-		new DiagramManager(packageNodes);
-	}
+	private void createDiagram(Map<String, PackageNode> packageNodes) {	new DiagramManager(packageNodes); }
 }

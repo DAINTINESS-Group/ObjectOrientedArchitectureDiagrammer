@@ -1,4 +1,4 @@
-package parsertests;
+package parser;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -9,13 +9,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.text.edits.MalformedTreeException;
 import org.junit.jupiter.api.Test;
 
-import parser.Parser;
 import model.PackageNode;
 import model.LeafNode;
 

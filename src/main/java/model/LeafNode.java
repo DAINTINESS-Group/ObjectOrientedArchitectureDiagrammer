@@ -48,13 +48,12 @@ public class LeafNode {
 		leafBranches.add(l);
 	}
 	
-	/* This method is responsible for adding to the nodes' method return types */
+	/* This method is responsible for adding the nodes' methods names and return types */
 	public void addMethod(String methodName, String methodReturnType) {
 		methods.put(methodName, methodReturnType);
-		//methodsReturnTypes.add(returnType);
 	}
 
-	/* This method is responsible for adding to the nodes' field types */
+	/* This method is responsible for adding the nodes' fields names types */
 	public void addField(String fieldName, String fieldType) {
 		fields.put(fieldName, fieldType);
 	}

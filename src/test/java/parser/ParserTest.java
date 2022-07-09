@@ -1,4 +1,4 @@
-package parsertests;
+package parser;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -16,7 +16,6 @@ import org.eclipse.text.edits.MalformedTreeException;
 import org.junit.jupiter.api.Test;
 import model.LeafNode;
 import model.PackageNode;
-import parser.Parser;
 
 class ParserTest {
 	

@@ -1,4 +1,4 @@
-package parsertests;
+package parser;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -10,7 +10,6 @@ import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.text.edits.MalformedTreeException;
 import org.junit.jupiter.api.Test;
 
-import parser.Parser;
 import model.PackageNode;
 import model.LeafNode;
 

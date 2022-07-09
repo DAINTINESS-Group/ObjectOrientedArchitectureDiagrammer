@@ -21,7 +21,7 @@ public class DiagramManager {
     private FileWriter graphMLWriter;
     private final Map<String, PackageNode> packages;
     private final Map<Integer, List<Double>> nodesGeometry;
-    private StringBuffer graphMLBuffer;
+    private StringBuilder graphMLBuffer;
 
     public DiagramManager (Map<String, PackageNode> packageNodes) {
         this.packages = packageNodes;
@@ -43,7 +43,7 @@ public class DiagramManager {
     private void createGraphMLFile() throws IOException {
         new File("all_packages.graphml");
         graphMLWriter = new FileWriter("all_packages.graphml");
-        graphMLBuffer = new StringBuffer();
+        graphMLBuffer = new StringBuilder();
         graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLPrefix());
     }
 
@@ -70,7 +70,7 @@ public class DiagramManager {
         for (Integer i: graphMLNode.getGraphMLNodes().values()) {
             graph.addVertex(i);
         }
-        for (Map.Entry<Integer, Integer> entry: graphMLEdge.getGraphEdges().entrySet()) {
+        for (Map.Entry<Integer, Integer> entry: graphMLEdge.getGraphMLEdges().entrySet()) {
             graph.addEdge(entry.getKey() + " " + entry.getValue(), entry.getKey(), entry.getValue(), EdgeType.DIRECTED);
         }
         AbstractLayout<Integer, String> layout = new SpringLayout(graph);
@@ -98,4 +98,5 @@ public class DiagramManager {
     private void printFile() {
         System.out.println(graphMLBuffer);
     }
+
 }
