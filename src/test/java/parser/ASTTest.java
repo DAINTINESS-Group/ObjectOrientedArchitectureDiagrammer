@@ -2,43 +2,33 @@ package parser;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.io.IOException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.jface.text.BadLocationException;
-import org.eclipse.text.edits.MalformedTreeException;
+import model.LeafNodeType;
+import model.RelationshipType;
 import org.junit.jupiter.api.Test;
-
 import model.PackageNode;
 import model.LeafNode;
 
 class ASTTest {
-	private Parser parser;
-	private Map<String, PackageNode> packages;
-	private List<String> methodReturnTypes;
-	private List<String> fieldTypes;
-	private List<String> methodParameterTypes;
-	private PackageNode commandPackage;
-	private LeafNode addLatexCommandLeaf;
-	private LeafNode commandFactoryLeaf;
+
 	@Test
-	void test() throws IOException, MalformedTreeException, BadLocationException, ParseException{
-		parser = new Parser("src\\test\\resources\\LatexEditor\\src");
-		packages = parser.getPackageNodes();
-		methodReturnTypes = new ArrayList<>(Arrays.asList("Constructor", "void"));
-		fieldTypes = new ArrayList<>(Arrays.asList("VersionsManager"));
-		methodParameterTypes = new ArrayList<>(Arrays.asList("VersionsManager"));
-		commandPackage = packages.get("commands");
-		
-		addLatexCommandLeaf = commandPackage.getLeafNodes().get("AddLatexCommand");
-		List<String> methodReturnTypesTest = new ArrayList<>();
-		List<String> fieldTypesTest = new ArrayList<>();
-		List<String> methodParameterTypesTest = new ArrayList<String>();
+	void test() {
+		Parser parser = new Parser("src\\test\\resources\\LatexEditor\\src");
+		Map<String, PackageNode> packages = parser.getPackageNodes();
+		List<String> methodReturnTypes = new ArrayList<>(Arrays.asList("Constructor", "void"));
+		List<String> fieldTypes = new ArrayList<>(List.of("VersionsManager"));
+		List<String> methodParameterTypes = new ArrayList<>(List.of("VersionsManager"));
+		PackageNode commandPackage = packages.get("commands");
+
+		LeafNode addLatexCommandLeaf = commandPackage.getLeafNodes().get("AddLatexCommand");
+		List<String> methodReturnTypesTest;
+		List<String> fieldTypesTest;
+		List<String> methodParameterTypesTest;
 		methodParameterTypesTest = addLatexCommandLeaf.getMethodParameterTypes();
 		fieldTypesTest = addLatexCommandLeaf.getFieldsTypes();
 		methodReturnTypesTest = addLatexCommandLeaf.getMethodsReturnTypes();
@@ -56,24 +46,24 @@ class ASTTest {
 		Collections.sort(methodParameterTypes);
 		assertTrue(methodParameterTypesTest.size() == methodParameterTypes.size() 
 				&& methodParameterTypes.containsAll(methodParameterTypesTest) 
-				&& methodParameterTypes.containsAll(methodParameterTypesTest));
+				&& methodParameterTypesTest.containsAll(methodParameterTypes));
 		
 		assertEquals("AddLatexCommand", addLatexCommandLeaf.getLeafBranches().get(0).getStartingLeafNode().getName());
 		assertEquals("VersionsManager", addLatexCommandLeaf.getLeafBranches().get(0).getEndingLeafNode().getName());
-		assertEquals("dependency", addLatexCommandLeaf.getLeafBranches().get(0).getBranchType());
+		assertEquals(RelationshipType.DEPENDENCY, addLatexCommandLeaf.getLeafBranches().get(0).getRelationshipType());
 		assertEquals("AddLatexCommand", addLatexCommandLeaf.getLeafBranches().get(1).getStartingLeafNode().getName());
 		assertEquals("Command", addLatexCommandLeaf.getLeafBranches().get(1).getEndingLeafNode().getName());
-		assertEquals("implementation", addLatexCommandLeaf.getLeafBranches().get(1).getBranchType());
-		assertEquals("class", addLatexCommandLeaf.getType());
-		
-		commandFactoryLeaf = commandPackage.getLeafNodes().get("CommandFactory");
+		assertEquals(RelationshipType.IMPLEMENTATION, addLatexCommandLeaf.getLeafBranches().get(1).getRelationshipType());
+		assertEquals(LeafNodeType.CLASS, addLatexCommandLeaf.getType());
+
+		LeafNode commandFactoryLeaf = commandPackage.getLeafNodes().get("CommandFactory");
 		assertEquals("CommandFactory", commandFactoryLeaf.getLeafBranches().get(0).getStartingLeafNode().getName(), "message");
 		assertEquals("VersionsManager", commandFactoryLeaf.getLeafBranches().get(0).getEndingLeafNode().getName(), "message");
-		assertEquals("dependency", commandFactoryLeaf.getLeafBranches().get(0).getBranchType(), "message");
+		assertEquals(RelationshipType.DEPENDENCY, commandFactoryLeaf.getLeafBranches().get(0).getRelationshipType(), "message");
 		assertEquals("DocumentManager", commandFactoryLeaf.getLeafBranches().get(1).getEndingLeafNode().getName(), "message");
-		assertEquals("association", commandFactoryLeaf.getLeafBranches().get(1).getBranchType(), "message");
+		assertEquals(RelationshipType.ASSOCIATION, commandFactoryLeaf.getLeafBranches().get(1).getRelationshipType(), "message");
 		assertEquals("Command", commandFactoryLeaf.getLeafBranches().get(2).getEndingLeafNode().getName(), "message");
-		assertEquals("dependency", commandFactoryLeaf.getLeafBranches().get(2).getBranchType(), "message");
+		assertEquals(RelationshipType.DEPENDENCY, commandFactoryLeaf.getLeafBranches().get(2).getRelationshipType(), "message");
 	}
 		
 }

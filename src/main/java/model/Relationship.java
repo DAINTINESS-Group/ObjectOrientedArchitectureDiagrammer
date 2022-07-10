@@ -1,18 +1,18 @@
 package model;
 
-public class RelationshipBranch {
+public class Relationship {
 	private final LeafNode startingLeafNode;
 	private final LeafNode endingLeafNode;
-	private final String branchType;
+	private final RelationshipType relationshipType;
 	
-	public RelationshipBranch (LeafNode startingLeafNode, LeafNode endingLeafNode, String branchType) {
+	public Relationship(LeafNode startingLeafNode, LeafNode endingLeafNode, RelationshipType relationshipType) {
 		this.startingLeafNode = startingLeafNode;
 		this.endingLeafNode = endingLeafNode;
-		this.branchType = branchType;
+		this.relationshipType = relationshipType;
 	}
 	
-	public String getBranchType() {
-		return branchType;
+	public RelationshipType getRelationshipType() {
+		return relationshipType;
 	}
 	
 	public LeafNode getEndingLeafNode() {

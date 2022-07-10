@@ -15,8 +15,8 @@ public class GraphMLSyntax {
     private static final int EDGE_SOURCE = 1;
     private static final int EDGE_TARGET = 2;
     private static final int EDGE_TYPE = 3;
-    private static final int EDGES_ARROW_SOURCE_TYPE = 4;
-    private static final int EDGES_ARROW_TARGET_TYPE = 5;
+    private static final int EDGES_SOURCE_TYPE = 4;
+    private static final int EDGES_TARGET_TYPE = 5;
     private static GraphMLSyntax instance;
 
     public String getGraphMLPrefix(){
@@ -78,7 +78,7 @@ public class GraphMLSyntax {
                 "        </y:PolyLineEdge>\n" +
                 "      </data>\n" +
                 "    </edge>\n", edgesDescription.get(EDGE_ID), edgesDescription.get(EDGE_SOURCE), edgesDescription.get(EDGE_TARGET),
-                edgesDescription.get(EDGE_TYPE), edgesDescription.get(EDGES_ARROW_SOURCE_TYPE), edgesDescription.get(EDGES_ARROW_TARGET_TYPE));
+                edgesDescription.get(EDGE_TYPE), edgesDescription.get(EDGES_SOURCE_TYPE), edgesDescription.get(EDGES_TARGET_TYPE));
     }
 
     public static GraphMLSyntax getInstance(){

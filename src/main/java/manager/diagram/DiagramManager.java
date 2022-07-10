@@ -59,7 +59,7 @@ public class DiagramManager {
             if (!p.isValid()) {
                 continue;
             }
-            convertToGraphML(p);
+            populateNodesAndEdges(p);
         }
          */
         populateNodesAndEdges(packages.get("commands"));

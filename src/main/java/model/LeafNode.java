@@ -15,7 +15,7 @@ public class LeafNode {
 	private final Map<String, String> fields;
 	private final Map<String, String> methods;
 	private final List<String> methodsParametersTypes;
-	private final List<RelationshipBranch> leafBranches;
+	private final List<Relationship> leafBranches;
 	
 	/* This method is responsible for initializing the nodes structs */
 	public LeafNode(String path) {
@@ -44,7 +44,7 @@ public class LeafNode {
 	
 	/* This method is responsible for adding a leaf branch that starts from the 
 	 * current node */
-	public void addLeafBranch(RelationshipBranch l) {
+	public void addLeafBranch(Relationship l) {
 		leafBranches.add(l);
 	}
 	
@@ -86,7 +86,7 @@ public class LeafNode {
 		return methodsParametersTypes;
 	}
 
-	public List<RelationshipBranch> getLeafBranches() {
+	public List<Relationship> getLeafBranches() {
 		return leafBranches;
 	}
 
@@ -94,13 +94,13 @@ public class LeafNode {
 
 	public List<String> getFieldsTypes(){ return new ArrayList<>(getFields().values());}
 
-	public String getType() {
+	public LeafNodeType getType() {
 		if (inheritanceLine[0].equals("enum")) {
-			return "enum";
+			return LeafNodeType.ENUM;
 		}else if (inheritanceLine[0].equals("interface")) {
-			return "interface";
+			return LeafNodeType.INTERFACE;
 		}else {
-			return "class";
+			return LeafNodeType.CLASS;
 		}
 	}
 

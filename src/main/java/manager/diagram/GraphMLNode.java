@@ -1,6 +1,7 @@
 package manager.diagram;
 
 import model.LeafNode;
+import model.LeafNodeType;
 import model.PackageNode;
 
 import java.util.Arrays;
@@ -19,8 +20,8 @@ public class GraphMLNode {
 
     public GraphMLNode() {
         graphMLNodes = new HashMap<>();
-        nodeCounter = 0;
         graphMLBuffer = new StringBuilder();
+        nodeCounter = 0;
     }
 
     public void populateGraphMLNodes(PackageNode currentPackage) {
@@ -68,7 +69,7 @@ public class GraphMLNode {
     }
 
     private String getNodesColor(LeafNode l) {
-        if (l.getType().equals("interface")) {
+        if (l.getType().equals(LeafNodeType.INTERFACE)) {
             return INTERFACE_COLOR;
         }
         return CLASS_COLOR;

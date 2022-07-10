@@ -4,9 +4,10 @@ import java.io.File;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import model.LeafNode;
-import model.LeafNodeRelationship;
+import model.RelationshipIdentifier;
 import model.PackageNode;
 
 
@@ -17,7 +18,7 @@ public class Parser {
 	private final Map<String, PackageNode> packageNodes;
 
 	/* This method creates the root of the tree, from the source package, calls the
-	 * parseFolder method thats responsible for the parsing and then creates an object
+	 * parseFolder method that's responsible for the parsing and then creates an object
 	 * of the LeafNodeRelation class with the created nodes in order to create the branches */
 	public Parser(String sourcePackagePath) {
 		packageNodes = new HashMap<>();
@@ -28,13 +29,13 @@ public class Parser {
         } catch (Exception e) {
             e.printStackTrace();
         }
-		new LeafNodeRelationship(packageNodes);
+		new RelationshipIdentifier(packageNodes);
 		
 	}
 
 	private void parseFolder(PackageNode currentNode) throws ParseException{
 		File folder = new File(currentNode.getNodesPath());
-		for (File file: folder.listFiles()) {
+		for (File file: Objects.requireNonNull(folder.listFiles())) {
 			if (file.isDirectory()) {
 				createPackageSubNode(currentNode, new PackageNode(getSubNodesPath(currentNode, file)));
 			}
