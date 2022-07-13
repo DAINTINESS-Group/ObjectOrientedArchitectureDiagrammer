@@ -54,15 +54,19 @@ public class DiagramManager {
     }
 
     private void parsePackages() {
-        /*
+
         for (PackageNode p: packages.values()) {
             if (!p.isValid()) {
                 continue;
             }
-            populateNodesAndEdges(p);
+            graphMLNode.populateGraphMLNodes(p);
         }
-         */
-        populateNodesAndEdges(packages.get("commands"));
+        for (PackageNode p: packages.values()) {
+            if (!p.isValid()) {
+                continue;
+            }
+            graphMLEdge.populateGraphMLEdges(p, graphMLNode.getGraphMLNodes());
+        }
     }
 
     private void arrangeDiagram(){
@@ -76,11 +80,6 @@ public class DiagramManager {
         AbstractLayout<Integer, String> layout = new SpringLayout(graph);
         layout.setSize(new Dimension(1500,1000));
         populateNodesGeometry(layout);
-    }
-
-    private void populateNodesAndEdges(PackageNode currentPackage) {
-        graphMLNode.populateGraphMLNodes(currentPackage);
-        graphMLEdge.populateGraphMLEdges(currentPackage, graphMLNode.getGraphMLNodes());
     }
 
     private void populateNodesGeometry(AbstractLayout<Integer, String> layout) {

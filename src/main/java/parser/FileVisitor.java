@@ -23,8 +23,6 @@ import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.jdt.core.dom.Type;
 import org.eclipse.jdt.core.dom.VariableDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
-
-import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.text.edits.MalformedTreeException;
 
 import model.LeafNode;
@@ -38,7 +36,7 @@ public class FileVisitor {
 	private LeafNode leafNode;
 	private String sourceFile[];
 	
-	/* This method calls the createAST method thats responsible for the creation 
+	/* This method calls the createAST method that is responsible for the creation
 	 * of the AST */
 	public FileVisitor(File file, LeafNode leafNode, Map<String, PackageNode> packageNodes){
 		try {
@@ -48,7 +46,7 @@ public class FileVisitor {
         }
 	}
 	
-    private void createAST(File file, LeafNode leafNode, Map<String, PackageNode> packageNodes) throws IOException, MalformedTreeException, BadLocationException {
+    private void createAST(File file, LeafNode leafNode, Map<String, PackageNode> packageNodes) throws IOException, MalformedTreeException {
     	System.out.println("File: " + file.getPath());
     	ASTParser parser = ASTParser.newParser(AST.JLS17);
     	this.sourceFile = ReadFileToCharArray(file.getAbsolutePath()).split("\\n");
@@ -59,7 +57,7 @@ public class FileVisitor {
 	    processJavaFile();
     }
     
-    private void validatePackageDeclaration(Map<String, PackageNode> packageNodes) throws IOException, MalformedTreeException, BadLocationException {
+    private void validatePackageDeclaration(Map<String, PackageNode> packageNodes) throws MalformedTreeException {
 	    if (!isPackageValid()) {
 	    	for(PackageNode p: packageNodes.values()) {
 	    		if (p.getName().equals(unit.getPackage().getName().toString())) {
@@ -76,9 +74,9 @@ public class FileVisitor {
 		return unit.getPackage().getName().toString().equals(leafNode.getParentNode().getName());
 	}
     
-    private  void processJavaFile() throws IOException, MalformedTreeException, BadLocationException {
+    private  void processJavaFile() throws MalformedTreeException {
 	    // to iterate through methods
-    	List<AbstractTypeDeclaration> types = new ArrayList<AbstractTypeDeclaration>();
+    	List<AbstractTypeDeclaration> types = new ArrayList<>();
     	for (Object o: unit.types()) {
     		types.add((AbstractTypeDeclaration)(o));
     	}
@@ -88,7 +86,7 @@ public class FileVisitor {
 	        	leafNode.setInheritanceLine(convertInheritanceLine(type));
 	        	System.out.println("Type name: " + typeName); 
     			System.out.println("   Type modifiers: " + type.modifiers() );
-	            List<BodyDeclaration> bodies = new ArrayList<BodyDeclaration>();
+	            List<BodyDeclaration> bodies = new ArrayList<>();
 	        	for (Object o: type.bodyDeclarations()) {
 	        		bodies.add((BodyDeclaration)(o));
 	        	}
@@ -96,14 +94,14 @@ public class FileVisitor {
 	            	if (isField(body)) {
 						String fieldName = "";
 	            		FieldDeclaration field = (FieldDeclaration)body;
-	            		List<VariableDeclarationFragment> fragments = new ArrayList<VariableDeclarationFragment>();
+	            		List<VariableDeclarationFragment> fragments = new ArrayList<>();
 	    	        	for (Object o: field.fragments()) {
 	    	        		fragments.add((VariableDeclarationFragment)(o));
 	    	        	}
 	            		for(VariableDeclarationFragment fragment: fragments) {
 		            		System.out.println(" field name: " + fragment.getName().toString());
 							fieldName = fragment.getName().toString();
-		            		Map<Object, Object> map = new HashMap<Object, Object>();
+		            		Map<Object, Object> map = new HashMap<>();
 		            		for (Object ob: fragment.properties().keySet()) {
 		            			map.put(ob, map.get(ob));
 		            		}
@@ -112,7 +110,7 @@ public class FileVisitor {
 		            				System.out.println(key + " : " + map.get(key).toString());
 		            		}
 		            	}
-	            		leafNode.addField(fieldName , field.getType().toString());
+	            		leafNode.addField(fieldName , field.getType().toString().replaceAll("<", "[").replaceAll(">", "]"));
             			System.out.println("   modifiers: " + field.modifiers() );
             			System.out.println("   type: " + field.getType() );
 	            	}
@@ -125,19 +123,16 @@ public class FileVisitor {
 	                    if (returnType==null) returnTypeName = "Constructor";
 	                    else returnTypeName = returnType.toString();
 	                    
-	                    List<String> parameters = new ArrayList<String>();
+	                    List<String> parameters = new ArrayList<>();
 	                    for (Object parameter : method.parameters()) {
 	                        VariableDeclaration variableDeclaration = (VariableDeclaration) parameter;
-	                        String vrblType = variableDeclaration.getStructuralProperty(SingleVariableDeclaration.TYPE_PROPERTY)
-	                                .toString();
-	                        for (int i = 0; i < variableDeclaration.getExtraDimensions(); i++) {
-	                        	vrblType += "[]";
-	                        }
-	                        parameters.add(vrblType);
+							String variableType = variableDeclaration.
+									getStructuralProperty(SingleVariableDeclaration.TYPE_PROPERTY).toString() + "[]".repeat(Math.max(0, variableDeclaration.getExtraDimensions()));
+	                        parameters.add(variableType);
 	                    }
 	                    
 	                    leafNode.addMethodParametersTypes(parameters);
-	                    leafNode.addMethod(methodName, returnTypeName);
+	                    leafNode.addMethod(methodName, returnTypeName.replaceAll("<", "[").replaceAll(">", "]"));
 	                    System.out.println(" method: " + methodName + " --> " + returnTypeName );
 	                    System.out.println("   modifiers: " + method.modifiers() );
 	                    System.out.println("   parameters: " + parameters );
@@ -154,7 +149,7 @@ public class FileVisitor {
 			inheritanceLine[i] = inheritanceLine[i].replace(",", "");
 			inheritanceLine[i] = inheritanceLine[i].replace("{", "");
 		}
-		List<String> list = new ArrayList<String>(Arrays.asList(inheritanceLine));
+		List<String> list = new ArrayList<>(Arrays.asList(inheritanceLine));
 		list.removeAll(Arrays.asList("", null));
 		return list.toArray(new String[0]);
 	}
@@ -176,7 +171,7 @@ public class FileVisitor {
 		BufferedReader reader = new BufferedReader(new FileReader(filePath));
  
 		char[] buf = new char[10];
-		int numRead = 0;
+		int numRead;
 		while ((numRead = reader.read(buf)) != -1) {
 			String readData = String.valueOf(buf, 0, numRead);
 			fileData.append(readData);

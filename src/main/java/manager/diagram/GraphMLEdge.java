@@ -29,24 +29,16 @@ public class GraphMLEdge {
     public void populateGraphMLEdges(PackageNode currentPackage, Map<LeafNode, Integer> graphMLNodes) {
         this.graphMLNodes = graphMLNodes;
         for (LeafNode l: currentPackage.getLeafNodes().values()) {
-            generateEdge(l, currentPackage);
+            generateEdge(l);
         }
     }
 
-    private void generateEdge(LeafNode l, PackageNode currentPackage) {
+    private void generateEdge(LeafNode l) {
         for (Relationship branch: l.getLeafBranches()) {
-            //Remove the if statement when working with all packages
-            if (isEndingLeafNodeInDifferentPackage(branch, currentPackage)) {
-                continue;
-            }
             graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLEdgesSyntax(getEdgesDescription(branch)));
             graphMLEdges.put(graphMLNodes.get(branch.getStartingLeafNode()), graphMLNodes.get(branch.getEndingLeafNode()));
             edgeCounter++;
         }
-    }
-
-    private boolean isEndingLeafNodeInDifferentPackage(Relationship branch, PackageNode currentPackage) {
-        return !currentPackage.getLeafNodes().containsKey(branch.getEndingLeafNode().getName());
     }
 
     private List<String> getEdgesDescription(Relationship branch) {
