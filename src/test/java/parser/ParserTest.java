@@ -16,7 +16,8 @@ class ParserTest {
 
 	@Test
 	void test() {
-		Parser parser = new Parser("src\\test\\resources\\LatexEditor\\src");
+		PackageParser parser = new Parser();
+		parser.parseSourcePackage("src\\test\\resources\\LatexEditor\\src");
 		List<String> sourcesSubPackages = new ArrayList<>(Arrays.asList(
 				"src\\test\\resources\\LatexEditor\\src\\controller",
 				"src\\test\\resources\\LatexEditor\\src\\model",

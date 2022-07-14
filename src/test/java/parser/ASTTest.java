@@ -18,7 +18,8 @@ class ASTTest {
 
 	@Test
 	void test() {
-		Parser parser = new Parser("src\\test\\resources\\LatexEditor\\src");
+		PackageParser parser = new Parser();
+		parser.parseSourcePackage("src\\test\\resources\\LatexEditor\\src");
 		Map<String, PackageNode> packages = parser.getPackageNodes();
 		List<String> methodReturnTypes = new ArrayList<>(Arrays.asList("Constructor", "void"));
 		List<String> fieldTypes = new ArrayList<>(List.of("VersionsManager"));
