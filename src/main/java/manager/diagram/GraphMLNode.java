@@ -2,7 +2,6 @@ package manager.diagram;
 
 import model.LeafNode;
 import model.LeafNodeType;
-import model.PackageNode;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -24,8 +23,8 @@ public class GraphMLNode {
         nodeCounter = 0;
     }
 
-    public void populateGraphMLNodes(PackageNode currentPackage) {
-        for(LeafNode l: currentPackage.getLeafNodes().values()) {
+    public void populateGraphMLNodes(List<LeafNode> leafNodes) {
+        for(LeafNode l: leafNodes) {
             graphMLNodes.put(l, nodeCounter);
             nodeCounter++;
         }

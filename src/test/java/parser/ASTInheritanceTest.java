@@ -12,7 +12,8 @@ import model.LeafNode;
 class ASTInheritanceTest {
 	@Test
 	void test() {
-		Parser parser = new Parser("src\\test\\resources\\InheritanceTesting\\src");
+		PackageParser parser = new Parser();
+		parser.parseSourcePackage("src\\test\\resources\\InheritanceTesting\\src");
 		Map<String, PackageNode> packages = parser.getPackageNodes();
 		PackageNode sourcePackage = packages.get("src");
 		LeafNode implementingClassLeaf = sourcePackage.getLeafNodes().get("ImplementingClass");

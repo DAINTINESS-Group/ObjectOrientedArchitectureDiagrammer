@@ -14,23 +14,25 @@ import model.PackageNode;
 /* This class is responsible for the parsing of a Java project. While parsing the project
  * it creates a tree where nodes are the packages and leafs are the Java source files.
  * In order to create the tree it uses the ASTNode API from the JDT library */
-public class Parser {
+public class Parser implements PackageParser{
 	private final Map<String, PackageNode> packageNodes;
+
+	public Parser() {
+		packageNodes = new HashMap<>();
+	}
 
 	/* This method creates the root of the tree, from the source package, calls the
 	 * parseFolder method that's responsible for the parsing and then creates an object
 	 * of the LeafNodeRelation class with the created nodes in order to create the branches */
-	public Parser(String sourcePackagePath) {
-		packageNodes = new HashMap<>();
+	public void parseSourcePackage(String sourcePackagePath) {
 		PackageNode rootPackageNode = new PackageNode(sourcePackagePath);
 		packageNodes.put(rootPackageNode.getName(), rootPackageNode);
 		try {
 			parseFolder(rootPackageNode);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		new RelationshipIdentifier(packageNodes);
-		
 	}
 
 	private void parseFolder(PackageNode currentNode) throws ParseException{
@@ -72,5 +74,5 @@ public class Parser {
 	public Map<String, PackageNode> getPackageNodes() {
 		return packageNodes;
 	}
-	 
+
 }

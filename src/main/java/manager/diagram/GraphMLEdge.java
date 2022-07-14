@@ -1,7 +1,6 @@
 package manager.diagram;
 
 import model.LeafNode;
-import model.PackageNode;
 import model.Relationship;
 
 import java.util.Arrays;
@@ -26,19 +25,25 @@ public class GraphMLEdge {
         edgeCounter = 0;
     }
 
-    public void populateGraphMLEdges(PackageNode currentPackage, Map<LeafNode, Integer> graphMLNodes) {
+    public void populateGraphMLEdges(List<LeafNode> leafNodes, Map<LeafNode, Integer> graphMLNodes) {
         this.graphMLNodes = graphMLNodes;
-        for (LeafNode l: currentPackage.getLeafNodes().values()) {
+        for (LeafNode l: leafNodes) {
             generateEdge(l);
         }
     }
 
     private void generateEdge(LeafNode l) {
         for (Relationship branch: l.getLeafBranches()) {
-            graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLEdgesSyntax(getEdgesDescription(branch)));
-            graphMLEdges.put(graphMLNodes.get(branch.getStartingLeafNode()), graphMLNodes.get(branch.getEndingLeafNode()));
-            edgeCounter++;
+            if (areEdgesNodesInTheChosenPackage(branch)) {
+                graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLEdgesSyntax(getEdgesDescription(branch)));
+                graphMLEdges.put(graphMLNodes.get(branch.getStartingLeafNode()), graphMLNodes.get(branch.getEndingLeafNode()));
+                edgeCounter++;
+            }
         }
+    }
+
+    private boolean areEdgesNodesInTheChosenPackage(Relationship branch) {
+        return graphMLNodes.containsKey(branch.getEndingLeafNode());
     }
 
     private List<String> getEdgesDescription(Relationship branch) {
