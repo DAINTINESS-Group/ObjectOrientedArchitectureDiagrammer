@@ -14,20 +14,26 @@ public class Controller implements DiagramController {
 
 	private Map<String, PackageNode> packageNodes;
 
+	private GraphMLDiagramManager diagramManager;
+
 	public void createTree(String sourcePackagePath) {
 		PackageParser packageParser = new Parser();
 		packageParser.parseSourcePackage(sourcePackagePath);
 		this.packageNodes = packageParser.getPackageNodes();
 	}
 
-	public void convertTreeToPackageDiagram(List<String> chosenPackagesNames, String graphMLSavePath) {
-		GraphMLDiagramManager diagramManager = new PackageDiagramManager(packageNodes);
-		diagramManager.createDiagram(chosenPackagesNames, graphMLSavePath);
+	public void convertTreeToPackageDiagram(List<String> chosenPackagesNames) {
+		diagramManager = new PackageDiagramManager(packageNodes);
+		diagramManager.createDiagram(chosenPackagesNames);
 	}
 
-	public void convertTreeToClassDiagram(List<String> chosenClassesNames, String graphMLSavePath) {
-		GraphMLDiagramManager diagramManager = new ClassDiagramManager(packageNodes);
-		diagramManager.createDiagram(chosenClassesNames, graphMLSavePath);
+	public void convertTreeToClassDiagram(List<String> chosenClassesNames) {
+		diagramManager = new ClassDiagramManager(packageNodes);
+		diagramManager.createDiagram(chosenClassesNames);
+	}
+
+	public void exportDiagramToGraphML(String graphMLSavePath) {
+		diagramManager.exportDiagramToGraphML(graphMLSavePath);
 	}
 
 

@@ -4,6 +4,8 @@ import java.util.List;
 
 public interface GraphMLDiagramManager {
 
-    void createDiagram(List<String> chosenPackagesNames, String graphMLSavePath);
+    void createDiagram(List<String> chosenPackagesNames);
+
+    void exportDiagramToGraphML(String graphMLSavePath);
 
 }
