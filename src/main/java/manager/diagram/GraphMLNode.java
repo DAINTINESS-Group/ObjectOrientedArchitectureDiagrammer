@@ -30,13 +30,13 @@ public class GraphMLNode {
         }
     }
 
-    public void parseGraphMLNodes(Map<Integer, List<Double>> nodesGeometry){
+    public void convertNodesToGraphML(Map<Integer, List<Double>> nodesGeometry){
         for (Map.Entry<LeafNode, Integer> entry: graphMLNodes.entrySet()) {
-            generateNode(entry.getKey(), entry.getValue(), nodesGeometry.get(entry.getValue()));
+            convertNode(entry.getKey(), entry.getValue(), nodesGeometry.get(entry.getValue()));
         }
     }
 
-    private void generateNode(LeafNode l, int nodeId, List<Double> nodeGeometry) {
+    private void convertNode(LeafNode l, int nodeId, List<Double> nodeGeometry) {
         graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLNodesSyntax(getNodesDescription(l, nodeId, nodeGeometry)));
     }
 

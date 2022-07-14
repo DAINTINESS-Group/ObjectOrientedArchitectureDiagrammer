@@ -19,6 +19,7 @@ public class ClassDiagramManager extends DiagramManager{
             for (PackageNode p: packages.values()){
                 if (p.getLeafNodes().containsKey(chosenClass)) {
                     chosenClasses.add(p.getLeafNodes().get(chosenClass));
+                    break;
                 }
             }
         }

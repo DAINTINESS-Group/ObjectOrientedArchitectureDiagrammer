@@ -15,7 +15,7 @@ public class GraphMLEdge {
     private static final int EDGES_TARGET_TYPE = 2;
 
     private Map<LeafNode, Integer> graphMLNodes;
-    private final Map<Integer, Integer> graphMLEdges;
+    private final Map<Relationship, Integer> graphMLEdges;
     private final StringBuilder graphMLBuffer;
     private int edgeCounter;
 
@@ -34,20 +34,25 @@ public class GraphMLEdge {
 
     private void generateEdge(LeafNode l) {
         for (Relationship branch: l.getLeafBranches()) {
-            if (areEdgesNodesInTheChosenPackage(branch)) {
-                graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLEdgesSyntax(getEdgesDescription(branch)));
-                graphMLEdges.put(graphMLNodes.get(branch.getStartingLeafNode()), graphMLNodes.get(branch.getEndingLeafNode()));
+            if (areEdgesNodesInTheChosenClasses(branch)) {
+                graphMLEdges.put(branch, edgeCounter);
                 edgeCounter++;
             }
         }
     }
 
-    private boolean areEdgesNodesInTheChosenPackage(Relationship branch) {
+    private boolean areEdgesNodesInTheChosenClasses(Relationship branch) {
         return graphMLNodes.containsKey(branch.getEndingLeafNode());
     }
 
-    private List<String> getEdgesDescription(Relationship branch) {
-        return Arrays.asList(String.valueOf(edgeCounter), String.valueOf(graphMLNodes.get(branch.getStartingLeafNode())),
+    public void convertEdgesToGraphML() {
+        for (Map.Entry<Relationship, Integer> entry: graphMLEdges.entrySet()) {
+            graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLEdgesSyntax(getEdgesProperties(entry.getKey(), entry.getValue())));
+        }
+    }
+
+    private List<String> getEdgesProperties(Relationship branch, Integer edgeId) {
+        return Arrays.asList(String.valueOf(edgeId), String.valueOf(graphMLNodes.get(branch.getStartingLeafNode())),
                 String.valueOf(graphMLNodes.get(branch.getEndingLeafNode())), identifyEdgeType(branch).get(EDGE_TYPE),
                 identifyEdgeType(branch).get(EDGES_SOURCE_TYPE), identifyEdgeType(branch).get(EDGES_TARGET_TYPE));
     }
@@ -69,7 +74,7 @@ public class GraphMLEdge {
 
     public String getGraphMLBuffer() { return graphMLBuffer.toString(); }
 
-    public Map<Integer, Integer> getGraphMLEdges() {
+    public Map<Relationship, Integer> getGraphMLEdges() {
         return graphMLEdges;
     }
 }

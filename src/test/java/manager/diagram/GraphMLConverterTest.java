@@ -44,7 +44,7 @@ class GraphMLConverterTest {
         parser.parseSourcePackage("src\\test\\resources\\LatexEditor\\src");
         graphMLNode.populateGraphMLNodes((List<LeafNode>) parser.getPackageNodes().get("commands").getLeafNodes().values());
         StringBuilder expected = new StringBuilder();
-        graphMLNode.parseGraphMLNodes(Map.ofEntries(
+        graphMLNode.convertNodesToGraphML(Map.ofEntries(
                 Map.entry(0, Arrays.asList(10.0, 10.0)),
                 Map.entry(1, Arrays.asList(10.0, 10.0)),
                 Map.entry(2, Arrays.asList(10.0, 10.0)),
@@ -97,9 +97,9 @@ class GraphMLConverterTest {
                 branches.add(b);
             }
         }
-        for (Map.Entry<Integer, Integer> e: graphMLEdge.getGraphMLEdges().entrySet()) {
-            String edgesStart = getKeyByValue(graphMLNode.getGraphMLNodes(), e.getKey()).getName();
-            String edgesEnd = getKeyByValue(graphMLNode.getGraphMLNodes(), e.getValue()).getName();
+        for (Map.Entry<Relationship, Integer> e: graphMLEdge.getGraphMLEdges().entrySet()) {
+            String edgesStart = e.getKey().getStartingLeafNode().getName();
+            String edgesEnd = e.getKey().getEndingLeafNode().getName();
             boolean foundBranch = false;
             for (Relationship b: branches) {
                 if (b.getStartingLeafNode().getName().equals(edgesStart) && b.getEndingLeafNode().getName().equals(edgesEnd)) {
@@ -129,9 +129,9 @@ class GraphMLConverterTest {
                 branches.add(b);
             }
         }
-        for (Map.Entry<Integer, Integer> e: graphMLEdge.getGraphMLEdges().entrySet()) {
-            String edgesStart = getKeyByValue(graphMLNode.getGraphMLNodes(), e.getKey()).getName();
-            String edgesEnd = getKeyByValue(graphMLNode.getGraphMLNodes(), e.getValue()).getName();
+        for (Map.Entry<Relationship, Integer> e: graphMLEdge.getGraphMLEdges().entrySet()) {
+            String edgesStart = e.getKey().getStartingLeafNode().getName();
+            String edgesEnd = e.getKey().getEndingLeafNode().getName();
             for (Relationship b: branches) {
                 if (b.getStartingLeafNode().getName().equals(edgesStart) && b.getEndingLeafNode().getName().equals(edgesEnd)) {
                     expected.append(String.format("<edge id=\"e%s\" source=\"n%s\" target=\"n%s\">\n" +
