@@ -21,7 +21,7 @@ public abstract class DiagramManager implements GraphMLDiagramManager {
     public void createDiagram(List<String> chosenFilesNames) {
         parseChosenFiles(chosenFilesNames);
         DiagramArrangement diagramArrangement = new DiagramArrangement();
-        diagramArrangement.arrangeDiagram(graphMLNode, graphMLEdge);
+        diagramArrangement.arrangeDiagram(graphMLNode.getGraphMLNodes(), graphMLEdge.getGraphMLEdges());
         nodesGeometry = diagramArrangement.getNodesGeometry();
     }
 

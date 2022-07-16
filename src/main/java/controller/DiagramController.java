@@ -6,9 +6,7 @@ public interface DiagramController {
 
     void createTree(String sourcePackagePath);
 
-    void convertTreeToPackageDiagram(List<String> chosenPackagesNames);
-
-    void convertTreeToClassDiagram(List<String> chosenClassesNames);
+    void convertTreeToDiagram(List<String> chosenPackagesNames);
 
     void exportDiagramToGraphML(String graphMLSavePath);
 }

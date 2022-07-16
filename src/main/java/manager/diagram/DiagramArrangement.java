@@ -20,23 +20,31 @@ public class DiagramArrangement {
     public DiagramArrangement() {
         nodesGeometry = new HashMap<>();
     }
-    public void arrangeDiagram(GraphMLNode graphMLNode, GraphMLEdge graphMLEdge) {
+
+    public void arrangeDiagram(Map<LeafNode, Integer> graphNodes, Map<Relationship, Integer> graphEdges) {
         Graph<Integer, String> graph = new SparseGraph<>();
-        for (Integer i : graphMLNode.getGraphMLNodes().values()) {
-            graph.addVertex(i);
-        }
-        for (Map.Entry<Relationship, Integer> entry : graphMLEdge.getGraphMLEdges().entrySet()) {
-            graph.addEdge(graphMLNode.getGraphMLNodes().get(entry.getKey().getStartingLeafNode()) + " " +
-                            graphMLNode.getGraphMLNodes().get(entry.getKey().getEndingLeafNode()),
-                    graphMLNode.getGraphMLNodes().get(entry.getKey().getStartingLeafNode()),
-                    graphMLNode.getGraphMLNodes().get(entry.getKey().getEndingLeafNode()), EdgeType.DIRECTED);
-        }
+        addVertexes(graphNodes, graph);
+        addEdges(graphNodes, graphEdges, graph);
         AbstractLayout<Integer, String> layout = new SpringLayout(graph);
         layout.setSize(new Dimension(1500, 1000));
-        populateNodesGeometry(layout, graphMLNode);
+        populateNodesGeometry(layout, graphNodes);
     }
-    private void populateNodesGeometry(AbstractLayout<Integer, String> layout, GraphMLNode graphMLNode) {
-        for (Integer i : graphMLNode.getGraphMLNodes().values()) {
+
+    private void addVertexes(Map<LeafNode, Integer> graphNodes, Graph<Integer, String> graph) {
+        for (Integer i : graphNodes.values()) {
+            graph.addVertex(i);
+        }
+    }
+
+    private void addEdges(Map<LeafNode, Integer> graphNodes, Map<Relationship, Integer> graphEdges, Graph<Integer, String> graph) {
+        for (Map.Entry<Relationship, Integer> entry : graphEdges.entrySet()) {
+            graph.addEdge(graphNodes.get(entry.getKey().getStartingLeafNode()) + " " + graphNodes.get(entry.getKey().getEndingLeafNode()),
+                    graphNodes.get(entry.getKey().getStartingLeafNode()), graphNodes.get(entry.getKey().getEndingLeafNode()), EdgeType.DIRECTED);
+        }
+    }
+
+    private void populateNodesGeometry(AbstractLayout<Integer, String> layout, Map<LeafNode, Integer> graphNodes) {
+        for (Integer i : graphNodes.values()) {
             nodesGeometry.put(i, Arrays.asList(layout.getX(i), layout.getY(i)));
         }
     }
