@@ -30,18 +30,10 @@ public class ClassDiagramManager extends DiagramManager{
 
     public void arrangeDiagram() {
         DiagramArrangement diagramArrangement = new ClassDiagramArrangement();
-        diagramArrangement.arrangeDiagram(getCollect(), getNewMap2());
+        diagramArrangement.arrangeDiagram(graphMLNode.getGraphMLNodes().entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)),
+                graphMLEdge.getGraphMLEdges().entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
         nodesGeometry = diagramArrangement.getNodesGeometry();
-    }
-
-    private Map<Object, Integer> getNewMap2() {
-        return graphMLEdge.getGraphMLEdges().entrySet().stream()
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-    }
-
-    private Map<Object, Integer> getCollect() {
-        return graphMLNode.getGraphMLNodes().entrySet().stream()
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
     public void exportDiagramToGraphML(String graphMLSavePath) {

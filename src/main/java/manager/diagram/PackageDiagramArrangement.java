@@ -2,8 +2,6 @@ package manager.diagram;
 
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.util.EdgeType;
-import model.LeafNode;
-import model.LeafNodeRelationship;
 import model.PackageNode;
 import model.PackageNodeRelationship;
 
@@ -15,13 +13,11 @@ public class PackageDiagramArrangement extends DiagramArrangement{
 
     @Override
     public void populateGraph(Map<Object, Integer> graphNodes, Map<Object, Integer> graphEdges, Graph<Integer, String> graph) {
-        Map<PackageNode, Integer> newMap = graphNodes.entrySet().stream()
-                .collect(Collectors.toMap(e -> (PackageNode)(e.getKey()), Map.Entry::getValue));
-        Map<PackageNodeRelationship, Integer> newMap2 = graphEdges.entrySet().stream()
-                .collect(Collectors.toMap(e -> (PackageNodeRelationship)(e.getKey()), Map.Entry::getValue));
-
-        addVertexes(newMap, graph);
-        addEdges(newMap, newMap2, graph);
+        addVertexes(graphNodes.entrySet().stream()
+                .collect(Collectors.toMap(e -> (PackageNode)(e.getKey()), Map.Entry::getValue)), graph);
+        addEdges(graphNodes.entrySet().stream()
+                .collect(Collectors.toMap(e -> (PackageNode)(e.getKey()), Map.Entry::getValue)),
+                graphEdges.entrySet().stream().collect(Collectors.toMap(e -> (PackageNodeRelationship)(e.getKey()), Map.Entry::getValue)), graph);
     }
 
     private void addVertexes(Map<PackageNode, Integer> graphNodes, Graph<Integer, String> graph) {

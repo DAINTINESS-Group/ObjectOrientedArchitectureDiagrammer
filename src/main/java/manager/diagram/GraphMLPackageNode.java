@@ -1,6 +1,5 @@
 package manager.diagram;
 
-import model.LeafNode;
 import model.PackageNode;
 
 import java.util.Arrays;

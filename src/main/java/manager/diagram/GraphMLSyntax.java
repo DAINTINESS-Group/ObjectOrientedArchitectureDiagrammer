@@ -17,6 +17,10 @@ public class GraphMLSyntax {
     private static final int EDGE_TYPE = 3;
     private static final int EDGES_SOURCE_TYPE = 4;
     private static final int EDGES_TARGET_TYPE = 5;
+    private static final int PACKAGE_X_COORDINATE = 2;
+    private static final int PACKAGE_Y_COORDINATE = 3;
+    private static final int PACKAGE_NAME = 1;
+
     private static GraphMLSyntax instance;
 
     public String getGraphMLPrefix(){
@@ -78,8 +82,8 @@ public class GraphMLSyntax {
                         "          <y:NodeLabel alignment=\"center\" autoSizePolicy=\"content\" fontFamily=\"Dialog\" fontSize=\"12\" fontStyle=\"plain\" hasBackgroundColor=\"false\" hasLineColor=\"false\" height=\"18.701171875\" horizontalTextPosition=\"center\" iconTextGap=\"0\" modelName=\"custom\" textColor=\"#000000\" verticalTextPosition=\"bottom\" visible=\"true\" width=\"57.373046875\" x=\"34.8134765625\" xml:space=\"preserve\" y=\"16.6494140625\">%s<y:LabelModel><y:SmartNodeLabelModel distance=\"4.0\"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX=\"0.0\" labelRatioY=\"0.0\" nodeRatioX=\"0.0\" nodeRatioY=\"0.0\" offsetX=\"0.0\" offsetY=\"0.0\" upX=\"0.0\" upY=\"-1.0\"/></y:ModelParameter></y:NodeLabel>\n" +
                         "        </y:GenericNode>\n" +
                         "      </data>\n" +
-                        "    </node>\n", nodesDescription.get(NODE_ID), nodesDescription.get(2),
-                nodesDescription.get(3), nodesDescription.get(1));
+                        "    </node>\n", nodesDescription.get(NODE_ID), nodesDescription.get(PACKAGE_X_COORDINATE),
+                nodesDescription.get(PACKAGE_Y_COORDINATE), nodesDescription.get(PACKAGE_NAME));
     }
 
     public String getGraphMLEdgesSyntax(List<String> edgesDescription) {

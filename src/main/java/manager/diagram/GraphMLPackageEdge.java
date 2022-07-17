@@ -1,7 +1,5 @@
 package manager.diagram;
 
-import model.LeafNode;
-import model.LeafNodeRelationship;
 import model.PackageNode;
 import model.PackageNodeRelationship;
 
