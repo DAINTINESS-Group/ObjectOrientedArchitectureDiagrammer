@@ -49,22 +49,22 @@ class ASTTest {
 				&& methodParameterTypes.containsAll(methodParameterTypesTest) 
 				&& methodParameterTypesTest.containsAll(methodParameterTypes));
 		
-		assertEquals("AddLatexCommand", addLatexCommandLeaf.getLeafBranches().get(0).getStartingLeafNode().getName());
-		assertEquals("VersionsManager", addLatexCommandLeaf.getLeafBranches().get(0).getEndingLeafNode().getName());
-		assertEquals(RelationshipType.DEPENDENCY, addLatexCommandLeaf.getLeafBranches().get(0).getRelationshipType());
-		assertEquals("AddLatexCommand", addLatexCommandLeaf.getLeafBranches().get(1).getStartingLeafNode().getName());
-		assertEquals("Command", addLatexCommandLeaf.getLeafBranches().get(1).getEndingLeafNode().getName());
-		assertEquals(RelationshipType.IMPLEMENTATION, addLatexCommandLeaf.getLeafBranches().get(1).getRelationshipType());
+		assertEquals("AddLatexCommand", addLatexCommandLeaf.getLeafNodeRelationships().get(0).getStartingLeafNode().getName());
+		assertEquals("VersionsManager", addLatexCommandLeaf.getLeafNodeRelationships().get(0).getEndingLeafNode().getName());
+		assertEquals(RelationshipType.DEPENDENCY, addLatexCommandLeaf.getLeafNodeRelationships().get(0).getRelationshipType());
+		assertEquals("AddLatexCommand", addLatexCommandLeaf.getLeafNodeRelationships().get(1).getStartingLeafNode().getName());
+		assertEquals("Command", addLatexCommandLeaf.getLeafNodeRelationships().get(1).getEndingLeafNode().getName());
+		assertEquals(RelationshipType.IMPLEMENTATION, addLatexCommandLeaf.getLeafNodeRelationships().get(1).getRelationshipType());
 		assertEquals(LeafNodeType.CLASS, addLatexCommandLeaf.getType());
 
 		LeafNode commandFactoryLeaf = commandPackage.getLeafNodes().get("CommandFactory");
-		assertEquals("CommandFactory", commandFactoryLeaf.getLeafBranches().get(0).getStartingLeafNode().getName(), "message");
-		assertEquals("VersionsManager", commandFactoryLeaf.getLeafBranches().get(0).getEndingLeafNode().getName(), "message");
-		assertEquals(RelationshipType.DEPENDENCY, commandFactoryLeaf.getLeafBranches().get(0).getRelationshipType(), "message");
-		assertEquals("DocumentManager", commandFactoryLeaf.getLeafBranches().get(1).getEndingLeafNode().getName(), "message");
-		assertEquals(RelationshipType.ASSOCIATION, commandFactoryLeaf.getLeafBranches().get(1).getRelationshipType(), "message");
-		assertEquals("Command", commandFactoryLeaf.getLeafBranches().get(2).getEndingLeafNode().getName(), "message");
-		assertEquals(RelationshipType.DEPENDENCY, commandFactoryLeaf.getLeafBranches().get(2).getRelationshipType(), "message");
+		assertEquals("CommandFactory", commandFactoryLeaf.getLeafNodeRelationships().get(0).getStartingLeafNode().getName(), "message");
+		assertEquals("VersionsManager", commandFactoryLeaf.getLeafNodeRelationships().get(0).getEndingLeafNode().getName(), "message");
+		assertEquals(RelationshipType.DEPENDENCY, commandFactoryLeaf.getLeafNodeRelationships().get(0).getRelationshipType(), "message");
+		assertEquals("DocumentManager", commandFactoryLeaf.getLeafNodeRelationships().get(1).getEndingLeafNode().getName(), "message");
+		assertEquals(RelationshipType.ASSOCIATION, commandFactoryLeaf.getLeafNodeRelationships().get(1).getRelationshipType(), "message");
+		assertEquals("Command", commandFactoryLeaf.getLeafNodeRelationships().get(2).getEndingLeafNode().getName(), "message");
+		assertEquals(RelationshipType.DEPENDENCY, commandFactoryLeaf.getLeafNodeRelationships().get(2).getRelationshipType(), "message");
 	}
 		
 }

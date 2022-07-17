@@ -1,6 +1,8 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /* This class is responsible for the implementation of a package node in the tree.
@@ -12,6 +14,8 @@ public class PackageNode {
 	private PackageNode parentNode;
 	private final Map<String, PackageNode> subNodes;
 	private final Map<String, LeafNode> leafNodes;
+
+	private final List<PackageNodeRelationship> packageNodeRelationships;
 	private boolean isValid;
 	
 	public PackageNode(String path) {
@@ -19,6 +23,7 @@ public class PackageNode {
 		this.isValid = false;
 		subNodes = new HashMap<>();
 		leafNodes = new HashMap<>();
+		packageNodeRelationships = new ArrayList<>();
 	}
 	
 	public void addLeafNode(LeafNode leafNode) {
@@ -27,6 +32,10 @@ public class PackageNode {
 	
 	public void addSubNode(PackageNode p) {
 		subNodes.put(p.getName(), p);
+	}
+
+	public void addPackageNodeRelationship(PackageNodeRelationship r) {
+		packageNodeRelationships.add(r);
 	}
 	
 	public void setParentNode(PackageNode p) {
@@ -63,5 +72,9 @@ public class PackageNode {
 	
 	public String getName() {
 		return path.substring(path.lastIndexOf("\\") + 1);
+	}
+
+	public List<PackageNodeRelationship> getPackageNodeRelationships() {
+		return packageNodeRelationships;
 	}
 }

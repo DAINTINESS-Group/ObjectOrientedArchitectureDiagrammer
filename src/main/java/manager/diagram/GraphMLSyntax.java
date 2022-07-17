@@ -67,6 +67,21 @@ public class GraphMLSyntax {
                 nodesDescription.get(NODE_FIELDS), nodesDescription.get(NODE_METHODS));
     }
 
+    public String getGraphMLPackageNodesSyntax(List<String> nodesDescription) {
+        return String.format("    <node id=\"n%s\">\n" +
+                        "      <data key=\"d4\" xml:space=\"preserve\"/>\n" +
+                        "      <data key=\"d6\">\n" +
+                        "        <y:GenericNode configuration=\"ShinyPlateNode3\">\n" +
+                        "          <y:Geometry height=\"52.0\" width=\"127.0\" x=\"%s\" y=\"%s\"/>\n" +
+                        "          <y:Fill color=\"#FF9900\" color2=\"#FFCC00\" transparent=\"false\"/>\n" +
+                        "          <y:BorderStyle color=\"#000000\" type=\"line\" width=\"1.0\"/>\n" +
+                        "          <y:NodeLabel alignment=\"center\" autoSizePolicy=\"content\" fontFamily=\"Dialog\" fontSize=\"12\" fontStyle=\"plain\" hasBackgroundColor=\"false\" hasLineColor=\"false\" height=\"18.701171875\" horizontalTextPosition=\"center\" iconTextGap=\"0\" modelName=\"custom\" textColor=\"#000000\" verticalTextPosition=\"bottom\" visible=\"true\" width=\"57.373046875\" x=\"34.8134765625\" xml:space=\"preserve\" y=\"16.6494140625\">%s<y:LabelModel><y:SmartNodeLabelModel distance=\"4.0\"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX=\"0.0\" labelRatioY=\"0.0\" nodeRatioX=\"0.0\" nodeRatioY=\"0.0\" offsetX=\"0.0\" offsetY=\"0.0\" upX=\"0.0\" upY=\"-1.0\"/></y:ModelParameter></y:NodeLabel>\n" +
+                        "        </y:GenericNode>\n" +
+                        "      </data>\n" +
+                        "    </node>\n", nodesDescription.get(NODE_ID), nodesDescription.get(2),
+                nodesDescription.get(3), nodesDescription.get(1));
+    }
+
     public String getGraphMLEdgesSyntax(List<String> edgesDescription) {
         return String.format("<edge id=\"e%s\" source=\"n%s\" target=\"n%s\">\n" +
                 "      <data key=\"d10\">\n" +
@@ -79,6 +94,20 @@ public class GraphMLSyntax {
                 "      </data>\n" +
                 "    </edge>\n", edgesDescription.get(EDGE_ID), edgesDescription.get(EDGE_SOURCE), edgesDescription.get(EDGE_TARGET),
                 edgesDescription.get(EDGE_TYPE), edgesDescription.get(EDGES_SOURCE_TYPE), edgesDescription.get(EDGES_TARGET_TYPE));
+    }
+
+    public String getGraphMLPackageEdgesSyntax(List<String> edgesDescription) {
+        return String.format("    <edge id=\"e%s\" source=\"n%s\" target=\"n%s\">\n" +
+                "      <data key=\"d9\"/>\n" +
+                "      <data key=\"d10\">\n" +
+                "        <y:PolyLineEdge>\n" +
+                "          <y:Path sx=\"0.0\" sy=\"0.0\" tx=\"0.0\" ty=\"0.0\"/>\n" +
+                "          <y:LineStyle color=\"#000000\" type=\"dashed\" width=\"1.0\"/>\n" +
+                "          <y:Arrows source=\"none\" target=\"plain\"/>\n" +
+                "          <y:BendStyle smoothed=\"false\"/>\n" +
+                "        </y:PolyLineEdge>\n" +
+                "      </data>\n" +
+                "    </edge>", edgesDescription.get(EDGE_ID), edgesDescription.get(EDGE_SOURCE), edgesDescription.get(EDGE_TARGET));
     }
 
     public static GraphMLSyntax getInstance(){

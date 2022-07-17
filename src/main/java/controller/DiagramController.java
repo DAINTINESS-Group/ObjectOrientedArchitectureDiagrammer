@@ -8,5 +8,7 @@ public interface DiagramController {
 
     void convertTreeToDiagram(List<String> chosenPackagesNames);
 
+    void arrangeDiagram();
+
     void exportDiagramToGraphML(String graphMLSavePath);
 }

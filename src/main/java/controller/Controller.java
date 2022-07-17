@@ -20,6 +20,10 @@ public abstract class Controller implements DiagramController {
 		this.packageNodes = packageParser.getPackageNodes();
 	}
 
+	public void arrangeDiagram(){
+		diagramManager.arrangeDiagram();
+	}
+
 	public void exportDiagramToGraphML(String graphMLSavePath) {
 		diagramManager.exportDiagramToGraphML(graphMLSavePath);
 	}

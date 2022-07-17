@@ -5,6 +5,7 @@ import model.PackageNode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class PackageDiagramManager extends DiagramManager{
 
@@ -12,38 +13,54 @@ public class PackageDiagramManager extends DiagramManager{
         super(packageNodes);
     }
 
-    public void parseChosenFiles(List<String> chosenPackagesNames) {
+    public void createDiagram(List<String> chosenPackagesNames) {
         for (String packageName: chosenPackagesNames) {
             createGraphMLNodes(packageName);
             createGraphMLEdges(packageName);
         }
-
     }
+
     private void createGraphMLNodes(String packageName) {
-        graphMLNode.populateGraphMLNodes(new ArrayList<>(packages.get(packageName).getLeafNodes().values()));
+        graphMLPackageNode.populateGraphMLNodes(packages.get(packageName));
         createSubPackagesGraphMLNodes(packageName);
     }
 
     private void createSubPackagesGraphMLNodes(String chosenPackagePath) {
         for (PackageNode p: packages.get(chosenPackagePath).getSubNodes().values()) {
             if (p.isValid()) {
-                graphMLNode.populateGraphMLNodes(new ArrayList<>(p.getLeafNodes().values()));
+                graphMLPackageNode.populateGraphMLNodes(p);
             }
             createSubPackagesGraphMLNodes(p.getName());
         }
     }
 
     private void createGraphMLEdges(String packageName) {
-        graphMLEdge.populateGraphMLEdges(new ArrayList<>(packages.get(packageName).getLeafNodes().values()), graphMLNode.getGraphMLNodes());
+        graphMLPackageEdge.populateGraphMLEdges(packages.get(packageName), graphMLPackageNode.getGraphMLNodes());
         createSubPackagesGraphMLEdges(packageName);
     }
 
     private void createSubPackagesGraphMLEdges(String packageName) {
         for (PackageNode p : packages.get(packageName).getSubNodes().values()) {
             if (p.isValid()) {
-                graphMLEdge.populateGraphMLEdges(new ArrayList<>(p.getLeafNodes().values()), graphMLNode.getGraphMLNodes());
+                graphMLPackageEdge.populateGraphMLEdges(p, graphMLPackageNode.getGraphMLNodes());
             }
             createSubPackagesGraphMLEdges(p.getName());
         }
     }
+
+    public void arrangeDiagram() {
+        DiagramArrangement diagramArrangement = new PackageDiagramArrangement();
+        diagramArrangement.arrangeDiagram(graphMLPackageNode.getGraphMLNodes().entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)),
+                graphMLPackageEdge.getGraphMLEdges().entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
+        nodesGeometry = diagramArrangement.getNodesGeometry();
+    }
+
+    public void exportDiagramToGraphML(String graphMLSavePath) {
+        graphMLPackageNode.convertNodesToGraphML(nodesGeometry);
+        graphMLPackageEdge.convertEdgesToGraphML();
+        GraphMLExporter graphMLExporter = new GraphMLExporter();
+        graphMLExporter.exportDiagramToGraphML(graphMLSavePath, graphMLPackageNode.getGraphMLBuffer(), graphMLPackageEdge.getGraphMLBuffer());
+    }
+
 }

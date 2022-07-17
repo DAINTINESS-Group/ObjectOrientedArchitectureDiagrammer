@@ -1,7 +1,7 @@
 package manager.diagram;
 
 import model.LeafNode;
-import model.Relationship;
+import model.LeafNodeRelationship;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -15,7 +15,7 @@ public class GraphMLEdge {
     private static final int EDGES_TARGET_TYPE = 2;
 
     private Map<LeafNode, Integer> graphMLNodes;
-    private final Map<Relationship, Integer> graphMLEdges;
+    private final Map<LeafNodeRelationship, Integer> graphMLEdges;
     private final StringBuilder graphMLBuffer;
     private int edgeCounter;
 
@@ -33,32 +33,32 @@ public class GraphMLEdge {
     }
 
     private void generateEdge(LeafNode l) {
-        for (Relationship branch: l.getLeafBranches()) {
-            if (areEdgesNodesInTheChosenClasses(branch)) {
-                graphMLEdges.put(branch, edgeCounter);
+        for (LeafNodeRelationship relationship: l.getLeafNodeRelationships()) {
+            if (areEdgesNodesInTheChosenClasses(relationship)) {
+                graphMLEdges.put(relationship, edgeCounter);
                 edgeCounter++;
             }
         }
     }
 
-    private boolean areEdgesNodesInTheChosenClasses(Relationship branch) {
-        return graphMLNodes.containsKey(branch.getEndingLeafNode());
+    private boolean areEdgesNodesInTheChosenClasses(LeafNodeRelationship relationship) {
+        return graphMLNodes.containsKey(relationship.getEndingLeafNode());
     }
 
     public void convertEdgesToGraphML() {
-        for (Map.Entry<Relationship, Integer> entry: graphMLEdges.entrySet()) {
+        for (Map.Entry<LeafNodeRelationship, Integer> entry: graphMLEdges.entrySet()) {
             graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLEdgesSyntax(getEdgesProperties(entry.getKey(), entry.getValue())));
         }
     }
 
-    private List<String> getEdgesProperties(Relationship branch, Integer edgeId) {
+    private List<String> getEdgesProperties(LeafNodeRelationship branch, Integer edgeId) {
         return Arrays.asList(String.valueOf(edgeId), String.valueOf(graphMLNodes.get(branch.getStartingLeafNode())),
                 String.valueOf(graphMLNodes.get(branch.getEndingLeafNode())), identifyEdgeType(branch).get(EDGE_TYPE),
                 identifyEdgeType(branch).get(EDGES_SOURCE_TYPE), identifyEdgeType(branch).get(EDGES_TARGET_TYPE));
     }
 
-    private List<String> identifyEdgeType(Relationship branch){
-        switch (branch.getRelationshipType()) {
+    private List<String> identifyEdgeType(LeafNodeRelationship relationship){
+        switch (relationship.getRelationshipType()) {
             case DEPENDENCY:
                 return Arrays.asList("dashed", "none", "plain");
             case AGGREGATION:
@@ -74,7 +74,7 @@ public class GraphMLEdge {
 
     public String getGraphMLBuffer() { return graphMLBuffer.toString(); }
 
-    public Map<Relationship, Integer> getGraphMLEdges() {
+    public Map<LeafNodeRelationship, Integer> getGraphMLEdges() {
         return graphMLEdges;
     }
 }
