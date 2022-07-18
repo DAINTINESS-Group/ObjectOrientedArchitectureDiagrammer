@@ -3,7 +3,7 @@ package manager.diagram;
 import com.google.common.base.Preconditions;
 import model.LeafNode;
 import model.LeafNodeType;
-import model.LeafNodeRelationship;
+import model.Relationship;
 import org.junit.jupiter.api.Test;
 import parser.PackageParser;
 import parser.Parser;
@@ -87,22 +87,22 @@ class GraphMLConverterTest {
         graphMLNode.populateGraphMLNodes((List<LeafNode>) parser.getPackageNodes().get("commands").getLeafNodes().values());
         GraphMLEdge graphMLEdge = new GraphMLEdge();
         graphMLEdge.populateGraphMLEdges((List<LeafNode>) parser.getPackageNodes().get("commands").getLeafNodes().values(), graphMLNode.getGraphMLNodes());
-        List<LeafNodeRelationship> branches = new ArrayList<>();
+        List<Relationship<?>> branches = new ArrayList<>();
 
         for (LeafNode l: parser.getPackageNodes().get("commands").getLeafNodes().values()) {
-            for (LeafNodeRelationship b: l.getLeafNodeRelationships()) {
-                if (!parser.getPackageNodes().get("commands").getLeafNodes().containsKey(b.getEndingLeafNode().getName())) {
+            for (Relationship<?> b: l.getLeafNodeRelationships()) {
+                if (!parser.getPackageNodes().get("commands").getLeafNodes().containsKey(((LeafNode)(b.getEndingNode())).getName())) {
                     continue;
                 }
                 branches.add(b);
             }
         }
-        for (Map.Entry<LeafNodeRelationship, Integer> e: graphMLEdge.getGraphMLEdges().entrySet()) {
-            String edgesStart = e.getKey().getStartingLeafNode().getName();
-            String edgesEnd = e.getKey().getEndingLeafNode().getName();
+        for (Map.Entry<Relationship<?>, Integer> e: graphMLEdge.getGraphMLEdges().entrySet()) {
+            String edgesStart = ((LeafNode)(e.getKey().getStartingNode())).getName();
+            String edgesEnd = ((LeafNode)(e.getKey().getEndingNode())).getName();
             boolean foundBranch = false;
-            for (LeafNodeRelationship b: branches) {
-                if (b.getStartingLeafNode().getName().equals(edgesStart) && b.getEndingLeafNode().getName().equals(edgesEnd)) {
+            for (Relationship<?> b: branches) {
+                if (((LeafNode)(b.getStartingNode())).getName().equals(edgesStart) && ((LeafNode)(b.getEndingNode())).getName().equals(edgesEnd)) {
                     foundBranch = true;
                 }
             }
@@ -120,20 +120,20 @@ class GraphMLConverterTest {
         graphMLEdge.populateGraphMLEdges((List<LeafNode>) parser.getPackageNodes().get("commands").getLeafNodes().values(), graphMLNode.getGraphMLNodes());
         StringBuilder expected = new StringBuilder();
         int counter = 0;
-        List<LeafNodeRelationship> branches = new ArrayList<>();
+        List<Relationship<?>> branches = new ArrayList<>();
         for (LeafNode l: parser.getPackageNodes().get("commands").getLeafNodes().values()) {
-            for (LeafNodeRelationship b: l.getLeafNodeRelationships()) {
-                if (!parser.getPackageNodes().get("commands").getLeafNodes().containsKey(b.getEndingLeafNode().getName())) {
+            for (Relationship<?> b: l.getLeafNodeRelationships()) {
+                if (!parser.getPackageNodes().get("commands").getLeafNodes().containsKey(((LeafNode)(b.getEndingNode())).getName())) {
                     continue;
                 }
                 branches.add(b);
             }
         }
-        for (Map.Entry<LeafNodeRelationship, Integer> e: graphMLEdge.getGraphMLEdges().entrySet()) {
-            String edgesStart = e.getKey().getStartingLeafNode().getName();
-            String edgesEnd = e.getKey().getEndingLeafNode().getName();
-            for (LeafNodeRelationship b: branches) {
-                if (b.getStartingLeafNode().getName().equals(edgesStart) && b.getEndingLeafNode().getName().equals(edgesEnd)) {
+        for (Map.Entry<Relationship<?>, Integer> e: graphMLEdge.getGraphMLEdges().entrySet()) {
+            String edgesStart = ((LeafNode)(e.getKey().getStartingNode())).getName();
+            String edgesEnd = ((LeafNode)(e.getKey().getEndingNode())).getName();
+            for (Relationship<?> b: branches) {
+                if (((LeafNode)(b.getStartingNode())).getName().equals(edgesStart) && ((LeafNode)(b.getEndingNode())).getName().equals(edgesEnd)) {
                     expected.append(String.format("<edge id=\"e%s\" source=\"n%s\" target=\"n%s\">\n" +
                                     "      <data key=\"d10\">\n" +
                                     "        <y:PolyLineEdge>\n" +
@@ -152,11 +152,11 @@ class GraphMLConverterTest {
         assertEquals(expected.toString(), graphMLEdge.getGraphMLBuffer());
     }
 
-    private List<String> getEdgesDescription(LeafNodeRelationship branch) {
+    private List<String> getEdgesDescription(Relationship<?> branch) {
         return Arrays.asList(identifyEdgeType(branch).get(0),
                 identifyEdgeType(branch).get(1), identifyEdgeType(branch).get(2));
     }
-    private List<String> identifyEdgeType(LeafNodeRelationship branch){
+    private List<String> identifyEdgeType(Relationship<?> branch){
         switch (branch.getRelationshipType()) {
             case DEPENDENCY:
                 return Arrays.asList("dashed", "none", "plain");

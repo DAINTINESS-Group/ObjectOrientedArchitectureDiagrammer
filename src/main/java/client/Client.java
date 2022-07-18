@@ -4,7 +4,6 @@ import controller.DiagramController;
 import controller.DiagramControllerFactory;
 
 import java.util.Arrays;
-import java.util.List;
 
 public class Client {
 

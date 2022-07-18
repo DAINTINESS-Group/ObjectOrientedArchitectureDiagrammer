@@ -6,7 +6,7 @@ import java.util.Map;
 
 public interface PackageParser {
 
-    public void parseSourcePackage(String sourcePackagePath);
+    void parseSourcePackage(String sourcePackagePath);
 
-    public Map<String, PackageNode> getPackageNodes();
+    Map<String, PackageNode> getPackageNodes();
 }

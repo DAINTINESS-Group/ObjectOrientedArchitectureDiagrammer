@@ -17,16 +17,16 @@ class ASTInheritanceTest {
 		Map<String, PackageNode> packages = parser.getPackageNodes();
 		PackageNode sourcePackage = packages.get("src");
 		LeafNode implementingClassLeaf = sourcePackage.getLeafNodes().get("ImplementingClass");
-		assertEquals("ImplementingClass", implementingClassLeaf.getLeafNodeRelationships().get(0).getStartingLeafNode().getName());
-		assertEquals("TestingInterface2", implementingClassLeaf.getLeafNodeRelationships().get(0).getEndingLeafNode().getName());
+		assertEquals("ImplementingClass", ((LeafNode)implementingClassLeaf.getLeafNodeRelationships().get(0).getStartingNode()).getName());
+		assertEquals("TestingInterface2", ((LeafNode)implementingClassLeaf.getLeafNodeRelationships().get(0).getEndingNode()).getName());
 		assertEquals(RelationshipType.IMPLEMENTATION, implementingClassLeaf.getLeafNodeRelationships().get(0).getRelationshipType());
 		
-		assertEquals("ImplementingClass", implementingClassLeaf.getLeafNodeRelationships().get(1).getStartingLeafNode().getName());
-		assertEquals("ExtensionClass", implementingClassLeaf.getLeafNodeRelationships().get(1).getEndingLeafNode().getName());
+		assertEquals("ImplementingClass", ((LeafNode)implementingClassLeaf.getLeafNodeRelationships().get(1).getStartingNode()).getName());
+		assertEquals("ExtensionClass", ((LeafNode)implementingClassLeaf.getLeafNodeRelationships().get(1).getEndingNode()).getName());
 		assertEquals(RelationshipType.EXTENSION, implementingClassLeaf.getLeafNodeRelationships().get(1).getRelationshipType());
 		
-		assertEquals("ImplementingClass", implementingClassLeaf.getLeafNodeRelationships().get(2).getStartingLeafNode().getName());
-		assertEquals("TestingInterface", implementingClassLeaf.getLeafNodeRelationships().get(2).getEndingLeafNode().getName());
+		assertEquals("ImplementingClass", ((LeafNode)implementingClassLeaf.getLeafNodeRelationships().get(2).getStartingNode()).getName());
+		assertEquals("TestingInterface", ((LeafNode)implementingClassLeaf.getLeafNodeRelationships().get(2).getEndingNode()).getName());
 		assertEquals(RelationshipType.IMPLEMENTATION, implementingClassLeaf.getLeafNodeRelationships().get(2).getRelationshipType());
 	}
 		

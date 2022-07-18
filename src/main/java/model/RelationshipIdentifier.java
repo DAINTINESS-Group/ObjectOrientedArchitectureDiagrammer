@@ -139,22 +139,22 @@ public class RelationshipIdentifier {
 	}
 	
 	private void createRelationship(int i, int j, RelationshipType relationshipType) {
-		allLeafNodes.get(i).addLeafBranch(new LeafNodeRelationship(allLeafNodes.get(i), allLeafNodes.get(j), relationshipType));
+		allLeafNodes.get(i).addLeafBranch(new Relationship<>(allLeafNodes.get(i), allLeafNodes.get(j), relationshipType));
 
-		for (PackageNodeRelationship r: allLeafNodes.get(i).getParentNode().getPackageNodeRelationships()) {
+		for (Relationship<?> r: allLeafNodes.get(i).getParentNode().getPackageNodeRelationships()) {
 			if (doesPackageRelationshipAlreadyExist(j, r)) {
 				return;
 			}
 		}
 		if (!isRelationshipBetweenTheSamePackages(i, j)) {
-			allLeafNodes.get(i).getParentNode().addPackageNodeRelationship(new PackageNodeRelationship(allLeafNodes.get(i).getParentNode(),
+			allLeafNodes.get(i).getParentNode().addPackageNodeRelationship(new Relationship<>(allLeafNodes.get(i).getParentNode(),
 					allLeafNodes.get(j).getParentNode(), RelationshipType.DEPENDENCY));
 		}
 
 	}
 
-	private boolean doesPackageRelationshipAlreadyExist(int j, PackageNodeRelationship r) {
-		return r.getEndingPackageNode().equals(allLeafNodes.get(j).getParentNode());
+	private boolean doesPackageRelationshipAlreadyExist(int j, Relationship<?> r) {
+		return r.getEndingNode().equals(allLeafNodes.get(j).getParentNode());
 	}
 
 	private boolean isRelationshipBetweenTheSamePackages(int i, int j) {

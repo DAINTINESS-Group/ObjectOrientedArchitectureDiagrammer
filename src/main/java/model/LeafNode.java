@@ -15,7 +15,7 @@ public class LeafNode {
 	private final Map<String, String> fields;
 	private final Map<String, String> methods;
 	private final List<String> methodsParametersTypes;
-	private final List<LeafNodeRelationship> leafNodeRelationships;
+	private final List<Relationship<?>> leafNodeRelationships;
 	
 	/* This method is responsible for initializing the nodes structs */
 	public LeafNode(String path) {
@@ -44,7 +44,7 @@ public class LeafNode {
 	
 	/* This method is responsible for adding a leaf branch that starts from the 
 	 * current node */
-	public void addLeafBranch(LeafNodeRelationship l) {
+	public void addLeafBranch(Relationship<?> l) {
 		leafNodeRelationships.add(l);
 	}
 	
@@ -86,7 +86,7 @@ public class LeafNode {
 		return methodsParametersTypes;
 	}
 
-	public List<LeafNodeRelationship> getLeafNodeRelationships() {
+	public List<Relationship<?>> getLeafNodeRelationships() {
 		return leafNodeRelationships;
 	}
 
