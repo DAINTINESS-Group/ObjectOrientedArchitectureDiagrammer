@@ -12,10 +12,10 @@ import org.junit.jupiter.api.Test;
 import model.LeafNode;
 import model.PackageNode;
 
-class ParserTest {
+class SourceFolderParsingTest {
 
 	@Test
-	void test() {
+	void parsingTest() {
 		PackageParser parser = new Parser();
 		parser.parseSourcePackage("src\\test\\resources\\LatexEditor\\src");
 		List<String> sourcesSubPackages = new ArrayList<>(Arrays.asList(
