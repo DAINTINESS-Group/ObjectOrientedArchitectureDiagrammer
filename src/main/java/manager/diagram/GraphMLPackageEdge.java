@@ -10,49 +10,59 @@ import java.util.Map;
 
 public class GraphMLPackageEdge {
 
+    private final Map<Relationship<PackageNode>, Integer> graphMLEdges;
     private Map<PackageNode, Integer> graphMLNodes;
-    private final Map<Relationship<?>, Integer> graphMLEdges;
     private final StringBuilder graphMLBuffer;
-    private int edgeCounter;
+    private int edgeId;
 
     public GraphMLPackageEdge() {
         graphMLEdges = new HashMap<>();
         graphMLBuffer = new StringBuilder();
-        edgeCounter = 0;
+        edgeId = 0;
     }
 
-    public void populateGraphMLEdges(PackageNode p, Map<PackageNode, Integer> graphMLNodes) {
-        this.graphMLNodes = graphMLNodes;
-        generateEdge(p);
+    public void populateGraphMLEdges(List<PackageNode> packageNodes) {
+        for (PackageNode packageNode: packageNodes) {
+            generateEdge(packageNode);
+        }
     }
 
-    private void generateEdge(PackageNode p) {
-        for (Relationship<?> relationship: p.getPackageNodeRelationships()) {
-            if (areEdgesNodesInTheChosenClasses(relationship)) {
-                graphMLEdges.put(relationship, edgeCounter);
-                edgeCounter++;
+    public void generateEdge(PackageNode packageNode) {
+        for (Relationship<PackageNode> relationship: packageNode.getPackageNodeRelationships()) {
+            if (areEdgesNodesInTheChosenPackages(relationship)) {
+                addEdge(relationship);
             }
         }
     }
 
-    private boolean areEdgesNodesInTheChosenClasses(Relationship<?> relationship) {
-        return graphMLNodes.containsKey((PackageNode) relationship.getEndingNode());
+    private boolean areEdgesNodesInTheChosenPackages(Relationship<PackageNode> relationship) {
+        return graphMLNodes.containsKey(relationship.getEndingNode());
+    }
+
+    private void addEdge(Relationship<PackageNode> relationship) {
+        graphMLEdges.put(relationship, edgeId);
+        edgeId++;
     }
 
     public void convertEdgesToGraphML() {
-        for (Map.Entry<Relationship<?>, Integer> entry: graphMLEdges.entrySet()) {
+        for (Map.Entry<Relationship<PackageNode>, Integer> entry: graphMLEdges.entrySet()) {
             graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLPackageEdgesSyntax(getEdgesProperties(entry.getKey(), entry.getValue())));
         }
     }
 
-    private List<String> getEdgesProperties(Relationship<?> relationship, Integer edgeId) {
-        return Arrays.asList(String.valueOf(edgeId), String.valueOf(graphMLNodes.get((PackageNode)relationship.getStartingNode())),
-                String.valueOf(graphMLNodes.get((PackageNode)relationship.getEndingNode())));
+    private List<String> getEdgesProperties(Relationship<PackageNode> relationship, Integer edgeId) {
+        return Arrays.asList(String.valueOf(edgeId), String.valueOf(graphMLNodes.get(relationship.getStartingNode())),
+                String.valueOf(graphMLNodes.get(relationship.getEndingNode())));
     }
 
-    public Map<Relationship<?>, Integer> getGraphMLEdges() {
+    public Map<Relationship<PackageNode>, Integer> getGraphMLEdges() {
         return graphMLEdges;
     }
 
+    public void setGraphMLNodes(Map<PackageNode, Integer> graphMLNodes){
+        this.graphMLNodes = graphMLNodes;
+    }
+
     public String getGraphMLBuffer() { return graphMLBuffer.toString(); }
+
 }

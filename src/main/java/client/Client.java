@@ -11,17 +11,20 @@ public class Client {
 
 		DiagramControllerFactory diagramControllerFactory = new DiagramControllerFactory();
 
+		/*
 		DiagramController classDiagramController = diagramControllerFactory.getController("Class");
 		classDiagramController.createTree(args[0]);
-		classDiagramController.convertTreeToDiagram(Arrays.asList("Command", "EditCommand", "CreateCommand", "CommandFactory", "LatexEditorController", "CommandFactory"));
+		classDiagramController.convertTreeToDiagram(Arrays.asList("LatexEditorView", "VersionsManager", "CreateCommand", "CommandFactory", "LatexEditorController", "CommandFactory"));
 		classDiagramController.arrangeDiagram();
 		classDiagramController.exportDiagramToGraphML(args[2]);
+		*/
 
 		DiagramController packageDiagramController = diagramControllerFactory.getController("Package");
 		packageDiagramController.createTree(args[0]);
-		packageDiagramController.convertTreeToDiagram(Arrays.asList("model", "controller"));
+		packageDiagramController.convertTreeToDiagram(Arrays.asList("controller", "model", "view", "commands", "strategies"));
 		packageDiagramController.arrangeDiagram();
 		packageDiagramController.exportDiagramToGraphML(args[2]);
+
 
 	}
 

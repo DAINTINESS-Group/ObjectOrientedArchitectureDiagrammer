@@ -2,56 +2,40 @@ package manager.diagram;
 
 import model.PackageNode;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class PackageDiagramManager extends DiagramManager{
 
+    private final GraphMLNode<PackageNode> graphMLPackageNode;
+    private final GraphMLPackageEdge graphMLPackageEdge;
+
     public PackageDiagramManager(Map<String, PackageNode> packageNodes) {
         super(packageNodes);
+        graphMLPackageNode = new GraphMLPackageNode<>();
+        graphMLPackageEdge = new GraphMLPackageEdge();
     }
 
     public void createDiagram(List<String> chosenPackagesNames) {
-        for (String packageName: chosenPackagesNames) {
-            createGraphMLNodes(packageName);
-            createGraphMLEdges(packageName);
-        }
+        graphMLPackageNode.populateGraphMLNodes(getChosenPackages(chosenPackagesNames));
+        graphMLPackageEdge.setGraphMLNodes(graphMLPackageNode.getGraphMLNodes());
+        graphMLPackageEdge.populateGraphMLEdges(getChosenPackages(chosenPackagesNames));
     }
 
-    private void createGraphMLNodes(String packageName) {
-        graphMLPackageNode.populateGraphMLNodes(packages.get(packageName));
-        createSubPackagesGraphMLNodes(packageName);
-    }
-
-    private void createSubPackagesGraphMLNodes(String chosenPackagePath) {
-        for (PackageNode p: packages.get(chosenPackagePath).getSubNodes().values()) {
-            if (p.isValid()) {
-                graphMLPackageNode.populateGraphMLNodes(p);
+    private List<PackageNode> getChosenPackages(List<String> chosenPackagesNames) {
+        List<PackageNode> chosenPackages = new ArrayList<>();
+        for (String chosenPackage: chosenPackagesNames) {
+            if (packages.get(chosenPackage).isValid()) {
+                chosenPackages.add(packages.get(chosenPackage));
             }
-            createSubPackagesGraphMLNodes(p.getName());
         }
-    }
-
-    private void createGraphMLEdges(String packageName) {
-        graphMLPackageEdge.populateGraphMLEdges(packages.get(packageName), graphMLPackageNode.getGraphMLNodes());
-        createSubPackagesGraphMLEdges(packageName);
-    }
-
-    private void createSubPackagesGraphMLEdges(String packageName) {
-        for (PackageNode p : packages.get(packageName).getSubNodes().values()) {
-            if (p.isValid()) {
-                graphMLPackageEdge.populateGraphMLEdges(p, graphMLPackageNode.getGraphMLNodes());
-            }
-            createSubPackagesGraphMLEdges(p.getName());
-        }
+        return chosenPackages;
     }
 
     public void arrangeDiagram() {
-        DiagramArrangement diagramArrangement = new PackageDiagramArrangement();
-        diagramArrangement.arrangeDiagram(graphMLPackageNode.getGraphMLNodes().entrySet().stream()
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)),
-                graphMLPackageEdge.getGraphMLEdges().entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
+        DiagramArrangement<PackageNode> diagramArrangement = new PackageDiagramArrangement<>();
+        diagramArrangement.arrangeDiagram(graphMLPackageNode.getGraphMLNodes(), graphMLPackageEdge.getGraphMLEdges());
         nodesGeometry = diagramArrangement.getNodesGeometry();
     }
 

@@ -27,8 +27,4 @@ public class GraphMLFile {
         graphMLBuffer.append(buffer);
     }
 
-    public void printBuffer(){
-        System.out.println(graphMLBuffer);
-    }
-
 }

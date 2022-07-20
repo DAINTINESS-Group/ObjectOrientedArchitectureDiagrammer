@@ -15,7 +15,6 @@ public class GraphMLExporter {
             graphMLFile.createGraphMLFile(graphMLSavePath);
             generateGraphMLGraph(nodeBuffer, edgeBuffer);
             graphMLFile.closeGraphMLFile();
-            graphMLFile.printBuffer();
         }catch (IOException e){
             e.printStackTrace();
         }

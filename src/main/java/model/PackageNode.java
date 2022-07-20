@@ -15,7 +15,7 @@ public class PackageNode {
 	private final Map<String, PackageNode> subNodes;
 	private final Map<String, LeafNode> leafNodes;
 
-	private final List<Relationship<?>> packageNodeRelationships;
+	private final List<Relationship<PackageNode>> packageNodeRelationships;
 	private boolean isValid;
 	
 	public PackageNode(String path) {
@@ -34,8 +34,8 @@ public class PackageNode {
 		subNodes.put(p.getName(), p);
 	}
 
-	public void addPackageNodeRelationship(Relationship<?> r) {
-		packageNodeRelationships.add(r);
+	public void addPackageNodeRelationship(Relationship<PackageNode> relationship) {
+		packageNodeRelationships.add(relationship);
 	}
 	
 	public void setParentNode(PackageNode p) {
@@ -74,7 +74,7 @@ public class PackageNode {
 		return path.substring(path.lastIndexOf("\\") + 1);
 	}
 
-	public List<Relationship<?>> getPackageNodeRelationships() {
+	public List<Relationship<PackageNode>> getPackageNodeRelationships() {
 		return packageNodeRelationships;
 	}
 }

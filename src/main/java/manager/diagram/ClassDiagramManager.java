@@ -6,15 +6,25 @@ import model.PackageNode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class ClassDiagramManager extends DiagramManager{
 
+    private final GraphMLNode<LeafNode> graphMLNode;
+    private final GraphMLLeafEdge graphMLEdge;
+
     public ClassDiagramManager(Map<String, PackageNode> packageNodes) {
         super(packageNodes);
+        graphMLNode = new GraphMLLeafNode<>();
+        graphMLEdge = new GraphMLLeafEdge();
     }
 
     public void createDiagram(List<String> chosenClassesNames) {
+        graphMLNode.populateGraphMLNodes(getChosenClasses(chosenClassesNames));
+        graphMLEdge.setGraphMLNodes(graphMLNode.getGraphMLNodes());
+        graphMLEdge.populateGraphMLEdges(getChosenClasses(chosenClassesNames));
+    }
+
+    private List<LeafNode> getChosenClasses(List<String> chosenClassesNames) {
         List<LeafNode> chosenClasses = new ArrayList<>();
         for (String chosenClass: chosenClassesNames) {
             for (PackageNode p: packages.values()){
@@ -24,15 +34,12 @@ public class ClassDiagramManager extends DiagramManager{
                 }
             }
         }
-        graphMLNode.populateGraphMLNodes(chosenClasses);
-        graphMLEdge.populateGraphMLEdges(chosenClasses, graphMLNode.getGraphMLNodes());
+        return chosenClasses;
     }
 
     public void arrangeDiagram() {
-        DiagramArrangement diagramArrangement = new ClassDiagramArrangement();
-        diagramArrangement.arrangeDiagram(graphMLNode.getGraphMLNodes().entrySet().stream()
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)),
-                graphMLEdge.getGraphMLEdges().entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
+        DiagramArrangement<LeafNode> diagramArrangement = new ClassDiagramArrangement<>();
+        diagramArrangement.arrangeDiagram(graphMLNode.getGraphMLNodes(), graphMLEdge.getGraphMLEdges());
         nodesGeometry = diagramArrangement.getNodesGeometry();
     }
 

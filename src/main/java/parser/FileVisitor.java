@@ -47,7 +47,7 @@ public class FileVisitor {
 	}
 	
     private void createAST(File file, LeafNode leafNode, Map<String, PackageNode> packageNodes) throws IOException, MalformedTreeException {
-    	System.out.println("File: " + file.getPath());
+    	// System.out.println("File: " + file.getPath());
     	ASTParser parser = ASTParser.newParser(AST.JLS17);
     	this.sourceFile = ReadFileToCharArray(file.getAbsolutePath()).split("\\n");
 	    parser.setSource(ReadFileToCharArray(file.getAbsolutePath()).toCharArray());
@@ -84,8 +84,8 @@ public class FileVisitor {
 	        if (type.getNodeType() == ASTNode.TYPE_DECLARATION) {
 	        	SimpleName typeName = type.getName();
 	        	leafNode.setInheritanceLine(convertInheritanceLine(type));
-	        	System.out.println("Type name: " + typeName); 
-    			System.out.println("   Type modifiers: " + type.modifiers() );
+	        	// System.out.println("Type name: " + typeName);
+    			// System.out.println("   Type modifiers: " + type.modifiers() );
 	            List<BodyDeclaration> bodies = new ArrayList<>();
 	        	for (Object o: type.bodyDeclarations()) {
 	        		bodies.add((BodyDeclaration)(o));
@@ -99,20 +99,22 @@ public class FileVisitor {
 	    	        		fragments.add((VariableDeclarationFragment)(o));
 	    	        	}
 	            		for(VariableDeclarationFragment fragment: fragments) {
-		            		System.out.println(" field name: " + fragment.getName().toString());
+		            		// System.out.println(" field name: " + fragment.getName().toString());
 							fieldName = fragment.getName().toString();
 		            		Map<Object, Object> map = new HashMap<>();
 		            		for (Object ob: fragment.properties().keySet()) {
 		            			map.put(ob, map.get(ob));
 		            		}
+							/*
 		            		if (map != null) {
 		            			for(Object key: map.keySet())
-		            				System.out.println(key + " : " + map.get(key).toString());
+		            				// System.out.println(key + " : " + map.get(key).toString());
 		            		}
+							*/
 		            	}
 	            		leafNode.addField(fieldName , field.getType().toString().replaceAll("<", "[").replaceAll(">", "]"));
-            			System.out.println("   modifiers: " + field.modifiers() );
-            			System.out.println("   type: " + field.getType() );
+            			// System.out.println("   modifiers: " + field.modifiers() );
+            			// System.out.println("   type: " + field.getType() );
 	            	}
 	                if (isMethod(body)) {
 	                    MethodDeclaration method = (MethodDeclaration)body;
@@ -133,9 +135,9 @@ public class FileVisitor {
 	                    
 	                    leafNode.addMethodParametersTypes(parameters);
 	                    leafNode.addMethod(methodName, returnTypeName.replaceAll("<", "[").replaceAll(">", "]"));
-	                    System.out.println(" method: " + methodName + " --> " + returnTypeName );
-	                    System.out.println("   modifiers: " + method.modifiers() );
-	                    System.out.println("   parameters: " + parameters );
+	                    // System.out.println(" method: " + methodName + " --> " + returnTypeName );
+	                    // System.out.println("   modifiers: " + method.modifiers() );
+	                    // System.out.println("   parameters: " + parameters );
 	                }
 	            }
 	        }
