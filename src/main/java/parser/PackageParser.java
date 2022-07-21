@@ -1,6 +1,6 @@
 package parser;
 
-import model.PackageNode;
+import model.tree.PackageNode;
 
 import java.util.Map;
 

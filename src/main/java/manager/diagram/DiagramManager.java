@@ -1,6 +1,6 @@
 package manager.diagram;
 
-import model.PackageNode;
+import model.tree.PackageNode;
 
 import java.util.*;
 import java.util.List;

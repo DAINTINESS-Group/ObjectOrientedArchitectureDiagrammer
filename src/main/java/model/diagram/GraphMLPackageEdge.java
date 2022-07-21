@@ -1,7 +1,7 @@
-package manager.diagram;
+package model.diagram;
 
-import model.Relationship;
-import model.PackageNode;
+import model.tree.Relationship;
+import model.tree.PackageNode;
 
 import java.util.Arrays;
 import java.util.HashMap;

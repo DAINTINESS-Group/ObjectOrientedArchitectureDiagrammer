@@ -1,6 +1,6 @@
-package manager.diagram;
+package model.diagram;
 
-import model.PackageNode;
+import model.tree.PackageNode;
 
 import java.util.Arrays;
 import java.util.List;

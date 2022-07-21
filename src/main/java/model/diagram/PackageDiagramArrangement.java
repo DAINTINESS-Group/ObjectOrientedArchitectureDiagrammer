@@ -1,12 +1,12 @@
-package manager.diagram;
+package model.diagram;
 
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.util.EdgeType;
-import model.Relationship;
+import model.tree.Relationship;
 
 import java.util.Map;
 
-public class PackageDiagramArrangement<T> extends DiagramArrangement<T>{
+public class PackageDiagramArrangement<T> extends DiagramArrangement<T> {
 
     public void populateGraph(Map<T, Integer> graphNodes, Map<Relationship<T>, Integer> graphEdges, Graph<Integer, String> graph) {
         addVertexes(graphNodes, graph);

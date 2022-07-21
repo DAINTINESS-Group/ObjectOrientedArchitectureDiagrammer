@@ -1,10 +1,11 @@
 package manager.diagram;
 
 import com.google.common.base.Preconditions;
-import model.LeafNode;
-import model.LeafNodeType;
-import model.PackageNode;
-import model.Relationship;
+import model.diagram.*;
+import model.tree.LeafNode;
+import model.tree.LeafNodeType;
+import model.tree.PackageNode;
+import model.tree.Relationship;
 import org.junit.jupiter.api.Test;
 import parser.PackageParser;
 import parser.Parser;

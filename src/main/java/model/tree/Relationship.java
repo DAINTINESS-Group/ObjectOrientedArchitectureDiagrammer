@@ -1,4 +1,4 @@
-package model;
+package model.tree;
 
 public class Relationship<T> {
 	private final T startingLeafNode;

@@ -1,4 +1,4 @@
-package manager.diagram;
+package model.diagram;
 
 import java.io.IOException;
 

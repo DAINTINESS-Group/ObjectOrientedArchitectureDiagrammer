@@ -6,9 +6,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import model.LeafNode;
-import model.RelationshipIdentifier;
-import model.PackageNode;
+import model.tree.LeafNode;
+import model.tree.RelationshipIdentifier;
+import model.tree.PackageNode;
 
 
 /* This class is responsible for the parsing of a Java project. While parsing the project

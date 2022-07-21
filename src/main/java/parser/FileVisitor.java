@@ -25,8 +25,8 @@ import org.eclipse.jdt.core.dom.VariableDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.text.edits.MalformedTreeException;
 
-import model.LeafNode;
-import model.PackageNode;
+import model.tree.LeafNode;
+import model.tree.PackageNode;
 
 /* This class is responsible for the creation of the AST Tree of a Java source file.
  * Using the ASTNode API it parses the files methods and field declarations */

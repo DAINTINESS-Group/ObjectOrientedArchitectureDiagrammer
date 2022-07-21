@@ -1,10 +1,10 @@
-package manager.diagram;
+package model.diagram;
 
 import edu.uci.ics.jung.algorithms.layout.AbstractLayout;
 import edu.uci.ics.jung.algorithms.layout.SpringLayout;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.SparseGraph;
-import model.Relationship;
+import model.tree.Relationship;
 
 import java.awt.*;
 import java.util.*;

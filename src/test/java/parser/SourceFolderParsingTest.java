@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.jupiter.api.Test;
-import model.LeafNode;
-import model.PackageNode;
+import model.tree.LeafNode;
+import model.tree.PackageNode;
 
 class SourceFolderParsingTest {
 

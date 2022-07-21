@@ -1,6 +1,7 @@
 package manager.diagram;
 
-import model.PackageNode;
+import model.diagram.*;
+import model.tree.PackageNode;
 
 import java.util.ArrayList;
 import java.util.List;

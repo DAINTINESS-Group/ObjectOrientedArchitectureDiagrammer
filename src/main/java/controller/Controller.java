@@ -1,7 +1,7 @@
 package controller;
 
 import manager.diagram.GraphMLDiagramManager;
-import model.PackageNode;
+import model.tree.PackageNode;
 import parser.PackageParser;
 import parser.Parser;
 

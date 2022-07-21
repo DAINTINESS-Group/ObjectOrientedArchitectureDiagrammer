@@ -8,11 +8,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import model.LeafNodeType;
-import model.RelationshipType;
+import model.tree.LeafNodeType;
+import model.tree.RelationshipType;
 import org.junit.jupiter.api.Test;
-import model.PackageNode;
-import model.LeafNode;
+import model.tree.PackageNode;
+import model.tree.LeafNode;
 
 class TreeStructureArchitectureTest {
 
@@ -50,21 +50,21 @@ class TreeStructureArchitectureTest {
 				&& methodParameterTypes.containsAll(methodParameterTypesTest) 
 				&& methodParameterTypesTest.containsAll(methodParameterTypes));
 		
-		assertEquals("AddLatexCommand", ((LeafNode)addLatexCommand.getLeafNodeRelationships().get(0).getStartingNode()).getName());
-		assertEquals("VersionsManager", ((LeafNode)addLatexCommand.getLeafNodeRelationships().get(0).getEndingNode()).getName());
+		assertEquals("AddLatexCommand", addLatexCommand.getLeafNodeRelationships().get(0).getStartingNode().getName());
+		assertEquals("VersionsManager", addLatexCommand.getLeafNodeRelationships().get(0).getEndingNode().getName());
 		assertEquals(RelationshipType.DEPENDENCY, addLatexCommand.getLeafNodeRelationships().get(0).getRelationshipType());
-		assertEquals("AddLatexCommand", ((LeafNode)addLatexCommand.getLeafNodeRelationships().get(1).getStartingNode()).getName());
-		assertEquals("Command", ((LeafNode)addLatexCommand.getLeafNodeRelationships().get(1).getEndingNode()).getName());
+		assertEquals("AddLatexCommand", addLatexCommand.getLeafNodeRelationships().get(1).getStartingNode().getName());
+		assertEquals("Command", addLatexCommand.getLeafNodeRelationships().get(1).getEndingNode().getName());
 		assertEquals(RelationshipType.IMPLEMENTATION, addLatexCommand.getLeafNodeRelationships().get(1).getRelationshipType());
 		assertEquals(LeafNodeType.CLASS, addLatexCommand.getType());
 
 		LeafNode commandFactoryLeaf = commandPackage.getLeafNodes().get("CommandFactory");
-		assertEquals("CommandFactory", ((LeafNode)commandFactoryLeaf.getLeafNodeRelationships().get(0).getStartingNode()).getName(), "message");
-		assertEquals("VersionsManager", ((LeafNode)commandFactoryLeaf.getLeafNodeRelationships().get(0).getEndingNode()).getName(), "message");
+		assertEquals("CommandFactory", commandFactoryLeaf.getLeafNodeRelationships().get(0).getStartingNode().getName(), "message");
+		assertEquals("VersionsManager", commandFactoryLeaf.getLeafNodeRelationships().get(0).getEndingNode().getName(), "message");
 		assertEquals(RelationshipType.DEPENDENCY, commandFactoryLeaf.getLeafNodeRelationships().get(0).getRelationshipType(), "message");
-		assertEquals("DocumentManager", ((LeafNode)commandFactoryLeaf.getLeafNodeRelationships().get(1).getEndingNode()).getName(), "message");
+		assertEquals("DocumentManager", commandFactoryLeaf.getLeafNodeRelationships().get(1).getEndingNode().getName(), "message");
 		assertEquals(RelationshipType.ASSOCIATION, commandFactoryLeaf.getLeafNodeRelationships().get(1).getRelationshipType(), "message");
-		assertEquals("Command", ((LeafNode)commandFactoryLeaf.getLeafNodeRelationships().get(2).getEndingNode()).getName(), "message");
+		assertEquals("Command", commandFactoryLeaf.getLeafNodeRelationships().get(2).getEndingNode().getName(), "message");
 		assertEquals(RelationshipType.DEPENDENCY, commandFactoryLeaf.getLeafNodeRelationships().get(2).getRelationshipType(), "message");
 	}
 
@@ -77,22 +77,22 @@ class TreeStructureArchitectureTest {
 
 		LeafNode addLatexCommand = commandPackage.getLeafNodes().get("AddLatexCommand");
 
-		assertEquals("AddLatexCommand", ((LeafNode)addLatexCommand.getLeafNodeRelationships().get(0).getStartingNode()).getName());
-		assertEquals("VersionsManager", ((LeafNode)addLatexCommand.getLeafNodeRelationships().get(0).getEndingNode()).getName());
+		assertEquals("AddLatexCommand", addLatexCommand.getLeafNodeRelationships().get(0).getStartingNode().getName());
+		assertEquals("VersionsManager", addLatexCommand.getLeafNodeRelationships().get(0).getEndingNode().getName());
 		assertEquals(RelationshipType.DEPENDENCY, addLatexCommand.getLeafNodeRelationships().get(0).getRelationshipType());
-		assertEquals("AddLatexCommand", ((LeafNode)addLatexCommand.getLeafNodeRelationships().get(1).getStartingNode()).getName());
-		assertEquals("Command", ((LeafNode)addLatexCommand.getLeafNodeRelationships().get(1).getEndingNode()).getName());
+		assertEquals("AddLatexCommand", addLatexCommand.getLeafNodeRelationships().get(1).getStartingNode().getName());
+		assertEquals("Command", addLatexCommand.getLeafNodeRelationships().get(1).getEndingNode().getName());
 		assertEquals(RelationshipType.IMPLEMENTATION, addLatexCommand.getLeafNodeRelationships().get(1).getRelationshipType());
 		assertEquals(LeafNodeType.CLASS, addLatexCommand.getType());
 
 		LeafNode commandFactory = commandPackage.getLeafNodes().get("CommandFactory");
 
-		assertEquals("CommandFactory", ((LeafNode)commandFactory.getLeafNodeRelationships().get(0).getStartingNode()).getName(), "message");
-		assertEquals("VersionsManager", ((LeafNode)commandFactory.getLeafNodeRelationships().get(0).getEndingNode()).getName(), "message");
+		assertEquals("CommandFactory", commandFactory.getLeafNodeRelationships().get(0).getStartingNode().getName(), "message");
+		assertEquals("VersionsManager", commandFactory.getLeafNodeRelationships().get(0).getEndingNode().getName(), "message");
 		assertEquals(RelationshipType.DEPENDENCY, commandFactory.getLeafNodeRelationships().get(0).getRelationshipType(), "message");
-		assertEquals("DocumentManager", ((LeafNode)commandFactory.getLeafNodeRelationships().get(1).getEndingNode()).getName(), "message");
+		assertEquals("DocumentManager", commandFactory.getLeafNodeRelationships().get(1).getEndingNode().getName(), "message");
 		assertEquals(RelationshipType.ASSOCIATION, commandFactory.getLeafNodeRelationships().get(1).getRelationshipType(), "message");
-		assertEquals("Command", ((LeafNode)commandFactory.getLeafNodeRelationships().get(2).getEndingNode()).getName(), "message");
+		assertEquals("Command", commandFactory.getLeafNodeRelationships().get(2).getEndingNode().getName(), "message");
 		assertEquals(RelationshipType.DEPENDENCY, commandFactory.getLeafNodeRelationships().get(2).getRelationshipType(), "message");
 	}
 
@@ -103,16 +103,16 @@ class TreeStructureArchitectureTest {
 		Map<String, PackageNode> packages = parser.getPackageNodes();
 		PackageNode sourcePackage = packages.get("src");
 		LeafNode implementingClassLeaf = sourcePackage.getLeafNodes().get("ImplementingClass");
-		assertEquals("ImplementingClass", ((LeafNode)implementingClassLeaf.getLeafNodeRelationships().get(0).getStartingNode()).getName());
-		assertEquals("TestingInterface2", ((LeafNode)implementingClassLeaf.getLeafNodeRelationships().get(0).getEndingNode()).getName());
+		assertEquals("ImplementingClass", implementingClassLeaf.getLeafNodeRelationships().get(0).getStartingNode().getName());
+		assertEquals("TestingInterface2", implementingClassLeaf.getLeafNodeRelationships().get(0).getEndingNode().getName());
 		assertEquals(RelationshipType.IMPLEMENTATION, implementingClassLeaf.getLeafNodeRelationships().get(0).getRelationshipType());
 
-		assertEquals("ImplementingClass", ((LeafNode)implementingClassLeaf.getLeafNodeRelationships().get(1).getStartingNode()).getName());
-		assertEquals("ExtensionClass", ((LeafNode)implementingClassLeaf.getLeafNodeRelationships().get(1).getEndingNode()).getName());
+		assertEquals("ImplementingClass", implementingClassLeaf.getLeafNodeRelationships().get(1).getStartingNode().getName());
+		assertEquals("ExtensionClass", implementingClassLeaf.getLeafNodeRelationships().get(1).getEndingNode().getName());
 		assertEquals(RelationshipType.EXTENSION, implementingClassLeaf.getLeafNodeRelationships().get(1).getRelationshipType());
 
-		assertEquals("ImplementingClass", ((LeafNode)implementingClassLeaf.getLeafNodeRelationships().get(2).getStartingNode()).getName());
-		assertEquals("TestingInterface", ((LeafNode)implementingClassLeaf.getLeafNodeRelationships().get(2).getEndingNode()).getName());
+		assertEquals("ImplementingClass", implementingClassLeaf.getLeafNodeRelationships().get(2).getStartingNode().getName());
+		assertEquals("TestingInterface", implementingClassLeaf.getLeafNodeRelationships().get(2).getEndingNode().getName());
 		assertEquals(RelationshipType.IMPLEMENTATION, implementingClassLeaf.getLeafNodeRelationships().get(2).getRelationshipType());
 	}
 
@@ -123,14 +123,14 @@ class TreeStructureArchitectureTest {
 		Map<String, PackageNode> packages = parser.getPackageNodes();
 		PackageNode commands = packages.get("commands");
 
-		assertEquals("commands", ((PackageNode)commands.getPackageNodeRelationships().get(0).getStartingNode()).getName());
-		assertEquals("model", ((PackageNode)commands.getPackageNodeRelationships().get(0).getEndingNode()).getName());
+		assertEquals("commands", commands.getPackageNodeRelationships().get(0).getStartingNode().getName());
+		assertEquals("model", commands.getPackageNodeRelationships().get(0).getEndingNode().getName());
 		assertEquals(RelationshipType.DEPENDENCY, commands.getPackageNodeRelationships().get(0).getRelationshipType());
 
 		PackageNode controller = packages.get("controller");
 
-		assertEquals("controller", ((PackageNode)controller.getPackageNodeRelationships().get(0).getStartingNode()).getName());
-		assertEquals("model", ((PackageNode)controller.getPackageNodeRelationships().get(0).getEndingNode()).getName());
+		assertEquals("controller", controller.getPackageNodeRelationships().get(0).getStartingNode().getName());
+		assertEquals("model", controller.getPackageNodeRelationships().get(0).getEndingNode().getName());
 		assertEquals(RelationshipType.DEPENDENCY, controller.getPackageNodeRelationships().get(0).getRelationshipType());
 	}
 
