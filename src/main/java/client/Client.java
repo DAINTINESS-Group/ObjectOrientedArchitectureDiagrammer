@@ -4,6 +4,8 @@ import controller.DiagramController;
 import controller.DiagramControllerFactory;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 public class Client {
 
@@ -24,8 +26,6 @@ public class Client {
 		packageDiagramController.convertTreeToDiagram(Arrays.asList("controller", "model", "view", "commands", "strategies"));
 		packageDiagramController.arrangeDiagram();
 		packageDiagramController.exportDiagramToGraphML(args[2]);
-
-
 	}
 
 }

@@ -1,6 +1,9 @@
 package manager.diagram;
 
+import model.diagram.GraphLayoutPair;
+
 import java.util.List;
+import java.util.Map;
 
 public interface GraphMLDiagramManager {
 
@@ -10,4 +13,5 @@ public interface GraphMLDiagramManager {
 
     void exportDiagramToGraphML(String graphMLSavePath);
 
+    Map<String, Map<String, String>> getGraph();
 }

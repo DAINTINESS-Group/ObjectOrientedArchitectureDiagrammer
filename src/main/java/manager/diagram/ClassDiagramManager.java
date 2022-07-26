@@ -3,25 +3,27 @@ package manager.diagram;
 import model.diagram.*;
 import model.tree.LeafNode;
 import model.tree.PackageNode;
+import model.tree.Relationship;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class ClassDiagramManager extends DiagramManager{
 
-    private final GraphMLNode<LeafNode> graphMLNode;
+    private final GraphMLNode<LeafNode> graphMLLeafNode;
     private final GraphMLLeafEdge graphMLEdge;
 
     public ClassDiagramManager(Map<String, PackageNode> packageNodes) {
         super(packageNodes);
-        graphMLNode = new GraphMLLeafNode<>();
+        graphMLLeafNode = new GraphMLLeafNode<>();
         graphMLEdge = new GraphMLLeafEdge();
     }
 
     public void createDiagram(List<String> chosenClassesNames) {
-        graphMLNode.populateGraphMLNodes(getChosenClasses(chosenClassesNames));
-        graphMLEdge.setGraphMLNodes(graphMLNode.getGraphMLNodes());
+        graphMLLeafNode.populateGraphMLNodes(getChosenClasses(chosenClassesNames));
+        graphMLEdge.setGraphMLNodes(graphMLLeafNode.getGraphMLNodes());
         graphMLEdge.populateGraphMLEdges(getChosenClasses(chosenClassesNames));
     }
 
@@ -40,14 +42,28 @@ public class ClassDiagramManager extends DiagramManager{
 
     public void arrangeDiagram() {
         DiagramArrangement<LeafNode> diagramArrangement = new ClassDiagramArrangement<>();
-        diagramArrangement.arrangeDiagram(graphMLNode.getGraphMLNodes(), graphMLEdge.getGraphMLEdges());
+        diagramArrangement.arrangeDiagram(graphMLLeafNode.getGraphMLNodes(), graphMLEdge.getGraphMLEdges());
         nodesGeometry = diagramArrangement.getNodesGeometry();
     }
 
     public void exportDiagramToGraphML(String graphMLSavePath) {
-        graphMLNode.convertNodesToGraphML(nodesGeometry);
+        graphMLLeafNode.convertNodesToGraphML(nodesGeometry);
         graphMLEdge.convertEdgesToGraphML();
         GraphMLExporter graphMLExporter = new GraphMLExporter();
-        graphMLExporter.exportDiagramToGraphML(graphMLSavePath, graphMLNode.getGraphMLBuffer(), graphMLEdge.getGraphMLBuffer());
+        graphMLExporter.exportDiagramToGraphML(graphMLSavePath, graphMLLeafNode.getGraphMLBuffer(), graphMLEdge.getGraphMLBuffer());
+    }
+
+    public Map<String, Map<String, String>> getGraph() {
+        Map<String, Map<String, String>> graph = new HashMap<>();
+        for (LeafNode leafNode: graphMLLeafNode.getGraphMLNodes().keySet()) {
+            Map<String, String> edgesTemp = new HashMap<>();
+            for (Relationship<LeafNode> relationship: graphMLEdge.getGraphMLEdges().keySet()){
+                if (relationship.getStartingNode().equals(leafNode)) {
+                    edgesTemp.put(relationship.getEndingNode().getName(), relationship.getRelationshipType().name());
+                }
+            }
+            graph.put(leafNode.getName(), edgesTemp);
+        }
+        return graph;
     }
 }

@@ -1,6 +1,9 @@
 package controller;
 
+import model.diagram.GraphLayoutPair;
+
 import java.util.List;
+import java.util.Map;
 
 public interface DiagramController {
 
@@ -11,4 +14,6 @@ public interface DiagramController {
     void arrangeDiagram();
 
     void exportDiagramToGraphML(String graphMLSavePath);
+
+    Map<String, Map<String, String>> getDiagram();
 }

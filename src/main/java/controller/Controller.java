@@ -1,6 +1,7 @@
 package controller;
 
 import manager.diagram.GraphMLDiagramManager;
+import model.diagram.GraphLayoutPair;
 import model.tree.PackageNode;
 import parser.PackageParser;
 import parser.Parser;
@@ -29,5 +30,9 @@ public abstract class Controller implements DiagramController {
 	}
 
 	public abstract void convertTreeToDiagram(List<String> chosenPackagesNames);
+
+	public Map<String, Map<String, String>> getDiagram() {
+		return diagramManager.getGraph();
+	}
 
 }
