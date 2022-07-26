@@ -20,14 +20,14 @@ public class DiagramVisualization {
         this.menuBar = menuBar;
     }
 
-    public void createDiagramVisualization(Map<String, Map<String, String>> graph) throws IOException {
+    public void createDiagramVisualization(Map<String, Map<String, String>> graph, String diagramType) throws IOException {
         URL url = getClass().getResource("/fxml/DiagramVisualizationView.fxml");
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(url);
         Parent diagramVisualizationParent = loader.load();
 
         DiagramVisualizationController diagramVisualizationController = loader.getController();
-        diagramVisualizationController.visualizeGraph(graph);
+        diagramVisualizationController.visualizeGraph(graph, diagramType);
 
         Scene diagramVisualizationScene = new Scene(diagramVisualizationParent);
         Stage window = (Stage) menuBar.getScene().getWindow();

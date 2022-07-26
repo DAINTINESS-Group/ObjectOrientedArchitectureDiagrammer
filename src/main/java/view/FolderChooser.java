@@ -17,7 +17,8 @@ public class FolderChooser {
     public FolderChooser(String title, MenuBar menuBar) {
         this.menuBar = menuBar;
         DirectoryChooser directoryChooser = new DirectoryChooser();
-        directoryChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        directoryChooser.setInitialDirectory(new File("C:\\Users\\user\\IntelliJProjects\\UMLDiagramTool\\src\\test\\resources\\LatexEditor"));
+        //directoryChooser.setInitialDirectory(new File(System.getProperty("user.home")));
         directoryChooser.setTitle(title);
         Stage window = (Stage) menuBar.getScene().getWindow();
         this.selectedDirectory = directoryChooser.showDialog(window);

@@ -13,7 +13,7 @@ public class DiagramCreation {
     @FXML
     MenuBar menuBar;
 
-    private ProjectTreeView projectTreeView;
+    private final ProjectTreeView projectTreeView;
 
     public DiagramCreation(MenuBar menuBar, ProjectTreeView projectTreeView) {
         this.menuBar = menuBar;
@@ -35,7 +35,7 @@ public class DiagramCreation {
         }else {
             try {
                 DiagramVisualization diagramVisualization = new DiagramVisualization(menuBar);
-                diagramVisualization.createDiagramVisualization(diagramController.getDiagram());
+                diagramVisualization.createDiagramVisualization(diagramController.getDiagram(), diagramType);
             } catch (IOException e) {
                 e.printStackTrace();
             }

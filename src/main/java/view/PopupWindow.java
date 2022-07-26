@@ -15,7 +15,7 @@ public class PopupWindow {
 
     @FXML
     MenuBar menuBar;
-    private ProjectTreeView projectTreeView;
+    private final ProjectTreeView projectTreeView;
 
     public PopupWindow(MenuBar menuBar, ProjectTreeView projectTreeView) {
         this.menuBar = menuBar;
@@ -61,9 +61,7 @@ public class PopupWindow {
         Label label1= new Label("No files were chosen");
 
         Button closeButton = new Button("Close");
-        closeButton.setOnAction(e -> {
-            popupWindow.close();
-        });
+        closeButton.setOnAction(e -> popupWindow.close());
         VBox layout= new VBox(10);
         layout.getChildren().addAll(label1, closeButton);
         layout.setAlignment(Pos.CENTER);

@@ -16,19 +16,6 @@ public class DiagramCreationController {
 
     private ProjectTreeView projectTreeView;
 
-
-    public void newProject() {
-        MenuUtility.newProject(menuBar);
-    }
-
-    public void closeProject() {
-        MenuUtility.closeProject(menuBar);
-    }
-
-    public void quitApp() {
-        MenuUtility.quitApp(menuBar);
-    }
-
     public void chooseDiagramVisualization(ActionEvent event) {
         projectTreeView.findCheckedItems(projectTreeView.getRootItem());
         PopupWindow popupWindow = new PopupWindow(menuBar, projectTreeView);
@@ -47,6 +34,18 @@ public class DiagramCreationController {
     public void createTreeView(String sourceFolderPath){
         projectTreeView = new ProjectTreeView(treeView, sourceFolderPath);
         projectTreeView.createTreeView();
+    }
+
+    public void newProject() {
+        MenuUtility.newProject(menuBar);
+    }
+
+    public void closeProject() {
+        MenuUtility.closeProject(menuBar);
+    }
+
+    public void quitApp() {
+        MenuUtility.quitApp(menuBar);
     }
 
 }

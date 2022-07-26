@@ -59,10 +59,11 @@ public class ClassDiagramManager extends DiagramManager{
             Map<String, String> edgesTemp = new HashMap<>();
             for (Relationship<LeafNode> relationship: graphMLEdge.getGraphMLEdges().keySet()){
                 if (relationship.getStartingNode().equals(leafNode)) {
-                    edgesTemp.put(relationship.getEndingNode().getName(), relationship.getRelationshipType().name());
+                    edgesTemp.put(relationship.getEndingNode().getName() + "_" + relationship.getEndingNode().getType().name(),
+                            relationship.getRelationshipType().name());
                 }
             }
-            graph.put(leafNode.getName(), edgesTemp);
+            graph.put(leafNode.getName() + "_" + leafNode.getType().name(), edgesTemp);
         }
         return graph;
     }

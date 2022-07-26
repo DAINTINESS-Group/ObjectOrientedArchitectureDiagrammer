@@ -8,11 +8,24 @@ STYLESHEET FOR JAVAFXGRAPH VISUALIZATION
 
 .vertex {
     -fx-stroke-width: 3;
-    -fx-stroke: #61B5F1;
+    -fx-stroke: #000000;
+    -fx-stroke-type: inside; /* you should keep this if using arrows */
+    -fx-fill: #FF9900;
+}
+
+.vertexPackage {
+    -fx-stroke-width: 3;
+    -fx-stroke: #000000;
+    -fx-stroke-type: inside; /* you should keep this if using arrows */
+    -fx-fill: #FF9900;
+}
+
+.vertexInterface {
+    -fx-stroke-width: 3;
+    -fx-stroke: #000000;
     -fx-stroke-type: inside; /* you should keep this if using arrows */
     -fx-fill: #B1DFF7;
 }
-
 .vertex-label {
     -fx-font: bold 8pt "sans-serif";
 }
