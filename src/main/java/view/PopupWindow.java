@@ -1,15 +1,27 @@
 package view;
 
+import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuBar;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+
 public class PopupWindow {
-/*
+
+    @FXML
+    MenuBar menuBar;
+    private ProjectTreeView projectTreeView;
+
+    public PopupWindow(MenuBar menuBar, ProjectTreeView projectTreeView) {
+        this.menuBar = menuBar;
+        this.projectTreeView = projectTreeView;
+    }
+
     public void createPopupWindow(String buttonsText) {
         Stage popupWindow = new Stage();
         popupWindow.initModality(Modality.APPLICATION_MODAL);
@@ -36,8 +48,11 @@ public class PopupWindow {
         popupWindow.setScene(scene1);
         popupWindow.showAndWait();
     }
-    
- */
+
+    private void chooseFiles(String fileType, String visualizationType) {
+        DiagramCreation diagramCreation = new DiagramCreation(menuBar, projectTreeView);
+        diagramCreation.createDiagram(visualizationType, fileType.split(" ")[0]);
+    }
 
     public void createPopupErrorWindow() {
         Stage popupWindow = new Stage();

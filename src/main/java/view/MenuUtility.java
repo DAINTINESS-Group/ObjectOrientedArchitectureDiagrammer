@@ -14,7 +14,7 @@ public class MenuUtility {
         throw new java.lang.UnsupportedOperationException("Not to be instantiated");
     }
 
-    public static void loadProject(MenuBar menuBar){
+    public static void newProject(MenuBar menuBar){
         FolderChooser folderChooser = new FolderChooser("Load Project Source Folder", menuBar);
         if (folderChooser.getSelectedDirectory() != null) {
             try {

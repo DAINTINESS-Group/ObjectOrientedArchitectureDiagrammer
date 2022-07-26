@@ -1,7 +1,6 @@
 package view;
 
 import com.brunomnsilva.smartgraph.containers.ContentZoomPane;
-import com.brunomnsilva.smartgraph.containers.SmartGraphDemoContainer;
 import com.brunomnsilva.smartgraph.graph.Digraph;
 import com.brunomnsilva.smartgraph.graph.Graph;
 import com.brunomnsilva.smartgraph.graph.DigraphEdgeList;
@@ -9,12 +8,9 @@ import com.brunomnsilva.smartgraph.graphview.SmartCircularSortedPlacementStrateg
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import com.brunomnsilva.smartgraph.graphview.SmartPlacementStrategy;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.MenuBar;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.control.ScrollPane;
 
 import java.util.Map;
 
@@ -91,8 +87,8 @@ public class DiagramVisualizationController {
         return graphView;
     }
 
-    public void loadProject() {
-        MenuUtility.loadProject(menuBar);
+    public void newProject() {
+        MenuUtility.newProject(menuBar);
     }
 
     public void closeProject() {
