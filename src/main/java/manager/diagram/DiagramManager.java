@@ -1,8 +1,5 @@
 package manager.diagram;
 
-import edu.uci.ics.jung.algorithms.layout.AbstractLayout;
-import edu.uci.ics.jung.graph.Graph;
-import model.diagram.GraphLayoutPair;
 import model.tree.PackageNode;
 
 import java.util.*;

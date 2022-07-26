@@ -1,7 +1,5 @@
 package manager.diagram;
 
-import model.diagram.GraphLayoutPair;
-
 import java.util.List;
 import java.util.Map;
 
