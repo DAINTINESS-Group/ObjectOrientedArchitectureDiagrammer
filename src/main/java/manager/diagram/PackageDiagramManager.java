@@ -1,5 +1,6 @@
 package manager.diagram;
 
+import model.diagram.*;
 import model.tree.Node;
 import model.tree.PackageNode;
 import model.tree.Relationship;
@@ -13,6 +14,8 @@ public class PackageDiagramManager extends DiagramManager{
 
     public PackageDiagramManager(Map<String, PackageNode> packageNodes) {
         super(packageNodes);
+        graphNode = new GraphMLPackageNode();
+        graphEdge = new GraphMLPackageEdge();
     }
 
     public List<Node> getChosenNodes(List<String> chosenPackagesNames) {
