@@ -1,18 +1,19 @@
 package model.diagram;
 
 import model.tree.LeafNode;
-import model.tree.LeafNodeType;
+import model.tree.Node;
+import model.tree.NodeType;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public class GraphMLLeafNode<T> extends GraphMLNode<T> {
+public class GraphMLLeafNode extends GraphNode {
 
     private static final String CLASS_COLOR = "#FF9900";
     private static final String INTERFACE_COLOR = "#3366FF";
 
-    public void convertNode(T leafNode, int nodeId, List<Double> nodeGeometry) {
+    public void convertNode(Node leafNode, int nodeId, List<Double> nodeGeometry) {
         graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLNodesSyntax(getNodesDescription((LeafNode) leafNode, nodeId, nodeGeometry)));
     }
 
@@ -44,7 +45,7 @@ public class GraphMLLeafNode<T> extends GraphMLNode<T> {
     }
 
     private String getNodesColor(LeafNode leafNode) {
-        if (leafNode.getType().equals(LeafNodeType.INTERFACE)) {
+        if (leafNode.getType().equals(NodeType.INTERFACE)) {
             return INTERFACE_COLOR;
         }
         return CLASS_COLOR;

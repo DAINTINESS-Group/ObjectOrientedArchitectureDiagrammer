@@ -66,7 +66,7 @@ class SourceFolderParsingTest {
 		assertEquals("src\\test\\resources\\LatexEditor\\src\\controller\\commands", subNodes.get("commands").getNodesPath());
 		
 		for (LeafNode l: controllerPackage.getLeafNodes().values()) {
-			testingLeafNodes.add(l.getPath());
+			testingLeafNodes.add(l.getNodesPath());
 			assertEquals(l.getParentNode().getNodesPath(), "src\\test\\resources\\LatexEditor\\src\\controller");
 		}
 		Collections.sort(testingLeafNodes);
@@ -83,7 +83,7 @@ class SourceFolderParsingTest {
 		subNodes = commandsPackage.getSubNodes();
 		assertEquals(0, subNodes.size());
 		for (LeafNode l: commandsPackage.getLeafNodes().values()) {
-			testingLeafNodes.add(l.getPath());
+			testingLeafNodes.add(l.getNodesPath());
 			assertEquals(l.getParentNode().getNodesPath(), "src\\test\\resources\\LatexEditor\\src\\controller\\commands");
 		}
 		Collections.sort(testingLeafNodes);
@@ -101,7 +101,7 @@ class SourceFolderParsingTest {
 		assertEquals("src\\test\\resources\\LatexEditor\\src\\model\\strategies", subNodes.get("strategies").getNodesPath());
 		for (LeafNode l: modelPackage.getLeafNodes().values()) {
 			assertEquals(l.getParentNode().getNodesPath(), "src\\test\\resources\\LatexEditor\\src\\model");
-			testingLeafNodes.add(l.getPath());
+			testingLeafNodes.add(l.getNodesPath());
 		}
 		Collections.sort(testingLeafNodes);
 		Collections.sort(modelsLeafNodes);
@@ -118,7 +118,7 @@ class SourceFolderParsingTest {
 		assertEquals(0, subNodes.size());
 		for (LeafNode l: strategiesPackage.getLeafNodes().values()) {
 			assertEquals(l.getParentNode().getNodesPath(), "src\\test\\resources\\LatexEditor\\src\\model\\strategies");
-			testingLeafNodes.add(l.getPath());
+			testingLeafNodes.add(l.getNodesPath());
 		}
 		Collections.sort(testingLeafNodes);
 		Collections.sort(strategiesLeafNodes);
@@ -135,7 +135,7 @@ class SourceFolderParsingTest {
 		assertEquals(0, subNodes.size());
 		for (LeafNode l: viewPackage.getLeafNodes().values()) {
 			assertEquals(l.getParentNode().getNodesPath(), "src\\test\\resources\\LatexEditor\\src\\view");
-			testingLeafNodes.add(l.getPath());
+			testingLeafNodes.add(l.getNodesPath());
 		}
 		Collections.sort(testingLeafNodes);
 		Collections.sort(viewsLeafNodes);

@@ -139,21 +139,21 @@ public class RelationshipIdentifier {
 	}
 	
 	private void createRelationship(int i, int j, RelationshipType relationshipType) {
-		allLeafNodes.get(i).addLeafBranch(new Relationship<>(allLeafNodes.get(i), allLeafNodes.get(j), relationshipType));
+		allLeafNodes.get(i).addNodeRelationship(new Relationship(allLeafNodes.get(i), allLeafNodes.get(j), relationshipType));
 
-		for (Relationship<?> r: allLeafNodes.get(i).getParentNode().getPackageNodeRelationships()) {
+		for (Relationship r: allLeafNodes.get(i).getParentNode().getNodeRelationships()) {
 			if (doesPackageRelationshipAlreadyExist(j, r)) {
 				return;
 			}
 		}
 		if (!isRelationshipBetweenTheSamePackages(i, j)) {
-			allLeafNodes.get(i).getParentNode().addPackageNodeRelationship(new Relationship<>(allLeafNodes.get(i).getParentNode(),
+			allLeafNodes.get(i).getParentNode().addNodeRelationship(new Relationship(allLeafNodes.get(i).getParentNode(),
 					allLeafNodes.get(j).getParentNode(), RelationshipType.DEPENDENCY));
 		}
 
 	}
 
-	private boolean doesPackageRelationshipAlreadyExist(int j, Relationship<?> r) {
+	private boolean doesPackageRelationshipAlreadyExist(int j, Relationship r) {
 		return r.getEndingNode().equals(allLeafNodes.get(j).getParentNode());
 	}
 

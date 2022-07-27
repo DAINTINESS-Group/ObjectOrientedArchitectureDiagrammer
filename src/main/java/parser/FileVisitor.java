@@ -80,6 +80,9 @@ public class FileVisitor {
     	for (Object o: unit.types()) {
     		types.add((AbstractTypeDeclaration)(o));
     	}
+		if (types.isEmpty()) {
+			leafNode.setInheritanceLine(new String[]{"enum"});
+		}
 	    for (AbstractTypeDeclaration type : types) {
 	        if (type.getNodeType() == ASTNode.TYPE_DECLARATION) {
 	        	SimpleName typeName = type.getName();

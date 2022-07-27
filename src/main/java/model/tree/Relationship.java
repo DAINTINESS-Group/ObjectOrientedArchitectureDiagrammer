@@ -1,11 +1,11 @@
 package model.tree;
 
-public class Relationship<T> {
-	private final T startingLeafNode;
-	private final T endingLeafNode;
+public class Relationship {
+	private final Node startingLeafNode;
+	private final Node endingLeafNode;
 	private final RelationshipType relationshipType;
 	
-	public Relationship(T startingLeafNode, T endingLeafNode, RelationshipType relationshipType) {
+	public Relationship(Node startingLeafNode, Node endingLeafNode, RelationshipType relationshipType) {
 		this.startingLeafNode = startingLeafNode;
 		this.endingLeafNode = endingLeafNode;
 		this.relationshipType = relationshipType;
@@ -15,11 +15,11 @@ public class Relationship<T> {
 		return relationshipType;
 	}
 	
-	public T getEndingNode() {
+	public Node getEndingNode() {
 		return endingLeafNode;
 	}
 	
-	public T getStartingNode() {
+	public Node getStartingNode() {
 		return startingLeafNode;
 	}
 }

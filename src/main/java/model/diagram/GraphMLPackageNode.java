@@ -1,13 +1,14 @@
 package model.diagram;
 
+import model.tree.Node;
 import model.tree.PackageNode;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class GraphMLPackageNode<T> extends GraphMLNode<T> {
+public class GraphMLPackageNode extends GraphNode {
 
-    public void convertNode(T packageNode, int nodeId, List<Double> nodeGeometry) {
+    public void convertNode(Node packageNode, int nodeId, List<Double> nodeGeometry) {
         graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLPackageNodesSyntax(getNodesDescription((PackageNode)packageNode,
                 nodeId, nodeGeometry)));
     }
