@@ -1,17 +1,37 @@
 package controller;
 
+import manager.diagram.DiagramManager;
+import model.tree.PackageNode;
+import parser.Parser;
+import parser.ProjectParser;
+
 import java.util.List;
 import java.util.Map;
 
-public interface DiagramController {
+public abstract class DiagramController implements Controller {
 
-    void createTree(String sourcePackagePath);
+	protected Map<String, PackageNode> packageNodes;
 
-    void convertTreeToDiagram(List<String> chosenPackagesNames);
+	protected DiagramManager diagramManager;
 
-    void arrangeDiagram();
+	public void createTree(String sourcePackagePath) {
+		Parser packageParser = new ProjectParser();
+		packageParser.parseSourcePackage(sourcePackagePath);
+		this.packageNodes = packageParser.getPackageNodes();
+	}
 
-    void exportDiagramToGraphML(String graphMLSavePath);
+	public void arrangeDiagram(){
+		diagramManager.arrangeDiagram();
+	}
 
-    Map<String, Map<String, String>> getDiagram();
+	public void exportDiagramToGraphML(String graphMLSavePath) {
+		diagramManager.exportDiagramToGraphML(graphMLSavePath);
+	}
+
+	public abstract void convertTreeToDiagram(List<String> chosenPackagesNames);
+
+	public Map<String, Map<String, String>> getDiagram() {
+		return diagramManager.getGraph();
+	}
+
 }

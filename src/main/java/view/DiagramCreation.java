@@ -1,6 +1,6 @@
 package view;
 
-import controller.DiagramController;
+import controller.Controller;
 import controller.DiagramControllerFactory;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuBar;
@@ -22,7 +22,7 @@ public class DiagramCreation {
 
     public void createDiagram(String visualizationType, String diagramType){
         DiagramControllerFactory diagramControllerFactory = new DiagramControllerFactory();
-        DiagramController diagramController = diagramControllerFactory.getController(diagramType);
+        Controller diagramController = diagramControllerFactory.getController(diagramType);
         diagramController.createTree(projectTreeView.getSourceFolderPath());
         diagramController.convertTreeToDiagram(getSelectedFiles(diagramType));
         diagramController.arrangeDiagram();

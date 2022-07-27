@@ -18,7 +18,7 @@ class TreeStructureArchitectureTest {
 
 	@Test
 	void getFieldAndMethodTypesTest() {
-		PackageParser parser = new Parser();
+		Parser parser = new ProjectParser();
 		parser.parseSourcePackage("src\\test\\resources\\LatexEditor\\src");
 		Map<String, PackageNode> packages = parser.getPackageNodes();
 		List<String> methodReturnTypes = new ArrayList<>(Arrays.asList("Constructor", "void"));
@@ -70,7 +70,7 @@ class TreeStructureArchitectureTest {
 
 	@Test
 	void leafNodeRelationshipsTest() {
-		PackageParser parser = new Parser();
+		Parser parser = new ProjectParser();
 		parser.parseSourcePackage("src\\test\\resources\\LatexEditor\\src");
 		Map<String, PackageNode> packages = parser.getPackageNodes();
 		PackageNode commandPackage = packages.get("commands");
@@ -98,7 +98,7 @@ class TreeStructureArchitectureTest {
 
 	@Test
 	void leadNodeInheritanceRelationshipTest(){
-		PackageParser parser = new Parser();
+		Parser parser = new ProjectParser();
 		parser.parseSourcePackage("src\\test\\resources\\InheritanceTesting\\src");
 		Map<String, PackageNode> packages = parser.getPackageNodes();
 		PackageNode sourcePackage = packages.get("src");
@@ -118,7 +118,7 @@ class TreeStructureArchitectureTest {
 
 	@Test
 	void packageNodeRelationshipsTest(){
-		PackageParser parser = new Parser();
+		Parser parser = new ProjectParser();
 		parser.parseSourcePackage("src\\test\\resources\\LatexEditor\\src");
 		Map<String, PackageNode> packages = parser.getPackageNodes();
 		PackageNode commands = packages.get("commands");
@@ -136,7 +136,7 @@ class TreeStructureArchitectureTest {
 
 	@Test
 	void leafNodeTypesTest(){
-		PackageParser parser = new Parser();
+		Parser parser = new ProjectParser();
 		parser.parseSourcePackage("src\\test\\resources\\InheritanceTesting\\src");
 		Map<String, PackageNode> packages = parser.getPackageNodes();
 		PackageNode sourcePackage = packages.get("src");

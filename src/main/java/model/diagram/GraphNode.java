@@ -21,7 +21,7 @@ public abstract class GraphNode {
         nodeId = 0;
     }
 
-    public void populateGraphMLNodes(List<Node> nodes){
+    public void populateGraphNodes(List<Node> nodes){
         for (Node node: nodes) {
             graphNodes.put(node, nodeId);
             nodeId++;

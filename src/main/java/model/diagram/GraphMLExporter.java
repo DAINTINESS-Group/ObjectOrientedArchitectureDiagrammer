@@ -1,5 +1,6 @@
 package model.diagram;
 
+import java.io.File;
 import java.io.IOException;
 
 public class GraphMLExporter {
@@ -23,5 +24,9 @@ public class GraphMLExporter {
     private void generateGraphMLGraph(String nodeBuffer, String edgeBuffer){
         graphMLFile.writeToBuffer(nodeBuffer);
         graphMLFile.writeToBuffer(edgeBuffer);
+    }
+
+    public File getExportedGraphMLFile(){
+        return graphMLFile.getGraphMLFile();
     }
 }

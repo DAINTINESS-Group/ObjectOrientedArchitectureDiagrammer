@@ -20,7 +20,7 @@ public abstract class GraphEdge {
         edgeId = 0;
     }
 
-    public void populateGraphMLEdges(List<Node> nodes) {
+    public void populateGraphEdges(List<Node> nodes) {
         for (Node node: nodes) {
             generateEdge(node);
         }

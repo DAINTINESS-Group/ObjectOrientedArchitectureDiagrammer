@@ -10,9 +10,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PackageDiagramManager extends DiagramManager{
+public class GraphPackageDiagramManager extends GraphDiagramManager {
 
-    public PackageDiagramManager(Map<String, PackageNode> packageNodes) {
+    public GraphPackageDiagramManager(Map<String, PackageNode> packageNodes) {
         super(packageNodes);
         graphNode = new GraphMLPackageNode();
         graphEdge = new GraphMLPackageEdge();

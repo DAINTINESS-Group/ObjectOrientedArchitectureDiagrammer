@@ -8,9 +8,10 @@ public class GraphMLFile {
 
     private FileWriter graphMLWriter;
     private StringBuilder graphMLBuffer;
+    private File graphMLFile;
 
     public void createGraphMLFile(String graphMLSavePath) throws IOException {
-        new File(String.format("%s\\diagram.graphml", graphMLSavePath));
+        graphMLFile = new File(String.format("%s\\diagram.graphml", graphMLSavePath));
         graphMLWriter = new FileWriter(String.format("%s\\diagram.graphml", graphMLSavePath));
         graphMLBuffer = new StringBuilder();
         graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLPrefix());
@@ -25,6 +26,10 @@ public class GraphMLFile {
 
     public void writeToBuffer(String buffer) {
         graphMLBuffer.append(buffer);
+    }
+
+    public File getGraphMLFile() {
+        return graphMLFile;
     }
 
 }

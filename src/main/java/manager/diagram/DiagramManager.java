@@ -1,46 +1,29 @@
 package manager.diagram;
 
-import model.diagram.DiagramArrangement;
 import model.diagram.GraphEdge;
-import model.diagram.GraphMLExporter;
+import model.diagram.GraphEdgePair;
 import model.diagram.GraphNode;
-import model.tree.Node;
-import model.tree.PackageNode;
 
-import java.util.*;
+import java.io.File;
 import java.util.List;
+import java.util.Map;
 
-public abstract class DiagramManager implements GraphMLDiagramManager {
+public interface DiagramManager {
 
-    protected final Map<String, PackageNode> packages;
-    protected Map<Integer, List<Double>> nodesGeometry;
-    protected GraphNode graphNode;
-    protected GraphEdge graphEdge;
+    /* This method converts the tree created by the Parser to a diagram, based on the files(classes or packages) selected
+     * by the designer. The type of the diagram depends on the type of files the designer has chosen and the controller
+     * is responsible for creating the corresponding GraphDiagramManager that implements the createDiagram method */
+    GraphEdgePair<GraphNode, GraphEdge> createDiagram(List<String> chosenFilesNames);
 
-    public DiagramManager (Map<String, PackageNode> packageNodes) {
-        this.packages = packageNodes;
-    }
+    /* This method arranges the created diagram's node geometry by creating a Jung Graph and then applying the SpringLayout
+    algorithm, implemented by the Jung library */
+    Map<Integer, List<Double>> arrangeDiagram();
 
-    public void createDiagram(List<String> chosenFilesNames){
-        graphNode.populateGraphMLNodes(getChosenNodes(chosenFilesNames));
-        graphEdge.setGraphNodes(graphNode.getGraphNodes());
-        graphEdge.populateGraphMLEdges(getChosenNodes(chosenFilesNames));
-    }
+    /* This method exports the created diagram to a file, to the path selected by the designer, in GraphMLFormat, by
+     * converting the nodes and edges to GraphML syntax */
+    File exportDiagramToGraphML(String graphMLSavePath);
 
-    public void arrangeDiagram(){
-        DiagramArrangement diagramArrangement = new DiagramArrangement();
-        diagramArrangement.arrangeDiagram(graphNode.getGraphNodes(), graphEdge.getGraphEdges());
-        nodesGeometry = diagramArrangement.getNodesGeometry();
-    }
-
-    public void exportDiagramToGraphML(String graphMLSavePath){
-        graphNode.convertNodesToGraphML(nodesGeometry);
-        graphEdge.convertEdgesToGraphML();
-        GraphMLExporter graphMLExporter = new GraphMLExporter();
-        graphMLExporter.exportDiagramToGraphML(graphMLSavePath, graphNode.getGraphMLBuffer(), graphEdge.getGraphMLBuffer());
-    }
-
-    public abstract Map<String, Map<String, String>> getGraph();
-
-    public abstract List<Node> getChosenNodes(List<String> chosenFileNames);
+    /* This method returns the graph that corresponds to the created diagram, so that the view can visualize the graph
+     * based on its nodes, edges and different edge types */
+    Map<String, Map<String, String>> getGraph();
 }
