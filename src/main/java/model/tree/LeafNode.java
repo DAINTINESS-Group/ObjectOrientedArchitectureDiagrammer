@@ -5,40 +5,53 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/* This class is responsible for the implementation of a leaf node in the tree.
- * Each has node has a parent node(the parent package), the path of the source file,
- * the branches that start from that node and also the field/method/method parameter types */
+/**This class is responsible for the implementation of a leaf node in the tree.
+ * Each node has a parent node(the parent package), the path of the source file,
+ * the branches that start from that node and also the field/method/method parameter types
+ */
 public class LeafNode extends Node{
 	private String inheritanceLine[];
 	private final Map<String, String> fields;
 	private final Map<String, String> methods;
 	private final List<String> methodsParametersTypes;
 
-	/* This method is responsible for initializing the nodes structs */
+	/**This method is responsible for initializing the nodes structs
+	 * @param path the path of Java source file
+	 */
 	public LeafNode(String path) {
 		super(path);
 		methodsParametersTypes = new ArrayList<>();
 		fields = new HashMap<>();
 		methods = new HashMap<>();
 	}
-	
-	/* This method is responsible for setting the nodes line that contains the declaration
-	 *  of the source file */
+
+	/**This method is responsible for setting the nodes line that contains the declaration
+	 *  of the source file
+	 * @param inheritanceLine the Java source file's line holding the information regarding its inheritance
+	 */
 	public void setInheritanceLine(String[] inheritanceLine) {
 		this.inheritanceLine = inheritanceLine;
 	}
-	
-	/* This method is responsible for adding to the nodes' method parameter types */
-	public void addMethodParametersTypes(List<String> parameterTypes) {
-		methodsParametersTypes.addAll(parameterTypes);
+
+	/**This method is responsible for adding to the nodes' method parameter types
+	 * @param methodParameterTypes the different types of parameters the Java source file's methods take
+	 */
+	public void addMethodParametersTypes(List<String> methodParameterTypes) {
+		methodsParametersTypes.addAll(methodParameterTypes);
 	}
-	
-	/* This method is responsible for adding the nodes' methods names and return types */
+
+	/**This method is responsible for adding the nodes' methods names and return types
+	 * @param methodName the method's name
+	 * @param methodReturnType the method's return type
+	 */
 	public void addMethod(String methodName, String methodReturnType) {
 		methods.put(methodName, methodReturnType);
 	}
 
-	/* This method is responsible for adding the nodes' fields names types */
+	/**This method is responsible for adding the nodes' fields names types
+	 * @param fieldName the field's name
+	 * @param fieldType the field's type
+	 */
 	public void addField(String fieldName, String fieldType) {
 		fields.put(fieldName, fieldType);
 	}

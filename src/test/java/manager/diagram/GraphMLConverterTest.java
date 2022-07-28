@@ -2,6 +2,10 @@ package manager.diagram;
 
 import com.google.common.base.Preconditions;
 import model.diagram.*;
+import model.diagram.graphml.GraphMLLeafEdge;
+import model.diagram.graphml.GraphMLLeafNode;
+import model.diagram.graphml.GraphMLPackageEdge;
+import model.diagram.graphml.GraphMLPackageNode;
 import model.tree.*;
 import org.junit.jupiter.api.Test;
 import parser.Parser;
@@ -14,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class GraphMLConverterTest {
     @Test
     void populateGraphMLNodesTest(){
-        GraphNode graphMLNode = new GraphMLLeafNode();
+        GraphNodeCollection graphMLNode = new GraphMLLeafNode();
         Parser parser = new ProjectParser();
         parser.parseSourcePackage("src\\test\\resources\\LatexEditor\\src");
         graphMLNode.populateGraphNodes(new ArrayList<>(parser.getPackageNodes().get("commands").getLeafNodes().values()));
@@ -27,18 +31,15 @@ class GraphMLConverterTest {
             Map.Entry<String, LeafNode> e1 = iter1.next();
             Map.Entry<Node, Integer> e2 = iter2.next();
             l1.add(e1.getValue().getName());
-            System.out.println(e1.getValue().getName());
-            System.out.println(e2.getKey().getName());
             l2.add(e2.getKey().getName());
         }
         Collections.sort(l1);
         Collections.sort(l2);
-        System.out.println(l1.size());
         assertTrue(l1.size() == l2.size() && l1.containsAll(l2) && l2.containsAll(l1));
     }
     @Test
     void convertNodesToGraphMLTest() {
-        GraphNode graphMLNode = new GraphMLLeafNode();
+        GraphNodeCollection graphMLNode = new GraphMLLeafNode();
         Parser parser = new ProjectParser();
         parser.parseSourcePackage("src\\test\\resources\\LatexEditor\\src");
         graphMLNode.populateGraphNodes(new ArrayList<>(parser.getPackageNodes().get("commands").getLeafNodes().values()));
@@ -80,7 +81,7 @@ class GraphMLConverterTest {
 
     @Test
     void populateGraphMLEdgesTest(){
-        GraphNode graphMLNode = new GraphMLLeafNode();
+        GraphNodeCollection graphMLNode = new GraphMLLeafNode();
         Parser parser = new ProjectParser();
         parser.parseSourcePackage("src\\test\\resources\\LatexEditor\\src");
         graphMLNode.populateGraphNodes(new ArrayList<>(parser.getPackageNodes().get("commands").getLeafNodes().values()));
@@ -116,7 +117,7 @@ class GraphMLConverterTest {
 
     @Test
     void convertEdgesToGraphML(){
-        GraphNode graphMLNode = new GraphMLLeafNode();
+        GraphNodeCollection graphMLNode = new GraphMLLeafNode();
         Parser parser = new ProjectParser();
         parser.parseSourcePackage("src\\test\\resources\\LatexEditor\\src");
         graphMLNode.populateGraphNodes(new ArrayList<>(parser.getPackageNodes().get("commands").getLeafNodes().values()));
@@ -159,7 +160,7 @@ class GraphMLConverterTest {
 
     @Test
     void populateGraphMLPackageNodeTest(){
-        GraphNode graphMLPackageNode = new GraphMLPackageNode();
+        GraphNodeCollection graphMLPackageNode = new GraphMLPackageNode();
         Parser parser = new ProjectParser();
         parser.parseSourcePackage("src\\test\\resources\\LatexEditor\\src");
         graphMLPackageNode.populateGraphNodes(new ArrayList<>(parser.getPackageNodes().values()));
@@ -175,19 +176,16 @@ class GraphMLConverterTest {
             Map.Entry<String, PackageNode> e1 = iter1.next();
             Map.Entry<Node, Integer> e2 = iter2.next();
             l1.add(e1.getValue().getName());
-            System.out.println(e1.getValue().getName());
-            System.out.println(e2.getKey().getName());
             l2.add(e2.getKey().getName());
         }
         Collections.sort(l1);
         Collections.sort(l2);
-        System.out.println(l1.size());
         assertTrue(l1.size() == l2.size() && l1.containsAll(l2) && l2.containsAll(l1));
     }
 
     @Test
     void convertPackageNodesToGraphMLTest(){
-        GraphNode graphMLPackageNode = new GraphMLPackageNode();
+        GraphNodeCollection graphMLPackageNode = new GraphMLPackageNode();
         Parser parser = new ProjectParser();
         parser.parseSourcePackage("src\\test\\resources\\LatexEditor\\src");
         graphMLPackageNode.populateGraphNodes(new ArrayList<>(parser.getPackageNodes().values()));
@@ -221,7 +219,7 @@ class GraphMLConverterTest {
 
     @Test
     void populateGraphMLPackageEdgesTest() {
-        GraphNode graphMLPackageNode = new GraphMLPackageNode();
+        GraphNodeCollection graphMLPackageNode = new GraphMLPackageNode();
         Parser parser = new ProjectParser();
         parser.parseSourcePackage("src\\test\\resources\\LatexEditor\\src");
         graphMLPackageNode.populateGraphNodes(new ArrayList<>(parser.getPackageNodes().values()));
@@ -252,7 +250,7 @@ class GraphMLConverterTest {
 
     @Test
     void convertPackageEdgesToGraphMLTest(){
-        GraphNode graphMLPackageNode = new GraphMLPackageNode();
+        GraphNodeCollection graphMLPackageNode = new GraphMLPackageNode();
         Parser parser = new ProjectParser();
         parser.parseSourcePackage("src\\test\\resources\\LatexEditor\\src");
         StringBuilder expected = new StringBuilder();

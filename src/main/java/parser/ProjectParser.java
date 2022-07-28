@@ -21,10 +21,7 @@ public class ProjectParser implements Parser {
 		packageNodes = new HashMap<>();
 	}
 
-	/* This method creates the root of the tree, from the source package, calls the
-	 * parseFolder method that's responsible for the parsing and then creates an object
-	 * of the LeafNodeRelation class with the created nodes in order to create the branches */
-	public void parseSourcePackage(String sourcePackagePath) {
+	public PackageNode parseSourcePackage(String sourcePackagePath) {
 		PackageNode rootPackageNode = new PackageNode(sourcePackagePath);
 		packageNodes.put(rootPackageNode.getName(), rootPackageNode);
 		try {
@@ -33,6 +30,7 @@ public class ProjectParser implements Parser {
 			e.printStackTrace();
 		}
 		new RelationshipIdentifier(packageNodes);
+		return rootPackageNode;
 	}
 
 	private void parseFolder(PackageNode currentNode) throws ParseException{

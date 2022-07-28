@@ -19,12 +19,20 @@ public class DiagramArrangement {
         nodesGeometry = new HashMap<>();
     }
 
-    public void arrangeDiagram(Map<Node, Integer> graphNodes, Map<Relationship, Integer> graphEdges) {
+    /**
+     * This method is responsible for the arrangement of the graph by creating a graph of the Jung library
+     * and using the SpringLayout algorithm
+     * @param graphNodes the nodes of the diagram
+     * @param graphEdges the edges of the diagram
+     * @return a Map with the nodes' id as key and geometry(x,y) as value
+     */
+    public Map<Integer, List<Double>> arrangeDiagram(Map<Node, Integer> graphNodes, Map<Relationship, Integer> graphEdges) {
         Graph<Integer, String> graph = new SparseGraph<>();
         populateGraph(graphNodes, graphEdges, graph);
-        AbstractLayout<Integer, String> layout = new SpringLayout(graph);
+        AbstractLayout<Integer, String> layout = new SpringLayout<>(graph);
         layout.setSize(new Dimension(1500, 1000));
         populateNodesGeometry(layout, new ArrayList<>(graphNodes.values()));
+        return nodesGeometry;
     }
 
     private void populateGraph(Map<Node, Integer> graphNodes, Map<Relationship, Integer> graphEdges, Graph<Integer, String> graph){
@@ -48,8 +56,5 @@ public class DiagramArrangement {
         for (Integer i : graphNodesIds) {
             nodesGeometry.put(i, Arrays.asList(layout.getX(i), layout.getY(i)));
         }
-    }
-    public Map<Integer, List<Double>> getNodesGeometry() {
-        return nodesGeometry;
     }
 }

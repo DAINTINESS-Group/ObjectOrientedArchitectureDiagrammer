@@ -38,7 +38,7 @@ public class DiagramVisualizationController {
 
         com.brunomnsilva.smartgraph.graph.Graph<String, String> g = populateGraph(graph, diagramType);
         SmartPlacementStrategy strategy = new SmartCircularSortedPlacementStrategy();
-        graphView = new SmartGraphPanel(g, strategy);
+        graphView = new SmartGraphPanel<>(g, strategy);
 
         if (diagramType.equals("Package")) {
             for (String packageName: graph.keySet()) {
@@ -57,7 +57,7 @@ public class DiagramVisualizationController {
     }
 
     private Graph<String, String> populateGraph(Map<String, Map<String, String>> graph, String diagramType) {
-        directedGraph = new DigraphEdgeList();
+        directedGraph = new DigraphEdgeList<>();
 
         generateVertexes(graph, diagramType);
         generateEdges(graph, diagramType);

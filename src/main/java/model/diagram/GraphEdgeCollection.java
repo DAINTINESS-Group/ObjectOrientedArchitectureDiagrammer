@@ -7,14 +7,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class GraphEdge {
+public abstract class GraphEdgeCollection {
 
-    protected final Map<Relationship, Integer> graphEdges;
+    private final Map<Relationship, Integer> graphEdges;
     protected Map<Node, Integer> graphNodes;
-    protected final StringBuilder graphMLBuffer;
+    private final StringBuilder graphMLBuffer;
     private int edgeId;
 
-    public GraphEdge() {
+    public GraphEdgeCollection() {
         graphEdges = new HashMap<>();
         graphMLBuffer = new StringBuilder();
         edgeId = 0;
@@ -26,7 +26,7 @@ public abstract class GraphEdge {
         }
     }
 
-    public void generateEdge(Node node) {
+    private void generateEdge(Node node) {
         for (Relationship relationship: node.getNodeRelationships()) {
             if (areEdgesNodesInTheChosenClasses(relationship)) {
                 addEdge(relationship);
@@ -53,6 +53,13 @@ public abstract class GraphEdge {
 
     public String getGraphMLBuffer() { return graphMLBuffer.toString(); }
 
-    public abstract void convertEdgesToGraphML();
+    public StringBuilder convertEdgesToGraphML(){
+        for (Map.Entry<Relationship, Integer> entry: graphEdges.entrySet()) {
+            graphMLBuffer.append(convertEdge(entry.getKey(), entry.getValue()));
+        }
+        return graphMLBuffer;
+    }
+
+    public abstract String convertEdge(Relationship relationship, int edgeId);
 
 }

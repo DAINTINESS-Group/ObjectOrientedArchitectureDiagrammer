@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/modena_dark.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.DiagramVisualizationController">
+<VBox prefHeight="700.0" prefWidth="1000.0" stylesheets="@../styles/modena_dark.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.DiagramVisualizationController">
    <children>
       <MenuBar fx:id="menuBar">
          <menus>

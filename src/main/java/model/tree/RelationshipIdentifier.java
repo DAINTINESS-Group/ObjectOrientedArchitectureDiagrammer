@@ -4,16 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-
-/* This class is responsible for the creation of the branches between the Java 
+/**This class is responsible for the creation of the branches between the Java
  * source files. The branches have a type, e.g., inheritance, implementation.
- * The branches are also directed with a starting and an ending node*/
+ * The branches are also directed with a starting and an ending node
+ */
 public class RelationshipIdentifier {
 	private final Map<String, PackageNode> packageNodes;
 	private final List<LeafNode> allLeafNodes;
-	
-	/* This method is responsible for retrieving the leaf nodes that have been created
-	 * and then creating the branches between them. */
+
+	/**This method is responsible for retrieving the leaf nodes that have been created
+	 * and then creating the branches between them
+	 * @param packageNodes a collection with the package nodes created by the parser
+	 */
 	public RelationshipIdentifier(Map<String, PackageNode> packageNodes) {
 		this.packageNodes = packageNodes;
 		allLeafNodes = new ArrayList<>();

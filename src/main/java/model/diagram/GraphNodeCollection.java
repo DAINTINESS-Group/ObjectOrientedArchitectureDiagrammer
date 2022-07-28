@@ -6,16 +6,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class GraphNode {
+public abstract class GraphNodeCollection {
 
     protected static final int X_COORDINATE = 0;
     protected static final int Y_COORDINATE = 1;
 
     private final Map<Node, Integer> graphNodes;
-    protected final StringBuilder graphMLBuffer;
+    private final StringBuilder graphMLBuffer;
     private int nodeId;
 
-    public GraphNode() {
+    public GraphNodeCollection() {
         graphNodes = new HashMap<>();
         graphMLBuffer = new StringBuilder();
         nodeId = 0;
@@ -28,10 +28,11 @@ public abstract class GraphNode {
         }
     }
 
-    public void convertNodesToGraphML(Map<Integer, List<Double>> nodesGeometry) {
+    public StringBuilder convertNodesToGraphML(Map<Integer, List<Double>> nodesGeometry) {
         for (Map.Entry<Node, Integer> entry: graphNodes.entrySet()) {
-            convertNode(entry.getKey(), entry.getValue(), nodesGeometry.get(entry.getValue()));
+            graphMLBuffer.append(convertNode(entry.getKey(), entry.getValue(), nodesGeometry.get(entry.getValue())));
         }
+        return graphMLBuffer;
     }
 
     public Map<Node, Integer> getGraphNodes() {
@@ -40,6 +41,6 @@ public abstract class GraphNode {
 
     public String getGraphMLBuffer(){ return graphMLBuffer.toString(); }
 
-    public abstract void convertNode(Node node, int nodeId, List<Double> nodesGeometry);
+    public abstract String convertNode(Node node, int nodeId, List<Double> nodesGeometry);
 
 }

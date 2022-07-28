@@ -3,11 +3,12 @@ package controller;
 import manager.diagram.GraphClassDiagramManager;
 
 import java.util.List;
+import java.util.Map;
 
 public class ClassDiagramController extends DiagramController {
 
-    public void convertTreeToDiagram(List<String> chosenClassesNames) {
-        diagramManager = new GraphClassDiagramManager(packageNodes);
-        diagramManager.createDiagram(chosenClassesNames);
+    public Map<String, Map<String, String>> convertTreeToDiagram(List<String> chosenClassesNames) {
+        diagramManager = new GraphClassDiagramManager(sourceProject);
+        return diagramManager.createDiagram(chosenClassesNames);
     }
 }

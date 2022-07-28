@@ -1,4 +1,4 @@
-package model.diagram;
+package model.diagram.graphml;
 
 import java.util.List;
 

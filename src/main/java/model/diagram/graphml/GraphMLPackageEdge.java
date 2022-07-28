@@ -1,17 +1,15 @@
-package model.diagram;
+package model.diagram.graphml;
 
+import model.diagram.GraphEdgeCollection;
 import model.tree.Relationship;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
-public class GraphMLPackageEdge extends GraphEdge {
+public class GraphMLPackageEdge extends GraphEdgeCollection {
 
-    public void convertEdgesToGraphML() {
-        for (Map.Entry<Relationship, Integer> entry: graphEdges.entrySet()) {
-            graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLPackageEdgesSyntax(getEdgesProperties(entry.getKey(), entry.getValue())));
-        }
+    public String convertEdge(Relationship relationship, int edgeId) {
+        return GraphMLSyntax.getInstance().getGraphMLPackageEdgesSyntax(getEdgesProperties(relationship, edgeId));
     }
 
     private List<String> getEdgesProperties(Relationship relationship, Integer edgeId) {
