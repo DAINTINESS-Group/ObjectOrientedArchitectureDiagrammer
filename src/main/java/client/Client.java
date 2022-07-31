@@ -19,7 +19,7 @@ public class Client {
 		classDiagramController.exportDiagramToGraphML(args[2]);
 		*/
 
-		Controller packageDiagramController = diagramControllerFactory.getController("Package");
+		Controller packageDiagramController = diagramControllerFactory.getDiagramController("Package");
 		packageDiagramController.createTree(args[0]);
 		packageDiagramController.convertTreeToDiagram(Arrays.asList("controller", "model", "view", "commands", "strategies"));
 		packageDiagramController.arrangeDiagram();

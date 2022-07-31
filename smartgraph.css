@@ -7,21 +7,21 @@ STYLESHEET FOR JAVAFXGRAPH VISUALIZATION
 }
 
 .vertex {
-    -fx-stroke-width: 3;
+    -fx-stroke-width: 4;
     -fx-stroke: #000000;
     -fx-stroke-type: inside; /* you should keep this if using arrows */
     -fx-fill: #FF9900;
 }
 
 .vertexPackage {
-    -fx-stroke-width: 3;
+    -fx-stroke-width: 4;
     -fx-stroke: #000000;
     -fx-stroke-type: inside; /* you should keep this if using arrows */
     -fx-fill: #FF9900;
 }
 
 .vertexInterface {
-    -fx-stroke-width: 3;
+    -fx-stroke-width: 4;
     -fx-stroke: #000000;
     -fx-stroke-type: inside; /* you should keep this if using arrows */
     -fx-fill: #B1DFF7;
@@ -36,7 +36,7 @@ STYLESHEET FOR JAVAFXGRAPH VISUALIZATION
     -fx-stroke-dash-array: 2 5 2 5; /* remove for clean edges */  
     -fx-fill: transparent; /*important for curved edges */
     -fx-stroke-line-cap: round;
-    -fx-opacity: 0.8;
+    -fx-opacity: 1;
 }
 
 .edgeNonDashed {
@@ -44,11 +44,11 @@ STYLESHEET FOR JAVAFXGRAPH VISUALIZATION
     -fx-stroke: #FF6D66;
     -fx-fill: transparent; /*important for curved edges */
     -fx-stroke-line-cap: round;
-    -fx-opacity: 0.8;
+    -fx-opacity: 1;
 }
 
 .edge-label {
-    -fx-font: normal 5pt "sans-serif";
+    -fx-font: normal 4pt "sans-serif";
 }
 
 .arrow {

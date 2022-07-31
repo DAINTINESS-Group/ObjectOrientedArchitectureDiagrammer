@@ -2,8 +2,7 @@ package controller;
 
 public class DiagramControllerFactory {
 
-    public Controller getController(String type) {
-
+    public Controller getDiagramController(String type) {
         if (type.equals("Class")) {
             return new ClassDiagramController();
         }else {

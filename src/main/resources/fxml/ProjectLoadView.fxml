@@ -53,11 +53,16 @@
           <items>
             <MenuItem mnemonicParsing="false" onAction="#newProject" text="New" />
             <MenuItem mnemonicParsing="false" text="Open…" />
-            <Menu mnemonicParsing="false" text="Open Recent" />
+                  <Menu mnemonicParsing="false" text="Load">
+                    <items>
+                      <MenuItem mnemonicParsing="false" onAction="#loadDiagram" text="Class Diagram" />
+                        <MenuItem mnemonicParsing="false" onAction="#loadDiagram" text="Package Diagram" />
+                    </items>
+                  </Menu>
             <SeparatorMenuItem mnemonicParsing="false" />
             <MenuItem mnemonicParsing="false" onAction="#closeProject" text="Close" />
             <MenuItem mnemonicParsing="false" text="Save" />
-            <MenuItem mnemonicParsing="false" text="Save As…" />
+            <MenuItem mnemonicParsing="false" onAction="#saveDiagram" text="Save As…" />
             <MenuItem mnemonicParsing="false" text="Revert" />
             <SeparatorMenuItem mnemonicParsing="false" />
             <MenuItem mnemonicParsing="false" text="Preferences…" />

@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="700.0" prefWidth="1000.0" stylesheets="@../styles/modena_dark.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.DiagramVisualizationController">
+<VBox prefHeight="650.0" prefWidth="900.0" stylesheets="@../styles/modena_dark.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.DiagramVisualizationController">
    <children>
       <MenuBar fx:id="menuBar">
          <menus>
@@ -15,11 +15,17 @@
                <items>
                   <MenuItem mnemonicParsing="false" onAction="#newProject" text="New" />
                   <MenuItem mnemonicParsing="false" text="Open…" />
+                  <Menu mnemonicParsing="false" text="Load">
+                     <items>
+                        <MenuItem mnemonicParsing="false" onAction="#loadDiagram" text="Class Diagram" />
+                        <MenuItem mnemonicParsing="false" onAction="#loadDiagram" text="Package Diagram" />
+                     </items>
+                  </Menu>
                   <Menu mnemonicParsing="false" text="Open Recent" />
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem mnemonicParsing="false" onAction="#closeProject" text="Close" />
                   <MenuItem mnemonicParsing="false" text="Save" />
-                  <MenuItem mnemonicParsing="false" text="Save As…" />
+                  <MenuItem mnemonicParsing="false" onAction="#saveDiagram" text="Save As…" />
                   <MenuItem mnemonicParsing="false" text="Revert" />
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem mnemonicParsing="false" text="Preferences…" />

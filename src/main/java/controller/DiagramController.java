@@ -1,6 +1,6 @@
 package controller;
 
-import manager.diagram.DiagramManager;
+import manager.diagram.Manager;
 import model.tree.SourceProject;
 
 import java.io.File;
@@ -9,13 +9,10 @@ import java.util.Map;
 
 public abstract class DiagramController implements Controller {
 
-	protected DiagramManager diagramManager;
-	protected SourceProject sourceProject;
+	protected Manager diagramManager;
 
 	public SourceProject createTree(String sourcePackagePath) {
-		sourceProject = new SourceProject(sourcePackagePath);
-		sourceProject.parseSourceProject();
-		return sourceProject;
+		return diagramManager.createTree(sourcePackagePath);
 	}
 
 	public Map<Integer, List<Double>> arrangeDiagram(){
@@ -25,6 +22,12 @@ public abstract class DiagramController implements Controller {
 	public File exportDiagramToGraphML(String graphMLSavePath) {
 		return diagramManager.exportDiagramToGraphML(graphMLSavePath);
 	}
+
+	public File saveDiagram(String graphSavePath) {
+		return diagramManager.saveDiagram(graphSavePath);
+	}
+
+	public abstract Map<String, Map<String, String>> loadDiagram(String graphSavePath);
 
 	public abstract Map<String, Map<String, String>> convertTreeToDiagram(List<String> chosenFileNames);
 

@@ -11,8 +11,8 @@ public class GraphMLFile {
     private File graphMLFile;
 
     public void createGraphMLFile(String graphMLSavePath) throws IOException {
-        graphMLFile = new File(String.format("%s\\diagram.graphml", graphMLSavePath));
-        graphMLWriter = new FileWriter(String.format("%s\\diagram.graphml", graphMLSavePath));
+        graphMLFile = new File(graphMLSavePath);
+        graphMLWriter = new FileWriter(graphMLSavePath);
         graphMLBuffer = new StringBuilder();
         graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLPrefix());
     }

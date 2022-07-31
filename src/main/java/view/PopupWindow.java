@@ -10,19 +10,23 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
 
 public class PopupWindow {
 
     @FXML
     MenuBar menuBar;
-    private final ProjectTreeView projectTreeView;
+    private ProjectTreeView projectTreeView;
 
-    public PopupWindow(MenuBar menuBar, ProjectTreeView projectTreeView) {
+    public PopupWindow(MenuBar menuBar) {
         this.menuBar = menuBar;
-        this.projectTreeView = projectTreeView;
     }
 
-    public void createPopupWindow(String buttonsText) {
+    public void createDiagramPopupWindow(String buttonsText, ProjectTreeView projectTreeView) {
+        this.projectTreeView = projectTreeView;
         Stage popupWindow = new Stage();
         popupWindow.initModality(Modality.APPLICATION_MODAL);
         popupWindow.setTitle("Choose how to view diagram");
@@ -54,11 +58,11 @@ public class PopupWindow {
         diagramCreation.createDiagram(visualizationType, fileType.split(" ")[0]);
     }
 
-    public void createPopupErrorWindow() {
+    public void createPopupInfoWindow(String infoMessage, String popupWindowTitle) {
         Stage popupWindow = new Stage();
         popupWindow.initModality(Modality.APPLICATION_MODAL);
-        popupWindow.setTitle("Error");
-        Label label1= new Label("No files were chosen");
+        popupWindow.setTitle(popupWindowTitle);
+        Label label1= new Label(infoMessage);
 
         Button closeButton = new Button("Close");
         closeButton.setOnAction(e -> popupWindow.close());
@@ -70,4 +74,5 @@ public class PopupWindow {
         popupWindow.setScene(scene1);
         popupWindow.showAndWait();
     }
+
 }

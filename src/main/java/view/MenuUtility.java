@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.MenuBar;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.net.URL;
 
 public class MenuUtility {
@@ -15,8 +16,8 @@ public class MenuUtility {
     }
 
     public static void newProject(MenuBar menuBar){
-        FolderChooser folderChooser = new FolderChooser("Load Project Source Folder", menuBar);
-        if (folderChooser.getSelectedDirectory() != null) {
+        File selectedDirectory = FileAndDirectoryUtility.chooseDirectory("Load Project Source Folder", menuBar);
+        if (selectedDirectory != null) {
             try {
                 URL url = MenuUtility.class.getResource("/fxml/DiagramCreationView.fxml");
                 FXMLLoader loader = new FXMLLoader();
@@ -24,7 +25,7 @@ public class MenuUtility {
                 Parent diagramCreationParent = loader.load();
 
                 DiagramCreationController controller = loader.getController();
-                controller.createTreeView(folderChooser.getSelectedDirectory().getPath());
+                controller.createTreeView(selectedDirectory.getPath());
 
                 Scene diagramCreationScene = new Scene(diagramCreationParent);
                 Stage window = (Stage) menuBar.getScene().getWindow();
@@ -34,6 +35,10 @@ public class MenuUtility {
                 e.printStackTrace();
             }
         }
+    }
+
+    private static boolean isCalledByTheVisualizationController() {
+        return Thread.currentThread().getStackTrace()[2].getClassName().equals("view.DiagramVisualizationController");
     }
 
     public static void closeProject(MenuBar menuBar){

@@ -5,7 +5,7 @@ import controller.DiagramControllerFactory;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuBar;
 
-import java.io.IOException;
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -23,23 +23,20 @@ public class DiagramCreation {
 
     public void createDiagram(String visualizationType, String diagramType){
         DiagramControllerFactory diagramControllerFactory = new DiagramControllerFactory();
-        Controller diagramController = diagramControllerFactory.getController(diagramType);
+        Controller diagramController = diagramControllerFactory.getDiagramController(diagramType);
         diagramController.createTree(projectTreeView.getSourceFolderPath());
         Map<String, Map<String, String>> diagram = diagramController.convertTreeToDiagram(getSelectedFiles(diagramType));
         diagramController.arrangeDiagram();
 
         if (visualizationType.equals("Export")) {
-            FolderChooser folderChooser = new FolderChooser("Export Diagram", menuBar);
-            if (folderChooser.getSelectedDirectory() != null) {
-                diagramController.exportDiagramToGraphML(folderChooser.getSelectedDirectory().getPath());
+            File selectedDirectory = FileAndDirectoryUtility.saveFile("Export Diagram", menuBar, "GraphML Files");
+            if (selectedDirectory != null) {
+                diagramController.exportDiagramToGraphML(selectedDirectory.getPath());
             }
         }else {
-            try {
-                DiagramVisualization diagramVisualization = new DiagramVisualization(menuBar);
-                diagramVisualization.createDiagramVisualization(diagram, diagramType);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            DiagramVisualization diagramVisualization = new DiagramVisualization(menuBar);
+            diagramVisualization.setDiagramController(diagramController);
+            diagramVisualization.loadDiagramVisualization(diagram);
         }
     }
 

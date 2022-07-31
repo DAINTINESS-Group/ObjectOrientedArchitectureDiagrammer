@@ -18,11 +18,11 @@ public class DiagramCreationController {
 
     public void chooseDiagramVisualization(ActionEvent event) {
         projectTreeView.findCheckedItems(projectTreeView.getRootItem());
-        PopupWindow popupWindow = new PopupWindow(menuBar, projectTreeView);
+        PopupWindow popupWindow = new PopupWindow(menuBar);
         if (!wereFilesChosen()) {
-            popupWindow.createPopupErrorWindow();
+            popupWindow.createPopupInfoWindow("No files were selected!", "Error");
         }else {
-            popupWindow.createPopupWindow(((Button) event.getSource()).getText());
+            popupWindow.createDiagramPopupWindow(((Button) event.getSource()).getText(), projectTreeView);
         }
     }
 
