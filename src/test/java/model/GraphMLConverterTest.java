@@ -1,4 +1,4 @@
-package manager.diagram;
+package model;
 
 import com.google.common.base.Preconditions;
 import model.diagram.*;
@@ -44,7 +44,7 @@ class GraphMLConverterTest {
         parser.parseSourcePackage("src\\test\\resources\\LatexEditor\\src");
         graphMLNode.populateGraphNodes(new ArrayList<>(parser.getPackageNodes().get("commands").getLeafNodes().values()));
         StringBuilder expected = new StringBuilder();
-        graphMLNode.convertNodesToGraphML(Map.ofEntries(
+        StringBuilder actual = graphMLNode.convertNodesToGraphML(Map.ofEntries(
                 Map.entry(0, Arrays.asList(10.0, 10.0)),
                 Map.entry(1, Arrays.asList(10.0, 10.0)),
                 Map.entry(2, Arrays.asList(10.0, 10.0)),
@@ -76,7 +76,7 @@ class GraphMLConverterTest {
                             "    </node>\n", graphMLNode.getGraphNodes().get(leafNode), 10.0, 10.0, getNodesColor(leafNode), leafNode.getName(),
                     getNodesFields(leafNode), getNodesMethods(leafNode)));
         }
-        assertEquals(expected.toString(), graphMLNode.getGraphMLBuffer());
+        assertEquals(expected.toString(), actual.toString());
     }
 
     @Test
@@ -124,7 +124,8 @@ class GraphMLConverterTest {
         GraphMLLeafEdge graphMLEdge = new GraphMLLeafEdge();
         graphMLEdge.setGraphNodes(graphMLNode.getGraphNodes());
         graphMLEdge.populateGraphEdges(new ArrayList<>(parser.getPackageNodes().get("commands").getLeafNodes().values()));
-        graphMLEdge.convertEdgesToGraphML();
+        StringBuilder actual = graphMLEdge.convertEdgesToGraphML();
+
         StringBuilder expected = new StringBuilder();
         List<Relationship> relationships = new ArrayList<>();
         for (LeafNode l: parser.getPackageNodes().get("commands").getLeafNodes().values()) {
@@ -155,7 +156,7 @@ class GraphMLConverterTest {
                 }
             }
         }
-        assertEquals(expected.toString(), graphMLEdge.getGraphMLBuffer());
+        assertEquals(expected.toString(), actual.toString());
     }
 
     @Test

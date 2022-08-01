@@ -44,7 +44,7 @@ public interface Controller {
 
     /**This method loads a diagram from a text file by calling the DiagramManager's loadDiagram method
      * @param graphSavePath the file's path where the diagram is saved
-     * @return
+     * @return the created diagram
      */
     Map<String, Map<String, String>> loadDiagram(String graphSavePath);
 

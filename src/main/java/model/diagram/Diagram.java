@@ -28,7 +28,7 @@ public abstract class Diagram {
         return sourceProject;
     }
 
-    public Map<String, Map<String, String>> createDiagram(List<String> chosenFilesNames){
+    public Map<String, Map<String, String>> createDiagram(List<String> chosenFilesNames) {
         graphNodeCollection.populateGraphNodes(getChosenNodes(chosenFilesNames));
         graphEdgeCollection.setGraphNodes(graphNodeCollection.getGraphNodes());
         graphEdgeCollection.populateGraphEdges(getChosenNodes(chosenFilesNames));
@@ -36,13 +36,13 @@ public abstract class Diagram {
         return createdDiagram;
     }
 
-    public Map<Integer, List<Double>> arrangeDiagram(){
+    public Map<Integer, List<Double>> arrangeDiagram() {
         DiagramArrangement diagramArrangement = new DiagramArrangement();
         nodesGeometry = diagramArrangement.arrangeDiagram(graphNodeCollection.getGraphNodes(), graphEdgeCollection.getGraphEdges());
         return nodesGeometry;
     }
 
-    public File exportDiagramToGraphML(String graphMLSavePath){
+    public File exportDiagramToGraphML(String graphMLSavePath) {
         graphNodeCollection.convertNodesToGraphML(nodesGeometry);
         graphEdgeCollection.convertEdgesToGraphML();
         GraphMLExporter graphMLExporter = new GraphMLExporter();

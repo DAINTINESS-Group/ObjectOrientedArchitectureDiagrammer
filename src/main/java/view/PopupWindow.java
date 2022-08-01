@@ -10,11 +10,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
-
 public class PopupWindow {
 
     @FXML
