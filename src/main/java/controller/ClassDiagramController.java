@@ -1,9 +1,6 @@
 package controller;
 
-import manager.diagram.ClassDiagramManager;
-
-import java.util.List;
-import java.util.Map;
+import manager.ClassDiagramManager;
 
 public class ClassDiagramController extends DiagramController {
 
@@ -11,11 +8,4 @@ public class ClassDiagramController extends DiagramController {
         diagramManager = new ClassDiagramManager();
     }
 
-    public Map<String, Map<String, String>> loadDiagram(String graphSavePath) {
-        return diagramManager.loadDiagram(graphSavePath);
-    }
-
-    public Map<String, Map<String, String>> convertTreeToDiagram(List<String> chosenClassesNames) {
-        return diagramManager.createDiagram(chosenClassesNames);
-    }
 }

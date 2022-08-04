@@ -19,7 +19,7 @@ public class ProjectTreeView {
     TreeView treeView;
 
     private CheckBoxTreeItem<String> rootItem;
-    private final ObservableSet<CheckBoxTreeItem<?>> checkedItems = FXCollections.observableSet();
+    private ObservableSet<CheckBoxTreeItem<?>> checkedItems;
 
     private List<String> folderFiles;
     private List<String> javaSourceFiles;
@@ -75,7 +75,12 @@ public class ProjectTreeView {
         return selectedFiles;
     }
 
-    public void findCheckedItems(CheckBoxTreeItem<?> item) {
+    public void setCheckedItems(CheckBoxTreeItem<?> rootItem) {
+        checkedItems = FXCollections.observableSet();
+        findCheckedItems(rootItem);
+    }
+
+    private void findCheckedItems(CheckBoxTreeItem<?> item) {
         if (item.isSelected()) {
             checkedItems.add(item);
         }

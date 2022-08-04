@@ -1,5 +1,6 @@
-package manager.diagram;
+package manager;
 
+import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import model.tree.SourceProject;
 
 import java.io.File;
@@ -51,5 +52,10 @@ public interface Manager {
      * @return the createdDiagram
      */
     Map<String, Map<String, String>> loadDiagram(String graphSavePath);
+
+    /**This method creates the JavaFX's graphView that will be rendered by view in the JavaFX Pane
+     * @return the created graphView
+     */
+    SmartGraphPanel<String, String> visualizeJavaFXGraph();
 
 }

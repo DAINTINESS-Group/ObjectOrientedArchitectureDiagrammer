@@ -1,5 +1,6 @@
-package manager.diagram;
+package manager;
 
+import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import model.diagram.Diagram;
 import model.tree.SourceProject;
 
@@ -10,38 +11,39 @@ import java.util.List;
 public abstract class DiagramManager implements Manager {
 
     private final ArrayDeque<Diagram> diagramStack;
-    private Diagram diagram;
 
     public DiagramManager() {
         diagramStack = new ArrayDeque<>();
     }
 
     public SourceProject createTree(String sourcePackagePath) {
-        diagram = getDiagramType();
-        diagramStack.push(diagram);
-        return diagram.createTree(sourcePackagePath);
+        diagramStack.push(getDiagramType());
+        return diagramStack.peek().createTree(sourcePackagePath);
     }
 
     public Map<String, Map<String, String>> createDiagram(List<String> chosenFilesNames) {
-        return diagram.createDiagram(chosenFilesNames);
+        return diagramStack.peek().createDiagram(chosenFilesNames);
     }
 
     public Map<Integer, List<Double>> arrangeDiagram(){
-        return diagram.arrangeDiagram();
+        return diagramStack.peek().arrangeDiagram();
     }
 
     public File exportDiagramToGraphML(String graphMLSavePath) {
-        return diagram.exportDiagramToGraphML(graphMLSavePath);
+        return diagramStack.peek().exportDiagramToGraphML(graphMLSavePath);
     }
 
     public File saveDiagram(String graphSavePath) {
-        return diagram.saveDiagram(graphSavePath);
+        return diagramStack.peek().saveDiagram(graphSavePath);
     }
 
     public Map<String, Map<String, String>> loadDiagram(String graphSavePath) {
-        diagram = getDiagramType();
-        diagramStack.push(diagram);
-        return diagram.loadDiagram(graphSavePath);
+        diagramStack.push(getDiagramType());
+        return diagramStack.peek().loadDiagram(graphSavePath);
+    }
+
+    public SmartGraphPanel<String, String> visualizeJavaFXGraph() {
+        return diagramStack.peek().visualizeJavaFXGraph();
     }
 
     /**

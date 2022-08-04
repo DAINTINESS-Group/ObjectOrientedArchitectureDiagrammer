@@ -1,5 +1,6 @@
 package view;
 
+import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import controller.Controller;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,7 +11,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Map;
 
 public class DiagramVisualization {
 
@@ -23,7 +23,7 @@ public class DiagramVisualization {
         this.menuBar = menuBar;
     }
 
-    public void loadDiagramVisualization(Map<String, Map<String, String>> graph) {
+    public void loadDiagramVisualization(SmartGraphPanel<String, String> graphView) {
         try {
             URL url = getClass().getResource("/fxml/DiagramVisualizationView.fxml");
             FXMLLoader loader = new FXMLLoader();
@@ -32,7 +32,7 @@ public class DiagramVisualization {
 
             DiagramVisualizationController diagramVisualizationController = loader.getController();
             diagramVisualizationController.setDiagramController(diagramController);
-            diagramVisualizationController.visualizeGraph(graph);
+            diagramVisualizationController.visualizeGraph(graphView);
 
             Scene diagramVisualizationScene = new Scene(diagramVisualizationParent);
             Stage window = (Stage) menuBar.getScene().getWindow();

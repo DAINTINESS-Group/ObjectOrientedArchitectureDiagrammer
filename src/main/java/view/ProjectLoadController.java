@@ -28,6 +28,8 @@ public class ProjectLoadController {
         MenuUtility.quitApp(menuBar);
     }
 
+    public void aboutPage() { MenuUtility.aboutPage(menuBar); }
+
     public void saveDiagram() {
         PopupWindow popupWindow = new PopupWindow(menuBar);
         popupWindow.createPopupInfoWindow("You haven't created a diagram yet!", "Error");
@@ -40,7 +42,8 @@ public class ProjectLoadController {
         if (selectedFile != null) {
             DiagramVisualization diagramVisualization = new DiagramVisualization(menuBar);
             diagramVisualization.setDiagramController(diagramController);
-            diagramVisualization.loadDiagramVisualization(diagramController.loadDiagram(selectedFile.getPath()));
+            diagramController.loadDiagram(selectedFile.getPath());
+            diagramVisualization.loadDiagramVisualization(diagramController.visualizeJavaFXGraph());
         }
     }
 

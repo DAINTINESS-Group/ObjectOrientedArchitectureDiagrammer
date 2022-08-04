@@ -7,7 +7,6 @@ import javafx.scene.control.MenuBar;
 
 import java.io.File;
 import java.util.List;
-import java.util.Map;
 
 public class DiagramCreation {
 
@@ -25,7 +24,7 @@ public class DiagramCreation {
         DiagramControllerFactory diagramControllerFactory = new DiagramControllerFactory();
         Controller diagramController = diagramControllerFactory.getDiagramController(diagramType);
         diagramController.createTree(projectTreeView.getSourceFolderPath());
-        Map<String, Map<String, String>> diagram = diagramController.convertTreeToDiagram(getSelectedFiles(diagramType));
+        diagramController.convertTreeToDiagram(getSelectedFiles(diagramType));
         diagramController.arrangeDiagram();
 
         if (visualizationType.equals("Export")) {
@@ -36,7 +35,7 @@ public class DiagramCreation {
         }else {
             DiagramVisualization diagramVisualization = new DiagramVisualization(menuBar);
             diagramVisualization.setDiagramController(diagramController);
-            diagramVisualization.loadDiagramVisualization(diagram);
+            diagramVisualization.loadDiagramVisualization(diagramController.visualizeJavaFXGraph());
         }
     }
 

@@ -1,7 +1,7 @@
 package model;
 
-import manager.diagram.ClassDiagramManager;
-import manager.diagram.DiagramManager;
+import manager.ClassDiagramManager;
+import manager.DiagramManager;
 import model.diagram.CollectionsDiagramConverter;
 import model.diagram.GraphEdgeCollection;
 import model.diagram.GraphNodeCollection;
@@ -15,6 +15,9 @@ import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 public class CollectionsDiagramConvertTest {
 
     @Test
@@ -22,7 +25,6 @@ public class CollectionsDiagramConvertTest {
         DiagramManager classDiagramManager = new ClassDiagramManager();
         List<String> chosenFiles = Arrays.asList("MainWindow", "LatexEditorView", "OpeningWindow");
         SourceProject sourceProject = classDiagramManager.createTree("src\\test\\resources\\LatexEditor\\src");
-        Map<String, Map<String, String>> testingCreatedDiagram = classDiagramManager.createDiagram(chosenFiles);
 
         GraphNodeCollection graphNodeCollection = new GraphMLLeafNode();
         GraphEdgeCollection graphEdgeCollection = new GraphMLLeafEdge();
@@ -43,6 +45,14 @@ public class CollectionsDiagramConvertTest {
                 }
             }
             expectedDiagram.put(leafNode.getName() + "_" + leafNode.getType().name(), nodeEdges);
+        }
+
+        for (Map.Entry<String, Map<String, String>> entry: expectedDiagram.entrySet()) {
+            assertTrue(actualDiagram.containsKey(entry.getKey()));
+            for (Map.Entry<String, String> entry1: entry.getValue().entrySet()) {
+                assertTrue(actualDiagram.get(entry.getKey()).containsKey(entry1.getKey()));
+                assertEquals(entry1.getValue(), actualDiagram.get(entry.getKey()).get(entry1.getKey()));
+            }
         }
     }
 

@@ -18,6 +18,7 @@ STYLESHEET FOR JAVAFXGRAPH VISUALIZATION
     -fx-stroke: #000000;
     -fx-stroke-type: inside; /* you should keep this if using arrows */
     -fx-fill: #FF9900;
+    -fx-background-image: url('src/main/resources/styles/package.png');
 }
 
 .vertexInterface {

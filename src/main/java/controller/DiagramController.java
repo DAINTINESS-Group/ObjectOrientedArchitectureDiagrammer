@@ -1,6 +1,7 @@
 package controller;
 
-import manager.diagram.Manager;
+import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
+import manager.Manager;
 import model.tree.SourceProject;
 
 import java.io.File;
@@ -23,12 +24,20 @@ public abstract class DiagramController implements Controller {
 		return diagramManager.exportDiagramToGraphML(graphMLSavePath);
 	}
 
+	public SmartGraphPanel<String, String> visualizeJavaFXGraph() {
+		return diagramManager.visualizeJavaFXGraph();
+	}
+
 	public File saveDiagram(String graphSavePath) {
 		return diagramManager.saveDiagram(graphSavePath);
 	}
 
-	public abstract Map<String, Map<String, String>> loadDiagram(String graphSavePath);
+	public Map<String, Map<String, String>> loadDiagram(String graphSavePath) {
+		return diagramManager.loadDiagram(graphSavePath);
+	}
 
-	public abstract Map<String, Map<String, String>> convertTreeToDiagram(List<String> chosenFileNames);
+	public Map<String, Map<String, String>> convertTreeToDiagram(List<String> chosenClassesNames) {
+		return diagramManager.createDiagram(chosenClassesNames);
+	}
 
 }

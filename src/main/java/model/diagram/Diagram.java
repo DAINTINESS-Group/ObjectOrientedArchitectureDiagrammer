@@ -1,7 +1,10 @@
 package model.diagram;
 
+import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import model.diagram.javafx.JavaFXExporter;
+import model.diagram.javafx.JavaFXLoader;
 import model.diagram.graphml.GraphMLExporter;
+import model.diagram.javafx.JavaFXVisualization;
 import model.tree.Node;
 import model.tree.SourceProject;
 
@@ -55,14 +58,19 @@ public abstract class Diagram {
     }
 
     public Map<String, Map<String, String>> loadDiagram(String graphSavePath) {
-        JavaFXExporter javaFXExporter = new JavaFXExporter();
-        createdDiagram = javaFXExporter.loadDiagram(graphSavePath);
+        JavaFXLoader javaFXLoader = new JavaFXLoader();
+        createdDiagram = javaFXLoader.loadDiagram(graphSavePath);
         return createdDiagram;
     }
 
     public Map<String, Map<String, String>> convertCollectionsToDiagram() {
         CollectionsDiagramConverter collectionsDiagramConverter = new CollectionsDiagramConverter(graphNodeCollection, graphEdgeCollection);
         return collectionsDiagramConverter.convertCollectionsToDiagram();
+    }
+
+    public SmartGraphPanel<String, String> visualizeJavaFXGraph() {
+        JavaFXVisualization javaFXVisualization = new JavaFXVisualization();
+        return javaFXVisualization.createGraphView(createdDiagram);
     }
 
     public abstract List<Node> getChosenNodes(List<String> chosenFileNames);

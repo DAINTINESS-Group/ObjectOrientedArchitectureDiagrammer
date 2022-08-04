@@ -1,4 +1,4 @@
-package manager.diagram;
+package manager;
 
 import model.diagram.Diagram;
 import model.diagram.PackageDiagram;

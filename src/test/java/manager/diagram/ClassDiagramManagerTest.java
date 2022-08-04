@@ -1,5 +1,7 @@
 package manager.diagram;
 
+import manager.ClassDiagramManager;
+import manager.DiagramManager;
 import model.diagram.CollectionsDiagramConverter;
 import model.diagram.DiagramArrangement;
 import model.diagram.GraphEdgeCollection;

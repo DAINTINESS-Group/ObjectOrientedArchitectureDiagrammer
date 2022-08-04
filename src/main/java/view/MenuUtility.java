@@ -54,6 +54,19 @@ public class MenuUtility {
         }
     }
 
+    public static void aboutPage(MenuBar menuBar) {
+        try {
+            URL url = MenuUtility.class.getResource("/fxml/AboutPageView.fxml");
+            Parent aboutPageParent = FXMLLoader.load(url);
+            Scene diagramCreationScene = new Scene(aboutPageParent);
+            Stage window = (Stage) menuBar.getScene().getWindow();
+            window.setScene(diagramCreationScene);
+            window.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void quitApp(MenuBar menuBar){
         Stage window = (Stage) menuBar.getScene().getWindow();
         window.close();
