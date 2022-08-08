@@ -26,7 +26,8 @@ public class FileAndDirectoryUtility {
     public static File saveFile(String windowTitle, MenuBar menuBar, String fileType) {
         final Map<String, String> availableExtensionTypes = Map.ofEntries(
                 entry("Text Files", "*.txt"),
-                entry("GraphML Files", "*.graphML"));
+                entry("GraphML Files", "*.graphML"),
+                entry("PNG files", "*.png"));
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle(windowTitle);
         fileChooser.setInitialDirectory(new File("C:\\Users\\user\\IntelliJProjects\\UMLDiagramTool\\src\\test\\resources\\LatexEditor"));

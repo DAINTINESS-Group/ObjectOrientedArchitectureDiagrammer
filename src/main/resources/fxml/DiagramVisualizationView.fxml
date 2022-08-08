@@ -14,8 +14,7 @@
             <Menu mnemonicParsing="false" text="File">
                <items>
                   <MenuItem mnemonicParsing="false" onAction="#newProject" text="New" />
-                  <MenuItem mnemonicParsing="false" text="Open…" />
-                  <Menu mnemonicParsing="false" text="Load">
+                  <Menu mnemonicParsing="false" text="Load...">
                      <items>
                         <MenuItem mnemonicParsing="false" onAction="#loadDiagram" text="Class Diagram" />
                         <MenuItem mnemonicParsing="false" onAction="#loadDiagram" text="Package Diagram" />
@@ -24,6 +23,7 @@
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem mnemonicParsing="false" onAction="#closeProject" text="Close" />
                   <MenuItem mnemonicParsing="false" onAction="#saveDiagram" text="Save As…" />
+                  <MenuItem mnemonicParsing="false" onAction="#ExportDiagram" text="Export As..." />
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem mnemonicParsing="false" onAction="#quitApp" text="Quit" />
                </items>

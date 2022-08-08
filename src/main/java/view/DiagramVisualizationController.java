@@ -4,11 +4,16 @@ import com.brunomnsilva.smartgraph.containers.ContentZoomPane;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 
 import controller.Controller;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.control.MenuBar;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.BorderPane;
 
+import javax.imageio.ImageIO;
 import java.io.File;
+import java.io.IOException;
 
 public class DiagramVisualizationController {
 
@@ -67,6 +72,18 @@ public class DiagramVisualizationController {
 
     public void quitApp() {
         MenuUtility.quitApp(menuBar);
+    }
+
+    public void ExportDiagram() {
+        File selectedDirectory = FileAndDirectoryUtility.saveFile("Export Diagram as PNG", menuBar,"PNG files");
+        if (selectedDirectory != null) {
+            WritableImage image = borderPane.snapshot(new SnapshotParameters(), null);
+            try {
+                ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", selectedDirectory);
+            }catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void saveDiagram() {
