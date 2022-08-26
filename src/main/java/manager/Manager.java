@@ -46,8 +46,8 @@ public interface Manager {
     File saveDiagram(String graphSavePath);
 
     /**This method loads a JavaFX diagram from a file, selected by the designer, by creating an object of the class
-     *  Diagram and populating the createdDiagram Collection with the contents of the file. The createdDiagram is a Map
-     *  as described in the method above
+     * Diagram and populating the createdDiagram Collection with the contents of the file. The createdDiagram is a Map
+     * as described in the method above
      * @param graphSavePath the file's path where the diagram is saved
      * @return the createdDiagram
      */

@@ -1,15 +1,21 @@
 package view;
 
+import controller.Controller;
+import controller.DiagramControllerFactory;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
 
 import java.io.File;
 import java.net.URL;
 
 public class MenuUtility {
+
+    private static final int DIAGRAM_TYPE = 0;
 
     private MenuUtility(){
         throw new java.lang.UnsupportedOperationException("Not to be instantiated");
@@ -24,8 +30,8 @@ public class MenuUtility {
                 loader.setLocation(url);
                 Parent diagramCreationParent = loader.load();
 
-                DiagramCreationController controller = loader.getController();
-                controller.createTreeView(selectedDirectory.getPath());
+                DiagramCreationController diagramCreationController = loader.getController();
+                diagramCreationController.createTreeView(selectedDirectory.getPath());
 
                 Scene diagramCreationScene = new Scene(diagramCreationParent);
                 Stage window = (Stage) menuBar.getScene().getWindow();
@@ -35,10 +41,6 @@ public class MenuUtility {
                 e.printStackTrace();
             }
         }
-    }
-
-    private static boolean isCalledByTheVisualizationController() {
-        return Thread.currentThread().getStackTrace()[2].getClassName().equals("view.DiagramVisualizationController");
     }
 
     public static void closeProject(MenuBar menuBar){
@@ -70,5 +72,17 @@ public class MenuUtility {
     public static void quitApp(MenuBar menuBar){
         Stage window = (Stage) menuBar.getScene().getWindow();
         window.close();
+    }
+
+    public static void loadDiagram(MenuBar menuBar, ActionEvent event) {
+        DiagramControllerFactory diagramControllerFactory = new DiagramControllerFactory();
+        Controller diagramController = diagramControllerFactory.getDiagramController(((MenuItem) event.getSource()).getText().split(" ")[DIAGRAM_TYPE]);
+        File selectedFile = FileAndDirectoryUtility.loadFile(String.format("Load %s", ((MenuItem) event.getSource()).getText()), menuBar);
+        if (selectedFile != null) {
+            DiagramVisualization diagramVisualization = new DiagramVisualization(menuBar);
+            diagramVisualization.setDiagramController(diagramController);
+            diagramController.loadDiagram(selectedFile.getPath());
+            diagramVisualization.loadDiagramVisualization(diagramController.visualizeJavaFXGraph(), "loaded");
+        }
     }
 }

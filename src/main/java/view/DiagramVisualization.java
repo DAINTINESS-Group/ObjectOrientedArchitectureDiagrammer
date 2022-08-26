@@ -14,16 +14,23 @@ import java.net.URL;
 
 public class DiagramVisualization {
 
+    private static final int EDGE_STARTING_NODE = 0;
+    private static final int EDGE_ENDING_NODE = 1;
+    private static final int EDGE_TYPE = 2;
+
     @FXML
     MenuBar menuBar;
 
+    private ProjectTreeView projectTreeView;
     private Controller diagramController;
+    private SmartGraphPanel<String, String> graphView;
 
     public DiagramVisualization(MenuBar menuBar) {
         this.menuBar = menuBar;
     }
 
-    public void loadDiagramVisualization(SmartGraphPanel<String, String> graphView) {
+    public void loadDiagramVisualization(SmartGraphPanel<String, String> graphView, String diagramType) {
+        this.graphView = graphView;
         try {
             URL url = getClass().getResource("/fxml/DiagramVisualizationView.fxml");
             FXMLLoader loader = new FXMLLoader();
@@ -32,20 +39,46 @@ public class DiagramVisualization {
 
             DiagramVisualizationController diagramVisualizationController = loader.getController();
             diagramVisualizationController.setDiagramController(diagramController);
-            diagramVisualizationController.visualizeGraph(graphView);
+
+            if (diagramType.equals("new")) {
+                diagramVisualizationController.setTreeView(projectTreeView);
+            }
+
+            addGraphActions();
+            diagramVisualizationController.visualizeGraph(graphView, diagramType);
 
             Scene diagramVisualizationScene = new Scene(diagramVisualizationParent);
             Stage window = (Stage) menuBar.getScene().getWindow();
             window.setScene(diagramVisualizationScene);
             window.show();
-
-            diagramVisualizationController.getGraphView().init();
+            graphView.init();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    public void addGraphActions() {
+        addVertexActions();
+        addEdgeActions();
+    }
+
+    private void addVertexActions() {
+        graphView.setVertexDoubleClickAction((graphVertex) ->
+                PopupWindow.createPopupInfoWindow(String.format("Vertex contains element: %s", graphVertex.getUnderlyingVertex().element()),
+                "Node Information"));
+    }
+
+    private void addEdgeActions() {
+        graphView.setEdgeDoubleClickAction((graphEdge) ->
+                PopupWindow.createPopupInfoWindow(String.format("Edge starting node: %s", graphEdge.getUnderlyingEdge().element().split("_")[EDGE_STARTING_NODE]) +
+                "\n" + String.format("Edge ending node: %s", graphEdge.getUnderlyingEdge().element().split("_")[EDGE_ENDING_NODE]) +
+                "\n" + String.format("Type of relationship: %s", Character.toUpperCase(graphEdge.getUnderlyingEdge().element().split("_")[EDGE_TYPE].charAt(0)) +
+                graphEdge.getUnderlyingEdge().element().split("_")[EDGE_TYPE].substring(1)), "Edge Information"));
+    }
+
     public void setDiagramController(Controller diagramController) {
         this.diagramController = diagramController;
     }
+
+    public void setProjectTreeView(ProjectTreeView projectTreeView) { this.projectTreeView = projectTreeView; }
 }

@@ -28,16 +28,18 @@ import org.eclipse.text.edits.MalformedTreeException;
 import model.tree.LeafNode;
 import model.tree.PackageNode;
 
-/* This class is responsible for the creation of the AST Tree of a Java source file.
- * Using the ASTNode API it parses the files methods and field declarations */
+/**This class is responsible for the creation of the AST Tree of a Java source file.
+ * Using the ASTNode API it parses the files methods and field declarations
+ */
 public class FileVisitor {
 
 	private CompilationUnit unit;
 	private LeafNode leafNode;
 	private String sourceFile[];
 	
-	/* This method calls the createAST method that is responsible for the creation
-	 * of the AST */
+	/** This method calls the createAST method that is responsible for the creation
+	 * of the AST
+	 */
 	public FileVisitor(File file, LeafNode leafNode, Map<String, PackageNode> packageNodes){
 		try {
 			createAST(file, leafNode, packageNodes);
@@ -47,32 +49,13 @@ public class FileVisitor {
 	}
 	
     private void createAST(File file, LeafNode leafNode, Map<String, PackageNode> packageNodes) throws IOException, MalformedTreeException {
-    	// System.out.println("File: " + file.getPath());
     	ASTParser parser = ASTParser.newParser(AST.JLS17);
     	this.sourceFile = ReadFileToCharArray(file.getAbsolutePath()).split("\\n");
 	    parser.setSource(ReadFileToCharArray(file.getAbsolutePath()).toCharArray());
 	    this.unit = (CompilationUnit)parser.createAST(null);
 	    this.leafNode = leafNode;
-	    validatePackageDeclaration(packageNodes);
 	    processJavaFile();
     }
-    
-    private void validatePackageDeclaration(Map<String, PackageNode> packageNodes) throws MalformedTreeException {
-	    if (!isPackageValid()) {
-	    	for(PackageNode p: packageNodes.values()) {
-	    		if (p.getName().equals(unit.getPackage().getName().toString())) {
-	    			leafNode.setParentNode(p);
-	    		}
-	    	}
-	    }
-    }
-
-	private boolean isPackageValid() {
-		if (leafNode.getParentNode().getName().equals("src")) {
-			return true;
-		}
-		return unit.getPackage().getName().toString().equals(leafNode.getParentNode().getName());
-	}
     
     private  void processJavaFile() throws MalformedTreeException {
 	    // to iterate through methods
@@ -87,8 +70,6 @@ public class FileVisitor {
 	        if (type.getNodeType() == ASTNode.TYPE_DECLARATION) {
 	        	SimpleName typeName = type.getName();
 	        	leafNode.setInheritanceLine(convertInheritanceLine(type));
-	        	// System.out.println("Type name: " + typeName);
-    			// System.out.println("   Type modifiers: " + type.modifiers() );
 	            List<BodyDeclaration> bodies = new ArrayList<>();
 	        	for (Object o: type.bodyDeclarations()) {
 	        		bodies.add((BodyDeclaration)(o));
@@ -102,22 +83,13 @@ public class FileVisitor {
 	    	        		fragments.add((VariableDeclarationFragment)(o));
 	    	        	}
 	            		for(VariableDeclarationFragment fragment: fragments) {
-		            		// System.out.println(" field name: " + fragment.getName().toString());
 							fieldName = fragment.getName().toString();
 		            		Map<Object, Object> map = new HashMap<>();
 		            		for (Object ob: fragment.properties().keySet()) {
 		            			map.put(ob, map.get(ob));
 		            		}
-							/*
-		            		if (map != null) {
-		            			for(Object key: map.keySet())
-		            				// System.out.println(key + " : " + map.get(key).toString());
-		            		}
-							*/
 		            	}
 	            		leafNode.addField(fieldName , field.getType().toString().replaceAll("<", "[").replaceAll(">", "]"));
-            			// System.out.println("   modifiers: " + field.modifiers() );
-            			// System.out.println("   type: " + field.getType() );
 	            	}
 	                if (isMethod(body)) {
 	                    MethodDeclaration method = (MethodDeclaration)body;
@@ -138,9 +110,6 @@ public class FileVisitor {
 	                    
 	                    leafNode.addMethodParametersTypes(parameters);
 	                    leafNode.addMethod(methodName, returnTypeName.replaceAll("<", "[").replaceAll(">", "]"));
-	                    // System.out.println(" method: " + methodName + " --> " + returnTypeName );
-	                    // System.out.println("   modifiers: " + method.modifiers() );
-	                    // System.out.println("   parameters: " + parameters );
 	                }
 	            }
 	        }

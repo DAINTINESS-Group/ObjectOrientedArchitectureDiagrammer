@@ -5,6 +5,7 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
 <VBox prefHeight="650.0" prefWidth="900.0" stylesheets="@../styles/modena_dark.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.DiagramVisualizationController">
@@ -28,6 +29,25 @@
                   <MenuItem mnemonicParsing="false" onAction="#quitApp" text="Quit" />
                </items>
             </Menu>
+            <Menu mnemonicParsing="false" text="Diagram">
+               <items>
+                  <Menu mnemonicParsing="false" text="New Diagram...">
+                     <items>
+                        <MenuItem mnemonicParsing="false" onAction="#createProject" text="Class" />
+                        <MenuItem mnemonicParsing="false" onAction="#createProject" text="Package" />
+                     </items>
+                  </Menu>
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" onAction="#loadProject" text="Load Diagram" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <Menu mnemonicParsing="false" text="View Diagram...">
+                     <items>
+                        <MenuItem mnemonicParsing="false" onAction="#viewProject" text="Export" />
+                        <MenuItem mnemonicParsing="false" onAction="#viewProject" text="View" />
+                     </items>
+                  </Menu>
+               </items>
+            </Menu>
             <Menu mnemonicParsing="false" text="Help">
                <items>
                   <MenuItem mnemonicParsing="false" onAction="#aboutPage" text="About" />
@@ -35,6 +55,10 @@
             </Menu>
          </menus>
       </MenuBar>
-      <BorderPane fx:id="borderPane" prefHeight="383.0" prefWidth="600.0" VBox.vgrow="ALWAYS" />
+      <HBox prefHeight="734.0" prefWidth="900.0">
+         <children>
+            <BorderPane fx:id="borderPane" prefHeight="625.0" prefWidth="917.0" />
+         </children>
+      </HBox>
    </children>
 </VBox>

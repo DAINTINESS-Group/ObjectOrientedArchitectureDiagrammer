@@ -1,6 +1,8 @@
 package parser;
 
+import java.nio.*;
 import java.io.File;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,9 +13,10 @@ import model.tree.RelationshipIdentifier;
 import model.tree.PackageNode;
 
 
-/* This class is responsible for the parsing of a Java project. While parsing the project
+/** This class is responsible for the parsing of a Java project. While parsing the project
  * it creates a tree where nodes are the packages and leafs are the Java source files.
- * In order to create the tree it uses the ASTNode API from the JDT library */
+ * In order to create the tree it uses the ASTNode API from the JDT library
+ */
 public class ProjectParser implements Parser {
 	private final Map<String, PackageNode> packageNodes;
 
@@ -23,7 +26,7 @@ public class ProjectParser implements Parser {
 
 	public PackageNode parseSourcePackage(String sourcePackagePath) {
 		PackageNode rootPackageNode = new PackageNode(sourcePackagePath);
-		packageNodes.put(rootPackageNode.getName(), rootPackageNode);
+		packageNodes.put(rootPackageNode.getNodesPath(), rootPackageNode);
 		try {
 			parseFolder(rootPackageNode);
 		} catch (Exception e) {
@@ -46,16 +49,16 @@ public class ProjectParser implements Parser {
 	}
 
 	private void createPackageSubNode(PackageNode currentNode, PackageNode subNode) throws ParseException{
-		packageNodes.put(subNode.getName(), subNode);
-		currentNode.addSubNode(subNode);
 		subNode.setParentNode(currentNode);
+		packageNodes.put(subNode.getNodesPath(), subNode);
+		currentNode.addSubNode(subNode);
 		parseFolder(subNode);
 	}
 
 	private void createLeafNode(PackageNode currentNode, LeafNode leafNode, File file) {
+		leafNode.setParentNode(currentNode);
 		currentNode.setValid();
 		currentNode.addLeafNode(leafNode);
-		leafNode.setParentNode(currentNode);
 		new FileVisitor(file, leafNode, packageNodes);
 	}
 	
@@ -67,8 +70,9 @@ public class ProjectParser implements Parser {
 		return currentPackage.getNodesPath() + "\\" + file.getName();
 	}
 	
-	/* This method returns the map with keys the name of the package and values 
-	 * the object of type PackageNode */
+	/** This method returns the map with keys the name of the package and values
+	 * the object of type PackageNode
+	 */
 	public Map<String, PackageNode> getPackageNodes() {
 		return packageNodes;
 	}
