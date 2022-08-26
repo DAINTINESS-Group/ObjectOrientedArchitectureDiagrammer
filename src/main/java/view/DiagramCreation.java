@@ -45,9 +45,9 @@ public class DiagramCreation {
 
     private List<String> getSelectedFiles(String diagramType) {
         if (diagramType.equals("Package")) {
-            return projectTreeView.getSelectedFiles(projectTreeView.getFolderFiles());
+            return projectTreeView.getSelectedFiles(projectTreeView.getFolderFiles(), "package");
         }else{
-            return projectTreeView.getSelectedFiles(projectTreeView.getJavaSourceFiles());
+            return projectTreeView.getSelectedFiles(projectTreeView.getJavaSourceFiles(), "java");
         }
     }
 
@@ -64,8 +64,8 @@ public class DiagramCreation {
     }
 
     private boolean wereFilesChosen() {
-        return !(projectTreeView.getSelectedFiles(projectTreeView.getFolderFiles()).size() == 0 &&
-                projectTreeView.getSelectedFiles(projectTreeView.getJavaSourceFiles()).size() == 0);
+        return !(projectTreeView.getSelectedFiles(projectTreeView.getFolderFiles(), "package").size() == 0 &&
+                projectTreeView.getSelectedFiles(projectTreeView.getJavaSourceFiles(), "java").size() == 0);
     }
 
     private void createDiagram(String visualizationType){

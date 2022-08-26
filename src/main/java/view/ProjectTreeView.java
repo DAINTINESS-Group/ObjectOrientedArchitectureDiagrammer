@@ -52,7 +52,6 @@ public class ProjectTreeView {
         if (file.isDirectory()) {
             folderFiles.add(getRelativePath(file));
             CheckBoxTreeItem<String> treeItem = new CheckBoxTreeItem<>(getRelativePath(file));
-
             parent.getChildren().add(treeItem);
             for (File f : Objects.requireNonNull(file.listFiles())) {
                 createTree(f, treeItem);
@@ -67,11 +66,11 @@ public class ProjectTreeView {
         return file.getPath().replace(sourceFolderPath.substring(0, sourceFolderPath.lastIndexOf("\\") + 1), "").replace("\\", ".");
     }
 
-    public List<String> getSelectedFiles(List<String> projectsFiles) {
+    public List<String> getSelectedFiles(List<String> files, String fileType) {
         List<String> selectedFiles = new ArrayList<>();
         for (CheckBoxTreeItem<?> c: checkedItems) {
-            if (projectsFiles.contains((String) c.getValue())) {
-                if (isFileExtensionJava(((String) c.getValue()))) {
+            if (files.contains((String) c.getValue())) {
+                if (fileType.equals("java")) {
                     selectedFiles.add(subtractFileExtension((String) c.getValue()));
                 }else{
                     selectedFiles.add(getFullPath(c));

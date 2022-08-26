@@ -9,8 +9,8 @@ public class ProjectLoadController {
     @FXML
     MenuBar menuBar;
 
-    public void newProject() {
-        MenuUtility.newProject(menuBar);
+    public void openProject() {
+        MenuUtility.openProject(menuBar);
     }
 
     public void closeProject() {

@@ -6,6 +6,7 @@
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
 <VBox prefHeight="650.0" prefWidth="900.0" stylesheets="@../styles/modena_dark.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.DiagramVisualizationController">
@@ -14,7 +15,7 @@
          <menus>
             <Menu mnemonicParsing="false" text="File">
                <items>
-                  <MenuItem mnemonicParsing="false" onAction="#newProject" text="New" />
+                  <MenuItem mnemonicParsing="false" onAction="#openProject" text="Open…" />
                   <Menu mnemonicParsing="false" text="Load...">
                      <items>
                         <MenuItem mnemonicParsing="false" onAction="#loadDiagram" text="Class Diagram" />
@@ -55,9 +56,12 @@
             </Menu>
          </menus>
       </MenuBar>
-      <HBox prefHeight="734.0" prefWidth="900.0">
+      <HBox prefHeight="734.0" prefWidth="900.0" VBox.vgrow="ALWAYS">
          <children>
-            <BorderPane fx:id="borderPane" prefHeight="625.0" prefWidth="917.0" />
+            <BorderPane fx:id="borderPane" prefHeight="625.0" prefWidth="917.0" HBox.hgrow="ALWAYS">
+               <right>
+                  <Pane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="625.0" prefWidth="21.0" BorderPane.alignment="CENTER" />
+               </right></BorderPane>
          </children>
       </HBox>
    </children>

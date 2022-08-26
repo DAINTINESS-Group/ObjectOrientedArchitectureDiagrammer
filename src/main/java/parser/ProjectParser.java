@@ -25,6 +25,8 @@ public class ProjectParser implements Parser {
 	}
 
 	public PackageNode parseSourcePackage(String sourcePackagePath) {
+		Paths.get(sourcePackagePath);
+
 		PackageNode rootPackageNode = new PackageNode(sourcePackagePath);
 		packageNodes.put(rootPackageNode.getNodesPath(), rootPackageNode);
 		try {

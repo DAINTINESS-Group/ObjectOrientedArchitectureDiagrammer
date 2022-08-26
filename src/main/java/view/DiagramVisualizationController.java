@@ -48,8 +48,8 @@ public class DiagramVisualizationController {
         diagramCreation.viewProject(((MenuItem) event.getSource()).getText());
     }
 
-    public void newProject() {
-        MenuUtility.newProject(menuBar);
+    public void openProject() {
+        MenuUtility.openProject(menuBar);
     }
 
     public void closeProject() {

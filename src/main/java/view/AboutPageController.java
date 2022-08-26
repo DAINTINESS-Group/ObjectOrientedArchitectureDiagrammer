@@ -22,7 +22,7 @@ public class AboutPageController implements Initializable {
     }
 
     public void newProject() {
-        MenuUtility.newProject(menuBar);
+        MenuUtility.openProject(menuBar);
     }
 
     public void closeProject() {
