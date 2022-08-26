@@ -33,8 +33,9 @@ public class ProjectTreeView {
     public void createTreeView(){
         folderFiles = new ArrayList<>();
         javaSourceFiles = new ArrayList<>();
-        rootItem = new CheckBoxTreeItem<>(sourceFolderPath);
-        treeView.setShowRoot(false);
+        rootItem = new CheckBoxTreeItem<>(sourceFolderPath
+                .substring(sourceFolderPath.lastIndexOf("\\") + 1));
+        treeView.setShowRoot(true);
         treeView.setCellFactory(CheckBoxTreeCell.<String>forTreeView());
         File sourceFolder = new File(sourceFolderPath);
         try {
@@ -49,16 +50,21 @@ public class ProjectTreeView {
 
     private void createTree(File file, CheckBoxTreeItem<String> parent) {
         if (file.isDirectory()) {
-            folderFiles.add(file.getName());
-            CheckBoxTreeItem<String> treeItem = new CheckBoxTreeItem<>(file.getName());
+            folderFiles.add(getRelativePath(file));
+            CheckBoxTreeItem<String> treeItem = new CheckBoxTreeItem<>(getRelativePath(file));
+
             parent.getChildren().add(treeItem);
             for (File f : Objects.requireNonNull(file.listFiles())) {
                 createTree(f, treeItem);
             }
-        } else if (isFileExtensionJava(file.getPath())) {
+        }else if (isFileExtensionJava(file.getPath())) {
             parent.getChildren().add(new CheckBoxTreeItem<>(file.getName()));
             javaSourceFiles.add(file.getName());
         }
+    }
+
+    private String getRelativePath(File file) {
+        return file.getPath().replace(sourceFolderPath.substring(0, sourceFolderPath.lastIndexOf("\\") + 1), "").replace("\\", ".");
     }
 
     public List<String> getSelectedFiles(List<String> projectsFiles) {
@@ -67,12 +73,16 @@ public class ProjectTreeView {
             if (projectsFiles.contains((String) c.getValue())) {
                 if (isFileExtensionJava(((String) c.getValue()))) {
                     selectedFiles.add(subtractFileExtension((String) c.getValue()));
-                }else {
-                    selectedFiles.add((String) c.getValue());
+                }else{
+                    selectedFiles.add(getFullPath(c));
                 }
             }
         }
         return selectedFiles;
+    }
+
+    private String getFullPath(CheckBoxTreeItem<?> c) {
+        return sourceFolderPath.substring(0, sourceFolderPath.lastIndexOf("\\") + 1) + ((String) c.getValue()).replace(".", "\\");
     }
 
     public void setCheckedItems(CheckBoxTreeItem<?> rootItem) {

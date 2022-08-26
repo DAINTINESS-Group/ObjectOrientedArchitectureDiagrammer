@@ -33,7 +33,6 @@
 -->
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
@@ -65,6 +64,25 @@
             <MenuItem mnemonicParsing="false" onAction="#quitApp" text="Quit" />
           </items>
         </Menu>
+            <Menu mnemonicParsing="false" text="Diagram">
+               <items>
+                  <Menu mnemonicParsing="false" text="New Diagram...">
+                     <items>
+                        <MenuItem mnemonicParsing="false" onAction="#createProject" text="Class" />
+                        <MenuItem mnemonicParsing="false" onAction="#createProject" text="Package" />
+                     </items>
+                  </Menu>
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" onAction="#loadProject" text="Load Diagram" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <Menu mnemonicParsing="false" text="View Diagram...">
+                     <items>
+                        <MenuItem mnemonicParsing="false" onAction="#viewProject" text="Export" />
+                        <MenuItem mnemonicParsing="false" onAction="#viewProject" text="View" />
+                     </items>
+                  </Menu>
+               </items>
+            </Menu>
         <Menu mnemonicParsing="false" text="Help">
           <items>
             <MenuItem mnemonicParsing="false" onAction="#aboutPage" text="About" />
@@ -75,31 +93,10 @@
       <HBox fx:id="hBox" prefHeight="401.0" prefWidth="640.0" VBox.vgrow="ALWAYS">
          <children>
             <TreeView fx:id="treeView" prefHeight="358.0" prefWidth="196.0" HBox.hgrow="NEVER" />
-            <Pane minHeight="-Infinity" minWidth="-Infinity" prefHeight="358.0" prefWidth="131.0">
-               <children>
-                  <Button layoutX="20.0" layoutY="250.0" mnemonicParsing="false" onAction="#chooseDiagramVisualization" text="Package Diagram">
-                     <font>
-                        <Font name="Calibri Light" size="14.0" />
-                     </font>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                  </Button>
-               </children>
-            </Pane>
             <Pane minHeight="-Infinity" minWidth="-Infinity" prefHeight="358.0" prefWidth="161.0" HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets />
                </HBox.margin>
-            </Pane>
-            <Pane minHeight="-Infinity" minWidth="-Infinity" prefHeight="358.0" prefWidth="130.0">
-               <children>
-                  <Button layoutX="10.0" layoutY="250.0" mnemonicParsing="false" onAction="#chooseDiagramVisualization" text="Class Diagram">
-                     <font>
-                        <Font name="Calibri Light" size="14.0" />
-                     </font>
-                  </Button>
-               </children>
             </Pane>
          </children>
       </HBox>

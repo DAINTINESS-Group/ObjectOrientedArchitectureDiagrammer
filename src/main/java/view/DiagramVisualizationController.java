@@ -5,9 +5,11 @@ import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 
 import controller.Controller;
 import javafx.embed.swing.SwingFXUtils;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.BorderPane;
 
@@ -17,49 +19,33 @@ import java.io.IOException;
 
 public class DiagramVisualizationController {
 
-    private static final int EDGE_STARTING_NODE = 0;
-    private static final int EDGE_ENDING_NODE = 1;
-    private static final int EDGE_TYPE = 2;
-
     @FXML
     BorderPane borderPane;
     @FXML
     MenuBar menuBar;
 
-    private SmartGraphPanel<String, String> graphView;
     private Controller diagramController;
+    private ProjectTreeView projectTreeView;
+    private DiagramCreation diagramCreation;
 
-    public void visualizeGraph(SmartGraphPanel<String, String> graphView) {
-        this.graphView = graphView;
-        addGraphActions();
+    public void visualizeGraph(SmartGraphPanel<String, String> graphView, String diagramType) {
         borderPane.setCenter(new ContentZoomPane(graphView));
+        diagramCreation = new DiagramCreation(projectTreeView, menuBar);
+        if (diagramType.equals("new")) {
+            setTreeView(projectTreeView);
+        }
     }
 
-    public void addGraphActions() {
-        addVertexActions();
-        addEdgeActions();
+    public void createProject(ActionEvent event) {
+        diagramCreation.createProject(((MenuItem) event.getSource()).getText());
     }
 
-    private void addVertexActions() {
-        graphView.setVertexDoubleClickAction((graphVertex) -> {
-            PopupWindow popupWindow = new PopupWindow(menuBar);
-            popupWindow.createPopupInfoWindow(String.format("Vertex contains element: %s", graphVertex.getUnderlyingVertex().element()),
-                    "Node Information");
-        });
+    public void loadProject() {
+        diagramCreation.loadProject();
     }
 
-    private void addEdgeActions() {
-        graphView.setEdgeDoubleClickAction((graphEdge) -> {
-            PopupWindow popupWindow = new PopupWindow(menuBar);
-            popupWindow.createPopupInfoWindow(String.format("Edge starting node: %s", graphEdge.getUnderlyingEdge().element().split("_")[EDGE_STARTING_NODE]) +
-                    "\n" + String.format("Edge ending node: %s", graphEdge.getUnderlyingEdge().element().split("_")[EDGE_ENDING_NODE]) +
-                    "\n" + String.format("Type of relationship: %s", Character.toUpperCase(graphEdge.getUnderlyingEdge().element().split("_")[EDGE_TYPE].charAt(0)) +
-                    graphEdge.getUnderlyingEdge().element().split("_")[EDGE_TYPE].substring(1)), "Edge Information");
-        });
-    }
-
-    public SmartGraphPanel<String, String> getGraphView() {
-        return graphView;
+    public void viewProject(ActionEvent event) {
+        diagramCreation.viewProject(((MenuItem) event.getSource()).getText());
     }
 
     public void newProject() {
@@ -77,7 +63,7 @@ public class DiagramVisualizationController {
     public void ExportDiagram() {
         File selectedDirectory = FileAndDirectoryUtility.saveFile("Export Diagram as PNG", menuBar,"PNG files");
         if (selectedDirectory != null) {
-            WritableImage image = borderPane.snapshot(new SnapshotParameters(), null);
+            WritableImage image = borderPane.getCenter().snapshot(new SnapshotParameters(), null);
             try {
                 ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", selectedDirectory);
             }catch (IOException e) {
@@ -94,13 +80,17 @@ public class DiagramVisualizationController {
     }
 
     public void loadDiagram() {
-        PopupWindow popupWindow = new PopupWindow(menuBar);
-        popupWindow.createPopupInfoWindow("Close the current diagram first!", "Error");
+        PopupWindow.createPopupInfoWindow("Close the current diagram first!", "Error");
     }
 
     public void aboutPage() { MenuUtility.aboutPage(menuBar); }
 
     public void setDiagramController(Controller diagramController) {
         this.diagramController = diagramController;
+    }
+
+    public void setTreeView(ProjectTreeView projectTreeView) {
+        this.projectTreeView = projectTreeView;
+        borderPane.setLeft(projectTreeView.treeView);
     }
 }
