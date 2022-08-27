@@ -18,7 +18,7 @@ public abstract class DiagramManager implements Manager {
     }
 
     public SourceProject createTree(Path sourcePackagePath) {
-        diagramStack.push(getDiagramType());
+        diagramStack.push(getDiagram());
         return Objects.requireNonNull(diagramStack.peek()).createTree(sourcePackagePath);
     }
 
@@ -39,7 +39,7 @@ public abstract class DiagramManager implements Manager {
     }
 
     public Map<String, Map<String, String>> loadDiagram(Path graphSavePath) {
-        diagramStack.push(getDiagramType());
+        diagramStack.push(getDiagram());
         return Objects.requireNonNull(diagramStack.peek()).loadDiagram(graphSavePath);
     }
 
@@ -51,6 +51,6 @@ public abstract class DiagramManager implements Manager {
      * This method is responsible for creating the corresponding type of Diagram, i.e., Class/Package Diagram
      * @return the Class/Package Diagram created
      */
-    public abstract Diagram getDiagramType();
+    public abstract Diagram getDiagram();
 
 }

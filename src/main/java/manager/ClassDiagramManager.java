@@ -5,7 +5,7 @@ import model.diagram.Diagram;
 
 public class ClassDiagramManager extends DiagramManager {
 
-    public Diagram getDiagramType() {
+    public Diagram getDiagram() {
         return new ClassDiagram();
     }
 
