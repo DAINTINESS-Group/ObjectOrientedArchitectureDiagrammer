@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -19,15 +21,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class JavaFXExporterTest {
 
+    Path currentDirectory = Path.of(".");
+
     @Test
-    void saveDiagramTest() {
+    void saveDiagramTest() throws IOException {
         DiagramManager classDiagramManager = new ClassDiagramManager();
         List<String> chosenFiles = Arrays.asList("MainWindow", "LatexEditorView", "OpeningWindow");
-        SourceProject sourceProject = classDiagramManager.createTree("src\\test\\resources\\LatexEditor\\src");
+        SourceProject sourceProject = classDiagramManager.createTree(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
         Map<String, Map<String, String>> createdDiagram = classDiagramManager.createDiagram(chosenFiles);
 
         JavaFXExporter javaFXExporter = new JavaFXExporter();
-        File actualFile = javaFXExporter.saveDiagram(createdDiagram, System.getProperty("user.home")+"\\testingExportedFile.graphML");
+        File actualFile = javaFXExporter.saveDiagram(createdDiagram, Paths.get(System.getProperty("user.home")+"\\testingExportedFile.graphML"));
 
         Properties propertiesMap = new Properties();
         for (Map.Entry<String, Map<String, String>> entry: createdDiagram.entrySet()) {

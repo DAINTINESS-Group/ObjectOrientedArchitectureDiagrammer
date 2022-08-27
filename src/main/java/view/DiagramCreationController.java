@@ -5,19 +5,21 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 
+import java.nio.file.Path;
+
 public class DiagramCreationController {
 
     @FXML
     MenuBar menuBar;
     @FXML
-    TreeView treeView;
+    TreeView<String> treeView;
     @FXML
     HBox hBox;
 
     private ProjectTreeView projectTreeView;
     private DiagramCreation diagramCreation;
 
-    public void createTreeView(String sourceFolderPath){
+    public void createTreeView(Path sourceFolderPath){
         projectTreeView = new ProjectTreeView(treeView, sourceFolderPath);
         projectTreeView.createTreeView();
     }

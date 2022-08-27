@@ -13,6 +13,9 @@ import model.tree.Relationship;
 import model.tree.SourceProject;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -20,11 +23,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CollectionsDiagramConvertTest {
 
+    Path currentDirectory = Path.of(".");
     @Test
-    void convertCollectionsToDiagramTest() {
+    void convertCollectionsToDiagramTest() throws IOException {
         DiagramManager classDiagramManager = new ClassDiagramManager();
         List<String> chosenFiles = Arrays.asList("MainWindow", "LatexEditorView", "OpeningWindow");
-        SourceProject sourceProject = classDiagramManager.createTree("src\\test\\resources\\LatexEditor\\src");
+        SourceProject sourceProject = classDiagramManager.createTree(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
 
         GraphNodeCollection graphNodeCollection = new GraphMLLeafNode();
         GraphEdgeCollection graphEdgeCollection = new GraphMLLeafEdge();

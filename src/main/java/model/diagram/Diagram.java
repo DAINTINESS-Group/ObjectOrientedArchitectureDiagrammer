@@ -9,6 +9,7 @@ import model.tree.Node;
 import model.tree.SourceProject;
 
 import java.io.*;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +26,7 @@ public abstract class Diagram {
         this.createdDiagram = new HashMap<>();
     }
 
-    public SourceProject createTree(String sourcePackagePath) {
+    public SourceProject createTree(Path sourcePackagePath) {
         sourceProject = new SourceProject(sourcePackagePath);
         sourceProject.parseSourceProject();
         return sourceProject;
@@ -45,19 +46,19 @@ public abstract class Diagram {
         return nodesGeometry;
     }
 
-    public File exportDiagramToGraphML(String graphMLSavePath) {
+    public File exportDiagramToGraphML(Path graphMLSavePath) {
         graphNodeCollection.convertNodesToGraphML(nodesGeometry);
         graphEdgeCollection.convertEdgesToGraphML();
         GraphMLExporter graphMLExporter = new GraphMLExporter();
         return graphMLExporter.exportDiagramToGraphML(graphMLSavePath, graphNodeCollection.getGraphMLBuffer(), graphEdgeCollection.getGraphMLBuffer());
     }
 
-    public File saveDiagram(String graphSavePath) {
+    public File saveDiagram(Path graphSavePath) {
         JavaFXExporter javaFXExporter = new JavaFXExporter();
         return javaFXExporter.saveDiagram(createdDiagram, graphSavePath);
     }
 
-    public Map<String, Map<String, String>> loadDiagram(String graphSavePath) {
+    public Map<String, Map<String, String>> loadDiagram(Path graphSavePath) {
         JavaFXLoader javaFXLoader = new JavaFXLoader();
         createdDiagram = javaFXLoader.loadDiagram(graphSavePath);
         return createdDiagram;

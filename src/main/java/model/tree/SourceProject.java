@@ -3,19 +3,20 @@ package model.tree;
 import parser.Parser;
 import parser.ProjectParser;
 
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
 public class SourceProject {
 
-    private Map<String, PackageNode> packageNodes;
+    private Map<Path, PackageNode> packageNodes;
     private PackageNode rootPackage;
     private int numberOfPackages;
     private int numberOfLeafNodes;
     private final Map<String, LeafNode> projectsLeafNodes;
-    private final String sourcePackagePath;
+    private final Path sourcePackagePath;
 
-    public SourceProject(String sourcePackagePath) {
+    public SourceProject(Path sourcePackagePath) {
         this.sourcePackagePath = sourcePackagePath;
         this.projectsLeafNodes = new HashMap<>();
     }
@@ -26,9 +27,9 @@ public class SourceProject {
      * @return the root of the tree
      */
     public PackageNode parseSourceProject() {
-        Parser packageParser = new ProjectParser();
-        this.rootPackage = packageParser.parseSourcePackage(sourcePackagePath);
-        this.packageNodes = packageParser.getPackageNodes();
+        Parser projectParser = new ProjectParser();
+        this.rootPackage = projectParser.parseSourcePackage(sourcePackagePath);
+        this.packageNodes = projectParser.getPackageNodes();
         setProjectsProperties();
         return rootPackage;
     }
@@ -37,7 +38,7 @@ public class SourceProject {
      * This method returns the PackageNodes created by the Parser when parsing the project
      * @return the PackageNodes
      */
-    public Map<String, PackageNode> getPackageNodes() {
+    public Map<Path, PackageNode> getPackageNodes() {
         return packageNodes;
     }
 

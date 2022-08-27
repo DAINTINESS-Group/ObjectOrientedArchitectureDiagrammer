@@ -4,6 +4,7 @@ import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import model.tree.SourceProject;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 
@@ -14,7 +15,7 @@ public interface Manager {
      * @param sourcePackagePath the project's source package path
      * @return the SourceProject created
      */
-    SourceProject createTree(String sourcePackagePath);
+    SourceProject createTree(Path sourcePackagePath);
 
     /**
      * This method converts the tree created by the Parser to a Diagram, based on the files(classes or packages) selected
@@ -36,14 +37,14 @@ public interface Manager {
      * @param graphMLSavePath the selected path by the designer where the diagram will be saved
      * @return the created File in which the diagram was saved
      */
-    File exportDiagramToGraphML(String graphMLSavePath);
+    File exportDiagramToGraphML(Path graphMLSavePath);
 
     /**This method saves the created JavaFX diagram to a text file, to the path selected by the designer, by implementing
      * a Map that stores the diagrams' nodes as keys and a Map of their edges and the relationship type as their values
      * @param graphSavePath the selected path by the designer where the diagram will be saved
      * @return the created File in which the diagram was saved
      */
-    File saveDiagram(String graphSavePath);
+    File saveDiagram(Path graphSavePath);
 
     /**This method loads a JavaFX diagram from a file, selected by the designer, by creating an object of the class
      * Diagram and populating the createdDiagram Collection with the contents of the file. The createdDiagram is a Map
@@ -51,7 +52,7 @@ public interface Manager {
      * @param graphSavePath the file's path where the diagram is saved
      * @return the createdDiagram
      */
-    Map<String, Map<String, String>> loadDiagram(String graphSavePath);
+    Map<String, Map<String, String>> loadDiagram(Path graphSavePath);
 
     /**This method creates the JavaFX's graphView that will be rendered by view in the JavaFX Pane
      * @return the created graphView

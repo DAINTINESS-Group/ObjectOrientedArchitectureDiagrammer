@@ -3,6 +3,7 @@ package client;
 import controller.Controller;
 import controller.DiagramControllerFactory;
 
+import java.nio.file.Paths;
 import java.util.Arrays;
 public class Client {
 
@@ -11,10 +12,10 @@ public class Client {
 		DiagramControllerFactory diagramControllerFactory = new DiagramControllerFactory();
 
         Controller classDiagramController = diagramControllerFactory.getDiagramController("Class");
-		classDiagramController.createTree(args[0]);
+		classDiagramController.createTree(Paths.get(args[0]));
 		classDiagramController.convertTreeToDiagram(Arrays.asList("LatexEditorView", "VersionsManager", "CreateCommand", "CommandFactory", "LatexEditorController", "CommandFactory"));
 		classDiagramController.arrangeDiagram();
-		classDiagramController.exportDiagramToGraphML(args[2]);
+		classDiagramController.exportDiagramToGraphML(Paths.get(args[2]));
 		/*
 		Controller packageDiagramController = diagramControllerFactory.getDiagramController("Package");
 		packageDiagramController.createTree(args[0]);

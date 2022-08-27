@@ -75,7 +75,7 @@ public class DiagramVisualizationController {
     public void saveDiagram() {
         File selectedFile = FileAndDirectoryUtility.saveFile("Save Diagram", menuBar, "Text Files");
         if (selectedFile != null) {
-            diagramController.saveDiagram(selectedFile.getPath());
+            diagramController.saveDiagram(selectedFile.toPath());
         }
     }
 

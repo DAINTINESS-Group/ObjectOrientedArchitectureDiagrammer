@@ -73,7 +73,7 @@ public class DiagramCreation {
             File selectedDirectory = FileAndDirectoryUtility.saveFile("Export Diagram", menuBar, "GraphML Files");
             if (selectedDirectory != null) {
                 diagramController.arrangeDiagram();
-                diagramController.exportDiagramToGraphML(selectedDirectory.getPath());
+                diagramController.exportDiagramToGraphML(selectedDirectory.toPath());
             }
         }else {
             DiagramVisualization diagramVisualization = new DiagramVisualization(menuBar);

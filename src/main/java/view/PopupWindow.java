@@ -12,11 +12,8 @@ import javafx.stage.Stage;
 
 public class PopupWindow {
 
-    @FXML
-    MenuBar menuBar;
-
-    public PopupWindow(MenuBar menuBar) {
-        this.menuBar = menuBar;
+    private PopupWindow() {
+        throw new java.lang.UnsupportedOperationException("Not to be instantiated");
     }
 
     public static void createPopupInfoWindow(String infoMessage, String popupWindowTitle) {

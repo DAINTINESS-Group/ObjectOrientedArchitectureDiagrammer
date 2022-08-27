@@ -1,5 +1,6 @@
 package model.tree;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,11 +9,11 @@ import java.util.List;
  * the relationships that start from this node
  */
 public abstract class Node {
-    protected final String path;
+    protected final Path path;
     protected PackageNode parentNode;
     private final List<Relationship> nodeRelationships;
 
-    public Node(String path) {
+    public Node(Path path) {
         this.path = path;
         nodeRelationships = new ArrayList<>();
     }
@@ -29,7 +30,7 @@ public abstract class Node {
         return nodeRelationships;
     }
 
-    public String getNodesPath() {
+    public Path getNodesPath() {
         return path;
     }
 

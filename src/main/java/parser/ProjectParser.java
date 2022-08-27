@@ -1,12 +1,13 @@
 package parser;
 
-import java.nio.*;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 import model.tree.LeafNode;
 import model.tree.RelationshipIdentifier;
@@ -18,15 +19,13 @@ import model.tree.PackageNode;
  * In order to create the tree it uses the ASTNode API from the JDT library
  */
 public class ProjectParser implements Parser {
-	private final Map<String, PackageNode> packageNodes;
+	private final Map<Path, PackageNode> packageNodes;
 
 	public ProjectParser() {
 		packageNodes = new HashMap<>();
 	}
 
-	public PackageNode parseSourcePackage(String sourcePackagePath) {
-		Paths.get(sourcePackagePath);
-
+	public PackageNode parseSourcePackage(Path sourcePackagePath) {
 		PackageNode rootPackageNode = new PackageNode(sourcePackagePath);
 		packageNodes.put(rootPackageNode.getNodesPath(), rootPackageNode);
 		try {
@@ -38,19 +37,21 @@ public class ProjectParser implements Parser {
 		return rootPackageNode;
 	}
 
-	private void parseFolder(PackageNode currentNode) throws ParseException{
-		File folder = new File(currentNode.getNodesPath());
-		for (File file: Objects.requireNonNull(folder.listFiles())) {
-			if (file.isDirectory()) {
-				createPackageSubNode(currentNode, new PackageNode(getSubNodesPath(currentNode, file)));
+	private void parseFolder(PackageNode currentNode) {
+		try (DirectoryStream<Path> filesStream = Files.newDirectoryStream(currentNode.getNodesPath())) {
+			for (Path path: filesStream) {
+				if (Files.isDirectory(path)) {
+					createPackageSubNode(currentNode, new PackageNode(getSubNodesPath(currentNode, path.toFile())));
+				} else if (isExtensionJava(path.normalize().toString())) {
+					createLeafNode(currentNode, new LeafNode(path), path.toFile());
+				}
 			}
-			else if (isExtensionJava(file.getPath())){
-				createLeafNode(currentNode, new LeafNode(file.getPath()), file);
-			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
-	private void createPackageSubNode(PackageNode currentNode, PackageNode subNode) throws ParseException{
+	private void createPackageSubNode(PackageNode currentNode, PackageNode subNode){
 		subNode.setParentNode(currentNode);
 		packageNodes.put(subNode.getNodesPath(), subNode);
 		currentNode.addSubNode(subNode);
@@ -68,14 +69,14 @@ public class ProjectParser implements Parser {
 		return filePath.toLowerCase().endsWith(".java");
 	}
 	
-	private String getSubNodesPath(PackageNode currentPackage, File file) {
-		return currentPackage.getNodesPath() + "\\" + file.getName();
+	private Path getSubNodesPath(PackageNode currentPackage, File file) {
+		return Paths.get(currentPackage.getNodesPath().normalize() + "\\" + file.getName());
 	}
 	
 	/** This method returns the map with keys the name of the package and values
 	 * the object of type PackageNode
 	 */
-	public Map<String, PackageNode> getPackageNodes() {
+	public Map<Path, PackageNode> getPackageNodes() {
 		return packageNodes;
 	}
 

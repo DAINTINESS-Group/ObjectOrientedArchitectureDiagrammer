@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -40,15 +41,15 @@ public class FileVisitor {
 	/** This method calls the createAST method that is responsible for the creation
 	 * of the AST
 	 */
-	public FileVisitor(File file, LeafNode leafNode, Map<String, PackageNode> packageNodes){
+	public FileVisitor(File file, LeafNode leafNode, Map<Path, PackageNode> packageNodes){
 		try {
-			createAST(file, leafNode, packageNodes);
+			createAST(file, leafNode);
         } catch (Exception e) {
             e.printStackTrace();
         }
 	}
 	
-    private void createAST(File file, LeafNode leafNode, Map<String, PackageNode> packageNodes) throws IOException, MalformedTreeException {
+    private void createAST(File file, LeafNode leafNode) throws IOException, MalformedTreeException {
     	ASTParser parser = ASTParser.newParser(AST.JLS17);
     	this.sourceFile = ReadFileToCharArray(file.getAbsolutePath()).split("\\n");
 	    parser.setSource(ReadFileToCharArray(file.getAbsolutePath()).toCharArray());

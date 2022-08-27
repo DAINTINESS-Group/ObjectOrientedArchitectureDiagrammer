@@ -1,5 +1,6 @@
 package model.tree;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -9,14 +10,14 @@ import java.util.Map;
  * The branches are also directed with a starting and an ending node
  */
 public class RelationshipIdentifier {
-	private final Map<String, PackageNode> packageNodes;
+	private final Map<Path, PackageNode> packageNodes;
 	private final List<LeafNode> allLeafNodes;
 
 	/**This method is responsible for retrieving the leaf nodes that have been created
 	 * and then creating the branches between them
 	 * @param packageNodes a collection with the package nodes created by the parser
 	 */
-	public RelationshipIdentifier(Map<String, PackageNode> packageNodes) {
+	public RelationshipIdentifier(Map<Path, PackageNode> packageNodes) {
 		this.packageNodes = packageNodes;
 		allLeafNodes = new ArrayList<>();
 		populateLeafNodes();

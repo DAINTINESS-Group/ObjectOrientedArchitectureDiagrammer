@@ -3,6 +3,7 @@ package model.diagram.graphml;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Path;
 
 public class GraphMLFile {
 
@@ -10,9 +11,9 @@ public class GraphMLFile {
     private StringBuilder graphMLBuffer;
     private File graphMLFile;
 
-    public void createGraphMLFile(String graphMLSavePath) throws IOException {
-        graphMLFile = new File(graphMLSavePath);
-        graphMLWriter = new FileWriter(graphMLSavePath);
+    public void createGraphMLFile(Path graphMLSavePath) throws IOException {
+        graphMLFile = graphMLSavePath.toFile();
+        graphMLWriter = new FileWriter(graphMLSavePath.toFile());
         graphMLBuffer = new StringBuilder();
         graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLPrefix());
     }

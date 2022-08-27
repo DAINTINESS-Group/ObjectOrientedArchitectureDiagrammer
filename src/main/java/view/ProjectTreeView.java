@@ -8,39 +8,40 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.control.cell.CheckBoxTreeCell;
 
-import java.io.File;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class ProjectTreeView {
 
     @FXML
-    TreeView treeView;
+    TreeView<String> treeView;
 
     private CheckBoxTreeItem<String> rootItem;
     private ObservableSet<CheckBoxTreeItem<?>> checkedItems;
+    private final List<String> folderFiles;
+    private final List<String> javaSourceFiles;
+    private final Path sourceFolderPath;
 
-    private List<String> folderFiles;
-    private List<String> javaSourceFiles;
-    private final String sourceFolderPath;
-
-    public ProjectTreeView(TreeView treeView, String sourceFolderPath) {
+    public ProjectTreeView(TreeView<String> treeView, Path sourceFolderPath) {
         this.sourceFolderPath = sourceFolderPath;
         this.treeView = treeView;
+        folderFiles = new ArrayList<>();
+        javaSourceFiles = new ArrayList<>();
     }
 
     public void createTreeView(){
-        folderFiles = new ArrayList<>();
-        javaSourceFiles = new ArrayList<>();
-        rootItem = new CheckBoxTreeItem<>(sourceFolderPath
-                .substring(sourceFolderPath.lastIndexOf("\\") + 1));
+        rootItem = new CheckBoxTreeItem<>(sourceFolderPath.normalize().toString()
+                .substring(sourceFolderPath.normalize().toString().lastIndexOf("\\") + 1));
         treeView.setShowRoot(true);
-        treeView.setCellFactory(CheckBoxTreeCell.<String>forTreeView());
-        File sourceFolder = new File(sourceFolderPath);
-        try {
-            for (File file : Objects.requireNonNull(sourceFolder.listFiles())) {
-                createTree(file, rootItem);
+        treeView.setCellFactory(CheckBoxTreeCell.forTreeView());
+
+        try (DirectoryStream<Path> folderStream = Files.newDirectoryStream(sourceFolderPath)) {
+            for (Path path: folderStream) {
+                createTree(path, rootItem);
             }
             treeView.setRoot(rootItem);
         } catch (Exception e) {
@@ -48,22 +49,28 @@ public class ProjectTreeView {
         }
     }
 
-    private void createTree(File file, CheckBoxTreeItem<String> parent) {
-        if (file.isDirectory()) {
-            folderFiles.add(getRelativePath(file));
-            CheckBoxTreeItem<String> treeItem = new CheckBoxTreeItem<>(getRelativePath(file));
+    private void createTree(Path path, CheckBoxTreeItem<String> parent) {
+        if (Files.isDirectory(path)) {
+            folderFiles.add(getRelativePath(path));
+            CheckBoxTreeItem<String> treeItem = new CheckBoxTreeItem<>(getRelativePath(path));
             parent.getChildren().add(treeItem);
-            for (File f : Objects.requireNonNull(file.listFiles())) {
-                createTree(f, treeItem);
+
+            try (DirectoryStream<Path> filesStream = Files.newDirectoryStream(path)) {
+                for (Path subPath: filesStream) {
+                    createTree(subPath, treeItem);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        }else if (isFileExtensionJava(file.getPath())) {
-            parent.getChildren().add(new CheckBoxTreeItem<>(file.getName()));
-            javaSourceFiles.add(file.getName());
+        } else if (isFileExtensionJava(path.normalize().toString())) {
+            parent.getChildren().add(new CheckBoxTreeItem<>(path.getFileName().toString()));
+            javaSourceFiles.add(path.getFileName().toString());
         }
     }
 
-    private String getRelativePath(File file) {
-        return file.getPath().replace(sourceFolderPath.substring(0, sourceFolderPath.lastIndexOf("\\") + 1), "").replace("\\", ".");
+    private String getRelativePath(Path path) {
+        return path.normalize().toString().replace(sourceFolderPath.normalize().toString().substring(0,
+                sourceFolderPath.normalize().toString().lastIndexOf("\\") + 1), "").replace("\\", ".");
     }
 
     public List<String> getSelectedFiles(List<String> files, String fileType) {
@@ -81,7 +88,8 @@ public class ProjectTreeView {
     }
 
     private String getFullPath(CheckBoxTreeItem<?> c) {
-        return sourceFolderPath.substring(0, sourceFolderPath.lastIndexOf("\\") + 1) + ((String) c.getValue()).replace(".", "\\");
+        return sourceFolderPath.normalize().toString().substring(0, sourceFolderPath.normalize().toString().lastIndexOf("\\") + 1) +
+                ((String) c.getValue()).replace(".", "\\");
     }
 
     public void setCheckedItems(CheckBoxTreeItem<?> rootItem) {
@@ -97,6 +105,7 @@ public class ProjectTreeView {
             findCheckedItems((CheckBoxTreeItem<?>) child);
         }
     }
+
     private boolean isFileExtensionJava(String c) {
         return c.toLowerCase().endsWith(".java");
     }
@@ -117,7 +126,7 @@ public class ProjectTreeView {
         return rootItem;
     }
 
-    public String getSourceFolderPath() {
+    public Path getSourceFolderPath() {
         return sourceFolderPath;
     }
 }

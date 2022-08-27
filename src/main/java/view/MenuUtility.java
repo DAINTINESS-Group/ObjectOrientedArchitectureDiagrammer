@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.net.URL;
+import java.util.Objects;
 
 public class MenuUtility {
 
@@ -22,7 +23,7 @@ public class MenuUtility {
     }
 
     public static void openProject(MenuBar menuBar){
-        File selectedDirectory = FileAndDirectoryUtility.chooseDirectory("Load Project Source Folder", menuBar);
+        File selectedDirectory = FileAndDirectoryUtility.chooseDirectory("Load the Project's Source Folder", menuBar);
         if (selectedDirectory != null) {
             try {
                 URL url = MenuUtility.class.getResource("/fxml/DiagramCreationView.fxml");
@@ -31,7 +32,7 @@ public class MenuUtility {
                 Parent diagramCreationParent = loader.load();
 
                 DiagramCreationController diagramCreationController = loader.getController();
-                diagramCreationController.createTreeView(selectedDirectory.getPath());
+                diagramCreationController.createTreeView(selectedDirectory.toPath());
 
                 Scene diagramCreationScene = new Scene(diagramCreationParent);
                 Stage window = (Stage) menuBar.getScene().getWindow();
@@ -46,7 +47,7 @@ public class MenuUtility {
     public static void closeProject(MenuBar menuBar){
         try {
             URL url = MenuUtility.class.getResource("/fxml/ProjectLoadView.fxml");
-            Parent diagramCreationParent = FXMLLoader.load(url);
+            Parent diagramCreationParent = FXMLLoader.load(Objects.requireNonNull(url));
             Scene diagramCreationScene = new Scene(diagramCreationParent);
             Stage window = (Stage) menuBar.getScene().getWindow();
             window.setScene(diagramCreationScene);
@@ -59,7 +60,7 @@ public class MenuUtility {
     public static void aboutPage(MenuBar menuBar) {
         try {
             URL url = MenuUtility.class.getResource("/fxml/AboutPageView.fxml");
-            Parent aboutPageParent = FXMLLoader.load(url);
+            Parent aboutPageParent = FXMLLoader.load(Objects.requireNonNull(url));
             Scene diagramCreationScene = new Scene(aboutPageParent);
             Stage window = (Stage) menuBar.getScene().getWindow();
             window.setScene(diagramCreationScene);
@@ -81,7 +82,7 @@ public class MenuUtility {
         if (selectedFile != null) {
             DiagramVisualization diagramVisualization = new DiagramVisualization(menuBar);
             diagramVisualization.setDiagramController(diagramController);
-            diagramController.loadDiagram(selectedFile.getPath());
+            diagramController.loadDiagram(selectedFile.toPath());
             diagramVisualization.loadDiagramVisualization(diagramController.visualizeJavaFXGraph(), "loaded");
         }
     }

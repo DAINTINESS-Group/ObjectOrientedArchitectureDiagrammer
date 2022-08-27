@@ -1,5 +1,7 @@
 package model.tree;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,11 +11,11 @@ import java.util.Map;
  * current package), a flag to identify if a package is empty or not
  */
 public class PackageNode extends Node{
-	private final Map<String, PackageNode> subNodes;
+	private final Map<Path, PackageNode> subNodes;
 	private final Map<String, LeafNode> leafNodes;
 	private boolean isValid;
 	
-	public PackageNode(String path) {
+	public PackageNode(Path path) {
 		super(path);
 		this.isValid = false;
 		subNodes = new HashMap<>();
@@ -32,7 +34,7 @@ public class PackageNode extends Node{
 		if (parentNode != null) {
 			return parentNode;
 		}else {
-			return new PackageNode("");
+			return new PackageNode(Paths.get(""));
 		}
 	}
 
@@ -44,7 +46,7 @@ public class PackageNode extends Node{
 		return isValid;
 	}
 	
-	public Map<String, PackageNode> getSubNodes() {
+	public Map<Path, PackageNode> getSubNodes() {
 		return subNodes;
 	}
 
@@ -54,14 +56,14 @@ public class PackageNode extends Node{
 
 	public String getName() {
 		if (doesParentNodeExist()) {
-			return getParentNodesName() + "." + path.substring(path.lastIndexOf("\\") + 1);
+			return getParentNodesName() + "." + path.normalize().toString().substring(path.normalize().toString().lastIndexOf("\\") + 1);
 		}else {
-			return path.substring(path.lastIndexOf("\\") + 1);
+			return path.normalize().toString().substring(path.normalize().toString().lastIndexOf("\\") + 1);
 		}
 	}
 
 	private boolean doesParentNodeExist() {
-		return !getParentNode().getNodesPath().isEmpty();
+		return !getParentNode().getNodesPath().normalize().toString().isEmpty();
 	}
 
 	private String getParentNodesName() {

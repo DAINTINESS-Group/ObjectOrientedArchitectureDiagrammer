@@ -4,6 +4,7 @@ import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import model.tree.SourceProject;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +14,7 @@ public interface Controller {
      * @param sourcePackagePath the project's source package path
      * @return the SourceProject created
      */
-    SourceProject createTree(String sourcePackagePath);
+    SourceProject createTree(Path sourcePackagePath);
 
     /**
      * This method converts the created tree to a diagram, by creating the corresponding DiagramManager
@@ -35,19 +36,19 @@ public interface Controller {
      * @param graphMLSavePath the selected path by the designer where the diagram will be saved
      * @return the created File in which the diagram was saved
      */
-    File exportDiagramToGraphML(String graphMLSavePath);
+    File exportDiagramToGraphML(Path graphMLSavePath);
 
     /**This method saves the diagram to a text file by calling the DiagramManager's saveDiagram method
      * @param graphSavePath the selected path by the designer where the diagram will be saved
      * @return the created File in which the diagram was saved
      */
-    File saveDiagram(String graphSavePath);
+    File saveDiagram(Path graphSavePath);
 
     /**This method loads a diagram from a text file by calling the DiagramManager's loadDiagram method
      * @param graphSavePath the file's path where the diagram is saved
      * @return the created diagram
      */
-    Map<String, Map<String, String>> loadDiagram(String graphSavePath);
+    Map<String, Map<String, String>> loadDiagram(Path graphSavePath);
 
     /**This method creates the JavaFX's graphView by calling the DiagramManager's visualizeJavaFXGraph method
      * @return the created graphView

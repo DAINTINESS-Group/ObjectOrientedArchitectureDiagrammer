@@ -3,12 +3,13 @@ package model.diagram.javafx;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Map;
 import java.util.Properties;
 
 public class JavaFXExporter {
 
-    public File saveDiagram(Map<String, Map<String, String>> createdDiagram, String graphSavePath){
+    public File saveDiagram(Map<String, Map<String, String>> createdDiagram, Path graphSavePath){
         return createFile(graphSavePath, populateProperties(createdDiagram));
     }
 
@@ -22,9 +23,9 @@ public class JavaFXExporter {
         return propertiesMap;
     }
 
-    private File createFile(String graphSavePath, Properties propertiesMap) {
+    private File createFile(Path graphSavePath, Properties propertiesMap) {
         try {
-            File graphSaveFile = new File(graphSavePath);
+            File graphSaveFile = graphSavePath.toFile();
             propertiesMap.store(new FileOutputStream(graphSaveFile), null);
             return graphSaveFile;
         } catch (IOException ioException) {

@@ -2,6 +2,7 @@ package parser;
 
 import model.tree.PackageNode;
 
+import java.nio.file.Path;
 import java.util.Map;
 
 public interface Parser {
@@ -13,7 +14,7 @@ public interface Parser {
      * @param sourcePackagePath the path of the project's source folder
      * @return the root of the tree
      */
-    PackageNode parseSourcePackage(String sourcePackagePath);
+    PackageNode parseSourcePackage(Path sourcePackagePath);
 
-    Map<String, PackageNode> getPackageNodes();
+    Map<Path, PackageNode> getPackageNodes();
 }

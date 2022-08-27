@@ -1,5 +1,6 @@
 package model.tree;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,7 +19,7 @@ public class LeafNode extends Node{
 	/**This method is responsible for initializing the nodes structs
 	 * @param path the path of Java source file
 	 */
-	public LeafNode(String path) {
+	public LeafNode(Path path) {
 		super(path);
 		methodsParametersTypes = new ArrayList<>();
 		fields = new HashMap<>();
@@ -65,7 +66,7 @@ public class LeafNode extends Node{
 	}
 	
 	public String getName() {
-		return path.substring(path.lastIndexOf("\\") + 1, path.lastIndexOf("."));
+		return path.normalize().toString().substring(path.normalize().toString().lastIndexOf("\\") + 1, path.normalize().toString().lastIndexOf("."));
 	}
 
 	public Map<String, String> getMethods() {

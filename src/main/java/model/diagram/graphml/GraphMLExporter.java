@@ -2,6 +2,7 @@ package model.diagram.graphml;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 
 public class GraphMLExporter {
 
@@ -11,7 +12,7 @@ public class GraphMLExporter {
         graphMLFile = new GraphMLFile();
     }
 
-    public File exportDiagramToGraphML(String graphMLSavePath, String nodeBuffer, String edgeBuffer) {
+    public File exportDiagramToGraphML(Path graphMLSavePath, String nodeBuffer, String edgeBuffer) {
         try {
             graphMLFile.createGraphMLFile(graphMLSavePath);
             generateGraphMLGraph(nodeBuffer, edgeBuffer);
