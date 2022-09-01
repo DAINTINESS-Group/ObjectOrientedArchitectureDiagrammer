@@ -15,6 +15,7 @@ import model.tree.NodeType;
 import model.tree.RelationshipType;
 import org.junit.jupiter.api.Test;
 import model.tree.PackageNode;
+import model.tree.Relationship;
 import model.tree.LeafNode;
 
 class TreeStructureArchitectureTest {
@@ -24,13 +25,13 @@ class TreeStructureArchitectureTest {
 	@Test
 	void getFieldAndMethodTypesTest() throws IOException {
 		Parser parser = new ProjectParser();
-		parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "src\\test\\resources\\LatexEditor\\src"));
+		parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
 		Map<Path, PackageNode> packages = parser.getPackageNodes();
 		List<String> methodReturnTypes = new ArrayList<>(Arrays.asList("Constructor", "void"));
 		List<String> fieldTypes = new ArrayList<>(List.of("VersionsManager"));
 		List<String> methodParameterTypes = new ArrayList<>(List.of("VersionsManager"));
 
-		PackageNode commandPackage = packages.get(Paths.get(currentDirectory.toRealPath().normalize().toString(), "src\\test\\resources\\LatexEditor\\src\\controller\\commands"));
+		PackageNode commandPackage = packages.get(Paths.get(currentDirectory.toRealPath().normalize().toString(), "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands"));
 		LeafNode addLatexCommand = commandPackage.getLeafNodes().get("AddLatexCommand");
 
 		List<String> methodReturnTypesTest;
@@ -55,6 +56,9 @@ class TreeStructureArchitectureTest {
 				&& methodParameterTypes.containsAll(methodParameterTypesTest) 
 				&& methodParameterTypesTest.containsAll(methodParameterTypes));
 		
+		//TODO: FIX LIKE THE leafNoreRelationshipsTypes!!!
+		
+		
 		assertEquals("AddLatexCommand", addLatexCommand.getNodeRelationships().get(0).getStartingNode().getName());
 		assertEquals("VersionsManager", addLatexCommand.getNodeRelationships().get(0).getEndingNode().getName());
 		assertEquals(RelationshipType.DEPENDENCY, addLatexCommand.getNodeRelationships().get(0).getRelationshipType());
@@ -76,14 +80,25 @@ class TreeStructureArchitectureTest {
 	@Test
 	void leafNodeRelationshipsTest() throws IOException {
 		Parser parser = new ProjectParser();
-		parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "src\\test\\resources\\LatexEditor\\src"));
+		parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
 		Map<Path, PackageNode> packages = parser.getPackageNodes();
-		PackageNode commandPackage = packages.get(Paths.get(currentDirectory.toRealPath().normalize().toString(), "src\\test\\resources\\LatexEditor\\src\\controller\\commands"));
+		PackageNode commandPackage = packages.get(Paths.get(currentDirectory.toRealPath().normalize().toString(), "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands"));
 
 		LeafNode addLatexCommand = commandPackage.getLeafNodes().get("AddLatexCommand");
 
-		assertEquals("AddLatexCommand", addLatexCommand.getNodeRelationships().get(0).getStartingNode().getName());
-		assertEquals("VersionsManager", addLatexCommand.getNodeRelationships().get(0).getEndingNode().getName());
+		List<Relationship> pckgRels = addLatexCommand.getNodeRelationships();
+		
+		///TODO FIX all the get(0), get(1)
+		
+		boolean foundObligatoryRel = false;
+		for(Relationship rel: pckgRels) {
+			if((rel.getStartingNode().getName().equals("AddLatexCommand")) && (rel.getEndingNode().getName().equals("VersionsManager")) ) {
+				foundObligatoryRel = true;
+			}
+		}
+		assertTrue(foundObligatoryRel);
+//		assertEquals("AddLatexCommand", addLatexCommand.getNodeRelationships().get(0).getStartingNode().getName());
+//		assertEquals("VersionsManager", addLatexCommand.getNodeRelationships().get(0).getEndingNode().getName());
 		assertEquals(RelationshipType.DEPENDENCY, addLatexCommand.getNodeRelationships().get(0).getRelationshipType());
 		assertEquals("AddLatexCommand", addLatexCommand.getNodeRelationships().get(1).getStartingNode().getName());
 		assertEquals("Command", addLatexCommand.getNodeRelationships().get(1).getEndingNode().getName());
@@ -104,9 +119,9 @@ class TreeStructureArchitectureTest {
 	@Test
 	void leadNodeInheritanceRelationshipTest() throws IOException {
 		Parser parser = new ProjectParser();
-		parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "src\\test\\resources\\InheritanceTesting\\src"));
+		parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\InheritanceTesting\\src"));
 		Map<Path, PackageNode> packages = parser.getPackageNodes();
-		PackageNode sourcePackage = packages.get(Paths.get(currentDirectory.toRealPath().normalize().toString(), "src\\test\\resources\\LatexEditor\\src"));
+		PackageNode sourcePackage = packages.get(Paths.get(currentDirectory.toRealPath().normalize().toString(), "\\src\\test\\resources\\InheritanceTesting\\src"));
 		LeafNode implementingClassLeaf = sourcePackage.getLeafNodes().get("ImplementingClass");
 		assertEquals("ImplementingClass", implementingClassLeaf.getNodeRelationships().get(0).getStartingNode().getName());
 		assertEquals("TestingInterface2", implementingClassLeaf.getNodeRelationships().get(0).getEndingNode().getName());
@@ -124,27 +139,27 @@ class TreeStructureArchitectureTest {
 	@Test
 	void packageNodeRelationshipsTest() throws IOException {
 		Parser parser = new ProjectParser();
-		parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "src\\test\\resources\\LatexEditor\\src"));
+		parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
 		Map<Path, PackageNode> packages = parser.getPackageNodes();
-		PackageNode commands = packages.get(Paths.get(currentDirectory.toRealPath().normalize().toString(), "src\\test\\resources\\LatexEditor\\src\\controller\\commands"));
+		PackageNode commands = packages.get(Paths.get(currentDirectory.toRealPath().normalize().toString(), "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands"));
 
-		assertEquals("commands", commands.getNodeRelationships().get(0).getStartingNode().getName());
-		assertEquals("model", commands.getNodeRelationships().get(0).getEndingNode().getName());
+		assertEquals("src.controller.commands", commands.getNodeRelationships().get(0).getStartingNode().getName());
+		assertEquals("src.model", commands.getNodeRelationships().get(0).getEndingNode().getName());
 		assertEquals(RelationshipType.DEPENDENCY, commands.getNodeRelationships().get(0).getRelationshipType());
 
-		PackageNode controller = packages.get(Paths.get(currentDirectory.toRealPath().normalize().toString(), "src\\test\\resources\\LatexEditor\\src\\controller"));
+		PackageNode controller = packages.get(Paths.get(currentDirectory.toRealPath().normalize().toString(), "\\src\\test\\resources\\LatexEditor\\src\\controller"));
 
-		assertEquals("controller", controller.getNodeRelationships().get(0).getStartingNode().getName());
-		assertEquals("model", controller.getNodeRelationships().get(0).getEndingNode().getName());
+		assertEquals("src.controller", controller.getNodeRelationships().get(0).getStartingNode().getName());
+		assertEquals("src.model", controller.getNodeRelationships().get(0).getEndingNode().getName());
 		assertEquals(RelationshipType.DEPENDENCY, controller.getNodeRelationships().get(0).getRelationshipType());
 	}
 
 	@Test
 	void leafNodeTypesTest() throws IOException {
 		Parser parser = new ProjectParser();
-		parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "src\\test\\resources\\InheritanceTesting\\src"));
+		parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\InheritanceTesting\\src"));
 		Map<Path, PackageNode> packages = parser.getPackageNodes();
-		PackageNode sourcePackage = packages.get(Paths.get(currentDirectory.toRealPath().normalize().toString(), "src\\test\\resources\\LatexEditor\\src"));
+		PackageNode sourcePackage = packages.get(Paths.get(currentDirectory.toRealPath().normalize().toString(), "\\src\\test\\resources\\InheritanceTesting\\src"));
 		List<LeafNode> classLeafs = new ArrayList<>();
 		List<LeafNode> interfaceLeafs = new ArrayList<>();
 		classLeafs.add(sourcePackage.getLeafNodes().get("ImplementingClass"));
