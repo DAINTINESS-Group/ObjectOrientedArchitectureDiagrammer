@@ -33,6 +33,7 @@ public abstract class Diagram {
     }
 
     public Map<String, Map<String, String>> createDiagram(List<String> chosenFilesNames) {
+        createCollections();
         graphNodeCollection.populateGraphNodes(getChosenNodes(chosenFilesNames));
         graphEdgeCollection.setGraphNodes(graphNodeCollection.getGraphNodes());
         graphEdgeCollection.populateGraphEdges(getChosenNodes(chosenFilesNames));
@@ -75,5 +76,7 @@ public abstract class Diagram {
     }
 
     public abstract List<Node> getChosenNodes(List<String> chosenFileNames);
+
+    public abstract void createCollections();
 
 }

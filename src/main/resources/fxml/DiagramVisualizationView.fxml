@@ -16,16 +16,8 @@
             <Menu mnemonicParsing="false" text="File">
                <items>
                   <MenuItem mnemonicParsing="false" onAction="#openProject" text="Open…" />
-                  <Menu mnemonicParsing="false" text="Load...">
-                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#loadDiagram" text="Class Diagram" />
-                        <MenuItem mnemonicParsing="false" onAction="#loadDiagram" text="Package Diagram" />
-                     </items>
-                  </Menu>
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem mnemonicParsing="false" onAction="#closeProject" text="Close" />
-                  <MenuItem mnemonicParsing="false" onAction="#saveDiagram" text="Save As…" />
-                  <MenuItem mnemonicParsing="false" onAction="#ExportDiagram" text="Export As..." />
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem mnemonicParsing="false" onAction="#quitApp" text="Quit" />
                </items>
@@ -33,18 +25,41 @@
             <Menu mnemonicParsing="false" text="Diagram">
                <items>
                   <Menu mnemonicParsing="false" text="New Diagram...">
+                    <items>
+                      <MenuItem mnemonicParsing="false" onAction="#showInfoWindow" text="Class" />
+                        <MenuItem mnemonicParsing="false" onAction="#showInfoWindow" text="Package" />
+                    </items>
+                  </Menu>
+                  <MenuItem mnemonicParsing="false" onAction="#closeDiagram" text="Close Diagram" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <Menu mnemonicParsing="false" text="Export...">
                      <items>
-                        <MenuItem mnemonicParsing="false" onAction="#createProject" text="Class" />
-                        <MenuItem mnemonicParsing="false" onAction="#createProject" text="Package" />
+                        <MenuItem mnemonicParsing="false" onAction="#ExportDiagram" text="Image" />
+                        <MenuItem mnemonicParsing="false" onAction="#saveDiagram" text="Text" />
                      </items>
                   </Menu>
                   <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem mnemonicParsing="false" onAction="#loadProject" text="Load Diagram" />
-                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <Menu mnemonicParsing="false" text="Load Diagram...">
+                     <items>
+                        <MenuItem mnemonicParsing="false" onAction="#showInfoWindow" text="Class" />
+                        <MenuItem mnemonicParsing="false" onAction="#showInfoWindow" text="Package" />
+                     </items>
+                  </Menu>
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Stepwise">
+               <items>
+                  <Menu mnemonicParsing="false" text="New Diagram...">
+                     <items>
+                        <MenuItem mnemonicParsing="false" onAction="#showInfoWindow" text="Class" />
+                        <MenuItem mnemonicParsing="false" onAction="#showInfoWindow" text="Package" />
+                     </items>
+                  </Menu>
+                  <MenuItem mnemonicParsing="false" onAction="#showInfoWindow" text="Load Diagram" />
                   <Menu mnemonicParsing="false" text="View Diagram...">
                      <items>
-                        <MenuItem mnemonicParsing="false" onAction="#viewProject" text="Export" />
-                        <MenuItem mnemonicParsing="false" onAction="#viewProject" text="View" />
+                        <MenuItem mnemonicParsing="false" onAction="#showInfoWindow" text="Export" />
+                        <MenuItem mnemonicParsing="false" onAction="#showInfoWindow" text="View" />
                      </items>
                   </Menu>
                </items>

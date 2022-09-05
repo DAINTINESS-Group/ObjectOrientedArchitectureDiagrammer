@@ -13,14 +13,13 @@ public class DiagramCreation {
     @FXML
     MenuBar menuBar;
 
+    private static DiagramCreation instance;
     private Controller diagramController;
-    private final ProjectTreeView projectTreeView;
+    private ProjectTreeView projectTreeView;
     private String diagramType;
 
-    public DiagramCreation(ProjectTreeView projectTreeView, MenuBar menuBar) {
+    private DiagramCreation() {
         this.diagramType = "";
-        this.menuBar = menuBar;
-        this.projectTreeView = projectTreeView;
     }
 
     public void createProject(String diagramType) {
@@ -35,10 +34,6 @@ public class DiagramCreation {
     }
 
     public void loadProject() {
-        if (diagramType.isEmpty()) {
-            PopupWindow.createPopupInfoWindow("You haven't created a diagram yet!", "Error");
-            return;
-        }
         projectTreeView.setCheckedItems(projectTreeView.getRootItem());
         diagramController.convertTreeToDiagram(getSelectedFiles(diagramType));
     }
@@ -81,5 +76,24 @@ public class DiagramCreation {
             diagramVisualization.setProjectTreeView(projectTreeView);
             diagramVisualization.loadDiagramVisualization(diagramController.visualizeJavaFXGraph(), "new");
         }
+    }
+
+    public void setMenuBar(MenuBar menuBar) {
+        this.menuBar = menuBar;
+    }
+
+    public ProjectTreeView getProjectTreeView() {
+        return projectTreeView;
+    }
+
+    public void setProjectTreeView(ProjectTreeView projectTreeView) {
+        this.projectTreeView = projectTreeView;
+    }
+
+    public static DiagramCreation getInstance(){
+        if (instance == null) {
+            instance = new DiagramCreation();
+        }
+        return instance;
     }
 }

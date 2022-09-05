@@ -16,8 +16,6 @@ import java.util.Objects;
 
 public class MenuUtility {
 
-    private static final int DIAGRAM_TYPE = 0;
-
     private MenuUtility(){
         throw new java.lang.UnsupportedOperationException("Not to be instantiated");
     }
@@ -77,8 +75,8 @@ public class MenuUtility {
 
     public static void loadDiagram(MenuBar menuBar, ActionEvent event) {
         DiagramControllerFactory diagramControllerFactory = new DiagramControllerFactory();
-        Controller diagramController = diagramControllerFactory.getDiagramController(((MenuItem) event.getSource()).getText().split(" ")[DIAGRAM_TYPE]);
-        File selectedFile = FileAndDirectoryUtility.loadFile(String.format("Load %s", ((MenuItem) event.getSource()).getText()), menuBar);
+        Controller diagramController = diagramControllerFactory.getDiagramController(((MenuItem) event.getSource()).getText());
+        File selectedFile = FileAndDirectoryUtility.loadFile(String.format("Load %s Diagram", ((MenuItem) event.getSource()).getText()), menuBar);
         if (selectedFile != null) {
             DiagramVisualization diagramVisualization = new DiagramVisualization(menuBar);
             diagramVisualization.setDiagramController(diagramController);

@@ -5,17 +5,20 @@ import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 
 import controller.Controller;
 import javafx.embed.swing.SwingFXUtils;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
 
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 public class DiagramVisualizationController {
 
@@ -26,38 +29,12 @@ public class DiagramVisualizationController {
 
     private Controller diagramController;
     private ProjectTreeView projectTreeView;
-    private DiagramCreation diagramCreation;
 
     public void visualizeGraph(SmartGraphPanel<String, String> graphView, String diagramType) {
         borderPane.setCenter(new ContentZoomPane(graphView));
-        diagramCreation = new DiagramCreation(projectTreeView, menuBar);
         if (diagramType.equals("new")) {
             setTreeView(projectTreeView);
         }
-    }
-
-    public void createProject(ActionEvent event) {
-        diagramCreation.createProject(((MenuItem) event.getSource()).getText());
-    }
-
-    public void loadProject() {
-        diagramCreation.loadProject();
-    }
-
-    public void viewProject(ActionEvent event) {
-        diagramCreation.viewProject(((MenuItem) event.getSource()).getText());
-    }
-
-    public void openProject() {
-        MenuUtility.openProject(menuBar);
-    }
-
-    public void closeProject() {
-        MenuUtility.closeProject(menuBar);
-    }
-
-    public void quitApp() {
-        MenuUtility.quitApp(menuBar);
     }
 
     public void ExportDiagram() {
@@ -79,11 +56,42 @@ public class DiagramVisualizationController {
         }
     }
 
-    public void loadDiagram() {
-        PopupWindow.createPopupInfoWindow("Close the current diagram first!", "Error");
+    public void closeDiagram() {
+        try {
+            URL url = MenuUtility.class.getResource("/fxml/DiagramCreationView.fxml");
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(url);
+            Parent diagramCreationParent = loader.load();
+
+            DiagramCreationController diagramCreationController = loader.getController();
+            diagramCreationController.setProject();
+
+            Scene diagramCreationScene = new Scene(diagramCreationParent);
+            Stage window = (Stage) menuBar.getScene().getWindow();
+            window.setScene(diagramCreationScene);
+            window.show();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     public void aboutPage() { MenuUtility.aboutPage(menuBar); }
+
+    public void showInfoWindow() {
+        PopupWindow.createPopupInfoWindow("Close the current diagram first!", "Error");
+    }
+
+    public void openProject() {
+        MenuUtility.openProject(menuBar);
+    }
+
+    public void closeProject() {
+        MenuUtility.closeProject(menuBar);
+    }
+
+    public void quitApp() {
+        MenuUtility.quitApp(menuBar);
+    }
 
     public void setDiagramController(Controller diagramController) {
         this.diagramController = diagramController;

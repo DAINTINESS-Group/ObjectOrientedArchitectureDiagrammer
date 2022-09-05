@@ -10,12 +10,6 @@ import java.util.List;
 
 public class ClassDiagram extends Diagram {
 
-    public ClassDiagram() {
-        super();
-        graphNodeCollection = new GraphMLLeafNode();
-        graphEdgeCollection = new GraphMLLeafEdge();
-    }
-
     public List<Node> getChosenNodes(List<String> chosenClassesNames) {
         List<Node> chosenClasses = new ArrayList<>();
         for (String chosenClass: chosenClassesNames) {
@@ -27,6 +21,11 @@ public class ClassDiagram extends Diagram {
             }
         }
         return chosenClasses;
+    }
+
+    public void createCollections() {
+        graphNodeCollection = new GraphMLLeafNode();
+        graphEdgeCollection = new GraphMLLeafEdge();
     }
 
 }

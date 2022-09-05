@@ -27,7 +27,7 @@ public class PopupWindow {
         VBox layout= new VBox(10);
         layout.getChildren().addAll(label1, closeButton);
         layout.setAlignment(Pos.CENTER);
-        Scene scene1= new Scene(layout, 400, 250);
+        Scene scene1= new Scene(layout, 300, 150);
         scene1.getStylesheets().add("styles/modena_dark.css");
         popupWindow.setScene(scene1);
         popupWindow.showAndWait();

@@ -10,12 +10,6 @@ import java.util.List;
 
 public class PackageDiagram extends Diagram {
 
-    public PackageDiagram() {
-        super();
-        graphNodeCollection = new GraphMLPackageNode();
-        graphEdgeCollection = new GraphMLPackageEdge();
-    }
-
     public List<Node> getChosenNodes(List<String> chosenPackagesNames) {
         List<Node> chosenPackages = new ArrayList<>();
         for (String chosenPackage: chosenPackagesNames) {
@@ -24,6 +18,11 @@ public class PackageDiagram extends Diagram {
             }
         }
         return chosenPackages;
+    }
+
+    public void createCollections() {
+        graphNodeCollection = new GraphMLPackageNode();
+        graphEdgeCollection = new GraphMLPackageEdge();
     }
 
     private boolean isPackageValid(String chosenPackage) {

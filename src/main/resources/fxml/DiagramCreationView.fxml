@@ -32,13 +32,13 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.TreeView?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
@@ -51,14 +51,8 @@
         <Menu mnemonicParsing="false" text="File">
           <items>
             <MenuItem mnemonicParsing="false" onAction="#openProject" text="Open…" />
-                  <Menu mnemonicParsing="false" text="Load">
-                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#loadDiagram" text="Class Diagram" />
-                        <MenuItem mnemonicParsing="false" onAction="#loadDiagram" text="Package Diagram" />
-                     </items>
-                  </Menu>
+                  <SeparatorMenuItem mnemonicParsing="false" />
             <MenuItem mnemonicParsing="false" onAction="#closeProject" text="Close" />
-            <MenuItem mnemonicParsing="false" text="Save As…" />
             <SeparatorMenuItem mnemonicParsing="false" />
             <MenuItem mnemonicParsing="false" onAction="#quitApp" text="Quit" />
           </items>
@@ -67,13 +61,36 @@
                <items>
                   <Menu mnemonicParsing="false" text="New Diagram...">
                      <items>
+                        <MenuItem mnemonicParsing="false" onAction="#createDiagram" text="Class" />
+                        <MenuItem mnemonicParsing="false" onAction="#createDiagram" text="Package" />
+                     </items>
+                  </Menu>
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" onAction="#loadProjectFiles" text="Load Diagram" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <Menu mnemonicParsing="false" text="View Diagram...">
+                     <items>
+                        <MenuItem mnemonicParsing="false" onAction="#viewProject" text="Export" />
+                        <MenuItem mnemonicParsing="false" onAction="#viewProject" text="View" />
+                     </items>
+                  </Menu>
+                  <Menu mnemonicParsing="false" text="Load Diagram...">
+                     <items>
+                        <MenuItem mnemonicParsing="false" onAction="#loadDiagram" text="Class" />
+                        <MenuItem mnemonicParsing="false" onAction="#loadDiagram" text="Package" />
+                     </items>
+                  </Menu>
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Stepwise">
+               <items>
+                  <Menu mnemonicParsing="false" text="New Diagram...">
+                     <items>
                         <MenuItem mnemonicParsing="false" onAction="#createProject" text="Class" />
                         <MenuItem mnemonicParsing="false" onAction="#createProject" text="Package" />
                      </items>
                   </Menu>
-                  <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem mnemonicParsing="false" onAction="#loadProject" text="Load Diagram" />
-                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" onAction="#loadProjectFiles" text="Load Diagram" />
                   <Menu mnemonicParsing="false" text="View Diagram...">
                      <items>
                         <MenuItem mnemonicParsing="false" onAction="#viewProject" text="Export" />
@@ -91,12 +108,11 @@
     </MenuBar>
       <HBox fx:id="hBox" prefHeight="401.0" prefWidth="640.0" VBox.vgrow="ALWAYS">
          <children>
-            <TreeView fx:id="treeView" prefHeight="358.0" prefWidth="196.0" HBox.hgrow="NEVER" />
-            <Pane minHeight="-Infinity" minWidth="-Infinity" prefHeight="358.0" prefWidth="161.0" HBox.hgrow="ALWAYS">
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin>
-            </Pane>
+            <BorderPane fx:id="borderPane" prefHeight="552.0" prefWidth="964.0">
+               <left>
+                  <TreeView fx:id="treeView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+               </left>
+            </BorderPane>
          </children>
       </HBox>
       <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="23.0" prefWidth="900.0" VBox.vgrow="NEVER">

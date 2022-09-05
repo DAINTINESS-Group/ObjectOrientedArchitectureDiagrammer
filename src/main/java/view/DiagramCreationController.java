@@ -3,6 +3,7 @@ package view;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 
 import java.nio.file.Path;
@@ -15,26 +16,35 @@ public class DiagramCreationController {
     TreeView<String> treeView;
     @FXML
     HBox hBox;
+    @FXML
+    BorderPane borderPane;
 
     private ProjectTreeView projectTreeView;
-    private DiagramCreation diagramCreation;
 
     public void createTreeView(Path sourceFolderPath){
         projectTreeView = new ProjectTreeView(treeView, sourceFolderPath);
         projectTreeView.createTreeView();
     }
 
-    public void createProject(ActionEvent event) {
-        diagramCreation = new DiagramCreation(projectTreeView, menuBar);
-        diagramCreation.createProject(((MenuItem) event.getSource()).getText());
+    public void createDiagram(ActionEvent event) {
+        createProject(event);
+        loadProjectFiles();
+        viewProject(event);
     }
 
-    public void loadProject() {
-        diagramCreation.loadProject();
+    public void createProject(ActionEvent event) {
+        DiagramCreation.getInstance().setProjectTreeView(projectTreeView);
+        DiagramCreation.getInstance().setMenuBar(menuBar);
+        DiagramCreation.getInstance().createProject(((MenuItem) event.getSource()).getText());
+        borderPane.setLeft(projectTreeView.treeView);
+    }
+
+    public void loadProjectFiles() {
+        DiagramCreation.getInstance().loadProject();
     }
 
     public void viewProject(ActionEvent event) {
-        diagramCreation.viewProject(((MenuItem) event.getSource()).getText());
+        DiagramCreation.getInstance().viewProject(((MenuItem) event.getSource()).getText());
     }
 
     public void openProject() {
@@ -53,4 +63,9 @@ public class DiagramCreationController {
 
     public void quitApp() { MenuUtility.quitApp(menuBar); }
 
+    public void setProject() {
+        this.projectTreeView = DiagramCreation.getInstance().getProjectTreeView();
+        borderPane.setLeft(projectTreeView.treeView);
+        DiagramCreation.getInstance().setMenuBar(menuBar);
+    }
 }
