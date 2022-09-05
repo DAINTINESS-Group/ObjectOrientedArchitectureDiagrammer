@@ -37,7 +37,7 @@ public class DiagramVisualizationController {
         }
     }
 
-    public void ExportDiagram() {
+    public void exportDiagramAsImage() {
         File selectedDirectory = FileAndDirectoryUtility.saveFile("Export Diagram as PNG", menuBar,"PNG files");
         if (selectedDirectory != null) {
             WritableImage image = borderPane.getCenter().snapshot(new SnapshotParameters(), null);
@@ -49,7 +49,7 @@ public class DiagramVisualizationController {
         }
     }
 
-    public void saveDiagram() {
+    public void exportDiagramAsText() {
         File selectedFile = FileAndDirectoryUtility.saveFile("Save Diagram", menuBar, "Text Files");
         if (selectedFile != null) {
             diagramController.saveDiagram(selectedFile.toPath());
@@ -73,6 +73,10 @@ public class DiagramVisualizationController {
         } catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    public void exportDiagramAsGraphML() {
+        DiagramCreation.getInstance().viewProject("Export");
     }
 
     public void aboutPage() { MenuUtility.aboutPage(menuBar); }

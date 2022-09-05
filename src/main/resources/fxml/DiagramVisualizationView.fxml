@@ -34,8 +34,9 @@
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <Menu mnemonicParsing="false" text="Export...">
                      <items>
-                        <MenuItem mnemonicParsing="false" onAction="#ExportDiagram" text="Image" />
-                        <MenuItem mnemonicParsing="false" onAction="#saveDiagram" text="Text" />
+                        <MenuItem mnemonicParsing="false" onAction="#exportDiagramAsGraphML" text="GraphML" />
+                        <MenuItem mnemonicParsing="false" onAction="#exportDiagramAsImage" text="Image" />
+                        <MenuItem mnemonicParsing="false" onAction="#exportDiagramAsText" text="Text" />
                      </items>
                   </Menu>
                   <SeparatorMenuItem mnemonicParsing="false" />

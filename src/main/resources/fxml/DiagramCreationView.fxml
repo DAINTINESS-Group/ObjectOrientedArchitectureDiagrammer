@@ -66,14 +66,6 @@
                      </items>
                   </Menu>
                   <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem mnemonicParsing="false" onAction="#loadProjectFiles" text="Load Diagram" />
-                  <SeparatorMenuItem mnemonicParsing="false" />
-                  <Menu mnemonicParsing="false" text="View Diagram...">
-                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#viewProject" text="Export" />
-                        <MenuItem mnemonicParsing="false" onAction="#viewProject" text="View" />
-                     </items>
-                  </Menu>
                   <Menu mnemonicParsing="false" text="Load Diagram...">
                      <items>
                         <MenuItem mnemonicParsing="false" onAction="#loadDiagram" text="Class" />
