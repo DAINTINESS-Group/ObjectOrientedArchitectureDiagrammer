@@ -13,9 +13,9 @@
    <children>
       <MenuBar fx:id="menuBar">
          <menus>
-            <Menu mnemonicParsing="false" text="File">
+            <Menu mnemonicParsing="false" text="Project">
                <items>
-                  <MenuItem mnemonicParsing="false" onAction="#openProject" text="Open…" />
+                  <MenuItem mnemonicParsing="false" onAction="#openProject" text="Load..." />
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem mnemonicParsing="false" onAction="#closeProject" text="Close" />
                   <SeparatorMenuItem mnemonicParsing="false" />
@@ -57,12 +57,7 @@
                      </items>
                   </Menu>
                   <MenuItem mnemonicParsing="false" onAction="#showInfoWindow" text="Load Diagram" />
-                  <Menu mnemonicParsing="false" text="View Diagram...">
-                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#showInfoWindow" text="Export" />
-                        <MenuItem mnemonicParsing="false" onAction="#showInfoWindow" text="View" />
-                     </items>
-                  </Menu>
+                  <MenuItem mnemonicParsing="false" onAction="#showInfoWindow" text="View" />
                </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Help">

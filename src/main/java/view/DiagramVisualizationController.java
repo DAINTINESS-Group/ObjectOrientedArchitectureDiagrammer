@@ -76,7 +76,7 @@ public class DiagramVisualizationController {
     }
 
     public void exportDiagramAsGraphML() {
-        DiagramCreation.getInstance().viewProject("Export");
+        DiagramCreation.getInstance().exportDiagram();
     }
 
     public void aboutPage() { MenuUtility.aboutPage(menuBar); }

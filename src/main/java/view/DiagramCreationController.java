@@ -29,7 +29,7 @@ public class DiagramCreationController {
     public void createDiagram(ActionEvent event) {
         createProject(event);
         loadProjectFiles();
-        viewProject(event);
+        viewProject();
     }
 
     public void createProject(ActionEvent event) {
@@ -43,8 +43,8 @@ public class DiagramCreationController {
         DiagramCreation.getInstance().loadProject();
     }
 
-    public void viewProject(ActionEvent event) {
-        DiagramCreation.getInstance().viewProject(((MenuItem) event.getSource()).getText());
+    public void viewProject() {
+        DiagramCreation.getInstance().viewProject();
     }
 
     public void openProject() {

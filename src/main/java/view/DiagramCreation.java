@@ -46,16 +46,16 @@ public class DiagramCreation {
         }
     }
 
-    public void viewProject(String visualizationType) {
+    public void viewProject() {
         if (diagramType.isEmpty()) {
             PopupWindow.createPopupInfoWindow("You have neither created a diagram nor loaded it yet!", "Error");
             return;
         }
         if (!wereFilesChosen()) {
             PopupWindow.createPopupInfoWindow("You haven't selected any files!", "Error");
-        }else {
-            createDiagram(visualizationType);
+            return;
         }
+        viewDiagram();
     }
 
     private boolean wereFilesChosen() {
@@ -63,18 +63,18 @@ public class DiagramCreation {
                 projectTreeView.getSelectedFiles(projectTreeView.getJavaSourceFiles(), "java").size() == 0);
     }
 
-    private void createDiagram(String visualizationType){
-        if (visualizationType.equals("Export")) {
-            File selectedDirectory = FileAndDirectoryUtility.saveFile("Export Diagram", menuBar, "GraphML Files");
-            if (selectedDirectory != null) {
-                diagramController.arrangeDiagram();
-                diagramController.exportDiagramToGraphML(selectedDirectory.toPath());
-            }
-        }else {
-            DiagramVisualization diagramVisualization = new DiagramVisualization(menuBar);
-            diagramVisualization.setDiagramController(diagramController);
-            diagramVisualization.setProjectTreeView(projectTreeView);
-            diagramVisualization.loadDiagramVisualization(diagramController.visualizeJavaFXGraph(), "new");
+    private void viewDiagram(){
+        DiagramVisualization diagramVisualization = new DiagramVisualization(menuBar);
+        diagramVisualization.setDiagramController(diagramController);
+        diagramVisualization.setProjectTreeView(projectTreeView);
+        diagramVisualization.loadDiagramVisualization(diagramController.visualizeJavaFXGraph(), "new");
+    }
+
+    public void exportDiagram(){
+        File selectedDirectory = FileAndDirectoryUtility.saveFile("Export Diagram", menuBar, "GraphML Files");
+        if (selectedDirectory != null) {
+            diagramController.arrangeDiagram();
+            diagramController.exportDiagramToGraphML(selectedDirectory.toPath());
         }
     }
 
