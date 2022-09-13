@@ -1,1 +1,4 @@
-theme: minima
+theme: jekyll-theme-minimal
+title: UML Diagram Tool
+description: A tool for the reverse engineering of Java object-oriented source code into UML diagrams
+show_downloads: false
