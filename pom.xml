@@ -62,6 +62,11 @@
           <version>18.0.1</version>
       </dependency>
       <dependency>
+          <groupId>org.openjfx</groupId>
+          <artifactId>javafx-web</artifactId>
+          <version>18.0.1</version>
+      </dependency>
+      <dependency>
           <groupId>com.sirolf2009</groupId>
           <artifactId>fxgraph</artifactId>
           <version>0.0.3</version>
@@ -73,6 +78,7 @@
           <scope>system</scope>
           <systemPath>${basedir}\src\main\resources\libs\JavaFXSmartGraph.jar</systemPath>
       </dependency>
+
   </dependencies>
   
   <build>
