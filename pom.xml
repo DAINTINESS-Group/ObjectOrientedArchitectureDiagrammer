@@ -3,6 +3,10 @@
   <groupId>UMLDiagramTool</groupId>
   <artifactId>UMLDiagramTool</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+    <properties>
+        <maven.compiler.source>13</maven.compiler.source>
+        <maven.compiler.target>13</maven.compiler.target>
+    </properties>
   <name>UMLDiagramTool</name>
   <description>A tool for the reverse engineering of Java-oriented source code into UML diagrams</description>
   
