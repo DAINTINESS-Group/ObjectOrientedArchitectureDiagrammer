@@ -32,7 +32,6 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
@@ -40,9 +39,7 @@
 <?import javafx.scene.control.TreeView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
 <VBox fx:id="vBox" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/modena_dark.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.DiagramCreationController">
   <children>
@@ -100,16 +97,6 @@
                   <TreeView fx:id="treeView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
                </left>
             </BorderPane>
-         </children>
-      </HBox>
-      <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="23.0" prefWidth="900.0" VBox.vgrow="NEVER">
-         <children>
-            <Label prefHeight="17.0" prefWidth="78.0" text="Label" />
-            <Pane maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="524.0" HBox.hgrow="ALWAYS" />
-            <Label alignment="TOP_RIGHT" contentDisplay="RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="40.0" text="Label">
-               <font>
-                  <Font name="Calibri Light" size="12.0" />
-               </font></Label>
          </children>
       </HBox>
   </children>

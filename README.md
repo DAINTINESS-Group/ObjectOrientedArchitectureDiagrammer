@@ -5,43 +5,20 @@
     A tool for the reverse engineering of Java object-oriented source code into Unified Modeling Language (UML) diagrams
   </p>
   
-<!-- Badges -->
-<p>
-  <a href="https://github.com/dimanyfantakis/UMLDiagramTool/graphs/contributors">
-    <img src="https://img.shields.io/github/contributors/dimanyfantakis/UMLDiagramTool" alt="contributors" />
-  </a>
-  <a href="https://github.com/dimanyfantakis/UMLDiagramTool/commit/main">
-    <img src="https://img.shields.io/github/last-commit/dimanyfantakis/UMLDiagramTool" alt="last update" />
-  </a>
-  <a href="https://github.com/dimanyfantakis/UMLDiagramTool/network/members">
-    <img src="https://img.shields.io/github/forks/dimanyfantakis/UMLDiagramTool" alt="forks" />
-  </a>
-  <a href="https://github.com/dimanyfantakis/UMLDiagramTool/stargazers">
-    <img src="https://img.shields.io/github/stars/dimanyfantakis/UMLDiagramTool" alt="stars" />
-  </a>
-  <a href="https://github.com/dimanyfantakis/UMLDiagramTool/issues/">
-    <img src="https://img.shields.io/github/issues/dimanyfantakis/UMLDiagramTool" alt="open issues" />
-  </a>
-  <a href="https://github.com/dimanyfantakis/UMLDiagramTool/blob/main/LICENSE">
-    <img src="https://img.shields.io/github/license/dimanyfantakis/UMLDiagramTool" alt="license" />
-  </a>
-</p>
+[![Contributors][contributors-shield]][contributors-url]
+[![Commits][commits-shield]][commits-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+[![MIT License][license-shield]][license-url]
 
-<h4>
-    <a href="https://github.com/dimanyfantakis/UMLDiagramTool">View Demo</a>
-  <span> · </span>
-    <a href="https://docs.google.com/document/d/1C8zHygW2cqtbSBOQGcSFhKYcRx0AkQaY/edit?usp=sharing&ouid=111456297792845674932&rtpof=true&sd=true">User Documentation</a>
-  <span> · </span>
-    <a href="https://github.com/dimanyfantakis/UMLDiagramTool/issues/new">Report Bug</a>
-  <span> · </span>
-    <a href="https://github.com/dimanyfantakis/UMLDiagramTool/issues/new">Request Feature</a>
-  </h4>
+[**View Demo**][demo-url] · [**User Documentation**][userDocumentation-url] · [**Report Bug**][issues-url] · [**Request Feature**][issues-url]
+
 </div>
 
 # Table of Contents
 > - [About](#about)
 >   * [Motivation](#motivation)
->   * [Screenshots](#screenshots)
 >   * [Features](#features)
 > - [Getting Started](#getting-started)
 >   * [Requirements](#requirements)
@@ -59,32 +36,15 @@
 
 The purpose of this project is to develop an independent software tool that creates UML diagrams by reverse engineering Java object-oriented source code. 
 
-### Screenshots
-
-Selecting project files
-
-![image](https://drive.google.com/uc?export=view&id=14Rcc2Hrx0pRtCEdIWApz-tBdMD0REVGp)
-
-Viewing a package diagram
-
-![image2](https://drive.google.com/uc?export=view&id=14OwqHPY-Sao5ao8pOEuOSaAJWONzPV2c)
-
-Viewing a class diagram
-
-![image3](https://drive.google.com/uc?export=view&id=1GeTCBHqNr0rOG-oSeHp5tamn1Eis8QLS)
-
-Viewing an exported package diagram via yEd
-
-![image4](https://drive.google.com/uc?export=view&id=1qokUgRL1XOl701FyqT53RewTOFFFeXsx)
-
-Viewing an exported class diagram via yEd
-
-![image5](https://drive.google.com/uc?export=view&id=18Y6C81E2BzOtdsUgT9ZbpwGop_jOW4oy)
-
 ### Features
 
-* feature 1
-* feature 2
+* Visualize class && package UML diagrams 
+  * Choose the classes/packages that will be included in the diagram
+  * Create different diagrams from the same project
+* Exported a created diagram:
+  * GraphML. View the exported diagram using yEd
+  * as Image
+  * as a text file that can you can load later
 
 ## Getting Started
 
@@ -96,8 +56,8 @@ Viewing an exported class diagram via yEd
   ```
 
 2. Import project into:
-  * [Eclipse](https://www.baeldung.com/maven-import-eclipse)
-  * [Intellij IDEA](https://www.jetbrains.com/idea/guide/tutorials/working-with-maven/importing-a-project/)
+  * [Eclipse][importEclipse-url]
+  * [Intellij IDEA][importIntellij-url]
 
 ### Installation
 
@@ -113,7 +73,7 @@ to build the project.
 
 ### Usage
 
-Check the [User Documentation](https://docs.google.com/document/d/1C8zHygW2cqtbSBOQGcSFhKYcRx0AkQaY/edit?usp=sharing&ouid=111456297792845674932&rtpof=true&sd=true) regarding more about the usage
+Check the [User Documentation][userDocumentation-url] regarding more about the usage
 
 ### Tests
 
@@ -147,19 +107,38 @@ If you have a suggestion that would make this better, please fork the repo and c
 
 ### Issues
 
-Create a new [Issue](https://github.com/dimanyfantakis/UMLDiagramTool/issues/new) to report any issues
+Create a new [Issue][issues-url] to report any issues
 
 ## Roadmap
 
-- [x] TODO 1
-- [ ] TODO 2
-    - [ ] TODO 2.1
-    - [ ] TODO 2.2
+- [ ] Change the parser
+  - [ ] Support local variables
+  - [ ] Support Enums
+- [ ] Build a visualization library
+    - [ ] Support of drag & drop canvas to add UML entities
 
 ## Authors
 
 ## License
 
-See [License](https://github.com/dimanyfantakis/UMLDiagramTool/blob/main/LICENSE) for more information regarding the license
+See [License][license-url] for more information regarding the license
 
 ## Acknowledgments
+
+<!-- MARKDOWN LINKS & IMAGES -->
+[contributors-shield]: https://img.shields.io/github/contributors/dimanyfantakis/UMLDiagramTool
+[contributors-url]: https://github.com/dimanyfantakis/UMLDiagramTool/graphs/contributors
+[commits-shield]: https://img.shields.io/github/last-commit/dimanyfantakis/UMLDiagramTool
+[commits-url]: https://github.com/dimanyfantakis/UMLDiagramTool/commit/main
+[forks-shield]: https://img.shields.io/github/forks/dimanyfantakis/UMLDiagramTool
+[forks-url]: https://github.com/dimanyfantakis/UMLDiagramTool/network/members
+[stars-shield]: https://img.shields.io/github/stars/dimanyfantakis/UMLDiagramTool
+[stars-url]: https://github.com/dimanyfantakis/UMLDiagramTool/stargazers
+[issues-shield]: https://img.shields.io/github/issues/dimanyfantakis/UMLDiagramTool
+[issues-url]: https://github.com/dimanyfantakis/UMLDiagramTool/issues/
+[license-shield]: https://img.shields.io/github/license/dimanyfantakis/UMLDiagramTool
+[license-url]: https://github.com/dimanyfantakis/UMLDiagramTool/blob/main/LICENSE
+[userDocumentation-url]: https://docs.google.com/document/d/1C8zHygW2cqtbSBOQGcSFhKYcRx0AkQaY/edit?usp=sharing&ouid=111456297792845674932&rtpof=true&sd=true
+[demo-url]: https://github.com/dimanyfantakis/UMLDiagramTool
+[importEclipse-url]: https://www.baeldung.com/maven-import-eclipse
+[importIntellij-url]: https://www.jetbrains.com/idea/guide/tutorials/working-with-maven/importing-a-project/
