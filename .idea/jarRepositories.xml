@@ -12,6 +12,11 @@
       <option name="url" value="file://C:\Users\user\IntelliJProjects\UMLDiagramTool/src\main\resources\libs\JavaFXSmartGraph.jar" />
     </remote-repository>
     <remote-repository>
+      <option name="id" value="JavaFXSmartGraph" />
+      <option name="name" value="JavaFXSmartGraph" />
+      <option name="url" value="file://C:\Users\user\IntelliJProjects\UMLDiagramTool/libs" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="central" />
       <option name="name" value="Maven Central repository" />
       <option name="url" value="https://repo1.maven.org/maven2" />

@@ -10,72 +10,83 @@
     </properties>
     <name>UMLDiagramTool</name>
     <description>A tool for the reverse engineering of Java-oriented source code into UML diagrams</description>
-  
-    <dependencies>
-    <dependency>
-        <groupId>org.eclipse.jdt</groupId>
-        <artifactId>org.eclipse.jdt.core</artifactId>
-        <version>3.28.0</version>
-    </dependency>
 
-    <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
-    <dependency>
-        <groupId>commons-io</groupId>
-        <artifactId>commons-io</artifactId>
-        <version>2.11.0</version>
-    </dependency>
-      <dependency>
-          <groupId>org.junit.jupiter</groupId>
-          <artifactId>junit-jupiter-api</artifactId>
-          <version>5.7.0</version>
-      </dependency>
-      <dependency>
-          <groupId>org.junit.jupiter</groupId>
-          <artifactId>junit-jupiter</artifactId>
-          <version>RELEASE</version>
-          <scope>test</scope>
-      </dependency>
-      <dependency>
-          <groupId>junit</groupId>
-          <artifactId>junit</artifactId>
-          <version>RELEASE</version>
-          <scope>test</scope>
-      </dependency>
-      <dependency>
-          <groupId>net.sf.jung</groupId>
-          <artifactId>jung-algorithms</artifactId>
-          <version>2.1.1</version>
-      </dependency>
-      <dependency>
-          <groupId>net.sf.jung</groupId>
-          <artifactId>jung-graph-impl</artifactId>
-          <version>2.1.1</version>
-      </dependency>
-      <dependency>
-          <groupId>net.sf.jung</groupId>
-          <artifactId>jung-visualization</artifactId>
-          <version>2.1.1</version>
-      </dependency>
-      <dependency>
-          <groupId>org.openjfx</groupId>
-          <artifactId>javafx-controls</artifactId>
-          <version>18.0.1</version>
-      </dependency>
-      <dependency>
-          <groupId>org.openjfx</groupId>
-          <artifactId>javafx-fxml</artifactId>
-          <version>18.0.1</version>
-      </dependency>
-      <dependency>
-          <groupId>org.openjfx</groupId>
-          <artifactId>javafx-web</artifactId>
-          <version>18.0.1</version>
-      </dependency>
-      <dependency>
-          <groupId>com.sirolf2009</groupId>
-          <artifactId>fxgraph</artifactId>
-          <version>0.0.3</version>
-      </dependency>
+    <repositories>
+        <repository>
+            <id>JavaFXSmartGraph</id>
+            <name>JavaFXSmartGraph</name>
+            <url>file://${pom.basedir}/libs</url>
+        </repository>
+    </repositories>
+    <dependencies>
+        <dependency>
+            <groupId>org.eclipse.jdt</groupId>
+            <artifactId>org.eclipse.jdt.core</artifactId>
+            <version>3.28.0</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.11.0</version>
+        </dependency>
+          <dependency>
+              <groupId>org.junit.jupiter</groupId>
+              <artifactId>junit-jupiter-api</artifactId>
+              <version>5.7.0</version>
+          </dependency>
+          <dependency>
+              <groupId>org.junit.jupiter</groupId>
+              <artifactId>junit-jupiter</artifactId>
+              <version>5.9.0</version>
+              <scope>test</scope>
+          </dependency>
+          <dependency>
+              <groupId>junit</groupId>
+              <artifactId>junit</artifactId>
+              <version>4.13.2</version>
+              <scope>test</scope>
+          </dependency>
+          <dependency>
+              <groupId>net.sf.jung</groupId>
+              <artifactId>jung-algorithms</artifactId>
+              <version>2.1.1</version>
+          </dependency>
+          <dependency>
+              <groupId>net.sf.jung</groupId>
+              <artifactId>jung-graph-impl</artifactId>
+              <version>2.1.1</version>
+          </dependency>
+          <dependency>
+              <groupId>net.sf.jung</groupId>
+              <artifactId>jung-visualization</artifactId>
+              <version>2.1.1</version>
+          </dependency>
+          <dependency>
+              <groupId>org.openjfx</groupId>
+              <artifactId>javafx-controls</artifactId>
+              <version>18.0.1</version>
+          </dependency>
+          <dependency>
+              <groupId>org.openjfx</groupId>
+              <artifactId>javafx-fxml</artifactId>
+              <version>18.0.1</version>
+          </dependency>
+          <dependency>
+              <groupId>org.openjfx</groupId>
+              <artifactId>javafx-web</artifactId>
+              <version>18.0.1</version>
+          </dependency>
+          <dependency>
+              <groupId>com.sirolf2009</groupId>
+              <artifactId>fxgraph</artifactId>
+              <version>0.0.3</version>
+          </dependency>
+        <dependency>
+            <groupId>JavaFXSmartGraph</groupId>
+            <artifactId>JavaFXSmartGraph</artifactId>
+            <version>1.0</version>
+        </dependency>
+    <!-->
       <dependency>
           <groupId>JavaFXSmartGraph</groupId>
           <artifactId>JavaFXSmartGraph</artifactId>
@@ -83,6 +94,7 @@
           <scope>system</scope>
           <systemPath>${project.basedir}\src\main\resources\libs\JavaFXSmartGraph.jar</systemPath>
       </dependency>
+    <-->
     </dependencies>
     <build>
     <plugins>
