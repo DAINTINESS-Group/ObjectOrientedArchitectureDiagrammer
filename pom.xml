@@ -86,15 +86,6 @@
             <artifactId>JavaFXSmartGraph</artifactId>
             <version>1.0</version>
         </dependency>
-    <!-->
-      <dependency>
-          <groupId>JavaFXSmartGraph</groupId>
-          <artifactId>JavaFXSmartGraph</artifactId>
-          <version>1.0</version>
-          <scope>system</scope>
-          <systemPath>${project.basedir}\src\main\resources\libs\JavaFXSmartGraph.jar</systemPath>
-      </dependency>
-    <-->
     </dependencies>
     <build>
     <plugins>
