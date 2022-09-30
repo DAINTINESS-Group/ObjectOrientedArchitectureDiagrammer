@@ -73,7 +73,12 @@ to build the project.
 
 ### Usage
 
-Check the [User Documentation][userDocumentation-url] regarding more about the usage
+Run
+  ```bash
+  java -jar UMLDiagramTool\target\UMLDiagramTool-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+  ```
+
+Check the [User Documentation][userDocumentation-url] regarding more about the usage of the tool
 
 ### Tests
 
