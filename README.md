@@ -1,5 +1,5 @@
 <div align="center">
-  <a href=https://github.com/dimanyfantakis/UMLDiagramTool>
+  <a href=https://github.com/dimanyfantakis/ObjectOrientedArchitectureDiagrammer>
     <img src="src/main/resources/assets/logo.png" alt="Logo" width="250" height="250">
   </a>
   <h1>Object Oriented Architecture Diagrammer</h1>
@@ -54,7 +54,7 @@ The purpose of this project is to develop an independent software tool that crea
 
 1. Clone the repository
   ```bash
-  git clone https://github.com/dimanyfantakis/UMLDiagramTool.git
+  git clone https://github.com/dimanyfantakis/ObjectOrientedArchitectureDiagrammer.git
   ```
 
 2. Import project into:
@@ -79,11 +79,11 @@ to build the project.
   ```bash
   mvn package
   ```
-to create the jar **UMLDiagramTool-0.0.1-SNAPSHOT-jar-with-dependencies.jar**
+to create the jar **ObjectOrientedArchitectureDiagrammer-0.0.1-SNAPSHOT-jar-with-dependencies.jar**
 
 2. Run
   ```bash
-  java -jar UMLDiagramTool\target\UMLDiagramTool-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+  java -jar ObjectOrientedArchitectureDiagrammer\target\ObjectOrientedArchitectureDiagrammer-0.0.1-SNAPSHOT-jar-with-dependencies.jar
   ```
 to execute the jar
 
@@ -142,19 +142,19 @@ See [License][license-url] for more information regarding the license
 ## Acknowledgments
 
 <!-- MARKDOWN LINKS & IMAGES -->
-[contributors-shield]: https://img.shields.io/github/contributors/dimanyfantakis/UMLDiagramTool
-[contributors-url]: https://github.com/dimanyfantakis/UMLDiagramTool/graphs/contributors
-[commits-shield]: https://img.shields.io/github/last-commit/dimanyfantakis/UMLDiagramTool
-[commits-url]: https://github.com/dimanyfantakis/UMLDiagramTool/commit/main
-[forks-shield]: https://img.shields.io/github/forks/dimanyfantakis/UMLDiagramTool
-[forks-url]: https://github.com/dimanyfantakis/UMLDiagramTool/network/members
-[stars-shield]: https://img.shields.io/github/stars/dimanyfantakis/UMLDiagramTool
-[stars-url]: https://github.com/dimanyfantakis/UMLDiagramTool/stargazers
-[issues-shield]: https://img.shields.io/github/issues/dimanyfantakis/UMLDiagramTool
-[issues-url]: https://github.com/dimanyfantakis/UMLDiagramTool/issues/
-[license-shield]: https://img.shields.io/github/license/dimanyfantakis/UMLDiagramTool
-[license-url]: https://github.com/dimanyfantakis/UMLDiagramTool/blob/main/LICENSE
+[contributors-shield]: https://img.shields.io/github/contributors/dimanyfantakis/ObjectOrientedArchitectureDiagrammer
+[contributors-url]: https://github.com/dimanyfantakis/ObjectOrientedArchitectureDiagrammer/graphs/contributors
+[commits-shield]: https://img.shields.io/github/last-commit/dimanyfantakis/ObjectOrientedArchitectureDiagrammer
+[commits-url]: https://github.com/dimanyfantakis/ObjectOrientedArchitectureDiagrammer/commit/main
+[forks-shield]: https://img.shields.io/github/forks/dimanyfantakis/ObjectOrientedArchitectureDiagrammer
+[forks-url]: https://github.com/dimanyfantakis/ObjectOrientedArchitectureDiagrammer/network/members
+[stars-shield]: https://img.shields.io/github/stars/dimanyfantakis/ObjectOrientedArchitectureDiagrammer
+[stars-url]: https://github.com/dimanyfantakis/ObjectOrientedArchitectureDiagrammer/stargazers
+[issues-shield]: https://img.shields.io/github/issues/dimanyfantakis/ObjectOrientedArchitectureDiagrammer
+[issues-url]: https://github.com/dimanyfantakis/ObjectOrientedArchitectureDiagrammer/issues/
+[license-shield]: https://img.shields.io/github/license/dimanyfantakis/ObjectOrientedArchitectureDiagrammer
+[license-url]: https://github.com/dimanyfantakis/ObjectOrientedArchitectureDiagrammer/blob/main/LICENSE
 [userDocumentation-url]: https://docs.google.com/document/d/1C8zHygW2cqtbSBOQGcSFhKYcRx0AkQaY/edit?usp=sharing&ouid=111456297792845674932&rtpof=true&sd=true
-[demo-url]: https://github.com/dimanyfantakis/UMLDiagramTool
+[demo-url]: https://github.com/dimanyfantakis/ObjectOrientedArchitectureDiagrammer
 [importEclipse-url]: https://www.baeldung.com/maven-import-eclipse
 [importIntellij-url]: https://www.jetbrains.com/idea/guide/tutorials/working-with-maven/importing-a-project/
