@@ -1,7 +1,6 @@
 package parser;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -62,7 +61,7 @@ public class ProjectParser implements Parser {
 		leafNode.setParentNode(currentNode);
 		currentNode.setValid();
 		currentNode.addLeafNode(leafNode);
-		new FileVisitor(file, leafNode, packageNodes);
+		new FileVisitor(file, leafNode);
 	}
 	
 	private boolean isExtensionJava(String filePath) {

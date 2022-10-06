@@ -41,7 +41,7 @@ public class FileVisitor {
 	/** This method calls the createAST method that is responsible for the creation
 	 * of the AST
 	 */
-	public FileVisitor(File file, LeafNode leafNode, Map<Path, PackageNode> packageNodes){
+	public FileVisitor(File file, LeafNode leafNode){
 		try {
 			createAST(file, leafNode);
         } catch (Exception e) {
@@ -69,7 +69,6 @@ public class FileVisitor {
 		}
 	    for (AbstractTypeDeclaration type : types) {
 	        if (type.getNodeType() == ASTNode.TYPE_DECLARATION) {
-	        	SimpleName typeName = type.getName();
 	        	leafNode.setInheritanceLine(convertInheritanceLine(type));
 	            List<BodyDeclaration> bodies = new ArrayList<>();
 	        	for (Object o: type.bodyDeclarations()) {
