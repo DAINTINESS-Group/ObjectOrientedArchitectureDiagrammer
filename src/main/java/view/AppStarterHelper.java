@@ -22,7 +22,7 @@ public class AppStarterHelper extends Application {
             URL url = getClass().getResource("/fxml/ProjectLoadView.fxml");
             Parent root = FXMLLoader.load(url);
             Scene scene = new Scene(root);
-            primaryStage.setTitle("UML Diagram Tool");
+            primaryStage.setTitle("Object Oriented Architecture Diagrammer");
             primaryStage.setScene(scene);
             primaryStage.show();
             primaryStage.setOnCloseRequest(e -> {
