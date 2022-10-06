@@ -1,6 +1,8 @@
 <div align="center">
-  <h1>Name</h1>
-  
+  <a href=https://github.com/dimanyfantakis/UMLDiagramTool>
+    <img src="src/main/resources/assets/logo.png" alt="Logo" width="250" height="250">
+  </a>
+  <h1>Object Oriented Architecture Diagrammer</h1>
   <p>
     A tool for the reverse engineering of Java object-oriented source code into Unified Modeling Language (UML) diagrams
   </p>
@@ -73,10 +75,17 @@ to build the project.
 
 ### Usage
 
-Run
+1. Run
+  ```bash
+  mvn package
+  ```
+to create the jar **UMLDiagramTool-0.0.1-SNAPSHOT-jar-with-dependencies.jar**
+
+2. Run
   ```bash
   java -jar UMLDiagramTool\target\UMLDiagramTool-0.0.1-SNAPSHOT-jar-with-dependencies.jar
   ```
+to execute the jar
 
 Check the [User Documentation][userDocumentation-url] regarding more about the usage of the tool
 
@@ -121,6 +130,8 @@ Create a new [Issue][issues-url] to report any issues
   - [ ] Support Enums
 - [ ] Build a visualization library
     - [ ] Support of drag & drop canvas to add UML entities
+    - [ ] Nodes should be editable, i.e, the user should be able to move them inside the canvas and/or delete them
+    - [ ] Implement a layout algorithm that uses bend minimization
 
 ## Authors
 
