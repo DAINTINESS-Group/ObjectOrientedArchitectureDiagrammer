@@ -4,30 +4,18 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.jdt.core.dom.AST;
-import org.eclipse.jdt.core.dom.ASTNode;
-import org.eclipse.jdt.core.dom.ASTParser;
-import org.eclipse.jdt.core.dom.AbstractTypeDeclaration;
-import org.eclipse.jdt.core.dom.BodyDeclaration;
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.FieldDeclaration;
-import org.eclipse.jdt.core.dom.MethodDeclaration;
-import org.eclipse.jdt.core.dom.SimpleName;
-import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
-import org.eclipse.jdt.core.dom.Type;
-import org.eclipse.jdt.core.dom.VariableDeclaration;
-import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
+import org.eclipse.jdt.core.dom.*;
 import org.eclipse.text.edits.MalformedTreeException;
 
 import model.tree.LeafNode;
-import model.tree.PackageNode;
+
+import static org.eclipse.jdt.core.dom.ASTNode.METHOD_DECLARATION;
 
 /**This class is responsible for the creation of the AST Tree of a Java source file.
  * Using the ASTNode API it parses the files methods and field declarations
@@ -37,7 +25,7 @@ public class FileVisitor {
 	private CompilationUnit unit;
 	private LeafNode leafNode;
 	private String sourceFile[];
-	
+
 	/** This method calls the createAST method that is responsible for the creation
 	 * of the AST
 	 */
@@ -110,6 +98,29 @@ public class FileVisitor {
 	                    
 	                    leafNode.addMethodParametersTypes(parameters);
 	                    leafNode.addMethod(methodName, returnTypeName.replaceAll("<", "[").replaceAll(">", "]"));
+						/*
+						for (Object o :((MethodDeclaration) body).getBody().statements() ) {
+							System.out.println(o.toString());
+						}
+						if (((MethodDeclaration) body).getBody() != null) {
+							System.out.println(((MethodDeclaration) body).getName().toString());
+							CompilationUnit c = (CompilationUnit) ((MethodDeclaration) body).getBody().getRoot();
+							c.accept(new ASTVisitor() {
+								public boolean visit(VariableDeclarationFragment v) {
+									try {
+										System.out.println("[]".repeat(Math.max(0, (Integer) v.getStructuralProperty(v.getExtraDimensions2Property()))));
+									}catch (RuntimeException e) {
+										e.printStackTrace();
+									}
+									// System.out.println( v.getType().toString());
+
+									// System.out.println(s.toString());
+									return false;
+								}
+							});
+
+						}
+						*/
 	                }
 	            }
 	        }
@@ -133,7 +144,7 @@ public class FileVisitor {
 	}
 
 	private boolean isMethod(BodyDeclaration body) {
-		return body.getNodeType() == ASTNode.METHOD_DECLARATION;
+		return body.getNodeType() == METHOD_DECLARATION;
 	}
 
 	private boolean isField(BodyDeclaration body) {

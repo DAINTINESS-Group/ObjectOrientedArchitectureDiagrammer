@@ -23,9 +23,9 @@ public class CollectionsDiagramConverter {
     }
 
     private void iterateGraphNodes(Map<String, Map<String, String>> graph) {
-        for (Node leafNode: graphNodeCollection.getGraphNodes().keySet()) {
+        for (Map.Entry<Node, Integer> leafNode: graphNodeCollection.getGraphNodes().entrySet()) {
             Map<String, String> nodeEdges = new HashMap<>();
-            iterateGraphEdges(leafNode, nodeEdges);
+            iterateGraphEdges(leafNode.getKey(), nodeEdges);
             insertNode(graph, leafNode, nodeEdges);
         }
     }
@@ -38,8 +38,8 @@ public class CollectionsDiagramConverter {
         }
     }
 
-    private void insertNode(Map<String, Map<String, String>> graph, Node leafNode, Map<String, String> nodeEdges) {
-        graph.put(leafNode.getName() + "_" + leafNode.getType().name(), nodeEdges);
+    private void insertNode(Map<String, Map<String, String>> graph, Map.Entry<Node, Integer> leafNode, Map<String, String> nodeEdges) {
+        graph.put(leafNode.getKey().getName() + "_" + leafNode.getKey().getType().name(), nodeEdges);
     }
 
     private boolean doesEdgeStartFromCurrentNode(Node leafNode, Relationship relationship) {
@@ -47,7 +47,7 @@ public class CollectionsDiagramConverter {
     }
 
     private void insertEdge(Map<String, String> nodeEdges, Relationship relationship) {
-        nodeEdges.put(relationship.getEndingNode().getName() + "_" + relationship.getEndingNode().getType().name(),
+        nodeEdges.put(relationship.getEndingNode().getName() + "_" + relationship.getEndingNode().getType().name() + "_" + relationship.getRelationshipType().toString(),
                 relationship.getRelationshipType().name());
     }
 }

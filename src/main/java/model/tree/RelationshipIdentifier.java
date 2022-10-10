@@ -105,16 +105,23 @@ public class RelationshipIdentifier {
 	
 	private boolean isRelationshipDependency(List<String> leafNodesTypes, String leafNodesName) {
 		for (String leafNodesType : leafNodesTypes) {
-			if (leafNodesType.equals(leafNodesName)) {
+			if (doesFieldBelongToClass(leafNodesType, leafNodesName)) {
 				return true;
 			}
+			/*
+			for (String type: leafNodesType.replace("[", ",").replace("]", ",").split(",")) {
+				if (leafNodesName.equals(type)) {
+					return true;
+				}
+			}
+			*/
 		}
 		return false;
 	}
 	
 	private boolean isRelationshipAssociation(List<String> leafNodesTypes, String leafNodesName) {
 		for (String leafNodesType : leafNodesTypes) {
-			if (isFieldOfTypeClassObject(leafNodesType, leafNodesName)) {
+			if (doesFieldBelongToClass(leafNodesType, leafNodesName)) {
 				return true;
 			}
 		}
@@ -123,21 +130,22 @@ public class RelationshipIdentifier {
 	
 	private boolean isRelationshipAggregation(List<String> leafNodesTypes, String leafNodesName) {
 		for (String leafNodeType: leafNodesTypes) {
-			if (isFieldOfTypeCollection(leafNodeType, leafNodesName) && isListOfTypeClassObject(leafNodeType, leafNodesName)){
+			if (isFieldOfTypeCollection(leafNodeType, leafNodesName) && doesFieldBelongToClass(leafNodeType, leafNodesName)){
 				return true;
 			}
 		}
 		return false;
 	}
 	
-	private boolean isFieldOfTypeClassObject(String leafNodesType, String leafNodesName) {
-		return leafNodesName.equals(leafNodesType);
+	private boolean doesFieldBelongToClass(String leafNodesType, String leafNodesName) {
+		for (String type: leafNodesType.replace("[", ",").replace("]", ",").split(",")) {
+			if (leafNodesName.equals(type)) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
-	private boolean isListOfTypeClassObject(String fieldType, String leafNodesName) {
-		return fieldType.contains(leafNodesName);
-	}
-
 	private boolean isFieldOfTypeCollection(String s, String leafNodesName) {
 		return (s.startsWith("List") || s.startsWith("ArrayList") || s.startsWith("Map") || s.startsWith("HashMap")
 				|| s.contains(leafNodesName+"[") || s.startsWith("ArrayDeque") ||  s.startsWith("LinkedList") || s.startsWith("PriorityQueue"));
@@ -145,7 +153,6 @@ public class RelationshipIdentifier {
 	
 	private void createRelationship(int i, int j, RelationshipType relationshipType) {
 		allLeafNodes.get(i).addNodeRelationship(new Relationship(allLeafNodes.get(i), allLeafNodes.get(j), relationshipType));
-
 		for (Relationship r: allLeafNodes.get(i).getParentNode().getNodeRelationships()) {
 			if (doesPackageRelationshipAlreadyExist(j, r)) {
 				return;

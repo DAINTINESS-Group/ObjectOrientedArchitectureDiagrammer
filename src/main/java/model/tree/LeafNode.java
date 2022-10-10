@@ -38,7 +38,9 @@ public class LeafNode extends Node{
 	 * @param methodParameterTypes the different types of parameters the Java source file's methods take
 	 */
 	public void addMethodParametersTypes(List<String> methodParameterTypes) {
-		methodsParametersTypes.addAll(methodParameterTypes);
+		for (String methodParameterType: methodParameterTypes) {
+			methodsParametersTypes.add(methodParameterType.replaceAll("<", "[").replaceAll(">", "]"));
+		}
 	}
 
 	/**This method is responsible for adding the nodes' methods names and return types
