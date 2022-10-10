@@ -84,7 +84,7 @@
         <dependency>
             <groupId>JavaFXSmartGraph</groupId>
             <artifactId>JavaFXSmartGraph</artifactId>
-            <version>1.0</version>
+            <version>0.1</version>
         </dependency>
     </dependencies>
     <build>
