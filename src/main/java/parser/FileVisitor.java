@@ -17,8 +17,8 @@ import model.tree.LeafNode;
 
 import static org.eclipse.jdt.core.dom.ASTNode.METHOD_DECLARATION;
 
-/**This class is responsible for the creation of the AST Tree of a Java source file.
- * Using the ASTNode API it parses the files methods and field declarations
+/**This class is responsible for the creation of the AST of a Java source file.
+ * Using the ASTNode API it parses the files methods parameters, return types and field declarations
  */
 public class FileVisitor {
 
@@ -28,6 +28,8 @@ public class FileVisitor {
 
 	/** This method calls the createAST method that is responsible for the creation
 	 * of the AST
+     * @param file the Java source file
+     * @param leafNode the leaf node representing the Java source file
 	 */
 	public FileVisitor(File file, LeafNode leafNode){
 		try {
@@ -77,7 +79,7 @@ public class FileVisitor {
 		            			map.put(ob, map.get(ob));
 		            		}
 		            	}
-	            		leafNode.addField(fieldName , field.getType().toString().replaceAll("<", "[").replaceAll(">", "]"));
+	            		leafNode.addField(fieldName, field.getType().toString().replaceAll("<", "[").replaceAll(">", "]"));
 	            	}
 	                if (isMethod(body)) {
 	                    MethodDeclaration method = (MethodDeclaration)body;
@@ -98,29 +100,6 @@ public class FileVisitor {
 	                    
 	                    leafNode.addMethodParametersTypes(parameters);
 	                    leafNode.addMethod(methodName, returnTypeName.replaceAll("<", "[").replaceAll(">", "]"));
-						/*
-						for (Object o :((MethodDeclaration) body).getBody().statements() ) {
-							System.out.println(o.toString());
-						}
-						if (((MethodDeclaration) body).getBody() != null) {
-							System.out.println(((MethodDeclaration) body).getName().toString());
-							CompilationUnit c = (CompilationUnit) ((MethodDeclaration) body).getBody().getRoot();
-							c.accept(new ASTVisitor() {
-								public boolean visit(VariableDeclarationFragment v) {
-									try {
-										System.out.println("[]".repeat(Math.max(0, (Integer) v.getStructuralProperty(v.getExtraDimensions2Property()))));
-									}catch (RuntimeException e) {
-										e.printStackTrace();
-									}
-									// System.out.println( v.getType().toString());
-
-									// System.out.println(s.toString());
-									return false;
-								}
-							});
-
-						}
-						*/
 	                }
 	            }
 	        }

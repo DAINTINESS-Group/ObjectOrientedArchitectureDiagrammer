@@ -10,6 +10,11 @@ import java.util.Map;
  * The branches are also directed with a starting and an ending node
  */
 public class RelationshipIdentifier {
+	public static final int DECLARATION_LINE_STANDARD_SIZE = 2;
+	public static final int INHERITANCE_TYPE = 2;
+	public static final int SUPERCLASS_NAME = 3;
+	public static final int MULTIPLE_IMPLEMENTATIONS = 5;
+	public static final int INHERITANCE_TYPE_WITH_MULTIPLE_IMPLEMENTATIONS = 4;
 	private final Map<Path, PackageNode> packageNodes;
 	private final List<LeafNode> allLeafNodes;
 
@@ -59,12 +64,12 @@ public class RelationshipIdentifier {
 	}
 	
 	private boolean isDependency(int i, int j) {
-		return isRelationshipDependency(allLeafNodes.get(i).getMethodParameterTypes(), allLeafNodes.get(j).getName()) ||
-				isRelationshipDependency(allLeafNodes.get(i).getMethodsReturnTypes(), allLeafNodes.get(j).getName());
+		return doesRelationshipExist(allLeafNodes.get(i).getMethodParameterTypes(), allLeafNodes.get(j).getName()) ||
+				doesRelationshipExist(allLeafNodes.get(i).getMethodsReturnTypes(), allLeafNodes.get(j).getName());
 	}
 
 	private boolean isAssociation(int i, int j) {
-		return isRelationshipAssociation(allLeafNodes.get(i).getFieldsTypes(), allLeafNodes.get(j).getName());
+		return doesRelationshipExist(allLeafNodes.get(i).getFieldsTypes(), allLeafNodes.get(j).getName());
 	}
 	
 	private boolean isAggregation(int i, int j) {
@@ -72,13 +77,13 @@ public class RelationshipIdentifier {
 	}
 	
 	private boolean isInheritance(int i) {
-		return allLeafNodes.get(i).getInheritanceLine().length > 2;
+		return allLeafNodes.get(i).getInheritanceLine().length > DECLARATION_LINE_STANDARD_SIZE;
 	}
 	
 	private boolean isExtension(int i, int j) {
-		if ( allLeafNodes.get(i).getInheritanceLine()[2].equals("extends") ) {
+		if ( allLeafNodes.get(i).getInheritanceLine()[INHERITANCE_TYPE].equals("extends") ) {
 			for (int k = 0; k < allLeafNodes.size(); k++) {
-				if (allLeafNodes.get(i).getInheritanceLine()[3].equals(allLeafNodes.get(j).getName())) {
+				if (allLeafNodes.get(i).getInheritanceLine()[SUPERCLASS_NAME].equals(allLeafNodes.get(j).getName())) {
 					return true;
 				}
 			}
@@ -87,13 +92,14 @@ public class RelationshipIdentifier {
 	}
 	
 	private boolean isImplementation(int i, int j) {
-		if ( allLeafNodes.get(i).getInheritanceLine()[2].equals("implements") ) {
+		if ( allLeafNodes.get(i).getInheritanceLine()[INHERITANCE_TYPE].equals("implements") ) {
 			for (int l = 3; l < allLeafNodes.get(i).getInheritanceLine().length; l++) {
 				if (allLeafNodes.get(i).getInheritanceLine()[l].equals(allLeafNodes.get(j).getName())) {
 					return true;
 				}
 			}
-		}else if (allLeafNodes.get(i).getInheritanceLine().length > 5 && allLeafNodes.get(i).getInheritanceLine()[4].equals("implements")) {
+		}else if (allLeafNodes.get(i).getInheritanceLine().length > MULTIPLE_IMPLEMENTATIONS &&
+				allLeafNodes.get(i).getInheritanceLine()[INHERITANCE_TYPE_WITH_MULTIPLE_IMPLEMENTATIONS].equals("implements")) {
 			for (int l = 5; l < allLeafNodes.get(i).getInheritanceLine().length; l++) {
 				if (allLeafNodes.get(i).getInheritanceLine()[l].equals(allLeafNodes.get(j).getName())) {
 					return true;
@@ -102,24 +108,8 @@ public class RelationshipIdentifier {
 		}
 		return false;
 	}
-	
-	private boolean isRelationshipDependency(List<String> leafNodesTypes, String leafNodesName) {
-		for (String leafNodesType : leafNodesTypes) {
-			if (doesFieldBelongToClass(leafNodesType, leafNodesName)) {
-				return true;
-			}
-			/*
-			for (String type: leafNodesType.replace("[", ",").replace("]", ",").split(",")) {
-				if (leafNodesName.equals(type)) {
-					return true;
-				}
-			}
-			*/
-		}
-		return false;
-	}
-	
-	private boolean isRelationshipAssociation(List<String> leafNodesTypes, String leafNodesName) {
+
+	private boolean doesRelationshipExist(List<String> leafNodesTypes, String leafNodesName) {
 		for (String leafNodesType : leafNodesTypes) {
 			if (doesFieldBelongToClass(leafNodesType, leafNodesName)) {
 				return true;
@@ -127,7 +117,7 @@ public class RelationshipIdentifier {
 		}
 		return false;
 	}
-	
+
 	private boolean isRelationshipAggregation(List<String> leafNodesTypes, String leafNodesName) {
 		for (String leafNodeType: leafNodesTypes) {
 			if (isFieldOfTypeCollection(leafNodeType, leafNodesName) && doesFieldBelongToClass(leafNodeType, leafNodesName)){

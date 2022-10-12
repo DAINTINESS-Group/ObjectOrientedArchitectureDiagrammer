@@ -125,15 +125,20 @@ Create a new [Issue][issues-url] to report any issues
 
 ## Roadmap
 
-- [ ] Change the parser
-  - [ ] Support local variables
-  - [ ] Support Enums
+- [ ] Change the parser to support
+  - [ ] Local fields
+  - [ ] Enums
 - [ ] Build a visualization library
     - [ ] Support of drag & drop canvas to add UML entities
-    - [ ] Nodes should be editable, i.e, the user should be able to move them inside the canvas and/or delete them
+    - [ ] Movable & deletable nodes
     - [ ] Implement a layout algorithm that uses bend minimization
-
+- [ ] Support [PlantUML][plantuml-url]
+  - [ ] Use PlantUML’s language to define the diagram
+  - [ ] Export image of diagram
+  - [ ] Visualize the diagram within the tool's canvas
+    
 ## Authors
+Dimitris Anyfantakis
 
 ## License
 
@@ -141,7 +146,6 @@ See [License][license-url] for more information regarding the license
 
 ## Acknowledgments
 
-<!-- MARKDOWN LINKS & IMAGES -->
 [contributors-shield]: https://img.shields.io/github/contributors/dimanyfantakis/ObjectOrientedArchitectureDiagrammer
 [contributors-url]: https://github.com/dimanyfantakis/ObjectOrientedArchitectureDiagrammer/graphs/contributors
 [commits-shield]: https://img.shields.io/github/last-commit/dimanyfantakis/ObjectOrientedArchitectureDiagrammer
@@ -158,3 +162,4 @@ See [License][license-url] for more information regarding the license
 [demo-url]: https://github.com/dimanyfantakis/ObjectOrientedArchitectureDiagrammer
 [importEclipse-url]: https://www.baeldung.com/maven-import-eclipse
 [importIntellij-url]: https://www.jetbrains.com/idea/guide/tutorials/working-with-maven/importing-a-project/
+[plantuml-url]: https://plantuml.com/
