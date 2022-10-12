@@ -146,20 +146,20 @@ See [License][license-url] for more information regarding the license
 
 ## Acknowledgments
 
-[contributors-shield]: https://img.shields.io/github/contributors/dimanyfantakis/ObjectOrientedArchitectureDiagrammer
-[contributors-url]: https://github.com/dimanyfantakis/ObjectOrientedArchitectureDiagrammer/graphs/contributors
-[commits-shield]: https://img.shields.io/github/last-commit/dimanyfantakis/ObjectOrientedArchitectureDiagrammer
-[commits-url]: https://github.com/dimanyfantakis/ObjectOrientedArchitectureDiagrammer/commit/main
-[forks-shield]: https://img.shields.io/github/forks/dimanyfantakis/ObjectOrientedArchitectureDiagrammer
-[forks-url]: https://github.com/dimanyfantakis/ObjectOrientedArchitectureDiagrammer/network/members
-[stars-shield]: https://img.shields.io/github/stars/dimanyfantakis/ObjectOrientedArchitectureDiagrammer
-[stars-url]: https://github.com/dimanyfantakis/ObjectOrientedArchitectureDiagrammer/stargazers
-[issues-shield]: https://img.shields.io/github/issues/dimanyfantakis/ObjectOrientedArchitectureDiagrammer
-[issues-url]: https://github.com/dimanyfantakis/ObjectOrientedArchitectureDiagrammer/issues/
-[license-shield]: https://img.shields.io/github/license/dimanyfantakis/ObjectOrientedArchitectureDiagrammer
-[license-url]: https://github.com/dimanyfantakis/ObjectOrientedArchitectureDiagrammer/blob/main/LICENSE
+[contributors-shield]: https://img.shields.io/github/contributors/DAINTINESS-Group/ObjectOrientedArchitectureDiagrammer
+[contributors-url]: https://github.com/DAINTINESS-Group/ObjectOrientedArchitectureDiagrammer/graphs/contributors
+[commits-shield]: https://img.shields.io/github/last-commit/DAINTINESS-Group/ObjectOrientedArchitectureDiagrammer
+[commits-url]: https://github.com/DAINTINESS-Group/ObjectOrientedArchitectureDiagrammer/commit/main
+[forks-shield]: https://img.shields.io/github/forks/DAINTINESS-Group/ObjectOrientedArchitectureDiagrammer
+[forks-url]: https://github.com/DAINTINESS-Group/ObjectOrientedArchitectureDiagrammer/network/members
+[stars-shield]: https://img.shields.io/github/stars/DAINTINESS-Group/ObjectOrientedArchitectureDiagrammer
+[stars-url]: https://github.com/DAINTINESS-Group/ObjectOrientedArchitectureDiagrammer/stargazers
+[issues-shield]: https://img.shields.io/github/issues/DAINTINESS-Group/ObjectOrientedArchitectureDiagrammer
+[issues-url]: https://github.com/DAINTINESS-Group/ObjectOrientedArchitectureDiagrammer/issues/
+[license-shield]: https://img.shields.io/github/license/DAINTINESS-Group/ObjectOrientedArchitectureDiagrammer
+[license-url]: https://github.com/DAINTINESS-Group/ObjectOrientedArchitectureDiagrammer/blob/main/LICENSE
 [userDocumentation-url]: https://docs.google.com/document/d/1C8zHygW2cqtbSBOQGcSFhKYcRx0AkQaY/edit?usp=sharing&ouid=111456297792845674932&rtpof=true&sd=true
-[demo-url]: https://github.com/dimanyfantakis/ObjectOrientedArchitectureDiagrammer
+[demo-url]: https://github.com/DAINTINESS-Group/ObjectOrientedArchitectureDiagrammer
 [importEclipse-url]: https://www.baeldung.com/maven-import-eclipse
 [importIntellij-url]: https://www.jetbrains.com/idea/guide/tutorials/working-with-maven/importing-a-project/
 [plantuml-url]: https://plantuml.com/
