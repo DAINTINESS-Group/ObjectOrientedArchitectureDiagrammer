@@ -158,7 +158,7 @@ See [License][license-url] for more information regarding the license
 [issues-url]: https://github.com/DAINTINESS-Group/ObjectOrientedArchitectureDiagrammer/issues/
 [license-shield]: https://img.shields.io/github/license/DAINTINESS-Group/ObjectOrientedArchitectureDiagrammer
 [license-url]: https://github.com/DAINTINESS-Group/ObjectOrientedArchitectureDiagrammer/blob/main/LICENSE
-[userDocumentation-url]: https://docs.google.com/document/d/1C8zHygW2cqtbSBOQGcSFhKYcRx0AkQaY/edit?usp=sharing&ouid=111456297792845674932&rtpof=true&sd=true
+[userDocumentation-url]: https://drive.google.com/file/d/17h9-hPtQ7GXwKxacQCjEKP51aE3G2JdZ/view?usp=sharing
 [demo-url]: https://github.com/DAINTINESS-Group/ObjectOrientedArchitectureDiagrammer
 [importEclipse-url]: https://www.baeldung.com/maven-import-eclipse
 [importIntellij-url]: https://www.jetbrains.com/idea/guide/tutorials/working-with-maven/importing-a-project/
