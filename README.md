@@ -36,17 +36,17 @@
 
 ### Motivation
 
-The purpose of this project is to develop an independent software tool that creates UML diagrams by reverse engineering Java object-oriented source code. 
+The purpose of this project is to develop an independent software tool that produces UML diagrams by reverse engineering Java object-oriented source code. 
 
 ### Features
 
 * Visualize class && package UML diagrams 
   * Choose the classes/packages that will be included in the diagram
   * Create different diagrams from the same project
-* Exported a created diagram:
-  * GraphML. View the exported diagram using yEd
-  * as Image
-  * as a text file that can you can load later
+* Export a diagram to:
+  * GraphML in order to visualize it using yEd
+  * Image
+  * text file that can you can later load
 
 ## Getting Started
 
@@ -125,16 +125,16 @@ Create a new [Issue][issues-url] to report any issues
 
 ## Roadmap
 
-- [ ] Change the parser to support
+- [ ] Change the parser to support:
   - [ ] Local fields
   - [ ] Enums
-- [ ] Build a visualization library
-    - [ ] Support of drag & drop canvas to add UML entities
-    - [ ] Movable & deletable nodes
-    - [ ] Implement a layout algorithm that uses bend minimization
+- [ ] Build a visualization library that supports:
+    - [ ] Drag & drop canvas to add UML entities
+    - [ ] Editable canvas in order to move & delete UML components and entities
+    - [ ] A layout algorithm that uses bend minimization
 - [ ] Support [PlantUML][plantuml-url]
   - [ ] Use PlantUML’s language to define the diagram
-  - [ ] Export image of diagram
+  - [ ] Export the image of diagram
   - [ ] Visualize the diagram within the tool's canvas
     
 ## Authors
