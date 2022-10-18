@@ -39,32 +39,24 @@ public class CollectionsDiagramConvertTest {
         CollectionsDiagramConverter collectionsDiagramConverter = new CollectionsDiagramConverter(graphNodeCollection, graphEdgeCollection);
         Map<String, Map<String, String>> actualDiagram = collectionsDiagramConverter.convertCollectionsToDiagram();
 
-        //TO FIX: Either the code needs fixing, or the Map must be Map<String, List<String>>
         Map<String, Map<String, String>> expectedDiagram = new HashMap<>();
         for (Node leafNode: graphNodeCollection.getGraphNodes().keySet()) {
             Map<String, String> nodeEdges = new HashMap<>();
             for (Relationship relationship: graphEdgeCollection.getGraphEdges().keySet()){
                 if (relationship.getStartingNode().equals(leafNode)) {
-                    nodeEdges.put(relationship.getEndingNode().getName() + "_" + relationship.getEndingNode().getType().name(),
-                            relationship.getRelationshipType().name());
+                    nodeEdges.put(relationship.getEndingNode().getName() + "_" + relationship.getEndingNode().getType().name() +
+                            "_" + relationship.getRelationshipType(), relationship.getRelationshipType().name());
                 }
             }
             expectedDiagram.put(leafNode.getName() + "_" + leafNode.getType().name(), nodeEdges);
         }
 
         for (Map.Entry<String, Map<String, String>> entry: expectedDiagram.entrySet()) {
-        	System.out.println("E: " + entry.getKey() + " :: " + entry.getValue().entrySet().toString());
-        }
-        System.out.println("--------");
-        for (Map.Entry<String, Map<String, String>> entry: actualDiagram.entrySet()) {
-        	System.out.println("A: " + entry.getKey() + " :: " + entry.getValue().entrySet().toString());
-        }
-        for (Map.Entry<String, Map<String, String>> entry: expectedDiagram.entrySet()) {
             assertTrue(actualDiagram.containsKey(entry.getKey()));
-//            for (Map.Entry<String, String> entry1: entry.getValue().entrySet()) {
-//                assertTrue(actualDiagram.get(entry.getKey()).containsKey(entry1.getKey()));
-//                assertEquals(entry1.getValue(), actualDiagram.get(entry.getKey()).get(entry1.getKey()));
-//            }
+            for (Map.Entry<String, String> entry1: entry.getValue().entrySet()) {
+                assertTrue(actualDiagram.get(entry.getKey()).containsKey(entry1.getKey()));
+                assertEquals(entry1.getValue(), actualDiagram.get(entry.getKey()).get(entry1.getKey()));
+            }
         }
     }
 

@@ -68,54 +68,47 @@ class TreeStructureArchitectureTest {
 		LeafNode addLatexCommand = commandPackage.getLeafNodes().get("AddLatexCommand");
 		List<Relationship> nodeRelationships = addLatexCommand.getNodeRelationships();
 		
-		boolean foundObligatoryRel = false;
-		int counter = 0;
+		boolean foundObligatoryRelationship = false;
+		int relationshipCounter = 0;
 		for (Relationship relationship : nodeRelationships) {
 			if ((relationship.getStartingNode().getName().equals("AddLatexCommand")) && (relationship.getEndingNode().getName().equals("VersionsManager"))) {
 				if (relationship.getRelationshipType().equals(RelationshipType.DEPENDENCY)) {
-					foundObligatoryRel = true;
+					foundObligatoryRelationship = true;
 				}else {
-					foundObligatoryRel = relationship.getRelationshipType().equals(RelationshipType.ASSOCIATION);
+					foundObligatoryRelationship = relationship.getRelationshipType().equals(RelationshipType.ASSOCIATION);
 				}
 			} else if ((relationship.getStartingNode().getName().equals("AddLatexCommand")) && (relationship.getEndingNode().getName().equals("Command"))) {
 				assertEquals(RelationshipType.IMPLEMENTATION, relationship.getRelationshipType());
-				foundObligatoryRel = true;
+				foundObligatoryRelationship = true;
 			} else {
-				foundObligatoryRel = false;
+				foundObligatoryRelationship = false;
 			}
-			counter++;
+			relationshipCounter++;
 		}
-		assertEquals(3, counter);
-		assertTrue(foundObligatoryRel);
+		assertEquals(3, relationshipCounter);
+		assertTrue(foundObligatoryRelationship);
 		assertEquals(NodeType.CLASS, addLatexCommand.getType());
 
 		LeafNode commandFactory = commandPackage.getLeafNodes().get("CommandFactory");
 		nodeRelationships = commandFactory.getNodeRelationships();
 
-		boolean foundObligatoryRel_CFV = false;
-		boolean foundObligatoryRel_CFC = false;
-		counter = 0;
+		boolean foundObligatoryRelationships_CommandFactoryToVersionsManager = false;
+		boolean foundObligatoryRelationships_CommandFactoryToCommand = false;
+		relationshipCounter = 0;
 		for(Relationship relationship: nodeRelationships) {
-//			System.out.println(relationship.getStartingNode().getName() + " - " + relationship.getEndingNode().getName() 
-//					+ " ## " + relationship.getRelationshipType().toString());
 			if((relationship.getStartingNode().getName().equals("CommandFactory")) && (relationship.getEndingNode().getName().equals("VersionsManager"))) {
 				if (relationship.getRelationshipType().equals(RelationshipType.DEPENDENCY) || (relationship.getRelationshipType().equals(RelationshipType.ASSOCIATION))) {
-					foundObligatoryRel_CFV = true;
-				}//else {
-					//foundObligatoryRel_CFV = relationship.getRelationshipType().equals(RelationshipType.ASSOCIATION);
-				//}
+					foundObligatoryRelationships_CommandFactoryToVersionsManager = true;
+				}
 			}else if ((relationship.getStartingNode().getName().equals("CommandFactory")) && (relationship.getEndingNode().getName().equals("Command"))) {
-				//assertEquals(RelationshipType.DEPENDENCY, relationship.getRelationshipType());
 				if(relationship.getRelationshipType().equals(RelationshipType.DEPENDENCY))
-					foundObligatoryRel_CFC = true;
-			}//else {
-				//foundObligatoryRel_CFC = false;
-			//}
-			counter++;
+					foundObligatoryRelationships_CommandFactoryToCommand = true;
+			}
+			relationshipCounter++;
 		}
-		assertTrue(foundObligatoryRel_CFV);
-		assertTrue(foundObligatoryRel_CFC);
-		assertEquals(4, counter);
+		assertTrue(foundObligatoryRelationships_CommandFactoryToVersionsManager);
+		assertTrue(foundObligatoryRelationships_CommandFactoryToCommand);
+		assertEquals(4, relationshipCounter);
 		assertEquals(NodeType.CLASS, commandFactory.getType());
 	}
 
@@ -129,26 +122,26 @@ class TreeStructureArchitectureTest {
 		LeafNode implementingClassLeaf = sourcePackage.getLeafNodes().get("ImplementingClass");
 		List<Relationship> nodeRelationships = implementingClassLeaf.getNodeRelationships();
 
-		boolean foundObligatoryRel = false;
-		int counter = 0;
+		boolean foundObligatoryRelationship = false;
+		int relationshipCounter = 0;
 		for(Relationship relationship: nodeRelationships) {
 			if((relationship.getStartingNode().getName().equals("ImplementingClass")) && (relationship.getEndingNode().getName().equals("TestingInterface2"))) {
 				assertEquals(RelationshipType.IMPLEMENTATION, relationship.getRelationshipType());
-				foundObligatoryRel = true;
+				foundObligatoryRelationship = true;
 			}else if ((relationship.getStartingNode().getName().equals("ImplementingClass")) && (relationship.getEndingNode().getName().equals("ExtensionClass"))) {
 				assertEquals(RelationshipType.EXTENSION, relationship.getRelationshipType());
-				foundObligatoryRel = true;
+				foundObligatoryRelationship = true;
 			}else if ((relationship.getStartingNode().getName().equals("ImplementingClass")) && (relationship.getEndingNode().getName().equals("TestingInterface"))) {
 				assertEquals(RelationshipType.IMPLEMENTATION, relationship.getRelationshipType());
-				foundObligatoryRel = true;
+				foundObligatoryRelationship = true;
 			}else {
-				foundObligatoryRel = false;
+				foundObligatoryRelationship = false;
 			}
-			counter++;
+			relationshipCounter++;
 		}
 
-		assertTrue(foundObligatoryRel);
-		assertEquals(3, counter);
+		assertTrue(foundObligatoryRelationship);
+		assertEquals(3, relationshipCounter);
 		assertEquals(NodeType.CLASS, implementingClassLeaf.getType());
 	}
 
@@ -161,42 +154,42 @@ class TreeStructureArchitectureTest {
 		PackageNode commands = packages.get(Paths.get(currentDirectory.toRealPath().normalize().toString(), "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands"));
 		List<Relationship> packageRelationships = commands.getNodeRelationships();
 
-		boolean foundObligatoryRel = false;
-		int counter = 0;
+		boolean foundObligatoryRelationship = false;
+		int relationshipCounter = 0;
 		for(Relationship relationship: packageRelationships) {
 			if((relationship.getStartingNode().getName().equals("src.controller.commands")) && (relationship.getEndingNode().getName().equals("src.model"))) {
 				assertEquals(RelationshipType.DEPENDENCY, relationship.getRelationshipType());
-				foundObligatoryRel = true;
+				foundObligatoryRelationship = true;
 			}else {
-				foundObligatoryRel = false;
+				foundObligatoryRelationship = false;
 			}
-			counter++;
+			relationshipCounter++;
 		}
 
-		assertTrue(foundObligatoryRel);
-		assertEquals(1, counter);
+		assertTrue(foundObligatoryRelationship);
+		assertEquals(1, relationshipCounter);
 		assertEquals(NodeType.PACKAGE, commands.getType());
 
 		PackageNode controller = packages.get(Paths.get(currentDirectory.toRealPath().normalize().toString(), "\\src\\test\\resources\\LatexEditor\\src\\controller"));
 		packageRelationships = controller.getNodeRelationships();
 
-		foundObligatoryRel = false;
-		counter = 0;
+		foundObligatoryRelationship = false;
+		relationshipCounter = 0;
 		for(Relationship relationship: packageRelationships) {
 			if((relationship.getStartingNode().getName().equals("src.controller")) && (relationship.getEndingNode().getName().equals("src.model"))) {
 				assertEquals(RelationshipType.DEPENDENCY, relationship.getRelationshipType());
-				foundObligatoryRel = true;
+				foundObligatoryRelationship = true;
 			}else if((relationship.getStartingNode().getName().equals("src.controller")) && (relationship.getEndingNode().getName().equals("src.controller.commands"))) {
 				assertEquals(RelationshipType.DEPENDENCY, relationship.getRelationshipType());
-				foundObligatoryRel = true;
+				foundObligatoryRelationship = true;
 			}else {
-				foundObligatoryRel = false;
+				foundObligatoryRelationship = false;
 			}
-			counter++;
+			relationshipCounter++;
 		}
 
-		assertTrue(foundObligatoryRel);
-		assertEquals(2, counter);
+		assertTrue(foundObligatoryRelationship);
+		assertEquals(2, relationshipCounter);
 		assertEquals(NodeType.PACKAGE, commands.getType());
 	}
 
