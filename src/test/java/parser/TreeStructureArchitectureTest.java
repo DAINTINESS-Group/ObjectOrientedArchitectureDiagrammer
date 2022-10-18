@@ -92,25 +92,29 @@ class TreeStructureArchitectureTest {
 		LeafNode commandFactory = commandPackage.getLeafNodes().get("CommandFactory");
 		nodeRelationships = commandFactory.getNodeRelationships();
 
-		foundObligatoryRel = false;
+		boolean foundObligatoryRel_CFV = false;
+		boolean foundObligatoryRel_CFC = false;
 		counter = 0;
 		for(Relationship relationship: nodeRelationships) {
+//			System.out.println(relationship.getStartingNode().getName() + " - " + relationship.getEndingNode().getName() 
+//					+ " ## " + relationship.getRelationshipType().toString());
 			if((relationship.getStartingNode().getName().equals("CommandFactory")) && (relationship.getEndingNode().getName().equals("VersionsManager"))) {
-				if (relationship.getRelationshipType().equals(RelationshipType.DEPENDENCY)) {
-					foundObligatoryRel = true;
-				}else {
-					foundObligatoryRel = relationship.getRelationshipType().equals(RelationshipType.ASSOCIATION);
-				}
+				if (relationship.getRelationshipType().equals(RelationshipType.DEPENDENCY) || (relationship.getRelationshipType().equals(RelationshipType.ASSOCIATION))) {
+					foundObligatoryRel_CFV = true;
+				}//else {
+					//foundObligatoryRel_CFV = relationship.getRelationshipType().equals(RelationshipType.ASSOCIATION);
+				//}
 			}else if ((relationship.getStartingNode().getName().equals("CommandFactory")) && (relationship.getEndingNode().getName().equals("Command"))) {
-				assertEquals(RelationshipType.DEPENDENCY, relationship.getRelationshipType());
-				foundObligatoryRel = true;
-			}else {
-				foundObligatoryRel = false;
-			}
+				//assertEquals(RelationshipType.DEPENDENCY, relationship.getRelationshipType());
+				if(relationship.getRelationshipType().equals(RelationshipType.DEPENDENCY))
+					foundObligatoryRel_CFC = true;
+			}//else {
+				//foundObligatoryRel_CFC = false;
+			//}
 			counter++;
 		}
-
-		assertTrue(foundObligatoryRel);
+		assertTrue(foundObligatoryRel_CFV);
+		assertTrue(foundObligatoryRel_CFC);
 		assertEquals(4, counter);
 		assertEquals(NodeType.CLASS, commandFactory.getType());
 	}
