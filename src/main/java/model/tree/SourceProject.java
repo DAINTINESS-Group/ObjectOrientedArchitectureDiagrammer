@@ -56,4 +56,12 @@ public class SourceProject {
         this.numberOfLeafNodes = leafNodeCounter;
     }
 
+	public int getNumberOfLeafNodes() {
+		return numberOfLeafNodes;
+	}
+
+	public int getNumberOfPackages() {
+		return numberOfPackages;
+	}
+
 }

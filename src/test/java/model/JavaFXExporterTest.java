@@ -3,7 +3,7 @@ package model;
 import manager.ClassDiagramManager;
 import manager.DiagramManager;
 import model.diagram.javafx.JavaFXExporter;
-import model.tree.SourceProject;
+//import model.tree.SourceProject;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Test;
 
@@ -27,7 +27,9 @@ public class JavaFXExporterTest {
     void saveDiagramTest() throws IOException {
         DiagramManager classDiagramManager = new ClassDiagramManager();
         List<String> chosenFiles = Arrays.asList("MainWindow", "LatexEditorView", "OpeningWindow");
-        SourceProject sourceProject = classDiagramManager.createTree(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
+        
+		//SourceProject sourceProject = 
+		classDiagramManager.createTree(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
         Map<String, Map<String, String>> createdDiagram = classDiagramManager.createDiagram(chosenFiles);
 
         JavaFXExporter javaFXExporter = new JavaFXExporter();
