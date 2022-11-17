@@ -6,7 +6,7 @@
   <p>
     A tool for the reverse engineering of Java object-oriented source code into Unified Modeling Language (UML) diagrams
   </p>
-  
+
 [![Contributors][contributors-shield]][contributors-url]
 [![Commits][commits-shield]][commits-url]
 [![Forks][forks-shield]][forks-url]
@@ -54,7 +54,7 @@ The purpose of this project is to develop an independent software tool that prod
 
 1. Clone the repository
   ```bash
-  git clone https://github.com/dimanyfantakis/ObjectOrientedArchitectureDiagrammer.git
+  git clone https://github.com/DAINTINESS-Group/ObjectOrientedArchitectureDiagrammer.git
   ```
 
 2. Import project into:
@@ -126,19 +126,20 @@ Create a new [Issue][issues-url] to report any issues
 ## Roadmap
 
 - [ ] Change the parser to support:
-  - [ ] Local fields
+  - [ ] Creation of new() objects via local variables (and the resulting dependencies)
   - [ ] Enums
 - [ ] Build a visualization library that supports:
+    - [ ] A layout algorithm that uses bend minimization
     - [ ] Drag & drop canvas to add UML entities
     - [ ] Editable canvas in order to move & delete UML components and entities
-    - [ ] A layout algorithm that uses bend minimization
+    - [ ] Editable edges that can split when clicked to help the user avoid edge/box overlapping
 - [ ] Support [PlantUML][plantuml-url]
   - [ ] Use PlantUML’s language to define the diagram
   - [ ] Export the image of diagram
   - [ ] Visualize the diagram within the tool's canvas
     
 ## Authors
-Dimitris Anyfantakis
+v0.1: Dimitris Anyfantakis has developed the first version of the tool as part of his Diploma Thesis in Univ. Ioannina; Panos Vassiliadis acted solely as code reviewer and co-designer.
 
 ## License
 
