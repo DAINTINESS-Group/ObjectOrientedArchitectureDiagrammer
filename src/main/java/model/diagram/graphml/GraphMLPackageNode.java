@@ -15,7 +15,7 @@ public class GraphMLPackageNode extends GraphNodeCollection {
     }
 
     private List<String> getNodesDescription(PackageNode packageNode, int nodeId, List<Double> nodeGeometry) {
-        return Arrays.asList(String.valueOf(nodeId), packageNode.getName(), String.valueOf(nodeGeometry.get(X_COORDINATE)),
+        return Arrays.asList(String.valueOf(nodeId), packageNode.getNodeName(), String.valueOf(nodeGeometry.get(X_COORDINATE)),
                 String.valueOf(nodeGeometry.get(Y_COORDINATE)));
     }
 }

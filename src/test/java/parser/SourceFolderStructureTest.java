@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
 import model.tree.LeafNode;
 import model.tree.PackageNode;
 
-class SourceFolderParsingTest {
+class SourceFolderStructureTest {
 
 	Path currentDirectory = Path.of(".");
 	@Test

@@ -10,11 +10,6 @@ import java.util.Map;
  * The branches are also directed with a starting and an ending node
  */
 public class RelationshipIdentifier {
-	public static final int DECLARATION_LINE_STANDARD_SIZE = 2;
-	public static final int INHERITANCE_TYPE = 2;
-	public static final int SUPERCLASS_NAME = 3;
-	public static final int MULTIPLE_IMPLEMENTATIONS = 5;
-	public static final int INHERITANCE_TYPE_WITH_MULTIPLE_IMPLEMENTATIONS = 4;
 	private final Map<Path, PackageNode> packageNodes;
 	private final List<LeafNode> allLeafNodes;
 
@@ -53,57 +48,45 @@ public class RelationshipIdentifier {
 		}else if (isAssociation(i, j)) {
 			createRelationship(i, j, RelationshipType.ASSOCIATION);
 		}
-		if (isInheritance(i)) {
-			if (isExtension(i, j)) {
-				createRelationship(i, j, RelationshipType.EXTENSION);
-			}
-			if (isImplementation(i, j)) {
-				createRelationship(i, j, RelationshipType.IMPLEMENTATION);
-			}
+
+		if (isExtension(i, j)) {
+			createRelationship(i, j, RelationshipType.EXTENSION);
+		}
+		if (isImplementation(i, j)) {
+			createRelationship(i, j, RelationshipType.IMPLEMENTATION);
 		}
 	}
-	
+
 	private boolean isDependency(int i, int j) {
-		return doesRelationshipExist(allLeafNodes.get(i).getMethodParameterTypes(), allLeafNodes.get(j).getName()) ||
-				doesRelationshipExist(allLeafNodes.get(i).getMethodsReturnTypes(), allLeafNodes.get(j).getName());
+		return doesRelationshipExist(allLeafNodes.get(i).getMethodParameterTypes(), allLeafNodes.get(j).getNodeName()) ||
+				doesRelationshipExist(allLeafNodes.get(i).getMethodsReturnTypes(), allLeafNodes.get(j).getNodeName()) ||
+				doesRelationshipExist(allLeafNodes.get(i).getVariablesTypes(), allLeafNodes.get(j).getNodeName()) ||
+				doesRelationshipExist(allLeafNodes.get(i).getCreatedObjects(), allLeafNodes.get(j).getNodeName());
 	}
 
 	private boolean isAssociation(int i, int j) {
-		return doesRelationshipExist(allLeafNodes.get(i).getFieldsTypes(), allLeafNodes.get(j).getName());
+		return doesRelationshipExist(allLeafNodes.get(i).getFieldsTypes(), allLeafNodes.get(j).getNodeName());
 	}
 	
 	private boolean isAggregation(int i, int j) {
-		return isRelationshipAggregation(allLeafNodes.get(i).getFieldsTypes(), allLeafNodes.get(j).getName());
-	}
-	
-	private boolean isInheritance(int i) {
-		return allLeafNodes.get(i).getInheritanceLine().length > DECLARATION_LINE_STANDARD_SIZE;
+		return isRelationshipAggregation(allLeafNodes.get(i).getFieldsTypes(), allLeafNodes.get(j).getNodeName());
 	}
 	
 	private boolean isExtension(int i, int j) {
-		if ( allLeafNodes.get(i).getInheritanceLine()[INHERITANCE_TYPE].equals("extends") ) {
-			for (int k = 0; k < allLeafNodes.size(); k++) {
-				if (allLeafNodes.get(i).getInheritanceLine()[SUPERCLASS_NAME].equals(allLeafNodes.get(j).getName())) {
-					return true;
-				}
-			}
+		if (allLeafNodes.get(i).getBaseClass().isEmpty()) {
+			return false;
 		}
-		return false;
+		return allLeafNodes.get(i).getBaseClass().equals(allLeafNodes.get(j).getNodeName());
 	}
 	
 	private boolean isImplementation(int i, int j) {
-		if ( allLeafNodes.get(i).getInheritanceLine()[INHERITANCE_TYPE].equals("implements") ) {
-			for (int l = 3; l < allLeafNodes.get(i).getInheritanceLine().length; l++) {
-				if (allLeafNodes.get(i).getInheritanceLine()[l].equals(allLeafNodes.get(j).getName())) {
-					return true;
-				}
-			}
-		}else if (allLeafNodes.get(i).getInheritanceLine().length > MULTIPLE_IMPLEMENTATIONS &&
-				allLeafNodes.get(i).getInheritanceLine()[INHERITANCE_TYPE_WITH_MULTIPLE_IMPLEMENTATIONS].equals("implements")) {
-			for (int l = 5; l < allLeafNodes.get(i).getInheritanceLine().length; l++) {
-				if (allLeafNodes.get(i).getInheritanceLine()[l].equals(allLeafNodes.get(j).getName())) {
-					return true;
-				}
+		if (allLeafNodes.get(i).getImplementedInterfaces().size() == 0) {
+			return false;
+		}
+
+		for (String implementedInterface: allLeafNodes.get(i).getImplementedInterfaces()) {
+			if (implementedInterface.equals(allLeafNodes.get(j).getNodeName())) {
+				return true;
 			}
 		}
 		return false;

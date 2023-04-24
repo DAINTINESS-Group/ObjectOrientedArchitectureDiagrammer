@@ -44,11 +44,11 @@ public class CollectionsDiagramConvertTest {
             Map<String, String> nodeEdges = new HashMap<>();
             for (Relationship relationship: graphEdgeCollection.getGraphEdges().keySet()){
                 if (relationship.getStartingNode().equals(leafNode)) {
-                    nodeEdges.put(relationship.getEndingNode().getName() + "_" + relationship.getEndingNode().getType().name() +
+                    nodeEdges.put(relationship.getEndingNode().getNodeName() + "_" + relationship.getEndingNode().getType().name() +
                             "_" + relationship.getRelationshipType(), relationship.getRelationshipType().name());
                 }
             }
-            expectedDiagram.put(leafNode.getName() + "_" + leafNode.getType().name(), nodeEdges);
+            expectedDiagram.put(leafNode.getNodeName() + "_" + leafNode.getType().name(), nodeEdges);
         }
 
         for (Map.Entry<String, Map<String, String>> entry: expectedDiagram.entrySet()) {

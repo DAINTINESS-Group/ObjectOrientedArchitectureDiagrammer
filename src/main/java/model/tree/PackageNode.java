@@ -23,7 +23,7 @@ public class PackageNode extends Node{
 	}
 	
 	public void addLeafNode(LeafNode leafNode) {
-		leafNodes.put(leafNode.getName(), leafNode);
+		leafNodes.put(leafNode.getNodeName(), leafNode);
 	}
 	
 	public void addSubNode(PackageNode packageNode) {
@@ -31,11 +31,10 @@ public class PackageNode extends Node{
 	}
 
 	public PackageNode getParentNode() {
-		if (parentNode != null) {
-			return parentNode;
-		}else {
+		if (parentNode == null) {
 			return new PackageNode(Paths.get(""));
 		}
+		return parentNode;
 	}
 
 	public void setValid() {
@@ -54,12 +53,11 @@ public class PackageNode extends Node{
 		return leafNodes;
 	}
 
-	public String getName() {
+	public String getNodeName() {
 		if (doesParentNodeExist()) {
 			return getParentNodesName() + "." + path.normalize().toString().substring(path.normalize().toString().lastIndexOf("\\") + 1);
-		}else {
-			return path.normalize().toString().substring(path.normalize().toString().lastIndexOf("\\") + 1);
 		}
+		return path.normalize().toString().substring(path.normalize().toString().lastIndexOf("\\") + 1);
 	}
 
 	private boolean doesParentNodeExist() {
@@ -67,7 +65,7 @@ public class PackageNode extends Node{
 	}
 
 	private String getParentNodesName() {
-		return getParentNode().getName();
+		return getParentNode().getNodeName();
 	}
 
 	public NodeType getType() {

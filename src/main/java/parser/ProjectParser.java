@@ -60,8 +60,8 @@ public class ProjectParser implements Parser {
 	private void createLeafNode(PackageNode currentNode, LeafNode leafNode, File file) {
 		leafNode.setParentNode(currentNode);
 		currentNode.setValid();
-		currentNode.addLeafNode(leafNode);
 		new FileVisitor(file, leafNode);
+		currentNode.addLeafNode(leafNode);
 	}
 	
 	private boolean isExtensionJava(String filePath) {
@@ -72,9 +72,6 @@ public class ProjectParser implements Parser {
 		return Paths.get(currentPackage.getNodesPath().normalize() + "\\" + file.getName());
 	}
 	
-	/** This method returns the map with keys the name of the package and values
-	 * the object of type PackageNode
-	 */
 	public Map<Path, PackageNode> getPackageNodes() {
 		return packageNodes;
 	}

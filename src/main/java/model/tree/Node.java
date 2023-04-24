@@ -36,7 +36,7 @@ public abstract class Node {
 
     public abstract PackageNode getParentNode();
 
-    public abstract String getName();
+    public abstract String getNodeName();
 
     public abstract NodeType getType();
 }

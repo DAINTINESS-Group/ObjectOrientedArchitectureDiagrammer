@@ -43,10 +43,10 @@ public class ClassDiagramManagerTest {
         Map<Path, PackageNode> testingPackageNodes = testingSourceProject.getPackageNodes();
 
         for (Map.Entry<Path, PackageNode> entry: packageNodes.entrySet()) {
-            assertEquals(entry.getValue().getName(), testingPackageNodes.get(entry.getKey()).getName());
-            assertEquals(entry.getValue().getParentNode().getName(), testingPackageNodes.get(entry.getKey()).getParentNode().getName());
+            assertEquals(entry.getValue().getNodeName(), testingPackageNodes.get(entry.getKey()).getNodeName());
+            assertEquals(entry.getValue().getParentNode().getNodeName(), testingPackageNodes.get(entry.getKey()).getParentNode().getNodeName());
             for (Map.Entry<String, LeafNode> leafNodeEntry: entry.getValue().getLeafNodes().entrySet()) {
-                assertEquals(leafNodeEntry.getValue().getName(), testingPackageNodes.get(entry.getKey()).getLeafNodes().get(leafNodeEntry.getKey()).getName());
+                assertEquals(leafNodeEntry.getValue().getNodeName(), testingPackageNodes.get(entry.getKey()).getLeafNodes().get(leafNodeEntry.getKey()).getNodeName());
             }
         }
     }

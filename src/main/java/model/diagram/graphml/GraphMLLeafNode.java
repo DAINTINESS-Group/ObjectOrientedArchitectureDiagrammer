@@ -19,7 +19,7 @@ public class GraphMLLeafNode extends GraphNodeCollection {
     }
 
     private List<String> getNodesDescription(LeafNode leafNode, int nodeId, List<Double> nodeGeometry) {
-        return Arrays.asList(String.valueOf(nodeId), getNodesColor(leafNode), leafNode.getName(), getNodesFields(leafNode),
+        return Arrays.asList(String.valueOf(nodeId), getNodesColor(leafNode), leafNode.getNodeName(), getNodesFields(leafNode),
                 getNodesMethods(leafNode), String.valueOf(nodeGeometry.get(X_COORDINATE)), String.valueOf(nodeGeometry.get(Y_COORDINATE)));
     }
 

@@ -39,7 +39,7 @@ public class CollectionsDiagramConverter {
     }
 
     private void insertNode(Map<String, Map<String, String>> graph, Map.Entry<Node, Integer> leafNode, Map<String, String> nodeEdges) {
-        graph.put(leafNode.getKey().getName() + "_" + leafNode.getKey().getType().name(), nodeEdges);
+        graph.put(leafNode.getKey().getNodeName() + "_" + leafNode.getKey().getType().name(), nodeEdges);
     }
 
     private boolean doesEdgeStartFromCurrentNode(Node leafNode, Relationship relationship) {
@@ -47,7 +47,7 @@ public class CollectionsDiagramConverter {
     }
 
     private void insertEdge(Map<String, String> nodeEdges, Relationship relationship) {
-        nodeEdges.put(relationship.getEndingNode().getName() + "_" + relationship.getEndingNode().getType().name() + "_" + relationship.getRelationshipType().toString(),
+        nodeEdges.put(relationship.getEndingNode().getNodeName() + "_" + relationship.getEndingNode().getType().name() + "_" + relationship.getRelationshipType().toString(),
                 relationship.getRelationshipType().name());
     }
 }
