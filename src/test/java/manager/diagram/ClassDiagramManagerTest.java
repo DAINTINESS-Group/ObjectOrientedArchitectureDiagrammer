@@ -35,9 +35,8 @@ public class ClassDiagramManagerTest {
     @Test
     void createTreeTest() throws IOException {
         DiagramManager classDiagramManager = new ClassDiagramManager();
+        SourceProject sourceProject = classDiagramManager.createTree(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
 
-        SourceProject sourceProject = new SourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-        sourceProject.parseSourceProject();
         SourceProject testingSourceProject = classDiagramManager.createTree(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
         Map<Path, PackageNode> packageNodes = sourceProject.getPackageNodes();
         Map<Path, PackageNode> testingPackageNodes = testingSourceProject.getPackageNodes();

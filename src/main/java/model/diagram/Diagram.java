@@ -26,9 +26,8 @@ public abstract class Diagram {
         this.createdDiagram = new HashMap<>();
     }
 
-    public SourceProject createTree(Path sourcePackagePath) {
-        sourceProject = new SourceProject(sourcePackagePath);
-        sourceProject.parseSourceProject();
+    public SourceProject createSourceProject() {
+        sourceProject = new SourceProject();
         return sourceProject;
     }
 

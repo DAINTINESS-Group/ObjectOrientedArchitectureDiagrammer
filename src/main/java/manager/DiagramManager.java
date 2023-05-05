@@ -19,17 +19,23 @@ public abstract class DiagramManager implements Manager {
         diagramStack = new ArrayDeque<>();
     }
 
+    /**
+     * This method is responsible for creating the tree of the source package
+     * It parses the source package using the Parser and populates the nodes of the sourceProject
+     * @param sourcePackagePath the project's source package path
+     * @return the sourceProject representing the model created by parsing the source package
+     */
     public SourceProject createTree(Path sourcePackagePath) {
         diagramStack.push(getDiagram());
-        SourceProject srcPrj = Objects.requireNonNull(diagramStack.peek()).createTree(sourcePackagePath);
+        SourceProject sourceProject = Objects.requireNonNull(diagramStack.peek()).createSourceProject();
         
-        //FIX: subpackage + factory
         Parser projectParser = new ProjectParser();
-        PackageNode rootPackage = projectParser.parseSourcePackage(sourcePackagePath);
+        projectParser.parseSourcePackage(sourcePackagePath);
         Map<Path, PackageNode> packageNodes = projectParser.getPackageNodes();
-        
-        int resSize = srcPrj.setPackageNodes(packageNodes);
-        return null;
+        sourceProject.setPackageNodes(packageNodes);
+        sourceProject.setProjectsProperties();
+
+        return sourceProject;
     }
 
     public Map<String, Map<String, String>> createDiagram(List<String> chosenFilesNames) {
