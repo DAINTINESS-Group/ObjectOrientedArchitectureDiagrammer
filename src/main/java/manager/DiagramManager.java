@@ -2,12 +2,14 @@ package manager;
 
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import model.diagram.Diagram;
+import model.tree.PackageNode;
 import model.tree.SourceProject;
+import parser.Parser;
+import parser.ProjectParser;
 
 import java.io.File;
 import java.nio.file.Path;
 import java.util.*;
-import java.util.List;
 
 public abstract class DiagramManager implements Manager {
 
@@ -19,7 +21,15 @@ public abstract class DiagramManager implements Manager {
 
     public SourceProject createTree(Path sourcePackagePath) {
         diagramStack.push(getDiagram());
-        return Objects.requireNonNull(diagramStack.peek()).createTree(sourcePackagePath);
+        SourceProject srcPrj = Objects.requireNonNull(diagramStack.peek()).createTree(sourcePackagePath);
+        
+        //FIX: subpackage + factory
+        Parser projectParser = new ProjectParser();
+        PackageNode rootPackage = projectParser.parseSourcePackage(sourcePackagePath);
+        Map<Path, PackageNode> packageNodes = projectParser.getPackageNodes();
+        
+        int resSize = srcPrj.setPackageNodes(packageNodes);
+        return null;
     }
 
     public Map<String, Map<String, String>> createDiagram(List<String> chosenFilesNames) {

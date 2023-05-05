@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.2.4" icons="true" automaticImage="PNG" always-add-relationships="true" generalizations="true" 
+  realizations="true" associations="true" dependencies="true" nesting-relationships="true" router="FAN">  
+  <package id="1" language="java" name="controller" project="ObjectOrientedArchitectureDiagrammer" 
+    file="/ObjectOrientedArchitectureDiagrammer/src/main/java/controller" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="50" width="101" x="144" y="123"/>    
+    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <package id="2" language="java" name="manager" project="ObjectOrientedArchitectureDiagrammer" 
+    file="/ObjectOrientedArchitectureDiagrammer/src/main/java/manager" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="50" width="101" x="144" y="213"/>    
+    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <package id="3" language="java" name="model.diagram" project="ObjectOrientedArchitectureDiagrammer" 
+    file="/ObjectOrientedArchitectureDiagrammer/src/main/java/model/diagram" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="502" y="263"/>    
+    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <package id="4" language="java" name="model.diagram.javafx" project="ObjectOrientedArchitectureDiagrammer" 
+    file="/ObjectOrientedArchitectureDiagrammer/src/main/java/model/diagram/javafx" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="758" y="382"/>    
+    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <package id="5" language="java" name="view" project="ObjectOrientedArchitectureDiagrammer" 
+    file="/ObjectOrientedArchitectureDiagrammer/src/main/java/view" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="365" y="106"/>    
+    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <package id="6" language="java" name="parser" project="ObjectOrientedArchitectureDiagrammer" 
+    file="/ObjectOrientedArchitectureDiagrammer/src/main/java/parser" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="296" y="356"/>    
+    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <package id="7" language="java" name="model.tree" project="ObjectOrientedArchitectureDiagrammer" 
+    file="/ObjectOrientedArchitectureDiagrammer/src/main/java/model/tree" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="325" y="502"/>    
+    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <package id="8" language="java" name="model.diagram.graphml" project="ObjectOrientedArchitectureDiagrammer" 
+    file="/ObjectOrientedArchitectureDiagrammer/src/main/java/model/diagram/graphml" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="537" y="399"/>    
+    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <dependency id="9">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="1"/>  
+  </dependency>  
+  <dependency id="10">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="7"/>  
+  </dependency>  
+  <dependency id="11">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="4"/>  
+  </dependency>  
+  <dependency id="12">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="6"/>  
+  </dependency>  
+  <dependency id="13">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="6"/>  
+  </dependency>  
+  <dependency id="14">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="8"/>  
+  </dependency>  
+  <dependency id="15">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="3"/>  
+  </dependency>  
+  <dependency id="16">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="3"/>  
+  </dependency>  
+  <dependency id="17">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="7"/>  
+  </dependency>  
+  <dependency id="18">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="2"/>  
+  </dependency>  
+  <dependency id="19">    
+    <bendpoint x="204" y="361"/>    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="7"/>  
+  </dependency>  
+  <dependency id="20">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="7"/>  
+  </dependency>  
+  <dependency id="21">    
+    <bendpoint x="91" y="248"/>    
+    <bendpoint x="187" y="378"/>    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="7"/>  
+  </dependency>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    sort-features="false" accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

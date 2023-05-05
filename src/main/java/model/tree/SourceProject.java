@@ -1,7 +1,7 @@
 package model.tree;
 
-import parser.Parser;
-import parser.ProjectParser;
+//import parser.Parser;
+//import parser.ProjectParser;
 
 import java.nio.file.Path;
 import java.util.HashMap;
@@ -27,13 +27,19 @@ public class SourceProject {
      * @return the root of the tree
      */
     public PackageNode parseSourceProject() {
-        Parser projectParser = new ProjectParser();
-        this.rootPackage = projectParser.parseSourcePackage(sourcePackagePath);
-        this.packageNodes = projectParser.getPackageNodes();
+     //   Parser projectParser = new ProjectParser();
+     //   this.rootPackage = projectParser.parseSourcePackage(sourcePackagePath);
+     //   this.packageNodes = projectParser.getPackageNodes();
         setProjectsProperties();
         return rootPackage;
     }
 
+    public int setPackageNodes(Map<Path, PackageNode> packageNodes) {
+    	this.packageNodes = packageNodes;
+    	return this.packageNodes.size();
+    }
+    
+    
     /**
      * This method returns the PackageNodes created by the Parser when parsing the project
      * @return the PackageNodes
