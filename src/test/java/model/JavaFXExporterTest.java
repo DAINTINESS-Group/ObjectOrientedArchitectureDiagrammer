@@ -28,7 +28,6 @@ public class JavaFXExporterTest {
         DiagramManager classDiagramManager = new ClassDiagramManager();
         List<String> chosenFiles = Arrays.asList("MainWindow", "LatexEditorView", "OpeningWindow");
         
-		//SourceProject sourceProject = 
 		classDiagramManager.createTree(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
         Map<String, Map<String, String>> createdDiagram = classDiagramManager.createDiagram(chosenFiles);
 
