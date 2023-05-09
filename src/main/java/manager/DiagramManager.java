@@ -5,6 +5,7 @@ import model.diagram.Diagram;
 import model.tree.PackageNode;
 import model.tree.SourceProject;
 import parser.Parser;
+import parser.ParserType;
 import parser.ProjectParser;
 
 import java.io.File;
@@ -28,10 +29,12 @@ public abstract class DiagramManager implements Manager {
     public SourceProject createTree(Path sourcePackagePath) {
         diagramStack.push(getDiagram());
         SourceProject sourceProject = Objects.requireNonNull(diagramStack.peek()).createSourceProject();
-        
-        Parser projectParser = new ProjectParser();
+
+        //TODO do something about the ProjectParser's parameter
+        Parser projectParser = new ProjectParser(ParserType.JDT);
         projectParser.parseSourcePackage(sourcePackagePath);
         Map<Path, PackageNode> packageNodes = projectParser.getPackageNodes();
+
         sourceProject.setPackageNodes(packageNodes);
         sourceProject.setProjectsProperties();
 

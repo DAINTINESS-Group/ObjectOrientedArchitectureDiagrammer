@@ -9,14 +9,9 @@ import java.util.Map;
  * source files. The branches have a type, e.g., inheritance, implementation.
  * The branches are also directed with a starting and an ending node
  */
-public class RelationshipIdentifier {
-	public static final int DECLARATION_LINE_STANDARD_SIZE = 2;
-	public static final int INHERITANCE_TYPE = 2;
-	public static final int SUPERCLASS_NAME = 3;
-	public static final int MULTIPLE_IMPLEMENTATIONS = 5;
-	public static final int INHERITANCE_TYPE_WITH_MULTIPLE_IMPLEMENTATIONS = 4;
+public abstract class RelationshipIdentifier {
 	private final Map<Path, PackageNode> packageNodes;
-	private final List<LeafNode> allLeafNodes;
+	protected final List<LeafNode> allLeafNodes;
 
 	/**This method is responsible for retrieving the leaf nodes that have been created
 	 * and then creating the branches between them
@@ -44,72 +39,15 @@ public class RelationshipIdentifier {
 		}
 	}
 	
-	private void checkRelationship(int i, int j) {
-		if (isDependency(i, j)) {
-			createRelationship(i, j, RelationshipType.DEPENDENCY);
-		}
-		if (isAggregation(i, j)) {
-			createRelationship(i, j, RelationshipType.AGGREGATION);
-		}else if (isAssociation(i, j)) {
-			createRelationship(i, j, RelationshipType.ASSOCIATION);
-		}
-		if (isInheritance(i)) {
-			if (isExtension(i, j)) {
-				createRelationship(i, j, RelationshipType.EXTENSION);
-			}
-			if (isImplementation(i, j)) {
-				createRelationship(i, j, RelationshipType.IMPLEMENTATION);
-			}
-		}
-	}
-	
-	private boolean isDependency(int i, int j) {
-		return doesRelationshipExist(allLeafNodes.get(i).getMethodParameterTypes(), allLeafNodes.get(j).getName()) ||
-				doesRelationshipExist(allLeafNodes.get(i).getMethodsReturnTypes(), allLeafNodes.get(j).getName());
-	}
-
-	private boolean isAssociation(int i, int j) {
+	protected boolean isAssociation(int i, int j) {
 		return doesRelationshipExist(allLeafNodes.get(i).getFieldsTypes(), allLeafNodes.get(j).getName());
 	}
 	
-	private boolean isAggregation(int i, int j) {
+	protected boolean isAggregation(int i, int j) {
 		return isRelationshipAggregation(allLeafNodes.get(i).getFieldsTypes(), allLeafNodes.get(j).getName());
 	}
-	
-	private boolean isInheritance(int i) {
-		return allLeafNodes.get(i).getInheritanceLine().length > DECLARATION_LINE_STANDARD_SIZE;
-	}
-	
-	private boolean isExtension(int i, int j) {
-		if ( allLeafNodes.get(i).getInheritanceLine()[INHERITANCE_TYPE].equals("extends") ) {
-			for (int k = 0; k < allLeafNodes.size(); k++) {
-				if (allLeafNodes.get(i).getInheritanceLine()[SUPERCLASS_NAME].equals(allLeafNodes.get(j).getName())) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-	
-	private boolean isImplementation(int i, int j) {
-		if ( allLeafNodes.get(i).getInheritanceLine()[INHERITANCE_TYPE].equals("implements") ) {
-			for (int l = 3; l < allLeafNodes.get(i).getInheritanceLine().length; l++) {
-				if (allLeafNodes.get(i).getInheritanceLine()[l].equals(allLeafNodes.get(j).getName())) {
-					return true;
-				}
-			}
-		}else if (allLeafNodes.get(i).getInheritanceLine().length > MULTIPLE_IMPLEMENTATIONS &&
-				allLeafNodes.get(i).getInheritanceLine()[INHERITANCE_TYPE_WITH_MULTIPLE_IMPLEMENTATIONS].equals("implements")) {
-			for (int l = 5; l < allLeafNodes.get(i).getInheritanceLine().length; l++) {
-				if (allLeafNodes.get(i).getInheritanceLine()[l].equals(allLeafNodes.get(j).getName())) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
 
-	private boolean doesRelationshipExist(List<String> leafNodesTypes, String leafNodesName) {
+	protected boolean doesRelationshipExist(List<String> leafNodesTypes, String leafNodesName) {
 		for (String leafNodesType : leafNodesTypes) {
 			if (doesFieldBelongToClass(leafNodesType, leafNodesName)) {
 				return true;
@@ -141,7 +79,7 @@ public class RelationshipIdentifier {
 				|| s.contains(leafNodesName+"[") || s.startsWith("ArrayDeque") ||  s.startsWith("LinkedList") || s.startsWith("PriorityQueue"));
 	}
 	
-	private void createRelationship(int i, int j, RelationshipType relationshipType) {
+	protected void createRelationship(int i, int j, RelationshipType relationshipType) {
 		allLeafNodes.get(i).addNodeRelationship(new Relationship(allLeafNodes.get(i), allLeafNodes.get(j), relationshipType));
 		for (Relationship r: allLeafNodes.get(i).getParentNode().getNodeRelationships()) {
 			if (doesPackageRelationshipAlreadyExist(j, r)) {
@@ -152,7 +90,6 @@ public class RelationshipIdentifier {
 			allLeafNodes.get(i).getParentNode().addNodeRelationship(new Relationship(allLeafNodes.get(i).getParentNode(),
 					allLeafNodes.get(j).getParentNode(), RelationshipType.DEPENDENCY));
 		}
-
 	}
 
 	private boolean doesPackageRelationshipAlreadyExist(int j, Relationship r) {
@@ -162,5 +99,13 @@ public class RelationshipIdentifier {
 	private boolean isRelationshipBetweenTheSamePackages(int i, int j) {
 		return allLeafNodes.get(i).getParentNode().equals(allLeafNodes.get(j).getParentNode());
 	}
+
+	protected abstract void checkRelationship(int i, int j);
+
+	protected abstract boolean isDependency(int i, int j);
+
+	protected abstract boolean isExtension(int i, int j);
+
+	protected abstract boolean isImplementation(int i, int j);
 
 }

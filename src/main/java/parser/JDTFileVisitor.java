@@ -10,20 +10,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import model.tree.JDTLeafNode;
 import org.eclipse.jdt.core.dom.*;
 import org.eclipse.text.edits.MalformedTreeException;
-
-import model.tree.LeafNode;
 
 import static org.eclipse.jdt.core.dom.ASTNode.METHOD_DECLARATION;
 
 /**This class is responsible for the creation of the AST of a Java source file.
  * Using the ASTNode API it parses the files methods parameters, return types and field declarations
  */
-public class FileVisitor {
+public class JDTFileVisitor {
 
 	private CompilationUnit unit;
-	private LeafNode leafNode;
+	private JDTLeafNode leafNode;
 	private String sourceFile[];
 
 	/** This method calls the createAST method that is responsible for the creation
@@ -31,7 +30,7 @@ public class FileVisitor {
      * @param file the Java source file
      * @param leafNode the leaf node representing the Java source file
 	 */
-	public FileVisitor(File file, LeafNode leafNode){
+	public JDTFileVisitor(File file, JDTLeafNode leafNode){
 		try {
 			createAST(file, leafNode);
         } catch (Exception e) {
@@ -39,7 +38,7 @@ public class FileVisitor {
         }
 	}
 	
-    private void createAST(File file, LeafNode leafNode) throws IOException, MalformedTreeException {
+    private void createAST(File file, JDTLeafNode leafNode) throws IOException, MalformedTreeException {
     	ASTParser parser = ASTParser.newParser(AST.JLS17);
     	this.sourceFile = ReadFileToCharArray(file.getAbsolutePath()).split("\\n");
 	    parser.setSource(ReadFileToCharArray(file.getAbsolutePath()).toCharArray());
@@ -90,15 +89,12 @@ public class FileVisitor {
 	                    if (returnType==null) returnTypeName = "Constructor";
 	                    else returnTypeName = returnType.toString();
 	                    
-	                    List<String> parameters = new ArrayList<>();
 	                    for (Object parameter : method.parameters()) {
 	                        VariableDeclaration variableDeclaration = (VariableDeclaration) parameter;
 							String variableType = variableDeclaration.
 									getStructuralProperty(SingleVariableDeclaration.TYPE_PROPERTY).toString() + "[]".repeat(Math.max(0, variableDeclaration.getExtraDimensions()));
-	                        parameters.add(variableType);
+							leafNode.addMethodParameterType(variableType.replaceAll("<", "[").replaceAll(">", "]"));
 	                    }
-	                    
-	                    leafNode.addMethodParametersTypes(parameters);
 	                    leafNode.addMethod(methodName, returnTypeName.replaceAll("<", "[").replaceAll(">", "]"));
 	                }
 	            }

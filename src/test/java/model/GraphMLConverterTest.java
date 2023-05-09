@@ -1,7 +1,6 @@
 package model;
 
-import com.google.common.base.Preconditions;
-import model.diagram.*;
+import model.diagram.GraphNodeCollection;
 import model.diagram.graphml.GraphMLLeafEdge;
 import model.diagram.graphml.GraphMLLeafNode;
 import model.diagram.graphml.GraphMLPackageEdge;
@@ -9,6 +8,7 @@ import model.diagram.graphml.GraphMLPackageNode;
 import model.tree.*;
 import org.junit.jupiter.api.Test;
 import parser.Parser;
+import parser.ParserType;
 import parser.ProjectParser;
 
 import java.io.IOException;
@@ -16,111 +16,120 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class GraphMLConverterTest {
 
     Path currentDirectory = Path.of(".");
+    List<ParserType> parserTypes = new ArrayList<>(List.of(ParserType.JAVAPARSER, ParserType.JDT));
 
     @Test
     void populateGraphMLNodesTest() throws IOException {
-        GraphNodeCollection graphMLNode = new GraphMLLeafNode();
-        Parser parser = new ProjectParser();
-        parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-        graphMLNode.populateGraphNodes(new ArrayList<>(parser.getPackageNodes().get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
-                "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands")).getLeafNodes().values()));
-        List<String> l1 = new ArrayList<>();
-        List<String> l2 = new ArrayList<>();
-        Preconditions.checkState(parser.getPackageNodes().get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
-                "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands")).getLeafNodes().size() == graphMLNode.getGraphNodes().size());
-        Iterator<Map.Entry<String, LeafNode>> iter1 = parser.getPackageNodes().get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
-                "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands")).getLeafNodes().entrySet().iterator();
-        Iterator<Map.Entry<Node, Integer>> iter2 = graphMLNode.getGraphNodes().entrySet().iterator();
-        while(iter1.hasNext() || iter2.hasNext()) {
-            Map.Entry<String, LeafNode> e1 = iter1.next();
-            Map.Entry<Node, Integer> e2 = iter2.next();
-            l1.add(e1.getValue().getName());
-            l2.add(e2.getKey().getName());
+        for (ParserType parserType: parserTypes) {
+            GraphNodeCollection graphMLNode = new GraphMLLeafNode();
+            Parser parser = new ProjectParser(parserType);
+            parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
+            graphMLNode.populateGraphNodes(new ArrayList<>(parser.getPackageNodes().get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
+                    "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands")).getLeafNodes().values()));
+            List<String> l1 = new ArrayList<>();
+            List<String> l2 = new ArrayList<>();
+            assertEquals(parser.getPackageNodes().get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
+                    "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands")).getLeafNodes().size(), graphMLNode.getGraphNodes().size());
+            Iterator<Map.Entry<String, LeafNode>> iter1 = parser.getPackageNodes().get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
+                    "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands")).getLeafNodes().entrySet().iterator();
+            Iterator<Map.Entry<Node, Integer>> iter2 = graphMLNode.getGraphNodes().entrySet().iterator();
+            while(iter1.hasNext() || iter2.hasNext()) {
+                Map.Entry<String, LeafNode> e1 = iter1.next();
+                Map.Entry<Node, Integer> e2 = iter2.next();
+                l1.add(e1.getValue().getName());
+                l2.add(e2.getKey().getName());
+            }
+            Collections.sort(l1);
+            Collections.sort(l2);
+            assertTrue(l1.size() == l2.size() && l1.containsAll(l2) && l2.containsAll(l1));
         }
-        Collections.sort(l1);
-        Collections.sort(l2);
-        assertTrue(l1.size() == l2.size() && l1.containsAll(l2) && l2.containsAll(l1));
     }
     @Test
     void convertNodesToGraphMLTest() throws IOException {
-        GraphNodeCollection graphMLNode = new GraphMLLeafNode();
-        Parser parser = new ProjectParser();
-        parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-        graphMLNode.populateGraphNodes(new ArrayList<>(parser.getPackageNodes().get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
-                "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands")).getLeafNodes().values()));
-        StringBuilder expected = new StringBuilder();
-        StringBuilder actual = graphMLNode.convertNodesToGraphML(Map.ofEntries(
-                Map.entry(0, Arrays.asList(10.0, 10.0)),
-                Map.entry(1, Arrays.asList(10.0, 10.0)),
-                Map.entry(2, Arrays.asList(10.0, 10.0)),
-                Map.entry(3, Arrays.asList(10.0, 10.0)),
-                Map.entry(4, Arrays.asList(10.0, 10.0)),
-                Map.entry(5, Arrays.asList(10.0, 10.0)),
-                Map.entry(6, Arrays.asList(10.0, 10.0)),
-                Map.entry(7, Arrays.asList(10.0, 10.0)),
-                Map.entry(8, Arrays.asList(10.0, 10.0)),
-                Map.entry(9, Arrays.asList(10.0, 10.0)),
-                Map.entry(10, Arrays.asList(10.0, 10.0))
-        ));
-        for (Node leafNode: graphMLNode.getGraphNodes().keySet()) {
-            expected.append(String.format("    <node id=\"n%s\">\n" +
-                            "      <data key=\"d4\" xml:space=\"preserve\"/>\n" +
-                            "      <data key=\"d5\"/>\n" +
-                            "      <data key=\"d6\">\n" +
-                            "        <y:UMLClassNode>\n" +
-                            "          <y:Geometry height=\"100.0\" width=\"150.0\" x=\"%s\" y=\"%s\"/>\n" +
-                            "          <y:Fill color=\"%s\" transparent=\"false\"/>\n" +
-                            "          <y:BorderStyle color=\"#000000\" type=\"line\" width=\"1.0\"/>\n" +
-                            "          <y:NodeLabel alignment=\"center\" autoSizePolicy=\"content\" fontFamily=\"Dialog\" fontSize=\"13\" fontStyle=\"bold\" hasBackgroundColor=\"false\" hasLineColor=\"false\" height=\"19.92626953125\" horizontalTextPosition=\"center\" iconTextGap=\"4\" modelName=\"custom\" textColor=\"#000000\" verticalTextPosition=\"bottom\" visible=\"true\" width=\"79.14990234375\" x=\"10.425048828125\" xml:space=\"preserve\" y=\"3.0\">%s<y:LabelModel><y:SmartNodeLabelModel distance=\"4.0\"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX=\"0.0\" labelRatioY=\"0.0\" nodeRatioX=\"0.0\" nodeRatioY=\"0.0\" offsetX=\"0.0\" offsetY=\"0.0\" upX=\"0.0\" upY=\"-1.0\"/></y:ModelParameter></y:NodeLabel>\n" +
-                            "          <y:UML clipContent=\"true\" constraint=\"\" hasDetailsColor=\"false\" omitDetails=\"false\" stereotype=\"\" use3DEffect=\"true\">\n" +
-                            "            <y:AttributeLabel xml:space=\"preserve\">%s</y:AttributeLabel>\n" +
-                            "            <y:MethodLabel xml:space=\"preserve\">%s</y:MethodLabel>\n" +
-                            "          </y:UML>\n" +
-                            "        </y:UMLClassNode>\n" +
-                            "      </data>\n" +
-                            "    </node>\n", graphMLNode.getGraphNodes().get(leafNode), 10.0, 10.0, getNodesColor(leafNode), leafNode.getName(),
-                    getNodesFields(leafNode), getNodesMethods(leafNode)));
+        for (ParserType parserType: parserTypes) {
+            GraphNodeCollection graphMLNode = new GraphMLLeafNode();
+            Parser parser = new ProjectParser(parserType);
+            parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
+            graphMLNode.populateGraphNodes(new ArrayList<>(parser.getPackageNodes().get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
+                    "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands")).getLeafNodes().values()));
+            StringBuilder expected = new StringBuilder();
+            StringBuilder actual = graphMLNode.convertNodesToGraphML(Map.ofEntries(
+                    Map.entry(0, Arrays.asList(10.0, 10.0)),
+                    Map.entry(1, Arrays.asList(10.0, 10.0)),
+                    Map.entry(2, Arrays.asList(10.0, 10.0)),
+                    Map.entry(3, Arrays.asList(10.0, 10.0)),
+                    Map.entry(4, Arrays.asList(10.0, 10.0)),
+                    Map.entry(5, Arrays.asList(10.0, 10.0)),
+                    Map.entry(6, Arrays.asList(10.0, 10.0)),
+                    Map.entry(7, Arrays.asList(10.0, 10.0)),
+                    Map.entry(8, Arrays.asList(10.0, 10.0)),
+                    Map.entry(9, Arrays.asList(10.0, 10.0)),
+                    Map.entry(10, Arrays.asList(10.0, 10.0))
+            ));
+            for (Node leafNode: graphMLNode.getGraphNodes().keySet()) {
+                expected.append(String.format("    <node id=\"n%s\">\n" +
+                                "      <data key=\"d4\" xml:space=\"preserve\"/>\n" +
+                                "      <data key=\"d5\"/>\n" +
+                                "      <data key=\"d6\">\n" +
+                                "        <y:UMLClassNode>\n" +
+                                "          <y:Geometry height=\"100.0\" width=\"150.0\" x=\"%s\" y=\"%s\"/>\n" +
+                                "          <y:Fill color=\"%s\" transparent=\"false\"/>\n" +
+                                "          <y:BorderStyle color=\"#000000\" type=\"line\" width=\"1.0\"/>\n" +
+                                "          <y:NodeLabel alignment=\"center\" autoSizePolicy=\"content\" fontFamily=\"Dialog\" fontSize=\"13\" fontStyle=\"bold\" hasBackgroundColor=\"false\" hasLineColor=\"false\" height=\"19.92626953125\" horizontalTextPosition=\"center\" iconTextGap=\"4\" modelName=\"custom\" textColor=\"#000000\" verticalTextPosition=\"bottom\" visible=\"true\" width=\"79.14990234375\" x=\"10.425048828125\" xml:space=\"preserve\" y=\"3.0\">%s<y:LabelModel><y:SmartNodeLabelModel distance=\"4.0\"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX=\"0.0\" labelRatioY=\"0.0\" nodeRatioX=\"0.0\" nodeRatioY=\"0.0\" offsetX=\"0.0\" offsetY=\"0.0\" upX=\"0.0\" upY=\"-1.0\"/></y:ModelParameter></y:NodeLabel>\n" +
+                                "          <y:UML clipContent=\"true\" constraint=\"\" hasDetailsColor=\"false\" omitDetails=\"false\" stereotype=\"\" use3DEffect=\"true\">\n" +
+                                "            <y:AttributeLabel xml:space=\"preserve\">%s</y:AttributeLabel>\n" +
+                                "            <y:MethodLabel xml:space=\"preserve\">%s</y:MethodLabel>\n" +
+                                "          </y:UML>\n" +
+                                "        </y:UMLClassNode>\n" +
+                                "      </data>\n" +
+                                "    </node>\n", graphMLNode.getGraphNodes().get(leafNode), 10.0, 10.0, getNodesColor(leafNode), leafNode.getName(),
+                        getNodesFields(leafNode), getNodesMethods(leafNode)));
+            }
+            assertEquals(expected.toString(), actual.toString());
         }
-        assertEquals(expected.toString(), actual.toString());
+
     }
 
     @Test
     void populateGraphMLEdgesTest() throws IOException {
-        GraphNodeCollection graphMLNode = new GraphMLLeafNode();
-        Parser parser = new ProjectParser();
-        parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-        graphMLNode.populateGraphNodes(new ArrayList<>(parser.getPackageNodes().get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
-                "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands")).getLeafNodes().values()));
-        GraphMLLeafEdge graphMLEdge = new GraphMLLeafEdge();
-        graphMLEdge.setGraphNodes(graphMLNode.getGraphNodes());
-        graphMLEdge.populateGraphEdges(new ArrayList<>(parser.getPackageNodes().get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
-                "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands")).getLeafNodes().values()));
-        List<Relationship> relationships = new ArrayList<>();
+        for (ParserType parserType: parserTypes) {
+            GraphNodeCollection graphMLNode = new GraphMLLeafNode();
+            Parser parser = new ProjectParser(parserType);
+            parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
+            graphMLNode.populateGraphNodes(new ArrayList<>(parser.getPackageNodes().get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
+                    "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands")).getLeafNodes().values()));
+            GraphMLLeafEdge graphMLEdge = new GraphMLLeafEdge();
+            graphMLEdge.setGraphNodes(graphMLNode.getGraphNodes());
+            graphMLEdge.populateGraphEdges(new ArrayList<>(parser.getPackageNodes().get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
+                    "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands")).getLeafNodes().values()));
+            List<Relationship> relationships = new ArrayList<>();
 
-        for (LeafNode l: parser.getPackageNodes().get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
-                "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands")).getLeafNodes().values()) {
-            for (Relationship relationship: l.getNodeRelationships()) {
-                if (isRelationshipBetweenDifferentPackages(parser, relationship.getEndingNode())) {
-                    continue;
-                }
-                relationships.add(relationship);
-            }
-        }
-        for (Map.Entry<Relationship, Integer> e: graphMLEdge.getGraphEdges().entrySet()) {
-            String edgesStart = e.getKey().getStartingNode().getName();
-            String edgesEnd = e.getKey().getEndingNode().getName();
-            boolean foundBranch = false;
-            for (Relationship b: relationships) {
-                if (b.getStartingNode().getName().equals(edgesStart) && b.getEndingNode().getName().equals(edgesEnd)) {
-                    foundBranch = true;
+            for (LeafNode l: parser.getPackageNodes().get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
+                    "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands")).getLeafNodes().values()) {
+                for (Relationship relationship: l.getNodeRelationships()) {
+                    if (isRelationshipBetweenDifferentPackages(parser, relationship.getEndingNode())) {
+                        continue;
+                    }
+                    relationships.add(relationship);
                 }
             }
-            assertTrue(foundBranch);
+            for (Map.Entry<Relationship, Integer> e: graphMLEdge.getGraphEdges().entrySet()) {
+                String edgesStart = e.getKey().getStartingNode().getName();
+                String edgesEnd = e.getKey().getEndingNode().getName();
+                boolean foundBranch = false;
+                for (Relationship b: relationships) {
+                    if (b.getStartingNode().getName().equals(edgesStart) && b.getEndingNode().getName().equals(edgesEnd)) {
+                        foundBranch = true;
+                    }
+                }
+                assertTrue(foundBranch);
+            }
         }
     }
 
@@ -131,182 +140,190 @@ class GraphMLConverterTest {
 
     @Test
     void convertEdgesToGraphML() throws IOException {
-        GraphNodeCollection graphMLNode = new GraphMLLeafNode();
-        Parser parser = new ProjectParser();
-        parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-        graphMLNode.populateGraphNodes(new ArrayList<>(parser.getPackageNodes().get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
-                "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands")).getLeafNodes().values()));
-        GraphMLLeafEdge graphMLEdge = new GraphMLLeafEdge();
-        graphMLEdge.setGraphNodes(graphMLNode.getGraphNodes());
-        graphMLEdge.populateGraphEdges(new ArrayList<>(parser.getPackageNodes().get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
-                "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands")).getLeafNodes().values()));
-        StringBuilder actual = graphMLEdge.convertEdgesToGraphML();
+        for (ParserType parserType: parserTypes) {
+            GraphNodeCollection graphMLNode = new GraphMLLeafNode();
+            Parser parser = new ProjectParser(parserType);
+            parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
+            graphMLNode.populateGraphNodes(new ArrayList<>(parser.getPackageNodes().get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
+                    "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands")).getLeafNodes().values()));
+            GraphMLLeafEdge graphMLEdge = new GraphMLLeafEdge();
+            graphMLEdge.setGraphNodes(graphMLNode.getGraphNodes());
+            graphMLEdge.populateGraphEdges(new ArrayList<>(parser.getPackageNodes().get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
+                    "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands")).getLeafNodes().values()));
+            StringBuilder actual = graphMLEdge.convertEdgesToGraphML();
 
-        StringBuilder expected = new StringBuilder();
-        List<Relationship> relationships = new ArrayList<>();
-        for (LeafNode l: parser.getPackageNodes().get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
-                "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands")).getLeafNodes().values()) {
-            for (Relationship relationship: l.getNodeRelationships()) {
-                if (isRelationshipBetweenDifferentPackages(parser, relationship.getEndingNode())) {
-                    continue;
-                }
-                relationships.add(relationship);
-            }
-        }
-        for (Map.Entry<Relationship, Integer> e: graphMLEdge.getGraphEdges().entrySet()) {
-            String edgesStart = e.getKey().getStartingNode().getName();
-            String edgesEnd = e.getKey().getEndingNode().getName();
-            for (Relationship relationship: relationships) {
-                if (relationship.getStartingNode().getName().equals(edgesStart) && relationship.getEndingNode().getName().equals(edgesEnd)) {
-                    expected.append(String.format("<edge id=\"e%s\" source=\"n%s\" target=\"n%s\">\n" +
-                                    "      <data key=\"d10\">\n" +
-                                    "        <y:PolyLineEdge>\n" +
-                                    "          <y:Path sx=\"0.0\" sy=\"0.0\" tx=\"0.0\" ty=\"0.0\"/>\n" +
-                                    "          <y:LineStyle color=\"#000000\" type=\"%s\" width=\"1.0\"/>\n" +
-                                    "          <y:Arrows source=\"%s\" target=\"%s\"/>\n" +
-                                    "          <y:BendStyle smoothed=\"false\"/>\n" +
-                                    "        </y:PolyLineEdge>\n" +
-                                    "      </data>\n" +
-                                    "    </edge>\n", e.getValue(), graphMLNode.getGraphNodes().get(e.getKey().getStartingNode()),
-                            graphMLNode.getGraphNodes().get(e.getKey().getEndingNode()), getEdgesDescription(relationship).get(0),
-                            getEdgesDescription(relationship).get(1),getEdgesDescription(relationship).get(2)));
+            StringBuilder expected = new StringBuilder();
+            List<Relationship> relationships = new ArrayList<>();
+            for (LeafNode l: parser.getPackageNodes().get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
+                    "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands")).getLeafNodes().values()) {
+                for (Relationship relationship: l.getNodeRelationships()) {
+                    if (isRelationshipBetweenDifferentPackages(parser, relationship.getEndingNode())) {
+                        continue;
+                    }
+                    relationships.add(relationship);
                 }
             }
+            for (Map.Entry<Relationship, Integer> e: graphMLEdge.getGraphEdges().entrySet()) {
+                String edgesStart = e.getKey().getStartingNode().getName();
+                String edgesEnd = e.getKey().getEndingNode().getName();
+                for (Relationship relationship: relationships) {
+                    if (relationship.getStartingNode().getName().equals(edgesStart) && relationship.getEndingNode().getName().equals(edgesEnd)) {
+                        expected.append(String.format("<edge id=\"e%s\" source=\"n%s\" target=\"n%s\">\n" +
+                                        "      <data key=\"d10\">\n" +
+                                        "        <y:PolyLineEdge>\n" +
+                                        "          <y:Path sx=\"0.0\" sy=\"0.0\" tx=\"0.0\" ty=\"0.0\"/>\n" +
+                                        "          <y:LineStyle color=\"#000000\" type=\"%s\" width=\"1.0\"/>\n" +
+                                        "          <y:Arrows source=\"%s\" target=\"%s\"/>\n" +
+                                        "          <y:BendStyle smoothed=\"false\"/>\n" +
+                                        "        </y:PolyLineEdge>\n" +
+                                        "      </data>\n" +
+                                        "    </edge>\n", e.getValue(), graphMLNode.getGraphNodes().get(e.getKey().getStartingNode()),
+                                graphMLNode.getGraphNodes().get(e.getKey().getEndingNode()), getEdgesDescription(relationship).get(0),
+                                getEdgesDescription(relationship).get(1),getEdgesDescription(relationship).get(2)));
+                    }
+                }
+            }
+            assertEquals(expected.toString(), actual.toString());
         }
-        assertEquals(expected.toString(), actual.toString());
     }
 
     @Test
     void populateGraphMLPackageNodeTest() throws IOException {
-        GraphNodeCollection graphMLPackageNode = new GraphMLPackageNode();
-        Parser parser = new ProjectParser();
-        parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-        graphMLPackageNode.populateGraphNodes(new ArrayList<>(parser.getPackageNodes().values()));
+        for (ParserType parserType: parserTypes) {
+            GraphNodeCollection graphMLPackageNode = new GraphMLPackageNode();
+            Parser parser = new ProjectParser(parserType);
+            parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
+            graphMLPackageNode.populateGraphNodes(new ArrayList<>(parser.getPackageNodes().values()));
 
-        List<String> l1 = new ArrayList<>();
-        List<String> l2 = new ArrayList<>();
+            List<String> l1 = new ArrayList<>();
+            List<String> l2 = new ArrayList<>();
 
-        Preconditions.checkState(parser.getPackageNodes().size() == graphMLPackageNode.getGraphNodes().size());
-        Iterator<Map.Entry<Path, PackageNode>> iter1 = parser.getPackageNodes().entrySet().iterator();
-        Iterator<Map.Entry<Node, Integer>> iter2 = graphMLPackageNode.getGraphNodes().entrySet().iterator();
+            assertEquals(parser.getPackageNodes().size(), graphMLPackageNode.getGraphNodes().size());
+            Iterator<Map.Entry<Path, PackageNode>> iter1 = parser.getPackageNodes().entrySet().iterator();
+            Iterator<Map.Entry<Node, Integer>> iter2 = graphMLPackageNode.getGraphNodes().entrySet().iterator();
 
-        while(iter1.hasNext() || iter2.hasNext()) {
-            Map.Entry<Path, PackageNode> e1 = iter1.next();
-            Map.Entry<Node, Integer> e2 = iter2.next();
-            l1.add(e1.getValue().getName());
-            l2.add(e2.getKey().getName());
+            while (iter1.hasNext() || iter2.hasNext()) {
+                Map.Entry<Path, PackageNode> e1 = iter1.next();
+                Map.Entry<Node, Integer> e2 = iter2.next();
+                l1.add(e1.getValue().getName());
+                l2.add(e2.getKey().getName());
+            }
+            Collections.sort(l1);
+            Collections.sort(l2);
+            assertTrue(l1.size() == l2.size() && l1.containsAll(l2) && l2.containsAll(l1));
         }
-        Collections.sort(l1);
-        Collections.sort(l2);
-        assertTrue(l1.size() == l2.size() && l1.containsAll(l2) && l2.containsAll(l1));
     }
 
     @Test
     void convertPackageNodesToGraphMLTest() throws IOException {
-        GraphNodeCollection graphMLPackageNode = new GraphMLPackageNode();
-        Parser parser = new ProjectParser();
-        parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-        graphMLPackageNode.populateGraphNodes(new ArrayList<>(parser.getPackageNodes().values()));
+        for (ParserType parserType: parserTypes) {
+            GraphNodeCollection graphMLPackageNode = new GraphMLPackageNode();
+            Parser parser = new ProjectParser(parserType);
+            parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
+            graphMLPackageNode.populateGraphNodes(new ArrayList<>(parser.getPackageNodes().values()));
 
-        StringBuilder expected = new StringBuilder();
-        graphMLPackageNode.convertNodesToGraphML(Map.ofEntries(
-                Map.entry(0, Arrays.asList(10.0, 10.0)),
-                Map.entry(1, Arrays.asList(10.0, 10.0)),
-                Map.entry(2, Arrays.asList(10.0, 10.0)),
-                Map.entry(3, Arrays.asList(10.0, 10.0)),
-                Map.entry(4, Arrays.asList(10.0, 10.0)),
-                Map.entry(5, Arrays.asList(10.0, 10.0))
-        ));
+            StringBuilder expected = new StringBuilder();
+            graphMLPackageNode.convertNodesToGraphML(Map.ofEntries(
+                    Map.entry(0, Arrays.asList(10.0, 10.0)),
+                    Map.entry(1, Arrays.asList(10.0, 10.0)),
+                    Map.entry(2, Arrays.asList(10.0, 10.0)),
+                    Map.entry(3, Arrays.asList(10.0, 10.0)),
+                    Map.entry(4, Arrays.asList(10.0, 10.0)),
+                    Map.entry(5, Arrays.asList(10.0, 10.0))
+            ));
 
-        for (Node packageNode: graphMLPackageNode.getGraphNodes().keySet()) {
-            expected.append(String.format("    <node id=\"n%s\">\n" +
-                            "      <data key=\"d4\" xml:space=\"preserve\"/>\n" +
-                            "      <data key=\"d6\">\n" +
-                            "        <y:GenericNode configuration=\"ShinyPlateNode3\">\n" +
-                            "          <y:Geometry height=\"52.0\" width=\"127.0\" x=\"%s\" y=\"%s\"/>\n" +
-                            "          <y:Fill color=\"#FF9900\" color2=\"#FFCC00\" transparent=\"false\"/>\n" +
-                            "          <y:BorderStyle color=\"#000000\" type=\"line\" width=\"1.0\"/>\n" +
-                            "          <y:NodeLabel alignment=\"center\" autoSizePolicy=\"content\" fontFamily=\"Dialog\" fontSize=\"12\" fontStyle=\"plain\" hasBackgroundColor=\"false\" hasLineColor=\"false\" height=\"18.701171875\" horizontalTextPosition=\"center\" iconTextGap=\"0\" modelName=\"custom\" textColor=\"#000000\" verticalTextPosition=\"bottom\" visible=\"true\" width=\"57.373046875\" x=\"34.8134765625\" xml:space=\"preserve\" y=\"16.6494140625\">%s<y:LabelModel><y:SmartNodeLabelModel distance=\"4.0\"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX=\"0.0\" labelRatioY=\"0.0\" nodeRatioX=\"0.0\" nodeRatioY=\"0.0\" offsetX=\"0.0\" offsetY=\"0.0\" upX=\"0.0\" upY=\"-1.0\"/></y:ModelParameter></y:NodeLabel>\n" +
-                            "        </y:GenericNode>\n" +
-                            "      </data>\n" +
-                            "    </node>\n", graphMLPackageNode.getGraphNodes().get(packageNode), 10.0,
-                    10.0, packageNode.getName()));
+            for (Node packageNode : graphMLPackageNode.getGraphNodes().keySet()) {
+                expected.append(String.format("    <node id=\"n%s\">\n" +
+                                "      <data key=\"d4\" xml:space=\"preserve\"/>\n" +
+                                "      <data key=\"d6\">\n" +
+                                "        <y:GenericNode configuration=\"ShinyPlateNode3\">\n" +
+                                "          <y:Geometry height=\"52.0\" width=\"127.0\" x=\"%s\" y=\"%s\"/>\n" +
+                                "          <y:Fill color=\"#FF9900\" color2=\"#FFCC00\" transparent=\"false\"/>\n" +
+                                "          <y:BorderStyle color=\"#000000\" type=\"line\" width=\"1.0\"/>\n" +
+                                "          <y:NodeLabel alignment=\"center\" autoSizePolicy=\"content\" fontFamily=\"Dialog\" fontSize=\"12\" fontStyle=\"plain\" hasBackgroundColor=\"false\" hasLineColor=\"false\" height=\"18.701171875\" horizontalTextPosition=\"center\" iconTextGap=\"0\" modelName=\"custom\" textColor=\"#000000\" verticalTextPosition=\"bottom\" visible=\"true\" width=\"57.373046875\" x=\"34.8134765625\" xml:space=\"preserve\" y=\"16.6494140625\">%s<y:LabelModel><y:SmartNodeLabelModel distance=\"4.0\"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX=\"0.0\" labelRatioY=\"0.0\" nodeRatioX=\"0.0\" nodeRatioY=\"0.0\" offsetX=\"0.0\" offsetY=\"0.0\" upX=\"0.0\" upY=\"-1.0\"/></y:ModelParameter></y:NodeLabel>\n" +
+                                "        </y:GenericNode>\n" +
+                                "      </data>\n" +
+                                "    </node>\n", graphMLPackageNode.getGraphNodes().get(packageNode), 10.0,
+                        10.0, packageNode.getName()));
+            }
+            assertEquals(expected.toString(), graphMLPackageNode.getGraphMLBuffer());
         }
-        assertEquals(expected.toString(), graphMLPackageNode.getGraphMLBuffer());
     }
 
     @Test
     void populateGraphMLPackageEdgesTest() throws IOException {
-        GraphNodeCollection graphMLPackageNode = new GraphMLPackageNode();
-        Parser parser = new ProjectParser();
-        parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-        graphMLPackageNode.populateGraphNodes(new ArrayList<>(parser.getPackageNodes().values()));
+        for (ParserType parserType: parserTypes) {
+            GraphNodeCollection graphMLPackageNode = new GraphMLPackageNode();
+            Parser parser = new ProjectParser(parserType);
+            parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
+            graphMLPackageNode.populateGraphNodes(new ArrayList<>(parser.getPackageNodes().values()));
 
-        GraphMLPackageEdge graphMLPackageEdge = new GraphMLPackageEdge();
-        graphMLPackageEdge.setGraphNodes(graphMLPackageNode.getGraphNodes());
-        graphMLPackageEdge.populateGraphEdges(new ArrayList<>(parser.getPackageNodes().values()));
+            GraphMLPackageEdge graphMLPackageEdge = new GraphMLPackageEdge();
+            graphMLPackageEdge.setGraphNodes(graphMLPackageNode.getGraphNodes());
+            graphMLPackageEdge.populateGraphEdges(new ArrayList<>(parser.getPackageNodes().values()));
 
-        List<Relationship> relationships = new ArrayList<>();
+            List<Relationship> relationships = new ArrayList<>();
 
-        for (PackageNode packageNode: parser.getPackageNodes().values()) {
-            relationships.addAll(packageNode.getNodeRelationships());
-        }
-
-
-        for (Map.Entry<Relationship, Integer> e: graphMLPackageEdge.getGraphEdges().entrySet()) {
-            String edgesStart = e.getKey().getStartingNode().getName();
-            String edgesEnd = e.getKey().getEndingNode().getName();
-            boolean foundBranch = false;
-            for (Relationship b: relationships) {
-                if (b.getStartingNode().getName().equals(edgesStart) && b.getEndingNode().getName().equals(edgesEnd)) {
-                    foundBranch = true;
-                }
+            for (PackageNode packageNode : parser.getPackageNodes().values()) {
+                relationships.addAll(packageNode.getNodeRelationships());
             }
-            assertTrue(foundBranch);
+
+            for (Map.Entry<Relationship, Integer> e : graphMLPackageEdge.getGraphEdges().entrySet()) {
+                String edgesStart = e.getKey().getStartingNode().getName();
+                String edgesEnd = e.getKey().getEndingNode().getName();
+                boolean foundBranch = false;
+                for (Relationship b : relationships) {
+                    if (b.getStartingNode().getName().equals(edgesStart) && b.getEndingNode().getName().equals(edgesEnd)) {
+                        foundBranch = true;
+                    }
+                }
+                assertTrue(foundBranch);
+            }
         }
     }
 
     @Test
     void convertPackageEdgesToGraphMLTest() throws IOException {
-        GraphNodeCollection graphMLPackageNode = new GraphMLPackageNode();
-        Parser parser = new ProjectParser();
-        parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-        StringBuilder expected = new StringBuilder();
-        graphMLPackageNode.populateGraphNodes(new ArrayList<>(parser.getPackageNodes().values()));
+        for (ParserType parserType: parserTypes) {
+            GraphNodeCollection graphMLPackageNode = new GraphMLPackageNode();
+            Parser parser = new ProjectParser(parserType);
+            parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
+            StringBuilder expected = new StringBuilder();
+            graphMLPackageNode.populateGraphNodes(new ArrayList<>(parser.getPackageNodes().values()));
 
-        GraphMLPackageEdge graphMLPackageEdge = new GraphMLPackageEdge();
-        graphMLPackageEdge.setGraphNodes(graphMLPackageNode.getGraphNodes());
-        graphMLPackageEdge.populateGraphEdges(new ArrayList<>(parser.getPackageNodes().values()));
-        graphMLPackageEdge.convertEdgesToGraphML();
+            GraphMLPackageEdge graphMLPackageEdge = new GraphMLPackageEdge();
+            graphMLPackageEdge.setGraphNodes(graphMLPackageNode.getGraphNodes());
+            graphMLPackageEdge.populateGraphEdges(new ArrayList<>(parser.getPackageNodes().values()));
+            graphMLPackageEdge.convertEdgesToGraphML();
 
-        List<Relationship> relationships = new ArrayList<>();
+            List<Relationship> relationships = new ArrayList<>();
 
-        for (PackageNode packageNode: parser.getPackageNodes().values()) {
-            relationships.addAll(packageNode.getNodeRelationships());
-        }
+            for (PackageNode packageNode : parser.getPackageNodes().values()) {
+                relationships.addAll(packageNode.getNodeRelationships());
+            }
 
-
-        for (Map.Entry<Relationship, Integer> e: graphMLPackageEdge.getGraphEdges().entrySet()) {
-            String edgesStart = e.getKey().getStartingNode().getName();
-            String edgesEnd = e.getKey().getEndingNode().getName();
-            for (Relationship relationship: relationships) {
-                if (relationship.getStartingNode().getName().equals(edgesStart) && relationship.getEndingNode().getName().equals(edgesEnd)) {
-                    expected.append(String.format("    <edge id=\"e%s\" source=\"n%s\" target=\"n%s\">\n" +
-                            "      <data key=\"d9\"/>\n" +
-                            "      <data key=\"d10\">\n" +
-                            "        <y:PolyLineEdge>\n" +
-                            "          <y:Path sx=\"0.0\" sy=\"0.0\" tx=\"0.0\" ty=\"0.0\"/>\n" +
-                            "          <y:LineStyle color=\"#000000\" type=\"dashed\" width=\"1.0\"/>\n" +
-                            "          <y:Arrows source=\"none\" target=\"plain\"/>\n" +
-                            "          <y:BendStyle smoothed=\"false\"/>\n" +
-                            "        </y:PolyLineEdge>\n" +
-                            "      </data>\n" +
-                            "    </edge>", e.getValue(), graphMLPackageNode.getGraphNodes().get(e.getKey().getStartingNode()),
-                            graphMLPackageNode.getGraphNodes().get(e.getKey().getEndingNode())));
+            for (Map.Entry<Relationship, Integer> e : graphMLPackageEdge.getGraphEdges().entrySet()) {
+                String edgesStart = e.getKey().getStartingNode().getName();
+                String edgesEnd = e.getKey().getEndingNode().getName();
+                for (Relationship relationship : relationships) {
+                    if (relationship.getStartingNode().getName().equals(edgesStart) && relationship.getEndingNode().getName().equals(edgesEnd)) {
+                        expected.append(String.format("    <edge id=\"e%s\" source=\"n%s\" target=\"n%s\">\n" +
+                                        "      <data key=\"d9\"/>\n" +
+                                        "      <data key=\"d10\">\n" +
+                                        "        <y:PolyLineEdge>\n" +
+                                        "          <y:Path sx=\"0.0\" sy=\"0.0\" tx=\"0.0\" ty=\"0.0\"/>\n" +
+                                        "          <y:LineStyle color=\"#000000\" type=\"dashed\" width=\"1.0\"/>\n" +
+                                        "          <y:Arrows source=\"none\" target=\"plain\"/>\n" +
+                                        "          <y:BendStyle smoothed=\"false\"/>\n" +
+                                        "        </y:PolyLineEdge>\n" +
+                                        "      </data>\n" +
+                                        "    </edge>", e.getValue(), graphMLPackageNode.getGraphNodes().get(e.getKey().getStartingNode()),
+                                graphMLPackageNode.getGraphNodes().get(e.getKey().getEndingNode())));
+                    }
                 }
             }
+            assertEquals(expected.toString(), graphMLPackageEdge.getGraphMLBuffer());
         }
-        assertEquals(expected.toString(), graphMLPackageEdge.getGraphMLBuffer());
     }
 
 
