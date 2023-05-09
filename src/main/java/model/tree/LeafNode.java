@@ -10,11 +10,10 @@ import java.util.Map;
  * Each node has a parent node(the parent package), the path of the source file,
  * the branches that start from that node and also the field/method/method parameter types
  */
-public class LeafNode extends Node{
-	private String inheritanceLine[];
+public abstract class LeafNode extends Node{
 	private final Map<String, String> fields;
 	private final Map<String, String> methods;
-	private final List<String> methodsParametersTypes;
+	protected final List<String> methodsParametersTypes;
 
 	/**This method is responsible for initializing the nodes structs
 	 * @param path the path of Java source file
@@ -26,21 +25,11 @@ public class LeafNode extends Node{
 		methods = new HashMap<>();
 	}
 
-	/**This method is responsible for setting the nodes line that contains the declaration
-	 *  of the source file
-	 * @param inheritanceLine the Java source file's line holding the information regarding its inheritance
-	 */
-	public void setInheritanceLine(String[] inheritanceLine) {
-		this.inheritanceLine = inheritanceLine;
-	}
-
 	/**This method is responsible for adding to the nodes' method parameter types
-	 * @param methodParameterTypes the different types of parameters the Java source file's methods take
+	 * @param methodParameterType the type of parameter the node's methods take
 	 */
-	public void addMethodParametersTypes(List<String> methodParameterTypes) {
-		for (String methodParameterType: methodParameterTypes) {
-			methodsParametersTypes.add(methodParameterType.replaceAll("<", "[").replaceAll(">", "]"));
-		}
+	public void addMethodParameterType(String methodParameterType) {
+			methodsParametersTypes.add(methodParameterType);
 	}
 
 	/**This method is responsible for adding the nodes' methods names and return types
@@ -62,14 +51,6 @@ public class LeafNode extends Node{
 	public PackageNode getParentNode() {
 		return parentNode;
 	}
-	
-	public String[] getInheritanceLine() {
-		return inheritanceLine;
-	}
-	
-	public String getName() {
-		return path.normalize().toString().substring(path.normalize().toString().lastIndexOf("\\") + 1, path.normalize().toString().lastIndexOf("."));
-	}
 
 	public Map<String, String> getMethods() {
 		return methods;
@@ -87,14 +68,8 @@ public class LeafNode extends Node{
 
 	public List<String> getFieldsTypes(){ return new ArrayList<>(getFields().values());}
 
-	public NodeType getType() {
-		if (inheritanceLine[0].equals("enum")) {
-			return NodeType.ENUM;
-		}else if (inheritanceLine[0].equals("interface")) {
-			return NodeType.INTERFACE;
-		}else {
-			return NodeType.CLASS;
-		}
-	}
+	public abstract NodeType getType();
+
+	public abstract String getName();
 
 }

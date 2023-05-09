@@ -35,8 +35,8 @@ public class ClassDiagramManagerTest {
     @Test
     void createTreeTest() throws IOException {
         DiagramManager classDiagramManager = new ClassDiagramManager();
-        SourceProject sourceProject = classDiagramManager.createTree(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
 
+        SourceProject sourceProject = classDiagramManager.createTree(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
         SourceProject testingSourceProject = classDiagramManager.createTree(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
         Map<Path, PackageNode> packageNodes = sourceProject.getPackageNodes();
         Map<Path, PackageNode> testingPackageNodes = testingSourceProject.getPackageNodes();
@@ -110,8 +110,7 @@ public class ClassDiagramManagerTest {
     void saveDiagramTest() throws IOException {
         DiagramManager classDiagramManager = new ClassDiagramManager();
         List<String> chosenFiles = Arrays.asList("MainWindow", "LatexEditorView", "OpeningWindow");
-        //SourceProject sourceProject = 
-        		classDiagramManager.createTree(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
+        classDiagramManager.createTree(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
         Map<String, Map<String, String>> createdDiagram = classDiagramManager.createDiagram(chosenFiles);
 
         File testingSavedFile = classDiagramManager.saveDiagram(Paths.get(System.getProperty("user.home")+"\\testingExportedFile.graphML"));
@@ -129,12 +128,9 @@ public class ClassDiagramManagerTest {
     void loadDiagramTest() throws IOException {
         DiagramManager classDiagramManager = new ClassDiagramManager();
         List<String> chosenFiles = Arrays.asList("MainWindow", "LatexEditorView", "OpeningWindow");
-        //SourceProject sourceProject = 
-        		classDiagramManager.createTree(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
+        classDiagramManager.createTree(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
         Map<String, Map<String, String>> createdDiagram = classDiagramManager.createDiagram(chosenFiles);
-        //File testingSavedFile = 
-        		classDiagramManager.saveDiagram(Paths.get(System.getProperty("user.home")+"\\testingExportedFile.graphML"));
-
+        classDiagramManager.saveDiagram(Paths.get(System.getProperty("user.home")+"\\testingExportedFile.graphML"));
         Map<String, Map<String, String>> testingLoadedDiagram = classDiagramManager.loadDiagram(Paths.get(System.getProperty("user.home")+"\\testingExportedFile.graphML"));
 
         for (Map.Entry<String, Map<String, String>> entry: createdDiagram.entrySet()) {
