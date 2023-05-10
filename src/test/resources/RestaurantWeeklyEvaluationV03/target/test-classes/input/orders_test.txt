@@ -1,0 +1,5 @@
+Id	DishName	ChefName	TimeToMake	Stars
+1	Ribs	Tony	2.5	3
+2	Steak	Geezer	5.00	4
+3	Potatoes	Tony	3.00	5
+4	Tzatziki	Geezer	5.00	5

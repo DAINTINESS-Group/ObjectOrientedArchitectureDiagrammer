@@ -1,0 +1,19 @@
+#This project consists of the following folders:
+	- design: contains the files regarding the architecture of the system
+	- doc: contains a list of HTML files that are responsible for displaying
+		   the documentation of the source code of the project.
+	- input: contains the input files of the source code
+	- output: output files that are created from the source code
+	- requirements: contains the requirements of this example and the use cases
+	- src: source code of the project (including UML diagrams)
+	
+#How to build
+ - at build path, set the compiler (JRE system library) to Java 12, and allow the access rule: <Accessible, "javafx/*">
+ - include in the build path all the libraries in the /lib folder
+https://stackoverflow.com/questions/22812488/using-javafx-in-jre-8-access-restriction-error	
+
+#How to run
+- Go to Run configurations and make a Run configuration for userViews.ApplicationMainGui
+- Add to VM arguments
+    --module-path "C:\Program Files\Java\JavaFX\javafx-sdk-12.0.1\lib" --add-modules javafx.controls,javafx.fxml
+(Change the above path to wherever you have the javafx sdk)    
