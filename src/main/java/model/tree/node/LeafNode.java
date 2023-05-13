@@ -1,4 +1,4 @@
-package model.tree;
+package model.tree.node;
 
 import java.nio.file.Path;
 import java.util.ArrayList;

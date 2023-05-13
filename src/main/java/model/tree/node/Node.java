@@ -1,4 +1,6 @@
-package model.tree;
+package model.tree.node;
+
+import model.tree.edge.Relationship;
 
 import java.nio.file.Path;
 import java.util.ArrayList;

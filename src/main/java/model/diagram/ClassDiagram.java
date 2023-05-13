@@ -2,8 +2,8 @@ package model.diagram;
 
 import model.diagram.graphml.GraphMLLeafEdge;
 import model.diagram.graphml.GraphMLLeafNode;
-import model.tree.Node;
-import model.tree.PackageNode;
+import model.tree.node.Node;
+import model.tree.node.PackageNode;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,7 +1,7 @@
 package model.diagram.graphml;
 
 import model.diagram.GraphEdgeCollection;
-import model.tree.Relationship;
+import model.tree.edge.Relationship;
 
 import java.util.Arrays;
 import java.util.List;

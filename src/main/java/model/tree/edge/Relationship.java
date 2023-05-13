@@ -1,4 +1,6 @@
-package model.tree;
+package model.tree.edge;
+
+import model.tree.node.Node;
 
 public class Relationship {
 	private final Node startingLeafNode;

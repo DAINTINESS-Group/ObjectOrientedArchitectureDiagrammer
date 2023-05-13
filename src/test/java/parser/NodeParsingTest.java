@@ -1,9 +1,9 @@
 package parser;
 
-import model.tree.JavaparserLeafNode;
-import model.tree.LeafNode;
-import model.tree.NodeType;
-import model.tree.PackageNode;
+import model.tree.javaparser.JavaparserLeafNode;
+import model.tree.node.LeafNode;
+import model.tree.node.NodeType;
+import model.tree.node.PackageNode;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;

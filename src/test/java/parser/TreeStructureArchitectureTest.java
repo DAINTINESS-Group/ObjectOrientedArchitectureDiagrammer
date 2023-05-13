@@ -12,12 +12,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import model.tree.NodeType;
-import model.tree.RelationshipType;
+import model.tree.node.NodeType;
+import model.tree.edge.RelationshipType;
 import org.junit.jupiter.api.Test;
-import model.tree.PackageNode;
-import model.tree.Relationship;
-import model.tree.LeafNode;
+import model.tree.node.PackageNode;
+import model.tree.edge.Relationship;
+import model.tree.node.LeafNode;
 
 class TreeStructureArchitectureTest {
 

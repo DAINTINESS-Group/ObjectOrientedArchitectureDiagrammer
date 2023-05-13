@@ -1,4 +1,7 @@
-package model.tree;
+package model.tree.javaparser;
+
+import model.tree.node.LeafNode;
+import model.tree.node.NodeType;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -6,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class JavaparserLeafNode extends LeafNode{
+public class JavaparserLeafNode extends LeafNode {
 
     private final List<String> implementedInterfaces;
     private final Map<String, String> variables;

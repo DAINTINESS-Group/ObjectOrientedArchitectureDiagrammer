@@ -1,7 +1,7 @@
 package parser;
 
-import model.tree.LeafNode;
-import model.tree.PackageNode;
+import model.tree.node.LeafNode;
+import model.tree.node.PackageNode;
 
 import java.io.File;
 import java.nio.file.DirectoryStream;
@@ -21,7 +21,8 @@ public class ProjectParser implements Parser {
 	private final Map<Path, PackageNode> packageNodes;
 
 	public ProjectParser(ParserType parserType) {
-		projectParserHelper = new ProjectParserHelper(parserType);
+		ParserFactory parserFactory = new ParserFactory(parserType);
+		projectParserHelper = parserFactory.createParser();
 		packageNodes = new HashMap<>();
 	}
 
@@ -61,7 +62,8 @@ public class ProjectParser implements Parser {
 	private void createLeafNode(PackageNode currentNode, LeafNode leafNode, File file) {
 		leafNode.setParentNode(currentNode);
 		currentNode.setValid();
-		projectParserHelper.createFileVisitor(file, leafNode);
+		FileVisitor fileVisitor = projectParserHelper.createFileVisitor();
+		fileVisitor.createAST(file, leafNode);
 		currentNode.addLeafNode(leafNode);
 	}
 	

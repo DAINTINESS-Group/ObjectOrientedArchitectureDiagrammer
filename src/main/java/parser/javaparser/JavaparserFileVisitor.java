@@ -1,4 +1,4 @@
-package parser;
+package parser.javaparser;
 
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
@@ -8,8 +8,10 @@ import com.github.javaparser.ast.expr.VariableDeclarationExpr;
 import com.github.javaparser.ast.stmt.ReturnStmt;
 import com.github.javaparser.ast.visitor.VoidVisitor;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
-import model.tree.JavaparserLeafNode;
-import model.tree.NodeType;
+import model.tree.javaparser.JavaparserLeafNode;
+import model.tree.node.LeafNode;
+import model.tree.node.NodeType;
+import parser.FileVisitor;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -22,55 +24,50 @@ import java.util.regex.Pattern;
 /**This class is responsible for the creation of the AST of a Java source file.
  * Using the ASTNode API it parses the files methods parameters, return types and field declarations
  */
-public class JavaparserFileVisitor {
+public class JavaparserFileVisitor implements FileVisitor {
 
     private final List<String> allCreatedObjects;
     private final List<String> returnedObjects;
     private final List<String> createdAssignedObjects;
 
-    /** The constructor calls the createAST method that is responsible for the creation
-     * of the AST
-     * @param file the Java source file
-     * @param leafNode the leaf node representing the Java source file
-     */
-    public JavaparserFileVisitor(File file, JavaparserLeafNode leafNode){
+    public JavaparserFileVisitor(){
         allCreatedObjects = new ArrayList<>();
         returnedObjects = new ArrayList<>();
         createdAssignedObjects = new ArrayList<>();
-        try {
-            createAST(file, leafNode);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
-    private void createAST(File file, JavaparserLeafNode leafNode) throws FileNotFoundException {
-        CompilationUnit compilationUnit = StaticJavaParser.parse(file);
+    public void createAST(File file, LeafNode leafNode) {
+        try {
+            JavaparserLeafNode javaparserLeafNode = (JavaparserLeafNode) leafNode;
+            CompilationUnit compilationUnit = StaticJavaParser.parse(file);
 
-        InheritanceVisitor inheritanceVisitor = new InheritanceVisitor(leafNode);
-        inheritanceVisitor.visit(compilationUnit, null);
+            InheritanceVisitor inheritanceVisitor = new InheritanceVisitor(javaparserLeafNode);
+            inheritanceVisitor.visit(compilationUnit, null);
 
-        VoidVisitor<Void> constructorVisitor = new ConstructorVisitor(leafNode);
-        constructorVisitor.visit(compilationUnit, null);
+            VoidVisitor<Void> constructorVisitor = new ConstructorVisitor(javaparserLeafNode);
+            constructorVisitor.visit(compilationUnit, null);
 
-        VoidVisitor<Void> fieldNameVisitor = new FieldVisitor(leafNode);
-        fieldNameVisitor.visit(compilationUnit, null);
+            VoidVisitor<Void> fieldNameVisitor = new FieldVisitor(javaparserLeafNode);
+            fieldNameVisitor.visit(compilationUnit, null);
 
-        VoidVisitor<List<String>> variableVisitor = new VariableVisitor(leafNode);
-        variableVisitor.visit(compilationUnit, createdAssignedObjects);
+            VoidVisitor<List<String>> variableVisitor = new VariableVisitor(javaparserLeafNode);
+            variableVisitor.visit(compilationUnit, createdAssignedObjects);
 
-        VoidVisitor<Void> methodNameVisitor = new MethodVisitor(leafNode);
-        methodNameVisitor.visit(compilationUnit, null);
+            VoidVisitor<Void> methodNameVisitor = new MethodVisitor(javaparserLeafNode);
+            methodNameVisitor.visit(compilationUnit, null);
 
-        VoidVisitor<List<String>> returnObjectsVisitor = new ReturnObjectsVisitor();
-        returnObjectsVisitor.visit(compilationUnit, returnedObjects);
+            VoidVisitor<List<String>> returnObjectsVisitor = new ReturnObjectsVisitor();
+            returnObjectsVisitor.visit(compilationUnit, returnedObjects);
 
-        VoidVisitor<List<String>> objectCreationVisitor = new ObjectCreationVisitor();
-        objectCreationVisitor.visit(compilationUnit, allCreatedObjects);
-        populateCreatedObjects(leafNode);
+            VoidVisitor<List<String>> objectCreationVisitor = new ObjectCreationVisitor();
+            objectCreationVisitor.visit(compilationUnit, allCreatedObjects);
+            populateCreatedObjects(javaparserLeafNode);
 
-        VoidVisitor<Void> enumVisitor = new EnumVisitor(leafNode, inheritanceVisitor.isClassOrInterface());
-        enumVisitor.visit(compilationUnit, null);
+            VoidVisitor<Void> enumVisitor = new EnumVisitor(javaparserLeafNode, inheritanceVisitor.isClassOrInterface());
+            enumVisitor.visit(compilationUnit, null);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     private static class InheritanceVisitor extends VoidVisitorAdapter<Void> {

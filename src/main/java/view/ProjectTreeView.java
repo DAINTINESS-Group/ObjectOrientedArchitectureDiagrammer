@@ -87,8 +87,16 @@ public class ProjectTreeView {
     }
 
     private String getFullPath(CheckBoxTreeItem<?> c) {
-        return sourceFolderPath.normalize().toString().substring(0, sourceFolderPath.normalize().toString().lastIndexOf("\\") + 1) +
-                ((String) c.getValue()).replace(".", "\\");
+        StringBuilder treeItem = new StringBuilder((String) c.getValue());
+        for (int i = 0; i < treeItem.length(); i++) {
+            if (treeItem.charAt(i) != '.' || (i > 0 && treeItem.charAt(i-1) == '\\')) {
+                continue;
+            }
+            treeItem.deleteCharAt(i);
+            treeItem.insert(i, "\\");
+        }
+
+        return (sourceFolderPath.normalize().toString().substring(0, sourceFolderPath.normalize().toString().lastIndexOf("\\") + 1) + treeItem);
     }
 
     public void setCheckedItems(CheckBoxTreeItem<?> rootItem) {
