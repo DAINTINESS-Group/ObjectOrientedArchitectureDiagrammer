@@ -1,6 +1,10 @@
 package parser;
 
-import model.tree.*;
+import model.tree.edge.Relationship;
+import model.tree.edge.RelationshipType;
+import model.tree.node.LeafNode;
+import model.tree.node.NodeType;
+import model.tree.node.PackageNode;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;

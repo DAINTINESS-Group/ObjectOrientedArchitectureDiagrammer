@@ -1,6 +1,6 @@
 package model.diagram;
 
-import model.tree.Node;
+import model.tree.node.Node;
 
 import java.util.HashMap;
 import java.util.List;

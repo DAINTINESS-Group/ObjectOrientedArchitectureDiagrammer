@@ -1,9 +1,13 @@
-package model.tree;
+package model.tree.jdt;
+
+import model.tree.node.PackageNode;
+import model.tree.edge.RelationshipIdentifier;
+import model.tree.edge.RelationshipType;
 
 import java.nio.file.Path;
 import java.util.Map;
 
-public class JDTRelationshipIdentifier extends RelationshipIdentifier{
+public class JDTRelationshipIdentifier extends RelationshipIdentifier {
 
     public static final int DECLARATION_LINE_STANDARD_SIZE = 2;
     public static final int INHERITANCE_TYPE = 2;

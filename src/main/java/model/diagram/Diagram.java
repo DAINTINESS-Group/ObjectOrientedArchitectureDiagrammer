@@ -5,7 +5,7 @@ import model.diagram.javafx.JavaFXExporter;
 import model.diagram.javafx.JavaFXLoader;
 import model.diagram.graphml.GraphMLExporter;
 import model.diagram.javafx.JavaFXVisualization;
-import model.tree.Node;
+import model.tree.node.Node;
 import model.tree.SourceProject;
 
 import java.io.*;

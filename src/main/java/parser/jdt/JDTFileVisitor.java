@@ -1,4 +1,4 @@
-package parser;
+package parser.jdt;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -10,55 +10,48 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import model.tree.JDTLeafNode;
+import model.tree.jdt.JDTLeafNode;
+import model.tree.node.LeafNode;
 import org.eclipse.jdt.core.dom.*;
 import org.eclipse.text.edits.MalformedTreeException;
+import parser.FileVisitor;
 
 import static org.eclipse.jdt.core.dom.ASTNode.METHOD_DECLARATION;
 
 /**This class is responsible for the creation of the AST of a Java source file.
  * Using the ASTNode API it parses the files methods parameters, return types and field declarations
  */
-public class JDTFileVisitor {
+public class JDTFileVisitor implements FileVisitor {
 
 	private CompilationUnit unit;
-	private JDTLeafNode leafNode;
 	private String sourceFile[];
 
-	/** This method calls the createAST method that is responsible for the creation
-	 * of the AST
-     * @param file the Java source file
-     * @param leafNode the leaf node representing the Java source file
-	 */
-	public JDTFileVisitor(File file, JDTLeafNode leafNode){
+
+    public void createAST(File file, LeafNode leafNode) {
 		try {
-			createAST(file, leafNode);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+			ASTParser parser = ASTParser.newParser(AST.JLS17);
+			this.sourceFile = ReadFileToCharArray(file.getAbsolutePath()).split("\\n");
+			parser.setSource(ReadFileToCharArray(file.getAbsolutePath()).toCharArray());
+			this.unit = (CompilationUnit)parser.createAST(null);
+			JDTLeafNode jdtLeafNode = (JDTLeafNode) leafNode;
+			processJavaFile(jdtLeafNode);
+		} catch (IOException | MalformedTreeException e) {
+			e.printStackTrace();
+		}
 	}
-	
-    private void createAST(File file, JDTLeafNode leafNode) throws IOException, MalformedTreeException {
-    	ASTParser parser = ASTParser.newParser(AST.JLS17);
-    	this.sourceFile = ReadFileToCharArray(file.getAbsolutePath()).split("\\n");
-	    parser.setSource(ReadFileToCharArray(file.getAbsolutePath()).toCharArray());
-	    this.unit = (CompilationUnit)parser.createAST(null);
-	    this.leafNode = leafNode;
-	    processJavaFile();
-    }
     
-    private  void processJavaFile() throws MalformedTreeException {
+    private  void processJavaFile(JDTLeafNode jdtLeafNode) throws MalformedTreeException {
 	    // to iterate through methods
     	List<AbstractTypeDeclaration> types = new ArrayList<>();
     	for (Object o: unit.types()) {
     		types.add((AbstractTypeDeclaration)(o));
     	}
 		if (types.isEmpty()) {
-			leafNode.setInheritanceLine(new String[]{"enum"});
+			jdtLeafNode.setInheritanceLine(new String[]{"enum"});
 		}
 	    for (AbstractTypeDeclaration type : types) {
 	        if (type.getNodeType() == ASTNode.TYPE_DECLARATION) {
-	        	leafNode.setInheritanceLine(convertInheritanceLine(type));
+				jdtLeafNode.setInheritanceLine(convertInheritanceLine(type));
 	            List<BodyDeclaration> bodies = new ArrayList<>();
 	        	for (Object o: type.bodyDeclarations()) {
 	        		bodies.add((BodyDeclaration)(o));
@@ -78,7 +71,7 @@ public class JDTFileVisitor {
 		            			map.put(ob, map.get(ob));
 		            		}
 		            	}
-	            		leafNode.addField(fieldName, field.getType().toString().replaceAll("<", "[").replaceAll(">", "]"));
+						jdtLeafNode.addField(fieldName, field.getType().toString().replaceAll("<", "[").replaceAll(">", "]"));
 	            	}
 	                if (isMethod(body)) {
 	                    MethodDeclaration method = (MethodDeclaration)body;
@@ -93,9 +86,9 @@ public class JDTFileVisitor {
 	                        VariableDeclaration variableDeclaration = (VariableDeclaration) parameter;
 							String variableType = variableDeclaration.
 									getStructuralProperty(SingleVariableDeclaration.TYPE_PROPERTY).toString() + "[]".repeat(Math.max(0, variableDeclaration.getExtraDimensions()));
-							leafNode.addMethodParameterType(variableType.replaceAll("<", "[").replaceAll(">", "]"));
+							jdtLeafNode.addMethodParameterType(variableType.replaceAll("<", "[").replaceAll(">", "]"));
 	                    }
-	                    leafNode.addMethod(methodName, returnTypeName.replaceAll("<", "[").replaceAll(">", "]"));
+						jdtLeafNode.addMethod(methodName, returnTypeName.replaceAll("<", "[").replaceAll(">", "]"));
 	                }
 	            }
 	        }

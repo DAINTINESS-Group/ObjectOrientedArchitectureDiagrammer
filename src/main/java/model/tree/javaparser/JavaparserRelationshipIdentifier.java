@@ -1,9 +1,13 @@
-package model.tree;
+package model.tree.javaparser;
+
+import model.tree.node.PackageNode;
+import model.tree.edge.RelationshipIdentifier;
+import model.tree.edge.RelationshipType;
 
 import java.nio.file.Path;
 import java.util.Map;
 
-public class JavaparserRelationshipIdentifier extends RelationshipIdentifier{
+public class JavaparserRelationshipIdentifier extends RelationshipIdentifier {
 
     public JavaparserRelationshipIdentifier(Map<Path, PackageNode> packageNodes) {
         super(packageNodes);

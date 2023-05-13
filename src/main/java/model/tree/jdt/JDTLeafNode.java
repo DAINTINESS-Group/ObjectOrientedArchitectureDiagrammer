@@ -1,8 +1,11 @@
-package model.tree;
+package model.tree.jdt;
+
+import model.tree.node.LeafNode;
+import model.tree.node.NodeType;
 
 import java.nio.file.Path;
 
-public class JDTLeafNode extends LeafNode{
+public class JDTLeafNode extends LeafNode {
 
     private String inheritanceLine[];
 

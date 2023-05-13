@@ -2,7 +2,7 @@ package manager;
 
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import model.diagram.Diagram;
-import model.tree.PackageNode;
+import model.tree.node.PackageNode;
 import model.tree.SourceProject;
 import parser.Parser;
 import parser.ParserType;

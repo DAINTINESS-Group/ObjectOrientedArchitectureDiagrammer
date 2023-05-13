@@ -1,4 +1,7 @@
-package model.tree;
+package model.tree.edge;
+
+import model.tree.node.LeafNode;
+import model.tree.node.PackageNode;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
