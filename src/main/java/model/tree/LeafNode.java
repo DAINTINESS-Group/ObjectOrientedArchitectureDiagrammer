@@ -12,8 +12,12 @@ import java.util.Map;
  */
 public class LeafNode extends Node{
 	private String inheritanceLine[];
+	private final Map<String, List<String>> methodToParameter;
+	private final Map<String, String> methodVisibilities;
+	private final Map<String, String> fieldVisibilities;
 	private final Map<String, String> fields;
 	private final Map<String, String> methods;
+	private final List<List<String>> methodTypes;
 	private final List<String> methodsParametersTypes;
 
 	/**This method is responsible for initializing the nodes structs
@@ -24,6 +28,10 @@ public class LeafNode extends Node{
 		methodsParametersTypes = new ArrayList<>();
 		fields = new HashMap<>();
 		methods = new HashMap<>();
+		methodToParameter = new HashMap<>();
+		methodVisibilities = new HashMap<>();
+		fieldVisibilities = new HashMap<>();
+		methodTypes = new ArrayList<List<String>>();
 	}
 
 	/**This method is responsible for setting the nodes line that contains the declaration
@@ -38,6 +46,7 @@ public class LeafNode extends Node{
 	 * @param methodParameterTypes the different types of parameters the Java source file's methods take
 	 */
 	public void addMethodParametersTypes(List<String> methodParameterTypes) {
+		methodTypes.add(methodParameterTypes);
 		for (String methodParameterType: methodParameterTypes) {
 			methodsParametersTypes.add(methodParameterType.replaceAll("<", "[").replaceAll(">", "]"));
 		}
@@ -81,6 +90,35 @@ public class LeafNode extends Node{
 	
 	public List<String> getMethodParameterTypes() {
 		return methodsParametersTypes;
+	}
+	
+	public void addFieldVisibility(String fieldName, String fieldVisibility) {
+		fieldVisibilities.put(fieldName, fieldVisibility);
+	}
+	
+	public void addMethodVisibility(String methodName, String methodVisibility) {
+		methodVisibilities.put(methodName, methodVisibility);
+	}
+	
+	public Map<String, String> getFieldVisibilities(){
+		return fieldVisibilities;
+	}
+	
+	public Map<String, String> getMethodVisibilities(){
+		return methodVisibilities;
+	}
+	
+	public void addForPlantUML(String methodName, List<String> parametersTypes, List<String> parametersNames) {
+		List<String> stringMergerList = new ArrayList<String>();
+		for (int i=0; i<parametersTypes.size(); i++) {
+			String parametersString = parametersTypes.get(i) + " " + parametersNames.get(i);
+			stringMergerList.add(parametersString);
+		}
+		methodToParameter.put(methodName, stringMergerList);
+	}
+	
+	public Map<String, List<String>> getMethodToParameter(){
+		return methodToParameter;
 	}
 
 	public List<String> getMethodsReturnTypes() { return new ArrayList<>(getMethods().values());}

@@ -5,6 +5,7 @@ import model.diagram.javafx.JavaFXExporter;
 import model.diagram.javafx.JavaFXLoader;
 import model.diagram.graphml.GraphMLExporter;
 import model.diagram.javafx.JavaFXVisualization;
+import model.diagram.plantuml.PlantUMLExporter;
 import model.tree.Node;
 import model.tree.SourceProject;
 
@@ -26,7 +27,7 @@ public abstract class Diagram {
         this.createdDiagram = new HashMap<>();
     }
 
-    public SourceProject createSourceProject() {
+    public SourceProject createSourceProject(Path sourcePackagePath) {
         sourceProject = new SourceProject();
         return sourceProject;
     }
@@ -52,7 +53,16 @@ public abstract class Diagram {
         GraphMLExporter graphMLExporter = new GraphMLExporter();
         return graphMLExporter.exportDiagramToGraphML(graphMLSavePath, graphNodeCollection.getGraphMLBuffer(), graphEdgeCollection.getGraphMLBuffer());
     }
-
+    
+    public void exportPlantUMLDiagram(Path selectedFile) {
+    	boolean packageDiagram = false;
+    	graphNodeCollection.convertNodesToPlantUML();
+    	packageDiagram = graphNodeCollection.getDiagramsChoice();
+    	graphEdgeCollection.convertEdgesToPlantUML();
+    	PlantUMLExporter plantUMLExporter = new PlantUMLExporter();
+    	plantUMLExporter.exportDiagram(selectedFile, graphNodeCollection.getPlantUMLBuffer(), graphEdgeCollection.getPlantUMLBuffer(), packageDiagram);
+    }
+    
     public File saveDiagram(Path graphSavePath) {
         JavaFXExporter javaFXExporter = new JavaFXExporter();
         return javaFXExporter.saveDiagram(createdDiagram, graphSavePath);

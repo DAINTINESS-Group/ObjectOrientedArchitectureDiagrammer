@@ -27,7 +27,7 @@ public abstract class DiagramManager implements Manager {
      */
     public SourceProject createTree(Path sourcePackagePath) {
         diagramStack.push(getDiagram());
-        SourceProject sourceProject = Objects.requireNonNull(diagramStack.peek()).createSourceProject();
+        SourceProject sourceProject = Objects.requireNonNull(diagramStack.peek()).createSourceProject(sourcePackagePath);
         
         Parser projectParser = new ProjectParser();
         projectParser.parseSourcePackage(sourcePackagePath);
@@ -48,6 +48,10 @@ public abstract class DiagramManager implements Manager {
 
     public File exportDiagramToGraphML(Path graphMLSavePath) {
         return Objects.requireNonNull(diagramStack.peek()).exportDiagramToGraphML(graphMLSavePath);
+    }
+    
+    public void exportPlantUMLDiagram(Path selectedFile) {
+    	Objects.requireNonNull(diagramStack.peek()).exportPlantUMLDiagram(selectedFile);
     }
 
     public File saveDiagram(Path graphSavePath) {

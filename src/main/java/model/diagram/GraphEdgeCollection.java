@@ -12,11 +12,15 @@ public abstract class GraphEdgeCollection {
     private final Map<Relationship, Integer> graphEdges;
     protected Map<Node, Integer> graphNodes;
     private final StringBuilder graphMLBuffer;
+    private final StringBuilder plantUMLBuffer;
+    private final Map<Map<String, String>, String> plantUMLTester;
     private int edgeId;
 
     public GraphEdgeCollection() {
         graphEdges = new HashMap<>();
         graphMLBuffer = new StringBuilder();
+        plantUMLBuffer = new StringBuilder();
+        plantUMLTester = new HashMap<>();
         edgeId = 0;
     }
 
@@ -50,9 +54,24 @@ public abstract class GraphEdgeCollection {
     public Map<Relationship, Integer> getGraphEdges() {
         return graphEdges;
     }
+    
+    public Map<Map<String, String>, String> convertEdgesToPlantUML() {
+    	for ( Relationship relationship : graphEdges.keySet()) {
+    		Map<String, String> nodesHashMap = new HashMap<>();
+    		plantUMLBuffer.append(relationship.getStartingNode().getName() + " ");
+    		plantUMLBuffer.append(transformPlantUMLRelationship(relationship.getRelationshipType().toString()) + " ");
+    		plantUMLBuffer.append(relationship.getEndingNode().getName() + "\n");
+    		nodesHashMap.put(relationship.getStartingNode().getName(), relationship.getEndingNode().getName());
+    		plantUMLTester.put(nodesHashMap, transformPlantUMLRelationship(relationship.getRelationshipType().toString()));
+		}
+    	return plantUMLTester;
+    	
+    }
 
     public String getGraphMLBuffer() { return graphMLBuffer.toString(); }
 
+    public String getPlantUMLBuffer() { return plantUMLBuffer.toString(); }
+    
     public StringBuilder convertEdgesToGraphML(){
         for (Map.Entry<Relationship, Integer> entry: graphEdges.entrySet()) {
             graphMLBuffer.append(convertEdge(entry.getKey(), entry.getValue()));
@@ -61,5 +80,25 @@ public abstract class GraphEdgeCollection {
     }
 
     public abstract String convertEdge(Relationship relationship, int edgeId);
+    
+    private String transformPlantUMLRelationship(String Relationship) {
+    	switch (Relationship) {
+    		case "EXTENSION":
+    			return "--|>";
+    		case "COMPOSITION":
+    			return "--*";
+    		case "AGGREGATION":
+    			return "--o";
+    		case "DEPENDENCY":
+    			return "..>";
+    		case "IMPLEMENTATION":
+    			return "..|>";
+    		case "ASSOCIATION":
+    			return "-->";
+    		case "SELFREFERENCE": // SELF-REFERENCING
+    			return "";		// A -- A , SAME CLASS WITH -- IN BETWEEN
+    	}
+    	return "";
+    }
 
 }

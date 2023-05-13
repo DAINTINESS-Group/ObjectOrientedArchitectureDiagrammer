@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.lang.reflect.Modifier;
 
 import org.eclipse.jdt.core.dom.*;
 import org.eclipse.text.edits.MalformedTreeException;
@@ -79,25 +80,33 @@ public class FileVisitor {
 		            			map.put(ob, map.get(ob));
 		            		}
 		            	}
+	            		int fieldModifiers = field.getModifiers();
+	            		String fieldVisibility = getVisibility(fieldModifiers);
+	            		leafNode.addFieldVisibility(fieldName, fieldVisibility);
 	            		leafNode.addField(fieldName, field.getType().toString().replaceAll("<", "[").replaceAll(">", "]"));
 	            	}
 	                if (isMethod(body)) {
 	                    MethodDeclaration method = (MethodDeclaration)body;
 	                    String methodName = method.getName().getFullyQualifiedName();
 	                    Type returnType = method.getReturnType2();
-	                    
 	                    String returnTypeName;
 	                    if (returnType==null) returnTypeName = "Constructor";
 	                    else returnTypeName = returnType.toString();
 	                    
 	                    List<String> parameters = new ArrayList<>();
+	                    List<String> parametersName = new ArrayList<>();
 	                    for (Object parameter : method.parameters()) {
 	                        VariableDeclaration variableDeclaration = (VariableDeclaration) parameter;
 							String variableType = variableDeclaration.
 									getStructuralProperty(SingleVariableDeclaration.TYPE_PROPERTY).toString() + "[]".repeat(Math.max(0, variableDeclaration.getExtraDimensions()));
 	                        parameters.add(variableType);
+	                        String variableName = variableDeclaration.getName().getIdentifier();
+	                        parametersName.add(variableName);
 	                    }
-	                    
+	                    int methodModifiers = method.getModifiers();
+	                    String methodVisibility = getVisibility(methodModifiers);
+	                    leafNode.addForPlantUML(methodName, parameters, parametersName);
+	                    leafNode.addMethodVisibility(methodName, methodVisibility);
 	                    leafNode.addMethodParametersTypes(parameters);
 	                    leafNode.addMethod(methodName, returnTypeName.replaceAll("<", "[").replaceAll(">", "]"));
 	                }
@@ -106,6 +115,18 @@ public class FileVisitor {
 	    }
 	}//end processJavaFile
 
+    private static String getVisibility(int modifiers) {
+    	if(Modifier.isPublic(modifiers)) {
+    		return "public";
+    	} else if (Modifier.isProtected(modifiers)) {
+    		return "protected";
+    	} else if (Modifier.isPrivate(modifiers)) {
+    		return "private";
+    	} else {
+    		return "default";
+    	}
+    }
+    
 	private String[] convertInheritanceLine(AbstractTypeDeclaration type) {
 		String inheritanceLine[] = Arrays.copyOfRange(getInheritanceLine(type), 1, getInheritanceLine(type).length);
 		for (int i = 0; i < inheritanceLine.length; i++) {

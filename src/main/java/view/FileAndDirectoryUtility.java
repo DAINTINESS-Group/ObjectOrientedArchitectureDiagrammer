@@ -27,7 +27,8 @@ public class FileAndDirectoryUtility {
         final Map<String, String> availableExtensionTypes = Map.ofEntries(
                 entry("Text Files", "*.txt"),
                 entry("GraphML Files", "*.graphML"),
-                entry("PNG files", "*.png"));
+                entry("PNG files", "*.png"),
+        		entry("PlantUML Files", "*.png"));
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle(windowTitle);
         //fileChooser.setInitialDirectory(new File("C:\\Users\\user\\IntelliJProjects\\UMLDiagramTool\\src\\test\\resources\\LatexEditor"));

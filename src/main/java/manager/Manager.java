@@ -59,4 +59,6 @@ public interface Manager {
      */
     SmartGraphPanel<String, String> visualizeJavaFXGraph();
 
+	void exportPlantUMLDiagram(Path selectedFile);
+
 }
