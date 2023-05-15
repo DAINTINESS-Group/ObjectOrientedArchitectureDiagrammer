@@ -13,14 +13,13 @@ public abstract class GraphEdgeCollection {
     private final Map<Relationship, Integer> graphEdges;
     protected Map<Node, Integer> graphNodes;
     private final StringBuilder graphMLBuffer;
-    private final StringBuilder plantUMLBuffer;
+    private StringBuilder plantUMLBuffer;
     private final List<String> plantUMLTester;
     private int edgeId;
 
     public GraphEdgeCollection() {
         graphEdges = new HashMap<>();
         graphMLBuffer = new StringBuilder();
-        plantUMLBuffer = new StringBuilder();
         plantUMLTester = new ArrayList<>();
         edgeId = 0;
     }
@@ -57,6 +56,7 @@ public abstract class GraphEdgeCollection {
     }
     
     public List<String> convertEdgesToPlantUML() {
+        plantUMLBuffer = new StringBuilder();
     	for ( Relationship relationship : graphEdges.keySet()) {
     		// Map<String, String> nodesHashMap = new HashMap<>();
     		plantUMLBuffer.append(relationship.getStartingNode().getName() + " ");

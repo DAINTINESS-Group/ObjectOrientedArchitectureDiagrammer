@@ -14,7 +14,7 @@ public abstract class GraphNodeCollection {
 
     private final Map<Node, Integer> graphNodes;
     private final StringBuilder graphMLBuffer;
-    private final StringBuilder plantUMLBuffer;  
+    private StringBuilder plantUMLBuffer;  
     private final Map<String, String> plantUMLTester;
     private boolean packageFlag = false;
     private int nodeId;
@@ -23,7 +23,6 @@ public abstract class GraphNodeCollection {
         graphNodes = new HashMap<>();
         plantUMLTester = new HashMap<>();
         graphMLBuffer = new StringBuilder();
-        plantUMLBuffer = new StringBuilder();
         nodeId = 0;
     }
 
@@ -45,6 +44,7 @@ public abstract class GraphNodeCollection {
     
     public Map<String, String> convertNodesToPlantUML() {
     	String plantUMLDeclarations = "";
+    	plantUMLBuffer = new StringBuilder();
     	for (Node node : graphNodes.keySet()) {
     		String plantUMLStringTester = "";
     		plantUMLDeclarations += node.getType().toString().toLowerCase() + " " + node.getName() + " {\n";
