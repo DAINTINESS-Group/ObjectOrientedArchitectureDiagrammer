@@ -3,6 +3,7 @@ package model.diagram;
 import model.tree.Node;
 import model.tree.Relationship;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,14 +14,14 @@ public abstract class GraphEdgeCollection {
     protected Map<Node, Integer> graphNodes;
     private final StringBuilder graphMLBuffer;
     private final StringBuilder plantUMLBuffer;
-    private final Map<Map<String, String>, String> plantUMLTester;
+    private final List<String> plantUMLTester;
     private int edgeId;
 
     public GraphEdgeCollection() {
         graphEdges = new HashMap<>();
         graphMLBuffer = new StringBuilder();
         plantUMLBuffer = new StringBuilder();
-        plantUMLTester = new HashMap<>();
+        plantUMLTester = new ArrayList<>();
         edgeId = 0;
     }
 
@@ -55,14 +56,14 @@ public abstract class GraphEdgeCollection {
         return graphEdges;
     }
     
-    public Map<Map<String, String>, String> convertEdgesToPlantUML() {
+    public List<String> convertEdgesToPlantUML() {
     	for ( Relationship relationship : graphEdges.keySet()) {
-    		Map<String, String> nodesHashMap = new HashMap<>();
+    		// Map<String, String> nodesHashMap = new HashMap<>();
     		plantUMLBuffer.append(relationship.getStartingNode().getName() + " ");
     		plantUMLBuffer.append(transformPlantUMLRelationship(relationship.getRelationshipType().toString()) + " ");
     		plantUMLBuffer.append(relationship.getEndingNode().getName() + "\n");
-    		nodesHashMap.put(relationship.getStartingNode().getName(), relationship.getEndingNode().getName());
-    		plantUMLTester.put(nodesHashMap, transformPlantUMLRelationship(relationship.getRelationshipType().toString()));
+    		// nodesHashMap.put(relationship.getStartingNode().getName(), relationship.getEndingNode().getName());
+    		plantUMLTester.add(relationship.getStartingNode().getName() + " " + transformPlantUMLRelationship(relationship.getRelationshipType().toString()) + " " + relationship.getEndingNode().getName());
 		}
     	return plantUMLTester;
     	

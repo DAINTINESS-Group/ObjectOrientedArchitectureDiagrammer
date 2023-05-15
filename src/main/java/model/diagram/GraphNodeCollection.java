@@ -15,8 +15,8 @@ public abstract class GraphNodeCollection {
     private final Map<Node, Integer> graphNodes;
     private final StringBuilder graphMLBuffer;
     private final StringBuilder plantUMLBuffer;  
-    private final Map<Map<String, String>, List<String>> plantUMLTester;
-    private boolean packageFlag;
+    private final Map<String, String> plantUMLTester;
+    private boolean packageFlag = false;
     private int nodeId;
 
     public GraphNodeCollection() {
@@ -43,11 +43,12 @@ public abstract class GraphNodeCollection {
         return graphMLBuffer;
     }
     
-    public void convertNodesToPlantUML() {
-    	boolean packageFlag = false;
+    public Map<String, String> convertNodesToPlantUML() {
     	String plantUMLDeclarations = "";
     	for (Node node : graphNodes.keySet()) {
+    		String plantUMLStringTester = "";
     		plantUMLDeclarations += node.getType().toString().toLowerCase() + " " + node.getName() + " {\n";
+    		plantUMLStringTester += node.getType().toString().toLowerCase() + " " + node.getName() + " {\n";
     		if (node.getType().toString() == "PACKAGE") {
     			packageFlag = true;
     		}
@@ -58,6 +59,7 @@ public abstract class GraphNodeCollection {
         			String fieldType = nodeFields.get(fieldName).toString();
         			String fieldVisibility = visibilityToPlantUML(fieldsVisibilities.get(fieldName));
         			plantUMLDeclarations += fieldVisibility + fieldName + ": " + fieldType + "\n";
+        			plantUMLStringTester += fieldVisibility + fieldName + ": " + fieldType + "\n";
         		}
         		Map<String, String> nodeMethods = ((LeafNode) node).getMethods();
             	Map<String, String> methodsVisibilities = ((LeafNode) node).getMethodVisibilities();
@@ -67,21 +69,29 @@ public abstract class GraphNodeCollection {
         			String methodType = nodeMethods.get(methodName).toString();
             		String methodVisibility = visibilityToPlantUML(methodsVisibilities.get(methodName));
         			plantUMLDeclarations += methodVisibility + methodName + "(";
+        			plantUMLStringTester += methodVisibility + methodName + "(";
         			List<String> resultList = methodNameWithReadyParameters.get(methodName);
         			for (String str : resultList) {
         				parametersFlag = true;
         				plantUMLDeclarations += str + ", ";
+        				plantUMLStringTester += str + ", ";
         			}
         			// using its substring TO REMOVE ", " added by the last parameter.
         			if (parametersFlag) {
         				plantUMLDeclarations = plantUMLDeclarations.substring(0, plantUMLDeclarations.length() - 2);
+        				plantUMLStringTester = plantUMLStringTester.substring(0, plantUMLStringTester.length() - 2);
         			}
         			plantUMLDeclarations += "): " + methodType + "\n";
+        			plantUMLStringTester += "): " + methodType + "\n";
+        			
         		}
     		}
     		plantUMLDeclarations += "}\n";
+    		plantUMLStringTester += "}\n";
+    		plantUMLTester.put(node.getName(), plantUMLStringTester);
     	}
     	plantUMLBuffer.append(plantUMLDeclarations);
+    	return plantUMLTester;
     }
 
     public Map<Node, Integer> getGraphNodes() {
