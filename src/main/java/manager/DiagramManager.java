@@ -50,8 +50,12 @@ public abstract class DiagramManager implements Manager {
         return Objects.requireNonNull(diagramStack.peek()).exportDiagramToGraphML(graphMLSavePath);
     }
     
-    public void exportPlantUMLDiagram(Path selectedFile) {
-    	Objects.requireNonNull(diagramStack.peek()).exportPlantUMLDiagram(selectedFile);
+    public void exportPlantUMLDiagram(Path graphSavePath) {
+    	Objects.requireNonNull(diagramStack.peek()).exportPlantUMLDiagram(graphSavePath);
+    }
+    
+    public void exportPlantUMLText(Path textSavePath) {
+    	Objects.requireNonNull(diagramStack.peek()).exportPlantUMLText(textSavePath);
     }
 
     public File saveDiagram(Path graphSavePath) {

@@ -1,9 +1,11 @@
 package model.diagram.plantuml;
 
 import java.awt.image.BufferedImage;
+import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
@@ -17,7 +19,7 @@ public class PlantUMLExporter {
     public PlantUMLExporter() {
     }
     
-    public void exportDiagram(Path selectedFile, String nodesBuffer, String edgesBuffer, boolean packageDiagram) {
+    public void exportDiagram(Path graphSavePath, String nodesBuffer, String edgesBuffer, boolean packageDiagram) {
     	String plantUMLCode;
     	if (packageDiagram) {
     		plantUMLCode ="@startuml\n";
@@ -55,11 +57,35 @@ public class PlantUMLExporter {
     		    width = convImg.getWidth();
                 //stringChangerCounter ++;
             }
-		    ImageIO.write(convImg, "png", new File(selectedFile.toString()));
+		    ImageIO.write(convImg, "png", new File(graphSavePath.toString()));
         } catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
+    
+    public void exportText(Path textSavePath, String nodesBuffer, String edgesBuffer, boolean packageDiagram) {
+    	String plantUMLCode;
+    	if (packageDiagram) {
+    		plantUMLCode ="@startuml\n";
+    	}
+    	else{
+    		plantUMLCode ="@startuml\n" +
+    		        "skinparam class {\n" +
+    		        "    BackgroundColor lightyellow\n" +
+    		        "    BorderColor black\n" +
+    		        "    ArrowColor black\n" +
+    		        "}\n";
+    	}
+    	plantUMLCode += nodesBuffer;
+    	plantUMLCode += edgesBuffer;
+    	plantUMLCode += "@enduml\n";
+    	try (BufferedWriter writer = new BufferedWriter(new FileWriter(textSavePath.toString()))) {
+            writer.write(plantUMLCode);
+            writer.close();
+        } catch (IOException e) {
+        	e.printStackTrace();
+        }
+    }
     
     private String stringChanger(String plantCode, int wrapWidth){
     	String updatedString;

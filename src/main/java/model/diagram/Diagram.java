@@ -54,13 +54,22 @@ public abstract class Diagram {
         return graphMLExporter.exportDiagramToGraphML(graphMLSavePath, graphNodeCollection.getGraphMLBuffer(), graphEdgeCollection.getGraphMLBuffer());
     }
     
-    public void exportPlantUMLDiagram(Path selectedFile) {
+    public void exportPlantUMLDiagram(Path graphSavePath) {
     	boolean packageDiagram = false;
     	graphNodeCollection.convertNodesToPlantUML();
     	packageDiagram = graphNodeCollection.getDiagramsChoice();
     	graphEdgeCollection.convertEdgesToPlantUML();
     	PlantUMLExporter plantUMLExporter = new PlantUMLExporter();
-    	plantUMLExporter.exportDiagram(selectedFile, graphNodeCollection.getPlantUMLBuffer(), graphEdgeCollection.getPlantUMLBuffer(), packageDiagram);
+    	plantUMLExporter.exportDiagram(graphSavePath, graphNodeCollection.getPlantUMLBuffer(), graphEdgeCollection.getPlantUMLBuffer(), packageDiagram);
+    }
+    
+    public void exportPlantUMLText(Path textSavePath) {
+    	boolean packageDiagram = false;
+    	graphNodeCollection.convertNodesToPlantUML();
+    	packageDiagram = graphNodeCollection.getDiagramsChoice();
+    	graphEdgeCollection.convertEdgesToPlantUML();
+    	PlantUMLExporter plantUMLExporter = new PlantUMLExporter();
+    	plantUMLExporter.exportText(textSavePath, graphNodeCollection.getPlantUMLBuffer(), graphEdgeCollection.getPlantUMLBuffer(), packageDiagram);
     }
     
     public File saveDiagram(Path graphSavePath) {

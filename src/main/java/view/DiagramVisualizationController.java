@@ -82,6 +82,10 @@ public class DiagramVisualizationController {
     public void exportDiagramAsPlantUML() {
     	DiagramCreation.getInstance().exportPlantUMLDiagram();
     }
+    
+    public void exportDiagramAsPlantUMLText() {
+    	DiagramCreation.getInstance().exportPlantUMLText();
+    }
 
     public void aboutPage() { MenuUtility.aboutPage(menuBar); }
 

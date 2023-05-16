@@ -25,8 +25,12 @@ public abstract class DiagramController implements Controller {
 		return diagramManager.exportDiagramToGraphML(graphMLSavePath);
 	}
 	
-	public void exportPlantUMLDiagram(Path selectedFile) {
-		diagramManager.exportPlantUMLDiagram(selectedFile);
+	public void exportPlantUMLDiagram(Path graphSavePath) {
+		diagramManager.exportPlantUMLDiagram(graphSavePath);
+	}
+	
+	public void exportPlantUMLText(Path textSavePath) {
+		diagramManager.exportPlantUMLText(textSavePath);
 	}
 
 	public SmartGraphPanel<String, String> visualizeJavaFXGraph() {

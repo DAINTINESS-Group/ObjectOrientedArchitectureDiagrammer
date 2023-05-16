@@ -59,6 +59,18 @@ public interface Manager {
      */
     SmartGraphPanel<String, String> visualizeJavaFXGraph();
 
-	void exportPlantUMLDiagram(Path selectedFile);
+    /**This method exports the diagram as an image with the help of PlantUML by calling Diagram's 
+     * exportPlantUMLDiagram method
+     * @param graphSavePath the selected path by the designer where the diagram's image will be saved
+     */
+	void exportPlantUMLDiagram(Path graphSavePath);
+	
+    /**This method saves the PlantUML code to a text file by calling Diagram's
+     * exportPlantUMLText method
+     * @param textSavePath the selected path by the designer where the text file will be saved
+     */
+	void exportPlantUMLText(Path textSavePath);
+	
+	
 
 }

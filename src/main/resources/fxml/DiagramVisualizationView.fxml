@@ -34,7 +34,8 @@
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <Menu mnemonicParsing="false" text="Export...">
                      <items>
-                        <MenuItem mnemonicParsing="false" onAction="#exportDiagramAsPlantUML" text="PlantUML" />                     	
+                        <MenuItem mnemonicParsing="false" onAction="#exportDiagramAsPlantUML" text="PlantUML Image" />
+                        <MenuItem mnemonicParsing="false" onAction="#exportDiagramAsPlantUMLText" text="PlantUML Text" />                     	
                         <MenuItem mnemonicParsing="false" onAction="#exportDiagramAsGraphML" text="GraphML" />
                         <MenuItem mnemonicParsing="false" onAction="#exportDiagramAsImage" text="Image" />
                         <MenuItem mnemonicParsing="false" onAction="#exportDiagramAsText" text="Text" />

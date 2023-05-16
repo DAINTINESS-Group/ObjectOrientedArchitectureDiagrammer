@@ -28,13 +28,18 @@ public class FileAndDirectoryUtility {
                 entry("Text Files", "*.txt"),
                 entry("GraphML Files", "*.graphML"),
                 entry("PNG files", "*.png"),
-        		entry("PlantUML Files", "*.png"));
+        		entry("PlantUML Files", "*.png"),
+        		entry("PlantUML Text Files", "*.txt"));
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle(windowTitle);
         //fileChooser.setInitialDirectory(new File("C:\\Users\\user\\IntelliJProjects\\UMLDiagramTool\\src\\test\\resources\\LatexEditor"));
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(fileType, availableExtensionTypes.get(fileType)));
-        fileChooser.setInitialFileName(String.format("createdDiagram%s", availableExtensionTypes.get(fileType).substring(1)));
+        if (fileType == "PlantUML Files" || fileType == "PlantUML Text Files") {
+        	fileChooser.setInitialFileName(String.format("plantUML%s", availableExtensionTypes.get(fileType).substring(1)));
+        }else {
+        	fileChooser.setInitialFileName(String.format("createdDiagram%s", availableExtensionTypes.get(fileType).substring(1)));
+        }
         Stage window = (Stage) menuBar.getScene().getWindow();
         return fileChooser.showSaveDialog(window);
     }

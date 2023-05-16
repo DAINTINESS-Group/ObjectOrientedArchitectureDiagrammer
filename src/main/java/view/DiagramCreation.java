@@ -84,6 +84,13 @@ public class DiagramCreation {
             diagramController.exportPlantUMLDiagram(selectedDirectory.toPath());
         }
     }
+    
+    public void exportPlantUMLText() {
+    	File selectedDirectory = FileAndDirectoryUtility.saveFile("Export PlantUML Text", menuBar, "PlantUML Text Files");
+        if (selectedDirectory != null) {
+            diagramController.exportPlantUMLText(selectedDirectory.toPath());
+        }
+    }
 
     public void setMenuBar(MenuBar menuBar) {
         this.menuBar = menuBar;
