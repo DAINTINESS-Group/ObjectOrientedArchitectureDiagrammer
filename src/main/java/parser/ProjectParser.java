@@ -1,5 +1,6 @@
 package parser;
 
+import model.tree.edge.RelationshipIdentifier;
 import model.tree.node.LeafNode;
 import model.tree.node.PackageNode;
 
@@ -34,7 +35,8 @@ public class ProjectParser implements Parser {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		projectParserHelper.createRelationshipIdentifier(packageNodes);
+		RelationshipIdentifier relationshipIdentifier = projectParserHelper.createRelationshipIdentifier(packageNodes);
+		relationshipIdentifier.createLeafNodesRelationships();
 		return rootPackageNode;
 	}
 

@@ -1,5 +1,6 @@
 package parser.jdt;
 
+import model.tree.edge.RelationshipIdentifier;
 import model.tree.jdt.JDTLeafNode;
 import model.tree.jdt.JDTRelationshipIdentifier;
 import model.tree.node.LeafNode;
@@ -18,8 +19,8 @@ public class JDTProjectParser implements ProjectParserHelper {
     }
 
     @Override
-    public void createRelationshipIdentifier(Map<Path, PackageNode> packageNodes) {
-        new JDTRelationshipIdentifier(packageNodes);
+    public RelationshipIdentifier createRelationshipIdentifier(Map<Path, PackageNode> packageNodes) {
+        return new JDTRelationshipIdentifier(packageNodes);
     }
 
     @Override
