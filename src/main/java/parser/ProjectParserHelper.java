@@ -1,5 +1,6 @@
 package parser;
 
+import model.tree.edge.RelationshipIdentifier;
 import model.tree.node.LeafNode;
 import model.tree.node.PackageNode;
 
@@ -10,7 +11,7 @@ public interface ProjectParserHelper {
 
     LeafNode createLeafNode(Path path);
 
-    void createRelationshipIdentifier(Map<Path, PackageNode> packageNodes);
+    RelationshipIdentifier createRelationshipIdentifier(Map<Path, PackageNode> packageNodes);
 
     FileVisitor createFileVisitor();
 

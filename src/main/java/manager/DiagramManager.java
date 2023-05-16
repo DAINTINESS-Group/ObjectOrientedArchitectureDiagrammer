@@ -14,6 +14,7 @@ import java.util.*;
 
 public abstract class DiagramManager implements Manager {
 
+    private static final ParserType PARSER_TYPE = ParserType.JAVAPARSER;
     private final ArrayDeque<Diagram> diagramStack;
 
     public DiagramManager() {
@@ -30,8 +31,7 @@ public abstract class DiagramManager implements Manager {
         diagramStack.push(getDiagram());
         SourceProject sourceProject = Objects.requireNonNull(diagramStack.peek()).createSourceProject();
 
-        //TODO do something about the ProjectParser's parameter
-        Parser projectParser = new ProjectParser(ParserType.JDT);
+        Parser projectParser = new ProjectParser(PARSER_TYPE);
         projectParser.parseSourcePackage(sourcePackagePath);
         Map<Path, PackageNode> packageNodes = projectParser.getPackageNodes();
 
