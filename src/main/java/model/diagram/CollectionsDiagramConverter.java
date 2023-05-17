@@ -1,7 +1,7 @@
 package model.diagram;
 
-import model.tree.Node;
-import model.tree.Relationship;
+import model.tree.node.Node;
+import model.tree.edge.Relationship;
 
 import java.util.HashMap;
 import java.util.Map;

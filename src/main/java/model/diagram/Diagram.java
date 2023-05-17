@@ -6,7 +6,7 @@ import model.diagram.javafx.JavaFXLoader;
 import model.diagram.graphml.GraphMLExporter;
 import model.diagram.javafx.JavaFXVisualization;
 import model.diagram.plantuml.PlantUMLExporter;
-import model.tree.Node;
+import model.tree.node.Node;
 import model.tree.SourceProject;
 
 import java.io.*;
@@ -27,7 +27,7 @@ public abstract class Diagram {
         this.createdDiagram = new HashMap<>();
     }
 
-    public SourceProject createSourceProject(Path sourcePackagePath) {
+    public SourceProject createSourceProject() {
         sourceProject = new SourceProject();
         return sourceProject;
     }

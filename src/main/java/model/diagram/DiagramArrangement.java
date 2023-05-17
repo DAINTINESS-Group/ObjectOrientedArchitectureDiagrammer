@@ -5,8 +5,8 @@ import edu.uci.ics.jung.algorithms.layout.SpringLayout;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.SparseGraph;
 import edu.uci.ics.jung.graph.util.EdgeType;
-import model.tree.Node;
-import model.tree.Relationship;
+import model.tree.node.Node;
+import model.tree.edge.Relationship;
 
 import java.awt.*;
 import java.util.*;

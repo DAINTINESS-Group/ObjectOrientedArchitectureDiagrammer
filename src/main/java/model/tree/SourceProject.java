@@ -1,5 +1,8 @@
 package model.tree;
 
+import model.tree.node.LeafNode;
+import model.tree.node.PackageNode;
+
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;

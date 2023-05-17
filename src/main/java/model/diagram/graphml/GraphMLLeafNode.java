@@ -1,9 +1,9 @@
 package model.diagram.graphml;
 
 import model.diagram.GraphNodeCollection;
-import model.tree.LeafNode;
-import model.tree.Node;
-import model.tree.NodeType;
+import model.tree.node.LeafNode;
+import model.tree.node.Node;
+import model.tree.node.NodeType;
 
 import java.util.Arrays;
 import java.util.List;

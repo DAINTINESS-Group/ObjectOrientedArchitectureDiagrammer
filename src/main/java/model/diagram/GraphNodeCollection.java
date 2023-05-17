@@ -1,7 +1,9 @@
 package model.diagram;
 
-import model.tree.LeafNode;
-import model.tree.Node;
+
+import model.tree.node.Node;
+import model.tree.node.LeafNode;
+
 
 import java.util.HashMap;
 import java.util.List;
@@ -108,18 +110,20 @@ public abstract class GraphNodeCollection {
 
     public abstract String convertNode(Node node, int nodeId, List<Double> nodesGeometry);
     
-    private String visibilityToPlantUML(String Visibility) {
-    	switch (Visibility) {
+    private String visibilityToPlantUML(String visibility) {
+    	if(null == visibility)
+    		return "~";
+    	switch (visibility) {
 			case "private":
 				return "-";
 			case "public":
 				return "+";
 			case "protected":
 				return "#";
-			case "default":
+			default: 
 				return "~";
     	}
-    	return "";
+    	//return "";
     }
 
 }

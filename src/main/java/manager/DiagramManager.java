@@ -2,9 +2,10 @@ package manager;
 
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import model.diagram.Diagram;
-import model.tree.PackageNode;
+import model.tree.node.PackageNode;
 import model.tree.SourceProject;
 import parser.Parser;
+import parser.ParserType;
 import parser.ProjectParser;
 
 import java.io.File;
@@ -13,6 +14,7 @@ import java.util.*;
 
 public abstract class DiagramManager implements Manager {
 
+    private static final ParserType PARSER_TYPE = ParserType.JAVAPARSER;
     private final ArrayDeque<Diagram> diagramStack;
 
     public DiagramManager() {
@@ -27,11 +29,12 @@ public abstract class DiagramManager implements Manager {
      */
     public SourceProject createTree(Path sourcePackagePath) {
         diagramStack.push(getDiagram());
-        SourceProject sourceProject = Objects.requireNonNull(diagramStack.peek()).createSourceProject(sourcePackagePath);
-        
-        Parser projectParser = new ProjectParser();
+        SourceProject sourceProject = Objects.requireNonNull(diagramStack.peek()).createSourceProject();
+        Parser projectParser = new ProjectParser(PARSER_TYPE);
+
         projectParser.parseSourcePackage(sourcePackagePath);
         Map<Path, PackageNode> packageNodes = projectParser.getPackageNodes();
+
         sourceProject.setPackageNodes(packageNodes);
         sourceProject.setProjectsProperties();
 

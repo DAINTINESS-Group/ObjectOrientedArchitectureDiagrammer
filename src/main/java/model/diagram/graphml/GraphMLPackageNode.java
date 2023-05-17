@@ -1,8 +1,8 @@
 package model.diagram.graphml;
 
 import model.diagram.GraphNodeCollection;
-import model.tree.Node;
-import model.tree.PackageNode;
+import model.tree.node.Node;
+import model.tree.node.PackageNode;
 
 import java.util.Arrays;
 import java.util.List;
