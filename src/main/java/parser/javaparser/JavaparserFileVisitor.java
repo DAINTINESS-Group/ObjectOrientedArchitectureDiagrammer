@@ -5,7 +5,6 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.*;
 import com.github.javaparser.ast.expr.ObjectCreationExpr;
 import com.github.javaparser.ast.expr.VariableDeclarationExpr;
-import com.github.javaparser.ast.stmt.ReturnStmt;
 import com.github.javaparser.ast.visitor.VoidVisitor;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import model.tree.javaparser.JavaparserLeafNode;
@@ -27,12 +26,10 @@ import java.util.regex.Pattern;
 public class JavaparserFileVisitor implements FileVisitor {
 
     private final List<String> allCreatedObjects;
-    private final List<String> returnedObjects;
     private final List<String> createdAssignedObjects;
 
     public JavaparserFileVisitor(){
         allCreatedObjects = new ArrayList<>();
-        returnedObjects = new ArrayList<>();
         createdAssignedObjects = new ArrayList<>();
     }
 
@@ -55,9 +52,6 @@ public class JavaparserFileVisitor implements FileVisitor {
 
             VoidVisitor<Void> methodNameVisitor = new MethodVisitor(javaparserLeafNode);
             methodNameVisitor.visit(compilationUnit, null);
-
-            VoidVisitor<List<String>> returnObjectsVisitor = new ReturnObjectsVisitor();
-            returnObjectsVisitor.visit(compilationUnit, returnedObjects);
 
             VoidVisitor<List<String>> objectCreationVisitor = new ObjectCreationVisitor();
             objectCreationVisitor.visit(compilationUnit, allCreatedObjects);
@@ -177,20 +171,6 @@ public class JavaparserFileVisitor implements FileVisitor {
         }
     }
 
-    private static class ReturnObjectsVisitor extends VoidVisitorAdapter<List<String>> {
-
-        @Override
-        public void visit(ReturnStmt returnStmt, List<String> returnedObjects) {
-            super.visit(returnStmt, returnedObjects);
-            Pattern pattern = Pattern.compile("return new ([A-Za-z]+)\\([^)]*\\);");
-            Matcher matcher = pattern.matcher(returnStmt.asReturnStmt().toString());
-            if (!matcher.matches()) {
-                return;
-            }
-            returnedObjects.add(matcher.group(1).replaceAll("<", "[").replaceAll(">", "]"));
-        }
-    }
-
     private static class ObjectCreationVisitor extends VoidVisitorAdapter<List<String>> {
 
         @Override
@@ -224,7 +204,6 @@ public class JavaparserFileVisitor implements FileVisitor {
     private void populateCreatedObjects(JavaparserLeafNode leafNode) {
         List<String> notAssignedCreatedObjects = getNotAssignedCreatedObjects(leafNode.getFieldsTypes(), allCreatedObjects);
         notAssignedCreatedObjects = getNotAssignedCreatedObjects(leafNode.getVariablesTypes(), notAssignedCreatedObjects);
-        notAssignedCreatedObjects = getNotAssignedCreatedObjects(returnedObjects, notAssignedCreatedObjects);
         notAssignedCreatedObjects = getNotAssignedCreatedObjects(createdAssignedObjects, notAssignedCreatedObjects);
         notAssignedCreatedObjects.forEach(leafNode::addCreatedObject);
     }

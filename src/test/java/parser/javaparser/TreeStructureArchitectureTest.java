@@ -94,21 +94,29 @@ public class TreeStructureArchitectureTest {
 
         boolean foundObligatoryRelationships_CommandFactoryToVersionsManager = false;
         boolean foundObligatoryRelationships_CommandFactoryToCommand = false;
+        boolean foundObligatoryRelationships_CommandFactoryToAddLatexCommand = false;
         relationshipCounter = 0;
         for (Relationship relationship : nodeRelationships) {
             if ((relationship.getStartingNode().getName().equals("CommandFactory")) && (relationship.getEndingNode().getName().equals("VersionsManager"))) {
-                if (relationship.getRelationshipType().equals(RelationshipType.DEPENDENCY) || (relationship.getRelationshipType().equals(RelationshipType.ASSOCIATION))) {
+                if (relationship.getRelationshipType().equals(RelationshipType.DEPENDENCY)) {
                     foundObligatoryRelationships_CommandFactoryToVersionsManager = true;
+                }else {
+                    foundObligatoryRelationships_CommandFactoryToVersionsManager = relationship.getRelationshipType().equals(RelationshipType.ASSOCIATION);
                 }
             } else if ((relationship.getStartingNode().getName().equals("CommandFactory")) && (relationship.getEndingNode().getName().equals("Command"))) {
                 if (relationship.getRelationshipType().equals(RelationshipType.DEPENDENCY))
                     foundObligatoryRelationships_CommandFactoryToCommand = true;
+            }else if ((relationship.getStartingNode().getName().equals("CommandFactory")) && (relationship.getEndingNode().getName().equals("AddLatexCommand"))) {
+                if (relationship.getRelationshipType().equals(RelationshipType.DEPENDENCY))
+                    foundObligatoryRelationships_CommandFactoryToAddLatexCommand = true;
             }
             relationshipCounter++;
         }
         assertTrue(foundObligatoryRelationships_CommandFactoryToVersionsManager);
         assertTrue(foundObligatoryRelationships_CommandFactoryToCommand);
-        assertEquals(4, relationshipCounter);
+        assertTrue(foundObligatoryRelationships_CommandFactoryToAddLatexCommand);
+
+        assertEquals(13, relationshipCounter);
         assertEquals(NodeType.CLASS, commandFactory.getType());
     }
 
