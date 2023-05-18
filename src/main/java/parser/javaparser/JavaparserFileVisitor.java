@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
 /**This class is responsible for the creation of the AST of a Java source file.
  * Using the ASTNode API it parses the files methods parameters, return types and field declarations
  */
@@ -109,20 +108,22 @@ public class JavaparserFileVisitor implements FileVisitor {
         @Override
         public void visit(ConstructorDeclaration constructorDeclaration, Void arg) {
             super.visit(constructorDeclaration, arg);
-            String visibility = "package private";
-            List<String> parameters = new ArrayList<>();
-            List<String> parametersName = new ArrayList<>();
+
+            String visibility = "";
             if (constructorDeclaration.getModifiers().size() > 0) {
-            	visibility = constructorDeclaration.getModifiers().get(0).toString();
-            	visibility = visibility.substring(0, visibility.length() - 1);
+                visibility = constructorDeclaration.getModifiers().get(0).toString().trim();
             }
             leafNode.addMethodVisibility(constructorDeclaration.getNameAsString(), visibility);
             leafNode.addMethod(constructorDeclaration.getNameAsString(), "Constructor");
-            constructorDeclaration.getParameters().forEach(parameter ->{
+
+            List<String> parameters = new ArrayList<>();
+            List<String> parametersName = new ArrayList<>();
+            constructorDeclaration.getParameters().forEach(parameter -> {
                     leafNode.addMethodParameterType(parameter.getTypeAsString().replaceAll("<", "[").replaceAll(">", "]"));
                     parameters.add(parameter.getTypeAsString().replaceAll("<", "[").replaceAll(">", "]"));
                     parametersName.add(parameter.getName().toString());
             });
+
             leafNode.addForPlantUML(constructorDeclaration.getNameAsString(), parameters, parametersName);
         }
     }
@@ -138,17 +139,16 @@ public class JavaparserFileVisitor implements FileVisitor {
         public void visit(FieldDeclaration fieldDeclaration, Void arg) {
             super.visit(fieldDeclaration, arg);
 
-            fieldDeclaration.getVariables().forEach(v ->
-                    {
-                    	String visibility = "package private";
-                        if (fieldDeclaration.getModifiers().size() > 0) {
-                        	visibility = fieldDeclaration.getModifiers().get(0).toString();
-                        	visibility = visibility.substring(0, visibility.length() - 1);
-                        }
-                        leafNode.addFieldVisibility(v.getNameAsString(),  visibility);
-                    	leafNode.addField(v.getNameAsString(),
-                            v.getTypeAsString().replaceAll("<", "[").replaceAll(">", "]"));
-                    });
+            fieldDeclaration.getVariables().forEach(variable -> {
+                String visibility = "";
+                if (fieldDeclaration.getModifiers().size() > 0) {
+                    visibility = fieldDeclaration.getModifiers().get(0).toString().trim();
+                }
+
+                leafNode.addFieldVisibility(variable.getNameAsString(),  visibility);
+                leafNode.addField(variable.getNameAsString(),
+                        variable.getTypeAsString().replaceAll("<", "[").replaceAll(">", "]"));
+            });
         }
     }
 
@@ -185,21 +185,24 @@ public class JavaparserFileVisitor implements FileVisitor {
         @Override
         public void visit(MethodDeclaration methodDeclaration, Void arg) {
             super.visit(methodDeclaration, arg);
-            String visibility = "package private";
             List<String> parameters = new ArrayList<>();
             List<String> parametersName = new ArrayList<>();
+
+            String visibility = "";
             if (methodDeclaration.getModifiers().size() > 0) {
-            	visibility = methodDeclaration.getModifiers().get(0).toString();
-            	visibility = visibility.substring(0, visibility.length() - 1);
+            	visibility = methodDeclaration.getModifiers().get(0).toString().trim();
             }
+
             leafNode.addMethodVisibility(methodDeclaration.getNameAsString(), visibility);
             leafNode.addMethod(methodDeclaration.getNameAsString(),
                     methodDeclaration.getTypeAsString().replaceAll("<", "[").replaceAll(">", "]"));
+
             methodDeclaration.getParameters().forEach(parameter -> {
             	leafNode.addMethodParameterType(parameter.getTypeAsString().replaceAll("<", "[").replaceAll(">", "]"));
             	parameters.add(parameter.getTypeAsString().replaceAll("<", "[").replaceAll(">", "]"));
                 parametersName.add(parameter.getName().toString());
             });
+
             leafNode.addForPlantUML(methodDeclaration.getNameAsString(), parameters, parametersName);
         }
     }
@@ -266,4 +269,5 @@ public class JavaparserFileVisitor implements FileVisitor {
         }
         return newList;
     }
+
 }

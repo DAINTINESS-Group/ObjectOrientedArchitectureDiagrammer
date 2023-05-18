@@ -16,15 +16,8 @@ public abstract class LeafNode extends Node{
 	private final Map<String, String> fieldVisibilities;
 	private final Map<String, String> fields;
 	private final Map<String, String> methods;
-	
 	protected final List<String> methodsParametersTypes;
 
-
-	public abstract NodeType getType();
-
-	public abstract String getName();
-
-	
 	/**This method is responsible for initializing the nodes structs
 	 * @param path the path of Java source file
 	 */
@@ -36,7 +29,6 @@ public abstract class LeafNode extends Node{
 		methodToParameter = new HashMap<>();
 		methodVisibilities = new HashMap<>();
 		fieldVisibilities = new HashMap<>();
-		
 	}
 
 	/**This method is responsible for adding to the nodes' method parameter types
@@ -95,10 +87,9 @@ public abstract class LeafNode extends Node{
 	}
 	
 	public void addForPlantUML(String methodName, List<String> parametersTypes, List<String> parametersNames) {
-		List<String> stringMergerList = new ArrayList<String>();
-		for (int i=0; i<parametersTypes.size(); i++) {
-			String parametersString = parametersTypes.get(i) + " " + parametersNames.get(i);
-			stringMergerList.add(parametersString);
+		List<String> stringMergerList = new ArrayList<>();
+		for (int i = 0; i < parametersTypes.size(); i++) {
+			stringMergerList.add(parametersTypes.get(i) + " " + parametersNames.get(i));
 		}
 		methodToParameter.put(methodName, stringMergerList);
 	}
@@ -110,5 +101,9 @@ public abstract class LeafNode extends Node{
 	public List<String> getMethodsReturnTypes() { return new ArrayList<>(getMethods().values());}
 
 	public List<String> getFieldsTypes(){ return new ArrayList<>(getFields().values());}
+
+	public abstract NodeType getType();
+
+	public abstract String getName();
 
 }

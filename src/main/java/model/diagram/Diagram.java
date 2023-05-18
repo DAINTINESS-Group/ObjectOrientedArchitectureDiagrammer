@@ -55,7 +55,7 @@ public abstract class Diagram {
     }
     
     public void exportPlantUMLDiagram(Path graphSavePath) {
-    	boolean packageDiagram = false;
+    	boolean packageDiagram;
     	graphNodeCollection.convertNodesToPlantUML();
     	packageDiagram = graphNodeCollection.getDiagramsChoice();
     	graphEdgeCollection.convertEdgesToPlantUML();
@@ -64,7 +64,7 @@ public abstract class Diagram {
     }
     
     public void exportPlantUMLText(Path textSavePath) {
-    	boolean packageDiagram = false;
+    	boolean packageDiagram;
     	graphNodeCollection.convertNodesToPlantUML();
     	packageDiagram = graphNodeCollection.getDiagramsChoice();
     	graphEdgeCollection.convertEdgesToPlantUML();
