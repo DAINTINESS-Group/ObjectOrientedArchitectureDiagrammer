@@ -1,6 +1,5 @@
 package parser.jdt;
 
-import model.tree.javaparser.JavaparserLeafNode;
 import model.tree.node.LeafNode;
 import model.tree.node.NodeType;
 import model.tree.node.PackageNode;
