@@ -124,21 +124,22 @@ If you have a suggestion that would make this better, please fork the repo and c
 Create a new [Issue][issues-url] to report any issues
 
 ## Roadmap
-
-- [ ] Change the parser to support:
-  - [ ] Creation of new() objects via local variables (and the resulting dependencies)
-  - [ ] Enums
+- [ ] Fix crashes with underscores, files/folders starting with '.', etc
 - [ ] Build a visualization library that supports:
     - [ ] A layout algorithm that uses bend minimization
     - [ ] Drag & drop canvas to add UML entities
     - [ ] Editable canvas in order to move & delete UML components and entities
     - [ ] Editable edges that can split when clicked to help the user avoid edge/box overlapping
 - [ ] Support [PlantUML][plantuml-url]
-  - [ ] Use PlantUML’s language to define the diagram
-  - [ ] Export the image of diagram
+  - [X] Use PlantUML’s language to define the diagram
+  - [X] Export the image of diagram
   - [ ] Visualize the diagram within the tool's canvas
+- [ ] Deprecate jdt parser after heavy usage of javaparser, or, extend the jdt parser to support:
+  - [ ] Creation of new() objects via local variables (and the resulting dependencies)
+  - [ ] Enums
     
 ## Authors
+v0.2: Dimitris Anyfantakis added a new java parser; Bill Dodis added the PlanUML extension as part of his Diploma Thesis in Univ. Ioannina.
 v0.1: Dimitris Anyfantakis has developed the first version of the tool as part of his Diploma Thesis in Univ. Ioannina; Panos Vassiliadis acted solely as code reviewer and co-designer.
 
 ## License
