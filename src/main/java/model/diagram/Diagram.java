@@ -33,7 +33,8 @@ public abstract class Diagram {
     }
 
     public Map<String, Map<String, String>> createDiagram(List<String> chosenFilesNames) {
-        createCollections();
+        graphNodeCollection = new GraphNodeCollection();
+        graphEdgeCollection = new GraphEdgeCollection(graphNodeCollection.getGraphNodes());
         graphNodeCollection.populateGraphNodes(getChosenNodes(chosenFilesNames));
         graphEdgeCollection.setGraphNodes(graphNodeCollection.getGraphNodes());
         graphEdgeCollection.populateGraphEdges(getChosenNodes(chosenFilesNames));
@@ -48,12 +49,12 @@ public abstract class Diagram {
     }
 
     public File exportDiagramToGraphML(Path graphMLSavePath) {
-        graphNodeCollection.convertNodesToGraphML(nodesGeometry);
-        graphEdgeCollection.convertEdgesToGraphML();
+        convertNodesToGraphML(nodesGeometry);
+        convertEdgesToGraphML();
         GraphMLExporter graphMLExporter = new GraphMLExporter();
         return graphMLExporter.exportDiagramToGraphML(graphMLSavePath, graphNodeCollection.getGraphMLBuffer(), graphEdgeCollection.getGraphMLBuffer());
     }
-    
+
     public void exportPlantUMLDiagram(Path graphSavePath) {
     	boolean packageDiagram;
     	graphNodeCollection.convertNodesToPlantUML();
@@ -62,7 +63,7 @@ public abstract class Diagram {
     	PlantUMLExporter plantUMLExporter = new PlantUMLExporter();
     	plantUMLExporter.exportDiagram(graphSavePath, graphNodeCollection.getPlantUMLBuffer(), graphEdgeCollection.getPlantUMLBuffer(), packageDiagram);
     }
-    
+
     public void exportPlantUMLText(Path textSavePath) {
     	boolean packageDiagram;
     	graphNodeCollection.convertNodesToPlantUML();
@@ -71,7 +72,7 @@ public abstract class Diagram {
     	PlantUMLExporter plantUMLExporter = new PlantUMLExporter();
     	plantUMLExporter.exportText(textSavePath, graphNodeCollection.getPlantUMLBuffer(), graphEdgeCollection.getPlantUMLBuffer(), packageDiagram);
     }
-    
+
     public File saveDiagram(Path graphSavePath) {
         JavaFXExporter javaFXExporter = new JavaFXExporter();
         return javaFXExporter.saveDiagram(createdDiagram, graphSavePath);
@@ -93,8 +94,10 @@ public abstract class Diagram {
         return javaFXVisualization.createGraphView(createdDiagram);
     }
 
-    public abstract List<Node> getChosenNodes(List<String> chosenFileNames);
+    protected abstract StringBuilder convertEdgesToGraphML();
 
-    public abstract void createCollections();
+    protected abstract StringBuilder convertNodesToGraphML(Map<Integer, List<Double>> nodesGeometry);
+
+    public abstract List<Node> getChosenNodes(List<String> chosenFileNames);
 
 }

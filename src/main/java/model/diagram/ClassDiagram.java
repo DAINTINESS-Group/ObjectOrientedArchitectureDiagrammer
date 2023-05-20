@@ -1,12 +1,11 @@
 package model.diagram;
 
-import model.diagram.graphml.GraphMLLeafEdge;
-import model.diagram.graphml.GraphMLLeafNode;
 import model.tree.node.Node;
 import model.tree.node.PackageNode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ClassDiagram extends Diagram {
 
@@ -23,9 +22,14 @@ public class ClassDiagram extends Diagram {
         return chosenClasses;
     }
 
-    public void createCollections() {
-        graphNodeCollection = new GraphMLLeafNode();
-        graphEdgeCollection = new GraphMLLeafEdge();
+    @Override
+    protected StringBuilder convertEdgesToGraphML() {
+        return graphEdgeCollection.convertLeafEdgesToGraphML();
+    }
+
+    @Override
+    protected StringBuilder convertNodesToGraphML(Map<Integer, List<Double>> nodesGeometry) {
+        return graphNodeCollection.convertLeafNodesToGraphML(nodesGeometry);
     }
 
 }
