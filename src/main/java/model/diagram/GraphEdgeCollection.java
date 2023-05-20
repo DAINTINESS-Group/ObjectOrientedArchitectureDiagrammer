@@ -2,6 +2,7 @@ package model.diagram;
 
 import model.tree.node.Node;
 import model.tree.edge.Relationship;
+import model.tree.edge.RelationshipType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -60,10 +61,10 @@ public abstract class GraphEdgeCollection {
     	for ( Relationship relationship : graphEdges.keySet()) {
     		// Map<String, String> nodesHashMap = new HashMap<>();
     		plantUMLBuffer.append(relationship.getStartingNode().getName() + " ");
-    		plantUMLBuffer.append(transformPlantUMLRelationship(relationship.getRelationshipType().toString()) + " ");
+    		plantUMLBuffer.append(transformPlantUMLRelationship(relationship.getRelationshipType()) + " ");
     		plantUMLBuffer.append(relationship.getEndingNode().getName() + "\n");
     		// nodesHashMap.put(relationship.getStartingNode().getName(), relationship.getEndingNode().getName());
-    		plantUMLTester.add(relationship.getStartingNode().getName() + " " + transformPlantUMLRelationship(relationship.getRelationshipType().toString()) + " " + relationship.getEndingNode().getName());
+    		plantUMLTester.add(relationship.getStartingNode().getName() + " " + transformPlantUMLRelationship(relationship.getRelationshipType()) + " " + relationship.getEndingNode().getName());
 		}
     	return plantUMLTester;
     	
@@ -82,24 +83,23 @@ public abstract class GraphEdgeCollection {
 
     public abstract String convertEdge(Relationship relationship, int edgeId);
     
-    private String transformPlantUMLRelationship(String Relationship) {
-    	switch (Relationship) {
-    		case "EXTENSION":
+    private String transformPlantUMLRelationship(RelationshipType relationshipType) {
+    	switch (relationshipType) {
+    		case EXTENSION:
     			return "--|>";
-    		case "COMPOSITION":
-    			return "--*";
-    		case "AGGREGATION":
+    		case AGGREGATION:
     			return "--o";
-    		case "DEPENDENCY":
+    		case DEPENDENCY:
     			return "..>";
-    		case "IMPLEMENTATION":
+    		case IMPLEMENTATION:
     			return "..|>";
-    		case "ASSOCIATION":
+    		default:			// ASSOCIATION
     			return "-->";
-    		case "SELFREFERENCE": // SELF-REFERENCING
-    			return "";		// A -- A , SAME CLASS WITH -- IN BETWEEN
+    		//case SELFREFERENCE: // SELF-REFERENCING
+    		//	return "";		// A -- A , SAME CLASS WITH -- IN BETWEEN
+        	//case COMPOSITION:
+        	//	return "--*";
     	}
-    	return "";
     }
 
 }

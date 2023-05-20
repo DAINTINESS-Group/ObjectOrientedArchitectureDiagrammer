@@ -12,6 +12,8 @@ import java.util.Map;
 
 import model.tree.jdt.JDTLeafNode;
 import model.tree.node.LeafNode;
+import model.tree.node.ModifierType;
+
 import org.eclipse.jdt.core.dom.*;
 import org.eclipse.text.edits.MalformedTreeException;
 import parser.FileVisitor;
@@ -72,8 +74,7 @@ public class JDTFileVisitor implements FileVisitor {
 		            		}
 		            	}
 	            		int fieldModifiers = field.getModifiers();
-	            		String fieldVisibility = getVisibility(fieldModifiers);
-	            		jdtLeafNode.addFieldVisibility(fieldName, fieldVisibility);
+	            		jdtLeafNode.addFieldVisibility(fieldName, getVisibility(fieldModifiers));
 
 						jdtLeafNode.addField(fieldName, field.getType().toString().replaceAll("<", "[").replaceAll(">", "]"));
 	            	}
@@ -103,9 +104,8 @@ public class JDTFileVisitor implements FileVisitor {
 							jdtLeafNode.addMethodParameterType(variableType.replaceAll("<", "[").replaceAll(">", "]"));
 	                    }
 	                    int methodModifiers = method.getModifiers();
-	                    String methodVisibility = getVisibility(methodModifiers);
 	                    jdtLeafNode.addForPlantUML(methodName, parameters, parametersName);
-	                    jdtLeafNode.addMethodVisibility(methodName, methodVisibility);
+	                    jdtLeafNode.addMethodVisibility(methodName, getVisibility(methodModifiers));
 	                    jdtLeafNode.addMethod(methodName, returnTypeName.replaceAll("<", "[").replaceAll(">", "]"));
 	                }
 	            }
@@ -155,15 +155,15 @@ public class JDTFileVisitor implements FileVisitor {
 	}//end ReadFileToCharArray
 
 	
-    private static String getVisibility(int modifiers) {
+    private static ModifierType getVisibility(int modifiers) {
     	if(Modifier.isPublic(modifiers)) {
-    		return "public";
+    		return ModifierType.PUBLIC;
     	} else if (Modifier.isProtected(modifiers)) {
-    		return "protected";
+    		return ModifierType.PROTECTED;
     	} else if (Modifier.isPrivate(modifiers)) {
-    		return "private";
+    		return ModifierType.PRIVATE;
     	} else {
-    		return "default";
+    		return ModifierType.PACKAGE_PRIVATE;
     	}
     }
 }

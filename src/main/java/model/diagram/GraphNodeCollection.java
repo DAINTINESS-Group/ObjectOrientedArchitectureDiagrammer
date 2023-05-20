@@ -3,6 +3,7 @@ package model.diagram;
 
 import model.tree.node.Node;
 import model.tree.node.LeafNode;
+import model.tree.node.ModifierType;
 import model.tree.node.NodeType;
 
 
@@ -76,11 +77,11 @@ public abstract class GraphNodeCollection {
 
     public abstract String convertNode(Node node, int nodeId, List<Double> nodesGeometry);
     
-    private String visibilityToPlantUML(String visibility) {
-		return switch (visibility) {
-			case "private" -> "-";
-			case "public" -> "+";
-			case "protected" -> "#";
+    private String visibilityToPlantUML(ModifierType visibilityEnum) {
+		return switch (visibilityEnum) {
+			case PRIVATE -> "-";
+			case PUBLIC -> "+";
+			case PROTECTED -> "#";
 			default -> "~";
 		};
     }
@@ -89,7 +90,7 @@ public abstract class GraphNodeCollection {
     private StringBuilder convertFieldsToPlantUML(Node node) {
     	StringBuilder plantUMLFieldDeclarations = new StringBuilder();
     	Map<String, String> nodeFields = ((LeafNode) node).getFields();
-    	Map<String, String> fieldsVisibilities = ((LeafNode) node).getFieldVisibilities();
+    	Map<String, ModifierType> fieldsVisibilities = ((LeafNode) node).getFieldVisibilities();
 		for (String fieldName : nodeFields.keySet()) {
 			String fieldType = nodeFields.get(fieldName);
 			String fieldVisibility = visibilityToPlantUML(fieldsVisibilities.get(fieldName));
@@ -101,7 +102,7 @@ public abstract class GraphNodeCollection {
     private StringBuilder convertMethodsToPlantUML(Node node) {
     	StringBuilder plantUMLMethodsDeclarations = new StringBuilder();
 		Map<String, String> nodeMethods = ((LeafNode) node).getMethods();
-    	Map<String, String> methodsVisibilities = ((LeafNode) node).getMethodVisibilities();
+    	Map<String, ModifierType> methodsVisibilities = ((LeafNode) node).getMethodVisibilities();
 		// List<String> methodNames = ((LeafNode) node).getMethodNamesList();
 		// List<String> methodReturnTypes = ((LeafNode) node).getMethodReturnTypesList();
 		// List<String> methodVisibilitiesList = ((LeafNode) node).getMethodVisibilitiesList();

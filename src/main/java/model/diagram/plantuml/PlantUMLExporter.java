@@ -116,7 +116,9 @@ public class PlantUMLExporter {
     		for (String word: splittedLine) {
     			String newWord = word;
     			if(word.contains(".") && !word.contains("..")) {
-        			newWord = word.replace(".", "_");
+    				// String[] splittedWord = word.split("\\.");
+    				// newWord = splittedWord[splittedWord.length - 1];
+    				newWord = word.replace(".", "_");
         			newWord = newWord.replace("-", "_");
     			}
     			newString += newWord + " ";
