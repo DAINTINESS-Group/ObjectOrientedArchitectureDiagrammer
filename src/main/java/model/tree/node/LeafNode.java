@@ -20,6 +20,9 @@ public abstract class LeafNode extends Node{
 	private final List<String> methodReturnTypes;
 	private final List<StringBuilder> methodParameters;
 	private final List<ModifierType> methodVisibilitiesList;
+	private final List<ModifierType> fieldVisibilitiesList;
+	private final List<String> fieldNamesList;
+	private final List<String> fieldTypesList;
 	protected final List<String> methodsParametersTypes;
 
 	/**This method is responsible for initializing the nodes structs
@@ -37,6 +40,9 @@ public abstract class LeafNode extends Node{
 		methodReturnTypes = new ArrayList<>();
 		methodParameters = new ArrayList<>();
 		methodVisibilitiesList = new ArrayList<>();
+		fieldVisibilitiesList = new ArrayList<>();
+		fieldNamesList = new ArrayList<>();
+		fieldTypesList = new ArrayList<>();
 	}
 
 	/**This method is responsible for adding to the nodes' method parameter types
@@ -63,6 +69,8 @@ public abstract class LeafNode extends Node{
 	 */
 	public void addField(String fieldName, String fieldType) {
 		fields.put(fieldName, fieldType);
+		fieldNamesList.add(fieldName);
+		fieldTypesList.add(fieldType);
 	}
 
 	public PackageNode getParentNode() {
@@ -87,6 +95,7 @@ public abstract class LeafNode extends Node{
 	
 	public void addFieldVisibility(String fieldName, ModifierType fieldVisibility) {
 		fieldVisibilities.put(fieldName, fieldVisibility);
+		fieldVisibilitiesList.add(fieldVisibility);
 	}
 	
 //	public void addMethodVisibility(String methodName, String methodVisibility) {
@@ -136,6 +145,18 @@ public abstract class LeafNode extends Node{
 	
 	public List<StringBuilder> getMethodParametersList(){
 		return methodParameters;
+	}
+	
+	public List<String> getFieldNamesList(){
+		return fieldNamesList;
+	}
+	
+	public List<String> getFieldTypesList(){
+		return fieldTypesList;
+	}
+	
+	public List<ModifierType> getFieldVisibilitiesList(){
+		return fieldVisibilitiesList;
 	}
 	
 	public Map<String, List<String>> getMethodToParameter(){
