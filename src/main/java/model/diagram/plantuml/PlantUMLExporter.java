@@ -35,7 +35,9 @@ public class PlantUMLExporter {
     	plantUMLCode += nodesBuffer;
     	plantUMLCode += edgesBuffer;
     	plantUMLCode += "@enduml\n";
-
+    	if (packageDiagram) {
+    		plantUMLCode = dotChanger(plantUMLCode);
+    	}
     	ByteArrayOutputStream png = new ByteArrayOutputStream();
     	try {
     		SourceStringReader reader = new SourceStringReader(plantUMLCode);
@@ -104,5 +106,23 @@ public class PlantUMLExporter {
 //    		updatedString = String.join("\n", lines);
 //    	}
     	return updatedString;
+    }
+    
+    private String dotChanger(String plantUMLCode) {
+    	String newString = "";
+    	String[] lines = plantUMLCode.split("\n");
+    	for (String line: lines) {
+    		String[] splittedLine = line.split(" ");
+    		for (String word: splittedLine) {
+    			String newWord = word;
+    			if(word.contains(".") && !word.contains("..")) {
+        			newWord = word.replace(".", "_");
+        			newWord = newWord.replace("-", "_");
+    			}
+    			newString += newWord + " ";
+    		}
+    		newString += "\n";
+    	}
+    	return newString;
     }
 }
