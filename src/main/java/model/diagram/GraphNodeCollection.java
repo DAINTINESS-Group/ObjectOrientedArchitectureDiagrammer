@@ -48,16 +48,18 @@ public abstract class GraphNodeCollection {
     	StringBuilder plantUMLDeclarations = new StringBuilder();
     	plantUMLBuffer = new StringBuilder();
     	for (Node node : graphNodes.keySet()) {
-    		plantUMLDeclarations.append(node.getType().toString().toLowerCase()).append(" ").append(node.getName()).append(" {\n");
+    		StringBuilder plantUMLDeclaration = new StringBuilder();
+    		plantUMLDeclaration.append(node.getType().toString().toLowerCase()).append(" ").append(node.getName()).append(" {\n");
     		if (node.getType().equals(NodeType.PACKAGE)) {
     			packageFlag = true;
     		}
     		if (!packageFlag) {
-    			plantUMLDeclarations.append(convertFieldsToPlantUML(node));
-    			plantUMLDeclarations.append(convertMethodsToPlantUML(node));
+    			plantUMLDeclaration.append(convertFieldsToPlantUML(node));
+    			plantUMLDeclaration.append(convertMethodsToPlantUML(node));
     		}
-    		plantUMLDeclarations.append("}\n");
-    		plantUMLTester.put(node.getName(), plantUMLDeclarations.toString());
+    		plantUMLDeclaration.append("}\n");
+    		plantUMLTester.put(node.getName(), plantUMLDeclaration.toString());
+    		plantUMLDeclarations.append(plantUMLDeclaration);
     	}
     	plantUMLBuffer.append(plantUMLDeclarations);
     	return plantUMLTester;

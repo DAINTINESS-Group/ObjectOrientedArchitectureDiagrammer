@@ -22,7 +22,13 @@ public class PlantUMLExporter {
     public void exportDiagram(Path graphSavePath, String nodesBuffer, String edgesBuffer, boolean packageDiagram) {
     	String plantUMLCode;
     	if (packageDiagram) {
-    		plantUMLCode ="@startuml\n";
+    		plantUMLCode ="@startuml\n" +
+    		        "skinparam package {\n" +
+    		        "    BackgroundColor lightyellow\n" +
+    		        "    BorderColor black\n" +
+    		        "    ArrowColor black\n" +
+    		        "    Shadowing true\n" +
+    		        "}\n";
     	}
     	else{
     		plantUMLCode ="@startuml\n" +
@@ -31,6 +37,7 @@ public class PlantUMLExporter {
     		        "    BorderColor black\n" +
     		        "    ArrowColor black\n" +
     		        "}\n";
+    		
     	}
     	plantUMLCode += nodesBuffer;
     	plantUMLCode += edgesBuffer;
