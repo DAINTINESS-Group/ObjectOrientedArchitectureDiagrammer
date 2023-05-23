@@ -7,7 +7,7 @@ import model.tree.node.PackageNode;
 import org.junit.jupiter.api.Test;
 import parser.Parser;
 import parser.ParserType;
-import parser.ProjectParser;
+import parser.ProjectParserFactory;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -24,7 +24,9 @@ public class NodeParsingTest {
 
     @Test
     void methodReturnTypesTest() throws IOException {
-        Parser parser = new ProjectParser(parserType);
+        ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
+        Parser parser = projectParserFactory.createProjectParser();
+
         parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
         Map<Path, PackageNode> packages = parser.getPackageNodes();
         PackageNode commandPackage = packages.get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
@@ -43,7 +45,9 @@ public class NodeParsingTest {
 
     @Test
     void methodParameterTypesTest() throws IOException {
-        Parser parser = new ProjectParser(parserType);
+        ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
+        Parser parser = projectParserFactory.createProjectParser();
+
         parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
         Map<Path, PackageNode> packages = parser.getPackageNodes();
         PackageNode commandPackage = packages.get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
@@ -62,7 +66,9 @@ public class NodeParsingTest {
 
     @Test
     void fieldTypesTest() throws IOException {
-        Parser parser = new ProjectParser(parserType);
+        ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
+        Parser parser = projectParserFactory.createProjectParser();
+
         parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
         Map<Path, PackageNode> packages = parser.getPackageNodes();
         PackageNode commandPackage = packages.get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
@@ -81,7 +87,9 @@ public class NodeParsingTest {
 
     @Test
     void variableTypesTest() throws IOException {
-        Parser parser = new ProjectParser(parserType);
+        ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
+        Parser parser = projectParserFactory.createProjectParser();
+
         parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
         Map<Path, PackageNode> packages = parser.getPackageNodes();
         PackageNode commandPackage = packages.get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
@@ -100,7 +108,9 @@ public class NodeParsingTest {
 
     @Test
     void objectCreationTest() throws IOException {
-        Parser parser = new ProjectParser(parserType);
+        ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
+        Parser parser = projectParserFactory.createProjectParser();
+
         parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\ParserTesting"));
         Map<Path, PackageNode> packages = parser.getPackageNodes();
         PackageNode sourcePackage = packages.get(Paths.get(currentDirectory.toRealPath().normalize().toString(), "\\src\\test\\resources\\ParserTesting"));
@@ -118,7 +128,9 @@ public class NodeParsingTest {
 
     @Test
     void leafNodeTypesTest() throws IOException {
-        Parser parser = new ProjectParser(parserType);
+        ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
+        Parser parser = projectParserFactory.createProjectParser();
+
         parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\ParserTesting"));
         Map<Path, PackageNode> packages = parser.getPackageNodes();
         PackageNode inheritancePackage = packages.get(Paths.get(currentDirectory.toRealPath().normalize().toString(), "\\src\\test\\resources\\ParserTesting"));

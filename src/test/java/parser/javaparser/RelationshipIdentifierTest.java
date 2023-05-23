@@ -8,7 +8,7 @@ import model.tree.node.PackageNode;
 import org.junit.jupiter.api.Test;
 import parser.Parser;
 import parser.ParserType;
-import parser.ProjectParser;
+import parser.ProjectParserFactory;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -26,7 +26,9 @@ public class RelationshipIdentifierTest {
 
     @Test
     void leafNodeRelationshipsTest() throws IOException {
-        Parser parser = new ProjectParser(parserType);
+        ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
+        Parser parser = projectParserFactory.createProjectParser();
+
         parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\ParserTesting"));
         Map<Path, PackageNode> packages = parser.getPackageNodes();
         PackageNode sourcePackage = packages.get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
@@ -61,7 +63,9 @@ public class RelationshipIdentifierTest {
 
     @Test
     void leafNodeInheritanceRelationshipTest() throws IOException {
-        Parser parser = new ProjectParser(parserType);
+        ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
+        Parser parser = projectParserFactory.createProjectParser();
+
         parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\ParserTesting"));
         Map<Path, PackageNode> packages = parser.getPackageNodes();
         PackageNode sourcePackage = packages.get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
@@ -95,7 +99,9 @@ public class RelationshipIdentifierTest {
 
     @Test
     void packageNodeRelationshipsTest() throws IOException {
-        Parser parser = new ProjectParser(parserType);
+        ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
+        Parser parser = projectParserFactory.createProjectParser();
+
         parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
         Map<Path, PackageNode> packages = parser.getPackageNodes();
 

@@ -1,12 +1,7 @@
 package parser;
 
-
-
 import java.io.File;
 import model.tree.node.LeafNode;
-
-
-
 
 public interface FileVisitor {
 
@@ -15,6 +10,5 @@ public interface FileVisitor {
      * @param leafNode the leaf node representing the Java source file
      */
     void createAST(File file, LeafNode leafNode);
-
 
 }

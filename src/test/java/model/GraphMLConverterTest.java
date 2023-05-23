@@ -13,7 +13,7 @@ import model.tree.node.PackageNode;
 import org.junit.jupiter.api.Test;
 import parser.Parser;
 import parser.ParserType;
-import parser.ProjectParser;
+import parser.ProjectParserFactory;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -32,7 +32,8 @@ class GraphMLConverterTest {
     void populateGraphMLNodesTest() throws IOException {
         for (ParserType parserType: parserTypes) {
             GraphNodeCollection graphMLNode = new GraphMLLeafNode();
-            Parser parser = new ProjectParser(parserType);
+            ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
+            Parser parser = projectParserFactory.createProjectParser();
             parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
             graphMLNode.populateGraphNodes(new ArrayList<>(parser.getPackageNodes().get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
                     "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands")).getLeafNodes().values()));
@@ -58,7 +59,9 @@ class GraphMLConverterTest {
     void convertNodesToGraphMLTest() throws IOException {
         for (ParserType parserType: parserTypes) {
             GraphNodeCollection graphMLNode = new GraphMLLeafNode();
-            Parser parser = new ProjectParser(parserType);
+            ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
+            Parser parser = projectParserFactory.createProjectParser();
+
             parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
             graphMLNode.populateGraphNodes(new ArrayList<>(parser.getPackageNodes().get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
                     "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands")).getLeafNodes().values()));
@@ -104,7 +107,9 @@ class GraphMLConverterTest {
     void populateGraphMLEdgesTest() throws IOException {
         for (ParserType parserType: parserTypes) {
             GraphNodeCollection graphMLNode = new GraphMLLeafNode();
-            Parser parser = new ProjectParser(parserType);
+            ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
+            Parser parser = projectParserFactory.createProjectParser();
+
             parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
             graphMLNode.populateGraphNodes(new ArrayList<>(parser.getPackageNodes().get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
                     "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands")).getLeafNodes().values()));
@@ -146,7 +151,9 @@ class GraphMLConverterTest {
     void convertEdgesToGraphML() throws IOException {
         for (ParserType parserType: parserTypes) {
             GraphNodeCollection graphMLNode = new GraphMLLeafNode();
-            Parser parser = new ProjectParser(parserType);
+            ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
+            Parser parser = projectParserFactory.createProjectParser();
+
             parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
             graphMLNode.populateGraphNodes(new ArrayList<>(parser.getPackageNodes().get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
                     "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands")).getLeafNodes().values()));
@@ -195,7 +202,9 @@ class GraphMLConverterTest {
     void populateGraphMLPackageNodeTest() throws IOException {
         for (ParserType parserType: parserTypes) {
             GraphNodeCollection graphMLPackageNode = new GraphMLPackageNode();
-            Parser parser = new ProjectParser(parserType);
+            ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
+            Parser parser = projectParserFactory.createProjectParser();
+
             parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
             graphMLPackageNode.populateGraphNodes(new ArrayList<>(parser.getPackageNodes().values()));
 
@@ -222,7 +231,9 @@ class GraphMLConverterTest {
     void convertPackageNodesToGraphMLTest() throws IOException {
         for (ParserType parserType: parserTypes) {
             GraphNodeCollection graphMLPackageNode = new GraphMLPackageNode();
-            Parser parser = new ProjectParser(parserType);
+            ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
+            Parser parser = projectParserFactory.createProjectParser();
+
             parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
             graphMLPackageNode.populateGraphNodes(new ArrayList<>(parser.getPackageNodes().values()));
 
@@ -258,7 +269,9 @@ class GraphMLConverterTest {
     void populateGraphMLPackageEdgesTest() throws IOException {
         for (ParserType parserType: parserTypes) {
             GraphNodeCollection graphMLPackageNode = new GraphMLPackageNode();
-            Parser parser = new ProjectParser(parserType);
+            ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
+            Parser parser = projectParserFactory.createProjectParser();
+
             parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
             graphMLPackageNode.populateGraphNodes(new ArrayList<>(parser.getPackageNodes().values()));
 
@@ -290,7 +303,9 @@ class GraphMLConverterTest {
     void convertPackageEdgesToGraphMLTest() throws IOException {
         for (ParserType parserType: parserTypes) {
             GraphNodeCollection graphMLPackageNode = new GraphMLPackageNode();
-            Parser parser = new ProjectParser(parserType);
+            ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
+            Parser parser = projectParserFactory.createProjectParser();
+
             parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
             StringBuilder expected = new StringBuilder();
             graphMLPackageNode.populateGraphNodes(new ArrayList<>(parser.getPackageNodes().values()));
@@ -336,18 +351,13 @@ class GraphMLConverterTest {
                 identifyEdgeType(relationship).get(1), identifyEdgeType(relationship).get(2));
     }
     private List<String> identifyEdgeType(Relationship relationship){
-        switch (relationship.getRelationshipType()) {
-            case DEPENDENCY:
-                return Arrays.asList("dashed", "none", "plain");
-            case AGGREGATION:
-                return Arrays.asList("line", "white_diamond", "none");
-            case ASSOCIATION:
-                return Arrays.asList("line", "none", "standard");
-            case EXTENSION:
-                return Arrays.asList("line", "none", "white_delta");
-            default:
-                return Arrays.asList("dashed", "none", "white_delta");
-        }
+        return switch (relationship.getRelationshipType()) {
+            case DEPENDENCY -> Arrays.asList("dashed", "none", "plain");
+            case AGGREGATION -> Arrays.asList("line", "white_diamond", "none");
+            case ASSOCIATION -> Arrays.asList("line", "none", "standard");
+            case EXTENSION -> Arrays.asList("line", "none", "white_delta");
+            default -> Arrays.asList("dashed", "none", "white_delta");
+        };
     }
     public static <T, E> T getKeyByValue(Map<T, E> map, E value) {
         for (Map.Entry<T, E> entry : map.entrySet()) {
