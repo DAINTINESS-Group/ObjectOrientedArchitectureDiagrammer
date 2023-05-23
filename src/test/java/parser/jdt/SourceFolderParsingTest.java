@@ -16,7 +16,7 @@ import model.tree.node.LeafNode;
 import model.tree.node.PackageNode;
 import parser.Parser;
 import parser.ParserType;
-import parser.ProjectParser;
+import parser.ProjectParserFactory;
 
 class SourceFolderParsingTest {
 
@@ -25,7 +25,9 @@ class SourceFolderParsingTest {
 
 	@Test
 	void parsingTest() throws IOException {
-		Parser parser = new ProjectParser(parserType);
+		ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
+		Parser parser = projectParserFactory.createProjectParser();
+
 		parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
 		List<Path> sourcesSubPackages = new ArrayList<>(Arrays.asList(
 				Paths.get(currentDirectory.toRealPath().normalize().toString(), "\\src\\test\\resources\\LatexEditor\\src\\controller"),
