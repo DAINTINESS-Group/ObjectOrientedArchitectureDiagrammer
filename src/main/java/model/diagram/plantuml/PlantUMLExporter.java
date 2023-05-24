@@ -17,7 +17,7 @@ import net.sourceforge.plantuml.SourceStringReader;
 public class PlantUMLExporter {
 
 	private final String bufferBody;
-	private File plantUMLFile;
+	private final File plantUMLFile;
 	
     public PlantUMLExporter(Path savePath, String nodesBuffer, String edgesBuffer) {
 		plantUMLFile = savePath.toFile();
@@ -84,9 +84,9 @@ public class PlantUMLExporter {
     		    convImg = ImageIO.read(in);
     		    width = convImg.getWidth();
                 //stringChangerCounter ++;
-				ImageIO.write(convImg, "png", plantUMLFile);
 			}
-        } catch (IOException e) {
+			ImageIO.write(convImg, "png", plantUMLFile);
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
