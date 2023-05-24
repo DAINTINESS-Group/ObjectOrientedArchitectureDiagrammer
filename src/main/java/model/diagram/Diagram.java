@@ -5,6 +5,7 @@ import model.diagram.javafx.JavaFXExporter;
 import model.diagram.javafx.JavaFXLoader;
 import model.diagram.graphml.GraphMLExporter;
 import model.diagram.javafx.JavaFXVisualization;
+import model.diagram.plantuml.PlantUMLExportType;
 import model.diagram.plantuml.PlantUMLExporter;
 import model.tree.node.Node;
 import model.tree.SourceProject;
@@ -76,14 +77,26 @@ public abstract class Diagram {
         return javaFXVisualization.createGraphView(createdDiagram);
     }
 
+    public File exportPlantUML(Path fileSavePth, PlantUMLExportType exportType) {
+        graphNodeCollection.convertClassNodesToPlantUML();
+        graphEdgeCollection.convertEdgesToPlantUML();
+        PlantUMLExporter plantUMLExporter = new PlantUMLExporter(fileSavePth, graphNodeCollection.getPlantUMLBuffer(),
+                graphEdgeCollection.getPlantUMLBuffer());
+
+        if (exportType.equals(PlantUMLExportType.TEXT)) {
+            return exportPlantUMLText(plantUMLExporter);
+        }else {
+            return exportPlantUMLDiagram(plantUMLExporter);
+        }
+    }
+
+    public abstract List<Node> getChosenNodes(List<String> chosenFileNames);
+
     protected abstract StringBuilder convertEdgesToGraphML();
 
     protected abstract StringBuilder convertNodesToGraphML(Map<Integer, List<Double>> nodesGeometry);
 
-    public abstract List<Node> getChosenNodes(List<String> chosenFileNames);
+	public abstract File exportPlantUMLDiagram(PlantUMLExporter plantUMLExporter);
 
-	public abstract void exportPlantUMLDiagram(Path graphSavePath);
-
-	public abstract void exportPlantUMLText(Path textSavePath);
-
+	public abstract File exportPlantUMLText(PlantUMLExporter plantUMLExporter);
 }

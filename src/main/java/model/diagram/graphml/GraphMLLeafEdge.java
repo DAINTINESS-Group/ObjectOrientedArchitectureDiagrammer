@@ -38,10 +38,4 @@ public class GraphMLLeafEdge {
         };
     }
 
-	@Override
-	public String convertPlantEdge(Relationship relationship) {
-		// Do nothing
-		return null;
-	}
-
 }

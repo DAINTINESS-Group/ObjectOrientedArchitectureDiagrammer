@@ -2,6 +2,7 @@ package model.diagram;
 
 import model.diagram.graphml.GraphMLLeafEdge;
 import model.diagram.graphml.GraphMLPackageEdge;
+import model.diagram.plantuml.PlantUMLEdge;
 import model.tree.node.Node;
 import model.tree.edge.Relationship;
 
@@ -60,9 +61,10 @@ public class GraphEdgeCollection {
     
     public List<String> convertEdgesToPlantUML() {
         plantUMLBuffer = new StringBuilder();
+        PlantUMLEdge plantUMLEdge = new PlantUMLEdge();
     	for ( Relationship relationship : graphEdges.keySet()) {
-    		plantUMLBuffer.append(convertPlantEdge(relationship) + "\n");
-    		plantUMLTester.add(convertPlantEdge(relationship));
+    		plantUMLBuffer.append(plantUMLEdge.convertPlantEdge(relationship)).append("\n");
+    		plantUMLTester.add(plantUMLEdge.convertPlantEdge(relationship));
 		}
     	return plantUMLTester;
     }
@@ -86,4 +88,5 @@ public class GraphEdgeCollection {
         }
         return graphMLBuffer;
     }
+
 }

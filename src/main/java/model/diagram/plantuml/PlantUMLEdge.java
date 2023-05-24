@@ -1,10 +1,9 @@
 package model.diagram.plantuml;
 
-import model.diagram.GraphEdgeCollection;
 import model.tree.edge.Relationship;
 import model.tree.edge.RelationshipType;
 
-public class PlantUMLEdge extends GraphEdgeCollection{
+public class PlantUMLEdge {
 
 	public String convertPlantEdge(Relationship relationship) {
 		String plantUMLRelationship = relationship.getStartingNode().getName() + " " ;
@@ -32,9 +31,4 @@ public class PlantUMLEdge extends GraphEdgeCollection{
     	}
     }
     
-	public String convertEdge(Relationship relationship, int edgeId) {
-		// Do nothing
-		return null;
-	}
-
 }

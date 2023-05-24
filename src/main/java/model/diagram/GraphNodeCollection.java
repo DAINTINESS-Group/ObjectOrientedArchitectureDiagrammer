@@ -2,6 +2,8 @@ package model.diagram;
 
 import model.diagram.graphml.GraphMLLeafNode;
 import model.diagram.graphml.GraphMLPackageNode;
+import model.diagram.plantuml.PlantUMLLeafNode;
+import model.diagram.plantuml.PlantUMLPackageNode;
 import model.tree.node.Node;
 
 import java.util.HashMap;
@@ -47,9 +49,10 @@ public class GraphNodeCollection {
     }
     
 	public Map<String, String> convertClassNodesToPlantUML() {
-    	plantUMLBuffer = new StringBuilder();
+        PlantUMLLeafNode plantUMLLeafNode = new PlantUMLLeafNode();
+        plantUMLBuffer = new StringBuilder();
     	for (Node node : graphNodes.keySet()) {
-    		String convertedNode = convertPlantNode(node);
+    		String convertedNode = plantUMLLeafNode.convertPlantNode(node);
     		plantUMLBuffer.append(convertedNode);
     		plantUMLTester.put(node.getName(), convertedNode);
     	}
@@ -57,10 +60,11 @@ public class GraphNodeCollection {
 	}
 
 	public Map<String, String> convertPackageNodesToPlantUML() {
+        PlantUMLPackageNode plantUMLPackageNode = new PlantUMLPackageNode();
     	plantUMLBuffer = new StringBuilder();
     	for (Node node : graphNodes.keySet()) {
-    		String convertedNode = convertPlantNode(node);
-    		plantUMLBuffer.append(convertedNode + "\n");
+    		String convertedNode = plantUMLPackageNode.convertPlantNode(node);
+    		plantUMLBuffer.append(convertedNode).append("\n");
     		plantUMLTester.put(node.getName(), convertedNode);
     	}
     	return plantUMLTester;

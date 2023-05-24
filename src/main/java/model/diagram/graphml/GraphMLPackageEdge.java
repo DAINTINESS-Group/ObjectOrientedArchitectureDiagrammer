@@ -11,7 +11,6 @@ public class GraphMLPackageEdge {
     private final Map<Node, Integer> graphNodes;
 
     public GraphMLPackageEdge(Map<Node, Integer> graphNodes) {
-
         this.graphNodes = graphNodes;
     }
 
@@ -23,11 +22,5 @@ public class GraphMLPackageEdge {
         return Arrays.asList(String.valueOf(edgeId), String.valueOf(graphNodes.get(relationship.getStartingNode())),
                 String.valueOf(graphNodes.get(relationship.getEndingNode())));
     }
-
-	@Override
-	public String convertPlantEdge(Relationship relationship) {
-		// Do nothing
-		return null;
-	}
 
 }

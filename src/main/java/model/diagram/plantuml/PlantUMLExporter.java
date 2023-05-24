@@ -15,54 +15,58 @@ import javax.imageio.ImageIO;
 import net.sourceforge.plantuml.SourceStringReader;
 
 public class PlantUMLExporter {
-	
-	private Path savePath;
-	private String bufferBody;
+
+	private final String bufferBody;
+	private File plantUMLFile;
 	
     public PlantUMLExporter(Path savePath, String nodesBuffer, String edgesBuffer) {
-    	this.savePath = savePath;
+		plantUMLFile = savePath.toFile();
     	bufferBody = nodesBuffer + edgesBuffer + "@enduml\n";
     }
 
-	public void exportClassDiagram() {
+	public File exportClassDiagram() {
     	String plantUMLCode = getClassText();
     	plantUMLCode += bufferBody;
-    	diagramExporter(plantUMLCode);
+    	exportDiagram(plantUMLCode);
+		return plantUMLFile;
 	}
 
-	public void exportClassDiagramText() {
+	public File exportClassDiagramText() {
 		String plantUMLCode = getClassText();
 		plantUMLCode += bufferBody;
 		textExporter(plantUMLCode);
+		return plantUMLFile;
 	}
 
-	public void exportPackageDiagram() {
+	public File exportPackageDiagram() {
     	String plantUMLCode = getPackageText();
     	plantUMLCode += bufferBody;
     	plantUMLCode = dotChanger(plantUMLCode);
-    	diagramExporter(plantUMLCode);
+    	exportDiagram(plantUMLCode);
+		return plantUMLFile;
 	}
 
-	public void exportPackageDiagramText() {
+	public File exportPackageDiagramText() {
 		String plantUMLCode = getPackageText();
 		plantUMLCode += bufferBody;
 		plantUMLCode = dotChanger(plantUMLCode);
 		textExporter(plantUMLCode);
+		return plantUMLFile;
 	}
 	
 	private void textExporter(String plantCode) {
-		try (BufferedWriter writer = new BufferedWriter(new FileWriter(savePath.toString()))) {
+		try {
+			BufferedWriter writer = new BufferedWriter(new FileWriter(plantUMLFile));
             writer.write(plantCode);
-            writer.close();
         } catch (IOException e) {
         	e.printStackTrace();
         }
 	}
 	
-	private void diagramExporter(String plantCode) {
-		ByteArrayOutputStream png = new ByteArrayOutputStream();
+	private void exportDiagram(String plantCode) {
     	try {
-    		SourceStringReader reader = new SourceStringReader(plantCode);
+			ByteArrayOutputStream png = new ByteArrayOutputStream();
+			SourceStringReader reader = new SourceStringReader(plantCode);
         	reader.outputImage(png).getDescription();
 			byte [] data = png.toByteArray();
 		    InputStream in = new ByteArrayInputStream(data);
@@ -80,8 +84,8 @@ public class PlantUMLExporter {
     		    convImg = ImageIO.read(in);
     		    width = convImg.getWidth();
                 //stringChangerCounter ++;
-            }
-		    ImageIO.write(convImg, "png", new File(savePath.toString()));
+				ImageIO.write(convImg, "png", plantUMLFile);
+			}
         } catch (IOException e) {
 			e.printStackTrace();
 		}

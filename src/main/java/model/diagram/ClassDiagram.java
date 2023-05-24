@@ -1,14 +1,10 @@
 package model.diagram;
 
-import model.diagram.graphml.GraphMLLeafEdge;
-import model.diagram.graphml.GraphMLLeafNode;
-import model.diagram.plantuml.PlantUMLEdge;
 import model.diagram.plantuml.PlantUMLExporter;
-import model.diagram.plantuml.PlantUMLLeafNode;
 import model.tree.node.Node;
 import model.tree.node.PackageNode;
 
-import java.nio.file.Path;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -27,19 +23,16 @@ public class ClassDiagram extends Diagram {
         }
         return chosenClasses;
     }
-    
-    public void exportPlantUMLDiagram(Path graphSavePath) {
-    	graphNodePlantCollection.convertClassNodesToPlantUML();
-    	graphEdgePlantCollection.convertEdgesToPlantUML();
-    	PlantUMLExporter plantUMLExporter = new PlantUMLExporter(graphSavePath, graphNodePlantCollection.getPlantUMLBuffer(), graphEdgePlantCollection.getPlantUMLBuffer());
-    	plantUMLExporter.exportClassDiagram();
+
+    @Override
+    public File exportPlantUMLDiagram(PlantUMLExporter plantUMLExporter) {
+    	return plantUMLExporter.exportClassDiagram();
     }
-    
-    public void exportPlantUMLText(Path textSavePath) {
-    	graphNodePlantCollection.convertClassNodesToPlantUML();
-    	graphEdgePlantCollection.convertEdgesToPlantUML();
-    	PlantUMLExporter plantUMLExporter = new PlantUMLExporter(textSavePath, graphNodePlantCollection.getPlantUMLBuffer(), graphEdgePlantCollection.getPlantUMLBuffer());
-    	plantUMLExporter.exportClassDiagramText();
+
+    @Override
+    public File exportPlantUMLText(PlantUMLExporter plantUMLExporter) {
+    	return plantUMLExporter.exportClassDiagramText();
+    }
 
     @Override
     protected StringBuilder convertEdgesToGraphML() {

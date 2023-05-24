@@ -1,13 +1,12 @@
 package model.diagram.plantuml;
 
-import java.util.List;
-
-import model.diagram.GraphNodeCollection;
 import model.tree.node.LeafNode;
 import model.tree.node.ModifierType;
 import model.tree.node.Node;
 
-public class PlantUMLLeafNode extends GraphNodeCollection{
+import java.util.List;
+
+public class PlantUMLLeafNode {
 
 	public String convertPlantNode(Node node) {
 		String plantUMLDeclaration = node.getType().toString().toLowerCase() + " " + node.getName() + " {\n";
@@ -20,11 +19,12 @@ public class PlantUMLLeafNode extends GraphNodeCollection{
     	List<String> fieldNames = ((LeafNode) node).getFieldNamesList();
     	List<String> fieldTypes = ((LeafNode) node).getFieldTypesList();
     	List<ModifierType> fieldVisibilitiesList = ((LeafNode) node).getFieldVisibilitiesList();
-    	String plantUMLFields = "";
+    	StringBuilder plantUMLFields = new StringBuilder();
     	for (int i=0; i<fieldNames.size();i++) {
-			plantUMLFields += visibilityToPlantUML(fieldVisibilitiesList.get(i)) + fieldNames.get(i) + ": " + fieldTypes.get(i) + "\n";
+			plantUMLFields.append(visibilityToPlantUML(fieldVisibilitiesList.get(i))).append(fieldNames.get(i)).append(": ")
+					.append(fieldTypes.get(i)).append("\n");
 		}
-		return plantUMLFields;
+		return plantUMLFields.toString();
 	}
     
     private String convertMethodsToPlantUML(Node node) {
@@ -32,11 +32,12 @@ public class PlantUMLLeafNode extends GraphNodeCollection{
 		List<String> methodReturnTypes = ((LeafNode) node).getMethodReturnTypesList();
 		List<ModifierType> methodVisibilitiesList = ((LeafNode) node).getMethodVisibilitiesList();
 		List<StringBuilder> methodParameters = ((LeafNode) node).getMethodParametersList();
-		String plantUMLMethods = "";
+		StringBuilder plantUMLMethods = new StringBuilder();
 		for (int i=0; i<methodNames.size();i++) {
-			plantUMLMethods += visibilityToPlantUML(methodVisibilitiesList.get(i)) + methodNames.get(i) + "(" + methodParameters.get(i) + "): " + methodReturnTypes.get(i) + "\n";
+			plantUMLMethods.append(visibilityToPlantUML(methodVisibilitiesList.get(i))).append(methodNames.get(i)).append("(")
+					.append(methodParameters.get(i)).append("): ").append(methodReturnTypes.get(i)).append("\n");
 		}
-    	return plantUMLMethods;
+    	return plantUMLMethods.toString();
     }
     
     private String visibilityToPlantUML(ModifierType visibilityEnum) {
@@ -48,9 +49,4 @@ public class PlantUMLLeafNode extends GraphNodeCollection{
 		};
     }
 
-	public String convertNode(Node node, int nodeId, List<Double> nodesGeometry) {
-		// Do nothing
-		return null;
-	}
-	
 }
