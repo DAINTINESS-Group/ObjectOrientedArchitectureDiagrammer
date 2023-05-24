@@ -52,4 +52,10 @@ public class GraphMLLeafNode extends GraphNodeCollection {
         return CLASS_COLOR;
     }
 
+	public String convertPlantNode(Node node) {
+		System.out.println("LEAF");
+		// Do nothing
+		return null;
+	}
+
 }

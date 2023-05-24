@@ -37,4 +37,10 @@ public class GraphMLLeafEdge extends GraphEdgeCollection {
         }
     }
 
+	@Override
+	public String convertPlantEdge(Relationship relationship) {
+		// Do nothing
+		return null;
+	}
+
 }

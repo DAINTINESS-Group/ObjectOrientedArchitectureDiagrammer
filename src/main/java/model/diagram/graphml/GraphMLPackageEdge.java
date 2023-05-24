@@ -17,4 +17,10 @@ public class GraphMLPackageEdge extends GraphEdgeCollection {
                 String.valueOf(graphNodes.get(relationship.getEndingNode())));
     }
 
+	@Override
+	public String convertPlantEdge(Relationship relationship) {
+		// Do nothing
+		return null;
+	}
+
 }

@@ -16,38 +16,53 @@ import net.sourceforge.plantuml.SourceStringReader;
 
 public class PlantUMLExporter {
 	
-    public PlantUMLExporter() {
+	private Path savePath;
+	private String bufferBody;
+	
+    public PlantUMLExporter(Path savePath, String nodesBuffer, String edgesBuffer) {
+    	this.savePath = savePath;
+    	bufferBody = nodesBuffer + edgesBuffer + "@enduml\n";
     }
-    
-    public void exportDiagram(Path graphSavePath, String nodesBuffer, String edgesBuffer, boolean packageDiagram) {
-    	String plantUMLCode;
-    	if (packageDiagram) {
-    		plantUMLCode ="@startuml\n" +
-    		        "skinparam package {\n" +
-    		        "    BackgroundColor lightyellow\n" +
-    		        "    BorderColor black\n" +
-    		        "    ArrowColor black\n" +
-    		        "    Shadowing true\n" +
-    		        "}\n";
-    	}
-    	else{
-    		plantUMLCode ="@startuml\n" +
-    		        "skinparam class {\n" +
-    		        "    BackgroundColor lightyellow\n" +
-    		        "    BorderColor black\n" +
-    		        "    ArrowColor black\n" +
-    		        "}\n";
-    		
-    	}
-    	plantUMLCode += nodesBuffer;
-    	plantUMLCode += edgesBuffer;
-    	plantUMLCode += "@enduml\n";
-    	if (packageDiagram) {
-    		plantUMLCode = dotChanger(plantUMLCode);
-    	}
-    	ByteArrayOutputStream png = new ByteArrayOutputStream();
+
+	public void exportClassDiagram() {
+    	String plantUMLCode = getClassText();
+    	plantUMLCode += bufferBody;
+    	diagramExporter(plantUMLCode);
+	}
+
+	public void exportClassDiagramText() {
+		String plantUMLCode = getClassText();
+		plantUMLCode += bufferBody;
+		textExporter(plantUMLCode);
+	}
+
+	public void exportPackageDiagram() {
+    	String plantUMLCode = getPackageText();
+    	plantUMLCode += bufferBody;
+    	plantUMLCode = dotChanger(plantUMLCode);
+    	diagramExporter(plantUMLCode);
+	}
+
+	public void exportPackageDiagramText() {
+		String plantUMLCode = getPackageText();
+		plantUMLCode += bufferBody;
+		plantUMLCode = dotChanger(plantUMLCode);
+		textExporter(plantUMLCode);
+	}
+	
+	private void textExporter(String plantCode) {
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(savePath.toString()))) {
+            writer.write(plantCode);
+            writer.close();
+        } catch (IOException e) {
+        	e.printStackTrace();
+        }
+	}
+	
+	private void diagramExporter(String plantCode) {
+		ByteArrayOutputStream png = new ByteArrayOutputStream();
     	try {
-    		SourceStringReader reader = new SourceStringReader(plantUMLCode);
+    		SourceStringReader reader = new SourceStringReader(plantCode);
         	reader.outputImage(png).getDescription();
 			byte [] data = png.toByteArray();
 		    InputStream in = new ByteArrayInputStream(data);
@@ -57,8 +72,8 @@ public class PlantUMLExporter {
             //int stringChangerCounter = 0; 
             if (width == 4096) {
             	png = new ByteArrayOutputStream();
-            	plantUMLCode = stringChanger(plantUMLCode, wrapWidth);
-            	reader = new SourceStringReader(plantUMLCode);
+            	plantCode = wrapWidthChanger(plantCode, wrapWidth);
+            	reader = new SourceStringReader(plantCode);
             	reader.outputImage(png).getDescription();
     			data = png.toByteArray();
     		    in = new ByteArrayInputStream(data);
@@ -66,37 +81,13 @@ public class PlantUMLExporter {
     		    width = convImg.getWidth();
                 //stringChangerCounter ++;
             }
-		    ImageIO.write(convImg, "png", new File(graphSavePath.toString()));
+		    ImageIO.write(convImg, "png", new File(savePath.toString()));
         } catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-    
-    public void exportText(Path textSavePath, String nodesBuffer, String edgesBuffer, boolean packageDiagram) {
-    	String plantUMLCode;
-    	if (packageDiagram) {
-    		plantUMLCode ="@startuml\n";
-    	}
-    	else{
-    		plantUMLCode ="@startuml\n" +
-    		        "skinparam class {\n" +
-    		        "    BackgroundColor lightyellow\n" +
-    		        "    BorderColor black\n" +
-    		        "    ArrowColor black\n" +
-    		        "}\n";
-    	}
-    	plantUMLCode += nodesBuffer;
-    	plantUMLCode += edgesBuffer;
-    	plantUMLCode += "@enduml\n";
-    	try (BufferedWriter writer = new BufferedWriter(new FileWriter(textSavePath.toString()))) {
-            writer.write(plantUMLCode);
-            writer.close();
-        } catch (IOException e) {
-        	e.printStackTrace();
-        }
-    }
-    
-    private String stringChanger(String plantCode, int wrapWidth){
+	   
+    private String wrapWidthChanger(String plantCode, int wrapWidth){
     	String updatedString;
     	//if (counter == 0) {
     	int indexOfNewLine = plantCode.indexOf("\n");
@@ -123,8 +114,6 @@ public class PlantUMLExporter {
     		for (String word: splittedLine) {
     			String newWord = word;
     			if(word.contains(".") && !word.contains("..")) {
-    				// String[] splittedWord = word.split("\\.");
-    				// newWord = splittedWord[splittedWord.length - 1];
     				newWord = word.replace(".", "_");
         			newWord = newWord.replace("-", "_");
     			}
@@ -133,5 +122,24 @@ public class PlantUMLExporter {
     		newString += "\n";
     	}
     	return newString;
+    }
+    
+    private String getPackageText() {
+    	return "@startuml\n" +
+		        "skinparam package {\n" +
+		        "    BackgroundColor lightyellow\n" +
+		        "    BorderColor black\n" +
+		        "    ArrowColor black\n" +
+		        "    Shadowing true\n" +
+		        "}\n";
+    }
+    
+    private String getClassText() {
+    	return "@startuml\n" +
+		        "skinparam class {\n" +
+		        "    BackgroundColor lightyellow\n" +
+		        "    BorderColor black\n" +
+		        "    ArrowColor black\n" +
+		        "}\n";
     }
 }

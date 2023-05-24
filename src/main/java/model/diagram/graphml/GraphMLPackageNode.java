@@ -18,4 +18,9 @@ public class GraphMLPackageNode extends GraphNodeCollection {
         return Arrays.asList(String.valueOf(nodeId), packageNode.getName(), String.valueOf(nodeGeometry.get(X_COORDINATE)),
                 String.valueOf(nodeGeometry.get(Y_COORDINATE)));
     }
+
+	public String convertPlantNode(Node node) {
+		// Do nothing
+		return null;
+	}
 }
