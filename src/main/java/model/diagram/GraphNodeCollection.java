@@ -1,15 +1,14 @@
 package model.diagram;
 
+import model.diagram.graphml.GraphMLLeafNode;
+import model.diagram.graphml.GraphMLPackageNode;
 import model.tree.node.Node;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class GraphNodeCollection {
-
-    protected static final int X_COORDINATE = 0;
-    protected static final int Y_COORDINATE = 1;
+public class GraphNodeCollection {
 
     private final Map<Node, Integer> graphNodes;
     private final StringBuilder graphMLBuffer;
@@ -31,9 +30,18 @@ public abstract class GraphNodeCollection {
         }
     }
 
-    public StringBuilder convertNodesToGraphML(Map<Integer, List<Double>> nodesGeometry) {
+    public StringBuilder convertLeafNodesToGraphML(Map<Integer, List<Double>> nodesGeometry) {
+		GraphMLLeafNode graphMLLeafNode = new GraphMLLeafNode();
         for (Map.Entry<Node, Integer> entry: graphNodes.entrySet()) {
-            graphMLBuffer.append(convertNode(entry.getKey(), entry.getValue(), nodesGeometry.get(entry.getValue())));
+            graphMLBuffer.append(graphMLLeafNode.convertNode(entry.getKey(), entry.getValue(), nodesGeometry.get(entry.getValue())));
+        }
+        return graphMLBuffer;
+    }
+
+	public StringBuilder convertPackageNodesToGraphML(Map<Integer, List<Double>> nodesGeometry) {
+		GraphMLPackageNode graphMLPackageNode = new GraphMLPackageNode();
+        for (Map.Entry<Node, Integer> entry: graphNodes.entrySet()) {
+            graphMLBuffer.append(graphMLPackageNode.convertNode(entry.getKey(), entry.getValue(), nodesGeometry.get(entry.getValue())));
         }
         return graphMLBuffer;
     }
@@ -61,13 +69,9 @@ public abstract class GraphNodeCollection {
 	public Map<Node, Integer> getGraphNodes() {
         return graphNodes;
     }
-	
+
     public String getGraphMLBuffer(){ return graphMLBuffer.toString(); }
     
     public String getPlantUMLBuffer(){ return plantUMLBuffer.toString(); }    
-
-    public abstract String convertNode(Node node, int nodeId, List<Double> nodesGeometry);
-    
-    public abstract String convertPlantNode(Node node);
 
 }

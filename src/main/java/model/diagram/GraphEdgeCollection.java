@@ -1,5 +1,7 @@
 package model.diagram;
 
+import model.diagram.graphml.GraphMLLeafEdge;
+import model.diagram.graphml.GraphMLPackageEdge;
 import model.tree.node.Node;
 import model.tree.edge.Relationship;
 
@@ -8,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class GraphEdgeCollection {
+public class GraphEdgeCollection {
 
     private final Map<Relationship, Integer> graphEdges;
     protected Map<Node, Integer> graphNodes;
@@ -17,7 +19,8 @@ public abstract class GraphEdgeCollection {
     private final List<String> plantUMLTester;
     private int edgeId;
 
-    public GraphEdgeCollection() {
+    public GraphEdgeCollection(Map<Node, Integer> graphNodes) {
+        this.graphNodes = graphNodes;
         graphEdges = new HashMap<>();
         graphMLBuffer = new StringBuilder();
         plantUMLTester = new ArrayList<>();
@@ -68,15 +71,19 @@ public abstract class GraphEdgeCollection {
 
     public String getPlantUMLBuffer() { return plantUMLBuffer.toString(); }
     
-    public StringBuilder convertEdgesToGraphML(){
+    public StringBuilder convertLeafEdgesToGraphML(){
+        GraphMLLeafEdge graphMLLeafEdge = new GraphMLLeafEdge(graphNodes);
         for (Map.Entry<Relationship, Integer> entry: graphEdges.entrySet()) {
-            graphMLBuffer.append(convertEdge(entry.getKey(), entry.getValue()));
+            graphMLBuffer.append(graphMLLeafEdge.convertEdge(entry.getKey(), entry.getValue()));
         }
         return graphMLBuffer;
     }
 
-    public abstract String convertEdge(Relationship relationship, int edgeId);
-
-    public abstract String convertPlantEdge(Relationship relationship);
-    
+    public StringBuilder convertPackageEdgesToGraphML(){
+        GraphMLPackageEdge graphMLPackageEdge = new GraphMLPackageEdge(graphNodes);
+        for (Map.Entry<Relationship, Integer> entry: graphEdges.entrySet()) {
+            graphMLBuffer.append(graphMLPackageEdge.convertEdge(entry.getKey(), entry.getValue()));
+        }
+        return graphMLBuffer;
+    }
 }

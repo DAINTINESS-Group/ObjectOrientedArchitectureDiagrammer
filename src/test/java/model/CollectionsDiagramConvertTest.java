@@ -30,8 +30,8 @@ public class CollectionsDiagramConvertTest {
         List<String> chosenFiles = Arrays.asList("MainWindow", "LatexEditorView", "OpeningWindow");
         SourceProject sourceProject = classDiagramManager.createTree(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
 
-        GraphNodeCollection graphNodeCollection = new GraphMLLeafNode();
-        GraphEdgeCollection graphEdgeCollection = new GraphMLLeafEdge();
+        GraphNodeCollection graphNodeCollection = new GraphNodeCollection();
+        GraphEdgeCollection graphEdgeCollection = new GraphEdgeCollection(graphNodeCollection.getGraphNodes());
         graphNodeCollection.populateGraphNodes(getChosenNodes(chosenFiles, sourceProject));
         graphEdgeCollection.setGraphNodes(graphNodeCollection.getGraphNodes());
         graphEdgeCollection.populateGraphEdges(getChosenNodes(chosenFiles, sourceProject));

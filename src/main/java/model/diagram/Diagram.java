@@ -5,6 +5,7 @@ import model.diagram.javafx.JavaFXExporter;
 import model.diagram.javafx.JavaFXLoader;
 import model.diagram.graphml.GraphMLExporter;
 import model.diagram.javafx.JavaFXVisualization;
+import model.diagram.plantuml.PlantUMLExporter;
 import model.tree.node.Node;
 import model.tree.SourceProject;
 
@@ -19,8 +20,6 @@ public abstract class Diagram {
     protected Map<Integer, List<Double>> nodesGeometry;
     protected GraphNodeCollection graphNodeCollection;
     protected GraphEdgeCollection graphEdgeCollection;
-    protected GraphNodeCollection graphNodePlantCollection;
-    protected GraphEdgeCollection graphEdgePlantCollection;
     protected SourceProject sourceProject;
     private Map<String, Map<String, String>> createdDiagram;
 
@@ -34,9 +33,11 @@ public abstract class Diagram {
     }
 
     public Map<String, Map<String, String>> createDiagram(List<String> chosenFilesNames) {
-        createCollections();
-        populateNodesAndEdges(graphNodeCollection, graphEdgeCollection, chosenFilesNames);
-        populateNodesAndEdges(graphNodePlantCollection, graphEdgePlantCollection, chosenFilesNames);
+        graphNodeCollection = new GraphNodeCollection();
+        graphEdgeCollection = new GraphEdgeCollection(graphNodeCollection.getGraphNodes());
+        graphNodeCollection.populateGraphNodes(getChosenNodes(chosenFilesNames));
+        graphEdgeCollection.setGraphNodes(graphNodeCollection.getGraphNodes());
+        graphEdgeCollection.populateGraphEdges(getChosenNodes(chosenFilesNames));
         createdDiagram = convertCollectionsToDiagram();
         return createdDiagram;
     }
@@ -48,12 +49,12 @@ public abstract class Diagram {
     }
 
     public File exportDiagramToGraphML(Path graphMLSavePath) {
-        graphNodeCollection.convertNodesToGraphML(nodesGeometry);
-        graphEdgeCollection.convertEdgesToGraphML();
+        convertNodesToGraphML(nodesGeometry);
+        convertEdgesToGraphML();
         GraphMLExporter graphMLExporter = new GraphMLExporter();
         return graphMLExporter.exportDiagramToGraphML(graphMLSavePath, graphNodeCollection.getGraphMLBuffer(), graphEdgeCollection.getGraphMLBuffer());
     }
-    
+
     public File saveDiagram(Path graphSavePath) {
         JavaFXExporter javaFXExporter = new JavaFXExporter();
         return javaFXExporter.saveDiagram(createdDiagram, graphSavePath);
@@ -74,16 +75,12 @@ public abstract class Diagram {
         JavaFXVisualization javaFXVisualization = new JavaFXVisualization();
         return javaFXVisualization.createGraphView(createdDiagram);
     }
-    
-    private void populateNodesAndEdges(GraphNodeCollection nodeCollection, GraphEdgeCollection edgeCollection, List<String> chosenFilesNames) {
-    	nodeCollection.populateGraphNodes(getChosenNodes(chosenFilesNames));
-    	edgeCollection.setGraphNodes(nodeCollection.getGraphNodes());
-    	edgeCollection.populateGraphEdges(getChosenNodes(chosenFilesNames));
-    }
+
+    protected abstract StringBuilder convertEdgesToGraphML();
+
+    protected abstract StringBuilder convertNodesToGraphML(Map<Integer, List<Double>> nodesGeometry);
 
     public abstract List<Node> getChosenNodes(List<String> chosenFileNames);
-
-    public abstract void createCollections();
 
 	public abstract void exportPlantUMLDiagram(Path graphSavePath);
 

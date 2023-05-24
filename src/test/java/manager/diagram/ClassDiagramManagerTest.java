@@ -57,8 +57,8 @@ public class ClassDiagramManagerTest {
         SourceProject sourceProject = classDiagramManager.createTree(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
         Map<String, Map<String, String>> testingCreatedDiagram = classDiagramManager.createDiagram(chosenFiles);
 
-        GraphNodeCollection graphNodeCollection = new GraphMLLeafNode();
-        GraphEdgeCollection graphEdgeCollection = new GraphMLLeafEdge();
+        GraphNodeCollection graphNodeCollection = new GraphNodeCollection();
+        GraphEdgeCollection graphEdgeCollection = new GraphEdgeCollection(graphNodeCollection.getGraphNodes());
         graphNodeCollection.populateGraphNodes(getChosenNodes(chosenFiles, sourceProject));
         graphEdgeCollection.setGraphNodes(graphNodeCollection.getGraphNodes());
         graphEdgeCollection.populateGraphEdges(getChosenNodes(chosenFiles, sourceProject));
@@ -85,8 +85,8 @@ public class ClassDiagramManagerTest {
 
         File testingExportedFile = classDiagramManager.exportDiagramToGraphML(Paths.get(System.getProperty("user.home")+"\\testingExportedFile.graphML"));
 
-        GraphNodeCollection graphNodeCollection = new GraphMLLeafNode();
-        GraphEdgeCollection graphEdgeCollection = new GraphMLLeafEdge();
+        GraphNodeCollection graphNodeCollection = new GraphNodeCollection();
+        GraphEdgeCollection graphEdgeCollection = new GraphEdgeCollection(graphNodeCollection.getGraphNodes());
         graphNodeCollection.populateGraphNodes(getChosenNodes(chosenFiles, sourceProject));
         graphEdgeCollection.setGraphNodes(graphNodeCollection.getGraphNodes());
         graphEdgeCollection.populateGraphEdges(getChosenNodes(chosenFiles, sourceProject));
@@ -94,8 +94,8 @@ public class ClassDiagramManagerTest {
         DiagramArrangement diagramArrangement = new DiagramArrangement();
         Map<Integer, List<Double>> nodesGeometry = diagramArrangement.arrangeDiagram(graphNodeCollection.getGraphNodes(), graphEdgeCollection.getGraphEdges());
 
-        graphNodeCollection.convertNodesToGraphML(nodesGeometry);
-        graphEdgeCollection.convertEdgesToGraphML();
+        graphNodeCollection.convertLeafNodesToGraphML(nodesGeometry);
+        graphEdgeCollection.convertLeafEdgesToGraphML();
         GraphMLExporter graphMLExporter = new GraphMLExporter();
 
         try {
