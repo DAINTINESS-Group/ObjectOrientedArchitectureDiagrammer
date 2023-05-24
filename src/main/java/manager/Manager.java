@@ -65,7 +65,7 @@ public interface Manager {
      *
      * @param fileSavePth the selected path by the designer where the exported diagram will be saved
      * @param exportType  the type of the exportation
-     * @return
+     * @return the exported file
      */
     File exportPlantUML(Path fileSavePth, PlantUMLExportType exportType);
 
