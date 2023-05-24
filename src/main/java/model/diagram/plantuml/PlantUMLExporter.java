@@ -55,8 +55,7 @@ public class PlantUMLExporter {
 	}
 	
 	private void textExporter(String plantCode) {
-		try {
-			BufferedWriter writer = new BufferedWriter(new FileWriter(plantUMLFile));
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(plantUMLFile))) {
             writer.write(plantCode);
         } catch (IOException e) {
         	e.printStackTrace();
