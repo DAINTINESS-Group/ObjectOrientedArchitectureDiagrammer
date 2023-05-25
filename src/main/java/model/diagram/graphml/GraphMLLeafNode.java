@@ -1,6 +1,5 @@
 package model.diagram.graphml;
 
-import model.diagram.GraphNodeCollection;
 import model.tree.node.LeafNode;
 import model.tree.node.Node;
 import model.tree.node.NodeType;
@@ -9,10 +8,15 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public class GraphMLLeafNode extends GraphNodeCollection {
+public class GraphMLLeafNode {
 
     private static final String CLASS_COLOR = "#FF9900";
     private static final String INTERFACE_COLOR = "#3366FF";
+    private static final int X_COORDINATE = 0;
+    private static final int Y_COORDINATE = 1;
+
+    public GraphMLLeafNode() {
+    }
 
     public String convertNode(Node leafNode, int nodeId, List<Double> nodeGeometry) {
         return GraphMLSyntax.getInstance().getGraphMLNodesSyntax(getNodesDescription((LeafNode) leafNode, nodeId, nodeGeometry));
@@ -51,5 +55,11 @@ public class GraphMLLeafNode extends GraphNodeCollection {
         }
         return CLASS_COLOR;
     }
+
+	public String convertPlantNode(Node node) {
+		System.out.println("LEAF");
+		// Do nothing
+		return null;
+	}
 
 }

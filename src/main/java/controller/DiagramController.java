@@ -2,6 +2,7 @@ package controller;
 
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import manager.Manager;
+import model.diagram.plantuml.PlantUMLExportType;
 import model.tree.SourceProject;
 
 import java.io.File;
@@ -25,12 +26,12 @@ public abstract class DiagramController implements Controller {
 		return diagramManager.exportDiagramToGraphML(graphMLSavePath);
 	}
 	
-	public void exportPlantUMLDiagram(Path graphSavePath) {
-		diagramManager.exportPlantUMLDiagram(graphSavePath);
+	public File exportPlantUMLDiagram(Path graphSavePath) {
+		return diagramManager.exportPlantUML(graphSavePath, PlantUMLExportType.DIAGRAM);
 	}
 	
-	public void exportPlantUMLText(Path textSavePath) {
-		diagramManager.exportPlantUMLText(textSavePath);
+	public File exportPlantUMLText(Path textSavePath) {
+		return diagramManager.exportPlantUML(textSavePath, PlantUMLExportType.TEXT);
 	}
 
 	public SmartGraphPanel<String, String> visualizeJavaFXGraph() {

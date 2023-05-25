@@ -1,6 +1,7 @@
 package manager;
 
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
+import model.diagram.plantuml.PlantUMLExportType;
 import model.tree.SourceProject;
 
 import java.io.File;
@@ -59,18 +60,13 @@ public interface Manager {
      */
     SmartGraphPanel<String, String> visualizeJavaFXGraph();
 
-    /**This method exports the diagram as an image with the help of PlantUML by calling Diagram's 
-     * exportPlantUMLDiagram method
-     * @param graphSavePath the selected path by the designer where the diagram's image will be saved
+    /**
+     * This method is responsible for exporting the diagram to PlantUML based on the export type given, i.e. text & diagram
+     *
+     * @param fileSavePth the selected path by the designer where the exported diagram will be saved
+     * @param exportType  the type of the exportation
+     * @return the exported file
      */
-	void exportPlantUMLDiagram(Path graphSavePath);
-	
-    /**This method saves the PlantUML code to a text file by calling Diagram's
-     * exportPlantUMLText method
-     * @param textSavePath the selected path by the designer where the text file will be saved
-     */
-	void exportPlantUMLText(Path textSavePath);
-	
-	
+    File exportPlantUML(Path fileSavePth, PlantUMLExportType exportType);
 
 }

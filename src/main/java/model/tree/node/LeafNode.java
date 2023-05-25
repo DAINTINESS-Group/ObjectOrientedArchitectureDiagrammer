@@ -12,10 +12,17 @@ import java.util.Map;
  */
 public abstract class LeafNode extends Node{
 	private final Map<String, List<String>> methodToParameter;
-	private final Map<String, String> methodVisibilities;
-	private final Map<String, String> fieldVisibilities;
+	private final Map<String, ModifierType> methodVisibilities;
+	private final Map<String, ModifierType> fieldVisibilities;
 	private final Map<String, String> fields;
 	private final Map<String, String> methods;
+	private final List<String> methodNames;
+	private final List<String> methodReturnTypes;
+	private final List<StringBuilder> methodParameters;
+	private final List<ModifierType> methodVisibilitiesList;
+	private final List<ModifierType> fieldVisibilitiesList;
+	private final List<String> fieldNamesList;
+	private final List<String> fieldTypesList;
 	protected final List<String> methodsParametersTypes;
 
 	/**This method is responsible for initializing the nodes structs
@@ -29,6 +36,13 @@ public abstract class LeafNode extends Node{
 		methodToParameter = new HashMap<>();
 		methodVisibilities = new HashMap<>();
 		fieldVisibilities = new HashMap<>();
+		methodNames = new ArrayList<>();
+		methodReturnTypes = new ArrayList<>();
+		methodParameters = new ArrayList<>();
+		methodVisibilitiesList = new ArrayList<>();
+		fieldVisibilitiesList = new ArrayList<>();
+		fieldNamesList = new ArrayList<>();
+		fieldTypesList = new ArrayList<>();
 	}
 
 	/**This method is responsible for adding to the nodes' method parameter types
@@ -43,7 +57,10 @@ public abstract class LeafNode extends Node{
 	 * @param methodReturnType the method's return type
 	 */
 	public void addMethod(String methodName, String methodReturnType) {
+		// System.out.println(methodName + " " + methodReturnType);
 		methods.put(methodName, methodReturnType);
+		methodNames.add(methodName);
+		methodReturnTypes.add(methodReturnType);
 	}
 
 	/**This method is responsible for adding the nodes' fields names types
@@ -52,6 +69,8 @@ public abstract class LeafNode extends Node{
 	 */
 	public void addField(String fieldName, String fieldType) {
 		fields.put(fieldName, fieldType);
+		fieldNamesList.add(fieldName);
+		fieldTypesList.add(fieldType);
 	}
 
 	public PackageNode getParentNode() {
@@ -70,28 +89,74 @@ public abstract class LeafNode extends Node{
 		return methodsParametersTypes;
 	}
 	
-	public void addFieldVisibility(String fieldName, String fieldVisibility) {
+//	public void addFieldVisibility(String fieldName, String fieldVisibility) {
+//		fieldVisibilities.put(fieldName, fieldVisibility);
+//	}
+	
+	public void addFieldVisibility(String fieldName, ModifierType fieldVisibility) {
 		fieldVisibilities.put(fieldName, fieldVisibility);
+		fieldVisibilitiesList.add(fieldVisibility);
 	}
 	
-	public void addMethodVisibility(String methodName, String methodVisibility) {
+//	public void addMethodVisibility(String methodName, String methodVisibility) {
+//		methodVisibilities.put(methodName, methodVisibility);
+//		methodVisibilitiesList.add(methodVisibility);
+//	}
+	
+	public void addMethodVisibility(String methodName, ModifierType methodVisibility) {
 		methodVisibilities.put(methodName, methodVisibility);
+		methodVisibilitiesList.add(methodVisibility);
 	}
 	
-	public Map<String, String> getFieldVisibilities(){
+	public Map<String, ModifierType> getFieldVisibilities(){
 		return fieldVisibilities;
 	}
 	
-	public Map<String, String> getMethodVisibilities(){
+	public Map<String, ModifierType> getMethodVisibilities(){
 		return methodVisibilities;
 	}
 	
 	public void addForPlantUML(String methodName, List<String> parametersTypes, List<String> parametersNames) {
 		List<String> stringMergerList = new ArrayList<>();
+		StringBuilder stringMergerString = new StringBuilder();
 		for (int i = 0; i < parametersTypes.size(); i++) {
 			stringMergerList.add(parametersTypes.get(i) + " " + parametersNames.get(i));
+			if (i == parametersTypes.size() - 1) {
+				stringMergerString.append(parametersTypes.get(i) + " " + parametersNames.get(i));
+			}else {
+				stringMergerString.append(parametersTypes.get(i) + " " + parametersNames.get(i) + ", ");
+			}
 		}
 		methodToParameter.put(methodName, stringMergerList);
+		methodParameters.add(stringMergerString);
+	}
+	
+	public List<String> getMethodNamesList(){
+		return methodNames;
+	}
+	
+	public List<String> getMethodReturnTypesList(){
+		return methodReturnTypes;
+	}
+	
+	public List<ModifierType> getMethodVisibilitiesList(){
+		return methodVisibilitiesList;
+	}
+	
+	public List<StringBuilder> getMethodParametersList(){
+		return methodParameters;
+	}
+	
+	public List<String> getFieldNamesList(){
+		return fieldNamesList;
+	}
+	
+	public List<String> getFieldTypesList(){
+		return fieldTypesList;
+	}
+	
+	public List<ModifierType> getFieldVisibilitiesList(){
+		return fieldVisibilitiesList;
 	}
 	
 	public Map<String, List<String>> getMethodToParameter(){

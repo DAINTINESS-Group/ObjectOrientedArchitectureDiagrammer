@@ -11,6 +11,8 @@ import java.util.Map;
 import static java.util.Map.entry;
 
 public class FileAndDirectoryUtility {
+	
+	private static File selectedDirectory;
 
     private FileAndDirectoryUtility() { throw new java.lang.UnsupportedOperationException("Not to be instantiated"); }
 
@@ -20,7 +22,8 @@ public class FileAndDirectoryUtility {
         directoryChooser.setInitialDirectory(new File(System.getProperty("user.home")));
         directoryChooser.setTitle(windowTitle);
         Stage window = (Stage) menuBar.getScene().getWindow();
-        return directoryChooser.showDialog(window);
+        selectedDirectory = directoryChooser.showDialog(window);
+        return selectedDirectory;
     }
 
     public static File saveFile(String windowTitle, MenuBar menuBar, String fileType) {
@@ -35,10 +38,12 @@ public class FileAndDirectoryUtility {
         //fileChooser.setInitialDirectory(new File("C:\\Users\\user\\IntelliJProjects\\UMLDiagramTool\\src\\test\\resources\\LatexEditor"));
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(fileType, availableExtensionTypes.get(fileType)));
+        String[] directoryPath = selectedDirectory.getAbsolutePath().split("\\\\");
+        String directoryName = directoryPath[directoryPath.length - 1];
         if (fileType == "PlantUML Files" || fileType == "PlantUML Text Files") {
-        	fileChooser.setInitialFileName(String.format("plantUML%s", availableExtensionTypes.get(fileType).substring(1)));
+        	fileChooser.setInitialFileName(String.format(directoryName + "_plantUML%s", availableExtensionTypes.get(fileType).substring(1)));
         }else {
-        	fileChooser.setInitialFileName(String.format("createdDiagram%s", availableExtensionTypes.get(fileType).substring(1)));
+        	fileChooser.setInitialFileName(String.format(directoryName + "_createdDiagram%s", availableExtensionTypes.get(fileType).substring(1)));
         }
         Stage window = (Stage) menuBar.getScene().getWindow();
         return fileChooser.showSaveDialog(window);

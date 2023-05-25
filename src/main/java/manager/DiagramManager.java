@@ -2,6 +2,7 @@ package manager;
 
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import model.diagram.Diagram;
+import model.diagram.plantuml.PlantUMLExportType;
 import model.tree.node.PackageNode;
 import model.tree.SourceProject;
 import parser.Parser;
@@ -52,13 +53,9 @@ public abstract class DiagramManager implements Manager {
     public File exportDiagramToGraphML(Path graphMLSavePath) {
         return Objects.requireNonNull(diagramStack.peek()).exportDiagramToGraphML(graphMLSavePath);
     }
-    
-    public void exportPlantUMLDiagram(Path graphSavePath) {
-    	Objects.requireNonNull(diagramStack.peek()).exportPlantUMLDiagram(graphSavePath);
-    }
-    
-    public void exportPlantUMLText(Path textSavePath) {
-    	Objects.requireNonNull(diagramStack.peek()).exportPlantUMLText(textSavePath);
+
+    public File exportPlantUML(Path fileSavePth, PlantUMLExportType exportType) {
+        return Objects.requireNonNull(diagramStack.peek()).exportPlantUML(fileSavePth, exportType);
     }
 
     public File saveDiagram(Path graphSavePath) {
