@@ -20,8 +20,8 @@ import parser.FileVisitor;
 
 import static org.eclipse.jdt.core.dom.ASTNode.METHOD_DECLARATION;
 
-/**This class is responsible for the creation of the AST of a Java source file.
- * Using the ASTNode API it parses the files methods parameters, return types and field declarations
+/**This class is responsible for the creation of the AST of a Java source file using JDT.
+ * The ASTNode API parses the files methods parameters, return types and field declarations
  */
 public class JDTFileVisitor implements FileVisitor {
 

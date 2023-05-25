@@ -1,5 +1,6 @@
 package parser.javaparser;
 
+import com.github.javaparser.ParserConfiguration;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.*;
@@ -21,8 +22,9 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**This class is responsible for the creation of the AST of a Java source file.
- * Using the ASTNode API it parses the files methods parameters, return types and field declarations
+/**This class is responsible for the creation of the AST of a Java source file using Javaparser.
+ * Using the different visitors, it parses the file's inheritance declarations, constructor, methods parameters,
+ * return types, field & local variable declarations as well as the instantiated objects that aren't assigned to a variable
  */
 public class JavaparserFileVisitor implements FileVisitor {
 
@@ -37,6 +39,7 @@ public class JavaparserFileVisitor implements FileVisitor {
     public void createAST(File file, LeafNode leafNode) {
         try {
             JavaparserLeafNode javaparserLeafNode = (JavaparserLeafNode) leafNode;
+            StaticJavaParser.getParserConfiguration().setLanguageLevel(ParserConfiguration.LanguageLevel.JAVA_17);
             CompilationUnit compilationUnit = StaticJavaParser.parse(file);
 
             InheritanceVisitor inheritanceVisitor = new InheritanceVisitor(javaparserLeafNode);
@@ -110,12 +113,12 @@ public class JavaparserFileVisitor implements FileVisitor {
         public void visit(ConstructorDeclaration constructorDeclaration, Void arg) {
             super.visit(constructorDeclaration, arg);
 
-            String visibility = "PACKAGE_PRIVATE";
             if (constructorDeclaration.getModifiers().size() > 0) {
-                visibility = constructorDeclaration.getModifiers().get(0).toString().toUpperCase().trim();
+                leafNode.addMethodVisibility(constructorDeclaration.getNameAsString(),
+                        ModifierType.valueOf(constructorDeclaration.getModifiers().get(0).toString().toUpperCase().trim()));
+            }else {
+                leafNode.addMethodVisibility(constructorDeclaration.getNameAsString(), ModifierType.PACKAGE_PRIVATE);
             }
-            // leafNode.addMethodVisibility(constructorDeclaration.getNameAsString(), visibility);
-            leafNode.addMethodVisibility(constructorDeclaration.getNameAsString(), ModifierType.valueOf(visibility));
             leafNode.addMethod(constructorDeclaration.getNameAsString(), "Constructor");
 
             List<String> parameters = new ArrayList<>();
@@ -142,12 +145,13 @@ public class JavaparserFileVisitor implements FileVisitor {
             super.visit(fieldDeclaration, arg);
 
             fieldDeclaration.getVariables().forEach(variable -> {
-                String visibility = "PACKAGE_PRIVATE";
                 if (fieldDeclaration.getModifiers().size() > 0) {
-                    visibility = fieldDeclaration.getModifiers().get(0).toString().toUpperCase().trim();
+                    leafNode.addFieldVisibility(variable.getNameAsString(),
+                            ModifierType.valueOf(fieldDeclaration.getModifiers().get(0).toString().toUpperCase().trim()));
+                }else {
+                    leafNode.addFieldVisibility(variable.getNameAsString(),  ModifierType.PACKAGE_PRIVATE);
                 }
-                // leafNode.addFieldVisibility(variable.getNameAsString(),  visibility);
-                leafNode.addFieldVisibility(variable.getNameAsString(),  ModifierType.valueOf(visibility));
+
                 leafNode.addField(variable.getNameAsString(),
                         variable.getTypeAsString().replaceAll("<", "[").replaceAll(">", "]"));
             });
@@ -190,12 +194,12 @@ public class JavaparserFileVisitor implements FileVisitor {
             List<String> parameters = new ArrayList<>();
             List<String> parametersName = new ArrayList<>();
 
-            String visibility = "PACKAGE_PRIVATE";
             if (methodDeclaration.getModifiers().size() > 0) {
-            	visibility = methodDeclaration.getModifiers().get(0).toString().toUpperCase().trim();
+                leafNode.addMethodVisibility(methodDeclaration.getNameAsString(),
+                        ModifierType.valueOf(methodDeclaration.getModifiers().get(0).toString().toUpperCase().trim()));
+            }else{
+                leafNode.addMethodVisibility(methodDeclaration.getNameAsString(), ModifierType.PACKAGE_PRIVATE);
             }
-            // leafNode.addMethodVisibility(methodDeclaration.getNameAsString(), visibility);
-            leafNode.addMethodVisibility(methodDeclaration.getNameAsString(), ModifierType.valueOf(visibility));
             leafNode.addMethod(methodDeclaration.getNameAsString(),
                     methodDeclaration.getTypeAsString().replaceAll("<", "[").replaceAll(">", "]"));
 
