@@ -31,10 +31,9 @@ public abstract class DiagramManager implements Manager {
     public SourceProject createTree(Path sourcePackagePath) {
         diagramStack.push(getDiagram());
         SourceProject sourceProject = Objects.requireNonNull(diagramStack.peek()).createSourceProject();
+
         ProjectParserFactory projectParserFactory = new ProjectParserFactory(PARSER_TYPE);
-
         Parser projectParser = projectParserFactory.createProjectParser();
-
         projectParser.parseSourcePackage(sourcePackagePath);
         Map<Path, PackageNode> packageNodes = projectParser.getPackageNodes();
 

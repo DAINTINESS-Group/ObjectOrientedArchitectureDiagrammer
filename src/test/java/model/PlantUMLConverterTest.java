@@ -1,27 +1,18 @@
 package model;
 
-import org.junit.jupiter.api.Test;
-
 import model.diagram.GraphEdgeCollection;
 import model.diagram.GraphNodeCollection;
-import model.diagram.plantuml.PlantUMLEdge;
-import model.diagram.plantuml.PlantUMLLeafNode;
-import model.diagram.plantuml.PlantUMLPackageNode;
+import org.junit.jupiter.api.Test;
 import parser.Parser;
 import parser.ParserType;
 import parser.ProjectParserFactory;
-import parser.jdt.JDTProjectParser;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class PlantUMLConverterTest {
 

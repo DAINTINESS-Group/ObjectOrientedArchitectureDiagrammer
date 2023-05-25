@@ -5,12 +5,10 @@ import manager.DiagramManager;
 import model.diagram.CollectionsDiagramConverter;
 import model.diagram.GraphEdgeCollection;
 import model.diagram.GraphNodeCollection;
-import model.diagram.graphml.GraphMLLeafEdge;
-import model.diagram.graphml.GraphMLLeafNode;
+import model.tree.SourceProject;
+import model.tree.edge.Relationship;
 import model.tree.node.Node;
 import model.tree.node.PackageNode;
-import model.tree.edge.Relationship;
-import model.tree.SourceProject;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;

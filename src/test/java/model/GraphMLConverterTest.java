@@ -2,10 +2,6 @@ package model;
 
 import model.diagram.GraphEdgeCollection;
 import model.diagram.GraphNodeCollection;
-import model.diagram.graphml.GraphMLLeafEdge;
-import model.diagram.graphml.GraphMLLeafNode;
-import model.diagram.graphml.GraphMLPackageEdge;
-import model.diagram.graphml.GraphMLPackageNode;
 import model.tree.edge.Relationship;
 import model.tree.node.LeafNode;
 import model.tree.node.Node;
@@ -108,14 +104,12 @@ class GraphMLConverterTest {
     void populateGraphMLEdgesTest() throws IOException {
         for (ParserType parserType: parserTypes) {
             GraphNodeCollection graphMLNode = new GraphNodeCollection();
-            Parser parser = new ProjectParser(parserType);
             ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
             Parser parser = projectParserFactory.createProjectParser();
 
             parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
             graphMLNode.populateGraphNodes(new ArrayList<>(parser.getPackageNodes().get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
                     "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands")).getLeafNodes().values()));
-            GraphMLLeafEdge graphMLEdge = new GraphMLLeafEdge(graphMLNode.getGraphNodes());
             GraphEdgeCollection graphEdgeCollection = new GraphEdgeCollection(graphMLNode.getGraphNodes());
             graphEdgeCollection.populateGraphEdges(new ArrayList<>(parser.getPackageNodes().get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
                     "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands")).getLeafNodes().values()));
@@ -159,7 +153,6 @@ class GraphMLConverterTest {
             parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
             graphMLNode.populateGraphNodes(new ArrayList<>(parser.getPackageNodes().get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
                     "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands")).getLeafNodes().values()));
-            GraphMLLeafEdge graphMLEdge = new GraphMLLeafEdge(graphMLNode.getGraphNodes());
             GraphEdgeCollection graphEdgeCollection = new GraphEdgeCollection(graphMLNode.getGraphNodes());
             graphEdgeCollection.setGraphNodes(graphMLNode.getGraphNodes());
             graphEdgeCollection.populateGraphEdges(new ArrayList<>(parser.getPackageNodes().get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
@@ -278,7 +271,6 @@ class GraphMLConverterTest {
             parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
             graphMLPackageNode.populateGraphNodes(new ArrayList<>(parser.getPackageNodes().values()));
 
-            GraphMLPackageEdge graphMLPackageEdge = new GraphMLPackageEdge(graphMLPackageNode.getGraphNodes());
             GraphEdgeCollection graphEdgeCollection = new GraphEdgeCollection(graphMLPackageNode.getGraphNodes());
             graphEdgeCollection.setGraphNodes(graphMLPackageNode.getGraphNodes());
             graphEdgeCollection.populateGraphEdges(new ArrayList<>(parser.getPackageNodes().values()));
@@ -314,7 +306,6 @@ class GraphMLConverterTest {
             StringBuilder expected = new StringBuilder();
             graphMLPackageNode.populateGraphNodes(new ArrayList<>(parser.getPackageNodes().values()));
 
-            GraphMLPackageEdge graphMLPackageEdge = new GraphMLPackageEdge(graphMLPackageNode.getGraphNodes());
             GraphEdgeCollection graphEdgeCollection = new GraphEdgeCollection(graphMLPackageNode.getGraphNodes());
             graphEdgeCollection.setGraphNodes(graphMLPackageNode.getGraphNodes());
             graphEdgeCollection.populateGraphEdges(new ArrayList<>(parser.getPackageNodes().values()));
