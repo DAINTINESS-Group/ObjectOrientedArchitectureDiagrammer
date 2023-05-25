@@ -9,7 +9,8 @@ import model.diagram.plantuml.PlantUMLLeafNode;
 import model.diagram.plantuml.PlantUMLPackageNode;
 import parser.Parser;
 import parser.ParserType;
-import parser.ProjectParser;
+import parser.ProjectParserFactory;
+import parser.jdt.JDTProjectParser;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -46,7 +47,10 @@ class PlantUMLConverterTest {
 		expectedRelationships.add("VersionsStrategy ..> Document");
 		GraphNodeCollection graphNodeCollection = new GraphNodeCollection();
 		GraphEdgeCollection graphEdgeCollection = new GraphEdgeCollection(graphNodeCollection.getGraphNodes());
-        Parser parser = new ProjectParser(parserType);
+
+		ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
+		Parser parser = projectParserFactory.createProjectParser();
+
         parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
         graphNodeCollection.populateGraphNodes(new ArrayList<>(parser.getPackageNodes().get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
                 "\\src\\test\\resources\\LatexEditor\\src\\model")).getLeafNodes().values()));
@@ -141,7 +145,9 @@ class PlantUMLConverterTest {
 				+"}\n");
 		
 		GraphNodeCollection graphNodeCollection = new GraphNodeCollection();
-        Parser parser = new ProjectParser(parserType);
+		ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
+		Parser parser = projectParserFactory.createProjectParser();
+
         parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
         graphNodeCollection.populateGraphNodes(new ArrayList<>(parser.getPackageNodes().get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
                 "\\src\\test\\resources\\LatexEditor\\src\\model")).getLeafNodes().values()));
@@ -165,7 +171,10 @@ class PlantUMLConverterTest {
 		expectedRelationships.add("src.view ..> src.controller");
 		GraphNodeCollection graphNodeCollection = new GraphNodeCollection();
 		GraphEdgeCollection graphEdgeCollection = new GraphEdgeCollection(graphNodeCollection.getGraphNodes());
-        Parser parser = new ProjectParser(parserType);
+
+		ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
+		Parser parser = projectParserFactory.createProjectParser();
+
         parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
         graphNodeCollection.populateGraphNodes(new ArrayList<>(parser.getPackageNodes().values()));
         graphEdgeCollection.setGraphNodes(graphNodeCollection.getGraphNodes());
@@ -193,7 +202,10 @@ class PlantUMLConverterTest {
 		expectedDeclarations.put("src.view", "package src.view {\n"
 				+ "}\n");
 		GraphNodeCollection graphNodeCollection = new GraphNodeCollection();
-        Parser parser = new ProjectParser(parserType);
+
+		ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
+		Parser parser = projectParserFactory.createProjectParser();
+
         parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
         graphNodeCollection.populateGraphNodes(new ArrayList<>(parser.getPackageNodes().values()));
         actualDeclarations = graphNodeCollection.convertPackageNodesToPlantUML();

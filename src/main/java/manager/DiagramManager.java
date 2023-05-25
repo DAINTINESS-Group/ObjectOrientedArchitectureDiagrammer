@@ -7,7 +7,7 @@ import model.tree.node.PackageNode;
 import model.tree.SourceProject;
 import parser.Parser;
 import parser.ParserType;
-import parser.ProjectParser;
+import parser.ProjectParserFactory;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -31,7 +31,9 @@ public abstract class DiagramManager implements Manager {
     public SourceProject createTree(Path sourcePackagePath) {
         diagramStack.push(getDiagram());
         SourceProject sourceProject = Objects.requireNonNull(diagramStack.peek()).createSourceProject();
-        Parser projectParser = new ProjectParser(PARSER_TYPE);
+        ProjectParserFactory projectParserFactory = new ProjectParserFactory(PARSER_TYPE);
+
+        Parser projectParser = projectParserFactory.createProjectParser();
 
         projectParser.parseSourcePackage(sourcePackagePath);
         Map<Path, PackageNode> packageNodes = projectParser.getPackageNodes();

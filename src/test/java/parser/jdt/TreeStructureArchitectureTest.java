@@ -20,7 +20,7 @@ import model.tree.edge.Relationship;
 import model.tree.node.LeafNode;
 import parser.Parser;
 import parser.ParserType;
-import parser.ProjectParser;
+import parser.ProjectParserFactory;
 
 class TreeStructureArchitectureTest {
 
@@ -29,7 +29,9 @@ class TreeStructureArchitectureTest {
 
 	@Test
 	void getFieldAndMethodTypesTest() throws IOException {
-		Parser parser = new ProjectParser(parserType);
+		ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
+		Parser parser = projectParserFactory.createProjectParser();
+
 		parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
 		Map<Path, PackageNode> packages = parser.getPackageNodes();
 		List<String> methodReturnTypes = new ArrayList<>(Arrays.asList("Constructor", "void"));
@@ -64,7 +66,9 @@ class TreeStructureArchitectureTest {
 
 	@Test
 	void leafNodeRelationshipsTest() throws IOException {
-		Parser parser = new ProjectParser(parserType);
+		ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
+		Parser parser = projectParserFactory.createProjectParser();
+
 		parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
 		Map<Path, PackageNode> packages = parser.getPackageNodes();
 		PackageNode commandPackage = packages.get(Paths.get(currentDirectory.toRealPath().normalize().toString(), "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands"));
@@ -118,7 +122,9 @@ class TreeStructureArchitectureTest {
 
 	@Test
 	void leafNodeInheritanceRelationshipTest() throws IOException {
-		Parser parser = new ProjectParser(parserType);
+		ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
+		Parser parser = projectParserFactory.createProjectParser();
+
 		parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\ParserTesting"));
 		Map<Path, PackageNode> packages = parser.getPackageNodes();
 		PackageNode sourcePackage = packages.get(Paths.get(currentDirectory.toRealPath().normalize().toString(), "\\src\\test\\resources\\ParserTesting"));
@@ -151,7 +157,9 @@ class TreeStructureArchitectureTest {
 
 	@Test
 	void packageNodeRelationshipsTest() throws IOException {
-		Parser parser = new ProjectParser(parserType);
+		ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
+		Parser parser = projectParserFactory.createProjectParser();
+
 		parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
 		Map<Path, PackageNode> packages = parser.getPackageNodes();
 
@@ -199,7 +207,9 @@ class TreeStructureArchitectureTest {
 
 	@Test
 	void leafNodeTypesTest() throws IOException {
-		Parser parser = new ProjectParser(parserType);
+		ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
+		Parser parser = projectParserFactory.createProjectParser();
+
 		parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\ParserTesting"));
 		Map<Path, PackageNode> packages = parser.getPackageNodes();
 		PackageNode sourcePackage = packages.get(Paths.get(currentDirectory.toRealPath().normalize().toString(), "\\src\\test\\resources\\ParserTesting"));

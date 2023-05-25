@@ -3,20 +3,19 @@ package parser;
 import parser.javaparser.JavaparserProjectParser;
 import parser.jdt.JDTProjectParser;
 
-public class ParserFactory {
+public class ProjectParserFactory {
 
     private final ParserType parserType;
 
-    public ParserFactory(ParserType parserType) {
+    public ProjectParserFactory(ParserType parserType) {
         this.parserType = parserType;
     }
 
-    public ProjectParserHelper createParser() {
+    public Parser createProjectParser() {
         if (parserType.equals(ParserType.JDT)) {
             return new JDTProjectParser();
-        }else {
-            return new JavaparserProjectParser();
         }
-    }
 
+        return new JavaparserProjectParser();
+    }
 }
