@@ -7,8 +7,6 @@ import model.diagram.DiagramArrangement;
 import model.diagram.GraphEdgeCollection;
 import model.diagram.GraphNodeCollection;
 import model.diagram.graphml.GraphMLExporter;
-import model.diagram.graphml.GraphMLLeafEdge;
-import model.diagram.graphml.GraphMLLeafNode;
 import model.diagram.javafx.JavaFXExporter;
 import model.tree.node.LeafNode;
 import model.tree.node.Node;

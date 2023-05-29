@@ -4,7 +4,6 @@ import model.diagram.plantuml.PlantUMLExporter;
 import model.tree.node.Node;
 
 import java.io.File;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
