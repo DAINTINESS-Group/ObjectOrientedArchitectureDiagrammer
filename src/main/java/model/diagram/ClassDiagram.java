@@ -5,6 +5,7 @@ import model.tree.node.Node;
 import model.tree.node.PackageNode;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -25,12 +26,20 @@ public class ClassDiagram extends Diagram {
     }
 
     @Override
-    public File exportPlantUMLDiagram(PlantUMLExporter plantUMLExporter) {
+    public File exportPlantUMLDiagram(Path fileSavePth) {
+        graphNodeCollection.convertClassNodesToPlantUML();
+        graphEdgeCollection.convertEdgesToPlantUML();
+        PlantUMLExporter plantUMLExporter = new PlantUMLExporter(fileSavePth, graphNodeCollection.getPlantUMLBuffer(),
+                graphEdgeCollection.getPlantUMLBuffer());
     	return plantUMLExporter.exportClassDiagram();
     }
 
     @Override
-    public File exportPlantUMLText(PlantUMLExporter plantUMLExporter) {
+    public File exportPlantUMLText(Path fileSavePth) {
+        graphNodeCollection.convertClassNodesToPlantUML();
+        graphEdgeCollection.convertEdgesToPlantUML();
+        PlantUMLExporter plantUMLExporter = new PlantUMLExporter(fileSavePth, graphNodeCollection.getPlantUMLBuffer(),
+                graphEdgeCollection.getPlantUMLBuffer());
     	return plantUMLExporter.exportClassDiagramText();
     }
 

@@ -4,6 +4,7 @@ import model.diagram.plantuml.PlantUMLExporter;
 import model.tree.node.Node;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,12 +28,20 @@ public class PackageDiagram extends Diagram {
     }
 
     @Override
-    public File exportPlantUMLDiagram(PlantUMLExporter plantUMLExporter) {
+    public File exportPlantUMLDiagram(Path fileSavePth) {
+        graphNodeCollection.convertPackageNodesToPlantUML();
+        graphEdgeCollection.convertEdgesToPlantUML();
+        PlantUMLExporter plantUMLExporter = new PlantUMLExporter(fileSavePth, graphNodeCollection.getPlantUMLBuffer(),
+                graphEdgeCollection.getPlantUMLBuffer());
     	return plantUMLExporter.exportPackageDiagram();
     }
 
     @Override
-    public File exportPlantUMLText(PlantUMLExporter plantUMLExporter) {
+    public File exportPlantUMLText(Path fileSavePth) {
+        graphNodeCollection.convertPackageNodesToPlantUML();
+        graphEdgeCollection.convertEdgesToPlantUML();
+        PlantUMLExporter plantUMLExporter = new PlantUMLExporter(fileSavePth, graphNodeCollection.getPlantUMLBuffer(),
+                graphEdgeCollection.getPlantUMLBuffer());
     	return plantUMLExporter.exportPackageDiagramText();
     }
 

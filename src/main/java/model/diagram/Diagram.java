@@ -6,7 +6,6 @@ import model.diagram.javafx.JavaFXLoader;
 import model.diagram.graphml.GraphMLExporter;
 import model.diagram.javafx.JavaFXVisualization;
 import model.diagram.plantuml.PlantUMLExportType;
-import model.diagram.plantuml.PlantUMLExporter;
 import model.tree.node.Node;
 import model.tree.SourceProject;
 
@@ -78,15 +77,10 @@ public abstract class Diagram {
     }
 
     public File exportPlantUML(Path fileSavePth, PlantUMLExportType exportType) {
-        graphNodeCollection.convertClassNodesToPlantUML();
-        graphEdgeCollection.convertEdgesToPlantUML();
-        PlantUMLExporter plantUMLExporter = new PlantUMLExporter(fileSavePth, graphNodeCollection.getPlantUMLBuffer(),
-                graphEdgeCollection.getPlantUMLBuffer());
-
         if (exportType.equals(PlantUMLExportType.TEXT)) {
-            return exportPlantUMLText(plantUMLExporter);
+            return exportPlantUMLText(fileSavePth);
         }else {
-            return exportPlantUMLDiagram(plantUMLExporter);
+            return exportPlantUMLDiagram(fileSavePth);
         }
     }
 
@@ -96,7 +90,7 @@ public abstract class Diagram {
 
     protected abstract StringBuilder convertNodesToGraphML(Map<Integer, List<Double>> nodesGeometry);
 
-	public abstract File exportPlantUMLDiagram(PlantUMLExporter plantUMLExporter);
+	public abstract File exportPlantUMLDiagram(Path fileSavePath);
 
-	public abstract File exportPlantUMLText(PlantUMLExporter plantUMLExporter);
+	public abstract File exportPlantUMLText(Path fileSavePath);
 }
