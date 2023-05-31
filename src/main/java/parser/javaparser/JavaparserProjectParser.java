@@ -7,7 +7,6 @@ import model.tree.node.LeafNode;
 import model.tree.node.PackageNode;
 import parser.FileVisitor;
 import parser.Parser;
-import parser.javaparser.JavaparserFileVisitor;
 
 import java.io.File;
 import java.nio.file.DirectoryStream;

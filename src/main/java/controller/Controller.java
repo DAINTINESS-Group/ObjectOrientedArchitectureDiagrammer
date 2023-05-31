@@ -1,7 +1,7 @@
 package controller;
 
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
-import model.tree.SourceProject;
+import model.SourceProject;
 
 import java.io.File;
 import java.nio.file.Path;

@@ -74,9 +74,7 @@ public class JDTFileVisitor implements FileVisitor {
 		            		}
 		            	}
 	            		int fieldModifiers = field.getModifiers();
-	            		jdtLeafNode.addFieldVisibility(fieldName, getVisibility(fieldModifiers));
-
-						jdtLeafNode.addField(fieldName, field.getType().toString().replaceAll("<", "[").replaceAll(">", "]"));
+						jdtLeafNode.addField(fieldName, field.getType().toString().replaceAll("<", "[").replaceAll(">", "]"), getVisibility(fieldModifiers));
 	            	}
 	                if (isMethod(body)) {
 	                    MethodDeclaration method = (MethodDeclaration)body;
@@ -87,26 +85,19 @@ public class JDTFileVisitor implements FileVisitor {
 	                    if (returnType==null) returnTypeName = "Constructor";
 	                    else returnTypeName = returnType.toString();
 	                    
-	                    List<String> parameters = new ArrayList<>();
-	                    List<String> parametersName = new ArrayList<>();
+						Map<String, String> parameters = new HashMap<>();
 
 	                    for (Object parameter : method.parameters()) {
 	                        VariableDeclaration variableDeclaration = (VariableDeclaration) parameter;
 							String variableType = variableDeclaration.
 									getStructuralProperty(SingleVariableDeclaration.TYPE_PROPERTY).toString() + "[]".repeat(Math.max(0, variableDeclaration.getExtraDimensions()));
 	                        
-							//plantUML
-							parameters.add(variableType);
-	                        String variableName = variableDeclaration.getName().getIdentifier();
-	                        parametersName.add(variableName);
-                        
-	                        //parser 
-							jdtLeafNode.addMethodParameterType(variableType.replaceAll("<", "[").replaceAll(">", "]"));
+							parameters.put(variableDeclaration.getName().getIdentifier(),
+									variableType.replaceAll("<", "[").replaceAll(">", "]"));
 	                    }
+
 	                    int methodModifiers = method.getModifiers();
-	                    jdtLeafNode.addForPlantUML(methodName, parameters, parametersName);
-	                    jdtLeafNode.addMethodVisibility(methodName, getVisibility(methodModifiers));
-	                    jdtLeafNode.addMethod(methodName, returnTypeName.replaceAll("<", "[").replaceAll(">", "]"));
+	                    jdtLeafNode.addMethod(methodName, returnTypeName.replaceAll("<", "[").replaceAll(">", "]"), getVisibility(methodModifiers), parameters);
 	                }
 	            }
 	        }

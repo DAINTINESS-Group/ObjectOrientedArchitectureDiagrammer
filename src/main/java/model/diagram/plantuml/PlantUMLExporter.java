@@ -19,9 +19,9 @@ public class PlantUMLExporter {
 	private final String bufferBody;
 	private final File plantUMLFile;
 	
-    public PlantUMLExporter(Path savePath, String nodesBuffer, String edgesBuffer) {
+    public PlantUMLExporter(Path savePath, StringBuilder nodesBuffer, StringBuilder edgesBuffer) {
 		plantUMLFile = savePath.toFile();
-    	bufferBody = nodesBuffer + edgesBuffer + "@enduml\n";
+    	bufferBody = nodesBuffer.append(edgesBuffer)  + "@enduml\n";
     }
 
 	public File exportClassDiagram() {

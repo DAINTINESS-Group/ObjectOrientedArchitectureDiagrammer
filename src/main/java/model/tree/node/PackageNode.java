@@ -57,9 +57,9 @@ public class PackageNode extends Node{
 	public String getName() {
 		if (doesParentNodeExist()) {
 			return getParentNodesName() + "." + path.normalize().toString().substring(path.normalize().toString().lastIndexOf("\\") + 1);
-		}else {
-			return path.normalize().toString().substring(path.normalize().toString().lastIndexOf("\\") + 1);
 		}
+		//return path.normalize().toString().substring(path.normalize().toString().lastIndexOf("\\") + 1);
+		return path.getFileName().toString();
 	}
 
 	private boolean doesParentNodeExist() {

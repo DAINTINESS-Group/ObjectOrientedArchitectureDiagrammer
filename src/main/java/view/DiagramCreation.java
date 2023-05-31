@@ -25,7 +25,7 @@ public class DiagramCreation {
     public void createProject(String diagramType) {
         this.diagramType = diagramType;
         if (projectTreeView == null) {
-            PopupWindow.createPopupInfoWindow("You should open a new project first!", "Error");
+            PopupWindow.createPopupInfoWindow("You should load a project first!", "Error");
             return;
         }
         DiagramControllerFactory diagramControllerFactory = new DiagramControllerFactory();

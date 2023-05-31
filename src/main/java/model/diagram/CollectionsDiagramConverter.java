@@ -1,53 +1,81 @@
 package model.diagram;
 
-import model.tree.node.Node;
-import model.tree.edge.Relationship;
+import model.graph.Arc;
+import model.graph.SinkVertex;
+import model.graph.Vertex;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class CollectionsDiagramConverter {
 
-    private final GraphNodeCollection graphNodeCollection;
-    private final GraphEdgeCollection graphEdgeCollection;
-
-    public CollectionsDiagramConverter(GraphNodeCollection graphNodeCollection, GraphEdgeCollection graphEdgeCollection) {
-        this.graphNodeCollection = graphNodeCollection;
-        this.graphEdgeCollection = graphEdgeCollection;
+    public CollectionsDiagramConverter() {
     }
 
-    public Map<String, Map<String, String>> convertCollectionsToDiagram() {
+    public Map<String, Map<String, String>> convertClassCollectionsToDiagram(Map<SinkVertex, Integer> graphNodes, Map<Arc<SinkVertex>, Integer> graphEdges) {
         Map<String, Map<String, String>> graph = new HashMap<>();
-        iterateGraphNodes(graph);
+        for (Map.Entry<SinkVertex, Integer> sinkVertex: graphNodes.entrySet()) {
+            Map<String, String> nodeEdges = iterateClassGraphEdges(sinkVertex.getKey(), graphEdges);
+            insertClassNode(graph, sinkVertex, nodeEdges);
+        }
         return graph;
     }
 
-    private void iterateGraphNodes(Map<String, Map<String, String>> graph) {
-        for (Map.Entry<Node, Integer> leafNode: graphNodeCollection.getGraphNodes().entrySet()) {
-            Map<String, String> nodeEdges = new HashMap<>();
-            iterateGraphEdges(leafNode.getKey(), nodeEdges);
-            insertNode(graph, leafNode, nodeEdges);
+    public Map<String, Map<String, String>> convertPackageCollectionsToDiagram(Map<Vertex, Integer> graphNodes, Map<Arc<Vertex>, Integer> graphEdges) {
+        Map<String, Map<String, String>> graph = new HashMap<>();
+        for (Map.Entry<Vertex, Integer> vertex: graphNodes.entrySet()) {
+            Map<String, String> nodeEdges = iteratePackageGraphEdges(vertex.getKey(), graphEdges);
+            insertPackageNode(graph, vertex, nodeEdges);
         }
+        return graph;
     }
 
-    private void iterateGraphEdges(Node leafNode, Map<String, String> nodeEdges) {
-        for (Relationship relationship: graphEdgeCollection.getGraphEdges().keySet()){
-            if (doesEdgeStartFromCurrentNode(leafNode, relationship)) {
-                insertEdge(nodeEdges, relationship);
+
+    private Map<String, String> iterateClassGraphEdges(SinkVertex sinkVertex, Map<Arc<SinkVertex>, Integer> graphEdges) {
+        Map<String, String> nodeEdges = new HashMap<>();
+        for (Arc<SinkVertex> arc: graphEdges.keySet()) {
+            if (!doesClassEdgeStartFromCurrentNode(sinkVertex, arc)) {
+                continue;
             }
+            insertClassEdge(nodeEdges, arc);
         }
+        return nodeEdges;
     }
 
-    private void insertNode(Map<String, Map<String, String>> graph, Map.Entry<Node, Integer> leafNode, Map<String, String> nodeEdges) {
-        graph.put(leafNode.getKey().getName() + "_" + leafNode.getKey().getType().name(), nodeEdges);
+    private void insertClassNode(Map<String, Map<String, String>> graph, Map.Entry<SinkVertex, Integer> sinkVertex, Map<String, String> nodeEdges) {
+        graph.put(sinkVertex.getKey().getName() + "_" + sinkVertex.getKey().getVertexType().name(), nodeEdges);
     }
 
-    private boolean doesEdgeStartFromCurrentNode(Node leafNode, Relationship relationship) {
-        return relationship.getStartingNode().equals(leafNode);
+    private void insertClassEdge(Map<String, String> nodeEdges, Arc<SinkVertex> arc) {
+        nodeEdges.put(arc.getTargetVertex().getName() + "_" + arc.getTargetVertex().getVertexType().name() + "_" + arc.getArcType().toString(),
+                arc.getArcType().name());
     }
 
-    private void insertEdge(Map<String, String> nodeEdges, Relationship relationship) {
-        nodeEdges.put(relationship.getEndingNode().getName() + "_" + relationship.getEndingNode().getType().name() + "_" + relationship.getRelationshipType().toString(),
-                relationship.getRelationshipType().name());
+    private Map<String, String> iteratePackageGraphEdges(Vertex vertex, Map<Arc<Vertex>, Integer> graphEdges) {
+        Map<String, String> nodeEdges = new HashMap<>();
+        for (Arc<Vertex> arc: graphEdges.keySet()) {
+            if (!doesPackageEdgeStartFromCurrentNode(vertex, arc)) {
+                continue;
+            }
+            insertPackageEdge(nodeEdges, arc);
+        }
+        return nodeEdges;
+    }
+
+    private void insertPackageNode(Map<String, Map<String, String>> graph, Map.Entry<Vertex, Integer> vertex, Map<String, String> nodeEdges) {
+        graph.put(vertex.getKey().getName() + "_" + vertex.getKey().getVertexType().name(), nodeEdges);
+    }
+
+    private void insertPackageEdge(Map<String, String> nodeEdges, Arc<Vertex> arc) {
+        nodeEdges.put(arc.getTargetVertex().getName() + "_" + arc.getTargetVertex().getVertexType().name() + "_" + arc.getArcType().toString(),
+                arc.getArcType().name());
+    }
+
+    private boolean doesClassEdgeStartFromCurrentNode(SinkVertex sinkVertex, Arc<SinkVertex> arc) {
+        return arc.getSourceVertex().equals(sinkVertex);
+    }
+
+    private boolean doesPackageEdgeStartFromCurrentNode(Vertex vertex, Arc<Vertex> arc) {
+        return arc.getSourceVertex().equals(vertex);
     }
 }

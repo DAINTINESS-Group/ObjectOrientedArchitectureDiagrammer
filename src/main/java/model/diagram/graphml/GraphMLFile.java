@@ -25,7 +25,7 @@ public class GraphMLFile {
         graphMLWriter.close();
     }
 
-    public void writeToBuffer(String buffer) {
+    public void writeToBuffer(StringBuilder buffer) {
         graphMLBuffer.append(buffer);
     }
 

@@ -1,8 +1,7 @@
 package model.diagram.graphml;
 
-import model.tree.node.LeafNode;
-import model.tree.node.Node;
-import model.tree.node.NodeType;
+import model.graph.SinkVertex;
+import model.graph.VertexType;
 
 import java.util.Arrays;
 import java.util.List;
@@ -14,52 +13,56 @@ public class GraphMLLeafNode {
     private static final String INTERFACE_COLOR = "#3366FF";
     private static final int X_COORDINATE = 0;
     private static final int Y_COORDINATE = 1;
+    private final Map<SinkVertex, Integer> graphNodes;
+    private final StringBuilder graphMLBuffer;
+    private final Map<Integer, List<Double>> nodesGeometry;
 
-    public GraphMLLeafNode() {
+    public GraphMLLeafNode(Map<SinkVertex, Integer> graphNodes, Map<Integer, List<Double>> nodesGeometry) {
+        this.graphNodes = graphNodes;
+        this.graphMLBuffer = new StringBuilder();
+        this.nodesGeometry = nodesGeometry;
     }
 
-    public String convertNode(Node leafNode, int nodeId, List<Double> nodeGeometry) {
-        return GraphMLSyntax.getInstance().getGraphMLNodesSyntax(getNodesDescription((LeafNode) leafNode, nodeId, nodeGeometry));
+    public StringBuilder convertLeafNode() {
+        for (Map.Entry<SinkVertex, Integer> sinkVertex: graphNodes.entrySet()) {
+            graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLNodesSyntax(
+                    getNodesDescription(sinkVertex.getKey(), sinkVertex.getValue(), nodesGeometry.get(sinkVertex.getValue()))));
+        }
+        return graphMLBuffer;
     }
 
-    private List<String> getNodesDescription(LeafNode leafNode, int nodeId, List<Double> nodeGeometry) {
+    private List<String> getNodesDescription(SinkVertex leafNode, int nodeId, List<Double> nodeGeometry) {
         return Arrays.asList(String.valueOf(nodeId), getNodesColor(leafNode), leafNode.getName(), getNodesFields(leafNode),
                 getNodesMethods(leafNode), String.valueOf(nodeGeometry.get(X_COORDINATE)), String.valueOf(nodeGeometry.get(Y_COORDINATE)));
     }
 
-    private String getNodesMethods(LeafNode leafNode) {
-        if (leafNode.getMethods().size() == 0) {
+    private String getNodesMethods(SinkVertex sinkVertex) {
+        if (sinkVertex.getMethods().size() == 0) {
             return "";
         }
         StringBuilder methods = new StringBuilder();
-        for(Map.Entry<String, String> entry: leafNode.getMethods().entrySet()) {
-            methods.append(entry.getValue()).append(" ").append(entry.getKey()).append("\n");
+        for (SinkVertex.Method method: sinkVertex.getMethods()) {
+            methods.append(method.getReturnType()).append(" ").append(method.getName()).append("\n");
         }
         return methods.deleteCharAt(methods.length() - 1).toString();
     }
 
-    private String getNodesFields(LeafNode leafNode) {
-        if (leafNode.getFields().size() == 0) {
+    private String getNodesFields(SinkVertex sinkVertex) {
+        if (sinkVertex.getFields().size() == 0) {
             return "";
         }
         StringBuilder fields = new StringBuilder();
-        for(Map.Entry<String, String> entry: leafNode.getFields().entrySet()) {
-            fields.append(entry.getValue()).append(" ").append(entry.getKey()).append("\n");
+        for (SinkVertex.Field field: sinkVertex.getFields()) {
+            fields.append(field.getType()).append(" ").append(field.getName()).append("\n");
         }
         return fields.deleteCharAt(fields.length() - 1).toString();
     }
 
-    private String getNodesColor(LeafNode leafNode) {
-        if (leafNode.getType().equals(NodeType.INTERFACE)) {
+    private String getNodesColor(SinkVertex leafNode) {
+        if (leafNode.getVertexType().equals(VertexType.INTERFACE)) {
             return INTERFACE_COLOR;
         }
         return CLASS_COLOR;
     }
-
-	public String convertPlantNode(Node node) {
-		System.out.println("LEAF");
-		// Do nothing
-		return null;
-	}
 
 }

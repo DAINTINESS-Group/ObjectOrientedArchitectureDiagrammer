@@ -1,11 +1,15 @@
 package model;
 
-import model.diagram.GraphEdgeCollection;
-import model.diagram.GraphNodeCollection;
+import manager.ClassDiagramManager;
+import manager.PackageDiagramManager;
+import model.diagram.plantuml.PlantUMLLeafEdge;
+import model.diagram.plantuml.PlantUMLLeafNode;
+import model.diagram.plantuml.PlantUMLPackageEdge;
+import model.diagram.plantuml.PlantUMLPackageNode;
+import model.graph.Arc;
+import model.graph.SinkVertex;
+import model.graph.Vertex;
 import org.junit.jupiter.api.Test;
-import parser.Parser;
-import parser.ParserType;
-import parser.ProjectParserFactory;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -13,18 +17,19 @@ import java.nio.file.Paths;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class PlantUMLConverterTest {
 
 	Path currentDirectory = Path.of(".");
-    ParserType parserType = ParserType.JDT;
 
 	@Test
 	void checkClassDiagramRelationshipsText() throws IOException{
-		List<String> actualRelationships; 
 		List<String> expectedRelationships = new ArrayList<>();
 		expectedRelationships.add("StableVersionsStrategy ..|> VersionsStrategy");
 		expectedRelationships.add("VersionsStrategyFactory ..> VersionsStrategy");
+		expectedRelationships.add("VersionsStrategyFactory ..> StableVersionsStrategy");
+		expectedRelationships.add("VersionsStrategyFactory ..> VolatileVersionsStrategy");
 		expectedRelationships.add("VersionsStrategyFactory --o VersionsStrategy");
 		expectedRelationships.add("VersionsManager --> VersionsStrategy");
 		expectedRelationships.add("VersionsManager ..> VersionsStrategy");
@@ -36,170 +41,201 @@ class PlantUMLConverterTest {
 		expectedRelationships.add("DocumentManager --o Document");
 		expectedRelationships.add("StableVersionsStrategy ..> Document");
 		expectedRelationships.add("VersionsStrategy ..> Document");
-		GraphNodeCollection graphNodeCollection = new GraphNodeCollection();
-		GraphEdgeCollection graphEdgeCollection = new GraphEdgeCollection(graphNodeCollection.getGraphNodes());
 
-		ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
-		Parser parser = projectParserFactory.createProjectParser();
+		ClassDiagramManager classDiagramManager = new ClassDiagramManager();
+		SourceProject sourceProject = classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
+		classDiagramManager.createDiagram(List.of("StableVersionsStrategy", "VersionsStrategy", "VersionsStrategyFactory", "VolatileVersionsStrategy",
+				"VersionsManager", "Document", "DocumentManager"));
 
-        parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-        graphNodeCollection.populateGraphNodes(new ArrayList<>(parser.getPackageNodes().get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
-                "\\src\\test\\resources\\LatexEditor\\src\\model")).getLeafNodes().values()));
-        graphNodeCollection.populateGraphNodes(new ArrayList<>(parser.getPackageNodes().get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
-                "\\src\\test\\resources\\LatexEditor\\src\\model\\strategies")).getLeafNodes().values()));
-        graphEdgeCollection.setGraphNodes(graphNodeCollection.getGraphNodes());
-        graphEdgeCollection.populateGraphEdges(new ArrayList<>(parser.getPackageNodes().get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
-                "\\src\\test\\resources\\LatexEditor\\src\\model")).getLeafNodes().values()));
-        graphEdgeCollection.populateGraphEdges(new ArrayList<>(parser.getPackageNodes().get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
-                "\\src\\test\\resources\\LatexEditor\\src\\model\\strategies")).getLeafNodes().values()));
-        actualRelationships = graphEdgeCollection.convertEdgesToPlantUML();
-        Collections.sort(actualRelationships);
-        Collections.sort(expectedRelationships);
-        assertEquals(actualRelationships, expectedRelationships);
+		Map<Arc<SinkVertex>, Integer> graphEdges = classDiagramManager.getDiagram().getGraphEdges();
+
+		PlantUMLLeafEdge plantUMLEdge = new PlantUMLLeafEdge(graphEdges);
+		plantUMLEdge.convertPlantEdge();
+		List<String> actualRelationships = plantUMLEdge.getPlantUMLTester();
+
+		Collections.sort(actualRelationships);
+		Collections.sort(expectedRelationships);
+		assertEquals(expectedRelationships, actualRelationships);
 	}
 	
 	@Test
 	void checkClassDiagramDeclarationsText() throws IOException{
-		Map<String, String> actualDeclarations; 
-		Map<String, String> expectedDeclarations = new HashMap<>();
-		expectedDeclarations.put("Document", "class Document {\n"
-				+ "-author: String\n"
-				+ "-date: String\n"
-				+ "-copyright: String\n"
-				+ "-versionID: String\n"
-				+ "-contents: String\n"
-				+ "+Document(String author, String date, String copyright, String versionID, String contents): Constructor\n"
-				+ "+Document(): Constructor\n"
-				+ "+getContents(): String\n"
-				+ "+setContents(String contents): void\n"
-				+ "+save(String filename): void\n"
-				+ "+clone(): Document\n"
-				+ "+changeVersion(): void\n"
-				+ "+getVersionID(): String\n"
-				+ "}\n");
-		expectedDeclarations.put("StableVersionsStrategy", "class StableVersionsStrategy {\n"
-				+ "-versionID: String\n"
-				+ "+putVersion(Document document): void\n"
-				+ "+getVersion(): Document\n"
-				+ "+setEntireHistory(List<Document> documents): void\n"
-				+ "+getEntireHistory(): List[Document]\n"
-				+ "+removeVersion(): void\n"
-				+ "}\n");
-		expectedDeclarations.put("VersionsStrategy", "interface VersionsStrategy {\n"
-				+ "+putVersion(Document document): void\n"
-				+ "+getVersion(): Document\n"
-				+ "+setEntireHistory(List<Document> documents): void\n"
-				+ "+getEntireHistory(): List[Document]\n"
-				+ "+removeVersion(): void\n"
-				+ "}\n");
-		expectedDeclarations.put("VersionsStrategyFactory", "class VersionsStrategyFactory {\n"
-				+ "-strategies: HashMap[String,VersionsStrategy]\n"
-				+ "+VersionsStrategyFactory(): Constructor\n"
-				+ "+createStrategy(String type): VersionsStrategy\n"
-				+ "}\n");
-		expectedDeclarations.put("DocumentManager", "class DocumentManager {\n"
-				+ "-templates: HashMap[String,Document]\n"
-				+ "+DocumentManager(): Constructor\n"
-				+ "+createDocument(String type): Document\n"
-				+ "+getContents(String type): String\n"
-				+ "}\n");
-		expectedDeclarations.put("VolatileVersionsStrategy", "class VolatileVersionsStrategy {\n"
-				+ "-history: ArrayList[Document]\n"
-				+ "+VolatileVersionsStrategy(): Constructor\n"
-				+ "+putVersion(Document document): void\n"
-				+ "+getVersion(): Document\n"
-				+ "+setEntireHistory(List<Document> documents): void\n"
-				+ "+getEntireHistory(): List[Document]\n"
-				+ "+removeVersion(): void\n"
-				+ "}\n");
-		expectedDeclarations.put("VersionsManager", "class VersionsManager {\n"
-				+"-enabled: boolean\n"
-				+"-strategy: VersionsStrategy\n"
-				+"-latexEditorView: LatexEditorView\n"
-				+"+VersionsManager(VersionsStrategy versionsStrategy, LatexEditorView latexEditorView): Constructor\n"
-				+"+isEnabled(): boolean\n"
-				+"+enable(): void\n"
-				+"+disable(): void\n"
-				+"+setStrategy(VersionsStrategy strategy): void\n"
-				+"+setCurrentVersion(Document document): void\n"
-				+"+setPreviousVersion(): Document\n"
-				+"+rollbackToPreviousVersion(): void\n"
-				+"+getType(): String\n"
-				+"+saveContents(): void\n"
-				+"+saveToFile(): void\n"
-				+"+loadFromFile(): void\n"
-				+"+enableStrategy(): void\n"
-				+"+changeStrategy(): void\n"
-				+"+putVersion(Document document): void\n"
-				+"+rollback(): void\n"
-				+"+getStrategy(): VersionsStrategy\n"
-				+"}\n");
-		
-		GraphNodeCollection graphNodeCollection = new GraphNodeCollection();
-		ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
-		Parser parser = projectParserFactory.createProjectParser();
+		List<String> expected = new ArrayList<>(List.of(
+		"class Document {\n" +
+				"-author: String\n" +
+				"-date: String\n" +
+				"-copyright: String\n" +
+				"-versionID: String\n" +
+				"-contents: String\n" +
+				"+Document(): Constructor\n" +
+				"+Document(String date, String copyright, String versionID, String contents, String author): Constructor\n" +
+				"+clone(): Document\n" +
+				"+save(String filename): void\n" +
+				"+setContents(String contents): void\n" +
+				"+changeVersion(): void\n" +
+				"+getVersionID(): String\n" +
+				"+getContents(): String\n" +
+				"}\n",
+				"class StableVersionsStrategy {\n" +
+				"-versionID: String\n" +
+				"+removeVersion(): void\n" +
+				"+getEntireHistory(): List[Document]\n" +
+				"+putVersion(Document document): void\n" +
+				"+setEntireHistory(List[Document] documents): void\n" +
+				"+getVersion(): Document\n" +
+				"}\n",
+				"interface VersionsStrategy {\n" +
+				"+removeVersion(): void\n" +
+				"+getEntireHistory(): List[Document]\n" +
+				"+putVersion(Document document): void\n" +
+				"+setEntireHistory(List[Document] documents): void\n" +
+				"+getVersion(): Document\n" +
+				"}\n",
+				"class DocumentManager {\n" +
+				"-templates: HashMap[String,Document]\n" +
+				"+createDocument(String type): Document\n" +
+				"+getContents(String type): String\n" +
+				"+DocumentManager(): Constructor\n" +
+				"}\n",
+				"class VersionsStrategyFactory {\n" +
+				"-strategies: HashMap[String,VersionsStrategy]\n" +
+				"+VersionsStrategyFactory(): Constructor\n" +
+				"+createStrategy(String type): VersionsStrategy\n" +
+				"}\n",
+				"class VolatileVersionsStrategy {\n" +
+				"-history: ArrayList[Document]\n" +
+				"+removeVersion(): void\n" +
+				"+VolatileVersionsStrategy(): Constructor\n" +
+				"+getEntireHistory(): List[Document]\n" +
+				"+setEntireHistory(List[Document] documents): void\n" +
+				"+putVersion(Document document): void\n" +
+				"+getVersion(): Document\n" +
+				"}\n",
+				"class VersionsManager {\n" +
+				"-enabled: boolean\n" +
+				"-strategy: VersionsStrategy\n" +
+				"-latexEditorView: LatexEditorView\n" +
+				"+loadFromFile(): void\n" +
+				"+enable(): void\n" +
+				"+isEnabled(): boolean\n" +
+				"+VersionsManager(LatexEditorView latexEditorView, VersionsStrategy versionsStrategy): Constructor\n" +
+				"+setPreviousVersion(): Document\n" +
+				"+saveContents(): void\n" +
+				"+getType(): String\n" +
+				"+changeStrategy(): void\n" +
+				"+setStrategy(VersionsStrategy strategy): void\n" +
+				"+setCurrentVersion(Document document): void\n" +
+				"+getStrategy(): VersionsStrategy\n" +
+				"+rollback(): void\n" +
+				"+rollbackToPreviousVersion(): void\n" +
+				"+enableStrategy(): void\n" +
+				"+disable(): void\n" +
+				"+saveToFile(): void\n" +
+				"+putVersion(Document document): void\n" +
+				"}\n"
+		));
 
-        parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-        graphNodeCollection.populateGraphNodes(new ArrayList<>(parser.getPackageNodes().get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
-                "\\src\\test\\resources\\LatexEditor\\src\\model")).getLeafNodes().values()));
-        graphNodeCollection.populateGraphNodes(new ArrayList<>(parser.getPackageNodes().get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
-                "\\src\\test\\resources\\LatexEditor\\src\\model\\strategies")).getLeafNodes().values()));
-        actualDeclarations = graphNodeCollection.convertClassNodesToPlantUML();
-        assertEquals(actualDeclarations, expectedDeclarations);
+		ClassDiagramManager classDiagramManager = new ClassDiagramManager();
+		SourceProject sourceProject = classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
+		classDiagramManager.createDiagram(List.of("StableVersionsStrategy", "VersionsStrategy", "VersionsStrategyFactory", "VolatileVersionsStrategy",
+				"VersionsManager", "Document", "DocumentManager"));
+
+		Map<SinkVertex, Integer> graphNodes = classDiagramManager.getDiagram().getGraphNodes();
+		PlantUMLLeafNode plantUMLLeafNode = new PlantUMLLeafNode(graphNodes);
+		plantUMLLeafNode.convertPlantLeafNode();
+		List<String> actual = new ArrayList<>(plantUMLLeafNode.getPlantUMLTester().values());
+
+
+		assertEquals(expected.size(), actual.size());
+		Collections.sort(actual);
+		Collections.sort(expected);
+		Iterator<String> actualIterator = actual.iterator();
+		Iterator<String> expectedIterator = expected.iterator();
+
+		while (actualIterator.hasNext() || expectedIterator.hasNext()) {
+			List<String> actualList = Arrays.asList(actualIterator.next().split("\n"));
+			List<String> expectedList = Arrays.asList(expectedIterator.next().split("\n"));
+
+			assertEquals(actualList.size(), expectedList.size());
+			Collections.sort(actualList);
+			Collections.sort(expectedList);
+			assertTrue(actualList.containsAll(expectedList));
+			assertTrue(expectedList.containsAll(actualList));
+		}
 	}
 	
 	@Test
-	void checkPackageDiagramRelationshipsText() throws IOException{
-		List<String> actualRelationships; 
-		List<String> expectedRelationships = new ArrayList<>();
-		expectedRelationships.add("src.model ..> src.view");
-		expectedRelationships.add("src.model ..> src.model.strategies");
-		expectedRelationships.add("src.model.strategies ..> src.model");
-		expectedRelationships.add("src.controller ..> src.model");
-		expectedRelationships.add("src.controller ..> src.controller.commands");
-		expectedRelationships.add("src.controller.commands ..> src.model");
-		expectedRelationships.add("src.view ..> src.model");
-		expectedRelationships.add("src.view ..> src.controller");
-		GraphNodeCollection graphNodeCollection = new GraphNodeCollection();
-		GraphEdgeCollection graphEdgeCollection = new GraphEdgeCollection(graphNodeCollection.getGraphNodes());
+	void checkPackageDiagramRelationshipsText() {
+		try {
+			List<String> actualRelationships;
+			List<String> expectedRelationships = new ArrayList<>();
+			expectedRelationships.add("src.model ..> src.view");
+			expectedRelationships.add("src.model ..> src.model.strategies");
+			expectedRelationships.add("src.model.strategies ..> src.model");
+			expectedRelationships.add("src.controller ..> src.model");
+			expectedRelationships.add("src.controller ..> src.controller.commands");
+			expectedRelationships.add("src.controller.commands ..> src.model");
+			expectedRelationships.add("src.view ..> src.model");
+			expectedRelationships.add("src.view ..> src.controller");
+			expectedRelationships.add("src.view ..> src.model.strategies");
 
-		ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
-		Parser parser = projectParserFactory.createProjectParser();
+			PackageDiagramManager packageDiagramManager = new PackageDiagramManager();
+			SourceProject sourceProject = packageDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
+			packageDiagramManager.createDiagram(List.of(
+					currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src",
+					currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src\\view",
+					currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src\\model",
+					currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src\\model\\strategies",
+					currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands",
+					currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src\\controller"));
 
-        parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-        graphNodeCollection.populateGraphNodes(new ArrayList<>(parser.getPackageNodes().values()));
-        graphEdgeCollection.setGraphNodes(graphNodeCollection.getGraphNodes());
-        graphEdgeCollection.populateGraphEdges(new ArrayList<>(parser.getPackageNodes().values()));
-        actualRelationships = graphEdgeCollection.convertEdgesToPlantUML();
-        Collections.sort(actualRelationships);
-        Collections.sort(expectedRelationships);
-        assertEquals(actualRelationships, expectedRelationships);   
+			Map<Arc<Vertex>, Integer> graphEdges = packageDiagramManager.getDiagram().getGraphEdges();
+			PlantUMLPackageEdge plantUMLEdge = new PlantUMLPackageEdge(graphEdges);
+			plantUMLEdge.convertPlantEdge();
+			actualRelationships = plantUMLEdge.getPlantUMLTester();
+
+			Collections.sort(actualRelationships);
+			Collections.sort(expectedRelationships);
+			assertEquals(expectedRelationships, actualRelationships);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Test
-	void checkPackageDiagramDeclarationsText() throws IOException{
-		Map<String, String> actualDeclarations; 
-		Map<String, String> expectedDeclarations = new HashMap<>();
-		expectedDeclarations.put("src", "package src {\n"
-				+ "}\n");
-		expectedDeclarations.put("src.model", "package src.model {\n"
-				+ "}\n");
-		expectedDeclarations.put("src.model.strategies", "package src.model.strategies {\n"
-				+ "}\n");
-		expectedDeclarations.put("src.controller", "package src.controller {\n"
-				+ "}\n");
-		expectedDeclarations.put("src.controller.commands", "package src.controller.commands {\n"
-				+ "}\n");
-		expectedDeclarations.put("src.view", "package src.view {\n"
-				+ "}\n");
-		GraphNodeCollection graphNodeCollection = new GraphNodeCollection();
+	void checkPackageDiagramDeclarationsText() {
+		try {
+			Map<String, String> actualDeclarations;
+			Map<String, String> expectedDeclarations = new HashMap<>();
+			expectedDeclarations.put("src", "package src {\n" + "}\n");
+			expectedDeclarations.put("src.model", "package src.model {\n" + "}\n");
+			expectedDeclarations.put("src.model.strategies", "package src.model.strategies {\n" + "}\n");
+			expectedDeclarations.put("src.controller", "package src.controller {\n" + "}\n");
+			expectedDeclarations.put("src.controller.commands", "package src.controller.commands {\n" + "}\n");
+			expectedDeclarations.put("src.view", "package src.view {\n" + "}\n");
 
-		ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
-		Parser parser = projectParserFactory.createProjectParser();
+			PackageDiagramManager packageDiagramManager = new PackageDiagramManager();
+			SourceProject sourceProject = packageDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
+			packageDiagramManager.createDiagram(List.of(
+					currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src",
+					currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src\\view",
+					currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src\\model",
+					currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src\\model\\strategies",
+					currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands",
+					currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src\\controller"));
 
-        parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-        graphNodeCollection.populateGraphNodes(new ArrayList<>(parser.getPackageNodes().values()));
-        actualDeclarations = graphNodeCollection.convertPackageNodesToPlantUML();
-        assertEquals(actualDeclarations , expectedDeclarations);  
+			Map<Vertex, Integer> graphNodes = packageDiagramManager.getDiagram().getGraphNodes();
+			PlantUMLPackageNode plantUMLPackageNode = new PlantUMLPackageNode(graphNodes);
+			plantUMLPackageNode.convertPlantPackageNode();
+			actualDeclarations = plantUMLPackageNode.getPlantUMLTester();
+
+			assertEquals(expectedDeclarations.size(), actualDeclarations.size());
+			for (Map.Entry<String, String> expected: expectedDeclarations.entrySet()) {
+				assertTrue(actualDeclarations.containsKey(expected.getKey()));
+				assertEquals(expected.getValue(), actualDeclarations.get(expected.getKey()));
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

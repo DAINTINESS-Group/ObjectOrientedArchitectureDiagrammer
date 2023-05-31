@@ -1,9 +1,9 @@
 package controller;
 
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
-import manager.Manager;
+import manager.DiagramManager;
 import model.diagram.plantuml.PlantUMLExportType;
-import model.tree.SourceProject;
+import model.SourceProject;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -12,10 +12,10 @@ import java.util.Map;
 
 public abstract class DiagramController implements Controller {
 
-	protected Manager diagramManager;
+	protected DiagramManager diagramManager;
 
 	public SourceProject createTree(Path sourcePackagePath) {
-		return diagramManager.createTree(sourcePackagePath);
+		return diagramManager.createSourceProject(sourcePackagePath);
 	}
 
 	public Map<Integer, List<Double>> arrangeDiagram(){

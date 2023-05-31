@@ -1,171 +1,98 @@
 package model.tree.node;
 
+import org.javatuples.Triplet;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**This class is responsible for the implementation of a leaf node in the tree.
  * Each node has a parent node(the parent package), the path of the source file,
  * the branches that start from that node and also the field/method/method parameter types
  */
 public abstract class LeafNode extends Node{
-	private final Map<String, List<String>> methodToParameter;
-	private final Map<String, ModifierType> methodVisibilities;
-	private final Map<String, ModifierType> fieldVisibilities;
-	private final Map<String, String> fields;
-	private final Map<String, String> methods;
-	private final List<String> methodNames;
-	private final List<String> methodReturnTypes;
-	private final List<StringBuilder> methodParameters;
-	private final List<ModifierType> methodVisibilitiesList;
-	private final List<ModifierType> fieldVisibilitiesList;
-	private final List<String> fieldNamesList;
-	private final List<String> fieldTypesList;
-	protected final List<String> methodsParametersTypes;
+	private final List<Triplet<String, String, ModifierType>> fields;
+	private final Map<Triplet<String, String, ModifierType>, Map<String, String>> methods;
+	private int methodId;
 
 	/**This method is responsible for initializing the nodes structs
 	 * @param path the path of Java source file
 	 */
 	public LeafNode(Path path) {
 		super(path);
-		methodsParametersTypes = new ArrayList<>();
-		fields = new HashMap<>();
+		fields = new ArrayList<>();
 		methods = new HashMap<>();
-		methodToParameter = new HashMap<>();
-		methodVisibilities = new HashMap<>();
-		fieldVisibilities = new HashMap<>();
-		methodNames = new ArrayList<>();
-		methodReturnTypes = new ArrayList<>();
-		methodParameters = new ArrayList<>();
-		methodVisibilitiesList = new ArrayList<>();
-		fieldVisibilitiesList = new ArrayList<>();
-		fieldNamesList = new ArrayList<>();
-		fieldTypesList = new ArrayList<>();
+		methodId = 0;
 	}
 
-	/**This method is responsible for adding to the nodes' method parameter types
-	 * @param methodParameterType the type of parameter the node's methods take
+	/**This method is responsible for adding the nodes' method's name, return type, modifier type & its parameters
+	 * that include the name and the type
+	 * @param name the method's name
+	 * @param returnType the method's return type
+	 * @param modifierType the method's modifier type
+	 * @param parameters the method's parameters
 	 */
-	public void addMethodParameterType(String methodParameterType) {
-			methodsParametersTypes.add(methodParameterType);
+	public void addMethod(String name, String returnType, ModifierType modifierType, Map<String, String> parameters) {
+		methods.put(new Triplet<>(name + "$" + methodId, returnType, modifierType), parameters);
+		methodId++;
 	}
 
-	/**This method is responsible for adding the nodes' methods names and return types
-	 * @param methodName the method's name
-	 * @param methodReturnType the method's return type
-	 */
-	public void addMethod(String methodName, String methodReturnType) {
-		// System.out.println(methodName + " " + methodReturnType);
-		methods.put(methodName, methodReturnType);
-		methodNames.add(methodName);
-		methodReturnTypes.add(methodReturnType);
-	}
-
-	/**This method is responsible for adding the nodes' fields names types
+	/**This method is responsible for adding the nodes' field's name, type & modifier type
 	 * @param fieldName the field's name
 	 * @param fieldType the field's type
+	 * @param modifierType the field's modifier type
 	 */
-	public void addField(String fieldName, String fieldType) {
-		fields.put(fieldName, fieldType);
-		fieldNamesList.add(fieldName);
-		fieldTypesList.add(fieldType);
+	public void addField(String fieldName, String fieldType, ModifierType modifierType) {
+		fields.add(new Triplet<>(fieldName, fieldType, modifierType));
 	}
 
 	public PackageNode getParentNode() {
 		return parentNode;
 	}
 
-	public Map<String, String> getMethods() {
+	public Map<Triplet<String, String, ModifierType>, Map<String, String>> getMethods(){
 		return methods;
 	}
-	
-	public Map<String, String> getFields() {
+
+	public List<Triplet<String, String, ModifierType>> getMethodNamesAndTypes() {
+		return new ArrayList<>(methods.keySet());
+	}
+
+	public List<String> getMethodsNames() {
+		return methods.keySet().stream().map(Triplet::getValue0).collect(Collectors.toList());
+	}
+
+	public List<String> getMethodsReturnTypes() {
+		return methods.keySet().stream().map(Triplet::getValue1).collect(Collectors.toList());
+	}
+
+	public List<ModifierType> getMethodVisibilities(){
+		return methods.keySet().stream().map(Triplet::getValue2).collect(Collectors.toList());
+	}
+
+	public List<String> getMethodParameterTypes() {
+		List<String> parameterTypes = new ArrayList<>();
+		methods.forEach((method, parameters) -> parameterTypes.addAll(new ArrayList<>(parameters.values())));
+		return parameterTypes;
+	}
+
+	public List<Triplet<String, String, ModifierType>> getFields() {
 		return fields;
 	}
-	
-	public List<String> getMethodParameterTypes() {
-		return methodsParametersTypes;
-	}
-	
-//	public void addFieldVisibility(String fieldName, String fieldVisibility) {
-//		fieldVisibilities.put(fieldName, fieldVisibility);
-//	}
-	
-	public void addFieldVisibility(String fieldName, ModifierType fieldVisibility) {
-		fieldVisibilities.put(fieldName, fieldVisibility);
-		fieldVisibilitiesList.add(fieldVisibility);
-	}
-	
-//	public void addMethodVisibility(String methodName, String methodVisibility) {
-//		methodVisibilities.put(methodName, methodVisibility);
-//		methodVisibilitiesList.add(methodVisibility);
-//	}
-	
-	public void addMethodVisibility(String methodName, ModifierType methodVisibility) {
-		methodVisibilities.put(methodName, methodVisibility);
-		methodVisibilitiesList.add(methodVisibility);
-	}
-	
-	public Map<String, ModifierType> getFieldVisibilities(){
-		return fieldVisibilities;
-	}
-	
-	public Map<String, ModifierType> getMethodVisibilities(){
-		return methodVisibilities;
-	}
-	
-	public void addForPlantUML(String methodName, List<String> parametersTypes, List<String> parametersNames) {
-		List<String> stringMergerList = new ArrayList<>();
-		StringBuilder stringMergerString = new StringBuilder();
-		for (int i = 0; i < parametersTypes.size(); i++) {
-			stringMergerList.add(parametersTypes.get(i) + " " + parametersNames.get(i));
-			if (i == parametersTypes.size() - 1) {
-				stringMergerString.append(parametersTypes.get(i) + " " + parametersNames.get(i));
-			}else {
-				stringMergerString.append(parametersTypes.get(i) + " " + parametersNames.get(i) + ", ");
-			}
-		}
-		methodToParameter.put(methodName, stringMergerList);
-		methodParameters.add(stringMergerString);
-	}
-	
-	public List<String> getMethodNamesList(){
-		return methodNames;
-	}
-	
-	public List<String> getMethodReturnTypesList(){
-		return methodReturnTypes;
-	}
-	
-	public List<ModifierType> getMethodVisibilitiesList(){
-		return methodVisibilitiesList;
-	}
-	
-	public List<StringBuilder> getMethodParametersList(){
-		return methodParameters;
-	}
-	
-	public List<String> getFieldNamesList(){
-		return fieldNamesList;
-	}
-	
-	public List<String> getFieldTypesList(){
-		return fieldTypesList;
-	}
-	
-	public List<ModifierType> getFieldVisibilitiesList(){
-		return fieldVisibilitiesList;
-	}
-	
-	public Map<String, List<String>> getMethodToParameter(){
-		return methodToParameter;
+
+	public List<String> getFieldsNames(){
+		return fields.stream().map(Triplet::getValue0).collect(Collectors.toList());
 	}
 
-	public List<String> getMethodsReturnTypes() { return new ArrayList<>(getMethods().values());}
+	public List<String> getFieldsTypes(){
+		return fields.stream().map(Triplet::getValue1).collect(Collectors.toList());
+	}
 
-	public List<String> getFieldsTypes(){ return new ArrayList<>(getFields().values());}
+	public List<ModifierType> getFieldVisibilities(){
+		return fields.stream().map(Triplet::getValue2).collect(Collectors.toList());
+	}
 
 	public abstract NodeType getType();
 

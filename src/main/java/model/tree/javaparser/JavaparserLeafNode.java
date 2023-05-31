@@ -76,4 +76,5 @@ public class JavaparserLeafNode extends LeafNode {
     public NodeType getType() {
         return nodeType;
     }
+
 }

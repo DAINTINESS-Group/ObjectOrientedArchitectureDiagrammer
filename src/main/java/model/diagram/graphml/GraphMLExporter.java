@@ -12,7 +12,7 @@ public class GraphMLExporter {
         graphMLFile = new GraphMLFile();
     }
 
-    public File exportDiagramToGraphML(Path graphMLSavePath, String nodeBuffer, String edgeBuffer) {
+    public File exportDiagramToGraphML(Path graphMLSavePath, StringBuilder nodeBuffer, StringBuilder edgeBuffer) {
         try {
             graphMLFile.createGraphMLFile(graphMLSavePath);
             generateGraphMLGraph(nodeBuffer, edgeBuffer);
@@ -23,7 +23,7 @@ public class GraphMLExporter {
         return graphMLFile.getGraphMLFile();
     }
 
-    private void generateGraphMLGraph(String nodeBuffer, String edgeBuffer){
+    private void generateGraphMLGraph(StringBuilder nodeBuffer, StringBuilder edgeBuffer){
         graphMLFile.writeToBuffer(nodeBuffer);
         graphMLFile.writeToBuffer(edgeBuffer);
     }
