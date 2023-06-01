@@ -4,19 +4,16 @@ import model.graph.ModifierType;
 import model.graph.SinkVertex;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 public class PlantUMLLeafNode {
 
-	private final Map<String, String> plantUMLTester;
 	private final Map<SinkVertex, Integer> graphNodes;
 
 	public PlantUMLLeafNode(Map<SinkVertex, Integer> graphNodes) {
 		this.graphNodes = graphNodes;
-		plantUMLTester = new HashMap<>();
 	}
 
 	public StringBuilder convertPlantLeafNode() {
@@ -26,7 +23,6 @@ public class PlantUMLLeafNode {
 			plantUMLDeclaration += convertFieldsToPlantUML(node);
 			plantUMLDeclaration += convertMethodsToPlantUML(node) + "}\n";
 			plantUMLBuffer.append(plantUMLDeclaration);
-			plantUMLTester.put(node.getName(), plantUMLDeclaration);
 		}
 		return plantUMLBuffer;
 	}
@@ -73,7 +69,4 @@ public class PlantUMLLeafNode {
 		};
     }
 
-	public Map<String, String> getPlantUMLTester() {
-		return plantUMLTester;
-	}
 }

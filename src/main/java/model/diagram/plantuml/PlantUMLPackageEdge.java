@@ -4,18 +4,14 @@ import model.graph.Arc;
 import model.graph.ArcType;
 import model.graph.Vertex;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 public class PlantUMLPackageEdge {
 
     private final Map<Arc<Vertex>, Integer> graphEdges;
-    private final List<String> plantUMLTester;
 
     public PlantUMLPackageEdge(Map<Arc<Vertex>, Integer> graphEdges) {
         this.graphEdges = graphEdges;
-        plantUMLTester = new ArrayList<>();
     }
 
     public StringBuilder convertPlantEdge() {
@@ -26,7 +22,6 @@ public class PlantUMLPackageEdge {
             plantUMLRelationship += relationship.getTargetVertex().getName();
 
             plantUMLBuffer.append(plantUMLRelationship).append("\n");
-            plantUMLTester.add(plantUMLRelationship);
         }
         return plantUMLBuffer;
     }
@@ -45,7 +40,4 @@ public class PlantUMLPackageEdge {
         };
     }
 
-    public List<String> getPlantUMLTester() {
-        return plantUMLTester;
-    }
 }
