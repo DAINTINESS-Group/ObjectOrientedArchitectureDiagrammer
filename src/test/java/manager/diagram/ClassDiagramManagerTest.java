@@ -4,7 +4,7 @@ import manager.ClassDiagramManager;
 import model.SourceProject;
 import model.diagram.CollectionsDiagramConverter;
 import model.diagram.DiagramArrangement;
-import model.diagram.graphml.GraphMLExporter;
+import model.diagram.graphml.GraphMLClassExporter;
 import model.diagram.graphml.GraphMLLeafEdge;
 import model.diagram.graphml.GraphMLLeafNode;
 import model.diagram.javafx.JavaFXExporter;
@@ -112,9 +112,9 @@ public class ClassDiagramManagerTest {
             GraphMLLeafEdge graphMLLeafEdge = new GraphMLLeafEdge(graphNodes);
             StringBuilder graphMLEdgeBuffer = graphMLLeafEdge.convertLeafEdge(graphEdges);
 
-            GraphMLExporter graphMLExporter = new GraphMLExporter();
-            assertTrue(FileUtils.contentEquals(graphMLExporter.exportDiagramToGraphML(Paths.get(System.getProperty("user.home")+"\\testingExportedFile.graphML"),
-                    graphMLNodeBuffer, graphMLEdgeBuffer), testingExportedFile));
+            GraphMLClassExporter graphMLExporter = new GraphMLClassExporter(graphNodes, nodesGeometry, graphEdges);
+            assertTrue(FileUtils.contentEquals(graphMLExporter.exportDiagramToGraphML(Paths.get(System.getProperty("user.home")+"\\testingExportedFile.graphML")
+            ), testingExportedFile));
         } catch (IOException e) {
             e.printStackTrace();
         }

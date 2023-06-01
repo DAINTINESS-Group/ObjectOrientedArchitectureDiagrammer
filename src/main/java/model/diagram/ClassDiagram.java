@@ -2,16 +2,12 @@ package model.diagram;
 
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import model.SourceProject;
-import model.diagram.graphml.GraphMLExporter;
-import model.diagram.graphml.GraphMLLeafEdge;
-import model.diagram.graphml.GraphMLLeafNode;
+import model.diagram.graphml.GraphMLClassExporter;
 import model.diagram.javafx.JavaFXExporter;
 import model.diagram.javafx.JavaFXLoader;
 import model.diagram.javafx.JavaFXVisualization;
-import model.diagram.plantuml.PlantUMLLeafEdge;
+import model.diagram.plantuml.PlantUMLClassExporter;
 import model.diagram.plantuml.PlantUMLExportType;
-import model.diagram.plantuml.PlantUMLExporter;
-import model.diagram.plantuml.PlantUMLLeafNode;
 import model.graph.Arc;
 import model.graph.SinkVertex;
 
@@ -47,13 +43,8 @@ public class ClassDiagram {
     }
 
     public File exportDiagramToGraphML(Path graphMLSavePath) {
-        GraphMLLeafNode graphMLLeafNode = new GraphMLLeafNode(graphNodes, nodesGeometry);
-        StringBuilder graphMLNodeBuffer = graphMLLeafNode.convertLeafNode();
-        GraphMLLeafEdge graphMLLeafEdge = new GraphMLLeafEdge(graphNodes);
-        StringBuilder graphMLEdgeBuffer = graphMLLeafEdge.convertLeafEdge(graphEdges);
-
-        GraphMLExporter graphMLExporter = new GraphMLExporter();
-        return graphMLExporter.exportDiagramToGraphML(graphMLSavePath, graphMLNodeBuffer, graphMLEdgeBuffer);
+        GraphMLClassExporter graphMLExporter = new GraphMLClassExporter(graphNodes, nodesGeometry, graphEdges);
+        return graphMLExporter.exportDiagramToGraphML(graphMLSavePath);
     }
 
     public File saveDiagram(Path graphSavePath) {
@@ -78,17 +69,12 @@ public class ClassDiagram {
     }
 
     public File exportPlantUML(Path fileSavePth, PlantUMLExportType exportType) {
-        PlantUMLLeafNode plantUMLLeafNode = new PlantUMLLeafNode(graphNodes);
-        StringBuilder plantUMLNodeBuffer = plantUMLLeafNode.convertPlantLeafNode();
-        PlantUMLLeafEdge plantUMLEdge = new PlantUMLLeafEdge(graphEdges);
-        StringBuilder plantUMLEdgeBuffer = plantUMLEdge.convertPlantEdge();
-
-        PlantUMLExporter plantUMLExporter = new PlantUMLExporter(fileSavePth, plantUMLNodeBuffer, plantUMLEdgeBuffer);
+        PlantUMLClassExporter plantUMLClassExporter = new PlantUMLClassExporter(fileSavePth, graphNodes, graphEdges);
 
         if (exportType.equals(PlantUMLExportType.TEXT)) {
-            return plantUMLExporter.exportClassDiagramText();
+            return plantUMLClassExporter.exportClassDiagramText();
         }else {
-            return plantUMLExporter.exportClassDiagram();
+            return plantUMLClassExporter.exportClassDiagram();
         }
     }
 

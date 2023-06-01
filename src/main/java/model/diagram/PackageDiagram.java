@@ -2,20 +2,22 @@ package model.diagram;
 
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import model.SourceProject;
-import model.diagram.graphml.GraphMLExporter;
-import model.diagram.graphml.GraphMLPackageEdge;
-import model.diagram.graphml.GraphMLPackageNode;
+import model.diagram.graphml.GraphMLPackageExporter;
 import model.diagram.javafx.JavaFXExporter;
 import model.diagram.javafx.JavaFXLoader;
 import model.diagram.javafx.JavaFXVisualization;
-import model.diagram.plantuml.*;
+import model.diagram.plantuml.PlantUMLExportType;
+import model.diagram.plantuml.PlantUMLPackageExporter;
 import model.graph.Arc;
 import model.graph.Vertex;
 
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class PackageDiagram {
 
@@ -45,13 +47,8 @@ public class PackageDiagram {
     }
 
     public File exportDiagramToGraphML(Path graphMLSavePath) {
-        GraphMLPackageNode graphMLPackageNode = new GraphMLPackageNode(graphNodes, nodesGeometry);
-        StringBuilder graphMLNodeBuffer = graphMLPackageNode.convertPackageNode();
-        GraphMLPackageEdge graphMLPackageEdge = new GraphMLPackageEdge(graphNodes);
-        StringBuilder graphMLEdgeBuffer = graphMLPackageEdge.convertPackageEdge(graphEdges);
-
-        GraphMLExporter graphMLExporter = new GraphMLExporter();
-        return graphMLExporter.exportDiagramToGraphML(graphMLSavePath, graphMLNodeBuffer, graphMLEdgeBuffer);
+        GraphMLPackageExporter graphMLPackageExporter = new GraphMLPackageExporter(graphNodes, nodesGeometry, graphEdges);
+        return graphMLPackageExporter.exportDiagramToGraphML(graphMLSavePath);
     }
 
     public File saveDiagram(Path graphSavePath) {
@@ -76,17 +73,12 @@ public class PackageDiagram {
     }
 
     public File exportPlantUML(Path fileSavePth, PlantUMLExportType exportType) {
-        PlantUMLPackageNode plantUMLPackageNode = new PlantUMLPackageNode(graphNodes);
-        StringBuilder plantUMLNodeBuffer = plantUMLPackageNode.convertPlantPackageNode();
-        PlantUMLPackageEdge plantUMLEdge = new PlantUMLPackageEdge(graphEdges);
-        StringBuilder plantUMLEdgeBuffer = plantUMLEdge.convertPlantEdge();
-
-        PlantUMLExporter plantUMLExporter = new PlantUMLExporter(fileSavePth, plantUMLNodeBuffer, plantUMLEdgeBuffer);
+        PlantUMLPackageExporter plantUMLPackageExporter = new PlantUMLPackageExporter(fileSavePth, graphNodes, graphEdges);
 
         if (exportType.equals(PlantUMLExportType.TEXT)) {
-            return plantUMLExporter.exportPackageDiagramText();
+            return plantUMLPackageExporter.exportPackageDiagramText();
         }else {
-            return plantUMLExporter.exportPackageDiagram();
+            return plantUMLPackageExporter.exportPackageDiagram();
         }
     }
 

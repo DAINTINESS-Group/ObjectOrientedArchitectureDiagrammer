@@ -9,19 +9,27 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 
+import model.graph.Arc;
+import model.graph.SinkVertex;
 import net.sourceforge.plantuml.SourceStringReader;
 
-public class PlantUMLExporter {
+public class PlantUMLClassExporter {
 
 	private final String bufferBody;
 	private final File plantUMLFile;
 	
-    public PlantUMLExporter(Path savePath, StringBuilder nodesBuffer, StringBuilder edgesBuffer) {
+    public PlantUMLClassExporter(Path savePath, Map<SinkVertex, Integer> graphNodes, Map<Arc<SinkVertex>, Integer> graphEdges) {
+		PlantUMLLeafNode plantUMLLeafNode = new PlantUMLLeafNode(graphNodes);
+		StringBuilder plantUMLNodeBuffer = plantUMLLeafNode.convertPlantLeafNode();
+		PlantUMLLeafEdge plantUMLEdge = new PlantUMLLeafEdge(graphEdges);
+		StringBuilder plantUMLEdgeBuffer = plantUMLEdge.convertPlantEdge();
+
 		plantUMLFile = savePath.toFile();
-    	bufferBody = nodesBuffer.append(edgesBuffer)  + "@enduml\n";
+    	bufferBody = plantUMLNodeBuffer.append(plantUMLEdgeBuffer)  + "@enduml\n";
     }
 
 	public File exportClassDiagram() {
@@ -38,22 +46,6 @@ public class PlantUMLExporter {
 		return plantUMLFile;
 	}
 
-	public File exportPackageDiagram() {
-    	String plantUMLCode = getPackageText();
-    	plantUMLCode += bufferBody;
-    	plantUMLCode = dotChanger(plantUMLCode);
-    	exportDiagram(plantUMLCode);
-		return plantUMLFile;
-	}
-
-	public File exportPackageDiagramText() {
-		String plantUMLCode = getPackageText();
-		plantUMLCode += bufferBody;
-		plantUMLCode = dotChanger(plantUMLCode);
-		textExporter(plantUMLCode);
-		return plantUMLFile;
-	}
-	
 	private void textExporter(String plantCode) {
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter(plantUMLFile))) {
             writer.write(plantCode);
@@ -107,34 +99,6 @@ public class PlantUMLExporter {
 //    		updatedString = String.join("\n", lines);
 //    	}
     	return updatedString;
-    }
-    
-    private String dotChanger(String plantUMLCode) {
-    	String newString = "";
-    	String[] lines = plantUMLCode.split("\n");
-    	for (String line: lines) {
-    		String[] splittedLine = line.split(" ");
-    		for (String word: splittedLine) {
-    			String newWord = word;
-    			if(word.contains(".") && !word.contains("..")) {
-    				newWord = word.replace(".", "_");
-        			newWord = newWord.replace("-", "_");
-    			}
-    			newString += newWord + " ";
-    		}
-    		newString += "\n";
-    	}
-    	return newString;
-    }
-    
-    private String getPackageText() {
-    	return "@startuml\n" +
-		        "skinparam package {\n" +
-		        "    BackgroundColor lightyellow\n" +
-		        "    BorderColor black\n" +
-		        "    ArrowColor black\n" +
-		        "    Shadowing true\n" +
-		        "}\n";
     }
     
     private String getClassText() {
