@@ -1,6 +1,6 @@
 package parser;
 
-import model.tree.node.PackageNode;
+import parser.tree.node.PackageNode;
 
 import java.nio.file.Path;
 import java.util.Map;

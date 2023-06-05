@@ -8,11 +8,9 @@ import com.github.javaparser.ast.expr.ObjectCreationExpr;
 import com.github.javaparser.ast.expr.VariableDeclarationExpr;
 import com.github.javaparser.ast.visitor.VoidVisitor;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
-import model.tree.javaparser.JavaparserLeafNode;
-import model.tree.node.LeafNode;
-import model.tree.node.ModifierType;
-import model.tree.node.NodeType;
-import parser.FileVisitor;
+import parser.tree.node.LeafNode;
+import parser.tree.node.ModifierType;
+import parser.tree.node.NodeType;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -24,7 +22,7 @@ import java.util.regex.Pattern;
  * Using the different visitors, it parses the file's inheritance declarations, constructor, methods parameters,
  * return types, field & local variable declarations as well as the instantiated objects that aren't assigned to a variable
  */
-public class JavaparserFileVisitor implements FileVisitor {
+public class JavaparserFileVisitor {
 
     private final List<String> allCreatedObjects;
     private final List<String> createdAssignedObjects;
@@ -34,6 +32,10 @@ public class JavaparserFileVisitor implements FileVisitor {
         createdAssignedObjects = new ArrayList<>();
     }
 
+    /** This method is responsible for the creation of the AST
+     * @param file the Java source file
+     * @param leafNode the leaf node representing the Java source file
+     */
     public void createAST(File file, LeafNode leafNode) {
         try {
             JavaparserLeafNode javaparserLeafNode = (JavaparserLeafNode) leafNode;

@@ -12,8 +12,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.jupiter.api.Test;
-import model.tree.node.LeafNode;
-import model.tree.node.PackageNode;
+import parser.tree.node.LeafNode;
+import parser.tree.node.PackageNode;
 import parser.Parser;
 import parser.ParserType;
 import parser.ProjectParserFactory;

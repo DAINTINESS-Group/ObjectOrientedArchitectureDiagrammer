@@ -1,10 +1,10 @@
 package parser.javaparser;
 
-import model.tree.edge.Relationship;
-import model.tree.edge.RelationshipType;
-import model.tree.node.LeafNode;
-import model.tree.node.NodeType;
-import model.tree.node.PackageNode;
+import parser.tree.edge.Relationship;
+import parser.tree.edge.RelationshipType;
+import parser.tree.node.LeafNode;
+import parser.tree.node.NodeType;
+import parser.tree.node.PackageNode;
 import org.junit.jupiter.api.Test;
 import parser.Parser;
 import parser.ParserType;

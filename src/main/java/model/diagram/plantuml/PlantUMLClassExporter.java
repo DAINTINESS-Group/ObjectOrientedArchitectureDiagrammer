@@ -23,9 +23,9 @@ public class PlantUMLClassExporter {
 	private final File plantUMLFile;
 	
     public PlantUMLClassExporter(Path savePath, Map<SinkVertex, Integer> graphNodes, Map<Arc<SinkVertex>, Integer> graphEdges) {
-		PlantUMLLeafNode plantUMLLeafNode = new PlantUMLLeafNode(graphNodes);
-		StringBuilder plantUMLNodeBuffer = plantUMLLeafNode.convertPlantLeafNode();
-		PlantUMLLeafEdge plantUMLEdge = new PlantUMLLeafEdge(graphEdges);
+		PlantUMLSinkVertex plantUMLSinkVertex = new PlantUMLSinkVertex(graphNodes);
+		StringBuilder plantUMLNodeBuffer = plantUMLSinkVertex.convertPlantLeafNode();
+		PlantUMLSinkVertexArc plantUMLEdge = new PlantUMLSinkVertexArc(graphEdges);
 		StringBuilder plantUMLEdgeBuffer = plantUMLEdge.convertPlantEdge();
 
 		plantUMLFile = savePath.toFile();

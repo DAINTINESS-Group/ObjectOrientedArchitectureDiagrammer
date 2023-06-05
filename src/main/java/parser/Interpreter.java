@@ -5,12 +5,12 @@ import model.graph.ArcType;
 import model.graph.SinkVertex;
 import model.graph.Vertex;
 import model.graph.VertexType;
-import model.tree.edge.Relationship;
-import model.tree.edge.RelationshipType;
-import model.tree.node.LeafNode;
-import model.tree.node.ModifierType;
-import model.tree.node.NodeType;
-import model.tree.node.PackageNode;
+import parser.tree.edge.Relationship;
+import parser.tree.edge.RelationshipType;
+import parser.tree.node.LeafNode;
+import parser.tree.node.ModifierType;
+import parser.tree.node.NodeType;
+import parser.tree.node.PackageNode;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;

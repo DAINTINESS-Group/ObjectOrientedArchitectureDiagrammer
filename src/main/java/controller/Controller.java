@@ -1,7 +1,7 @@
 package controller;
 
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
-import model.SourceProject;
+import manager.SourceProject;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -24,7 +24,7 @@ public interface Controller {
      * @param chosenFileNames the names of the files selected by the designer to be included in the diagram
      * @return the diagram created
      */
-    Map<String, Map<String, String>> convertTreeToDiagram(List<String> chosenFileNames);
+    void convertTreeToDiagram(List<String> chosenFileNames);
 
     /**This method arranges the diagram by calling the DiagramManager's arrangeDiagram method
      * @return a Map with the nodes' ids as keys and their geometry as value
@@ -48,7 +48,7 @@ public interface Controller {
      * @param graphSavePath the file's path where the diagram is saved
      * @return the created diagram
      */
-    Map<String, Map<String, String>> loadDiagram(Path graphSavePath);
+    void loadDiagram(Path graphSavePath);
 
     /**This method creates the JavaFX's graphView by calling the DiagramManager's visualizeJavaFXGraph method
      * @return the created graphView

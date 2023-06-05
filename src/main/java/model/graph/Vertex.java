@@ -1,5 +1,7 @@
 package model.graph;
 
+import org.javatuples.Triplet;
+
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +16,7 @@ public class Vertex {
     private final Path path;
     private final String name;
     private Vertex parentVertex;
+    private List<Triplet<String, String, String>> deserializedArcs;
     //TODO maybe add package validity as boolean, same as PackageNode
 
     public Vertex(Path path, VertexType vertexType, String parentName) {
@@ -40,6 +43,14 @@ public class Vertex {
 
     public void setParentNode(Vertex parentVertex) {
         this.parentVertex = parentVertex;
+    }
+
+    public void setDeserializedArcs(List<Triplet<String, String, String>> deserializedArcs) {
+        this.deserializedArcs = deserializedArcs;
+    }
+
+    public List<Triplet<String, String, String>> getDeserializedArcs() {
+        return deserializedArcs;
     }
 
     public List<Arc<Vertex>> getArcs() {

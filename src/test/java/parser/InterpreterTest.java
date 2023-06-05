@@ -1,13 +1,13 @@
 package parser;
 
-import model.SourceProject;
+import manager.SourceProject;
 import model.graph.Arc;
 import model.graph.SinkVertex;
 import model.graph.Vertex;
-import model.tree.edge.Relationship;
-import model.tree.node.LeafNode;
-import model.tree.node.ModifierType;
-import model.tree.node.PackageNode;
+import parser.tree.edge.Relationship;
+import parser.tree.node.LeafNode;
+import parser.tree.node.ModifierType;
+import parser.tree.node.PackageNode;
 import org.javatuples.Triplet;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

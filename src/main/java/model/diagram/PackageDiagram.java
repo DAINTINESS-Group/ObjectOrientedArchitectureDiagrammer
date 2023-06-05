@@ -1,11 +1,10 @@
 package model.diagram;
 
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
-import model.SourceProject;
 import model.diagram.graphml.GraphMLPackageExporter;
-import model.diagram.javafx.JavaFXExporter;
-import model.diagram.javafx.JavaFXLoader;
-import model.diagram.javafx.JavaFXVisualization;
+import model.diagram.javafx.packagediagram.JavaFXPackageDiagramExporter;
+import model.diagram.javafx.packagediagram.JavaFXPackageDiagramLoader;
+import model.diagram.javafx.packagediagram.JavaFXPackageVisualization;
 import model.diagram.plantuml.PlantUMLExportType;
 import model.diagram.plantuml.PlantUMLPackageExporter;
 import model.graph.Arc;
@@ -13,31 +12,27 @@ import model.graph.Vertex;
 
 import java.io.File;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class PackageDiagram {
 
     private Map<Integer, List<Double>> nodesGeometry;
-    private SourceProject sourceProject;
-    private Map<String, Map<String, String>> createdDiagram;
+    private Map<Vertex, Set<Arc<Vertex>>> diagram;
     private final Map<Vertex, Integer> graphNodes;
     private final Map<Arc<Vertex>, Integer> graphEdges;
+    private Map<Path, Vertex> vertices;
 
     public PackageDiagram() {
-        createdDiagram = new HashMap<>();
+        diagram = new HashMap<>();
         graphNodes = new HashMap<>();
         graphEdges = new HashMap<>();
     }
 
-    public Map<String, Map<String, String>> createDiagram(List<String> chosenFileNames) {
+    public Map<Vertex, Set<Arc<Vertex>>> createDiagram(List<String> chosenFileNames) {
         createNodeCollection(chosenFileNames);
         createEdgeCollection();
-        createdDiagram = convertCollectionsToDiagram();
-        return createdDiagram;
+        diagram = convertCollectionsToDiagram();
+        return diagram;
     }
 
     public Map<Integer, List<Double>> arrangeDiagram() {
@@ -52,24 +47,23 @@ public class PackageDiagram {
     }
 
     public File saveDiagram(Path graphSavePath) {
-        JavaFXExporter javaFXExporter = new JavaFXExporter();
-        return javaFXExporter.saveDiagram(createdDiagram, graphSavePath);
+        JavaFXPackageDiagramExporter javaFXPackageDiagramExporter = new JavaFXPackageDiagramExporter(graphSavePath, diagram);
+        return javaFXPackageDiagramExporter.saveDiagram();
     }
 
-    public Map<String, Map<String, String>> loadDiagram(Path graphSavePath) {
-        JavaFXLoader javaFXLoader = new JavaFXLoader();
-        createdDiagram = javaFXLoader.loadDiagram(graphSavePath);
-        return createdDiagram;
+    public Set<Vertex> loadDiagram(Path graphSavePath) {
+        JavaFXPackageDiagramLoader javaFXPackageDiagramLoader = new JavaFXPackageDiagramLoader(graphSavePath);
+        return javaFXPackageDiagramLoader.loadDiagram();
     }
 
-    public Map<String, Map<String, String>> convertCollectionsToDiagram() {
-        CollectionsDiagramConverter collectionsDiagramConverter = new CollectionsDiagramConverter();
-        return collectionsDiagramConverter.convertPackageCollectionsToDiagram(graphNodes, graphEdges);
+    public Map<Vertex, Set<Arc<Vertex>>> convertCollectionsToDiagram() {
+        GraphPackageDiagramConverter graphPackageDiagramConverter = new GraphPackageDiagramConverter(graphNodes.keySet());
+        return graphPackageDiagramConverter.convertGraphToPackageDiagram();
     }
 
     public SmartGraphPanel<String, String> visualizeJavaFXGraph() {
-        JavaFXVisualization javaFXVisualization = new JavaFXVisualization();
-        return javaFXVisualization.createGraphView(createdDiagram);
+        JavaFXPackageVisualization javaFXPackageVisualization = new JavaFXPackageVisualization(diagram);
+        return javaFXPackageVisualization.createGraphView();
     }
 
     public File exportPlantUML(Path fileSavePth, PlantUMLExportType exportType) {
@@ -80,6 +74,10 @@ public class PackageDiagram {
         }else {
             return plantUMLPackageExporter.exportPackageDiagram();
         }
+    }
+
+    public void setVertices(Map<Path, Vertex> vertices) {
+        this.vertices = vertices;
     }
 
     private void createNodeCollection(List<String> chosenFilesNames) {
@@ -103,10 +101,6 @@ public class PackageDiagram {
         }
     }
 
-    public void setSourceProject(SourceProject sourceProject) {
-        this.sourceProject = sourceProject;
-    }
-
     public Map<Vertex, Integer> getGraphNodes() {
         return graphNodes;
     }
@@ -118,12 +112,12 @@ public class PackageDiagram {
     public List<Vertex> getChosenNodes(List<String> chosenPackagesNames) {
         List<Vertex> chosenPackages = new ArrayList<>();
         for (String chosenPackage: chosenPackagesNames) {
-            if (!sourceProject.getVertices().containsKey(Paths.get(chosenPackage))) {
+            Path path = Path.of(chosenPackage);
+            if (!vertices.containsKey(path)) {
                 continue;
             }
-            chosenPackages.add(sourceProject.getVertices().get(Paths.get(chosenPackage)));
+            chosenPackages.add(vertices.get(path));
         }
         return chosenPackages;
     }
-
 }

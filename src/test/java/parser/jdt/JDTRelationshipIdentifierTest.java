@@ -12,12 +12,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import model.tree.node.NodeType;
-import model.tree.edge.RelationshipType;
+import parser.tree.node.NodeType;
+import parser.tree.edge.RelationshipType;
 import org.junit.jupiter.api.Test;
-import model.tree.node.PackageNode;
-import model.tree.edge.Relationship;
-import model.tree.node.LeafNode;
+import parser.tree.node.PackageNode;
+import parser.tree.edge.Relationship;
+import parser.tree.node.LeafNode;
 import parser.Parser;
 import parser.ParserType;
 import parser.ProjectParserFactory;

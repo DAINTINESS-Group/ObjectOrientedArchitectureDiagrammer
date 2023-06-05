@@ -3,7 +3,7 @@ package controller;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import manager.DiagramManager;
 import model.diagram.plantuml.PlantUMLExportType;
-import model.SourceProject;
+import manager.SourceProject;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -42,12 +42,12 @@ public abstract class DiagramController implements Controller {
 		return diagramManager.saveDiagram(graphSavePath);
 	}
 
-	public Map<String, Map<String, String>> loadDiagram(Path graphSavePath) {
-		return diagramManager.loadDiagram(graphSavePath);
+	public void loadDiagram(Path graphSavePath) {
+		diagramManager.loadDiagram(graphSavePath);
 	}
 
-	public Map<String, Map<String, String>> convertTreeToDiagram(List<String> chosenClassesNames) {
-		return diagramManager.createDiagram(chosenClassesNames);
+	public void convertTreeToDiagram(List<String> chosenClassesNames) {
+		diagramManager.createDiagram(chosenClassesNames);
 	}
 
 }

@@ -16,10 +16,10 @@ public class GraphMLClassExporter {
     private final StringBuilder graphMLEdgeBuffer;
 
     public GraphMLClassExporter(Map<SinkVertex, Integer> graphNodes, Map<Integer, List<Double>> nodesGeometry, Map<Arc<SinkVertex>, Integer> graphEdges) {
-        GraphMLLeafNode graphMLLeafNode = new GraphMLLeafNode(graphNodes, nodesGeometry);
-        this.graphMLNodeBuffer = graphMLLeafNode.convertLeafNode();
-        GraphMLLeafEdge graphMLLeafEdge = new GraphMLLeafEdge(graphNodes);
-        this.graphMLEdgeBuffer = graphMLLeafEdge.convertLeafEdge(graphEdges);
+        GraphMLSinkVertex graphMLSinkVertex = new GraphMLSinkVertex(graphNodes, nodesGeometry);
+        this.graphMLNodeBuffer = graphMLSinkVertex.convertLeafNode();
+        GraphMLSinkVertexArc graphMLSinkVertexArc = new GraphMLSinkVertexArc(graphNodes);
+        this.graphMLEdgeBuffer = graphMLSinkVertexArc.convertLeafEdge(graphEdges);
 
         graphMLFile = new GraphMLFile();
     }

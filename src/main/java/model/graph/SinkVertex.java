@@ -1,5 +1,7 @@
 package model.graph;
 
+import org.javatuples.Triplet;
+
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,12 +9,13 @@ import java.util.Map;
 
 public class SinkVertex {
 
+    private final List<Arc<SinkVertex>> arcs;
     private final List<Method> methods;
     private final List<Field> fields;
-    private final List<Arc<SinkVertex>> arcs;
     private final VertexType vertexType;
     private final Path path;
     private final String name;
+    private List<Triplet<String, String, String>> deserializedArcs;
 
     public SinkVertex(Path path, String name, VertexType vertexType) {
         this.vertexType = vertexType;
@@ -33,6 +36,14 @@ public class SinkVertex {
 
     public void addField(String name, String type, ModifierType modifier) {
         fields.add(new Field(name, type, modifier));
+    }
+
+    public void setDeserializedArcs(List<Triplet<String, String, String>> deserializedArcs) {
+        this.deserializedArcs = deserializedArcs;
+    }
+
+    public List<Triplet<String, String, String>> getDeserializedArcs() {
+        return deserializedArcs;
     }
 
     public VertexType getVertexType() {

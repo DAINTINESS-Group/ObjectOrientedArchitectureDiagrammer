@@ -1,7 +1,7 @@
 package parser.javaparser;
 
-import model.tree.node.LeafNode;
-import model.tree.node.PackageNode;
+import parser.tree.node.LeafNode;
+import parser.tree.node.PackageNode;
 import org.junit.jupiter.api.Test;
 import parser.Parser;
 import parser.ParserType;

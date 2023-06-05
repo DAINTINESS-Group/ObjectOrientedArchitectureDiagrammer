@@ -2,7 +2,6 @@ package manager;
 
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import model.diagram.plantuml.PlantUMLExportType;
-import model.SourceProject;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -21,10 +20,11 @@ public interface DiagramManager {
      * This method converts the tree created by the Parser to a Diagram, based on the files(classes or packages) selected
      * by the designer. The type of the Diagram depends on the type of files the designer has chosen and the Controller
      * is responsible for creating the corresponding GraphDiagramManager that implements the createDiagram method
+     *
      * @param chosenFilesNames the names of the files selected by the designer
      * @return the createDiagram
      */
-    Map<String, Map<String, String>> createDiagram(List<String> chosenFilesNames);
+    void createDiagram(List<String> chosenFilesNames);
 
     /**This method arranges the createdDiagram's node geometry by creating a Jung Graph and then applying the SpringLayout
      * algorithm, implemented by the Jung library
@@ -52,7 +52,7 @@ public interface DiagramManager {
      * @param graphSavePath the file's path where the diagram is saved
      * @return the createdDiagram
      */
-    Map<String, Map<String, String>> loadDiagram(Path graphSavePath);
+    void loadDiagram(Path graphSavePath);
 
     /**This method creates the JavaFX's graphView that will be rendered by view in the JavaFX Pane
      * @return the created graphView

@@ -16,10 +16,10 @@ public class GraphMLPackageExporter {
     private final StringBuilder graphMLEdgeBuffer;
 
     public GraphMLPackageExporter(Map<Vertex, Integer> graphNodes, Map<Integer, List<Double>> nodesGeometry, Map<Arc<Vertex>, Integer> graphEdges) {
-        GraphMLPackageNode graphMLPackageNode = new GraphMLPackageNode(graphNodes, nodesGeometry);
-        graphMLNodeBuffer = graphMLPackageNode.convertPackageNode();
-        GraphMLPackageEdge graphMLPackageEdge = new GraphMLPackageEdge(graphNodes);
-        graphMLEdgeBuffer = graphMLPackageEdge.convertPackageEdge(graphEdges);
+        GraphMLVertex graphMLVertex = new GraphMLVertex(graphNodes, nodesGeometry);
+        graphMLNodeBuffer = graphMLVertex.convertPackageNode();
+        GraphMLVertexArc graphMLVertexArc = new GraphMLVertexArc(graphNodes);
+        graphMLEdgeBuffer = graphMLVertexArc.convertPackageEdge(graphEdges);
 
         graphMLFile = new GraphMLFile();
     }

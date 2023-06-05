@@ -1,11 +1,10 @@
 package model.diagram;
 
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
-import model.SourceProject;
 import model.diagram.graphml.GraphMLClassExporter;
-import model.diagram.javafx.JavaFXExporter;
-import model.diagram.javafx.JavaFXLoader;
-import model.diagram.javafx.JavaFXVisualization;
+import model.diagram.javafx.classdiagram.JavaFXClassDiagramExporter;
+import model.diagram.javafx.classdiagram.JavaFXClassDiagramLoader;
+import model.diagram.javafx.classdiagram.JavaFXClassVisualization;
 import model.diagram.plantuml.PlantUMLClassExporter;
 import model.diagram.plantuml.PlantUMLExportType;
 import model.graph.Arc;
@@ -18,22 +17,22 @@ import java.util.*;
 public class ClassDiagram {
 
     private Map<Integer, List<Double>> nodesGeometry;
-    private SourceProject sourceProject;
-    private Map<String, Map<String, String>> createdDiagram;
+    private Map<SinkVertex, Set<Arc<SinkVertex>>> diagram;
     private final Map<SinkVertex, Integer> graphNodes;
     private final Map<Arc<SinkVertex>, Integer> graphEdges;
+    private Map<Path, SinkVertex> sinkVertices;
 
     public ClassDiagram() {
-        createdDiagram = new HashMap<>();
+        diagram = new HashMap<>();
         graphNodes = new HashMap<>();
         graphEdges = new HashMap<>();
     }
 
-    public Map<String, Map<String, String>> createDiagram(List<String> chosenFileNames) {
+    public Map<SinkVertex, Set<Arc<SinkVertex>>> createDiagram(List<String> chosenFileNames) {
         createNodeCollection(chosenFileNames);
         createEdgeCollection();
-        createdDiagram = convertCollectionsToDiagram();
-        return createdDiagram;
+        diagram = convertCollectionsToDiagram();
+        return diagram;
     }
 
     public Map<Integer, List<Double>> arrangeDiagram() {
@@ -48,24 +47,23 @@ public class ClassDiagram {
     }
 
     public File saveDiagram(Path graphSavePath) {
-        JavaFXExporter javaFXExporter = new JavaFXExporter();
-        return javaFXExporter.saveDiagram(createdDiagram, graphSavePath);
+        JavaFXClassDiagramExporter javaFXClassDiagramExporter = new JavaFXClassDiagramExporter(graphSavePath, diagram);
+        return javaFXClassDiagramExporter.saveDiagram();
     }
 
-    public Map<String, Map<String, String>> loadDiagram(Path graphSavePath) {
-        JavaFXLoader javaFXLoader = new JavaFXLoader();
-        createdDiagram = javaFXLoader.loadDiagram(graphSavePath);
-        return createdDiagram;
+    public Set<SinkVertex> loadDiagram(Path graphSavePath) {
+        JavaFXClassDiagramLoader javaFXClassDiagramLoader =  new JavaFXClassDiagramLoader(graphSavePath);
+        return javaFXClassDiagramLoader.loadDiagram();
     }
 
-    public Map<String, Map<String, String>> convertCollectionsToDiagram() {
-        CollectionsDiagramConverter collectionsDiagramConverter = new CollectionsDiagramConverter();
-        return collectionsDiagramConverter.convertClassCollectionsToDiagram(graphNodes, graphEdges);
+    public Map<SinkVertex, Set<Arc<SinkVertex>>> convertCollectionsToDiagram() {
+        GraphClassDiagramConverter graphClassDiagramConverter = new GraphClassDiagramConverter(graphNodes.keySet());
+        return graphClassDiagramConverter.convertGraphToClassDiagram();
     }
 
     public SmartGraphPanel<String, String> visualizeJavaFXGraph() {
-        JavaFXVisualization javaFXVisualization = new JavaFXVisualization();
-        return javaFXVisualization.createGraphView(createdDiagram);
+        JavaFXClassVisualization javaFXVisualization = new JavaFXClassVisualization(diagram);
+        return javaFXVisualization.createGraphView();
     }
 
     public File exportPlantUML(Path fileSavePth, PlantUMLExportType exportType) {
@@ -76,6 +74,10 @@ public class ClassDiagram {
         }else {
             return plantUMLClassExporter.exportClassDiagram();
         }
+    }
+
+    public void setSinkVertices(Map<Path, SinkVertex> sinkVertices) {
+        this.sinkVertices = sinkVertices;
     }
 
     private void createNodeCollection(List<String> chosenFilesNames) {
@@ -102,7 +104,7 @@ public class ClassDiagram {
     private List<SinkVertex> getChosenNodes(List<String> chosenClassesNames) {
         List<SinkVertex> chosenClasses = new ArrayList<>();
         for (String chosenClass: chosenClassesNames) {
-            Optional<SinkVertex> optionalSinkVertex = sourceProject.getSinkVertices().values().stream().
+            Optional<SinkVertex> optionalSinkVertex = sinkVertices.values().stream().
                     filter(sinkVertex -> sinkVertex.getName().equals(chosenClass)).findFirst();
             if (optionalSinkVertex.isEmpty()) {
                 continue;
@@ -110,10 +112,6 @@ public class ClassDiagram {
             chosenClasses.add(optionalSinkVertex.get());
         }
         return chosenClasses;
-    }
-
-    public void setSourceProject(SourceProject sourceProject) {
-        this.sourceProject = sourceProject;
     }
 
     public Map<SinkVertex, Integer> getGraphNodes() {

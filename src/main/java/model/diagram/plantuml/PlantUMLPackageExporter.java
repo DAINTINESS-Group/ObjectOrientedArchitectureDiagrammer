@@ -16,9 +16,9 @@ public class PlantUMLPackageExporter {
     private final File plantUMLFile;
 
     public PlantUMLPackageExporter(Path fileSavePth, Map<Vertex, Integer> graphNodes, Map<Arc<Vertex>, Integer> graphEdges) {
-        PlantUMLPackageNode plantUMLPackageNode = new PlantUMLPackageNode(graphNodes);
-        StringBuilder plantUMLNodeBuffer = plantUMLPackageNode.convertPlantPackageNode();
-        PlantUMLPackageEdge plantUMLEdge = new PlantUMLPackageEdge(graphEdges);
+        PlantUMLVertex plantUMLVertex = new PlantUMLVertex(graphNodes);
+        StringBuilder plantUMLNodeBuffer = plantUMLVertex.convertPlantPackageNode();
+        PlantUMLVertexArc plantUMLEdge = new PlantUMLVertexArc(graphEdges);
         StringBuilder plantUMLEdgeBuffer = plantUMLEdge.convertPlantEdge();
 
         plantUMLFile = fileSavePth.toFile();

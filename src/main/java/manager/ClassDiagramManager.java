@@ -1,21 +1,20 @@
 package manager;
 
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
-import model.SourceProject;
 import model.diagram.ClassDiagram;
 import model.diagram.plantuml.PlantUMLExportType;
+import model.graph.Arc;
+import model.graph.SinkVertex;
 
 import java.io.File;
 import java.nio.file.Path;
-import java.util.ArrayDeque;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class ClassDiagramManager implements DiagramManager {
 
     private final SourceProject sourceProject;
     private final ArrayDeque<ClassDiagram> diagramStack;
+    private Map<SinkVertex, Set<Arc<SinkVertex>>> diagram;
 
     public ClassDiagramManager() {
         sourceProject = new SourceProject();
@@ -25,12 +24,12 @@ public class ClassDiagramManager implements DiagramManager {
     public SourceProject createSourceProject(Path sourcePackagePath) {
         diagramStack.push(new ClassDiagram());
         sourceProject.createGraph(sourcePackagePath);
-        Objects.requireNonNull(diagramStack.peek()).setSourceProject(sourceProject);
+        Objects.requireNonNull(diagramStack.peek()).setSinkVertices(sourceProject.getSinkVertices());
         return sourceProject;
     }
 
-    public Map<String, Map<String, String>> createDiagram(List<String> chosenFilesNames) {
-        return Objects.requireNonNull(diagramStack.peek()).createDiagram(chosenFilesNames);
+    public void createDiagram(List<String> chosenFilesNames) {
+        diagram = Objects.requireNonNull(diagramStack.peek()).createDiagram(chosenFilesNames);
     }
 
     public Map<Integer, List<Double>> arrangeDiagram(){
@@ -49,9 +48,9 @@ public class ClassDiagramManager implements DiagramManager {
         return Objects.requireNonNull(diagramStack.peek()).saveDiagram(graphSavePath);
     }
 
-    public Map<String, Map<String, String>> loadDiagram(Path graphSavePath) {
+    public void loadDiagram(Path graphSavePath) {
         diagramStack.push(new ClassDiagram());
-        return Objects.requireNonNull(diagramStack.peek()).loadDiagram(graphSavePath);
+        Objects.requireNonNull(diagramStack.peek()).loadDiagram(graphSavePath);
     }
 
     public SmartGraphPanel<String, String> visualizeJavaFXGraph() {
@@ -62,4 +61,5 @@ public class ClassDiagramManager implements DiagramManager {
         return diagramStack.peek();
     }
 
+    public Map<SinkVertex, Set<Arc<SinkVertex>>> getCreatedDiagram() { return  diagram; }
 }
