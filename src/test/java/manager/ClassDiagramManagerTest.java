@@ -1,7 +1,7 @@
 package manager;
 
-import model.diagram.CollectionsDiagramConverter;
 import model.diagram.DiagramArrangement;
+import model.diagram.GraphClassDiagramConverter;
 import model.diagram.graphml.GraphMLClassExporter;
 import model.diagram.graphml.GraphMLSinkVertex;
 import model.diagram.graphml.GraphMLSinkVertexArc;
@@ -77,20 +77,10 @@ public class ClassDiagramManagerTest {
 
             Map<SinkVertex, Integer> graphNodes = classDiagramManager.getDiagram().getGraphNodes();
             Map<Arc<SinkVertex>, Integer> graphEdges = classDiagramManager.getDiagram().getGraphEdges();
-            CollectionsDiagramConverter collectionsDiagramConverter = new CollectionsDiagramConverter();
+            GraphClassDiagramConverter graphClassDiagramConverter = new GraphClassDiagramConverter(graphNodes.keySet());
+            Map<SinkVertex, Set<Arc<SinkVertex>>> adjacencyList = graphClassDiagramConverter.convertGraphToClassDiagram();
 
-            /*
-            Map<String, Map<String, String>> createdDiagram = collectionsDiagramConverter.convertClassCollectionsToDiagram(graphNodes, graphEdges);
-
-            for (Map.Entry<String, Map<String, String>> entry: createdDiagram.entrySet()) {
-                assertTrue(testingCreatedDiagram.containsKey(entry.getKey()));
-                for (Map.Entry<String, String> entry1: entry.getValue().entrySet()) {
-                    assertTrue(testingCreatedDiagram.get(entry.getKey()).containsKey(entry1.getKey()));
-                    assertEquals(entry1.getValue(), testingCreatedDiagram.get(entry.getKey()).get(entry1.getKey()));
-                }
-            }
-
-             */
+            assertEquals(adjacencyList, testingCreatedDiagram);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -132,10 +122,9 @@ public class ClassDiagramManagerTest {
             classDiagramManager.createDiagram(chosenFiles);
             Map<SinkVertex, Set<Arc<SinkVertex>>> createdDiagram = classDiagramManager.getCreatedDiagram();
 
-            File testingSavedFile = classDiagramManager.saveDiagram(Paths.get(System.getProperty("user.home")+"\\testingExportedFile.graphML"));
+            File testingSavedFile = classDiagramManager.saveDiagram(Paths.get(System.getProperty("user.home")+"\\testingExportedFile.txt"));
             JavaFXClassDiagramExporter javaFXExporter = new JavaFXClassDiagramExporter(Paths.get(System.getProperty("user.home")+"\\testingExportedFile.txt"), createdDiagram);
-            assertTrue(FileUtils.contentEquals(javaFXExporter.saveDiagram(
-            ), testingSavedFile));
+            assertTrue(FileUtils.contentEquals(javaFXExporter.saveDiagram(), testingSavedFile));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -148,19 +137,15 @@ public class ClassDiagramManagerTest {
         classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
         classDiagramManager.createDiagram(chosenFiles);
         Map<SinkVertex, Set<Arc<SinkVertex>>> createdDiagram = classDiagramManager.getCreatedDiagram();
-        classDiagramManager.saveDiagram(Paths.get(System.getProperty("user.home")+"\\testingExportedFile.graphML"));
-        classDiagramManager.loadDiagram(Paths.get(System.getProperty("user.home")+"\\testingExportedFile.graphML"));
+        classDiagramManager.saveDiagram(Paths.get(System.getProperty("user.home")+"\\testingExportedFile.txt"));
+        classDiagramManager.loadDiagram(Paths.get(System.getProperty("user.home")+"\\testingExportedFile.txt"));
+        Set<SinkVertex> loadedDiagram = classDiagramManager.getLoadedDiagram();
 
-        /*
-        for (Map.Entry<String, Map<String, String>> entry: createdDiagram.entrySet()) {
-            assertTrue(testingLoadedDiagram.containsKey(entry.getKey()));
-            for (Map.Entry<String, String> entry1: entry.getValue().entrySet()) {
-                assertTrue(testingLoadedDiagram.get(entry.getKey()).containsKey(entry1.getKey()));
-                assertEquals(entry1.getValue(), testingLoadedDiagram.get(entry.getKey()).get(entry1.getKey()));
-            }
+        for (SinkVertex sinkVertex: createdDiagram.keySet()) {
+            loadedDiagram.stream().filter(sinkVertex1 ->
+                    sinkVertex1.getName().equals(sinkVertex.getName())
+            ).findFirst().orElseGet(Assertions::fail);
         }
-
-         */
     }
 
 }

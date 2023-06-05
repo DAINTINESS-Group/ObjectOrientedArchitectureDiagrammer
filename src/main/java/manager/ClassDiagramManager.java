@@ -15,6 +15,7 @@ public class ClassDiagramManager implements DiagramManager {
     private final SourceProject sourceProject;
     private final ArrayDeque<ClassDiagram> diagramStack;
     private Map<SinkVertex, Set<Arc<SinkVertex>>> diagram;
+    private Set<SinkVertex> loadedDiagram;
 
     public ClassDiagramManager() {
         sourceProject = new SourceProject();
@@ -50,7 +51,7 @@ public class ClassDiagramManager implements DiagramManager {
 
     public void loadDiagram(Path graphSavePath) {
         diagramStack.push(new ClassDiagram());
-        Objects.requireNonNull(diagramStack.peek()).loadDiagram(graphSavePath);
+        loadedDiagram = Objects.requireNonNull(diagramStack.peek()).loadDiagram(graphSavePath);
     }
 
     public SmartGraphPanel<String, String> visualizeJavaFXGraph() {
@@ -62,4 +63,8 @@ public class ClassDiagramManager implements DiagramManager {
     }
 
     public Map<SinkVertex, Set<Arc<SinkVertex>>> getCreatedDiagram() { return  diagram; }
+
+    public Set<SinkVertex> getLoadedDiagram() {
+        return loadedDiagram;
+    }
 }

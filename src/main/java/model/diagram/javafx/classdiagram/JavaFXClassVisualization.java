@@ -47,10 +47,10 @@ public class JavaFXClassVisualization {
             for (Arc<SinkVertex> arc: arcs) {
                 if (arc.getArcType().equals(ArcType.AGGREGATION)) {
                     directedGraph.insertEdge(arc.getTargetVertex().getName(), arc.getSourceVertex().getName(),
-                            arc.getTargetVertex().getName() + "_" + arc.getSourceVertex().getName());
+                            arc.getTargetVertex().getName() + "_" + arc.getSourceVertex().getName() + "_" + arc.getArcType().toString());
                 }else {
                     directedGraph.insertEdge(arc.getSourceVertex().getName(), arc.getTargetVertex().getName(),
-                            arc.getSourceVertex().getName() + "_" + arc.getTargetVertex().getName());
+                            arc.getSourceVertex().getName() + "_" + arc.getTargetVertex().getName() + "_" + arc.getArcType().toString());
                 }
             }
         }

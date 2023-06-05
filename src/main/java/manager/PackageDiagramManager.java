@@ -4,7 +4,6 @@ import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import model.diagram.PackageDiagram;
 import model.diagram.plantuml.PlantUMLExportType;
 import model.graph.Arc;
-import model.graph.SinkVertex;
 import model.graph.Vertex;
 
 import java.io.File;
@@ -15,6 +14,7 @@ public class PackageDiagramManager implements DiagramManager {
 
     private final ArrayDeque<PackageDiagram> diagramStack;
     private Map<Vertex, Set<Arc<Vertex>>> diagram;
+    private Set<Vertex> loadedDiagram;
 
     public PackageDiagramManager() {
         diagramStack = new ArrayDeque<>();
@@ -50,7 +50,7 @@ public class PackageDiagramManager implements DiagramManager {
 
     public void loadDiagram(Path graphSavePath) {
         diagramStack.push(new PackageDiagram());
-        Objects.requireNonNull(diagramStack.peek()).loadDiagram(graphSavePath);
+        loadedDiagram = Objects.requireNonNull(diagramStack.peek()).loadDiagram(graphSavePath);
     }
 
     public SmartGraphPanel<String, String> visualizeJavaFXGraph() {
@@ -63,4 +63,7 @@ public class PackageDiagramManager implements DiagramManager {
 
     public Map<Vertex, Set<Arc<Vertex>>> getCreatedDiagram() { return  diagram; }
 
+    public Set<Vertex> getLoadedDiagram() {
+        return loadedDiagram;
+    }
 }
