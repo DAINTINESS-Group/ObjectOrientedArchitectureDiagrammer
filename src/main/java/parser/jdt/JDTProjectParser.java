@@ -3,7 +3,7 @@ package parser.jdt;
 import parser.tree.edge.RelationshipIdentifier;
 import parser.tree.node.LeafNode;
 import parser.tree.node.PackageNode;
-import parser.Parser;
+import parser.factory.Parser;
 
 import java.io.File;
 import java.nio.file.DirectoryStream;

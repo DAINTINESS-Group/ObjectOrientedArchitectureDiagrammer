@@ -1,7 +1,11 @@
 package model.diagram;
 
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
+import model.diagram.arrangement.DiagramArrangement;
+import model.diagram.arrangement.PackageDiagramArrangement;
 import model.diagram.graphml.GraphMLPackageExporter;
+import model.diagram.javafx.JavaFXDiagramExporter;
+import model.diagram.javafx.JavaFXVisualization;
 import model.diagram.javafx.packagediagram.JavaFXPackageDiagramExporter;
 import model.diagram.javafx.packagediagram.JavaFXPackageDiagramLoader;
 import model.diagram.javafx.packagediagram.JavaFXPackageVisualization;
@@ -36,8 +40,8 @@ public class PackageDiagram {
     }
 
     public Map<Integer, List<Double>> arrangeDiagram() {
-        DiagramArrangement diagramArrangement = new DiagramArrangement();
-        nodesGeometry = diagramArrangement.arrangePackageDiagram(graphNodes, graphEdges);
+        DiagramArrangement diagramArrangement = new PackageDiagramArrangement(graphNodes, graphEdges);
+        nodesGeometry = diagramArrangement.arrangeDiagram();
         return nodesGeometry;
     }
 
@@ -47,7 +51,7 @@ public class PackageDiagram {
     }
 
     public File saveDiagram(Path graphSavePath) {
-        JavaFXPackageDiagramExporter javaFXPackageDiagramExporter = new JavaFXPackageDiagramExporter(graphSavePath, diagram);
+        JavaFXDiagramExporter javaFXPackageDiagramExporter = new JavaFXPackageDiagramExporter(graphSavePath, diagram);
         return javaFXPackageDiagramExporter.saveDiagram();
     }
 
@@ -64,7 +68,7 @@ public class PackageDiagram {
     }
 
     public SmartGraphPanel<String, String> visualizeJavaFXGraph() {
-        JavaFXPackageVisualization javaFXPackageVisualization = new JavaFXPackageVisualization(diagram);
+        JavaFXVisualization javaFXPackageVisualization = new JavaFXPackageVisualization(diagram);
         return javaFXPackageVisualization.createGraphView();
     }
 

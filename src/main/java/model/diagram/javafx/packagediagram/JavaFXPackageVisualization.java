@@ -5,12 +5,13 @@ import com.brunomnsilva.smartgraph.graph.DigraphEdgeList;
 import com.brunomnsilva.smartgraph.graph.Graph;
 import com.brunomnsilva.smartgraph.graphview.SmartCircularSortedPlacementStrategy;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
+import model.diagram.javafx.JavaFXVisualization;
 import model.graph.*;
 
 import java.util.Map;
 import java.util.Set;
 
-public class JavaFXPackageVisualization {
+public class JavaFXPackageVisualization implements JavaFXVisualization {
 
     private SmartGraphPanel<String, String> graphView;
     private final Map<Vertex, Set<Arc<Vertex>>> diagram;
@@ -19,6 +20,7 @@ public class JavaFXPackageVisualization {
         this.diagram = diagram;
     }
 
+    @Override
     public SmartGraphPanel<String, String> createGraphView() {
         Graph<String, String> graph = createGraph();
         graphView = new SmartGraphPanel<>(graph, new SmartCircularSortedPlacementStrategy());

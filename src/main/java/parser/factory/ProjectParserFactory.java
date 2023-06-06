@@ -1,4 +1,4 @@
-package parser;
+package parser.factory;
 
 import parser.javaparser.JavaparserProjectParser;
 import parser.jdt.JDTProjectParser;

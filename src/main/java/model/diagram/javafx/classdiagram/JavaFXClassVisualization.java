@@ -13,7 +13,7 @@ import model.graph.VertexType;
 import java.util.Map;
 import java.util.Set;
 
-public class JavaFXClassVisualization {
+public class JavaFXClassVisualization implements model.diagram.javafx.JavaFXVisualization {
 
     private SmartGraphPanel<String, String> graphView;
     private final Map<SinkVertex, Set<Arc<SinkVertex>>> diagram;
@@ -22,6 +22,7 @@ public class JavaFXClassVisualization {
         this.diagram = diagram;
     }
 
+    @Override
     public SmartGraphPanel<String, String> createGraphView() {
         Graph<String, String> graph = createGraph();
         graphView = new SmartGraphPanel<>(graph, new SmartCircularSortedPlacementStrategy());

@@ -14,9 +14,9 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 import parser.tree.node.LeafNode;
 import parser.tree.node.PackageNode;
-import parser.Parser;
-import parser.ParserType;
-import parser.ProjectParserFactory;
+import parser.factory.Parser;
+import parser.factory.ParserType;
+import parser.factory.ProjectParserFactory;
 
 class JDTProjectParserTest {
 

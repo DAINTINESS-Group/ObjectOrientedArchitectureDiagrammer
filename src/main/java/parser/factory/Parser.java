@@ -1,4 +1,4 @@
-package parser;
+package parser.factory;
 
 import parser.tree.node.PackageNode;
 

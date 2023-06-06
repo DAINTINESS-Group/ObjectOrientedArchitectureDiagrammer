@@ -3,9 +3,9 @@ package parser.javaparser;
 import parser.tree.node.LeafNode;
 import parser.tree.node.PackageNode;
 import org.junit.jupiter.api.Test;
-import parser.Parser;
-import parser.ParserType;
-import parser.ProjectParserFactory;
+import parser.factory.Parser;
+import parser.factory.ParserType;
+import parser.factory.ProjectParserFactory;
 
 import java.io.IOException;
 import java.nio.file.Path;

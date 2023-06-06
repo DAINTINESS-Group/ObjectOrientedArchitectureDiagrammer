@@ -1,7 +1,8 @@
 package manager;
 
-import model.diagram.DiagramArrangement;
+import model.diagram.arrangement.ClassDiagramArrangement;
 import model.diagram.GraphClassDiagramConverter;
+import model.diagram.arrangement.DiagramArrangement;
 import model.diagram.graphml.GraphMLClassExporter;
 import model.diagram.graphml.GraphMLSinkVertex;
 import model.diagram.graphml.GraphMLSinkVertexArc;
@@ -98,8 +99,8 @@ public class ClassDiagramManagerTest {
 
             Map<SinkVertex, Integer> graphNodes = classDiagramManager.getDiagram().getGraphNodes();
             Map<Arc<SinkVertex>, Integer> graphEdges = classDiagramManager.getDiagram().getGraphEdges();
-            DiagramArrangement diagramArrangement = new DiagramArrangement();
-            Map<Integer, List<Double>> nodesGeometry = diagramArrangement.arrangeClassDiagram(graphNodes, graphEdges);
+            DiagramArrangement classDiagramArrangement = new ClassDiagramArrangement(graphNodes, graphEdges);
+            Map<Integer, List<Double>> nodesGeometry = classDiagramArrangement.arrangeDiagram();
             GraphMLSinkVertex graphMLSinkVertex = new GraphMLSinkVertex(graphNodes, nodesGeometry);
             StringBuilder graphMLNodeBuffer = graphMLSinkVertex.convertLeafNode();
             GraphMLSinkVertexArc graphMLSinkVertexArc = new GraphMLSinkVertexArc(graphNodes);

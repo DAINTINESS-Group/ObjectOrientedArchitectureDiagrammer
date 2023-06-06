@@ -1,6 +1,6 @@
 package parser.javaparser;
 
-import parser.Parser;
+import parser.factory.Parser;
 import parser.tree.edge.RelationshipIdentifier;
 import parser.tree.node.LeafNode;
 import parser.tree.node.PackageNode;
