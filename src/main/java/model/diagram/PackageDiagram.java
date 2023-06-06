@@ -3,18 +3,16 @@ package model.diagram;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import model.diagram.arrangement.DiagramArrangement;
 import model.diagram.arrangement.PackageDiagramArrangement;
-import model.diagram.graphml.GraphMLPackageExporter;
-import model.diagram.javafx.JavaFXDiagramExporter;
+import model.diagram.graphml.GraphMLPackageDiagramExporter;
 import model.diagram.javafx.JavaFXVisualization;
 import model.diagram.javafx.packagediagram.JavaFXPackageDiagramExporter;
 import model.diagram.javafx.packagediagram.JavaFXPackageDiagramLoader;
 import model.diagram.javafx.packagediagram.JavaFXPackageVisualization;
-import model.diagram.plantuml.PlantUMLExportType;
-import model.diagram.plantuml.PlantUMLPackageExporter;
+import model.diagram.plantuml.PlantUMLPackageDiagramImageExporter;
+import model.diagram.plantuml.PlantUMLPackageDiagramTextExporter;
 import model.graph.Arc;
 import model.graph.Vertex;
 
-import java.io.File;
 import java.nio.file.Path;
 import java.util.*;
 
@@ -45,14 +43,12 @@ public class PackageDiagram {
         return nodesGeometry;
     }
 
-    public File exportDiagramToGraphML(Path graphMLSavePath) {
-        GraphMLPackageExporter graphMLPackageExporter = new GraphMLPackageExporter(graphNodes, nodesGeometry, graphEdges);
-        return graphMLPackageExporter.exportDiagramToGraphML(graphMLSavePath);
+    public DiagramExporter createGraphMLExporter() {
+        return new GraphMLPackageDiagramExporter(graphNodes, nodesGeometry, graphEdges);
     }
 
-    public File saveDiagram(Path graphSavePath) {
-        JavaFXDiagramExporter javaFXPackageDiagramExporter = new JavaFXPackageDiagramExporter(graphSavePath, diagram);
-        return javaFXPackageDiagramExporter.saveDiagram();
+    public DiagramExporter createJavaFXExporter() {
+        return new JavaFXPackageDiagramExporter(diagram);
     }
 
     public Map<Vertex, Set<Arc<Vertex>>> loadDiagram(Path graphSavePath) {
@@ -72,14 +68,12 @@ public class PackageDiagram {
         return javaFXPackageVisualization.createGraphView();
     }
 
-    public File exportPlantUML(Path fileSavePth, PlantUMLExportType exportType) {
-        PlantUMLPackageExporter plantUMLPackageExporter = new PlantUMLPackageExporter(fileSavePth, graphNodes, graphEdges);
+    public DiagramExporter createPlantUMLImageExporter() {
+        return new PlantUMLPackageDiagramImageExporter(graphNodes, graphEdges);
+    }
 
-        if (exportType.equals(PlantUMLExportType.TEXT)) {
-            return plantUMLPackageExporter.exportPackageDiagramText();
-        }else {
-            return plantUMLPackageExporter.exportPackageDiagram();
-        }
+    public DiagramExporter createPlantUMLTextExporter() {
+        return new PlantUMLPackageDiagramTextExporter(graphNodes, graphEdges);
     }
 
     public void setVertices(Map<Path, Vertex> vertices) {

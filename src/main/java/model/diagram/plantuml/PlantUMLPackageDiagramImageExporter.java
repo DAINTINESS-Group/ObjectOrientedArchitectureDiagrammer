@@ -1,5 +1,6 @@
 package model.diagram.plantuml;
 
+import model.diagram.DiagramExporter;
 import model.graph.Arc;
 import model.graph.Vertex;
 import net.sourceforge.plantuml.SourceStringReader;
@@ -10,46 +11,29 @@ import java.io.*;
 import java.nio.file.Path;
 import java.util.Map;
 
-public class PlantUMLPackageExporter {
+public class PlantUMLPackageDiagramImageExporter implements DiagramExporter {
 
     private final String bufferBody;
-    private final File plantUMLFile;
 
-    public PlantUMLPackageExporter(Path fileSavePth, Map<Vertex, Integer> graphNodes, Map<Arc<Vertex>, Integer> graphEdges) {
+    public PlantUMLPackageDiagramImageExporter(Map<Vertex, Integer> graphNodes, Map<Arc<Vertex>, Integer> graphEdges) {
         PlantUMLVertex plantUMLVertex = new PlantUMLVertex(graphNodes);
         StringBuilder plantUMLNodeBuffer = plantUMLVertex.convertPlantPackageNode();
         PlantUMLVertexArc plantUMLEdge = new PlantUMLVertexArc(graphEdges);
         StringBuilder plantUMLEdgeBuffer = plantUMLEdge.convertPlantEdge();
-
-        plantUMLFile = fileSavePth.toFile();
         bufferBody = plantUMLNodeBuffer.append(plantUMLEdgeBuffer)  + "@enduml\n";
     }
 
-    public File exportPackageDiagram() {
+    @Override
+    public File exportDiagram(Path exportPath) {
+        File plantUMLFile = exportPath.toFile();
         String plantUMLCode = getPackageText();
         plantUMLCode += bufferBody;
         plantUMLCode = dotChanger(plantUMLCode);
-        exportDiagram(plantUMLCode);
+        exportDiagram(plantUMLFile, plantUMLCode);
         return plantUMLFile;
     }
 
-    public File exportPackageDiagramText() {
-        String plantUMLCode = getPackageText();
-        plantUMLCode += bufferBody;
-        plantUMLCode = dotChanger(plantUMLCode);
-        textExporter(plantUMLCode);
-        return plantUMLFile;
-    }
-
-    private void textExporter(String plantCode) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(plantUMLFile))) {
-            writer.write(plantCode);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void exportDiagram(String plantCode) {
+    private void exportDiagram(File plantUMLFile, String plantCode) {
         try {
             ByteArrayOutputStream png = new ByteArrayOutputStream();
             SourceStringReader reader = new SourceStringReader(plantCode);
@@ -123,4 +107,5 @@ public class PlantUMLPackageExporter {
                 "    Shadowing true\n" +
                 "}\n";
     }
+
 }

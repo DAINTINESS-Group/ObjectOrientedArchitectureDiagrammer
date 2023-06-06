@@ -1,9 +1,11 @@
 package manager;
 
+import jdk.jshell.Diag;
+import model.diagram.DiagramExporter;
 import model.diagram.arrangement.ClassDiagramArrangement;
 import model.diagram.GraphClassDiagramConverter;
 import model.diagram.arrangement.DiagramArrangement;
-import model.diagram.graphml.GraphMLClassExporter;
+import model.diagram.graphml.GraphMLClassDiagramExporter;
 import model.diagram.graphml.GraphMLSinkVertex;
 import model.diagram.graphml.GraphMLSinkVertexArc;
 import model.diagram.javafx.classdiagram.JavaFXClassDiagramExporter;
@@ -106,8 +108,8 @@ public class ClassDiagramManagerTest {
             GraphMLSinkVertexArc graphMLSinkVertexArc = new GraphMLSinkVertexArc(graphNodes);
             StringBuilder graphMLEdgeBuffer = graphMLSinkVertexArc.convertLeafEdge(graphEdges);
 
-            GraphMLClassExporter graphMLExporter = new GraphMLClassExporter(graphNodes, nodesGeometry, graphEdges);
-            assertTrue(FileUtils.contentEquals(graphMLExporter.exportDiagramToGraphML(Paths.get(System.getProperty("user.home")+"\\testingExportedFile.graphML")
+            DiagramExporter graphMLExporter = new GraphMLClassDiagramExporter(graphNodes, nodesGeometry, graphEdges);
+            assertTrue(FileUtils.contentEquals(graphMLExporter.exportDiagram(Paths.get(System.getProperty("user.home")+"\\testingExportedFile.graphML")
             ), testingExportedFile));
         } catch (IOException e) {
             e.printStackTrace();
@@ -124,8 +126,8 @@ public class ClassDiagramManagerTest {
             Map<SinkVertex, Set<Arc<SinkVertex>>> createdDiagram = classDiagramManager.getCreatedDiagram();
 
             File testingSavedFile = classDiagramManager.saveDiagram(Paths.get(System.getProperty("user.home")+"\\testingExportedFile.txt"));
-            JavaFXClassDiagramExporter javaFXExporter = new JavaFXClassDiagramExporter(Paths.get(System.getProperty("user.home")+"\\testingExportedFile.txt"), createdDiagram);
-            assertTrue(FileUtils.contentEquals(javaFXExporter.saveDiagram(), testingSavedFile));
+            DiagramExporter javaFXExporter = new JavaFXClassDiagramExporter(createdDiagram);
+            assertTrue(FileUtils.contentEquals(javaFXExporter.exportDiagram(Paths.get(System.getProperty("user.home")+"\\testingExportedFile.txt")), testingSavedFile));
         } catch (IOException e) {
             e.printStackTrace();
         }

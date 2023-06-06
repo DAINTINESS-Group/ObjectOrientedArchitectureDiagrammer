@@ -1,6 +1,7 @@
 package model.javafx;
 
 import manager.PackageDiagramManager;
+import model.diagram.DiagramExporter;
 import model.diagram.javafx.packagediagram.JavaFXPackageDiagramExporter;
 import model.diagram.javafx.packagediagram.JavaFXPackageDiagramLoader;
 import model.graph.Arc;
@@ -38,9 +39,8 @@ public class JavaFXPackageDiagramLoaderTest {
                     currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src\\controller"));
             Map<Vertex, Set<Arc<Vertex>>> createdDiagram = packageDiagramManager.getCreatedDiagram();
 
-            JavaFXPackageDiagramExporter javaFXExporter = new JavaFXPackageDiagramExporter(
-                    Path.of(System.getProperty("user.home") + "\\testingExportedFile.txt"), createdDiagram);
-            File actualFile = javaFXExporter.saveDiagram();
+            DiagramExporter javaFXExporter = new JavaFXPackageDiagramExporter(createdDiagram);
+            File actualFile = javaFXExporter.exportDiagram(Path.of(System.getProperty("user.home") + "\\testingExportedFile.txt"));
 
             JavaFXPackageDiagramLoader javaFXLoader = new JavaFXPackageDiagramLoader(actualFile.toPath());
             Set<Vertex> loadedDiagram = javaFXLoader.loadDiagram();

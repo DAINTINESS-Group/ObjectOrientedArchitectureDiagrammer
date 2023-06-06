@@ -2,7 +2,7 @@ package model.diagram.javafx.classdiagram;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import model.diagram.javafx.JavaFXDiagramExporter;
+import model.diagram.DiagramExporter;
 import model.graph.Arc;
 import model.graph.SinkVertex;
 
@@ -13,19 +13,17 @@ import java.nio.file.Path;
 import java.util.Map;
 import java.util.Set;
 
-public class JavaFXClassDiagramExporter implements JavaFXDiagramExporter {
+public class JavaFXClassDiagramExporter implements DiagramExporter {
 
-    private final Path graphSavePath;
     private final Map<SinkVertex, Set<Arc<SinkVertex>>> diagram;
 
-    public JavaFXClassDiagramExporter(Path graphSavePath, Map<SinkVertex, Set<Arc<SinkVertex>>> diagram) {
+    public JavaFXClassDiagramExporter(Map<SinkVertex, Set<Arc<SinkVertex>>> diagram) {
         this.diagram = diagram;
-        this.graphSavePath = graphSavePath;
     }
 
     @Override
-    public File saveDiagram(){
-        File graphSaveFile = graphSavePath.toFile();
+    public File exportDiagram(Path exportPath) {
+        File graphSaveFile = exportPath.toFile();
         try (FileWriter fileWriter = new FileWriter(graphSaveFile)) {
             Gson gson = new GsonBuilder().registerTypeAdapter(SinkVertex.class, new SinkVertexSerializer()).create();
             String json = gson.toJson(diagram.keySet());

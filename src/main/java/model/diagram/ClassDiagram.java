@@ -3,18 +3,16 @@ package model.diagram;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import model.diagram.arrangement.ClassDiagramArrangement;
 import model.diagram.arrangement.DiagramArrangement;
-import model.diagram.graphml.GraphMLClassExporter;
-import model.diagram.javafx.JavaFXDiagramExporter;
+import model.diagram.graphml.GraphMLClassDiagramExporter;
 import model.diagram.javafx.JavaFXVisualization;
 import model.diagram.javafx.classdiagram.JavaFXClassDiagramExporter;
 import model.diagram.javafx.classdiagram.JavaFXClassDiagramLoader;
 import model.diagram.javafx.classdiagram.JavaFXClassVisualization;
-import model.diagram.plantuml.PlantUMLClassExporter;
-import model.diagram.plantuml.PlantUMLExportType;
+import model.diagram.plantuml.PlantUMLClassDiagramImageExporter;
+import model.diagram.plantuml.PlantUMLClassDiagramTextExporter;
 import model.graph.Arc;
 import model.graph.SinkVertex;
 
-import java.io.File;
 import java.nio.file.Path;
 import java.util.*;
 
@@ -45,14 +43,12 @@ public class ClassDiagram {
         return nodesGeometry;
     }
 
-    public File exportDiagramToGraphML(Path graphMLSavePath) {
-        GraphMLClassExporter graphMLExporter = new GraphMLClassExporter(graphNodes, nodesGeometry, graphEdges);
-        return graphMLExporter.exportDiagramToGraphML(graphMLSavePath);
+    public DiagramExporter createGraphMLExporter() {
+        return new GraphMLClassDiagramExporter(graphNodes, nodesGeometry, graphEdges);
     }
 
-    public File saveDiagram(Path graphSavePath) {
-        JavaFXDiagramExporter javaFXClassDiagramExporter = new JavaFXClassDiagramExporter(graphSavePath, diagram);
-        return javaFXClassDiagramExporter.saveDiagram();
+    public DiagramExporter createJavaFXExporter() {
+        return new JavaFXClassDiagramExporter(diagram);
     }
 
     public Map<SinkVertex, Set<Arc<SinkVertex>>> loadDiagram(Path graphSavePath) {
@@ -72,14 +68,12 @@ public class ClassDiagram {
         return javaFXVisualization.createGraphView();
     }
 
-    public File exportPlantUML(Path fileSavePth, PlantUMLExportType exportType) {
-        PlantUMLClassExporter plantUMLClassExporter = new PlantUMLClassExporter(fileSavePth, graphNodes, graphEdges);
+    public DiagramExporter createPlantUMLImageExporter() {
+        return new PlantUMLClassDiagramImageExporter(graphNodes, graphEdges);
+    }
 
-        if (exportType.equals(PlantUMLExportType.TEXT)) {
-            return plantUMLClassExporter.exportClassDiagramText();
-        }else {
-            return plantUMLClassExporter.exportClassDiagram();
-        }
+    public DiagramExporter createPlantUMLTextExporter() {
+        return new PlantUMLClassDiagramTextExporter(graphNodes, graphEdges);
     }
 
     public void setSinkVertices(Map<Path, SinkVertex> sinkVertices) {

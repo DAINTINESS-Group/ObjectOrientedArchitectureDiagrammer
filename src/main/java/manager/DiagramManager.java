@@ -1,7 +1,6 @@
 package manager;
 
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
-import model.diagram.plantuml.PlantUMLExportType;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -22,7 +21,6 @@ public interface DiagramManager {
      * is responsible for creating the corresponding GraphDiagramManager that implements the createDiagram method
      *
      * @param chosenFilesNames the names of the files selected by the designer
-     * @return the createDiagram
      */
     void createDiagram(List<String> chosenFilesNames);
 
@@ -50,7 +48,6 @@ public interface DiagramManager {
      * Diagram and populating the createdDiagram Collection with the contents of the file. The createdDiagram is a Map
      * as described in the method above
      * @param graphSavePath the file's path where the diagram is saved
-     * @return the createdDiagram
      */
     void loadDiagram(Path graphSavePath);
 
@@ -59,13 +56,15 @@ public interface DiagramManager {
      */
     SmartGraphPanel<String, String> visualizeJavaFXGraph();
 
-    /**
-     * This method is responsible for exporting the diagram to PlantUML based on the export type given, i.e. text & diagram
-     *
-     * @param fileSavePth the selected path by the designer where the exported diagram will be saved
-     * @param exportType  the type of the exportation
+    /**This method is responsible for exporting the diagram to a PlantUML image diagram
+     * @param plantUMLSavePath the selected path by the designer where the exported diagram will be saved
      * @return the exported file
      */
-    File exportPlantUML(Path fileSavePth, PlantUMLExportType exportType);
+    File exportPlantUMLDiagram(Path plantUMLSavePath);
 
+    /**This method is responsible for exporting the diagram to a PlantUML text file
+     * @param textSavePath the selected path by the designer where the exported diagram will be saved
+     * @return the exported file
+     */
+    File exportPlantUMLText(Path textSavePath);
 }

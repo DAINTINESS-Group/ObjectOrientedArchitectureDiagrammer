@@ -1,8 +1,8 @@
 package manager;
 
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
+import model.diagram.DiagramExporter;
 import model.diagram.PackageDiagram;
-import model.diagram.plantuml.PlantUMLExportType;
 import model.graph.Arc;
 import model.graph.Vertex;
 
@@ -19,6 +19,7 @@ public class PackageDiagramManager implements DiagramManager {
         diagramStack = new ArrayDeque<>();
     }
 
+    @Override
     public SourceProject createSourceProject(Path sourcePackagePath) {
         SourceProject sourceProject = new SourceProject();
         sourceProject.createGraph(sourcePackagePath);
@@ -27,31 +28,47 @@ public class PackageDiagramManager implements DiagramManager {
         return sourceProject;
     }
 
+    @Override
     public void createDiagram(List<String> chosenFilesNames) {
         diagram = Objects.requireNonNull(diagramStack.peek()).createDiagram(chosenFilesNames);
     }
 
+    @Override
     public Map<Integer, List<Double>> arrangeDiagram(){
         return Objects.requireNonNull(diagramStack.peek()).arrangeDiagram();
     }
 
+    @Override
     public File exportDiagramToGraphML(Path graphMLSavePath) {
-        return Objects.requireNonNull(diagramStack.peek()).exportDiagramToGraphML(graphMLSavePath);
+        DiagramExporter diagramExporter = Objects.requireNonNull(diagramStack.peek()).createGraphMLExporter();
+        return diagramExporter.exportDiagram(graphMLSavePath);
     }
 
-    public File exportPlantUML(Path fileSavePth, PlantUMLExportType exportType) {
-        return Objects.requireNonNull(diagramStack.peek()).exportPlantUML(fileSavePth, exportType);
+    @Override
+    public File exportPlantUMLDiagram(Path plantUMLSavePath) {
+        DiagramExporter diagramExporter =  Objects.requireNonNull(diagramStack.peek()).createPlantUMLImageExporter();
+        return diagramExporter.exportDiagram(plantUMLSavePath);
     }
 
+    @Override
+    public File exportPlantUMLText(Path textSavePath) {
+        DiagramExporter diagramExporter =  Objects.requireNonNull(diagramStack.peek()).createPlantUMLTextExporter();
+        return diagramExporter.exportDiagram(textSavePath);
+    }
+
+    @Override
     public File saveDiagram(Path graphSavePath) {
-        return Objects.requireNonNull(diagramStack.peek()).saveDiagram(graphSavePath);
+        DiagramExporter diagramExporter =  Objects.requireNonNull(diagramStack.peek()).createJavaFXExporter();
+        return diagramExporter.exportDiagram(graphSavePath);
     }
 
+    @Override
     public void loadDiagram(Path graphSavePath) {
         diagramStack.push(new PackageDiagram());
         diagram = Objects.requireNonNull(diagramStack.peek()).loadDiagram(graphSavePath);
     }
 
+    @Override
     public SmartGraphPanel<String, String> visualizeJavaFXGraph() {
         return Objects.requireNonNull(diagramStack.peek()).visualizeJavaFXGraph();
     }

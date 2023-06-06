@@ -2,7 +2,6 @@ package controller;
 
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import manager.DiagramManager;
-import model.diagram.plantuml.PlantUMLExportType;
 import manager.SourceProject;
 
 import java.io.File;
@@ -26,12 +25,12 @@ public abstract class DiagramController implements Controller {
 		return diagramManager.exportDiagramToGraphML(graphMLSavePath);
 	}
 	
-	public File exportPlantUMLDiagram(Path graphSavePath) {
-		return diagramManager.exportPlantUML(graphSavePath, PlantUMLExportType.DIAGRAM);
+	public File exportPlantUMLDiagram(Path plantUMLSavePath) {
+		return diagramManager.exportPlantUMLDiagram(plantUMLSavePath);
 	}
 	
 	public File exportPlantUMLText(Path textSavePath) {
-		return diagramManager.exportPlantUML(textSavePath, PlantUMLExportType.TEXT);
+		return diagramManager.exportPlantUMLText(textSavePath);
 	}
 
 	public SmartGraphPanel<String, String> visualizeJavaFXGraph() {

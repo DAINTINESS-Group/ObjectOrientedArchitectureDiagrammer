@@ -1,6 +1,7 @@
 package model.javafx;
 
 import manager.ClassDiagramManager;
+import model.diagram.DiagramExporter;
 import model.diagram.javafx.classdiagram.JavaFXClassDiagramExporter;
 import model.diagram.javafx.classdiagram.JavaFXClassDiagramLoader;
 import model.graph.Arc;
@@ -30,9 +31,8 @@ public class JavaFXClassDiagramLoaderTest {
             classDiagramManager.createDiagram(chosenFiles);
             Map<SinkVertex, Set<Arc<SinkVertex>>> createdDiagram = classDiagramManager.getCreatedDiagram();
 
-            JavaFXClassDiagramExporter javaFXExporter = new JavaFXClassDiagramExporter(
-                    Path.of(System.getProperty("user.home") + "\\testingExportedFile.txt"), createdDiagram);
-            File actualFile = javaFXExporter.saveDiagram();
+            DiagramExporter javaFXExporter = new JavaFXClassDiagramExporter(createdDiagram);
+            File actualFile = javaFXExporter.exportDiagram(Path.of(System.getProperty("user.home") + "\\testingExportedFile.txt"));
 
             JavaFXClassDiagramLoader javaFXClassDiagramLoader = new JavaFXClassDiagramLoader(actualFile.toPath());
             Set<SinkVertex> loadedDiagram = javaFXClassDiagramLoader.loadDiagram();
