@@ -51,9 +51,11 @@ public class PackageDiagram {
         return javaFXPackageDiagramExporter.saveDiagram();
     }
 
-    public Set<Vertex> loadDiagram(Path graphSavePath) {
+    public Map<Vertex, Set<Arc<Vertex>>> loadDiagram(Path graphSavePath) {
         JavaFXPackageDiagramLoader javaFXPackageDiagramLoader = new JavaFXPackageDiagramLoader(graphSavePath);
-        return javaFXPackageDiagramLoader.loadDiagram();
+        Set<Vertex> loadedDiagram = javaFXPackageDiagramLoader.loadDiagram();
+        GraphPackageDiagramConverter graphPackageDiagramConverter = new GraphPackageDiagramConverter(loadedDiagram);
+        return graphPackageDiagramConverter.convertGraphToPackageDiagram();
     }
 
     public Map<Vertex, Set<Arc<Vertex>>> convertCollectionsToDiagram() {

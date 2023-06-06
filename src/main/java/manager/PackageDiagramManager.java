@@ -14,7 +14,6 @@ public class PackageDiagramManager implements DiagramManager {
 
     private final ArrayDeque<PackageDiagram> diagramStack;
     private Map<Vertex, Set<Arc<Vertex>>> diagram;
-    private Set<Vertex> loadedDiagram;
 
     public PackageDiagramManager() {
         diagramStack = new ArrayDeque<>();
@@ -50,7 +49,7 @@ public class PackageDiagramManager implements DiagramManager {
 
     public void loadDiagram(Path graphSavePath) {
         diagramStack.push(new PackageDiagram());
-        loadedDiagram = Objects.requireNonNull(diagramStack.peek()).loadDiagram(graphSavePath);
+        diagram = Objects.requireNonNull(diagramStack.peek()).loadDiagram(graphSavePath);
     }
 
     public SmartGraphPanel<String, String> visualizeJavaFXGraph() {
@@ -63,7 +62,4 @@ public class PackageDiagramManager implements DiagramManager {
 
     public Map<Vertex, Set<Arc<Vertex>>> getCreatedDiagram() { return  diagram; }
 
-    public Set<Vertex> getLoadedDiagram() {
-        return loadedDiagram;
-    }
 }

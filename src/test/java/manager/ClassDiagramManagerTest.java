@@ -131,20 +131,35 @@ public class ClassDiagramManagerTest {
     }
 
     @Test
-    void loadDiagramTest() throws IOException {
-        ClassDiagramManager classDiagramManager = new ClassDiagramManager();
-        List<String> chosenFiles = Arrays.asList("MainWindow", "LatexEditorView", "OpeningWindow");
-        classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-        classDiagramManager.createDiagram(chosenFiles);
-        Map<SinkVertex, Set<Arc<SinkVertex>>> createdDiagram = classDiagramManager.getCreatedDiagram();
-        classDiagramManager.saveDiagram(Paths.get(System.getProperty("user.home")+"\\testingExportedFile.txt"));
-        classDiagramManager.loadDiagram(Paths.get(System.getProperty("user.home")+"\\testingExportedFile.txt"));
-        Set<SinkVertex> loadedDiagram = classDiagramManager.getLoadedDiagram();
+    void loadDiagramTest() {
+        try {
+            ClassDiagramManager classDiagramManager = new ClassDiagramManager();
+            List<String> chosenFiles = Arrays.asList("MainWindow", "LatexEditorView", "OpeningWindow");
+            classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
+            classDiagramManager.createDiagram(chosenFiles);
+            Map<SinkVertex, Set<Arc<SinkVertex>>> createdDiagram = classDiagramManager.getCreatedDiagram();
+            classDiagramManager.saveDiagram(Paths.get(System.getProperty("user.home")+"\\testingExportedFile.txt"));
+            classDiagramManager.loadDiagram(Paths.get(System.getProperty("user.home")+"\\testingExportedFile.txt"));
+            Map<SinkVertex, Set<Arc<SinkVertex>>> loadedDiagram = classDiagramManager.getCreatedDiagram();
 
-        for (SinkVertex sinkVertex: createdDiagram.keySet()) {
-            loadedDiagram.stream().filter(sinkVertex1 ->
+            for (SinkVertex sinkVertex: createdDiagram.keySet()) {
+                Optional<SinkVertex> optionalSinkVertex = loadedDiagram.keySet().stream().filter(sinkVertex1 ->
                     sinkVertex1.getName().equals(sinkVertex.getName())
-            ).findFirst().orElseGet(Assertions::fail);
+                ).findFirst();
+                assertTrue(optionalSinkVertex.isPresent());
+
+                assertEquals(createdDiagram.get(sinkVertex).size(), loadedDiagram.get(optionalSinkVertex.get()).size());
+                for (Arc<SinkVertex> arc: createdDiagram.get(sinkVertex)) {
+                    loadedDiagram.get(optionalSinkVertex.get()).stream().filter(a ->
+                        a.getSourceVertex().getName().equals(arc.getSourceVertex().getName()) &&
+                        a.getTargetVertex().getName().equals(arc.getTargetVertex().getName()) &&
+                        a.getArcType().equals(arc.getArcType()))
+                    .findFirst().orElseGet(Assertions::fail);
+                }
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

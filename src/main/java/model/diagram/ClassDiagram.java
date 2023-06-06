@@ -51,9 +51,11 @@ public class ClassDiagram {
         return javaFXClassDiagramExporter.saveDiagram();
     }
 
-    public Set<SinkVertex> loadDiagram(Path graphSavePath) {
+    public Map<SinkVertex, Set<Arc<SinkVertex>>> loadDiagram(Path graphSavePath) {
         JavaFXClassDiagramLoader javaFXClassDiagramLoader =  new JavaFXClassDiagramLoader(graphSavePath);
-        return javaFXClassDiagramLoader.loadDiagram();
+        Set<SinkVertex> loadedDiagram = javaFXClassDiagramLoader.loadDiagram();
+        GraphClassDiagramConverter graphClassDiagramConverter = new GraphClassDiagramConverter(loadedDiagram);
+        return graphClassDiagramConverter.convertGraphToClassDiagram();
     }
 
     public Map<SinkVertex, Set<Arc<SinkVertex>>> convertCollectionsToDiagram() {
