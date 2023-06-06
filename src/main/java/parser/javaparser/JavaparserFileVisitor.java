@@ -8,17 +8,13 @@ import com.github.javaparser.ast.expr.ObjectCreationExpr;
 import com.github.javaparser.ast.expr.VariableDeclarationExpr;
 import com.github.javaparser.ast.visitor.VoidVisitor;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
-import model.tree.javaparser.JavaparserLeafNode;
-import model.tree.node.LeafNode;
-import model.tree.node.NodeType;
-import model.tree.node.ModifierType;
-import parser.FileVisitor;
+import parser.tree.node.LeafNode;
+import parser.tree.node.ModifierType;
+import parser.tree.node.NodeType;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -26,7 +22,7 @@ import java.util.regex.Pattern;
  * Using the different visitors, it parses the file's inheritance declarations, constructor, methods parameters,
  * return types, field & local variable declarations as well as the instantiated objects that aren't assigned to a variable
  */
-public class JavaparserFileVisitor implements FileVisitor {
+public class JavaparserFileVisitor {
 
     private final List<String> allCreatedObjects;
     private final List<String> createdAssignedObjects;
@@ -36,6 +32,10 @@ public class JavaparserFileVisitor implements FileVisitor {
         createdAssignedObjects = new ArrayList<>();
     }
 
+    /** This method is responsible for the creation of the AST
+     * @param file the Java source file
+     * @param leafNode the leaf node representing the Java source file
+     */
     public void createAST(File file, LeafNode leafNode) {
         try {
             JavaparserLeafNode javaparserLeafNode = (JavaparserLeafNode) leafNode;
@@ -112,24 +112,16 @@ public class JavaparserFileVisitor implements FileVisitor {
         @Override
         public void visit(ConstructorDeclaration constructorDeclaration, Void arg) {
             super.visit(constructorDeclaration, arg);
-
+            ModifierType modifierType = ModifierType.PACKAGE_PRIVATE;
             if (constructorDeclaration.getModifiers().size() > 0) {
-                leafNode.addMethodVisibility(constructorDeclaration.getNameAsString(),
-                        ModifierType.valueOf(constructorDeclaration.getModifiers().get(0).toString().toUpperCase().trim()));
-            }else {
-                leafNode.addMethodVisibility(constructorDeclaration.getNameAsString(), ModifierType.PACKAGE_PRIVATE);
+                modifierType = ModifierType.valueOf(constructorDeclaration.getModifiers().get(0).toString().toUpperCase().trim());
             }
-            leafNode.addMethod(constructorDeclaration.getNameAsString(), "Constructor");
 
-            List<String> parameters = new ArrayList<>();
-            List<String> parametersName = new ArrayList<>();
-            constructorDeclaration.getParameters().forEach(parameter -> {
-                    leafNode.addMethodParameterType(parameter.getTypeAsString().replaceAll("<", "[").replaceAll(">", "]"));
-                    parameters.add(parameter.getTypeAsString().replaceAll("<", "[").replaceAll(">", "]"));
-                    parametersName.add(parameter.getName().toString());
-            });
-
-            leafNode.addForPlantUML(constructorDeclaration.getNameAsString(), parameters, parametersName);
+            Map<String, String> parameters = new HashMap<>();
+            constructorDeclaration.getParameters().forEach(parameter ->
+                parameters.put(parameter.getNameAsString(), parameter.getTypeAsString().replaceAll("<", "[").replaceAll(">", "]"))
+            );
+            leafNode.addMethod(constructorDeclaration.getNameAsString(), "Constructor", modifierType, parameters);
         }
     }
 
@@ -145,15 +137,15 @@ public class JavaparserFileVisitor implements FileVisitor {
             super.visit(fieldDeclaration, arg);
 
             fieldDeclaration.getVariables().forEach(variable -> {
+                ModifierType modifierType;
                 if (fieldDeclaration.getModifiers().size() > 0) {
-                    leafNode.addFieldVisibility(variable.getNameAsString(),
-                            ModifierType.valueOf(fieldDeclaration.getModifiers().get(0).toString().toUpperCase().trim()));
+                    modifierType = ModifierType.valueOf(fieldDeclaration.getModifiers().get(0).toString().toUpperCase().trim());
                 }else {
-                    leafNode.addFieldVisibility(variable.getNameAsString(),  ModifierType.PACKAGE_PRIVATE);
+                    modifierType = ModifierType.PACKAGE_PRIVATE;
                 }
 
                 leafNode.addField(variable.getNameAsString(),
-                        variable.getTypeAsString().replaceAll("<", "[").replaceAll(">", "]"));
+                        variable.getTypeAsString().replaceAll("<", "[").replaceAll(">", "]"), modifierType);
             });
         }
     }
@@ -191,25 +183,19 @@ public class JavaparserFileVisitor implements FileVisitor {
         @Override
         public void visit(MethodDeclaration methodDeclaration, Void arg) {
             super.visit(methodDeclaration, arg);
-            List<String> parameters = new ArrayList<>();
-            List<String> parametersName = new ArrayList<>();
 
+            ModifierType modifierType = ModifierType.PACKAGE_PRIVATE;
             if (methodDeclaration.getModifiers().size() > 0) {
-                leafNode.addMethodVisibility(methodDeclaration.getNameAsString(),
-                        ModifierType.valueOf(methodDeclaration.getModifiers().get(0).toString().toUpperCase().trim()));
-            }else{
-                leafNode.addMethodVisibility(methodDeclaration.getNameAsString(), ModifierType.PACKAGE_PRIVATE);
+                modifierType = ModifierType.valueOf(methodDeclaration.getModifiers().get(0).toString().toUpperCase().trim());
             }
+
+            Map<String, String> parameters = new HashMap<>();
+            methodDeclaration.getParameters().forEach(parameter ->
+                parameters.put(parameter.getNameAsString(), parameter.getTypeAsString().replaceAll("<", "[").replaceAll(">", "]"))
+            );
+
             leafNode.addMethod(methodDeclaration.getNameAsString(),
-                    methodDeclaration.getTypeAsString().replaceAll("<", "[").replaceAll(">", "]"));
-
-            methodDeclaration.getParameters().forEach(parameter -> {
-            	leafNode.addMethodParameterType(parameter.getTypeAsString().replaceAll("<", "[").replaceAll(">", "]"));
-            	parameters.add(parameter.getTypeAsString().replaceAll("<", "[").replaceAll(">", "]"));
-                parametersName.add(parameter.getName().toString());
-            });
-
-            leafNode.addForPlantUML(methodDeclaration.getNameAsString(), parameters, parametersName);
+                    methodDeclaration.getTypeAsString().replaceAll("<", "[").replaceAll(">", "]"), modifierType, parameters);
         }
     }
 

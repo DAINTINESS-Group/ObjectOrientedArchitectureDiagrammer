@@ -22,23 +22,25 @@ public class MenuUtility {
 
     public static void openProject(MenuBar menuBar){
         File selectedDirectory = FileAndDirectoryUtility.chooseDirectory("Load the Project's Source Folder", menuBar);
-        if (selectedDirectory != null) {
-            try {
-                URL url = MenuUtility.class.getResource("/fxml/DiagramCreationView.fxml");
-                FXMLLoader loader = new FXMLLoader();
-                loader.setLocation(url);
-                Parent diagramCreationParent = loader.load();
+        if (selectedDirectory == null) {
+            PopupWindow.createPopupInfoWindow("You should select a directory!", "Error");
+            return;
+        }
+        try {
+            URL url = MenuUtility.class.getResource("/fxml/DiagramCreationView.fxml");
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(url);
+            Parent diagramCreationParent = loader.load();
 
-                DiagramCreationController diagramCreationController = loader.getController();
-                diagramCreationController.createTreeView(selectedDirectory.toPath());
+            DiagramCreationController diagramCreationController = loader.getController();
+            diagramCreationController.createTreeView(selectedDirectory.toPath());
 
-                Scene diagramCreationScene = new Scene(diagramCreationParent);
-                Stage window = (Stage) menuBar.getScene().getWindow();
-                window.setScene(diagramCreationScene);
-                window.show();
-            } catch (Exception e){
-                e.printStackTrace();
-            }
+            Scene diagramCreationScene = new Scene(diagramCreationParent);
+            Stage window = (Stage) menuBar.getScene().getWindow();
+            window.setScene(diagramCreationScene);
+            window.show();
+        } catch (Exception e){
+            e.printStackTrace();
         }
     }
 

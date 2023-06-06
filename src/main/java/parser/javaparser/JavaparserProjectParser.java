@@ -1,12 +1,9 @@
 package parser.javaparser;
 
-import model.tree.edge.RelationshipIdentifier;
-import model.tree.javaparser.JavaparserLeafNode;
-import model.tree.javaparser.JavaparserRelationshipIdentifier;
-import model.tree.node.LeafNode;
-import model.tree.node.PackageNode;
-import parser.FileVisitor;
-import parser.Parser;
+import parser.factory.Parser;
+import parser.tree.edge.RelationshipIdentifier;
+import parser.tree.node.LeafNode;
+import parser.tree.node.PackageNode;
 
 import java.io.File;
 import java.nio.file.DirectoryStream;
@@ -62,7 +59,7 @@ public class JavaparserProjectParser implements Parser {
     private void createLeafNode(PackageNode currentNode, LeafNode leafNode, File file) {
         leafNode.setParentNode(currentNode);
         currentNode.setValid();
-        FileVisitor fileVisitor = new JavaparserFileVisitor();
+        JavaparserFileVisitor fileVisitor = new JavaparserFileVisitor();
         fileVisitor.createAST(file, leafNode);
         currentNode.addLeafNode(leafNode);
     }

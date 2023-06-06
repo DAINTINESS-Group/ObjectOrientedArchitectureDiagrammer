@@ -1,12 +1,9 @@
 package parser.jdt;
 
-import model.tree.edge.RelationshipIdentifier;
-import model.tree.jdt.JDTLeafNode;
-import model.tree.jdt.JDTRelationshipIdentifier;
-import model.tree.node.LeafNode;
-import model.tree.node.PackageNode;
-import parser.FileVisitor;
-import parser.Parser;
+import parser.tree.edge.RelationshipIdentifier;
+import parser.tree.node.LeafNode;
+import parser.tree.node.PackageNode;
+import parser.factory.Parser;
 
 import java.io.File;
 import java.nio.file.DirectoryStream;
@@ -66,7 +63,7 @@ public class JDTProjectParser implements Parser {
 	private void createLeafNode(PackageNode currentNode, LeafNode leafNode, File file) {
 		leafNode.setParentNode(currentNode);
 		currentNode.setValid();
-		FileVisitor fileVisitor = new JDTFileVisitor();
+		JDTFileVisitor fileVisitor = new JDTFileVisitor();
 		fileVisitor.createAST(file, leafNode);
 		currentNode.addLeafNode(leafNode);
 	}

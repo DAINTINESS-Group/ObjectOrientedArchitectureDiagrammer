@@ -1,34 +1,30 @@
 package parser.jdt;
 
+import org.eclipse.jdt.core.dom.*;
+import org.eclipse.text.edits.MalformedTreeException;
+import parser.tree.node.LeafNode;
+import parser.tree.node.ModifierType;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import model.tree.jdt.JDTLeafNode;
-import model.tree.node.LeafNode;
-import model.tree.node.ModifierType;
-
-import org.eclipse.jdt.core.dom.*;
-import org.eclipse.text.edits.MalformedTreeException;
-import parser.FileVisitor;
+import java.util.*;
 
 import static org.eclipse.jdt.core.dom.ASTNode.METHOD_DECLARATION;
 
 /**This class is responsible for the creation of the AST of a Java source file using JDT.
  * The ASTNode API parses the files methods parameters, return types and field declarations
  */
-public class JDTFileVisitor implements FileVisitor {
+public class JDTFileVisitor {
 
 	private CompilationUnit unit;
 	private String sourceFile[];
 
-
+	/** This method is responsible for the creation of the AST
+	 * @param file the Java source file
+	 * @param leafNode the leaf node representing the Java source file
+	 */
     public void createAST(File file, LeafNode leafNode) {
 		try {
 			ASTParser parser = ASTParser.newParser(AST.JLS17);
@@ -74,9 +70,7 @@ public class JDTFileVisitor implements FileVisitor {
 		            		}
 		            	}
 	            		int fieldModifiers = field.getModifiers();
-	            		jdtLeafNode.addFieldVisibility(fieldName, getVisibility(fieldModifiers));
-
-						jdtLeafNode.addField(fieldName, field.getType().toString().replaceAll("<", "[").replaceAll(">", "]"));
+						jdtLeafNode.addField(fieldName, field.getType().toString().replaceAll("<", "[").replaceAll(">", "]"), getVisibility(fieldModifiers));
 	            	}
 	                if (isMethod(body)) {
 	                    MethodDeclaration method = (MethodDeclaration)body;
@@ -87,26 +81,19 @@ public class JDTFileVisitor implements FileVisitor {
 	                    if (returnType==null) returnTypeName = "Constructor";
 	                    else returnTypeName = returnType.toString();
 	                    
-	                    List<String> parameters = new ArrayList<>();
-	                    List<String> parametersName = new ArrayList<>();
+						Map<String, String> parameters = new HashMap<>();
 
 	                    for (Object parameter : method.parameters()) {
 	                        VariableDeclaration variableDeclaration = (VariableDeclaration) parameter;
 							String variableType = variableDeclaration.
 									getStructuralProperty(SingleVariableDeclaration.TYPE_PROPERTY).toString() + "[]".repeat(Math.max(0, variableDeclaration.getExtraDimensions()));
 	                        
-							//plantUML
-							parameters.add(variableType);
-	                        String variableName = variableDeclaration.getName().getIdentifier();
-	                        parametersName.add(variableName);
-                        
-	                        //parser 
-							jdtLeafNode.addMethodParameterType(variableType.replaceAll("<", "[").replaceAll(">", "]"));
+							parameters.put(variableDeclaration.getName().getIdentifier(),
+									variableType.replaceAll("<", "[").replaceAll(">", "]"));
 	                    }
+
 	                    int methodModifiers = method.getModifiers();
-	                    jdtLeafNode.addForPlantUML(methodName, parameters, parametersName);
-	                    jdtLeafNode.addMethodVisibility(methodName, getVisibility(methodModifiers));
-	                    jdtLeafNode.addMethod(methodName, returnTypeName.replaceAll("<", "[").replaceAll(">", "]"));
+	                    jdtLeafNode.addMethod(methodName, returnTypeName.replaceAll("<", "[").replaceAll(">", "]"), getVisibility(methodModifiers), parameters);
 	                }
 	            }
 	        }

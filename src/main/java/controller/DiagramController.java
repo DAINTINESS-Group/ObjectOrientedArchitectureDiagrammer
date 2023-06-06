@@ -1,9 +1,8 @@
 package controller;
 
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
-import manager.Manager;
-import model.diagram.plantuml.PlantUMLExportType;
-import model.tree.SourceProject;
+import manager.DiagramManager;
+import manager.SourceProject;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -12,10 +11,10 @@ import java.util.Map;
 
 public abstract class DiagramController implements Controller {
 
-	protected Manager diagramManager;
+	protected DiagramManager diagramManager;
 
 	public SourceProject createTree(Path sourcePackagePath) {
-		return diagramManager.createTree(sourcePackagePath);
+		return diagramManager.createSourceProject(sourcePackagePath);
 	}
 
 	public Map<Integer, List<Double>> arrangeDiagram(){
@@ -26,12 +25,12 @@ public abstract class DiagramController implements Controller {
 		return diagramManager.exportDiagramToGraphML(graphMLSavePath);
 	}
 	
-	public File exportPlantUMLDiagram(Path graphSavePath) {
-		return diagramManager.exportPlantUML(graphSavePath, PlantUMLExportType.DIAGRAM);
+	public File exportPlantUMLDiagram(Path plantUMLSavePath) {
+		return diagramManager.exportPlantUMLDiagram(plantUMLSavePath);
 	}
 	
 	public File exportPlantUMLText(Path textSavePath) {
-		return diagramManager.exportPlantUML(textSavePath, PlantUMLExportType.TEXT);
+		return diagramManager.exportPlantUMLText(textSavePath);
 	}
 
 	public SmartGraphPanel<String, String> visualizeJavaFXGraph() {
@@ -42,12 +41,12 @@ public abstract class DiagramController implements Controller {
 		return diagramManager.saveDiagram(graphSavePath);
 	}
 
-	public Map<String, Map<String, String>> loadDiagram(Path graphSavePath) {
-		return diagramManager.loadDiagram(graphSavePath);
+	public void loadDiagram(Path graphSavePath) {
+		diagramManager.loadDiagram(graphSavePath);
 	}
 
-	public Map<String, Map<String, String>> convertTreeToDiagram(List<String> chosenClassesNames) {
-		return diagramManager.createDiagram(chosenClassesNames);
+	public void convertTreeToDiagram(List<String> chosenClassesNames) {
+		diagramManager.createDiagram(chosenClassesNames);
 	}
 
 }
