@@ -14,8 +14,8 @@ public class PlantUMLVertex {
 
     public StringBuilder convertPlantPackageNode() {
         StringBuilder plantUMLBuffer = new StringBuilder();
-        for (Vertex node : graphNodes.keySet()) {
-            String convertedNode = node.getVertexType().toString().toLowerCase() + " " + node.getName() + " {\n" + "}\n";
+        for (Vertex vertex : graphNodes.keySet()) {
+            String convertedNode = vertex.getVertexType().toString().toLowerCase() + " " + vertex.getName() + " {\n" + "}\n";
             plantUMLBuffer.append(convertedNode).append("\n");
         }
         return plantUMLBuffer;

@@ -1,10 +1,10 @@
 package parser.javaparser;
 
-import parser.tree.edge.Relationship;
-import parser.tree.edge.RelationshipType;
-import parser.tree.node.LeafNode;
-import parser.tree.node.NodeType;
-import parser.tree.node.PackageNode;
+import parser.tree.Relationship;
+import parser.tree.RelationshipType;
+import parser.tree.LeafNode;
+import parser.tree.NodeType;
+import parser.tree.PackageNode;
 import org.junit.jupiter.api.Test;
 import parser.factory.Parser;
 import parser.factory.ParserType;
@@ -75,11 +75,11 @@ public class JavaparserRelationshipIdentifierTest {
             PackageNode commandPackage = packages.get(Paths.get(currentDirectory.toRealPath().normalize().toString(), "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands"));
 
             LeafNode addLatexCommand = commandPackage.getLeafNodes().get("AddLatexCommand");
-            List<Relationship> nodeRelationships = addLatexCommand.getNodeRelationships();
+            List<Relationship<LeafNode>> nodeRelationships = addLatexCommand.getLeafNodeRelationships();
 
             boolean foundObligatoryRelationship = false;
             int relationshipCounter = 0;
-            for (Relationship relationship : nodeRelationships) {
+            for (Relationship<LeafNode> relationship : nodeRelationships) {
                 if ((relationship.getStartingNode().getName().equals("AddLatexCommand")) && (relationship.getEndingNode().getName().equals("VersionsManager"))) {
                     if (relationship.getRelationshipType().equals(RelationshipType.DEPENDENCY)) {
                         foundObligatoryRelationship = true;
@@ -99,13 +99,13 @@ public class JavaparserRelationshipIdentifierTest {
             assertEquals(NodeType.CLASS, addLatexCommand.getType());
 
             LeafNode commandFactory = commandPackage.getLeafNodes().get("CommandFactory");
-            nodeRelationships = commandFactory.getNodeRelationships();
+            nodeRelationships = commandFactory.getLeafNodeRelationships();
 
             boolean foundObligatoryRelationships_CommandFactoryToVersionsManager = false;
             boolean foundObligatoryRelationships_CommandFactoryToCommand = false;
             boolean foundObligatoryRelationships_CommandFactoryToAddLatexCommand = false;
             relationshipCounter = 0;
-            for (Relationship relationship : nodeRelationships) {
+            for (Relationship<LeafNode> relationship : nodeRelationships) {
                 if ((relationship.getStartingNode().getName().equals("CommandFactory")) && (relationship.getEndingNode().getName().equals("VersionsManager"))) {
                     if (relationship.getRelationshipType().equals(RelationshipType.DEPENDENCY)) {
                         foundObligatoryRelationships_CommandFactoryToVersionsManager = true;
@@ -137,11 +137,11 @@ public class JavaparserRelationshipIdentifierTest {
                     "\\src\\test\\resources\\ParserTesting"));
 
             LeafNode objectCreation = sourcePackage.getLeafNodes().get("ObjectCreationTest");
-            nodeRelationships = objectCreation.getNodeRelationships();
+            nodeRelationships = objectCreation.getLeafNodeRelationships();
 
             foundObligatoryRelationship = false;
             relationshipCounter = 0;
-            for (Relationship relationship : nodeRelationships) {
+            for (Relationship<LeafNode> relationship : nodeRelationships) {
                 if ((relationship.getStartingNode().getName().equals("ObjectCreationTest")) && (relationship.getEndingNode().getName().equals("ExtensionClass"))) {
                     if (relationship.getRelationshipType().equals(RelationshipType.DEPENDENCY)) {
                         foundObligatoryRelationship = true;
@@ -177,11 +177,11 @@ public class JavaparserRelationshipIdentifierTest {
             PackageNode sourcePackage = packages.get(Paths.get(currentDirectory.toRealPath().normalize().toString(), "\\src\\test\\resources\\ParserTesting"));
 
             LeafNode implementingClassLeaf = sourcePackage.getLeafNodes().get("ImplementingClass");
-            List<Relationship> nodeRelationships = implementingClassLeaf.getNodeRelationships();
+            List<Relationship<LeafNode>> nodeRelationships = implementingClassLeaf.getLeafNodeRelationships();
 
             boolean foundObligatoryRelationship = false;
             int relationshipCounter = 0;
-            for (Relationship relationship : nodeRelationships) {
+            for (Relationship<LeafNode> relationship : nodeRelationships) {
                 if ((relationship.getStartingNode().getName().equals("ImplementingClass")) && (relationship.getEndingNode().getName().equals("TestingInterface2"))) {
                     assertEquals(RelationshipType.IMPLEMENTATION, relationship.getRelationshipType());
                     foundObligatoryRelationship = true;
@@ -215,11 +215,11 @@ public class JavaparserRelationshipIdentifierTest {
             Map<Path, PackageNode> packages = parser.getPackageNodes();
 
             PackageNode commands = packages.get(Paths.get(currentDirectory.toRealPath().normalize().toString(), "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands"));
-            List<Relationship> packageRelationships = commands.getNodeRelationships();
+            List<Relationship<PackageNode>> packageRelationships = commands.getPackageNodeRelationships();
 
             boolean foundObligatoryRelationship = false;
             int relationshipCounter = 0;
-            for (Relationship relationship : packageRelationships) {
+            for (Relationship<PackageNode> relationship : packageRelationships) {
                 if ((relationship.getStartingNode().getName().equals("src.controller.commands")) && (relationship.getEndingNode().getName().equals("src.model"))) {
                     assertEquals(RelationshipType.DEPENDENCY, relationship.getRelationshipType());
                     foundObligatoryRelationship = true;
@@ -234,11 +234,11 @@ public class JavaparserRelationshipIdentifierTest {
             assertEquals(NodeType.PACKAGE, commands.getType());
 
             PackageNode controller = packages.get(Paths.get(currentDirectory.toRealPath().normalize().toString(), "\\src\\test\\resources\\LatexEditor\\src\\controller"));
-            packageRelationships = controller.getNodeRelationships();
+            packageRelationships = controller.getPackageNodeRelationships();
 
             foundObligatoryRelationship = false;
             relationshipCounter = 0;
-            for (Relationship relationship : packageRelationships) {
+            for (Relationship<PackageNode> relationship : packageRelationships) {
                 if ((relationship.getStartingNode().getName().equals("src.controller")) && (relationship.getEndingNode().getName().equals("src.model"))) {
                     assertEquals(RelationshipType.DEPENDENCY, relationship.getRelationshipType());
                     foundObligatoryRelationship = true;

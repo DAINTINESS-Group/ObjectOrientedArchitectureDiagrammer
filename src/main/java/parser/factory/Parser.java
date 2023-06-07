@@ -1,6 +1,6 @@
 package parser.factory;
 
-import parser.tree.node.PackageNode;
+import parser.tree.PackageNode;
 
 import java.nio.file.Path;
 import java.util.Map;

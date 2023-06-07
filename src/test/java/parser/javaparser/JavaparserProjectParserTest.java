@@ -1,7 +1,7 @@
 package parser.javaparser;
 
-import parser.tree.node.LeafNode;
-import parser.tree.node.PackageNode;
+import parser.tree.LeafNode;
+import parser.tree.PackageNode;
 import org.junit.jupiter.api.Test;
 import parser.factory.Parser;
 import parser.factory.ParserType;
@@ -68,19 +68,19 @@ public class JavaparserProjectParserTest {
             PackageNode controllerPackage = packageNodes.get(Paths.get(currentDirectory.toRealPath().normalize().toString(), "src\\test\\resources\\LatexEditor\\src\\controller"));
             List<Path> testingLeafNodes = new ArrayList<>();
             assertEquals(Paths.get(currentDirectory.toRealPath().normalize().toString(),
-                    "\\src\\test\\resources\\LatexEditor\\src\\controller"), controllerPackage.getNodesPath());
+                    "\\src\\test\\resources\\LatexEditor\\src\\controller"), controllerPackage.getPackageNodesPath());
             assertEquals(Paths.get(currentDirectory.toRealPath().normalize().toString(),
-                    "\\src\\test\\resources\\LatexEditor\\src"), controllerPackage.getParentNode().getNodesPath());
+                    "\\src\\test\\resources\\LatexEditor\\src"), controllerPackage.getParentNode().getPackageNodesPath());
             assertTrue(controllerPackage.isValid(), "message");
             Map<Path, PackageNode> subNodes = controllerPackage.getSubNodes();
             assertEquals(Paths.get(currentDirectory.toRealPath().normalize().toString(),
                             "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands"),
                     subNodes.get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
-                            "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands")).getNodesPath());
+                            "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands")).getPackageNodesPath());
 
             for (LeafNode l : controllerPackage.getLeafNodes().values()) {
-                testingLeafNodes.add(l.getNodesPath());
-                assertEquals(l.getParentNode().getNodesPath(), Paths.get(currentDirectory.toRealPath().normalize().toString(),
+                testingLeafNodes.add(l.getLeafNodesPath());
+                assertEquals(l.getParentNode().getPackageNodesPath(), Paths.get(currentDirectory.toRealPath().normalize().toString(),
                         "\\src\\test\\resources\\LatexEditor\\src\\controller"));
             }
             Collections.sort(testingLeafNodes);
@@ -93,15 +93,15 @@ public class JavaparserProjectParserTest {
             PackageNode commandsPackage = packageNodes.get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
                     "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands"));
             assertEquals(Paths.get(currentDirectory.toRealPath().normalize().toString(),
-                    "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands"), commandsPackage.getNodesPath());
+                    "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands"), commandsPackage.getPackageNodesPath());
             assertEquals(Paths.get(currentDirectory.toRealPath().normalize().toString(),
-                    "\\src\\test\\resources\\LatexEditor\\src\\controller"), commandsPackage.getParentNode().getNodesPath());
+                    "\\src\\test\\resources\\LatexEditor\\src\\controller"), commandsPackage.getParentNode().getPackageNodesPath());
             assertTrue(commandsPackage.isValid());
             subNodes = commandsPackage.getSubNodes();
             assertEquals(0, subNodes.size());
             for (LeafNode l : commandsPackage.getLeafNodes().values()) {
-                testingLeafNodes.add(l.getNodesPath());
-                assertEquals(l.getParentNode().getNodesPath(), Paths.get(currentDirectory.toRealPath().normalize().toString(),
+                testingLeafNodes.add(l.getLeafNodesPath());
+                assertEquals(l.getParentNode().getPackageNodesPath(), Paths.get(currentDirectory.toRealPath().normalize().toString(),
                         "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands"));
             }
             Collections.sort(testingLeafNodes);
@@ -114,19 +114,19 @@ public class JavaparserProjectParserTest {
             PackageNode modelPackage = packageNodes.get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
                     "\\src\\test\\resources\\LatexEditor\\src\\model"));
             assertEquals(Paths.get(currentDirectory.toRealPath().normalize().toString(),
-                    "\\src\\test\\resources\\LatexEditor\\src\\model"), modelPackage.getNodesPath());
+                    "\\src\\test\\resources\\LatexEditor\\src\\model"), modelPackage.getPackageNodesPath());
             assertEquals(Paths.get(currentDirectory.toRealPath().normalize().toString(),
-                    "\\src\\test\\resources\\LatexEditor\\src"), modelPackage.getParentNode().getNodesPath());
+                    "\\src\\test\\resources\\LatexEditor\\src"), modelPackage.getParentNode().getPackageNodesPath());
             assertTrue(modelPackage.isValid());
             subNodes = modelPackage.getSubNodes();
             assertEquals(Paths.get(currentDirectory.toRealPath().normalize().toString(),
                             "\\src\\test\\resources\\LatexEditor\\src\\model\\strategies"),
                     subNodes.get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
-                            "\\src\\test\\resources\\LatexEditor\\src\\model\\strategies")).getNodesPath());
+                            "\\src\\test\\resources\\LatexEditor\\src\\model\\strategies")).getPackageNodesPath());
             for (LeafNode l : modelPackage.getLeafNodes().values()) {
-                assertEquals(l.getParentNode().getNodesPath(), Paths.get(currentDirectory.toRealPath().normalize().toString(),
+                assertEquals(l.getParentNode().getPackageNodesPath(), Paths.get(currentDirectory.toRealPath().normalize().toString(),
                         "\\src\\test\\resources\\LatexEditor\\src\\model"));
-                testingLeafNodes.add(l.getNodesPath());
+                testingLeafNodes.add(l.getLeafNodesPath());
             }
             Collections.sort(testingLeafNodes);
             Collections.sort(modelsLeafNodes);
@@ -138,16 +138,16 @@ public class JavaparserProjectParserTest {
             PackageNode strategiesPackage = packageNodes.get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
                     "\\src\\test\\resources\\LatexEditor\\src\\model\\strategies"));
             assertEquals(Paths.get(currentDirectory.toRealPath().normalize().toString(),
-                    "\\src\\test\\resources\\LatexEditor\\src\\model\\strategies"), strategiesPackage.getNodesPath());
+                    "\\src\\test\\resources\\LatexEditor\\src\\model\\strategies"), strategiesPackage.getPackageNodesPath());
             assertEquals(Paths.get(currentDirectory.toRealPath().normalize().toString(),
-                    "\\src\\test\\resources\\LatexEditor\\src\\model"), strategiesPackage.getParentNode().getNodesPath());
+                    "\\src\\test\\resources\\LatexEditor\\src\\model"), strategiesPackage.getParentNode().getPackageNodesPath());
             assertTrue(strategiesPackage.isValid());
             subNodes = strategiesPackage.getSubNodes();
             assertEquals(0, subNodes.size());
             for (LeafNode l : strategiesPackage.getLeafNodes().values()) {
-                assertEquals(l.getParentNode().getNodesPath(), Paths.get(currentDirectory.toRealPath().normalize().toString(),
+                assertEquals(l.getParentNode().getPackageNodesPath(), Paths.get(currentDirectory.toRealPath().normalize().toString(),
                         "\\src\\test\\resources\\LatexEditor\\src\\model\\strategies"));
-                testingLeafNodes.add(l.getNodesPath());
+                testingLeafNodes.add(l.getLeafNodesPath());
             }
             Collections.sort(testingLeafNodes);
             Collections.sort(strategiesLeafNodes);
@@ -159,16 +159,16 @@ public class JavaparserProjectParserTest {
             PackageNode viewPackage = packageNodes.get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
                     "\\src\\test\\resources\\LatexEditor\\src\\view"));
             assertEquals(Paths.get(currentDirectory.toRealPath().normalize().toString(),
-                    "\\src\\test\\resources\\LatexEditor\\src\\view"), viewPackage.getNodesPath());
+                    "\\src\\test\\resources\\LatexEditor\\src\\view"), viewPackage.getPackageNodesPath());
             assertEquals(Paths.get(currentDirectory.toRealPath().normalize().toString(),
-                    "\\src\\test\\resources\\LatexEditor\\src"), viewPackage.getParentNode().getNodesPath());
+                    "\\src\\test\\resources\\LatexEditor\\src"), viewPackage.getParentNode().getPackageNodesPath());
             assertTrue(viewPackage.isValid());
             subNodes = viewPackage.getSubNodes();
             assertEquals(0, subNodes.size());
             for (LeafNode l : viewPackage.getLeafNodes().values()) {
-                assertEquals(l.getParentNode().getNodesPath(), Paths.get(currentDirectory.toRealPath().normalize().toString(),
+                assertEquals(l.getParentNode().getPackageNodesPath(), Paths.get(currentDirectory.toRealPath().normalize().toString(),
                         "\\src\\test\\resources\\LatexEditor\\src\\view"));
-                testingLeafNodes.add(l.getNodesPath());
+                testingLeafNodes.add(l.getLeafNodesPath());
             }
             Collections.sort(testingLeafNodes);
             Collections.sort(viewsLeafNodes);
@@ -180,13 +180,13 @@ public class JavaparserProjectParserTest {
             PackageNode sourcePackage = packageNodes.get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
                     "\\src\\test\\resources\\LatexEditor\\src"));
             assertEquals(Paths.get(currentDirectory.toRealPath().normalize().toString(),
-                    "\\src\\test\\resources\\LatexEditor\\src"), sourcePackage.getNodesPath());
-            assertEquals(Paths.get(""), sourcePackage.getParentNode().getNodesPath());
+                    "\\src\\test\\resources\\LatexEditor\\src"), sourcePackage.getPackageNodesPath());
+            assertEquals(Paths.get(""), sourcePackage.getParentNode().getPackageNodesPath());
             assertFalse(sourcePackage.isValid());
             subNodes = sourcePackage.getSubNodes();
             List<Path> testingSubPackages = new ArrayList<>();
             for (PackageNode subP : subNodes.values()) {
-                testingSubPackages.add(subP.getNodesPath());
+                testingSubPackages.add(subP.getPackageNodesPath());
             }
             Collections.sort(testingSubPackages);
             Collections.sort(sourcesSubPackages);

@@ -66,6 +66,6 @@ public class PlantUMLPackageDiagramTextExporter implements DiagramExporter {
                 "    BorderColor black\n" +
                 "    ArrowColor black\n" +
                 "    Shadowing true\n" +
-                "}\n";
+                "}\n\n";
     }
 }

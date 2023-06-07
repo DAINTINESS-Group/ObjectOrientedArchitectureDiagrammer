@@ -2,8 +2,8 @@ package parser.jdt;
 
 import org.eclipse.jdt.core.dom.*;
 import org.eclipse.text.edits.MalformedTreeException;
-import parser.tree.node.LeafNode;
-import parser.tree.node.ModifierType;
+import parser.tree.LeafNode;
+import parser.tree.ModifierType;
 
 import java.io.BufferedReader;
 import java.io.File;

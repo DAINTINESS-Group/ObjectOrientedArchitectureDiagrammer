@@ -1,8 +1,8 @@
 package parser.jdt;
 
-import parser.tree.edge.RelationshipIdentifier;
-import parser.tree.node.LeafNode;
-import parser.tree.node.PackageNode;
+import parser.tree.RelationshipIdentifier;
+import parser.tree.LeafNode;
+import parser.tree.PackageNode;
 import parser.factory.Parser;
 
 import java.io.File;
@@ -28,7 +28,7 @@ public class JDTProjectParser implements Parser {
 
 	public PackageNode parseSourcePackage(Path sourcePackagePath) {
 		PackageNode rootPackageNode = new PackageNode(sourcePackagePath);
-		packageNodes.put(rootPackageNode.getNodesPath(), rootPackageNode);
+		packageNodes.put(rootPackageNode.getPackageNodesPath(), rootPackageNode);
 		try {
 			parseFolder(rootPackageNode);
 			RelationshipIdentifier relationshipIdentifier = new JDTRelationshipIdentifier(packageNodes);
@@ -40,7 +40,7 @@ public class JDTProjectParser implements Parser {
 	}
 
 	private void parseFolder(PackageNode currentNode) {
-		try (DirectoryStream<Path> filesStream = Files.newDirectoryStream(currentNode.getNodesPath())) {
+		try (DirectoryStream<Path> filesStream = Files.newDirectoryStream(currentNode.getPackageNodesPath())) {
 			for (Path path: filesStream) {
 				if (Files.isDirectory(path)) {
 					createPackageSubNode(currentNode, new PackageNode(getSubNodesPath(currentNode, path.toFile())));
@@ -55,7 +55,7 @@ public class JDTProjectParser implements Parser {
 
 	private void createPackageSubNode(PackageNode currentNode, PackageNode subNode){
 		subNode.setParentNode(currentNode);
-		packageNodes.put(subNode.getNodesPath(), subNode);
+		packageNodes.put(subNode.getPackageNodesPath(), subNode);
 		currentNode.addSubNode(subNode);
 		parseFolder(subNode);
 	}
@@ -73,7 +73,7 @@ public class JDTProjectParser implements Parser {
 	}
 	
 	private Path getSubNodesPath(PackageNode currentPackage, File file) {
-		return Paths.get(currentPackage.getNodesPath().normalize() + "\\" + file.getName());
+		return Paths.get(currentPackage.getPackageNodesPath().normalize() + "\\" + file.getName());
 	}
 
 	/** This method returns the map with keys the name of the package and values

@@ -1,7 +1,4 @@
-package parser.tree.edge;
-
-import parser.tree.node.LeafNode;
-import parser.tree.node.PackageNode;
+package parser.tree;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -85,9 +82,9 @@ public abstract class RelationshipIdentifier {
 	}
 	
 	protected void createRelationship(int i, int j, RelationshipType relationshipType) {
-		allLeafNodes.get(i).addNodeRelationship(new Relationship(allLeafNodes.get(i), allLeafNodes.get(j), relationshipType));
+		allLeafNodes.get(i).addLeafNodeRelationship(new Relationship<>(allLeafNodes.get(i), allLeafNodes.get(j), relationshipType));
 		relationshipsCreated++;
-		for (Relationship r: allLeafNodes.get(i).getParentNode().getNodeRelationships()) {
+		for (Relationship<PackageNode> r: allLeafNodes.get(i).getParentNode().getPackageNodeRelationships()) {
 			if (doesPackageRelationshipAlreadyExist(j, r)) {
 				return;
 			}
@@ -95,12 +92,12 @@ public abstract class RelationshipIdentifier {
 		if (isRelationshipBetweenTheSamePackages(i, j)) {
 			return;
 		}
-		allLeafNodes.get(i).getParentNode().addNodeRelationship(new Relationship(allLeafNodes.get(i).getParentNode(),
+		allLeafNodes.get(i).getParentNode().addPackageNodeRelationship(new Relationship<>(allLeafNodes.get(i).getParentNode(),
 				allLeafNodes.get(j).getParentNode(), RelationshipType.DEPENDENCY));
 		relationshipsCreated++;
 	}
 
-	private boolean doesPackageRelationshipAlreadyExist(int j, Relationship r) {
+	private boolean doesPackageRelationshipAlreadyExist(int j, Relationship<PackageNode> r) {
 		return r.getEndingNode().equals(allLeafNodes.get(j).getParentNode());
 	}
 

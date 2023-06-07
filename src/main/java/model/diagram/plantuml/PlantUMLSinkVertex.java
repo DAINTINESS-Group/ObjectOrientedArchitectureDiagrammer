@@ -3,7 +3,7 @@ package model.diagram.plantuml;
 import model.graph.ModifierType;
 import model.graph.SinkVertex;
 
-import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -21,46 +21,48 @@ public class PlantUMLSinkVertex {
 		for (SinkVertex node : graphNodes.keySet()) {
 			String plantUMLDeclaration = node.getVertexType().toString().toLowerCase() + " " + node.getName() + " {\n";
 			plantUMLDeclaration += convertFieldsToPlantUML(node);
-			plantUMLDeclaration += convertMethodsToPlantUML(node) + "}\n";
+			plantUMLDeclaration += convertMethodsToPlantUML(node) + "}\n\n";
 			plantUMLBuffer.append(plantUMLDeclaration);
 		}
 		return plantUMLBuffer;
 	}
 	
     private String convertFieldsToPlantUML(SinkVertex sinkVertex) {
-    	List<String> fieldNames = sinkVertex.getFields().stream().map(SinkVertex.Field::getName).collect(Collectors.toList());
-    	List<String> fieldTypes = sinkVertex.getFields().stream().map(SinkVertex.Field::getType).collect(Collectors.toList());
-    	List<ModifierType> fieldVisibilitiesList = sinkVertex.getFields().stream().map(SinkVertex.Field::getModifier).collect(Collectors.toList());
     	StringBuilder plantUMLFields = new StringBuilder();
-    	for (int i = 0; i < fieldNames.size(); i++) {
-			plantUMLFields.append(visibilityToPlantUML(fieldVisibilitiesList.get(i))).append(fieldNames.get(i)).append(": ")
-					.append(fieldTypes.get(i)).append("\n");
+		for (SinkVertex.Field field: sinkVertex.getFields()) {
+			plantUMLFields.append(getVisibility(field.getModifier())).append(field.getName()).append(": ").append(field.getType()).append("\n");
 		}
 		return plantUMLFields.toString();
 	}
     
     private String convertMethodsToPlantUML(SinkVertex sinkVertex) {
-		List<String> methodNames = sinkVertex.getMethods().stream().map(SinkVertex.Method::getName).collect(Collectors.toList());
-		List<String> methodReturnTypes = sinkVertex.getMethods().stream().map(SinkVertex.Method::getReturnType).collect(Collectors.toList());
-		List<ModifierType> methodVisibilitiesList = sinkVertex.getMethods().stream().map(SinkVertex.Method::getModifierType).collect(Collectors.toList());
-		List<String> methodParametersPlantUML = new ArrayList<>();
 		StringBuilder plantUMLMethods = new StringBuilder();
+		List<SinkVertex.Method> constructors = sinkVertex.getMethods().stream()
+			.filter(method -> method.getReturnType().equals("Constructor"))
+			.sorted(Comparator.comparingInt(method -> method.getParameters().size()))
+			.collect(Collectors.toList());
+		convertMethod(plantUMLMethods, constructors);
 
-		for (SinkVertex.Method method: sinkVertex.getMethods()) {
-			methodParametersPlantUML.add(method.getParameters().entrySet()
+		List<SinkVertex.Method> methods = sinkVertex.getMethods().stream()
+			.filter(method -> !method.getReturnType().equals("Constructor"))
+			.collect(Collectors.toList());
+		convertMethod(plantUMLMethods, methods);
+
+		return plantUMLMethods.toString();
+    }
+
+	private void convertMethod(StringBuilder plantUMLMethods, List<SinkVertex.Method> constructors) {
+		for (SinkVertex.Method method: constructors) {
+			plantUMLMethods.append(getVisibility(method.getModifierType())).append(method.getName()).append("(")
+				.append(method.getParameters().entrySet()
 					.stream()
 					.map(parameter -> parameter.getValue() + " " + parameter.getKey())
-					.collect(Collectors.joining(", ")));
+					.collect(Collectors.joining(", ")))
+				.append("): ").append(method.getReturnType()).append("\n");
 		}
+	}
 
-		for (int i = 0; i < methodNames.size(); i++) {
-			plantUMLMethods.append(visibilityToPlantUML(methodVisibilitiesList.get(i))).append(methodNames.get(i))
-					.append("(").append(methodParametersPlantUML.get(i)).append("): ").append(methodReturnTypes.get(i)).append("\n");
-		}
-    	return plantUMLMethods.toString();
-    }
-    
-    private String visibilityToPlantUML(ModifierType visibilityEnum) {
+	private String getVisibility(ModifierType visibilityEnum) {
 		return switch (visibilityEnum) {
 			case PRIVATE -> "-";
 			case PUBLIC -> "+";

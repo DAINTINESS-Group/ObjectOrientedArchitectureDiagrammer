@@ -1,7 +1,7 @@
 package parser.jdt;
 
-import parser.tree.node.LeafNode;
-import parser.tree.node.NodeType;
+import parser.tree.LeafNode;
+import parser.tree.NodeType;
 
 import java.nio.file.Path;
 

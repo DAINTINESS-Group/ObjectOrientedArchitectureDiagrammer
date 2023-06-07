@@ -1,8 +1,8 @@
 package parser.jdt;
 
-import parser.tree.node.PackageNode;
-import parser.tree.edge.RelationshipIdentifier;
-import parser.tree.edge.RelationshipType;
+import parser.tree.PackageNode;
+import parser.tree.RelationshipIdentifier;
+import parser.tree.RelationshipType;
 
 import java.nio.file.Path;
 import java.util.Map;

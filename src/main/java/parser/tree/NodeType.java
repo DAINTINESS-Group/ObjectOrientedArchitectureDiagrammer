@@ -1,4 +1,4 @@
-package parser.tree.node;
+package parser.tree;
 
 public enum NodeType {
     CLASS, INTERFACE, ENUM, PACKAGE

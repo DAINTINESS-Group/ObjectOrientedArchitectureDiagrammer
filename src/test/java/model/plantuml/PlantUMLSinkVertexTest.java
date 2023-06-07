@@ -43,7 +43,7 @@ public class PlantUMLSinkVertexTest {
                 "+saveToFile(): void\n" +
                 "+setCurrentVersion(Document document): void\n" +
                 "+loadFromFile(): void\n" +
-                "}\n" +
+                "}\n\n" +
                 "class VolatileVersionsStrategy {\n" +
                 "-history: ArrayList[Document]\n" +
                 "+removeVersion(): void\n" +
@@ -52,14 +52,14 @@ public class PlantUMLSinkVertexTest {
                 "+setEntireHistory(List[Document] documents): void\n" +
                 "+putVersion(Document document): void\n" +
                 "+getEntireHistory(): List[Document]\n" +
-                "}\n" +
+                "}\n\n" +
                 "interface VersionsStrategy {\n" +
                 "+removeVersion(): void\n" +
                 "+getVersion(): Document\n" +
                 "+setEntireHistory(List[Document] documents): void\n" +
                 "+getEntireHistory(): List[Document]\n" +
                 "+putVersion(Document document): void\n" +
-                "}\n" +
+                "}\n\n" +
                 "class StableVersionsStrategy {\n" +
                 "-versionID: String\n" +
                 "+removeVersion(): void\n" +
@@ -67,12 +67,12 @@ public class PlantUMLSinkVertexTest {
                 "+setEntireHistory(List[Document] documents): void\n" +
                 "+getEntireHistory(): List[Document]\n" +
                 "+putVersion(Document document): void\n" +
-                "}\n" +
+                "}\n\n" +
                 "class VersionsStrategyFactory {\n" +
                 "-strategies: HashMap[String,VersionsStrategy]\n" +
                 "+createStrategy(String type): VersionsStrategy\n" +
                 "+VersionsStrategyFactory(): Constructor\n" +
-                "}\n" +
+                "}\n\n" +
                 "class Document {\n" +
                 "-author: String\n" +
                 "-date: String\n" +
@@ -87,13 +87,13 @@ public class PlantUMLSinkVertexTest {
                 "+getVersionID(): String\n" +
                 "+setContents(String contents): void\n" +
                 "+changeVersion(): void\n" +
-                "}\n" +
+                "}\n\n" +
                 "class DocumentManager {\n" +
                 "-templates: HashMap[String,Document]\n" +
                 "+createDocument(String type): Document\n" +
                 "+getContents(String type): String\n" +
                 "+DocumentManager(): Constructor\n" +
-                "}\n";
+                "}\n\n";
 
         ClassDiagramManager classDiagramManager = new ClassDiagramManager();
         SourceProject sourceProject = classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));

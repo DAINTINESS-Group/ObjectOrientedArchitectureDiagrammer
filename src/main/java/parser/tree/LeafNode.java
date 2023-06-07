@@ -1,6 +1,7 @@
-package parser.tree.node;
+package parser.tree;
 
 import org.javatuples.Triplet;
+
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,16 +13,17 @@ import java.util.stream.Collectors;
  * Each node has a parent node(the parent package), the path of the source file,
  * the branches that start from that node and also the field/method/method parameter types
  */
-public abstract class LeafNode extends Node{
+public abstract class LeafNode {
+	protected final Path path;
+	private PackageNode parentNode;
+	private final List<Relationship<LeafNode>> leafNodeRelationships;
 	private final List<Triplet<String, String, ModifierType>> fields;
 	private final Map<Triplet<String, String, ModifierType>, Map<String, String>> methods;
 	private int methodId;
 
-	/**This method is responsible for initializing the nodes structs
-	 * @param path the path of Java source file
-	 */
 	public LeafNode(Path path) {
-		super(path);
+		this.path = path;
+		leafNodeRelationships = new ArrayList<>();
 		fields = new ArrayList<>();
 		methods = new HashMap<>();
 		methodId = 0;
@@ -48,6 +50,22 @@ public abstract class LeafNode extends Node{
 		fields.add(new Triplet<>(fieldName, fieldType, modifierType));
 	}
 
+	public void setParentNode(PackageNode p) {
+		this.parentNode = p;
+	}
+
+	public void addLeafNodeRelationship(Relationship<LeafNode> relationship) {
+		leafNodeRelationships.add(relationship);
+	}
+
+	public List<Relationship<LeafNode>> getLeafNodeRelationships() {
+		return leafNodeRelationships;
+	}
+
+	public Path getLeafNodesPath() {
+		return path;
+	}
+
 	public PackageNode getParentNode() {
 		return parentNode;
 	}
@@ -56,20 +74,8 @@ public abstract class LeafNode extends Node{
 		return methods;
 	}
 
-	public List<Triplet<String, String, ModifierType>> getMethodNamesAndTypes() {
-		return new ArrayList<>(methods.keySet());
-	}
-
-	public List<String> getMethodsNames() {
-		return methods.keySet().stream().map(Triplet::getValue0).collect(Collectors.toList());
-	}
-
 	public List<String> getMethodsReturnTypes() {
 		return methods.keySet().stream().map(Triplet::getValue1).collect(Collectors.toList());
-	}
-
-	public List<ModifierType> getMethodVisibilities(){
-		return methods.keySet().stream().map(Triplet::getValue2).collect(Collectors.toList());
 	}
 
 	public List<String> getMethodParameterTypes() {
@@ -82,16 +88,8 @@ public abstract class LeafNode extends Node{
 		return fields;
 	}
 
-	public List<String> getFieldsNames(){
-		return fields.stream().map(Triplet::getValue0).collect(Collectors.toList());
-	}
-
 	public List<String> getFieldsTypes(){
 		return fields.stream().map(Triplet::getValue1).collect(Collectors.toList());
-	}
-
-	public List<ModifierType> getFieldVisibilities(){
-		return fields.stream().map(Triplet::getValue2).collect(Collectors.toList());
 	}
 
 	public abstract NodeType getType();

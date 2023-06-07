@@ -8,9 +8,9 @@ import com.github.javaparser.ast.expr.ObjectCreationExpr;
 import com.github.javaparser.ast.expr.VariableDeclarationExpr;
 import com.github.javaparser.ast.visitor.VoidVisitor;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
-import parser.tree.node.LeafNode;
-import parser.tree.node.ModifierType;
-import parser.tree.node.NodeType;
+import parser.tree.LeafNode;
+import parser.tree.ModifierType;
+import parser.tree.NodeType;
 
 import java.io.File;
 import java.io.FileNotFoundException;

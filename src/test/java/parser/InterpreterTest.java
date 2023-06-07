@@ -4,10 +4,10 @@ import manager.SourceProject;
 import model.graph.Arc;
 import model.graph.SinkVertex;
 import model.graph.Vertex;
-import parser.tree.edge.Relationship;
-import parser.tree.node.LeafNode;
-import parser.tree.node.ModifierType;
-import parser.tree.node.PackageNode;
+import parser.tree.Relationship;
+import parser.tree.LeafNode;
+import parser.tree.ModifierType;
+import parser.tree.PackageNode;
 import org.javatuples.Triplet;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -60,14 +60,14 @@ public class InterpreterTest {
                     assertTrue(neighbour.isPresent());
                 }
 
-                List<Relationship> relationships = packageNode.getNodeRelationships();
+                List<Relationship<PackageNode>> relationships = packageNode.getPackageNodeRelationships();
                 List<Arc<Vertex>> arcs = vertex.getArcs();
                 assertEquals(relationships.size(), arcs.size());
-                for (Relationship relationship: relationships) {
+                for (Relationship<PackageNode> relationship: relationships) {
                     Optional<Arc<Vertex>> arc = arcs.stream().filter(a ->
                         a.getArcType().toString().equals(relationship.getRelationshipType().toString()) &&
-                        a.getSourceVertex().getPath().equals(relationship.getStartingNode().getNodesPath()) &&
-                        a.getTargetVertex().getPath().equals(relationship.getEndingNode().getNodesPath()))
+                        a.getSourceVertex().getPath().equals(relationship.getStartingNode().getPackageNodesPath()) &&
+                        a.getTargetVertex().getPath().equals(relationship.getEndingNode().getPackageNodesPath()))
                         .findAny();
                     assertTrue(arc.isPresent());
                 }
@@ -103,14 +103,14 @@ public class InterpreterTest {
                         assertTrue(vertexField.isPresent());
                     }
 
-                    List<Relationship> subNodeRelationships = leafNodeEntry.getValue().getNodeRelationships();
+                    List<Relationship<LeafNode>> subNodeRelationships = leafNodeEntry.getValue().getLeafNodeRelationships();
                     List<Arc<SinkVertex>> sinkVertexArcs = sinkVertex.getArcs();
                     assertEquals(subNodeRelationships.size(), sinkVertexArcs.size());
-                    for (Relationship relationship: subNodeRelationships) {
+                    for (Relationship<LeafNode> relationship: subNodeRelationships) {
                         Optional<Arc<SinkVertex>> arc = sinkVertexArcs.stream().filter(a ->
                             a.getArcType().toString().equals(relationship.getRelationshipType().toString()) &&
-                            a.getSourceVertex().getPath().equals(relationship.getStartingNode().getNodesPath()) &&
-                            a.getTargetVertex().getPath().equals(relationship.getEndingNode().getNodesPath()))
+                            a.getSourceVertex().getPath().equals(relationship.getStartingNode().getLeafNodesPath()) &&
+                            a.getTargetVertex().getPath().equals(relationship.getEndingNode().getLeafNodesPath()))
                             .findAny();
                         assertTrue(arc.isPresent());
                     }

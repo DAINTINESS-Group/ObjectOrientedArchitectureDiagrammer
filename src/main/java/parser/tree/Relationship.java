@@ -1,13 +1,11 @@
-package parser.tree.edge;
+package parser.tree;
 
-import parser.tree.node.Node;
-
-public class Relationship {
-	private final Node startingLeafNode;
-	private final Node endingLeafNode;
+public class Relationship<T> {
+	private final T startingLeafNode;
+	private final T endingLeafNode;
 	private final RelationshipType relationshipType;
 	
-	public Relationship(Node startingLeafNode, Node endingLeafNode, RelationshipType relationshipType) {
+	public Relationship(T startingLeafNode, T endingLeafNode, RelationshipType relationshipType) {
 		this.startingLeafNode = startingLeafNode;
 		this.endingLeafNode = endingLeafNode;
 		this.relationshipType = relationshipType;
@@ -17,11 +15,12 @@ public class Relationship {
 		return relationshipType;
 	}
 	
-	public Node getEndingNode() {
+	public T getEndingNode() {
 		return endingLeafNode;
 	}
 	
-	public Node getStartingNode() {
+	public T getStartingNode() {
 		return startingLeafNode;
 	}
+
 }
