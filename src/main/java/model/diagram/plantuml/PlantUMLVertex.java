@@ -3,6 +3,7 @@ package model.diagram.plantuml;
 import model.graph.Vertex;
 
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class PlantUMLVertex {
 
@@ -12,13 +13,12 @@ public class PlantUMLVertex {
         this.graphNodes = graphNodes;
     }
 
-    public StringBuilder convertPlantPackageNode() {
-        StringBuilder plantUMLBuffer = new StringBuilder();
-        for (Vertex vertex : graphNodes.keySet()) {
-            String convertedNode = vertex.getVertexType().toString().toLowerCase() + " " + vertex.getName() + " {\n" + "}\n";
-            plantUMLBuffer.append(convertedNode).append("\n");
-        }
-        return plantUMLBuffer;
+    public StringBuilder convertVertex() {
+        return new StringBuilder(
+            graphNodes.keySet().stream()
+                .map(vertex -> vertex.getVertexType().toString().toLowerCase() + " " + vertex.getName() + " {\n" + "}\n")
+                .collect(Collectors.joining("\n"))
+        );
 	}
 
 }

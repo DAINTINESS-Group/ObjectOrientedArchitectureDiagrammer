@@ -20,9 +20,9 @@ public class GraphMLSinkVertexArc {
         graphMLBuffer = new StringBuilder();
     }
 
-    public StringBuilder convertLeafEdge(Map<Arc<SinkVertex>, Integer> graphEdges) {
+    public StringBuilder convertSinkVertexArc(Map<Arc<SinkVertex>, Integer> graphEdges) {
         for (Map.Entry<Arc<SinkVertex>, Integer> arc: graphEdges.entrySet()) {
-            graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLEdgesSyntax(getEdgesProperties(arc.getKey(), arc.getValue())));
+            graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLSinkVertexArcSyntax(getEdgesProperties(arc.getKey(), arc.getValue())));
         }
         return graphMLBuffer;
     }

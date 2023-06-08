@@ -16,14 +16,14 @@ public class GraphMLVertexArc {
         graphMLBuffer = new StringBuilder();
     }
 
-    public StringBuilder convertPackageEdge(Map<Arc<Vertex>, Integer> graphEdges) {
+    public StringBuilder convertVertexArc(Map<Arc<Vertex>, Integer> graphEdges) {
         for (Map.Entry<Arc<Vertex>, Integer> entry: graphEdges.entrySet()) {
-            graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLPackageEdgesSyntax(getEdgesProperties(entry.getKey(), entry.getValue())));
+            graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLVertexArcSyntax(getVertexArcProperties(entry.getKey(), entry.getValue())));
         }
         return graphMLBuffer;
     }
 
-    private List<String> getEdgesProperties(Arc<Vertex> relationship, Integer edgeId) {
+    private List<String> getVertexArcProperties(Arc<Vertex> relationship, Integer edgeId) {
         return Arrays.asList(String.valueOf(edgeId), String.valueOf(graphNodes.get(relationship.getSourceVertex())),
                 String.valueOf(graphNodes.get(relationship.getTargetVertex())));
     }

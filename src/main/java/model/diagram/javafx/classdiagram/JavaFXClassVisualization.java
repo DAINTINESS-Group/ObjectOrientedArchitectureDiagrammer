@@ -26,24 +26,24 @@ public class JavaFXClassVisualization implements model.diagram.javafx.JavaFXVisu
     public SmartGraphPanel<String, String> createGraphView() {
         Graph<String, String> graph = createGraph();
         graphView = new SmartGraphPanel<>(graph, new SmartCircularSortedPlacementStrategy());
-        setVertexCustomStyle();
+        setSinkVertexCustomStyle();
         return graphView;
     }
 
     private Graph<String, String> createGraph() {
         Digraph<String, String> directedGraph = new DigraphEdgeList<>();
-        iterateVertexes(directedGraph);
-        iterateEdges(directedGraph);
+        insertSinkVertices(directedGraph);
+        insertSinkArcs(directedGraph);
         return directedGraph;
     }
 
-    private void iterateVertexes(Digraph<String, String> directedGraph) {
+    private void insertSinkVertices(Digraph<String, String> directedGraph) {
         for (SinkVertex sinkVertex: diagram.keySet()) {
             directedGraph.insertVertex(sinkVertex.getName());
         }
     }
 
-    private void iterateEdges(Digraph<String, String> directedGraph){
+    private void insertSinkArcs(Digraph<String, String> directedGraph){
         for (Set<Arc<SinkVertex>> arcs : diagram.values()) {
             for (Arc<SinkVertex> arc: arcs) {
                 if (arc.getArcType().equals(ArcType.AGGREGATION)) {
@@ -57,7 +57,7 @@ public class JavaFXClassVisualization implements model.diagram.javafx.JavaFXVisu
         }
     }
 
-    private void setVertexCustomStyle() {
+    private void setSinkVertexCustomStyle() {
         for (SinkVertex sinkVertex: diagram.keySet()){
             if (sinkVertex.getVertexType().equals(VertexType.INTERFACE)) {
                 graphView.getStylableVertex(sinkVertex.getName()).setStyleClass("vertexInterface");

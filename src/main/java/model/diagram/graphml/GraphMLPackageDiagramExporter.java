@@ -18,9 +18,9 @@ public class GraphMLPackageDiagramExporter implements DiagramExporter {
 
     public GraphMLPackageDiagramExporter(Map<Vertex, Integer> graphNodes, Map<Integer, List<Double>> nodesGeometry, Map<Arc<Vertex>, Integer> graphEdges) {
         GraphMLVertex graphMLVertex = new GraphMLVertex(graphNodes, nodesGeometry);
-        graphMLNodeBuffer = graphMLVertex.convertPackageNode();
+        graphMLNodeBuffer = graphMLVertex.convertVertex();
         GraphMLVertexArc graphMLVertexArc = new GraphMLVertexArc(graphNodes);
-        graphMLEdgeBuffer = graphMLVertexArc.convertPackageEdge(graphEdges);
+        graphMLEdgeBuffer = graphMLVertexArc.convertVertexArc(graphEdges);
         graphMLFile = new GraphMLFile();
     }
 

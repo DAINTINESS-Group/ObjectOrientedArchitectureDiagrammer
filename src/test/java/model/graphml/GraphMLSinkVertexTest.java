@@ -20,39 +20,7 @@ public class GraphMLSinkVertexTest {
     Path currentDirectory = Path.of(".");
 
     @Test
-    void populateGraphMLLeafNodesTest() {
-        try {
-            ClassDiagramManager classDiagramManager = new ClassDiagramManager();
-            SourceProject sourceProject = classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-            classDiagramManager.createDiagram(List.of("AddLatexCommand", "ChangeVersionsStrategyCommand", "Command", "CommandFactory",
-                    "CreateCommand", "DisableVersionsManagementCommand", "EditCommand", "EnableVersionsManagementCommand",
-                    "LoadCommand", "RollbackToPreviousVersionCommand", "SaveCommand"));
-
-            Map<SinkVertex, Integer> graphNodes = classDiagramManager.getDiagram().getGraphNodes();
-
-            List<String> l1 = new ArrayList<>();
-            List<String> l2 = new ArrayList<>();
-            assertEquals(sourceProject.getVertices().get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
-                    "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands")).getSinkVertices().size(), graphNodes.size());
-
-            Iterator<SinkVertex> iter1 = sourceProject.getVertices().get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
-                    "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands")).getSinkVertices().iterator();
-            Iterator<Map.Entry<SinkVertex, Integer>> iter2 = graphNodes.entrySet().iterator();
-            while(iter1.hasNext() || iter2.hasNext()) {
-                SinkVertex e1 = iter1.next();
-                Map.Entry<SinkVertex, Integer> e2 = iter2.next();
-                l1.add(e1.getName());
-                l2.add(e2.getKey().getName());
-            }
-            Collections.sort(l1);
-            Collections.sort(l2);
-            assertTrue(l1.size() == l2.size() && l1.containsAll(l2) && l2.containsAll(l1));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    @Test
-    void convertLeafNodesToGraphMLTest() {
+    void convertSinkVerticesToGraphMLTest() {
         try {
             ClassDiagramManager classDiagramManager = new ClassDiagramManager();
             SourceProject sourceProject = classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
@@ -73,7 +41,7 @@ public class GraphMLSinkVertexTest {
                     Map.entry(9, Arrays.asList(10.0, 10.0)),
                     Map.entry(10, Arrays.asList(10.0, 10.0))
             ));
-            StringBuilder actual = graphMLSinkVertex.convertLeafNode();
+            StringBuilder actual = graphMLSinkVertex.convertSinkVertex();
 
             StringBuilder expected = new StringBuilder();
             for (SinkVertex leafNode: graphNodes.keySet()) {

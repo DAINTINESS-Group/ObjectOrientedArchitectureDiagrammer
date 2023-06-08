@@ -6,6 +6,7 @@ import model.graph.VertexType;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class GraphMLSinkVertex {
 
@@ -23,42 +24,38 @@ public class GraphMLSinkVertex {
         this.nodesGeometry = nodesGeometry;
     }
 
-    public StringBuilder convertLeafNode() {
+    public StringBuilder convertSinkVertex() {
         for (Map.Entry<SinkVertex, Integer> sinkVertex: graphNodes.entrySet()) {
-            graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLNodesSyntax(
-                    getNodesDescription(sinkVertex.getKey(), sinkVertex.getValue(), nodesGeometry.get(sinkVertex.getValue()))));
+            graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLSinkVertexSyntax(
+                    getSinkVertexDescription(sinkVertex.getKey(), sinkVertex.getValue(), nodesGeometry.get(sinkVertex.getValue()))));
         }
         return graphMLBuffer;
     }
 
-    private List<String> getNodesDescription(SinkVertex leafNode, int nodeId, List<Double> nodeGeometry) {
-        return Arrays.asList(String.valueOf(nodeId), getNodesColor(leafNode), leafNode.getName(), getNodesFields(leafNode),
-                getNodesMethods(leafNode), String.valueOf(nodeGeometry.get(X_COORDINATE)), String.valueOf(nodeGeometry.get(Y_COORDINATE)));
+    private List<String> getSinkVertexDescription(SinkVertex sinkVertex, int nodeId, List<Double> nodeGeometry) {
+        return Arrays.asList(String.valueOf(nodeId), getSinkVertexColor(sinkVertex), sinkVertex.getName(), getSinkVertexFields(sinkVertex),
+                getSinkVertexMethods(sinkVertex), String.valueOf(nodeGeometry.get(X_COORDINATE)), String.valueOf(nodeGeometry.get(Y_COORDINATE)));
     }
 
-    private String getNodesMethods(SinkVertex sinkVertex) {
+    private String getSinkVertexMethods(SinkVertex sinkVertex) {
         if (sinkVertex.getMethods().size() == 0) {
             return "";
         }
-        StringBuilder methods = new StringBuilder();
-        for (SinkVertex.Method method: sinkVertex.getMethods()) {
-            methods.append(method.getReturnType()).append(" ").append(method.getName()).append("\n");
-        }
-        return methods.deleteCharAt(methods.length() - 1).toString();
+        return sinkVertex.getMethods().stream()
+                .map(method -> method.getReturnType() + " " + method.getName())
+                .collect(Collectors.joining("\n"));
     }
 
-    private String getNodesFields(SinkVertex sinkVertex) {
+    private String getSinkVertexFields(SinkVertex sinkVertex) {
         if (sinkVertex.getFields().size() == 0) {
             return "";
         }
-        StringBuilder fields = new StringBuilder();
-        for (SinkVertex.Field field: sinkVertex.getFields()) {
-            fields.append(field.getType()).append(" ").append(field.getName()).append("\n");
-        }
-        return fields.deleteCharAt(fields.length() - 1).toString();
+        return sinkVertex.getFields().stream()
+            .map(field -> field.getType() + " " + field.getName())
+            .collect(Collectors.joining("\n"));
     }
 
-    private String getNodesColor(SinkVertex leafNode) {
+    private String getSinkVertexColor(SinkVertex leafNode) {
         if (leafNode.getVertexType().equals(VertexType.INTERFACE)) {
             return INTERFACE_COLOR;
         }

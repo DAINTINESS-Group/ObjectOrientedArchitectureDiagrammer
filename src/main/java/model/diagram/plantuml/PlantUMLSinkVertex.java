@@ -16,26 +16,26 @@ public class PlantUMLSinkVertex {
 		this.graphNodes = graphNodes;
 	}
 
-	public StringBuilder convertPlantLeafNode() {
-		StringBuilder plantUMLBuffer = new StringBuilder();
-		for (SinkVertex node : graphNodes.keySet()) {
-			String plantUMLDeclaration = node.getVertexType().toString().toLowerCase() + " " + node.getName() + " {\n";
-			plantUMLDeclaration += convertFieldsToPlantUML(node);
-			plantUMLDeclaration += convertMethodsToPlantUML(node) + "}\n\n";
-			plantUMLBuffer.append(plantUMLDeclaration);
-		}
-		return plantUMLBuffer;
+	public StringBuilder convertSinkVertex() {
+		return new StringBuilder(
+			graphNodes.keySet().stream()
+				.map(sinkVertex ->
+					sinkVertex.getVertexType().toString().toLowerCase() + " " + sinkVertex.getName() + " {\n" +
+					convertFields(sinkVertex) + convertMethods(sinkVertex) + "}")
+				.collect(Collectors.joining("\n\n"))
+		);
 	}
 	
-    private String convertFieldsToPlantUML(SinkVertex sinkVertex) {
-    	StringBuilder plantUMLFields = new StringBuilder();
-		for (SinkVertex.Field field: sinkVertex.getFields()) {
-			plantUMLFields.append(getVisibility(field.getModifier())).append(field.getName()).append(": ").append(field.getType()).append("\n");
+    private String convertFields(SinkVertex sinkVertex) {
+		if (sinkVertex.getFields().size() == 0) {
+			return "";
 		}
-		return plantUMLFields.toString();
+		return sinkVertex.getFields().stream()
+			.map(field -> getVisibility(field.getModifier()) + field.getName() + ": " + field.getType())
+			.collect(Collectors.joining("\n")) + "\n";
 	}
     
-    private String convertMethodsToPlantUML(SinkVertex sinkVertex) {
+    private String convertMethods(SinkVertex sinkVertex) {
 		StringBuilder plantUMLMethods = new StringBuilder();
 		List<SinkVertex.Method> constructors = sinkVertex.getMethods().stream()
 			.filter(method -> method.getReturnType().equals("Constructor"))
@@ -51,8 +51,8 @@ public class PlantUMLSinkVertex {
 		return plantUMLMethods.toString();
     }
 
-	private void convertMethod(StringBuilder plantUMLMethods, List<SinkVertex.Method> constructors) {
-		for (SinkVertex.Method method: constructors) {
+	private void convertMethod(StringBuilder plantUMLMethods, List<SinkVertex.Method> methods) {
+		for (SinkVertex.Method method: methods) {
 			plantUMLMethods.append(getVisibility(method.getModifierType())).append(method.getName()).append("(")
 				.append(method.getParameters().entrySet()
 					.stream()

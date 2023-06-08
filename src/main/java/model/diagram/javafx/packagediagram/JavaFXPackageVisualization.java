@@ -30,18 +30,18 @@ public class JavaFXPackageVisualization implements JavaFXVisualization {
 
     private Graph<String, String> createGraph() {
         Digraph<String, String> directedGraph = new DigraphEdgeList<>();
-        iterateVertexes(directedGraph);
-        iterateEdges(directedGraph);
+        insertVertices(directedGraph);
+        insertVertexArcs(directedGraph);
         return directedGraph;
     }
 
-    private void iterateVertexes(Digraph<String, String> directedGraph) {
+    private void insertVertices(Digraph<String, String> directedGraph) {
         for (Vertex vertex: diagram.keySet()) {
             directedGraph.insertVertex(vertex.getName());
         }
     }
 
-    private void iterateEdges(Digraph<String, String> directedGraph){
+    private void insertVertexArcs(Digraph<String, String> directedGraph){
         for (Set<Arc<Vertex>> arcs : diagram.values()) {
             for (Arc<Vertex> arc: arcs) {
                 if (arc.getArcType().equals(ArcType.AGGREGATION)) {

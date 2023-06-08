@@ -19,42 +19,7 @@ class GraphMLVertexTest {
     Path currentDirectory = Path.of(".");
 
     @Test
-    void populateGraphMLPackageNodeTest() {
-        try {
-            PackageDiagramManager packageDiagramManager = new PackageDiagramManager();
-            SourceProject sourceProject = packageDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-            packageDiagramManager.createDiagram(List.of(
-                    currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src\\view",
-                    currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src\\model",
-                    currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src\\model\\strategies",
-                    currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands",
-                    currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src\\controller"));
-            Map<Vertex, Integer> graphNodes = packageDiagramManager.getDiagram().getGraphNodes();
-
-            Map<Path, Vertex> packageNodes = sourceProject.getVertices();
-            packageNodes.remove(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-            assertEquals(packageNodes.size(), graphNodes.size());
-            Iterator<Map.Entry<Path, Vertex>> iter1 = packageNodes.entrySet().iterator();
-            Iterator<Map.Entry<Vertex, Integer>> iter2 = graphNodes.entrySet().iterator();
-
-            List<String> l1 = new ArrayList<>();
-            List<String> l2 = new ArrayList<>();
-            while (iter1.hasNext() || iter2.hasNext()) {
-                Map.Entry<Path, Vertex> e1 = iter1.next();
-                Map.Entry<Vertex, Integer> e2 = iter2.next();
-                l1.add(e1.getValue().getName());
-                l2.add(e2.getKey().getName());
-            }
-            Collections.sort(l1);
-            Collections.sort(l2);
-            assertTrue(l1.size() == l2.size() && l1.containsAll(l2) && l2.containsAll(l1));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Test
-    void convertPackageNodesToGraphMLTest() {
+    void convertVerticesToGraphMLTest() {
         try {
             PackageDiagramManager packageDiagramManager = new PackageDiagramManager();
             SourceProject sourceProject = packageDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
@@ -74,7 +39,7 @@ class GraphMLVertexTest {
                     Map.entry(4, Arrays.asList(10.0, 10.0)),
                     Map.entry(5, Arrays.asList(10.0, 10.0))
             ));
-            StringBuilder actual = graphMLVertex.convertPackageNode();
+            StringBuilder actual = graphMLVertex.convertVertex();
 
             StringBuilder expected = new StringBuilder();
             for (Vertex packageNode : graphNodes.keySet()) {

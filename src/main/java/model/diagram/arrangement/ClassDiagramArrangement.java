@@ -26,14 +26,14 @@ public class ClassDiagramArrangement implements DiagramArrangement{
     @Override
     public Map<Integer, List<Double>> arrangeDiagram() {
         Graph<Integer, String> graph = new SparseGraph<>();
-        populateClassGraph(graphNodes, graphEdges, graph);
+        populateClassGraph(graph);
         AbstractLayout<Integer, String> layout = new SpringLayout<>(graph);
         layout.setSize(new Dimension(1500, 1000));
-        populateNodesGeometry(layout, new ArrayList<>(graphNodes.values()));
+        populateNodesGeometry(layout);
         return nodesGeometry;
     }
 
-    private void populateClassGraph(Map<SinkVertex, Integer> graphNodes, Map<Arc<SinkVertex>, Integer> graphEdges, Graph<Integer, String> graph){
+    private void populateClassGraph(Graph<Integer, String> graph){
         for (Integer i : graphNodes.values()) {
             graph.addVertex(i);
         }
@@ -43,8 +43,8 @@ public class ClassDiagramArrangement implements DiagramArrangement{
         }
     }
 
-    private void populateNodesGeometry(AbstractLayout<Integer, String> layout, List<Integer> graphNodesIds) {
-        for (Integer i : graphNodesIds) {
+    private void populateNodesGeometry(AbstractLayout<Integer, String> layout) {
+        for (Integer i : graphNodes.values()) {
             nodesGeometry.put(i, Arrays.asList(layout.getX(i), layout.getY(i)));
         }
     }

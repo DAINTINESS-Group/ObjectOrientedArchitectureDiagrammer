@@ -21,33 +21,7 @@ public class GraphMLSinkVertexArcTest {
     Path currentDirectory = Path.of(".");
 
     @Test
-    void populateGraphMLLeafEdgesTest() {
-        try {
-            ClassDiagramManager classDiagramManager = new ClassDiagramManager();
-            SourceProject sourceProject = classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-            classDiagramManager.createDiagram(List.of("AddLatexCommand", "ChangeVersionsStrategyCommand", "Command", "CommandFactory",
-                    "CreateCommand", "DisableVersionsManagementCommand", "EditCommand", "EnableVersionsManagementCommand",
-                    "LoadCommand", "RollbackToPreviousVersionCommand", "SaveCommand"));
-            Map<Arc<SinkVertex>, Integer> graphEdges = classDiagramManager.getDiagram().getGraphEdges();
-            List<Arc<SinkVertex>> relationships = new ArrayList<>();
-
-            sourceProject.getVertices().get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
-                            "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands")).getSinkVertices()
-                    .forEach(sinkVertex -> relationships.addAll(sinkVertex.getArcs()));
-
-            for (Map.Entry<Arc<SinkVertex>, Integer> e: graphEdges.entrySet()) {
-                Arc<SinkVertex> arc = relationships.stream().filter(sinkVertexArc ->
-                                sinkVertexArc.getSourceVertex().getName().equals(e.getKey().getSourceVertex().getName()) &&
-                                        sinkVertexArc.getTargetVertex().getName().equals(e.getKey().getTargetVertex().getName()))
-                        .findFirst().orElseGet(Assertions::fail);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Test
-    void convertLeafEdgesToGraphML() {
+    void convertSinkVertexArcsToGraphMLTest() {
         try {
             ClassDiagramManager classDiagramManager = new ClassDiagramManager();
             SourceProject sourceProject = classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
@@ -58,7 +32,7 @@ public class GraphMLSinkVertexArcTest {
             Map<Arc<SinkVertex>, Integer> graphEdges = classDiagramManager.getDiagram().getGraphEdges();
 
             GraphMLSinkVertexArc graphMLSinkVertexArc = new GraphMLSinkVertexArc(graphNodes);
-            StringBuilder actual = graphMLSinkVertexArc.convertLeafEdge(graphEdges);
+            StringBuilder actual = graphMLSinkVertexArc.convertSinkVertexArc(graphEdges);
 
             StringBuilder expected = new StringBuilder();
             List<Arc<SinkVertex>> relationships = new ArrayList<>();

@@ -18,9 +18,9 @@ public class GraphMLClassDiagramExporter implements DiagramExporter {
 
     public GraphMLClassDiagramExporter(Map<SinkVertex, Integer> graphNodes, Map<Integer, List<Double>> nodesGeometry, Map<Arc<SinkVertex>, Integer> graphEdges) {
         GraphMLSinkVertex graphMLSinkVertex = new GraphMLSinkVertex(graphNodes, nodesGeometry);
-        this.graphMLNodeBuffer = graphMLSinkVertex.convertLeafNode();
+        this.graphMLNodeBuffer = graphMLSinkVertex.convertSinkVertex();
         GraphMLSinkVertexArc graphMLSinkVertexArc = new GraphMLSinkVertexArc(graphNodes);
-        this.graphMLEdgeBuffer = graphMLSinkVertexArc.convertLeafEdge(graphEdges);
+        this.graphMLEdgeBuffer = graphMLSinkVertexArc.convertSinkVertexArc(graphEdges);
         graphMLFile = new GraphMLFile();
     }
 

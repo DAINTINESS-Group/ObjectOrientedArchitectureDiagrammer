@@ -17,9 +17,9 @@ public class PlantUMLPackageDiagramImageExporter implements DiagramExporter {
 
     public PlantUMLPackageDiagramImageExporter(Map<Vertex, Integer> graphNodes, Map<Arc<Vertex>, Integer> graphEdges) {
         PlantUMLVertex plantUMLVertex = new PlantUMLVertex(graphNodes);
-        StringBuilder plantUMLNodeBuffer = plantUMLVertex.convertPlantPackageNode();
+        StringBuilder plantUMLNodeBuffer = plantUMLVertex.convertVertex();
         PlantUMLVertexArc plantUMLEdge = new PlantUMLVertexArc(graphEdges);
-        StringBuilder plantUMLEdgeBuffer = plantUMLEdge.convertPlantEdge();
+        StringBuilder plantUMLEdgeBuffer = plantUMLEdge.convertVertexArc();
         bufferBody = plantUMLNodeBuffer.append(plantUMLEdgeBuffer)  + "@enduml\n";
     }
 

@@ -20,15 +20,15 @@ public class GraphMLVertex {
         this.nodesGeometry = nodesGeometry;
     }
 
-    public StringBuilder convertPackageNode() {
+    public StringBuilder convertVertex() {
         for (Map.Entry<Vertex, Integer> entry: graphNodes.entrySet()) {
-            graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLPackageNodesSyntax(getNodesDescription(entry.getKey(),
+            graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLVertexSyntax(getVertexDescription(entry.getKey(),
                     entry.getValue(), nodesGeometry.get(entry.getValue()))));
         }
         return graphMLBuffer;
     }
 
-    private List<String> getNodesDescription(Vertex packageNode, int nodeId, List<Double> nodeGeometry) {
+    private List<String> getVertexDescription(Vertex packageNode, int nodeId, List<Double> nodeGeometry) {
         return Arrays.asList(String.valueOf(nodeId), packageNode.getName(), String.valueOf(nodeGeometry.get(X_COORDINATE)),
                 String.valueOf(nodeGeometry.get(Y_COORDINATE)));
     }

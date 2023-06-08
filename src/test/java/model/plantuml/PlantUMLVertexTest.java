@@ -21,7 +21,7 @@ public class PlantUMLVertexTest {
     Path currentDirectory = Path.of(".");
 
     @Test
-    void checkPackageDiagramDeclarationsText() {
+    void convertVertexTest() {
         try {
             String expectedBuffer = "package src.controller {\n" +
                     "}\n" +
@@ -53,7 +53,7 @@ public class PlantUMLVertexTest {
 
             Map<Vertex, Integer> graphNodes = packageDiagramManager.getDiagram().getGraphNodes();
             PlantUMLVertex plantUMLVertex = new PlantUMLVertex(graphNodes);
-            String actualBuffer = plantUMLVertex.convertPlantPackageNode().toString();
+            String actualBuffer = plantUMLVertex.convertVertex().toString();
 
             List<String> expected = Arrays.asList(expectedBuffer.split("\n"));
             List<String> actual = Arrays.asList(actualBuffer.split("\n"));

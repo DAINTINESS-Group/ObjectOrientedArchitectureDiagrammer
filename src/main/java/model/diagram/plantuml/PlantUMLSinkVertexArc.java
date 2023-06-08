@@ -5,6 +5,7 @@ import model.graph.ArcType;
 import model.graph.SinkVertex;
 
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class PlantUMLSinkVertexArc {
 
@@ -14,19 +15,17 @@ public class PlantUMLSinkVertexArc {
 		this.graphEdges = graphEdges;
 	}
 
-	public StringBuilder convertPlantEdge() {
-		StringBuilder plantUMLBuffer = new StringBuilder();
-		for (Arc<SinkVertex> relationship : graphEdges.keySet()) {
-			String plantUMLRelationship = relationship.getSourceVertex().getName() + " " ;
-			plantUMLRelationship += transformPlantUMLRelationship(relationship.getArcType()) + " ";
-			plantUMLRelationship += relationship.getTargetVertex().getName();
-
-			plantUMLBuffer.append(plantUMLRelationship).append("\n");
-		}
-		return plantUMLBuffer;
+	public StringBuilder convertSinkVertexArc() {
+		return new StringBuilder(
+			graphEdges.keySet().stream()
+				.map(sinkVertexArc ->
+					sinkVertexArc.getSourceVertex().getName() + " " + getRelationship(sinkVertexArc.getArcType()) + " " +
+					sinkVertexArc.getTargetVertex().getName())
+				.collect(Collectors.joining("\n"))
+		);
 	}
     
-    private String transformPlantUMLRelationship(ArcType relationshipType) {
+    private String getRelationship(ArcType relationshipType) {
 		return switch (relationshipType) {
 			case EXTENSION -> "--|>";
 			case AGGREGATION -> "--o";

@@ -17,9 +17,9 @@ public class PlantUMLClassDiagramImageExporter implements DiagramExporter {
 
     public PlantUMLClassDiagramImageExporter(Map<SinkVertex, Integer> graphNodes, Map<Arc<SinkVertex>, Integer> graphEdges) {
 		PlantUMLSinkVertex plantUMLSinkVertex = new PlantUMLSinkVertex(graphNodes);
-		StringBuilder plantUMLNodeBuffer = plantUMLSinkVertex.convertPlantLeafNode();
+		StringBuilder plantUMLNodeBuffer = plantUMLSinkVertex.convertSinkVertex();
 		PlantUMLSinkVertexArc plantUMLEdge = new PlantUMLSinkVertexArc(graphEdges);
-		StringBuilder plantUMLEdgeBuffer = plantUMLEdge.convertPlantEdge();
+		StringBuilder plantUMLEdgeBuffer = plantUMLEdge.convertSinkVertexArc();
     	bufferBody = plantUMLNodeBuffer.append(plantUMLEdgeBuffer)  + "@enduml\n";
     }
 

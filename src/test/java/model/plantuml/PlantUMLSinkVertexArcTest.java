@@ -22,7 +22,7 @@ public class PlantUMLSinkVertexArcTest {
     Path currentDirectory = Path.of(".");
 
     @Test
-    void checkClassDiagramRelationshipsText() {
+    void convertSinkVertexArcTest() {
         try {
             String expectedBuffer = "VersionsStrategy ..> Document\n" +
                     "DocumentManager --o Document\n" +
@@ -48,7 +48,7 @@ public class PlantUMLSinkVertexArcTest {
             Map<Arc<SinkVertex>, Integer> graphEdges = classDiagramManager.getDiagram().getGraphEdges();
 
             PlantUMLSinkVertexArc plantUMLEdge = new PlantUMLSinkVertexArc(graphEdges);
-            String actualBuffer = plantUMLEdge.convertPlantEdge().toString();
+            String actualBuffer = plantUMLEdge.convertSinkVertexArc().toString();
 
             List<String> actualRelationships = Arrays.asList(expectedBuffer.split("\n"));
             List<String> expectedRelationships = Arrays.asList(actualBuffer.split("\n"));

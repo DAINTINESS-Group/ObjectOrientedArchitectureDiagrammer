@@ -21,7 +21,7 @@ class PlantUMLVertexArcTest {
 
 	Path currentDirectory = Path.of(".");
 	@Test
-	void checkPackageDiagramRelationshipsText() {
+	void convertVertexArcTest() {
 		try {
 			String expectedBuffer = "src.model ..> src.view\n" +
 					"src.controller.commands ..> src.model\n" +
@@ -45,7 +45,7 @@ class PlantUMLVertexArcTest {
 
 			Map<Arc<Vertex>, Integer> graphEdges = packageDiagramManager.getDiagram().getGraphEdges();
 			PlantUMLVertexArc plantUMLEdge = new PlantUMLVertexArc(graphEdges);
-			String actualBuffer = plantUMLEdge.convertPlantEdge().toString();
+			String actualBuffer = plantUMLEdge.convertVertexArc().toString();
 
 			List<String> expectedRelationship = Arrays.asList(expectedBuffer.split("\n"));
 			List<String> actualRelationship = Arrays.asList(actualBuffer.split("\n"));

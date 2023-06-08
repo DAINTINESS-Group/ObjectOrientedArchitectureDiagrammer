@@ -22,40 +22,7 @@ public class GraphMLVertexArcTest {
     Path currentDirectory = Path.of(".");
 
     @Test
-    void populateGraphMLPackageEdgesTest() {
-        try {
-            PackageDiagramManager packageDiagramManager = new PackageDiagramManager();
-            SourceProject sourceProject = packageDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-            packageDiagramManager.createDiagram(List.of(
-                    currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src\\view",
-                    currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src\\model",
-                    currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src\\model\\strategies",
-                    currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands",
-                    currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src\\controller"));
-            Map<Arc<Vertex>, Integer> graphEdges = packageDiagramManager.getDiagram().getGraphEdges();
-
-            List<Arc<Vertex>> relationships = new ArrayList<>();
-            for (Vertex packageNode : sourceProject.getVertices().values()) {
-                relationships.addAll(packageNode.getArcs());
-            }
-            for (Map.Entry<Arc<Vertex>, Integer> e : graphEdges.entrySet()) {
-                String edgesStart = e.getKey().getSourceVertex().getName();
-                String edgesEnd = e.getKey().getTargetVertex().getName();
-                boolean foundBranch = false;
-                for (Arc<Vertex> b : relationships) {
-                    if (b.getSourceVertex().getName().equals(edgesStart) && b.getTargetVertex().getName().equals(edgesEnd)) {
-                        foundBranch = true;
-                    }
-                }
-                assertTrue(foundBranch);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Test
-    void convertPackageEdgesToGraphMLTest() {
+    void convertVertexArcsToGraphMLTest() {
         try {
             PackageDiagramManager packageDiagramManager = new PackageDiagramManager();
             SourceProject sourceProject = packageDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
@@ -68,7 +35,7 @@ public class GraphMLVertexArcTest {
             Map<Vertex, Integer> graphNodes = packageDiagramManager.getDiagram().getGraphNodes();
             Map<Arc<Vertex>, Integer> graphEdges = packageDiagramManager.getDiagram().getGraphEdges();
             GraphMLVertexArc graphMLVertexArc = new GraphMLVertexArc(graphNodes);
-            StringBuilder actual = graphMLVertexArc.convertPackageEdge(graphEdges);
+            StringBuilder actual = graphMLVertexArc.convertVertexArc(graphEdges);
 
             StringBuilder expected = new StringBuilder();
             List<Arc<Vertex>> relationships = new ArrayList<>();

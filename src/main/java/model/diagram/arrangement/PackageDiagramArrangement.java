@@ -38,7 +38,6 @@ public class PackageDiagramArrangement implements DiagramArrangement {
         for (Integer i : graphNodes.values()) {
             graph.addVertex(i);
         }
-
         for (Map.Entry<Arc<Vertex>, Integer> arc : graphEdges.entrySet()) {
             graph.addEdge(graphNodes.get(arc.getKey().getSourceVertex()) + " " + graphNodes.get(arc.getKey().getTargetVertex()),
                     graphNodes.get(arc.getKey().getSourceVertex()), graphNodes.get(arc.getKey().getTargetVertex()), EdgeType.DIRECTED);

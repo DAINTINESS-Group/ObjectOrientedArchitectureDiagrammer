@@ -50,7 +50,7 @@ public class GraphMLSyntax {
                 "</graphml>";
     }
 
-    public String getGraphMLNodesSyntax(List<String> nodesDescription) {
+    public String getGraphMLSinkVertexSyntax(List<String> sinkVertexDescription) {
         return String.format("    <node id=\"n%s\">\n" +
                 "      <data key=\"d4\" xml:space=\"preserve\"/>\n" +
                 "      <data key=\"d5\"/>\n" +
@@ -66,12 +66,12 @@ public class GraphMLSyntax {
                 "          </y:UML>\n" +
                 "        </y:UMLClassNode>\n" +
                 "      </data>\n" +
-                "    </node>\n", nodesDescription.get(NODE_ID), nodesDescription.get(NODE_X_COORDINATE),
-                nodesDescription.get(NODE_Y_COORDINATE), nodesDescription.get(NODE_COLOR), nodesDescription.get(NODE_NAME),
-                nodesDescription.get(NODE_FIELDS), nodesDescription.get(NODE_METHODS));
+                "    </node>\n", sinkVertexDescription.get(NODE_ID), sinkVertexDescription.get(NODE_X_COORDINATE),
+                sinkVertexDescription.get(NODE_Y_COORDINATE), sinkVertexDescription.get(NODE_COLOR), sinkVertexDescription.get(NODE_NAME),
+                sinkVertexDescription.get(NODE_FIELDS), sinkVertexDescription.get(NODE_METHODS));
     }
 
-    public String getGraphMLPackageNodesSyntax(List<String> nodesDescription) {
+    public String getGraphMLVertexSyntax(List<String> vertexDescription) {
         return String.format("    <node id=\"n%s\">\n" +
                         "      <data key=\"d4\" xml:space=\"preserve\"/>\n" +
                         "      <data key=\"d6\">\n" +
@@ -82,11 +82,11 @@ public class GraphMLSyntax {
                         "          <y:NodeLabel alignment=\"center\" autoSizePolicy=\"content\" fontFamily=\"Dialog\" fontSize=\"12\" fontStyle=\"plain\" hasBackgroundColor=\"false\" hasLineColor=\"false\" height=\"18.701171875\" horizontalTextPosition=\"center\" iconTextGap=\"0\" modelName=\"custom\" textColor=\"#000000\" verticalTextPosition=\"bottom\" visible=\"true\" width=\"57.373046875\" x=\"34.8134765625\" xml:space=\"preserve\" y=\"16.6494140625\">%s<y:LabelModel><y:SmartNodeLabelModel distance=\"4.0\"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX=\"0.0\" labelRatioY=\"0.0\" nodeRatioX=\"0.0\" nodeRatioY=\"0.0\" offsetX=\"0.0\" offsetY=\"0.0\" upX=\"0.0\" upY=\"-1.0\"/></y:ModelParameter></y:NodeLabel>\n" +
                         "        </y:GenericNode>\n" +
                         "      </data>\n" +
-                        "    </node>\n", nodesDescription.get(NODE_ID), nodesDescription.get(PACKAGE_X_COORDINATE),
-                nodesDescription.get(PACKAGE_Y_COORDINATE), nodesDescription.get(PACKAGE_NAME));
+                        "    </node>\n", vertexDescription.get(NODE_ID), vertexDescription.get(PACKAGE_X_COORDINATE),
+                vertexDescription.get(PACKAGE_Y_COORDINATE), vertexDescription.get(PACKAGE_NAME));
     }
 
-    public String getGraphMLEdgesSyntax(List<String> edgesDescription) {
+    public String getGraphMLSinkVertexArcSyntax(List<String> sinkVertexArcDescription) {
         return String.format("<edge id=\"e%s\" source=\"n%s\" target=\"n%s\">\n" +
                 "      <data key=\"d10\">\n" +
                 "        <y:PolyLineEdge>\n" +
@@ -96,11 +96,11 @@ public class GraphMLSyntax {
                 "          <y:BendStyle smoothed=\"false\"/>\n" +
                 "        </y:PolyLineEdge>\n" +
                 "      </data>\n" +
-                "    </edge>\n", edgesDescription.get(EDGE_ID), edgesDescription.get(EDGE_SOURCE), edgesDescription.get(EDGE_TARGET),
-                edgesDescription.get(EDGE_TYPE), edgesDescription.get(EDGES_SOURCE_TYPE), edgesDescription.get(EDGES_TARGET_TYPE));
+                "    </edge>\n", sinkVertexArcDescription.get(EDGE_ID), sinkVertexArcDescription.get(EDGE_SOURCE), sinkVertexArcDescription.get(EDGE_TARGET),
+                sinkVertexArcDescription.get(EDGE_TYPE), sinkVertexArcDescription.get(EDGES_SOURCE_TYPE), sinkVertexArcDescription.get(EDGES_TARGET_TYPE));
     }
 
-    public String getGraphMLPackageEdgesSyntax(List<String> edgesDescription) {
+    public String getGraphMLVertexArcSyntax(List<String> vertexArcDescription) {
         return String.format("    <edge id=\"e%s\" source=\"n%s\" target=\"n%s\">\n" +
                 "      <data key=\"d9\"/>\n" +
                 "      <data key=\"d10\">\n" +
@@ -111,7 +111,7 @@ public class GraphMLSyntax {
                 "          <y:BendStyle smoothed=\"false\"/>\n" +
                 "        </y:PolyLineEdge>\n" +
                 "      </data>\n" +
-                "    </edge>", edgesDescription.get(EDGE_ID), edgesDescription.get(EDGE_SOURCE), edgesDescription.get(EDGE_TARGET));
+                "    </edge>", vertexArcDescription.get(EDGE_ID), vertexArcDescription.get(EDGE_SOURCE), vertexArcDescription.get(EDGE_TARGET));
     }
 
     public static GraphMLSyntax getInstance(){
