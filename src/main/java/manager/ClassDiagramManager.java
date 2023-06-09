@@ -5,6 +5,7 @@ import model.diagram.ClassDiagram;
 import model.diagram.DiagramExporter;
 import model.graph.Arc;
 import model.graph.SinkVertex;
+import org.javatuples.Pair;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -35,7 +36,7 @@ public class ClassDiagramManager implements DiagramManager {
     }
 
     @Override
-    public Map<Integer, List<Double>> arrangeDiagram(){
+    public Map<Integer, Pair<Double, Double>> arrangeDiagram(){
         return Objects.requireNonNull(diagramStack.peek()).arrangeDiagram();
     }
 

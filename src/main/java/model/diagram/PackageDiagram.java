@@ -12,17 +12,18 @@ import model.diagram.plantuml.PlantUMLPackageDiagramImageExporter;
 import model.diagram.plantuml.PlantUMLPackageDiagramTextExporter;
 import model.graph.Arc;
 import model.graph.Vertex;
+import org.javatuples.Pair;
 
 import java.nio.file.Path;
 import java.util.*;
 
 public class PackageDiagram {
 
-    private Map<Integer, List<Double>> nodesGeometry;
     private Map<Vertex, Set<Arc<Vertex>>> diagram;
     private final Map<Vertex, Integer> graphNodes;
     private final Map<Arc<Vertex>, Integer> graphEdges;
     private Map<Path, Vertex> vertices;
+    private Map<Integer, Pair<Double, Double>> nodesGeometry;
 
     public PackageDiagram() {
         diagram = new HashMap<>();
@@ -37,7 +38,7 @@ public class PackageDiagram {
         return diagram;
     }
 
-    public Map<Integer, List<Double>> arrangeDiagram() {
+    public Map<Integer, Pair<Double, Double>> arrangeDiagram() {
         DiagramArrangement diagramArrangement = new PackageDiagramArrangement(graphNodes, graphEdges);
         nodesGeometry = diagramArrangement.arrangeDiagram();
         return nodesGeometry;

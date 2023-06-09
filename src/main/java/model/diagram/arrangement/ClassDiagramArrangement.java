@@ -7,13 +7,13 @@ import edu.uci.ics.jung.graph.SparseGraph;
 import edu.uci.ics.jung.graph.util.EdgeType;
 import model.graph.Arc;
 import model.graph.SinkVertex;
+import org.javatuples.Pair;
 
 import java.awt.*;
 import java.util.*;
-import java.util.List;
 
 public class ClassDiagramArrangement implements DiagramArrangement{
-    private final Map<Integer, List<Double>> nodesGeometry;
+    private final Map<Integer, Pair<Double, Double>> nodesGeometry;
     private final Map<SinkVertex, Integer> graphNodes;
     private final Map<Arc<SinkVertex>, Integer> graphEdges;
 
@@ -24,7 +24,7 @@ public class ClassDiagramArrangement implements DiagramArrangement{
     }
 
     @Override
-    public Map<Integer, List<Double>> arrangeDiagram() {
+    public Map<Integer, Pair<Double, Double>> arrangeDiagram() {
         Graph<Integer, String> graph = new SparseGraph<>();
         populateClassGraph(graph);
         AbstractLayout<Integer, String> layout = new SpringLayout<>(graph);
@@ -45,7 +45,7 @@ public class ClassDiagramArrangement implements DiagramArrangement{
 
     private void populateNodesGeometry(AbstractLayout<Integer, String> layout) {
         for (Integer i : graphNodes.values()) {
-            nodesGeometry.put(i, Arrays.asList(layout.getX(i), layout.getY(i)));
+            nodesGeometry.put(i, new Pair<>(layout.getX(i), layout.getY(i)));
         }
     }
 }

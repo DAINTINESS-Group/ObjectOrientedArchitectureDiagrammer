@@ -29,11 +29,11 @@ public class PlantUMLPackageDiagramTextExporter implements DiagramExporter {
         String plantUMLCode = getPackageText();
         plantUMLCode += bufferBody;
         plantUMLCode = dotChanger(plantUMLCode);
-        textExporter(plantUMLFile, plantUMLCode);
+        writeFile(plantUMLFile, plantUMLCode);
         return plantUMLFile;
     }
 
-    private void textExporter(File plantUMLFile, String plantCode) {
+    private void writeFile(File plantUMLFile, String plantCode) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(plantUMLFile))) {
             writer.write(plantCode);
         } catch (IOException e) {

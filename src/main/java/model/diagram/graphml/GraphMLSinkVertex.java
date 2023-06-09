@@ -2,6 +2,7 @@ package model.diagram.graphml;
 
 import model.graph.SinkVertex;
 import model.graph.VertexType;
+import org.javatuples.Pair;
 
 import java.util.Arrays;
 import java.util.List;
@@ -12,13 +13,11 @@ public class GraphMLSinkVertex {
 
     private static final String CLASS_COLOR = "#FF9900";
     private static final String INTERFACE_COLOR = "#3366FF";
-    private static final int X_COORDINATE = 0;
-    private static final int Y_COORDINATE = 1;
     private final Map<SinkVertex, Integer> graphNodes;
     private final StringBuilder graphMLBuffer;
-    private final Map<Integer, List<Double>> nodesGeometry;
+    private final Map<Integer, Pair<Double, Double>> nodesGeometry;
 
-    public GraphMLSinkVertex(Map<SinkVertex, Integer> graphNodes, Map<Integer, List<Double>> nodesGeometry) {
+    public GraphMLSinkVertex(Map<SinkVertex, Integer> graphNodes, Map<Integer, Pair<Double, Double>> nodesGeometry) {
         this.graphNodes = graphNodes;
         this.graphMLBuffer = new StringBuilder();
         this.nodesGeometry = nodesGeometry;
@@ -32,9 +31,9 @@ public class GraphMLSinkVertex {
         return graphMLBuffer;
     }
 
-    private List<String> getSinkVertexDescription(SinkVertex sinkVertex, int nodeId, List<Double> nodeGeometry) {
+    private List<String> getSinkVertexDescription(SinkVertex sinkVertex, int nodeId, Pair<Double, Double> nodeGeometry) {
         return Arrays.asList(String.valueOf(nodeId), getSinkVertexColor(sinkVertex), sinkVertex.getName(), getSinkVertexFields(sinkVertex),
-                getSinkVertexMethods(sinkVertex), String.valueOf(nodeGeometry.get(X_COORDINATE)), String.valueOf(nodeGeometry.get(Y_COORDINATE)));
+                getSinkVertexMethods(sinkVertex), String.valueOf(nodeGeometry.getValue0()), String.valueOf(nodeGeometry.getValue1()));
     }
 
     private String getSinkVertexMethods(SinkVertex sinkVertex) {

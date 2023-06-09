@@ -3,6 +3,7 @@ package controller;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import manager.DiagramManager;
 import manager.SourceProject;
+import org.javatuples.Pair;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -17,7 +18,7 @@ public abstract class DiagramController implements Controller {
 		return diagramManager.createSourceProject(sourcePackagePath);
 	}
 
-	public Map<Integer, List<Double>> arrangeDiagram(){
+	public Map<Integer, Pair<Double, Double>> arrangeDiagram(){
 		return diagramManager.arrangeDiagram();
 	}
 

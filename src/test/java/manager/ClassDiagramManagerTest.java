@@ -12,6 +12,7 @@ import model.graph.Arc;
 import model.graph.SinkVertex;
 import model.graph.Vertex;
 import org.apache.commons.io.FileUtils;
+import org.javatuples.Pair;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import parser.Interpreter;
@@ -155,20 +156,20 @@ public class ClassDiagramManagerTest {
             SourceProject sourceProject = classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
             classDiagramManager.createDiagram(chosenFiles);
             classDiagramManager.arrangeDiagram();
-            File testingExportedFile = classDiagramManager.exportDiagramToGraphML(Paths.get(System.getProperty("user.home")+"\\testingExportedFile.graphML"));
+            File actualFile = classDiagramManager.exportDiagramToGraphML(Paths.get(System.getProperty("user.home")+"\\testingExportedFile.graphML"));
 
             Map<SinkVertex, Integer> graphNodes = classDiagramManager.getDiagram().getGraphNodes();
             Map<Arc<SinkVertex>, Integer> graphEdges = classDiagramManager.getDiagram().getGraphEdges();
             DiagramArrangement classDiagramArrangement = new ClassDiagramArrangement(graphNodes, graphEdges);
-            Map<Integer, List<Double>> nodesGeometry = classDiagramArrangement.arrangeDiagram();
+            Map<Integer, Pair<Double, Double>> nodesGeometry = classDiagramArrangement.arrangeDiagram();
             GraphMLSinkVertex graphMLSinkVertex = new GraphMLSinkVertex(graphNodes, nodesGeometry);
             StringBuilder graphMLNodeBuffer = graphMLSinkVertex.convertSinkVertex();
             GraphMLSinkVertexArc graphMLSinkVertexArc = new GraphMLSinkVertexArc(graphNodes);
             StringBuilder graphMLEdgeBuffer = graphMLSinkVertexArc.convertSinkVertexArc(graphEdges);
 
             DiagramExporter graphMLExporter = new GraphMLClassDiagramExporter(graphNodes, nodesGeometry, graphEdges);
-            assertTrue(FileUtils.contentEquals(graphMLExporter.exportDiagram(Paths.get(System.getProperty("user.home")+"\\testingExportedFile.graphML")
-            ), testingExportedFile));
+            File expectedFile = graphMLExporter.exportDiagram(Paths.get(System.getProperty("user.home") + "\\testingExportedFile.graphML"));
+            assertTrue(FileUtils.contentEquals(expectedFile, actualFile));
         } catch (IOException e) {
             e.printStackTrace();
         }

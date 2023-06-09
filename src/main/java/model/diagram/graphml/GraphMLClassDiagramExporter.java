@@ -3,11 +3,11 @@ package model.diagram.graphml;
 import model.diagram.DiagramExporter;
 import model.graph.Arc;
 import model.graph.SinkVertex;
+import org.javatuples.Pair;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.List;
 import java.util.Map;
 
 public class GraphMLClassDiagramExporter implements DiagramExporter {
@@ -16,7 +16,8 @@ public class GraphMLClassDiagramExporter implements DiagramExporter {
     private final StringBuilder graphMLNodeBuffer;
     private final StringBuilder graphMLEdgeBuffer;
 
-    public GraphMLClassDiagramExporter(Map<SinkVertex, Integer> graphNodes, Map<Integer, List<Double>> nodesGeometry, Map<Arc<SinkVertex>, Integer> graphEdges) {
+    public GraphMLClassDiagramExporter(Map<SinkVertex, Integer> graphNodes, Map<Integer, Pair<Double, Double>> nodesGeometry,
+                                       Map<Arc<SinkVertex>, Integer> graphEdges) {
         GraphMLSinkVertex graphMLSinkVertex = new GraphMLSinkVertex(graphNodes, nodesGeometry);
         this.graphMLNodeBuffer = graphMLSinkVertex.convertSinkVertex();
         GraphMLSinkVertexArc graphMLSinkVertexArc = new GraphMLSinkVertexArc(graphNodes);

@@ -46,7 +46,6 @@ public class PlantUMLSinkVertexArcTest {
                     "VersionsManager", "Document", "DocumentManager"));
 
             Map<Arc<SinkVertex>, Integer> graphEdges = classDiagramManager.getDiagram().getGraphEdges();
-
             PlantUMLSinkVertexArc plantUMLEdge = new PlantUMLSinkVertexArc(graphEdges);
             String actualBuffer = plantUMLEdge.convertSinkVertexArc().toString();
 

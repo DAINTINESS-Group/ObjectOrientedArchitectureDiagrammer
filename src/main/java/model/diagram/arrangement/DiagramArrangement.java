@@ -1,6 +1,7 @@
 package model.diagram.arrangement;
 
-import java.util.List;
+import org.javatuples.Pair;
+
 import java.util.Map;
 
 public interface DiagramArrangement {
@@ -11,6 +12,6 @@ public interface DiagramArrangement {
      *
      * @return a Map with the nodes' id as key and geometry(x,y) as value
      */
-    Map<Integer, List<Double>> arrangeDiagram();
+    Map<Integer, Pair<Double, Double>> arrangeDiagram();
 
 }

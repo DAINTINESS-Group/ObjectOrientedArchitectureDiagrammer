@@ -29,11 +29,11 @@ public class PlantUMLPackageDiagramImageExporter implements DiagramExporter {
         String plantUMLCode = getPackageText();
         plantUMLCode += bufferBody;
         plantUMLCode = dotChanger(plantUMLCode);
-        exportDiagram(plantUMLFile, plantUMLCode);
+        exportImage(plantUMLFile, plantUMLCode);
         return plantUMLFile;
     }
 
-    private void exportDiagram(File plantUMLFile, String plantCode) {
+    private void exportImage(File plantUMLFile, String plantCode) {
         try {
             ByteArrayOutputStream png = new ByteArrayOutputStream();
             SourceStringReader reader = new SourceStringReader(plantCode);

@@ -1,6 +1,7 @@
 package manager;
 
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
+import org.javatuples.Pair;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -24,11 +25,13 @@ public interface DiagramManager {
      */
     void createDiagram(List<String> chosenFilesNames);
 
-    /**This method arranges the createdDiagram's node geometry by creating a Jung Graph and then applying the SpringLayout
+    /**
+     * This method arranges the createdDiagram's node geometry by creating a Jung Graph and then applying the SpringLayout
      * algorithm, implemented by the Jung library
+     *
      * @return a Map with the nodes' ids as keys and their geometry as value
      */
-    Map<Integer, List<Double>> arrangeDiagram();
+    Map<Integer, Pair<Double, Double>> arrangeDiagram();
 
     /**This method exports the created diagram to a file, to the path selected by the designer, in GraphMLFormat, by
      * converting the nodes and edges to GraphML syntax

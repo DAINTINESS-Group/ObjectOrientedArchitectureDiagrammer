@@ -12,17 +12,18 @@ import model.diagram.plantuml.PlantUMLClassDiagramImageExporter;
 import model.diagram.plantuml.PlantUMLClassDiagramTextExporter;
 import model.graph.Arc;
 import model.graph.SinkVertex;
+import org.javatuples.Pair;
 
 import java.nio.file.Path;
 import java.util.*;
 
 public class ClassDiagram {
 
-    private Map<Integer, List<Double>> nodesGeometry;
     private Map<SinkVertex, Set<Arc<SinkVertex>>> diagram;
     private final Map<SinkVertex, Integer> graphNodes;
     private final Map<Arc<SinkVertex>, Integer> graphEdges;
     private Map<Path, SinkVertex> sinkVertices;
+    private Map<Integer, Pair<Double, Double>> nodesGeometry;
 
     public ClassDiagram() {
         diagram = new HashMap<>();
@@ -37,7 +38,7 @@ public class ClassDiagram {
         return diagram;
     }
 
-    public Map<Integer, List<Double>> arrangeDiagram() {
+    public Map<Integer, Pair<Double, Double>> arrangeDiagram() {
         DiagramArrangement classDiagramArrangement = new ClassDiagramArrangement(graphNodes, graphEdges);
         nodesGeometry = classDiagramArrangement.arrangeDiagram();
         return nodesGeometry;

@@ -5,15 +5,16 @@ import manager.SourceProject;
 import model.diagram.graphml.GraphMLSinkVertex;
 import model.graph.SinkVertex;
 import model.graph.VertexType;
+import org.javatuples.Pair;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class GraphMLSinkVertexTest {
 
@@ -29,17 +30,17 @@ public class GraphMLSinkVertexTest {
                     "LoadCommand", "RollbackToPreviousVersionCommand", "SaveCommand"));
             Map<SinkVertex, Integer> graphNodes = classDiagramManager.getDiagram().getGraphNodes();
             GraphMLSinkVertex graphMLSinkVertex = new GraphMLSinkVertex(graphNodes, Map.ofEntries(
-                    Map.entry(0, Arrays.asList(10.0, 10.0)),
-                    Map.entry(1, Arrays.asList(10.0, 10.0)),
-                    Map.entry(2, Arrays.asList(10.0, 10.0)),
-                    Map.entry(3, Arrays.asList(10.0, 10.0)),
-                    Map.entry(4, Arrays.asList(10.0, 10.0)),
-                    Map.entry(5, Arrays.asList(10.0, 10.0)),
-                    Map.entry(6, Arrays.asList(10.0, 10.0)),
-                    Map.entry(7, Arrays.asList(10.0, 10.0)),
-                    Map.entry(8, Arrays.asList(10.0, 10.0)),
-                    Map.entry(9, Arrays.asList(10.0, 10.0)),
-                    Map.entry(10, Arrays.asList(10.0, 10.0))
+                    Map.entry(0, new Pair<>(10.0, 10.0)),
+                    Map.entry(1, new Pair<>(10.0, 10.0)),
+                    Map.entry(2, new Pair<>(10.0, 10.0)),
+                    Map.entry(3, new Pair<>(10.0, 10.0)),
+                    Map.entry(4, new Pair<>(10.0, 10.0)),
+                    Map.entry(5, new Pair<>(10.0, 10.0)),
+                    Map.entry(6, new Pair<>(10.0, 10.0)),
+                    Map.entry(7, new Pair<>(10.0, 10.0)),
+                    Map.entry(8, new Pair<>(10.0, 10.0)),
+                    Map.entry(9, new Pair<>(10.0, 10.0)),
+                    Map.entry(10, new Pair<>(10.0, 10.0))
             ));
             StringBuilder actual = graphMLSinkVertex.convertSinkVertex();
 

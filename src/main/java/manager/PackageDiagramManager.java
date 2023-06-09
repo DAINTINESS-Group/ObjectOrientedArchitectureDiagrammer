@@ -5,6 +5,7 @@ import model.diagram.DiagramExporter;
 import model.diagram.PackageDiagram;
 import model.graph.Arc;
 import model.graph.Vertex;
+import org.javatuples.Pair;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -34,7 +35,7 @@ public class PackageDiagramManager implements DiagramManager {
     }
 
     @Override
-    public Map<Integer, List<Double>> arrangeDiagram(){
+    public Map<Integer, Pair<Double, Double>> arrangeDiagram(){
         return Objects.requireNonNull(diagramStack.peek()).arrangeDiagram();
     }
 

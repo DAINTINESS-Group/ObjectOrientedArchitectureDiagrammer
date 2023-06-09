@@ -1,6 +1,7 @@
 package model.diagram.graphml;
 
 import model.graph.Vertex;
+import org.javatuples.Pair;
 
 import java.util.Arrays;
 import java.util.List;
@@ -8,13 +9,11 @@ import java.util.Map;
 
 public class GraphMLVertex {
 
-    private static final int X_COORDINATE = 0;
-    private static final int Y_COORDINATE = 1;
     private final Map<Vertex, Integer> graphNodes;
     private final StringBuilder graphMLBuffer;
-    private final Map<Integer, List<Double>> nodesGeometry;
+    private final Map<Integer, Pair<Double, Double>> nodesGeometry;
 
-    public GraphMLVertex(Map<Vertex, Integer> graphNodes, Map<Integer, List<Double>> nodesGeometry) {
+    public GraphMLVertex(Map<Vertex, Integer> graphNodes, Map<Integer, Pair<Double, Double>> nodesGeometry) {
         this.graphNodes = graphNodes;
         this.graphMLBuffer = new StringBuilder();
         this.nodesGeometry = nodesGeometry;
@@ -28,9 +27,9 @@ public class GraphMLVertex {
         return graphMLBuffer;
     }
 
-    private List<String> getVertexDescription(Vertex packageNode, int nodeId, List<Double> nodeGeometry) {
-        return Arrays.asList(String.valueOf(nodeId), packageNode.getName(), String.valueOf(nodeGeometry.get(X_COORDINATE)),
-                String.valueOf(nodeGeometry.get(Y_COORDINATE)));
+    private List<String> getVertexDescription(Vertex packageNode, int nodeId, Pair<Double, Double> nodeGeometry) {
+        return Arrays.asList(String.valueOf(nodeId), packageNode.getName(), String.valueOf(nodeGeometry.getValue0()),
+                String.valueOf(nodeGeometry.getValue1()));
     }
 
 }

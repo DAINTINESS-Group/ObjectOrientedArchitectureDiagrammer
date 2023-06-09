@@ -3,11 +3,11 @@ package model.diagram.graphml;
 import model.diagram.DiagramExporter;
 import model.graph.Arc;
 import model.graph.Vertex;
+import org.javatuples.Pair;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.List;
 import java.util.Map;
 
 public class GraphMLPackageDiagramExporter implements DiagramExporter {
@@ -16,7 +16,8 @@ public class GraphMLPackageDiagramExporter implements DiagramExporter {
     private final StringBuilder graphMLNodeBuffer;
     private final StringBuilder graphMLEdgeBuffer;
 
-    public GraphMLPackageDiagramExporter(Map<Vertex, Integer> graphNodes, Map<Integer, List<Double>> nodesGeometry, Map<Arc<Vertex>, Integer> graphEdges) {
+    public GraphMLPackageDiagramExporter(Map<Vertex, Integer> graphNodes, Map<Integer, Pair<Double, Double>> nodesGeometry,
+                                         Map<Arc<Vertex>, Integer> graphEdges) {
         GraphMLVertex graphMLVertex = new GraphMLVertex(graphNodes, nodesGeometry);
         graphMLNodeBuffer = graphMLVertex.convertVertex();
         GraphMLVertexArc graphMLVertexArc = new GraphMLVertexArc(graphNodes);

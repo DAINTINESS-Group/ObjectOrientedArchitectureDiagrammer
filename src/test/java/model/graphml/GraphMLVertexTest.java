@@ -4,15 +4,16 @@ import manager.PackageDiagramManager;
 import manager.SourceProject;
 import model.diagram.graphml.GraphMLVertex;
 import model.graph.Vertex;
+import org.javatuples.Pair;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class GraphMLVertexTest {
 
@@ -32,12 +33,12 @@ class GraphMLVertexTest {
             Map<Vertex, Integer> graphNodes = packageDiagramManager.getDiagram().getGraphNodes();
 
             GraphMLVertex graphMLVertex = new GraphMLVertex(graphNodes, Map.ofEntries(
-                    Map.entry(0, Arrays.asList(10.0, 10.0)),
-                    Map.entry(1, Arrays.asList(10.0, 10.0)),
-                    Map.entry(2, Arrays.asList(10.0, 10.0)),
-                    Map.entry(3, Arrays.asList(10.0, 10.0)),
-                    Map.entry(4, Arrays.asList(10.0, 10.0)),
-                    Map.entry(5, Arrays.asList(10.0, 10.0))
+                    Map.entry(0, new Pair<>(10.0, 10.0)),
+                    Map.entry(1, new Pair<>(10.0, 10.0)),
+                    Map.entry(2, new Pair<>(10.0, 10.0)),
+                    Map.entry(3, new Pair<>(10.0, 10.0)),
+                    Map.entry(4, new Pair<>(10.0, 10.0)),
+                    Map.entry(5, new Pair<>(10.0, 10.0))
             ));
             StringBuilder actual = graphMLVertex.convertVertex();
 

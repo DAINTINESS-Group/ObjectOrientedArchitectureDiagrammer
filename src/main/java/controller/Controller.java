@@ -2,6 +2,7 @@ package controller;
 
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import manager.SourceProject;
+import org.javatuples.Pair;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -20,16 +21,14 @@ public interface Controller {
      * This method converts the created tree to a diagram, by creating the corresponding DiagramManager
      * based on the type of the graph, i.e. package or class and then calling the createDiagram method
      * of the DiagramManager
-     *
      * @param chosenFileNames the names of the files selected by the designer to be included in the diagram
-     * @return the diagram created
      */
     void convertTreeToDiagram(List<String> chosenFileNames);
 
     /**This method arranges the diagram by calling the DiagramManager's arrangeDiagram method
      * @return a Map with the nodes' ids as keys and their geometry as value
      */
-    Map<Integer, List<Double>> arrangeDiagram();
+    Map<Integer, Pair<Double, Double>> arrangeDiagram();
 
     /**This method exports the diagram to a GraphML file by calling the DiagramManager's exportDiagramToGraphML
      * method
@@ -46,7 +45,6 @@ public interface Controller {
 
     /**This method loads a diagram from a text file by calling the DiagramManager's loadDiagram method
      * @param graphSavePath the file's path where the diagram is saved
-     * @return the created diagram
      */
     void loadDiagram(Path graphSavePath);
 
@@ -55,18 +53,14 @@ public interface Controller {
      */
     SmartGraphPanel<String, String> visualizeJavaFXGraph();
 
-    /**
-     * This method exports the diagram as an image with the help of PlantUML by calling the DiagramManager's
+    /**This method exports the diagram as an image with the help of PlantUML by calling the DiagramManager's
      * exportPlantUMLDiagram method
-     *
      * @param graphSavePath the selected path by the designer where the diagram's image will be saved
      * @return the created PlantUML diagram
      */
 	File exportPlantUMLDiagram(Path graphSavePath);
 	
-    /**
-     * This method saves the PlantUML code to a text file by calling the DiagramManager's exportPlantUMLText method
-     *
+    /**This method saves the PlantUML code to a text file by calling the DiagramManager's exportPlantUMLText method
      * @param textSavePath the selected path by the designer where the text file will be saved
      * @return the create PlantUML text file
      */
