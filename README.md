@@ -124,7 +124,7 @@ If you have a suggestion that would make this better, please fork the repo and c
 Create a new [Issue][issues-url] to report any issues
 
 ## Roadmap
-- [ ] Fix crashes with underscores, files/folders starting with '.', etc
+- [X] Fix crashes with underscores, files/folders starting with '.', etc
 - [ ] Build a visualization library that supports:
     - [ ] A layout algorithm that uses bend minimization
     - [ ] Drag & drop canvas to add UML entities
@@ -139,7 +139,7 @@ Create a new [Issue][issues-url] to report any issues
   - [ ] Enums
     
 ## Authors
-v0.2: Dimitris Anyfantakis added a new java parser; Bill Dodis added the PlanUML extension as part of his Diploma Thesis in Univ. Ioannina.
+v0.2: Dimitris Anyfantakis added a new java parser; Bill Dodis added the PlanUML extension as part of his Diploma Thesis in Univ. Ioannina.<br>
 v0.1: Dimitris Anyfantakis has developed the first version of the tool as part of his Diploma Thesis in Univ. Ioannina; Panos Vassiliadis acted solely as code reviewer and co-designer.
 
 ## License
