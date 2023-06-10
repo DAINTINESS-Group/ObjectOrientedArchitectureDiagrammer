@@ -20,7 +20,7 @@ public class PlantUMLClassDiagramTextExporter implements DiagramExporter {
         StringBuilder plantUMLNodeBuffer = plantUMLSinkVertex.convertSinkVertex();
         PlantUMLSinkVertexArc plantUMLEdge = new PlantUMLSinkVertexArc(graphEdges);
         StringBuilder plantUMLEdgeBuffer = plantUMLEdge.convertSinkVertexArc();
-        bufferBody = plantUMLNodeBuffer.append(plantUMLEdgeBuffer) + "\n @enduml";
+        bufferBody = plantUMLNodeBuffer.append("\n\n").append(plantUMLEdgeBuffer) + "\n @enduml";
     }
 
     @Override
@@ -47,6 +47,6 @@ public class PlantUMLClassDiagramTextExporter implements DiagramExporter {
             "    BackgroundColor lightyellow\n" +
             "    BorderColor black\n" +
             "    ArrowColor black\n" +
-            "}\n";
+            "}\n\n";
     }
 }

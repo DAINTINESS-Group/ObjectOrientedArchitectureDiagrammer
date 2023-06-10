@@ -20,7 +20,7 @@ public class PlantUMLPackageDiagramImageExporter implements DiagramExporter {
         StringBuilder plantUMLNodeBuffer = plantUMLVertex.convertVertex();
         PlantUMLVertexArc plantUMLEdge = new PlantUMLVertexArc(graphEdges);
         StringBuilder plantUMLEdgeBuffer = plantUMLEdge.convertVertexArc();
-        bufferBody = plantUMLNodeBuffer.append(plantUMLEdgeBuffer) + "\n @enduml";
+        bufferBody = plantUMLNodeBuffer.append("\n\n").append(plantUMLEdgeBuffer) + "\n @enduml";
     }
 
     @Override
@@ -105,7 +105,7 @@ public class PlantUMLPackageDiagramImageExporter implements DiagramExporter {
                 "    BorderColor black\n" +
                 "    ArrowColor black\n" +
                 "    Shadowing true\n" +
-                "}\n";
+                "}\n\n";
     }
 
 }

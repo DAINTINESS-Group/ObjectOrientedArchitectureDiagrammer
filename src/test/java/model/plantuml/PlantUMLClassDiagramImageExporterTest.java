@@ -1,5 +1,9 @@
 package model.plantuml;
 
+import com.github.romankh3.image.comparison.ImageComparison;
+import com.github.romankh3.image.comparison.ImageComparisonUtil;
+import com.github.romankh3.image.comparison.model.ImageComparisonResult;
+import com.github.romankh3.image.comparison.model.ImageComparisonState;
 import manager.ClassDiagramManager;
 import manager.SourceProject;
 import model.diagram.DiagramExporter;
@@ -13,18 +17,14 @@ import org.junit.jupiter.api.Test;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -49,8 +49,6 @@ public class PlantUMLClassDiagramImageExporterTest {
 
             DiagramExporter graphMLExporter = new PlantUMLClassDiagramImageExporter(graphNodes, graphEdges);
             graphMLExporter.exportDiagram(Paths.get(System.getProperty("user.home") + "\\testingExportedFile.png"));
-            BufferedImage originalImage = ImageIO.read(Path.of(System.getProperty("user.home") + "\\testingExportedFile.png").toFile());
-            byte[] byteArray = ((DataBufferByte) originalImage.getData().getDataBuffer()).getData();
 
             String expected = "@startuml\n" +
                     "skinparam class {\n" +
@@ -58,20 +56,19 @@ public class PlantUMLClassDiagramImageExporterTest {
                     "    BorderColor black\n" +
                     "    ArrowColor black\n" +
                     "}\n";
-
-            expected += sinkVertexBuffer + sinkVertexArcBuffer + "\n @enduml";
+            expected += sinkVertexBuffer + "\n\n" + sinkVertexArcBuffer + "\n @enduml";
             ByteArrayOutputStream png = new ByteArrayOutputStream();
             SourceStringReader reader = new SourceStringReader(expected);
             reader.outputImage(png).getDescription();
             byte[] data = png.toByteArray();
             InputStream in = new ByteArrayInputStream(data);
             BufferedImage convImg = ImageIO.read(in);
-            byte[] actualByteArray = ((DataBufferByte) convImg.getData().getDataBuffer()).getData();
-            //ImageIO.write(convImg, "png", plantUMLFile);
+            ImageIO.write(convImg, "png", Path.of(System.getProperty("user.home") + "\\actualExportedFile.png").toFile());
 
-
-            //assertEquals(byteArray, actualByteArray);
-
+            BufferedImage expectedImage = ImageComparisonUtil.readImageFromResources(Path.of(System.getProperty("user.home") + "\\testingExportedFile.png").toString());
+            BufferedImage actualImage = ImageComparisonUtil.readImageFromResources(Path.of(System.getProperty("user.home") + "\\actualExportedFile.png").toString());
+            ImageComparisonResult imageComparisonResult = new ImageComparison(expectedImage, actualImage).compareImages();
+            assertEquals(ImageComparisonState.MATCH, imageComparisonResult.getImageComparisonState());
         } catch (IOException e) {
             e.printStackTrace();
         }
