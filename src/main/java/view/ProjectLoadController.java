@@ -23,10 +23,6 @@ public class ProjectLoadController {
 
     public void aboutPage() { MenuUtility.aboutPage(menuBar); }
 
-    public void saveDiagram() {
-        PopupWindow.createPopupInfoWindow("You haven't created a diagram yet!", "Error");
-    }
-
     public void loadDiagram(ActionEvent event) {
         MenuUtility.loadDiagram(menuBar, event);
     }

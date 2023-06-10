@@ -38,14 +38,6 @@ public class DiagramCreation {
         diagramController.convertTreeToDiagram(getSelectedFiles(diagramType));
     }
 
-    private List<String> getSelectedFiles(String diagramType) {
-        if (diagramType.equals("Package")) {
-            return projectTreeView.getSelectedFiles(projectTreeView.getFolderFiles(), "package");
-        }else{
-            return projectTreeView.getSelectedFiles(projectTreeView.getJavaSourceFiles(), "java");
-        }
-    }
-
     public void viewProject() {
         if (diagramType.isEmpty()) {
             PopupWindow.createPopupInfoWindow("You have neither created a diagram nor loaded it yet!", "Error");
@@ -58,11 +50,6 @@ public class DiagramCreation {
         viewDiagram();
     }
 
-    private boolean wereFilesChosen() {
-        return !(projectTreeView.getSelectedFiles(projectTreeView.getFolderFiles(), "package").size() == 0 &&
-                projectTreeView.getSelectedFiles(projectTreeView.getJavaSourceFiles(), "java").size() == 0);
-    }
-
     private void viewDiagram(){
         DiagramVisualization diagramVisualization = new DiagramVisualization(menuBar);
         diagramVisualization.setDiagramController(diagramController);
@@ -72,24 +59,40 @@ public class DiagramCreation {
 
     public void exportDiagram(){
         File selectedDirectory = FileAndDirectoryUtility.saveFile("Export Diagram", menuBar, "GraphML Files");
-        if (selectedDirectory != null) {
-            diagramController.arrangeDiagram();
-            diagramController.exportDiagramToGraphML(selectedDirectory.toPath());
+        if (selectedDirectory == null) {
+            return;
         }
+        diagramController.arrangeDiagram();
+        diagramController.exportDiagramToGraphML(selectedDirectory.toPath());
     }
-    
-    public void exportPlantUMLDiagram() {
+
+    public void exportPlantUMLImage() {
     	File selectedDirectory = FileAndDirectoryUtility.saveFile("Export Diagram As PlantUML", menuBar, "PlantUML Files");
-        if (selectedDirectory != null) {
-            diagramController.exportPlantUMLDiagram(selectedDirectory.toPath());
+        if (selectedDirectory == null) {
+            return;
         }
+        diagramController.exportPlantUMLDiagram(selectedDirectory.toPath());
     }
-    
+
     public void exportPlantUMLText() {
     	File selectedDirectory = FileAndDirectoryUtility.saveFile("Export PlantUML Text", menuBar, "PlantUML Text Files");
-        if (selectedDirectory != null) {
-            diagramController.exportPlantUMLText(selectedDirectory.toPath());
+        if (selectedDirectory == null) {
+            return;
         }
+        diagramController.exportPlantUMLText(selectedDirectory.toPath());
+    }
+
+    private List<String> getSelectedFiles(String diagramType) {
+        if (diagramType.equals("Package")) {
+            return projectTreeView.getSelectedFiles(projectTreeView.getFolderFiles(), "package");
+        }else{
+            return projectTreeView.getSelectedFiles(projectTreeView.getJavaSourceFiles(), "java");
+        }
+    }
+
+    private boolean wereFilesChosen() {
+        return !(projectTreeView.getSelectedFiles(projectTreeView.getFolderFiles(), "package").size() == 0 &&
+                projectTreeView.getSelectedFiles(projectTreeView.getJavaSourceFiles(), "java").size() == 0);
     }
 
     public void setMenuBar(MenuBar menuBar) {

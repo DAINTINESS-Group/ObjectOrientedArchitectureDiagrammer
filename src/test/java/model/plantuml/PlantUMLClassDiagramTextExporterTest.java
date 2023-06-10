@@ -53,7 +53,7 @@ public class PlantUMLClassDiagramTextExporterTest {
                     "    BorderColor black\n" +
                     "    ArrowColor black\n" +
                     "}\n";
-            expectedFileContents += sinkVertexBuffer + sinkVertexArcBuffer + "@enduml";
+            expectedFileContents += sinkVertexBuffer + sinkVertexArcBuffer + "\n @enduml";
 
             assertEquals(expectedFileContents, actualFileContents);
 

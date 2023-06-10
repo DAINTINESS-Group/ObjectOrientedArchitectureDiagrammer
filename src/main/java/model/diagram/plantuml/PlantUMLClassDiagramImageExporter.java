@@ -20,7 +20,7 @@ public class PlantUMLClassDiagramImageExporter implements DiagramExporter {
 		StringBuilder plantUMLNodeBuffer = plantUMLSinkVertex.convertSinkVertex();
 		PlantUMLSinkVertexArc plantUMLEdge = new PlantUMLSinkVertexArc(graphEdges);
 		StringBuilder plantUMLEdgeBuffer = plantUMLEdge.convertSinkVertexArc();
-    	bufferBody = plantUMLNodeBuffer.append(plantUMLEdgeBuffer)  + "@enduml\n";
+    	bufferBody = plantUMLNodeBuffer.append(plantUMLEdgeBuffer) + "\n @enduml";
     }
 
 	@Override
@@ -28,11 +28,11 @@ public class PlantUMLClassDiagramImageExporter implements DiagramExporter {
 		File plantUMLFile = exportPath.toFile();
 		String plantUMLCode = getClassText();
 		plantUMLCode += bufferBody;
-		exportDiagram(plantUMLFile, plantUMLCode);
+		exportImage(plantUMLFile, plantUMLCode);
 		return plantUMLFile;
 	}
 
-	private void exportDiagram(File plantUMLFile, String plantCode) {
+	private void exportImage(File plantUMLFile, String plantCode) {
     	try {
 			ByteArrayOutputStream png = new ByteArrayOutputStream();
 			SourceStringReader reader = new SourceStringReader(plantCode);

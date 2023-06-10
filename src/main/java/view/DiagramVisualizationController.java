@@ -39,21 +39,23 @@ public class DiagramVisualizationController {
 
     public void exportDiagramAsImage() {
         File selectedDirectory = FileAndDirectoryUtility.saveFile("Export Diagram as PNG", menuBar,"PNG files");
-        if (selectedDirectory != null) {
+        if (selectedDirectory == null) {
+            return;
+        }
+        try {
             WritableImage image = borderPane.getCenter().snapshot(new SnapshotParameters(), null);
-            try {
-                ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", selectedDirectory);
-            }catch (IOException e) {
-                e.printStackTrace();
-            }
+            ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", selectedDirectory);
+        }catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
     public void exportDiagramAsText() {
         File selectedFile = FileAndDirectoryUtility.saveFile("Save Diagram", menuBar, "Text Files");
-        if (selectedFile != null) {
-            diagramController.saveDiagram(selectedFile.toPath());
+        if (selectedFile == null) {
+            return;
         }
+        diagramController.saveDiagram(selectedFile.toPath());
     }
 
     public void closeDiagram() {
@@ -80,7 +82,7 @@ public class DiagramVisualizationController {
     }
     
     public void exportDiagramAsPlantUML() {
-    	DiagramCreation.getInstance().exportPlantUMLDiagram();
+    	DiagramCreation.getInstance().exportPlantUMLImage();
     }
     
     public void exportDiagramAsPlantUMLText() {

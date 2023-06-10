@@ -20,7 +20,7 @@ public class PlantUMLPackageDiagramTextExporter implements DiagramExporter {
         StringBuilder plantUMLNodeBuffer = plantUMLVertex.convertVertex();
         PlantUMLVertexArc plantUMLEdge = new PlantUMLVertexArc(graphEdges);
         StringBuilder plantUMLEdgeBuffer = plantUMLEdge.convertVertexArc();
-        bufferBody = plantUMLNodeBuffer.append(plantUMLEdgeBuffer)  + "@enduml\n";
+        bufferBody = plantUMLNodeBuffer.append(plantUMLEdgeBuffer) + "\n @enduml";
     }
 
     @Override
