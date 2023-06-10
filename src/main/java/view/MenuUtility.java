@@ -79,11 +79,12 @@ public class MenuUtility {
         DiagramControllerFactory diagramControllerFactory = new DiagramControllerFactory();
         Controller diagramController = diagramControllerFactory.getDiagramController(((MenuItem) event.getSource()).getText());
         File selectedFile = FileAndDirectoryUtility.loadFile(String.format("Load %s Diagram", ((MenuItem) event.getSource()).getText()), menuBar);
-        if (selectedFile != null) {
-            DiagramVisualization diagramVisualization = new DiagramVisualization(menuBar);
-            diagramVisualization.setDiagramController(diagramController);
-            diagramController.loadDiagram(selectedFile.toPath());
-            diagramVisualization.loadDiagramVisualization(diagramController.visualizeJavaFXGraph(), "loaded");
+        if (selectedFile == null) {
+            return;
         }
+        DiagramVisualization diagramVisualization = new DiagramVisualization(menuBar);
+        diagramVisualization.setDiagramController(diagramController);
+        diagramController.loadDiagram(selectedFile.toPath());
+        diagramVisualization.loadDiagramVisualization(diagramController.visualizeJavaFXGraph(), "loaded");
     }
 }

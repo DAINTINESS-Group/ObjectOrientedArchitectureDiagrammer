@@ -132,7 +132,7 @@ Create a new [Issue][issues-url] to report any issues
     - [ ] Editable edges that can split when clicked to help the user avoid edge/box overlapping
 - [ ] Support [PlantUML][plantuml-url]
   - [X] Use PlantUML’s language to define the diagram
-  - [X] Export the image of diagram
+  - [X] Export the image of the diagram
   - [ ] Visualize the diagram within the tool's canvas
 - [ ] Deprecate jdt parser after heavy usage of javaparser, or, extend the jdt parser to support:
   - [ ] Creation of new() objects via local variables (and the resulting dependencies)

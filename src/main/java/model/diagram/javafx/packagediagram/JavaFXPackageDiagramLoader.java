@@ -26,21 +26,28 @@ public class JavaFXPackageDiagramLoader {
             Gson gson = new GsonBuilder().registerTypeAdapter(Vertex.class, new VertexDeserializer()).create();
             Vertex[] verticesArray = gson.fromJson(json, Vertex[].class);
             Collections.addAll(vertices, verticesArray);
-            for (Vertex vertex: vertices) {
-                List<Triplet<String, String, String>> deserializedArcs = vertex.getDeserializedArcs();
-                for (Triplet<String, String, String> arc: deserializedArcs) {
-                    Optional<Vertex> sourceVertex = vertices.stream().filter(vertex1 -> vertex1.getName().equals(arc.getValue0())).findFirst();
-                    Optional<Vertex> targetVertex = vertices.stream().filter(vertex1 -> vertex1.getName().equals(arc.getValue1())).findFirst();
-                    if (sourceVertex.isEmpty() || targetVertex.isEmpty()) {
-                        continue;
-                    }
-                    vertex.addArc(sourceVertex.get(), targetVertex.get(), ArcType.valueOf(arc.getValue2()));
-                }
-            }
-
+            deserializeArcs(vertices);
         } catch (IOException e) {
             e.printStackTrace();
         }
         return vertices;
+    }
+
+    private void deserializeArcs(Set<Vertex> vertices) {
+        for (Vertex vertex: vertices) {
+            List<Triplet<String, String, String>> deserializedArcs = vertex.getDeserializedArcs();
+            for (Triplet<String, String, String> arc: deserializedArcs) {
+                Optional<Vertex> sourceVertex = vertices.stream()
+                    .filter(vertex1 -> vertex1.getName().equals(arc.getValue0()))
+                    .findFirst();
+                Optional<Vertex> targetVertex = vertices.stream()
+                    .filter(vertex1 -> vertex1.getName().equals(arc.getValue1()))
+                    .findFirst();
+                if (sourceVertex.isEmpty() || targetVertex.isEmpty()) {
+                    continue;
+                }
+                vertex.addArc(sourceVertex.get(), targetVertex.get(), ArcType.valueOf(arc.getValue2()));
+            }
+        }
     }
 }

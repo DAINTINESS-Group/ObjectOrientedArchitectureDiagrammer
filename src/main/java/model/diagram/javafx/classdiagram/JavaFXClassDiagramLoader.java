@@ -26,22 +26,29 @@ public class JavaFXClassDiagramLoader {
             Gson gson = new GsonBuilder().registerTypeAdapter(SinkVertex.class, new SinkVertexDeserializer()).create();
             SinkVertex[] sinkVerticesArray = gson.fromJson(json, SinkVertex[].class);
             Collections.addAll(sinkVertices, sinkVerticesArray);
-            for (SinkVertex sinkVertex: sinkVertices) {
-                List<Triplet<String, String, String>> deserializedArcs = sinkVertex.getDeserializedArcs();
-                for (Triplet<String, String, String> arc: deserializedArcs) {
-                    Optional<SinkVertex> sourceVertex = sinkVertices.stream().filter(sinkVertex1 -> sinkVertex1.getName().equals(arc.getValue0())).findFirst();
-                    Optional<SinkVertex> targetVertex = sinkVertices.stream().filter(sinkVertex1 -> sinkVertex1.getName().equals(arc.getValue1())).findFirst();
-                    if (sourceVertex.isEmpty() || targetVertex.isEmpty()) {
-                        continue;
-                    }
-                    sinkVertex.addArc(sourceVertex.get(), targetVertex.get(), ArcType.valueOf(arc.getValue2()));
-                }
-            }
-
+            deserializeArcs(sinkVertices);
         } catch (IOException e) {
             e.printStackTrace();
         }
         return sinkVertices;
+    }
+
+    private void deserializeArcs(Set<SinkVertex> sinkVertices) {
+        for (SinkVertex sinkVertex: sinkVertices) {
+            List<Triplet<String, String, String>> deserializedArcs = sinkVertex.getDeserializedArcs();
+            for (Triplet<String, String, String> arc: deserializedArcs) {
+                Optional<SinkVertex> sourceVertex = sinkVertices.stream()
+                    .filter(sinkVertex1 -> sinkVertex1.getName().equals(arc.getValue0()))
+                    .findFirst();
+                Optional<SinkVertex> targetVertex = sinkVertices.stream()
+                    .filter(sinkVertex1 -> sinkVertex1.getName().equals(arc.getValue1()))
+                    .findFirst();
+                if (sourceVertex.isEmpty() || targetVertex.isEmpty()) {
+                    continue;
+                }
+                sinkVertex.addArc(sourceVertex.get(), targetVertex.get(), ArcType.valueOf(arc.getValue2()));
+            }
+        }
     }
 
 }

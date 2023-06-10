@@ -56,7 +56,8 @@ public class PackageDiagram {
         JavaFXPackageDiagramLoader javaFXPackageDiagramLoader = new JavaFXPackageDiagramLoader(graphSavePath);
         Set<Vertex> loadedDiagram = javaFXPackageDiagramLoader.loadDiagram();
         GraphPackageDiagramConverter graphPackageDiagramConverter = new GraphPackageDiagramConverter(loadedDiagram);
-        return graphPackageDiagramConverter.convertGraphToPackageDiagram();
+        diagram = graphPackageDiagramConverter.convertGraphToPackageDiagram();
+        return diagram;
     }
 
     public Map<Vertex, Set<Arc<Vertex>>> convertCollectionsToDiagram() {

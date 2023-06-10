@@ -56,7 +56,8 @@ public class ClassDiagram {
         JavaFXClassDiagramLoader javaFXClassDiagramLoader =  new JavaFXClassDiagramLoader(graphSavePath);
         Set<SinkVertex> loadedDiagram = javaFXClassDiagramLoader.loadDiagram();
         GraphClassDiagramConverter graphClassDiagramConverter = new GraphClassDiagramConverter(loadedDiagram);
-        return graphClassDiagramConverter.convertGraphToClassDiagram();
+        diagram = graphClassDiagramConverter.convertGraphToClassDiagram();
+        return diagram;
     }
 
     public Map<SinkVertex, Set<Arc<SinkVertex>>> convertCollectionsToDiagram() {
