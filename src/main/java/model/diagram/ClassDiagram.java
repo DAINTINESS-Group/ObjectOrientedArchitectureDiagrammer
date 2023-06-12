@@ -106,8 +106,9 @@ public class ClassDiagram {
     private List<SinkVertex> getChosenNodes(List<String> chosenClassesNames) {
         List<SinkVertex> chosenClasses = new ArrayList<>();
         for (String chosenClass: chosenClassesNames) {
-            Optional<SinkVertex> optionalSinkVertex = sinkVertices.values().stream().
-                    filter(sinkVertex -> sinkVertex.getName().equals(chosenClass)).findFirst();
+            Optional<SinkVertex> optionalSinkVertex = sinkVertices.values().stream()
+                .filter(sinkVertex -> sinkVertex.getName().equals(chosenClass))
+                .findFirst();
             if (optionalSinkVertex.isEmpty()) {
                 continue;
             }

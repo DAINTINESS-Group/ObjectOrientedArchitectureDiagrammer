@@ -24,32 +24,33 @@ public class PlantUMLVertexTest {
     void convertVertexTest() {
         try {
             String expectedBuffer = "package src.controller {\n" +
-                    "}\n" +
-                    "\n" +
-                    "package src.controller.commands {\n" +
-                    "}\n" +
-                    "\n" +
-                    "package src.model {\n" +
-                    "}\n" +
-                    "\n" +
-                    "package src {\n" +
-                    "}\n" +
-                    "\n" +
-                    "package src.view {\n" +
-                    "}\n" +
-                    "\n" +
-                    "package src.model.strategies {\n" +
-                    "}\n\n";
+                "}\n" +
+                "\n" +
+                "package src.controller.commands {\n" +
+                "}\n" +
+                "\n" +
+                "package src.model {\n" +
+                "}\n" +
+                "\n" +
+                "package src {\n" +
+                "}\n" +
+                "\n" +
+                "package src.view {\n" +
+                "}\n" +
+                "\n" +
+                "package src.model.strategies {\n" +
+                "}\n\n";
 
             PackageDiagramManager packageDiagramManager = new PackageDiagramManager();
             SourceProject sourceProject = packageDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
             packageDiagramManager.createDiagram(List.of(
-                    currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src",
-                    currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src\\view",
-                    currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src\\model",
-                    currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src\\model\\strategies",
-                    currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands",
-                    currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src\\controller"));
+                "src",
+                "src.view",
+                "src.model",
+                "src.model.strategies",
+                "src.controller.commands",
+                "src.controller"
+            ));
 
             Map<Vertex, Integer> graphNodes = packageDiagramManager.getDiagram().getGraphNodes();
             PlantUMLVertex plantUMLVertex = new PlantUMLVertex(graphNodes);

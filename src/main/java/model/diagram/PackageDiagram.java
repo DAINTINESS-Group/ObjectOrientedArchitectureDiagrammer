@@ -114,11 +114,13 @@ public class PackageDiagram {
     public List<Vertex> getChosenNodes(List<String> chosenPackagesNames) {
         List<Vertex> chosenPackages = new ArrayList<>();
         for (String chosenPackage: chosenPackagesNames) {
-            Path path = Path.of(chosenPackage);
-            if (!vertices.containsKey(path)) {
+            Optional<Vertex> vertex = vertices.values().stream()
+                .filter(vertex1 -> vertex1.getName().equals(chosenPackage))
+                .findFirst();
+            if (vertex.isEmpty()) {
                 continue;
             }
-            chosenPackages.add(vertices.get(path));
+            chosenPackages.add(vertex.get());
         }
         return chosenPackages;
     }

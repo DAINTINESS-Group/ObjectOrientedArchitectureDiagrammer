@@ -43,9 +43,9 @@ public class ClassDiagramManagerTest {
             assertEquals(vertices.size(), interpreterVertices.size());
             for (Map.Entry<Path, Vertex> vertexEntry: vertices.entrySet()) {
                 Vertex optionalVertex = interpreterVertices.stream()
-                    .filter(vertex -> vertex.getName().equals(
-                    vertexEntry.getValue().getName()) &&
-                    vertex.getParentVertex().getName().equals(vertexEntry.getValue().getParentVertex().getName()))
+                    .filter(vertex ->
+                        vertex.getName().equals(vertexEntry.getValue().getName()) &&
+                        vertex.getParentVertex().getName().equals(vertexEntry.getValue().getParentVertex().getName()))
                     .findFirst().orElseGet(Assertions::fail);
 
                 assertEquals(vertexEntry.getValue().getNeighbourVertices().size(), optionalVertex.getNeighbourVertices().size());

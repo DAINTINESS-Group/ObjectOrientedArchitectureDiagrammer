@@ -13,19 +13,18 @@ import java.util.*;
 
 public class ClassDiagramManager implements DiagramManager {
 
-    private final SourceProject sourceProject;
     private final ArrayDeque<ClassDiagram> diagramStack;
     private Map<SinkVertex, Set<Arc<SinkVertex>>> diagram;
 
     public ClassDiagramManager() {
-        sourceProject = new SourceProject();
         diagramStack = new ArrayDeque<>();
     }
 
     @Override
     public SourceProject createSourceProject(Path sourcePackagePath) {
-        diagramStack.push(new ClassDiagram());
+        SourceProject sourceProject = new SourceProject();
         sourceProject.createGraph(sourcePackagePath);
+        diagramStack.push(new ClassDiagram());
         Objects.requireNonNull(diagramStack.peek()).setSinkVertices(sourceProject.getSinkVertices());
         return sourceProject;
     }

@@ -28,11 +28,12 @@ public class GraphPackageDiagramConverterTest {
             PackageDiagramManager packageDiagramManager = new PackageDiagramManager();
             SourceProject sourceProject = packageDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
             packageDiagramManager.createDiagram(List.of(
-                    currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src\\view",
-                    currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src\\model",
-                    currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src\\model\\strategies",
-                    currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands",
-                    currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src\\controller"));
+                "src.view",
+                "src.model",
+                "src.model.strategies",
+                "src.controller.commands",
+                "src.controller"
+            ));
             Set<Vertex> graphNodes = packageDiagramManager.getDiagram().getGraphNodes().keySet();
             Set<Arc<Vertex>> graphEdges = packageDiagramManager.getDiagram().getGraphEdges().keySet();
 

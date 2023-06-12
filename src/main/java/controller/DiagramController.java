@@ -2,6 +2,7 @@ package controller;
 
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import manager.DiagramManager;
+import manager.DiagramManagerFactory;
 import manager.SourceProject;
 import org.javatuples.Pair;
 
@@ -10,9 +11,14 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 
-public abstract class DiagramController implements Controller {
+public class DiagramController implements Controller {
 
-	protected DiagramManager diagramManager;
+	private final DiagramManager diagramManager;
+
+	public DiagramController(String diagramType) {
+		DiagramManagerFactory diagramManagerFactory = new DiagramManagerFactory();
+		diagramManager = diagramManagerFactory.createDiagramManager(diagramType);
+	}
 
 	public SourceProject createTree(Path sourcePackagePath) {
 		return diagramManager.createSourceProject(sourcePackagePath);

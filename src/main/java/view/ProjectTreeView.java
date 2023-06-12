@@ -75,28 +75,16 @@ public class ProjectTreeView {
     public List<String> getSelectedFiles(List<String> files, String fileType) {
         List<String> selectedFiles = new ArrayList<>();
         for (CheckBoxTreeItem<?> c: checkedItems) {
-            if (files.contains((String) c.getValue())) {
-                if (fileType.equals("java")) {
-                    selectedFiles.add(subtractFileExtension((String) c.getValue()));
-                }else{
-                    selectedFiles.add(getFullPath(c));
-                }
+            if (!files.contains((String) c.getValue())) {
+                continue;
+            }
+            if (fileType.equals("java")) {
+                selectedFiles.add(subtractFileExtension((String) c.getValue()));
+            }else {
+                selectedFiles.add(((String) c.getValue()));
             }
         }
         return selectedFiles;
-    }
-
-    private String getFullPath(CheckBoxTreeItem<?> c) {
-        StringBuilder treeItem = new StringBuilder((String) c.getValue());
-        for (int i = 0; i < treeItem.length(); i++) {
-            if (treeItem.charAt(i) != '.' || (i > 0 && treeItem.charAt(i-1) == '\\')) {
-                continue;
-            }
-            treeItem.deleteCharAt(i);
-            treeItem.insert(i, "\\");
-        }
-
-        return (sourceFolderPath.normalize().toString().substring(0, sourceFolderPath.normalize().toString().lastIndexOf("\\") + 1) + treeItem);
     }
 
     public void setCheckedItems(CheckBoxTreeItem<?> rootItem) {

@@ -1,7 +1,7 @@
 package view;
 
 import controller.Controller;
-import controller.DiagramControllerFactory;
+import controller.DiagramController;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuBar;
 
@@ -23,13 +23,12 @@ public class DiagramCreation {
     }
 
     public void createProject(String diagramType) {
-        this.diagramType = diagramType;
         if (projectTreeView == null) {
             PopupWindow.createPopupInfoWindow("You should load a project first!", "Error");
             return;
         }
-        DiagramControllerFactory diagramControllerFactory = new DiagramControllerFactory();
-        diagramController = diagramControllerFactory.getDiagramController(diagramType);
+        this.diagramType = diagramType;
+        diagramController = new DiagramController(diagramType);
         diagramController.createTree(projectTreeView.getSourceFolderPath());
     }
 
@@ -54,7 +53,7 @@ public class DiagramCreation {
         DiagramVisualization diagramVisualization = new DiagramVisualization(menuBar);
         diagramVisualization.setDiagramController(diagramController);
         diagramVisualization.setProjectTreeView(projectTreeView);
-        diagramVisualization.loadDiagramVisualization(diagramController.visualizeJavaFXGraph(), "new");
+        diagramVisualization.loadDiagramVisualization(diagramController.visualizeJavaFXGraph());
     }
 
     public void exportDiagram(){

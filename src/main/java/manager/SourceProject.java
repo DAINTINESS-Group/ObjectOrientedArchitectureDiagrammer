@@ -23,9 +23,9 @@ public class SourceProject {
     public void createGraph(Path sourcePackagePath) {
         Interpreter interpreter = new Interpreter();
         interpreter.parseProject(sourcePackagePath);
-        Pair<ArrayList<Vertex>, ArrayList<SinkVertex>> vertices = interpreter.convertTreeToGraph();
-        vertices.getKey().forEach(this::addVertex);
-        vertices.getValue().forEach(this::addSinkVertex);
+        Pair<ArrayList<Vertex>, ArrayList<SinkVertex>> graph = interpreter.convertTreeToGraph();
+        graph.getKey().forEach(this::addVertex);
+        graph.getValue().forEach(this::addSinkVertex);
     }
 
     private void addVertex(Vertex vertex) {

@@ -1,7 +1,7 @@
 package view;
 
 import controller.Controller;
-import controller.DiagramControllerFactory;
+import controller.DiagramController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -21,12 +21,12 @@ public class MenuUtility {
     }
 
     public static void openProject(MenuBar menuBar){
-        File selectedDirectory = FileAndDirectoryUtility.chooseDirectory("Load the Project's Source Folder", menuBar);
-        if (selectedDirectory == null) {
-            PopupWindow.createPopupInfoWindow("You should select a directory!", "Error");
-            return;
-        }
         try {
+            File selectedDirectory = FileAndDirectoryUtility.chooseDirectory("Load the Project's Source Folder", menuBar);
+            if (selectedDirectory == null) {
+                PopupWindow.createPopupInfoWindow("You should select a directory!", "Error");
+                return;
+            }
             URL url = MenuUtility.class.getResource("/fxml/DiagramCreationView.fxml");
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(url);
@@ -76,8 +76,7 @@ public class MenuUtility {
     }
 
     public static void loadDiagram(MenuBar menuBar, ActionEvent event) {
-        DiagramControllerFactory diagramControllerFactory = new DiagramControllerFactory();
-        Controller diagramController = diagramControllerFactory.getDiagramController(((MenuItem) event.getSource()).getText());
+        Controller diagramController = new DiagramController(((MenuItem) event.getSource()).getText());
         File selectedFile = FileAndDirectoryUtility.loadFile(String.format("Load %s Diagram", ((MenuItem) event.getSource()).getText()), menuBar);
         if (selectedFile == null) {
             return;
@@ -85,6 +84,6 @@ public class MenuUtility {
         DiagramVisualization diagramVisualization = new DiagramVisualization(menuBar);
         diagramVisualization.setDiagramController(diagramController);
         diagramController.loadDiagram(selectedFile.toPath());
-        diagramVisualization.loadDiagramVisualization(diagramController.visualizeJavaFXGraph(), "loaded");
+        diagramVisualization.loadLoadedDiagramVisualization(diagramController.visualizeJavaFXGraph());
     }
 }

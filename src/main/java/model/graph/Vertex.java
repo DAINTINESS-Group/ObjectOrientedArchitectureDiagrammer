@@ -17,7 +17,6 @@ public class Vertex {
     private final String name;
     private Vertex parentVertex;
     private List<Triplet<String, String, String>> deserializedArcs;
-    //TODO maybe add package validity as boolean, same as PackageNode
 
     public Vertex(Path path, VertexType vertexType, String parentName) {
         this.path = path;
@@ -25,7 +24,6 @@ public class Vertex {
         arcs = new ArrayList<>();
         sinkVertices = new ArrayList<>();
         neighbourVertices = new ArrayList<>();
-        //TODO maybe change to '\\' instead of '.'
         name = (parentName.equals("")) ? path.getFileName().toString() : parentName + "." + path.getFileName().toString();
     }
 

@@ -50,7 +50,8 @@ public class Interpreter {
     private void populateVertexMaps() {
         for (PackageNode packageNode: packageNodes.values()) {
             Vertex vertex = vertices.computeIfAbsent(packageNode, k ->
-                new Vertex(packageNode.getPackageNodesPath(), EnumMapper.vertexTypeEnumMap.get(packageNode.getType()), packageNode.getParentNode().getName())
+                new Vertex(packageNode.getPackageNodesPath(), EnumMapper.vertexTypeEnumMap.get(packageNode.getType()),
+                packageNode.getParentNode().getName())
             );
             for (LeafNode leafNode: packageNode.getLeafNodes().values()) {
                 vertex.addSinkVertex(sinkVertices.computeIfAbsent(leafNode, k -> createSinkVertex(leafNode)));
@@ -58,7 +59,7 @@ public class Interpreter {
         }
         for (PackageNode packageNode: packageNodes.values()) {
             vertices.get(packageNode).setParentNode(
-                    vertices.getOrDefault(packageNode.getParentNode(), new Vertex(Paths.get(""), VertexType.PACKAGE, ""))
+                vertices.getOrDefault(packageNode.getParentNode(), new Vertex(Paths.get(""), VertexType.PACKAGE, ""))
             );
             for (PackageNode subNode: packageNode.getSubNodes().values()) {
                 vertices.get(packageNode).addNeighbourVertex(vertices.get(subNode));
@@ -70,8 +71,7 @@ public class Interpreter {
         for (PackageNode packageNode: packageNodes.values()) {
             Vertex vertex = vertices.get(packageNode);
             for (Relationship<PackageNode> relationship: packageNode.getPackageNodeRelationships()) {
-                vertex.addArc(vertex, vertices.get(relationship.getEndingNode()),
-                        EnumMapper.edgeEnumMap.get(relationship.getRelationshipType()));
+                vertex.addArc(vertex, vertices.get(relationship.getEndingNode()), EnumMapper.edgeEnumMap.get(relationship.getRelationshipType()));
             }
             addSinkVertexArcs(packageNode);
         }
@@ -81,8 +81,7 @@ public class Interpreter {
         for (LeafNode leafNode: packageNode.getLeafNodes().values()) {
             SinkVertex sinkVertex = sinkVertices.get(leafNode);
             for (Relationship<LeafNode> relationship: leafNode.getLeafNodeRelationships()) {
-                sinkVertex.addArc(sinkVertex, sinkVertices.get(relationship.getEndingNode()),
-                        EnumMapper.edgeEnumMap.get(relationship.getRelationshipType()));
+                sinkVertex.addArc(sinkVertex, sinkVertices.get(relationship.getEndingNode()), EnumMapper.edgeEnumMap.get(relationship.getRelationshipType()));
             }
         }
     }

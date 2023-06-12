@@ -22,11 +22,12 @@ public class PackageDiagramManagerTest {
             PackageDiagramManager packageDiagramManager = new PackageDiagramManager();
             SourceProject sourceProject = packageDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
             packageDiagramManager.createDiagram(List.of(
-                    currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src\\view",
-                    currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src\\model",
-                    currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src\\model\\strategies",
-                    currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands",
-                    currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src\\controller"));
+                "src.view",
+                "src.model",
+                "src.model.strategies",
+                "src.controller.commands",
+                "src.controller"
+            ));
             Set<Arc<Vertex>> expectedArcs = packageDiagramManager.getDiagram().getGraphEdges().keySet();
 
             List<Arc<Vertex>> actualArcs = new ArrayList<>();
@@ -51,11 +52,12 @@ public class PackageDiagramManagerTest {
             PackageDiagramManager packageDiagramManager = new PackageDiagramManager();
             SourceProject sourceProject = packageDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
             packageDiagramManager.createDiagram(List.of(
-                    currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src\\view",
-                    currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src\\model",
-                    currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src\\model\\strategies",
-                    currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands",
-                    currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src\\controller"));
+                "src.view",
+                "src.model",
+                "src.model.strategies",
+                "src.controller.commands",
+                "src.controller"
+            ));
             Map<Vertex, Integer> graphNodes = packageDiagramManager.getDiagram().getGraphNodes();
 
             Map<Path, Vertex> packageNodes = sourceProject.getVertices();

@@ -31,11 +31,12 @@ public class JavaFXPackageDiagramExporterTest {
             PackageDiagramManager packageDiagramManager = new PackageDiagramManager();
             packageDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
             packageDiagramManager.createDiagram(List.of(
-                    currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src\\view",
-                    currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src\\model",
-                    currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src\\model\\strategies",
-                    currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands",
-                    currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src\\controller"));
+                "src.view",
+                "src.model",
+                "src.model.strategies",
+                "src.controller.commands",
+                "src.controller"
+            ));
             Map<Vertex, Set<Arc<Vertex>>> createdDiagram = packageDiagramManager.getCreatedDiagram();
 
             DiagramExporter javaFXExporter = new JavaFXPackageDiagramExporter(createdDiagram);
