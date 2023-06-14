@@ -23,7 +23,7 @@ public interface DiagramManager {
      *
      * @param chosenFilesNames the names of the files selected by the designer
      */
-    void createDiagram(List<String> chosenFilesNames);
+    void convertTreeToDiagram(List<String> chosenFilesNames);
 
     /**
      * This method arranges the createdDiagram's node geometry by creating a Jung Graph and then applying the SpringLayout

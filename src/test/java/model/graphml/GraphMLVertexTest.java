@@ -24,14 +24,14 @@ class GraphMLVertexTest {
         try {
             PackageDiagramManager packageDiagramManager = new PackageDiagramManager();
             SourceProject sourceProject = packageDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-            packageDiagramManager.createDiagram(List.of(
+            packageDiagramManager.convertTreeToDiagram(List.of(
                 "src.view",
                 "src.model",
                 "src.model.strategies",
                 "src.controller.commands",
                 "src.controller"
             ));
-            Map<Vertex, Integer> graphNodes = packageDiagramManager.getDiagram().getGraphNodes();
+            Map<Vertex, Integer> graphNodes = packageDiagramManager.getPackageDiagram().getGraphNodes();
 
             GraphMLVertex graphMLVertex = new GraphMLVertex(graphNodes, Map.ofEntries(
                     Map.entry(0, new Pair<>(10.0, 10.0)),

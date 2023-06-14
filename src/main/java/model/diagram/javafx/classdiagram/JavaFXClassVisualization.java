@@ -48,10 +48,10 @@ public class JavaFXClassVisualization implements model.diagram.javafx.JavaFXVisu
             for (Arc<SinkVertex> arc: arcs) {
                 if (arc.getArcType().equals(ArcType.AGGREGATION)) {
                     directedGraph.insertEdge(arc.getTargetVertex().getName(), arc.getSourceVertex().getName(),
-                            arc.getTargetVertex().getName() + "_" + arc.getSourceVertex().getName() + "_" + arc.getArcType().toString());
+                        arc.getTargetVertex().getName() + "_" + arc.getSourceVertex().getName() + "_" + arc.getArcType().toString().toLowerCase());
                 }else {
                     directedGraph.insertEdge(arc.getSourceVertex().getName(), arc.getTargetVertex().getName(),
-                            arc.getSourceVertex().getName() + "_" + arc.getTargetVertex().getName() + "_" + arc.getArcType().toString());
+                        arc.getSourceVertex().getName() + "_" + arc.getTargetVertex().getName() + "_" + arc.getArcType().toString().toLowerCase());
                 }
             }
         }

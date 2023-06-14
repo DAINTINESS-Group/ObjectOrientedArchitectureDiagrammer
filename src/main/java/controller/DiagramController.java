@@ -24,6 +24,10 @@ public class DiagramController implements Controller {
 		return diagramManager.createSourceProject(sourcePackagePath);
 	}
 
+	public void convertTreeToDiagram(List<String> chosenClassesNames) {
+		diagramManager.convertTreeToDiagram(chosenClassesNames);
+	}
+
 	public Map<Integer, Pair<Double, Double>> arrangeDiagram(){
 		return diagramManager.arrangeDiagram();
 	}
@@ -31,11 +35,11 @@ public class DiagramController implements Controller {
 	public File exportDiagramToGraphML(Path graphMLSavePath) {
 		return diagramManager.exportDiagramToGraphML(graphMLSavePath);
 	}
-	
+
 	public File exportPlantUMLDiagram(Path plantUMLSavePath) {
 		return diagramManager.exportPlantUMLDiagram(plantUMLSavePath);
 	}
-	
+
 	public File exportPlantUMLText(Path textSavePath) {
 		return diagramManager.exportPlantUMLText(textSavePath);
 	}
@@ -50,10 +54,6 @@ public class DiagramController implements Controller {
 
 	public void loadDiagram(Path graphSavePath) {
 		diagramManager.loadDiagram(graphSavePath);
-	}
-
-	public void convertTreeToDiagram(List<String> chosenClassesNames) {
-		diagramManager.createDiagram(chosenClassesNames);
 	}
 
 }

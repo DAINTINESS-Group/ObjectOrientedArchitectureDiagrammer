@@ -21,14 +21,14 @@ public class PackageDiagramManagerTest {
         try {
             PackageDiagramManager packageDiagramManager = new PackageDiagramManager();
             SourceProject sourceProject = packageDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-            packageDiagramManager.createDiagram(List.of(
+            packageDiagramManager.convertTreeToDiagram(List.of(
                 "src.view",
                 "src.model",
                 "src.model.strategies",
                 "src.controller.commands",
                 "src.controller"
             ));
-            Set<Arc<Vertex>> expectedArcs = packageDiagramManager.getDiagram().getGraphEdges().keySet();
+            Set<Arc<Vertex>> expectedArcs = packageDiagramManager.getPackageDiagram().getGraphEdges().keySet();
 
             List<Arc<Vertex>> actualArcs = new ArrayList<>();
             for (Vertex packageNode : sourceProject.getVertices().values()) {
@@ -51,14 +51,14 @@ public class PackageDiagramManagerTest {
         try {
             PackageDiagramManager packageDiagramManager = new PackageDiagramManager();
             SourceProject sourceProject = packageDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-            packageDiagramManager.createDiagram(List.of(
+            packageDiagramManager.convertTreeToDiagram(List.of(
                 "src.view",
                 "src.model",
                 "src.model.strategies",
                 "src.controller.commands",
                 "src.controller"
             ));
-            Map<Vertex, Integer> graphNodes = packageDiagramManager.getDiagram().getGraphNodes();
+            Map<Vertex, Integer> graphNodes = packageDiagramManager.getPackageDiagram().getGraphNodes();
 
             Map<Path, Vertex> packageNodes = sourceProject.getVertices();
             packageNodes.remove(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));

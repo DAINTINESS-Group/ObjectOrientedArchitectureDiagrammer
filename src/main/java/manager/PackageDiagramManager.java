@@ -30,7 +30,7 @@ public class PackageDiagramManager implements DiagramManager {
     }
 
     @Override
-    public void createDiagram(List<String> chosenFilesNames) {
+    public void convertTreeToDiagram(List<String> chosenFilesNames) {
         diagram = Objects.requireNonNull(diagramStack.peek()).createDiagram(chosenFilesNames);
     }
 
@@ -74,10 +74,10 @@ public class PackageDiagramManager implements DiagramManager {
         return Objects.requireNonNull(diagramStack.peek()).visualizeJavaFXGraph();
     }
 
-    public PackageDiagram getDiagram() {
+    public PackageDiagram getPackageDiagram() {
         return diagramStack.peek();
     }
 
-    public Map<Vertex, Set<Arc<Vertex>>> getCreatedDiagram() { return  diagram; }
+    public Map<Vertex, Set<Arc<Vertex>>> getDiagram() { return  diagram; }
 
 }

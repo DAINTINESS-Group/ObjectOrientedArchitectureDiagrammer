@@ -1,6 +1,7 @@
 package manager;
 
 import model.diagram.DiagramExporter;
+import model.diagram.ShadowCleaner;
 import model.diagram.arrangement.ClassDiagramArrangement;
 import model.diagram.GraphClassDiagramConverter;
 import model.diagram.arrangement.DiagramArrangement;
@@ -74,10 +75,10 @@ public class ClassDiagramManagerTest {
         try {
             ClassDiagramManager classDiagramManager = new ClassDiagramManager();
             SourceProject sourceProject = classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-            classDiagramManager.createDiagram(List.of("AddLatexCommand", "ChangeVersionsStrategyCommand", "Command", "CommandFactory",
+            classDiagramManager.convertTreeToDiagram(List.of("AddLatexCommand", "ChangeVersionsStrategyCommand", "Command", "CommandFactory",
                     "CreateCommand", "DisableVersionsManagementCommand", "EditCommand", "EnableVersionsManagementCommand",
                     "LoadCommand", "RollbackToPreviousVersionCommand", "SaveCommand"));
-            Map<Arc<SinkVertex>, Integer> graphEdges = classDiagramManager.getDiagram().getGraphEdges();
+            Map<Arc<SinkVertex>, Integer> graphEdges = classDiagramManager.getClassDiagram().getGraphEdges();
             List<Arc<SinkVertex>> relationships = new ArrayList<>();
 
             sourceProject.getVertices().get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
@@ -100,11 +101,11 @@ public class ClassDiagramManagerTest {
         try {
             ClassDiagramManager classDiagramManager = new ClassDiagramManager();
             SourceProject sourceProject = classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-            classDiagramManager.createDiagram(List.of("AddLatexCommand", "ChangeVersionsStrategyCommand", "Command", "CommandFactory",
+            classDiagramManager.convertTreeToDiagram(List.of("AddLatexCommand", "ChangeVersionsStrategyCommand", "Command", "CommandFactory",
                     "CreateCommand", "DisableVersionsManagementCommand", "EditCommand", "EnableVersionsManagementCommand",
                     "LoadCommand", "RollbackToPreviousVersionCommand", "SaveCommand"));
 
-            Map<SinkVertex, Integer> graphNodes = classDiagramManager.getDiagram().getGraphNodes();
+            Map<SinkVertex, Integer> graphNodes = classDiagramManager.getClassDiagram().getGraphNodes();
 
             List<String> l1 = new ArrayList<>();
             List<String> l2 = new ArrayList<>();
@@ -134,13 +135,15 @@ public class ClassDiagramManagerTest {
             ClassDiagramManager classDiagramManager = new ClassDiagramManager();
             List<String> chosenFiles = Arrays.asList("MainWindow", "LatexEditorView", "OpeningWindow");
             SourceProject sourceProject = classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-            classDiagramManager.createDiagram(chosenFiles);
-            Map<SinkVertex, Set<Arc<SinkVertex>>> testingCreatedDiagram = classDiagramManager.getCreatedDiagram();
+            classDiagramManager.convertTreeToDiagram(chosenFiles);
+            Map<SinkVertex, Set<Arc<SinkVertex>>> testingCreatedDiagram = classDiagramManager.getDiagram();
 
-            Map<SinkVertex, Integer> graphNodes = classDiagramManager.getDiagram().getGraphNodes();
-            Map<Arc<SinkVertex>, Integer> graphEdges = classDiagramManager.getDiagram().getGraphEdges();
+            Map<SinkVertex, Integer> graphNodes = classDiagramManager.getClassDiagram().getGraphNodes();
+            Map<Arc<SinkVertex>, Integer> graphEdges = classDiagramManager.getClassDiagram().getGraphEdges();
             GraphClassDiagramConverter graphClassDiagramConverter = new GraphClassDiagramConverter(graphNodes.keySet());
             Map<SinkVertex, Set<Arc<SinkVertex>>> adjacencyList = graphClassDiagramConverter.convertGraphToClassDiagram();
+            ShadowCleaner shadowCleaner = new ShadowCleaner(adjacencyList);
+            adjacencyList = shadowCleaner.shadowWeakRelationships();
 
             assertEquals(adjacencyList, testingCreatedDiagram);
         } catch (IOException e) {
@@ -154,12 +157,12 @@ public class ClassDiagramManagerTest {
             ClassDiagramManager classDiagramManager = new ClassDiagramManager();
             List<String> chosenFiles = Arrays.asList("MainWindow", "LatexEditorView", "OpeningWindow");
             SourceProject sourceProject = classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-            classDiagramManager.createDiagram(chosenFiles);
+            classDiagramManager.convertTreeToDiagram(chosenFiles);
             classDiagramManager.arrangeDiagram();
             File actualFile = classDiagramManager.exportDiagramToGraphML(Paths.get(System.getProperty("user.home")+"\\testingExportedFile.graphML"));
 
-            Map<SinkVertex, Integer> graphNodes = classDiagramManager.getDiagram().getGraphNodes();
-            Map<Arc<SinkVertex>, Integer> graphEdges = classDiagramManager.getDiagram().getGraphEdges();
+            Map<SinkVertex, Integer> graphNodes = classDiagramManager.getClassDiagram().getGraphNodes();
+            Map<Arc<SinkVertex>, Integer> graphEdges = classDiagramManager.getClassDiagram().getGraphEdges();
             DiagramArrangement classDiagramArrangement = new ClassDiagramArrangement(graphNodes, graphEdges);
             Map<Integer, Pair<Double, Double>> nodesGeometry = classDiagramArrangement.arrangeDiagram();
             GraphMLSinkVertex graphMLSinkVertex = new GraphMLSinkVertex(graphNodes, nodesGeometry);
@@ -181,8 +184,8 @@ public class ClassDiagramManagerTest {
             ClassDiagramManager classDiagramManager = new ClassDiagramManager();
             List<String> chosenFiles = Arrays.asList("MainWindow", "LatexEditorView", "OpeningWindow");
             classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-            classDiagramManager.createDiagram(chosenFiles);
-            Map<SinkVertex, Set<Arc<SinkVertex>>> createdDiagram = classDiagramManager.getCreatedDiagram();
+            classDiagramManager.convertTreeToDiagram(chosenFiles);
+            Map<SinkVertex, Set<Arc<SinkVertex>>> createdDiagram = classDiagramManager.getDiagram();
 
             File testingSavedFile = classDiagramManager.saveDiagram(Paths.get(System.getProperty("user.home")+"\\testingExportedFile.txt"));
             DiagramExporter javaFXExporter = new JavaFXClassDiagramExporter(createdDiagram);
@@ -198,11 +201,11 @@ public class ClassDiagramManagerTest {
             ClassDiagramManager classDiagramManager = new ClassDiagramManager();
             List<String> chosenFiles = Arrays.asList("MainWindow", "LatexEditorView", "OpeningWindow");
             classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-            classDiagramManager.createDiagram(chosenFiles);
-            Map<SinkVertex, Set<Arc<SinkVertex>>> createdDiagram = classDiagramManager.getCreatedDiagram();
+            classDiagramManager.convertTreeToDiagram(chosenFiles);
+            Map<SinkVertex, Set<Arc<SinkVertex>>> createdDiagram = classDiagramManager.getDiagram();
             classDiagramManager.saveDiagram(Paths.get(System.getProperty("user.home")+"\\testingExportedFile.txt"));
             classDiagramManager.loadDiagram(Paths.get(System.getProperty("user.home")+"\\testingExportedFile.txt"));
-            Map<SinkVertex, Set<Arc<SinkVertex>>> loadedDiagram = classDiagramManager.getCreatedDiagram();
+            Map<SinkVertex, Set<Arc<SinkVertex>>> loadedDiagram = classDiagramManager.getDiagram();
 
             for (SinkVertex sinkVertex: createdDiagram.keySet()) {
                 Optional<SinkVertex> optionalSinkVertex = loadedDiagram.keySet().stream().filter(sinkVertex1 ->

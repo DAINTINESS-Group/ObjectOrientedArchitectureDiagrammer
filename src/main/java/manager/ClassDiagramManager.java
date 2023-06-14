@@ -3,6 +3,7 @@ package manager;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import model.diagram.ClassDiagram;
 import model.diagram.DiagramExporter;
+import model.diagram.ShadowCleaner;
 import model.graph.Arc;
 import model.graph.SinkVertex;
 import org.javatuples.Pair;
@@ -30,8 +31,10 @@ public class ClassDiagramManager implements DiagramManager {
     }
 
     @Override
-    public void createDiagram(List<String> chosenFilesNames) {
+    public void convertTreeToDiagram(List<String> chosenFilesNames) {
         diagram = Objects.requireNonNull(diagramStack.peek()).createDiagram(chosenFilesNames);
+        ShadowCleaner shadowCleaner = new ShadowCleaner(diagram);
+        diagram = shadowCleaner.shadowWeakRelationships();
     }
 
     @Override
@@ -67,6 +70,8 @@ public class ClassDiagramManager implements DiagramManager {
     public void loadDiagram(Path graphSavePath) {
         diagramStack.push(new ClassDiagram());
         diagram = Objects.requireNonNull(diagramStack.peek()).loadDiagram(graphSavePath);
+        ShadowCleaner shadowCleaner = new ShadowCleaner(diagram);
+        diagram = shadowCleaner.shadowWeakRelationships();
     }
 
     @Override
@@ -74,10 +79,10 @@ public class ClassDiagramManager implements DiagramManager {
         return Objects.requireNonNull(diagramStack.peek()).visualizeJavaFXGraph();
     }
 
-    public ClassDiagram getDiagram() {
+    public ClassDiagram getClassDiagram() {
         return diagramStack.peek();
     }
 
-    public Map<SinkVertex, Set<Arc<SinkVertex>>> getCreatedDiagram() { return  diagram; }
+    public Map<SinkVertex, Set<Arc<SinkVertex>>> getDiagram() { return  diagram; }
 
 }

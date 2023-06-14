@@ -29,8 +29,8 @@ public class JavaFXClassDiagramExporterTest {
             ClassDiagramManager classDiagramManager = new ClassDiagramManager();
             List<String> chosenFiles = Arrays.asList("MainWindow", "LatexEditorView", "OpeningWindow");
             classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-            classDiagramManager.createDiagram(chosenFiles);
-            Map<SinkVertex, Set<Arc<SinkVertex>>> createdDiagram = classDiagramManager.getCreatedDiagram();
+            classDiagramManager.convertTreeToDiagram(chosenFiles);
+            Map<SinkVertex, Set<Arc<SinkVertex>>> createdDiagram = classDiagramManager.getDiagram();
 
             DiagramExporter javaFXExporter = new JavaFXClassDiagramExporter(createdDiagram);
             File actualFile = javaFXExporter.exportDiagram(Path.of(System.getProperty("user.home") + "\\testingExportedFile.txt"));

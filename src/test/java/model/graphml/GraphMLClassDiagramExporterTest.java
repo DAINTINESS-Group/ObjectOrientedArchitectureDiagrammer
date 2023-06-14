@@ -35,11 +35,11 @@ public class GraphMLClassDiagramExporterTest {
             ClassDiagramManager classDiagramManager = new ClassDiagramManager();
             List<String> chosenFiles = Arrays.asList("MainWindow", "LatexEditorView", "OpeningWindow");
             SourceProject sourceProject = classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-            classDiagramManager.createDiagram(chosenFiles);
+            classDiagramManager.convertTreeToDiagram(chosenFiles);
             classDiagramManager.arrangeDiagram();
 
-            Map<SinkVertex, Integer> graphNodes = classDiagramManager.getDiagram().getGraphNodes();
-            Map<Arc<SinkVertex>, Integer> graphEdges = classDiagramManager.getDiagram().getGraphEdges();
+            Map<SinkVertex, Integer> graphNodes = classDiagramManager.getClassDiagram().getGraphNodes();
+            Map<Arc<SinkVertex>, Integer> graphEdges = classDiagramManager.getClassDiagram().getGraphEdges();
             DiagramArrangement classDiagramArrangement = new ClassDiagramArrangement(graphNodes, graphEdges);
             Map<Integer, Pair<Double, Double>> nodesGeometry = classDiagramArrangement.arrangeDiagram();
             DiagramExporter graphMLExporter = new GraphMLClassDiagramExporter(graphNodes, nodesGeometry, graphEdges);

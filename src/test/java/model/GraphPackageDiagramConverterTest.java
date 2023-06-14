@@ -27,15 +27,15 @@ public class GraphPackageDiagramConverterTest {
         try {
             PackageDiagramManager packageDiagramManager = new PackageDiagramManager();
             SourceProject sourceProject = packageDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-            packageDiagramManager.createDiagram(List.of(
+            packageDiagramManager.convertTreeToDiagram(List.of(
                 "src.view",
                 "src.model",
                 "src.model.strategies",
                 "src.controller.commands",
                 "src.controller"
             ));
-            Set<Vertex> graphNodes = packageDiagramManager.getDiagram().getGraphNodes().keySet();
-            Set<Arc<Vertex>> graphEdges = packageDiagramManager.getDiagram().getGraphEdges().keySet();
+            Set<Vertex> graphNodes = packageDiagramManager.getPackageDiagram().getGraphNodes().keySet();
+            Set<Arc<Vertex>> graphEdges = packageDiagramManager.getPackageDiagram().getGraphEdges().keySet();
 
             GraphPackageDiagramConverter graphPackageDiagramConverter = new GraphPackageDiagramConverter(graphNodes);
             Map<Vertex, Set<Arc<Vertex>>> adjacencyList = graphPackageDiagramConverter.convertGraphToPackageDiagram();

@@ -34,7 +34,7 @@ public class ClassDiagram {
     public Map<SinkVertex, Set<Arc<SinkVertex>>> createDiagram(List<String> chosenFileNames) {
         createNodeCollection(chosenFileNames);
         createEdgeCollection();
-        diagram = convertCollectionsToDiagram();
+        diagram = convertCollectionsToDiagram(graphNodes.keySet());
         return diagram;
     }
 
@@ -55,14 +55,8 @@ public class ClassDiagram {
     public Map<SinkVertex, Set<Arc<SinkVertex>>> loadDiagram(Path graphSavePath) {
         JavaFXClassDiagramLoader javaFXClassDiagramLoader =  new JavaFXClassDiagramLoader(graphSavePath);
         Set<SinkVertex> loadedDiagram = javaFXClassDiagramLoader.loadDiagram();
-        GraphClassDiagramConverter graphClassDiagramConverter = new GraphClassDiagramConverter(loadedDiagram);
-        diagram = graphClassDiagramConverter.convertGraphToClassDiagram();
+        diagram = convertCollectionsToDiagram(loadedDiagram);
         return diagram;
-    }
-
-    public Map<SinkVertex, Set<Arc<SinkVertex>>> convertCollectionsToDiagram() {
-        GraphClassDiagramConverter graphClassDiagramConverter = new GraphClassDiagramConverter(graphNodes.keySet());
-        return graphClassDiagramConverter.convertGraphToClassDiagram();
     }
 
     public SmartGraphPanel<String, String> visualizeJavaFXGraph() {
@@ -117,6 +111,11 @@ public class ClassDiagram {
         return chosenClasses;
     }
 
+    private Map<SinkVertex, Set<Arc<SinkVertex>>> convertCollectionsToDiagram(Set<SinkVertex> sinkVertices) {
+        GraphClassDiagramConverter graphClassDiagramConverter = new GraphClassDiagramConverter(sinkVertices);
+        return graphClassDiagramConverter.convertGraphToClassDiagram();
+    }
+
     public Map<SinkVertex, Integer> getGraphNodes() {
         return graphNodes;
     }
@@ -124,5 +123,4 @@ public class ClassDiagram {
     public Map<Arc<SinkVertex>, Integer> getGraphEdges() {
         return graphEdges;
     }
-
 }
