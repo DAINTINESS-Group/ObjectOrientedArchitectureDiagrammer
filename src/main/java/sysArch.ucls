@@ -8,12 +8,12 @@
   </package>  
   <package id="2" language="java" name="controller" project="ObjectOrientedArchitectureDiagrammer" 
     file="/ObjectOrientedArchitectureDiagrammer/src/main/java/controller" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="400" y="43"/>    
+    <position height="-1" width="-1" x="391" y="44"/>    
     <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
   </package>  
   <package id="3" language="java" name="manager" project="ObjectOrientedArchitectureDiagrammer" 
     file="/ObjectOrientedArchitectureDiagrammer/src/main/java/manager" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="297" y="127"/>    
+    <position height="-1" width="-1" x="397" y="145"/>    
     <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
   </package>  
   <package id="4" language="java" name="model.diagram" project="ObjectOrientedArchitectureDiagrammer" 
@@ -48,7 +48,7 @@
   </package>  
   <package id="10" language="java" name="parser.factory" project="ObjectOrientedArchitectureDiagrammer" 
     file="/ObjectOrientedArchitectureDiagrammer/src/main/java/parser/factory" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="136" y="329"/>    
+    <position height="-1" width="-1" x="171" y="330"/>    
     <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
   </package>  
   <package id="11" language="java" name="parser.tree" project="ObjectOrientedArchitectureDiagrammer" 
