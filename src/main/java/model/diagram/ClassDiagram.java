@@ -19,14 +19,12 @@ import java.util.*;
 
 public class ClassDiagram {
 
-    private Map<SinkVertex, Set<Arc<SinkVertex>>> diagram;
     private final Map<SinkVertex, Integer> graphNodes;
     private final Map<Arc<SinkVertex>, Integer> graphEdges;
     private Map<Path, SinkVertex> sinkVertices;
     private Map<Integer, Pair<Double, Double>> nodesGeometry;
 
     public ClassDiagram() {
-        diagram = new HashMap<>();
         graphNodes = new HashMap<>();
         graphEdges = new HashMap<>();
     }
@@ -34,8 +32,7 @@ public class ClassDiagram {
     public Map<SinkVertex, Set<Arc<SinkVertex>>> createDiagram(List<String> chosenFileNames) {
         createNodeCollection(chosenFileNames);
         createEdgeCollection();
-        diagram = convertCollectionsToDiagram(graphNodes.keySet());
-        return diagram;
+        return convertCollectionsToDiagram(graphNodes.keySet());
     }
 
     public Map<Integer, Pair<Double, Double>> arrangeDiagram() {
@@ -44,24 +41,23 @@ public class ClassDiagram {
         return nodesGeometry;
     }
 
+    public SmartGraphPanel<String, String> visualizeJavaFXGraph(Map<SinkVertex, Set<Arc<SinkVertex>>> diagram) {
+        JavaFXVisualization javaFXVisualization = new JavaFXClassVisualization(diagram);
+        return javaFXVisualization.createGraphView();
+    }
+
     public DiagramExporter createGraphMLExporter() {
         return new GraphMLClassDiagramExporter(graphNodes, nodesGeometry, graphEdges);
     }
 
-    public DiagramExporter createJavaFXExporter() {
+    public DiagramExporter createJavaFXExporter(Map<SinkVertex, Set<Arc<SinkVertex>>> diagram) {
         return new JavaFXClassDiagramExporter(diagram);
     }
 
     public Map<SinkVertex, Set<Arc<SinkVertex>>> loadDiagram(Path graphSavePath) {
         JavaFXClassDiagramLoader javaFXClassDiagramLoader =  new JavaFXClassDiagramLoader(graphSavePath);
         Set<SinkVertex> loadedDiagram = javaFXClassDiagramLoader.loadDiagram();
-        diagram = convertCollectionsToDiagram(loadedDiagram);
-        return diagram;
-    }
-
-    public SmartGraphPanel<String, String> visualizeJavaFXGraph() {
-        JavaFXVisualization javaFXVisualization = new JavaFXClassVisualization(diagram);
-        return javaFXVisualization.createGraphView();
+        return convertCollectionsToDiagram(loadedDiagram);
     }
 
     public DiagramExporter createPlantUMLImageExporter() {

@@ -40,6 +40,11 @@ public class PackageDiagramManager implements DiagramManager {
     }
 
     @Override
+    public SmartGraphPanel<String, String> visualizeJavaFXGraph() {
+        return Objects.requireNonNull(diagramStack.peek()).visualizeJavaFXGraph(diagram);
+    }
+
+    @Override
     public File exportDiagramToGraphML(Path graphMLSavePath) {
         DiagramExporter diagramExporter = Objects.requireNonNull(diagramStack.peek()).createGraphMLExporter();
         return diagramExporter.exportDiagram(graphMLSavePath);
@@ -59,7 +64,7 @@ public class PackageDiagramManager implements DiagramManager {
 
     @Override
     public File saveDiagram(Path graphSavePath) {
-        DiagramExporter diagramExporter =  Objects.requireNonNull(diagramStack.peek()).createJavaFXExporter();
+        DiagramExporter diagramExporter =  Objects.requireNonNull(diagramStack.peek()).createJavaFXExporter(diagram);
         return diagramExporter.exportDiagram(graphSavePath);
     }
 
@@ -67,11 +72,6 @@ public class PackageDiagramManager implements DiagramManager {
     public void loadDiagram(Path graphSavePath) {
         diagramStack.push(new PackageDiagram());
         diagram = Objects.requireNonNull(diagramStack.peek()).loadDiagram(graphSavePath);
-    }
-
-    @Override
-    public SmartGraphPanel<String, String> visualizeJavaFXGraph() {
-        return Objects.requireNonNull(diagramStack.peek()).visualizeJavaFXGraph();
     }
 
     public PackageDiagram getPackageDiagram() {
