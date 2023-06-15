@@ -3,196 +3,118 @@
   realizations="true" associations="true" dependencies="true" nesting-relationships="true" router="FAN">  
   <package id="1" language="java" name="view" project="ObjectOrientedArchitectureDiagrammer" 
     file="/ObjectOrientedArchitectureDiagrammer/src/main/java/view" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="176" y="34"/>    
+    <position height="-1" width="-1" x="171" y="42"/>    
     <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
   </package>  
   <package id="2" language="java" name="controller" project="ObjectOrientedArchitectureDiagrammer" 
     file="/ObjectOrientedArchitectureDiagrammer/src/main/java/controller" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="400" y="43"/>    
+    <position height="-1" width="-1" x="391" y="44"/>    
     <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
   </package>  
   <package id="3" language="java" name="manager" project="ObjectOrientedArchitectureDiagrammer" 
     file="/ObjectOrientedArchitectureDiagrammer/src/main/java/manager" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="297" y="127"/>    
+    <position height="-1" width="-1" x="397" y="145"/>    
     <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
   </package>  
-  <package id="4" language="java" name="model.tree.javaparser" project="ObjectOrientedArchitectureDiagrammer" 
-    file="/ObjectOrientedArchitectureDiagrammer/src/main/java/model/tree/javaparser" binary="false" 
-    corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="585" y="423"/>    
-    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
-  </package>  
-  <package id="5" language="java" name="model.tree.jdt" project="ObjectOrientedArchitectureDiagrammer" 
-    file="/ObjectOrientedArchitectureDiagrammer/src/main/java/model/tree/jdt" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="327" y="551"/>    
-    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
-  </package>  
-  <package id="6" language="java" name="model.tree.edge" project="ObjectOrientedArchitectureDiagrammer" 
-    file="/ObjectOrientedArchitectureDiagrammer/src/main/java/model/tree/edge" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="560" y="664"/>    
-    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
-  </package>  
-  <package id="7" language="java" name="model.diagram" project="ObjectOrientedArchitectureDiagrammer" 
+  <package id="4" language="java" name="model.diagram" project="ObjectOrientedArchitectureDiagrammer" 
     file="/ObjectOrientedArchitectureDiagrammer/src/main/java/model/diagram" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="583" y="234"/>    
     <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
   </package>  
-  <package id="8" language="java" name="model" project="ObjectOrientedArchitectureDiagrammer" 
+  <package id="5" language="java" name="model" project="ObjectOrientedArchitectureDiagrammer" 
     file="/ObjectOrientedArchitectureDiagrammer/src/main/java/model" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="937" y="567"/>    
+    <position height="-1" width="-1" x="565" y="323"/>    
     <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
   </package>  
-  <package id="9" language="java" name="model.tree" project="ObjectOrientedArchitectureDiagrammer" 
-    file="/ObjectOrientedArchitectureDiagrammer/src/main/java/model/tree" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="915" y="492"/>    
-    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
-  </package>  
-  <package id="10" language="java" name="model.tree.node" project="ObjectOrientedArchitectureDiagrammer" 
-    file="/ObjectOrientedArchitectureDiagrammer/src/main/java/model/tree/node" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="438" y="840"/>    
-    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
-  </package>  
-  <package id="11" language="java" name="parser.jdt" project="ObjectOrientedArchitectureDiagrammer" 
+  <package id="6" language="java" name="parser.jdt" project="ObjectOrientedArchitectureDiagrammer" 
     file="/ObjectOrientedArchitectureDiagrammer/src/main/java/parser/jdt" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="266" y="369"/>    
+    <position height="-1" width="-1" x="324" y="424"/>    
     <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
   </package>  
-  <package id="12" language="java" name="parser.javaparser" project="ObjectOrientedArchitectureDiagrammer" 
+  <package id="7" language="java" name="parser.javaparser" project="ObjectOrientedArchitectureDiagrammer" 
     file="/ObjectOrientedArchitectureDiagrammer/src/main/java/parser/javaparser" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="458" y="285"/>    
+    <position height="-1" width="-1" x="173" y="415"/>    
     <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
   </package>  
-  <package id="13" language="java" name="parser" project="ObjectOrientedArchitectureDiagrammer" 
+  <package id="8" language="java" name="parser" project="ObjectOrientedArchitectureDiagrammer" 
     file="/ObjectOrientedArchitectureDiagrammer/src/main/java/parser" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="248" y="225"/>    
     <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
   </package>  
+  <package id="9" language="java" name="model.graph" project="ObjectOrientedArchitectureDiagrammer" 
+    file="/ObjectOrientedArchitectureDiagrammer/src/main/java/model/graph" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="392" y="290"/>    
+    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <package id="10" language="java" name="parser.factory" project="ObjectOrientedArchitectureDiagrammer" 
+    file="/ObjectOrientedArchitectureDiagrammer/src/main/java/parser/factory" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="171" y="330"/>    
+    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <package id="11" language="java" name="parser.tree" project="ObjectOrientedArchitectureDiagrammer" 
+    file="/ObjectOrientedArchitectureDiagrammer/src/main/java/parser/tree" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="176" y="491"/>    
+    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <dependency id="12">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="9"/>  
+  </dependency>  
+  <dependency id="13">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="9"/>  
+  </dependency>  
   <dependency id="14">    
     <end type="SOURCE" refId="3"/>    
-    <end type="TARGET" refId="13"/>  
+    <end type="TARGET" refId="4"/>  
   </dependency>  
   <dependency id="15">    
-    <bendpoint x="812" y="582"/>    
-    <end type="SOURCE" refId="7"/>    
-    <end type="TARGET" refId="10"/>  
-  </dependency>  
-  <dependency id="16">    
-    <end type="SOURCE" refId="4"/>    
-    <end type="TARGET" refId="10"/>  
-  </dependency>  
-  <dependency id="17">    
-    <bendpoint x="662" y="180"/>    
-    <bendpoint x="810" y="330"/>    
-    <end type="SOURCE" refId="3"/>    
-    <end type="TARGET" refId="9"/>  
-  </dependency>  
-  <dependency id="18">    
-    <end type="SOURCE" refId="7"/>    
-    <end type="TARGET" refId="9"/>  
-  </dependency>  
-  <dependency id="19">    
-    <end type="SOURCE" refId="11"/>    
-    <end type="TARGET" refId="13"/>  
-  </dependency>  
-  <dependency id="20">    
-    <bendpoint x="116" y="546"/>    
-    <bendpoint x="161" y="741"/>    
-    <end type="SOURCE" refId="13"/>    
-    <end type="TARGET" refId="10"/>  
-  </dependency>  
-  <dependency id="21">    
-    <end type="SOURCE" refId="6"/>    
-    <end type="TARGET" refId="10"/>  
-  </dependency>  
-  <dependency id="22">    
-    <end type="SOURCE" refId="4"/>    
-    <end type="TARGET" refId="6"/>  
-  </dependency>  
-  <dependency id="23">    
-    <end type="SOURCE" refId="13"/>    
-    <end type="TARGET" refId="11"/>  
-  </dependency>  
-  <dependency id="24">    
-    <end type="SOURCE" refId="11"/>    
-    <end type="TARGET" refId="5"/>  
-  </dependency>  
-  <dependency id="25">    
-    <end type="SOURCE" refId="1"/>    
-    <end type="TARGET" refId="2"/>  
-  </dependency>  
-  <dependency id="26">    
-    <end type="SOURCE" refId="5"/>    
-    <end type="TARGET" refId="6"/>  
-  </dependency>  
-  <dependency id="27">    
     <end type="SOURCE" refId="2"/>    
     <end type="TARGET" refId="3"/>  
   </dependency>  
-  <dependency id="28">    
-    <end type="SOURCE" refId="5"/>    
-    <end type="TARGET" refId="10"/>  
-  </dependency>  
-  <dependency id="29">    
-    <end type="SOURCE" refId="12"/>    
-    <end type="TARGET" refId="4"/>  
-  </dependency>  
-  <dependency id="30">    
-    <bendpoint x="733" y="718"/>    
-    <end type="SOURCE" refId="9"/>    
-    <end type="TARGET" refId="10"/>  
-  </dependency>  
-  <dependency id="31">    
-    <end type="SOURCE" refId="12"/>    
-    <end type="TARGET" refId="13"/>  
-  </dependency>  
-  <dependency id="32">    
-    <bendpoint x="230" y="690"/>    
-    <end type="SOURCE" refId="11"/>    
-    <end type="TARGET" refId="10"/>  
-  </dependency>  
-  <dependency id="33">    
-    <end type="SOURCE" refId="13"/>    
-    <end type="TARGET" refId="12"/>  
-  </dependency>  
-  <dependency id="34">    
-    <end type="SOURCE" refId="3"/>    
-    <end type="TARGET" refId="7"/>  
-  </dependency>  
-  <dependency id="35">    
-    <end type="SOURCE" refId="12"/>    
-    <end type="TARGET" refId="10"/>  
-  </dependency>  
-  <dependency id="36">    
-    <bendpoint x="912" y="277"/>    
-    <end type="SOURCE" refId="2"/>    
-    <end type="TARGET" refId="9"/>  
-  </dependency>  
-  <dependency id="37">    
-    <bendpoint x="712" y="489"/>    
-    <end type="SOURCE" refId="7"/>    
-    <end type="TARGET" refId="6"/>  
-  </dependency>  
-  <dependency id="38">    
-    <end type="SOURCE" refId="12"/>    
-    <end type="TARGET" refId="6"/>  
-  </dependency>  
-  <dependency id="39">    
-    <end type="SOURCE" refId="11"/>    
-    <end type="TARGET" refId="6"/>  
-  </dependency>  
-  <dependency id="40">    
-    <bendpoint x="52" y="285"/>    
-    <bendpoint x="126" y="756"/>    
-    <end type="SOURCE" refId="3"/>    
-    <end type="TARGET" refId="10"/>  
-  </dependency>  
-  <dependency id="41">    
-    <end type="SOURCE" refId="13"/>    
-    <end type="TARGET" refId="6"/>  
-  </dependency>  
-  <dependency id="42">    
+  <dependency id="16">    
     <end type="SOURCE" refId="10"/>    
     <end type="TARGET" refId="6"/>  
+  </dependency>  
+  <dependency id="17">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="7"/>  
+  </dependency>  
+  <dependency id="18">    
+    <bendpoint x="53" y="237"/>    
+    <bendpoint x="53" y="498"/>    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="11"/>  
+  </dependency>  
+  <dependency id="19">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="9"/>  
+  </dependency>  
+  <dependency id="20">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="11"/>  
+  </dependency>  
+  <dependency id="21">    
+    <bendpoint x="72" y="336"/>    
+    <bendpoint x="71" y="475"/>    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="11"/>  
+  </dependency>  
+  <dependency id="22">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="8"/>  
+  </dependency>  
+  <dependency id="23">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="10"/>  
+  </dependency>  
+  <dependency id="24">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="2"/>  
+  </dependency>  
+  <dependency id="25">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="11"/>  
   </dependency>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     sort-features="false" accessors="true" visibility="true">    
