@@ -20,18 +20,16 @@ public class GraphMLSinkVertexArc {
         graphMLBuffer = new StringBuilder();
     }
 
-    public StringBuilder convertSinkVertexArc(Map<Arc<SinkVertex>, Integer> graphEdges) {
-        for (Map.Entry<Arc<SinkVertex>, Integer> arc: graphEdges.entrySet()) {
-            Optional<Arc<SinkVertex>> optionalArc = diagram.get(arc.getKey().getSourceVertex()).stream()
-                .filter(sinkVertexArc ->
-                    sinkVertexArc.getTargetVertex().equals(arc.getKey().getTargetVertex()) &&
-                    sinkVertexArc.getArcType().equals(arc.getKey().getArcType()))
-                .findFirst();
-            if (optionalArc.isEmpty()) {
-                continue;
-            }
+    public StringBuilder convertSinkVertexArc() {
+        List<Arc<SinkVertex>> arcs = new ArrayList<>();
+        for (Set<Arc<SinkVertex>> arcSet: diagram.values()) {
+            arcs.addAll(arcSet);
+        }
 
-            graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLSinkVertexArcSyntax(getEdgesProperties(arc.getKey(), arc.getValue())));
+        int edgeId = 0;
+        for (Arc<SinkVertex> arc: arcs) {
+            graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLSinkVertexArcSyntax(getEdgesProperties(arc, edgeId)));
+            edgeId++;
         }
         return graphMLBuffer;
     }

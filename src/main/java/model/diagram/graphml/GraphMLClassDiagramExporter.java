@@ -18,11 +18,11 @@ public class GraphMLClassDiagramExporter implements DiagramExporter {
     private final StringBuilder graphMLEdgeBuffer;
 
     public GraphMLClassDiagramExporter(Map<SinkVertex, Integer> graphNodes, Map<Integer, Pair<Double, Double>> nodesGeometry,
-                                       Map<Arc<SinkVertex>, Integer> graphEdges, Map<SinkVertex, Set<Arc<SinkVertex>>> diagram) {
+                                       Map<SinkVertex, Set<Arc<SinkVertex>>> diagram) {
         GraphMLSinkVertex graphMLSinkVertex = new GraphMLSinkVertex(graphNodes, nodesGeometry);
         this.graphMLNodeBuffer = graphMLSinkVertex.convertSinkVertex();
         GraphMLSinkVertexArc graphMLSinkVertexArc = new GraphMLSinkVertexArc(graphNodes, diagram);
-        this.graphMLEdgeBuffer = graphMLSinkVertexArc.convertSinkVertexArc(graphEdges);
+        this.graphMLEdgeBuffer = graphMLSinkVertexArc.convertSinkVertexArc();
         graphMLFile = new GraphMLFile();
     }
 

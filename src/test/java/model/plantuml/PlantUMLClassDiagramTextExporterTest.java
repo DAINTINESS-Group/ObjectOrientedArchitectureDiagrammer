@@ -38,7 +38,6 @@ public class PlantUMLClassDiagramTextExporterTest {
             Map<SinkVertex, Integer> graphNodes = classDiagramManager.getClassDiagram().getGraphNodes();
             PlantUMLSinkVertex plantUMLSinkVertex = new PlantUMLSinkVertex(graphNodes);
             String sinkVertexBuffer = plantUMLSinkVertex.convertSinkVertex().toString();
-            Map<Arc<SinkVertex>, Integer> graphEdges = classDiagramManager.getClassDiagram().getGraphEdges();
             Map<SinkVertex, Set<Arc<SinkVertex>>> diagram = classDiagramManager.getDiagram();
             PlantUMLSinkVertexArc plantUMLEdge = new PlantUMLSinkVertexArc(diagram);
             String sinkVertexArcBuffer = plantUMLEdge.convertSinkVertexArc().toString();

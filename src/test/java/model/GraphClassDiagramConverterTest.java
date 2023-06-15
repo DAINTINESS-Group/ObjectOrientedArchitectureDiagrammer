@@ -3,6 +3,7 @@ package model;
 import manager.ClassDiagramManager;
 import manager.SourceProject;
 import model.diagram.GraphClassDiagramConverter;
+import model.diagram.ShadowCleaner;
 import model.graph.Arc;
 import model.graph.SinkVertex;
 import org.junit.jupiter.api.Test;
@@ -25,21 +26,28 @@ public class GraphClassDiagramConverterTest {
             ClassDiagramManager classDiagramManager = new ClassDiagramManager();
             List<String> chosenFiles = Arrays.asList("MainWindow", "LatexEditorView", "OpeningWindow");
             SourceProject sourceProject = classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-            classDiagramManager.getClassDiagram().createDiagram(chosenFiles);
+            classDiagramManager.convertTreeToDiagram(chosenFiles);
             Set<SinkVertex> graphNodes = classDiagramManager.getClassDiagram().getGraphNodes().keySet();
-            Set<Arc<SinkVertex>> graphEdges = classDiagramManager.getClassDiagram().getGraphEdges().keySet();
+            Map<SinkVertex, Set<Arc<SinkVertex>>> diagram = classDiagramManager.getDiagram();
 
-            GraphClassDiagramConverter graphClassDiagramConverter = new GraphClassDiagramConverter(graphNodes);
+            List<Arc<SinkVertex>> arcs = new ArrayList<>();
+            for (Set<Arc<SinkVertex>> arcSet: diagram.values()) {
+                arcs.addAll(arcSet);
+            }
+
+            GraphClassDiagramConverter graphClassDiagramConverter = new GraphClassDiagramConverter(diagram.keySet());
             Map<SinkVertex, Set<Arc<SinkVertex>>> adjacencyList = graphClassDiagramConverter.convertGraphToClassDiagram();
+            ShadowCleaner shadowCleaner = new ShadowCleaner(adjacencyList);
+            adjacencyList = shadowCleaner.shadowWeakRelationships();
 
             Set<Arc<SinkVertex>> actualArcs = new HashSet<>();
             for (Set<Arc<SinkVertex>> value : adjacencyList.values()) {
                 actualArcs.addAll(value);
             }
 
-            assertEquals(graphEdges.size(), actualArcs.size());
+            assertEquals(arcs.size(), actualArcs.size());
             for (Arc<SinkVertex> arc: actualArcs) {
-                assertTrue(graphEdges.contains(arc));
+                assertTrue(arcs.contains(arc));
             }
 
             assertEquals(graphNodes.size(), adjacencyList.keySet().size());

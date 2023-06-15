@@ -20,22 +20,19 @@ import java.util.*;
 public class ClassDiagram {
 
     private final Map<SinkVertex, Integer> graphNodes;
-    private final Map<Arc<SinkVertex>, Integer> graphEdges;
     private Map<Path, SinkVertex> sinkVertices;
 
     public ClassDiagram() {
         graphNodes = new HashMap<>();
-        graphEdges = new HashMap<>();
     }
 
     public Map<SinkVertex, Set<Arc<SinkVertex>>> createDiagram(List<String> chosenFileNames) {
         createNodeCollection(chosenFileNames);
-        createEdgeCollection();
         return convertCollectionsToDiagram(graphNodes.keySet());
     }
 
     public Map<Integer, Pair<Double, Double>> arrangeDiagram(Map<SinkVertex, Set<Arc<SinkVertex>>> diagram) {
-        DiagramArrangement classDiagramArrangement = new ClassDiagramArrangement(graphNodes, graphEdges, diagram);
+        DiagramArrangement classDiagramArrangement = new ClassDiagramArrangement(graphNodes, diagram);
         return classDiagramArrangement.arrangeDiagram();
     }
 
@@ -51,7 +48,7 @@ public class ClassDiagram {
     }
 
     public DiagramExporter createGraphMLExporter(Map<SinkVertex, Set<Arc<SinkVertex>>> diagram, Map<Integer, Pair<Double, Double>> diagramGeometry) {
-        return new GraphMLClassDiagramExporter(graphNodes, diagramGeometry, graphEdges, diagram);
+        return new GraphMLClassDiagramExporter(graphNodes, diagramGeometry, diagram);
     }
 
     public DiagramExporter createJavaFXExporter(Map<SinkVertex, Set<Arc<SinkVertex>>> diagram) {
@@ -78,19 +75,6 @@ public class ClassDiagram {
         }
     }
 
-    private void createEdgeCollection() {
-        int edgeId = 0;
-        for (SinkVertex sinkVertex: graphNodes.keySet()) {
-            for (Arc<SinkVertex> arc: sinkVertex.getArcs()) {
-                if (!graphNodes.containsKey(arc.getTargetVertex())) {
-                    continue;
-                }
-                graphEdges.put(arc, edgeId);
-                edgeId++;
-            }
-        }
-    }
-
     private List<SinkVertex> getChosenNodes(List<String> chosenClassesNames) {
         List<SinkVertex> chosenClasses = new ArrayList<>();
         for (String chosenClass: chosenClassesNames) {
@@ -114,7 +98,4 @@ public class ClassDiagram {
         return graphNodes;
     }
 
-    public Map<Arc<SinkVertex>, Integer> getGraphEdges() {
-        return graphEdges;
-    }
 }

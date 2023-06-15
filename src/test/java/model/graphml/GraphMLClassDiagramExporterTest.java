@@ -40,10 +40,9 @@ public class GraphMLClassDiagramExporterTest {
             Map<SinkVertex, Set<Arc<SinkVertex>>> diagram = classDiagramManager.getDiagram();
 
             Map<SinkVertex, Integer> graphNodes = classDiagramManager.getClassDiagram().getGraphNodes();
-            Map<Arc<SinkVertex>, Integer> graphEdges = classDiagramManager.getClassDiagram().getGraphEdges();
-            DiagramArrangement classDiagramArrangement = new ClassDiagramArrangement(graphNodes, graphEdges, diagram);
+            DiagramArrangement classDiagramArrangement = new ClassDiagramArrangement(graphNodes, diagram);
             Map<Integer, Pair<Double, Double>> nodesGeometry = classDiagramArrangement.arrangeDiagram();
-            DiagramExporter graphMLExporter = new GraphMLClassDiagramExporter(graphNodes, nodesGeometry, graphEdges, diagram);
+            DiagramExporter graphMLExporter = new GraphMLClassDiagramExporter(graphNodes, nodesGeometry, diagram);
             File exportedFile = graphMLExporter.exportDiagram(Paths.get(System.getProperty("user.home") + "\\testingExportedFile.graphML"));
             Stream<String> lines = Files.lines(exportedFile.toPath());
             String actualFileContents = lines.collect(Collectors.joining("\n"));
@@ -52,7 +51,7 @@ public class GraphMLClassDiagramExporterTest {
             GraphMLSinkVertex graphMLSinkVertex = new GraphMLSinkVertex(graphNodes, nodesGeometry);
             StringBuilder graphMLNodeBuffer = graphMLSinkVertex.convertSinkVertex();
             GraphMLSinkVertexArc graphMLSinkVertexArc = new GraphMLSinkVertexArc(graphNodes, diagram);
-            StringBuilder graphMLEdgeBuffer = graphMLSinkVertexArc.convertSinkVertexArc(graphEdges);
+            StringBuilder graphMLEdgeBuffer = graphMLSinkVertexArc.convertSinkVertexArc();
             String expectedFileContents = "";
             expectedFileContents += (GraphMLSyntax.getInstance().getGraphMLPrefix());
             expectedFileContents += (graphMLNodeBuffer.toString());

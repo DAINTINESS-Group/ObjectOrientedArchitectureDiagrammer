@@ -11,16 +11,15 @@ import org.javatuples.Pair;
 
 import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 public class ClassDiagramArrangement implements DiagramArrangement{
     private final Map<Integer, Pair<Double, Double>> nodesGeometry;
     private final Map<SinkVertex, Integer> graphNodes;
-    private final Map<Arc<SinkVertex>, Integer> graphEdges;
     private final Map<SinkVertex, Set<Arc<SinkVertex>>> diagram;
 
-    public ClassDiagramArrangement(Map<SinkVertex, Integer> graphNodes, Map<Arc<SinkVertex>, Integer> graphEdges, Map<SinkVertex, Set<Arc<SinkVertex>>> diagram) {
+    public ClassDiagramArrangement(Map<SinkVertex, Integer> graphNodes, Map<SinkVertex, Set<Arc<SinkVertex>>> diagram) {
         this.graphNodes = graphNodes;
-        this.graphEdges = graphEdges;
         this.diagram = diagram;
         nodesGeometry = new HashMap<>();
     }
@@ -42,18 +41,16 @@ public class ClassDiagramArrangement implements DiagramArrangement{
             graph.addVertex(nodeId);
         }
 
-        for (Arc<SinkVertex> arc : graphEdges.keySet()) {
-            Optional<Arc<SinkVertex>> optionalArc = diagram.get(arc.getSourceVertex()).stream()
-                .filter(sinkVertexArc ->
-                    sinkVertexArc.getTargetVertex().equals(arc.getTargetVertex()) &&
-                    sinkVertexArc.getArcType().equals(arc.getArcType()))
-                .findFirst();
-            if (optionalArc.isEmpty()) {
-                continue;
-            }
+        List<Arc<SinkVertex>> arcs = new ArrayList<>();
+        for (Set<Arc<SinkVertex>> arcSet: diagram.values()) {
+            arcs.addAll(arcSet);
+        }
+
+        for (Arc<SinkVertex> arc: arcs) {
             graph.addEdge(graphNodes.get(arc.getSourceVertex()) + " " + graphNodes.get(arc.getTargetVertex()),
                 graphNodes.get(arc.getSourceVertex()), graphNodes.get(arc.getTargetVertex()), EdgeType.DIRECTED);
         }
+
         return graph;
     }
 

@@ -28,54 +28,37 @@ public class GraphMLSinkVertexArcTest {
                     "CreateCommand", "DisableVersionsManagementCommand", "EditCommand", "EnableVersionsManagementCommand",
                     "LoadCommand", "RollbackToPreviousVersionCommand", "SaveCommand"));
             Map<SinkVertex, Integer> graphNodes = classDiagramManager.getClassDiagram().getGraphNodes();
-            Map<Arc<SinkVertex>, Integer> graphEdges = classDiagramManager.getClassDiagram().getGraphEdges();
             Map<SinkVertex, Set<Arc<SinkVertex>>> diagram = classDiagramManager.getDiagram();
 
             GraphMLSinkVertexArc graphMLSinkVertexArc = new GraphMLSinkVertexArc(graphNodes, diagram);
-            StringBuilder actual = graphMLSinkVertexArc.convertSinkVertexArc(graphEdges);
+            StringBuilder actual = graphMLSinkVertexArc.convertSinkVertexArc();
 
             StringBuilder expected = new StringBuilder();
-            List<Arc<SinkVertex>> relationships = new ArrayList<>();
-            for (SinkVertex l: sourceProject.getVertices().get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
-                    "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands")).getSinkVertices()) {
-                for (Arc<SinkVertex> relationship: l.getArcs()) {
-                    if (isRelationshipBetweenSamePackages(sourceProject.getVertices(), relationship.getTargetVertex())) {
-                        continue;
-                    }
-                    relationships.add(relationship);
-                }
+            List<Arc<SinkVertex>> arcs = new ArrayList<>();
+            for (Set<Arc<SinkVertex>> arcSet: diagram.values()) {
+                arcs.addAll(arcSet);
             }
-            for (Map.Entry<Arc<SinkVertex>, Integer> e: graphEdges.entrySet()) {
-                String edgesStart = e.getKey().getSourceVertex().getName();
-                String edgesEnd = e.getKey().getTargetVertex().getName();
-                for (Arc<SinkVertex> relationship: relationships) {
-                    if (relationship.getSourceVertex().getName().equals(edgesStart) && relationship.getTargetVertex().getName().equals(edgesEnd)) {
-                        expected.append(String.format("<edge id=\"e%s\" source=\"n%s\" target=\"n%s\">\n" +
-                                        "      <data key=\"d10\">\n" +
-                                        "        <y:PolyLineEdge>\n" +
-                                        "          <y:Path sx=\"0.0\" sy=\"0.0\" tx=\"0.0\" ty=\"0.0\"/>\n" +
-                                        "          <y:LineStyle color=\"#000000\" type=\"%s\" width=\"1.0\"/>\n" +
-                                        "          <y:Arrows source=\"%s\" target=\"%s\"/>\n" +
-                                        "          <y:BendStyle smoothed=\"false\"/>\n" +
-                                        "        </y:PolyLineEdge>\n" +
-                                        "      </data>\n" +
-                                        "    </edge>\n", e.getValue(), graphNodes.get(e.getKey().getSourceVertex()),
-                                graphNodes.get(e.getKey().getTargetVertex()), getEdgesDescription(relationship).get(0),
-                                getEdgesDescription(relationship).get(1),getEdgesDescription(relationship).get(2)));
-                    }
-                }
+            int edgeId = 0;
+            for (Arc<SinkVertex> e: arcs) {
+                expected.append(
+                    String.format("<edge id=\"e%s\" source=\"n%s\" target=\"n%s\">\n" +
+                            "      <data key=\"d10\">\n" +
+                            "        <y:PolyLineEdge>\n" +
+                            "          <y:Path sx=\"0.0\" sy=\"0.0\" tx=\"0.0\" ty=\"0.0\"/>\n" +
+                            "          <y:LineStyle color=\"#000000\" type=\"%s\" width=\"1.0\"/>\n" +
+                            "          <y:Arrows source=\"%s\" target=\"%s\"/>\n" +
+                            "          <y:BendStyle smoothed=\"false\"/>\n" +
+                            "        </y:PolyLineEdge>\n" +
+                            "      </data>\n" +
+                            "    </edge>\n", edgeId, graphNodes.get(e.getSourceVertex()),
+                    graphNodes.get(e.getTargetVertex()), getEdgesDescription(e).get(0),
+                    getEdgesDescription(e).get(1),getEdgesDescription(e).get(2)));
+            edgeId++;
             }
             assertEquals(expected.toString(), actual.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private boolean isRelationshipBetweenSamePackages(Map<Path, Vertex> vertices, SinkVertex sinkVertex) throws IOException {
-        Optional<SinkVertex> any = vertices.get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
-                        "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands")).getSinkVertices().stream()
-                .filter(sinkVertex1 -> sinkVertex1.getName().equals(sinkVertex.getName())).findAny();
-        return any.isEmpty();
     }
 
     private List<String> getEdgesDescription(Arc<SinkVertex> relationship) {

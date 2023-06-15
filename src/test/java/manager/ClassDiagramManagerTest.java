@@ -71,32 +71,6 @@ public class ClassDiagramManagerTest {
     }
 
     @Test
-    void populateGraphEdgesTest() {
-        try {
-            ClassDiagramManager classDiagramManager = new ClassDiagramManager();
-            SourceProject sourceProject = classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-            classDiagramManager.convertTreeToDiagram(List.of("AddLatexCommand", "ChangeVersionsStrategyCommand", "Command", "CommandFactory",
-                    "CreateCommand", "DisableVersionsManagementCommand", "EditCommand", "EnableVersionsManagementCommand",
-                    "LoadCommand", "RollbackToPreviousVersionCommand", "SaveCommand"));
-            Map<Arc<SinkVertex>, Integer> graphEdges = classDiagramManager.getClassDiagram().getGraphEdges();
-            List<Arc<SinkVertex>> relationships = new ArrayList<>();
-
-            sourceProject.getVertices().get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
-                            "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands")).getSinkVertices()
-                    .forEach(sinkVertex -> relationships.addAll(sinkVertex.getArcs()));
-
-            for (Map.Entry<Arc<SinkVertex>, Integer> e: graphEdges.entrySet()) {
-                Arc<SinkVertex> arc = relationships.stream().filter(sinkVertexArc ->
-                                sinkVertexArc.getSourceVertex().getName().equals(e.getKey().getSourceVertex().getName()) &&
-                                        sinkVertexArc.getTargetVertex().getName().equals(e.getKey().getTargetVertex().getName()))
-                        .findFirst().orElseGet(Assertions::fail);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Test
     void populateGraphNodesTest() {
         try {
             ClassDiagramManager classDiagramManager = new ClassDiagramManager();
@@ -139,7 +113,6 @@ public class ClassDiagramManagerTest {
             Map<SinkVertex, Set<Arc<SinkVertex>>> testingCreatedDiagram = classDiagramManager.getDiagram();
 
             Map<SinkVertex, Integer> graphNodes = classDiagramManager.getClassDiagram().getGraphNodes();
-            Map<Arc<SinkVertex>, Integer> graphEdges = classDiagramManager.getClassDiagram().getGraphEdges();
             GraphClassDiagramConverter graphClassDiagramConverter = new GraphClassDiagramConverter(graphNodes.keySet());
             Map<SinkVertex, Set<Arc<SinkVertex>>> adjacencyList = graphClassDiagramConverter.convertGraphToClassDiagram();
             ShadowCleaner shadowCleaner = new ShadowCleaner(adjacencyList);
@@ -163,15 +136,14 @@ public class ClassDiagramManagerTest {
             Map<SinkVertex, Set<Arc<SinkVertex>>> diagram = classDiagramManager.getDiagram();
 
             Map<SinkVertex, Integer> graphNodes = classDiagramManager.getClassDiagram().getGraphNodes();
-            Map<Arc<SinkVertex>, Integer> graphEdges = classDiagramManager.getClassDiagram().getGraphEdges();
-            DiagramArrangement classDiagramArrangement = new ClassDiagramArrangement(graphNodes, graphEdges, diagram);
+            DiagramArrangement classDiagramArrangement = new ClassDiagramArrangement(graphNodes, diagram);
             Map<Integer, Pair<Double, Double>> nodesGeometry = classDiagramArrangement.arrangeDiagram();
             GraphMLSinkVertex graphMLSinkVertex = new GraphMLSinkVertex(graphNodes, nodesGeometry);
             StringBuilder graphMLNodeBuffer = graphMLSinkVertex.convertSinkVertex();
             GraphMLSinkVertexArc graphMLSinkVertexArc = new GraphMLSinkVertexArc(graphNodes, diagram);
-            StringBuilder graphMLEdgeBuffer = graphMLSinkVertexArc.convertSinkVertexArc(graphEdges);
+            StringBuilder graphMLEdgeBuffer = graphMLSinkVertexArc.convertSinkVertexArc();
 
-            DiagramExporter graphMLExporter = new GraphMLClassDiagramExporter(graphNodes, nodesGeometry, graphEdges, diagram);
+            DiagramExporter graphMLExporter = new GraphMLClassDiagramExporter(graphNodes, nodesGeometry, diagram);
             File expectedFile = graphMLExporter.exportDiagram(Paths.get(System.getProperty("user.home") + "\\testingExportedFile.graphML"));
             assertTrue(FileUtils.contentEquals(expectedFile, actualFile));
         } catch (IOException e) {
