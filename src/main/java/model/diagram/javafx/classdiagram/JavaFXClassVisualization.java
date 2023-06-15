@@ -32,15 +32,11 @@ public class JavaFXClassVisualization implements model.diagram.javafx.JavaFXVisu
 
     private Graph<String, String> createGraph() {
         Digraph<String, String> directedGraph = new DigraphEdgeList<>();
-        insertSinkVertices(directedGraph);
-        insertSinkArcs(directedGraph);
-        return directedGraph;
-    }
-
-    private void insertSinkVertices(Digraph<String, String> directedGraph) {
         for (SinkVertex sinkVertex: diagram.keySet()) {
             directedGraph.insertVertex(sinkVertex.getName());
         }
+        insertSinkArcs(directedGraph);
+        return directedGraph;
     }
 
     private void insertSinkArcs(Digraph<String, String> directedGraph){
@@ -48,10 +44,10 @@ public class JavaFXClassVisualization implements model.diagram.javafx.JavaFXVisu
             for (Arc<SinkVertex> arc: arcs) {
                 if (arc.getArcType().equals(ArcType.AGGREGATION)) {
                     directedGraph.insertEdge(arc.getTargetVertex().getName(), arc.getSourceVertex().getName(),
-                            arc.getTargetVertex().getName() + "_" + arc.getSourceVertex().getName() + "_" + arc.getArcType().toString());
+                        arc.getTargetVertex().getName() + "_" + arc.getSourceVertex().getName() + "_" + arc.getArcType().toString().toLowerCase());
                 }else {
                     directedGraph.insertEdge(arc.getSourceVertex().getName(), arc.getTargetVertex().getName(),
-                            arc.getSourceVertex().getName() + "_" + arc.getTargetVertex().getName() + "_" + arc.getArcType().toString());
+                        arc.getSourceVertex().getName() + "_" + arc.getTargetVertex().getName() + "_" + arc.getArcType().toString().toLowerCase());
                 }
             }
         }

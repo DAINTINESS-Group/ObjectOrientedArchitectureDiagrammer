@@ -23,7 +23,7 @@ public interface DiagramManager {
      *
      * @param chosenFilesNames the names of the files selected by the designer
      */
-    void createDiagram(List<String> chosenFilesNames);
+    void convertTreeToDiagram(List<String> chosenFilesNames);
 
     /**
      * This method arranges the createdDiagram's node geometry by creating a Jung Graph and then applying the SpringLayout
@@ -63,7 +63,7 @@ public interface DiagramManager {
      * @param plantUMLSavePath the selected path by the designer where the exported diagram will be saved
      * @return the exported file
      */
-    File exportPlantUMLDiagram(Path plantUMLSavePath);
+    File exportPlantUMLImage(Path plantUMLSavePath);
 
     /**This method is responsible for exporting the diagram to a PlantUML text file
      * @param textSavePath the selected path by the designer where the exported diagram will be saved

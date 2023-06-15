@@ -25,10 +25,10 @@ public class GraphMLSinkVertexTest {
         try {
             ClassDiagramManager classDiagramManager = new ClassDiagramManager();
             SourceProject sourceProject = classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-            classDiagramManager.createDiagram(List.of("AddLatexCommand", "ChangeVersionsStrategyCommand", "Command", "CommandFactory",
+            classDiagramManager.convertTreeToDiagram(List.of("AddLatexCommand", "ChangeVersionsStrategyCommand", "Command", "CommandFactory",
                     "CreateCommand", "DisableVersionsManagementCommand", "EditCommand", "EnableVersionsManagementCommand",
                     "LoadCommand", "RollbackToPreviousVersionCommand", "SaveCommand"));
-            Map<SinkVertex, Integer> graphNodes = classDiagramManager.getDiagram().getGraphNodes();
+            Map<SinkVertex, Integer> graphNodes = classDiagramManager.getClassDiagram().getGraphNodes();
             GraphMLSinkVertex graphMLSinkVertex = new GraphMLSinkVertex(graphNodes, Map.ofEntries(
                     Map.entry(0, new Pair<>(10.0, 10.0)),
                     Map.entry(1, new Pair<>(10.0, 10.0)),

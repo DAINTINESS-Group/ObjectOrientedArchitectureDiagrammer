@@ -98,10 +98,10 @@ public class PlantUMLSinkVertexTest {
 
             ClassDiagramManager classDiagramManager = new ClassDiagramManager();
             SourceProject sourceProject = classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-            classDiagramManager.createDiagram(List.of("StableVersionsStrategy", "VersionsStrategy", "VersionsStrategyFactory", "VolatileVersionsStrategy",
+            classDiagramManager.convertTreeToDiagram(List.of("StableVersionsStrategy", "VersionsStrategy", "VersionsStrategyFactory", "VolatileVersionsStrategy",
                     "VersionsManager", "Document", "DocumentManager"));
 
-            Map<SinkVertex, Integer> graphNodes = classDiagramManager.getDiagram().getGraphNodes();
+            Map<SinkVertex, Integer> graphNodes = classDiagramManager.getClassDiagram().getGraphNodes();
             PlantUMLSinkVertex plantUMLSinkVertex = new PlantUMLSinkVertex(graphNodes);
             String actualBuffer = plantUMLSinkVertex.convertSinkVertex().toString();
 

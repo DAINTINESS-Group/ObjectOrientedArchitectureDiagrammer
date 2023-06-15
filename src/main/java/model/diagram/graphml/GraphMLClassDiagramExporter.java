@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Map;
+import java.util.Set;
 
 public class GraphMLClassDiagramExporter implements DiagramExporter {
 
@@ -17,10 +18,10 @@ public class GraphMLClassDiagramExporter implements DiagramExporter {
     private final StringBuilder graphMLEdgeBuffer;
 
     public GraphMLClassDiagramExporter(Map<SinkVertex, Integer> graphNodes, Map<Integer, Pair<Double, Double>> nodesGeometry,
-                                       Map<Arc<SinkVertex>, Integer> graphEdges) {
+                                       Map<Arc<SinkVertex>, Integer> graphEdges, Map<SinkVertex, Set<Arc<SinkVertex>>> diagram) {
         GraphMLSinkVertex graphMLSinkVertex = new GraphMLSinkVertex(graphNodes, nodesGeometry);
         this.graphMLNodeBuffer = graphMLSinkVertex.convertSinkVertex();
-        GraphMLSinkVertexArc graphMLSinkVertexArc = new GraphMLSinkVertexArc(graphNodes);
+        GraphMLSinkVertexArc graphMLSinkVertexArc = new GraphMLSinkVertexArc(graphNodes, diagram);
         this.graphMLEdgeBuffer = graphMLSinkVertexArc.convertSinkVertexArc(graphEdges);
         graphMLFile = new GraphMLFile();
     }

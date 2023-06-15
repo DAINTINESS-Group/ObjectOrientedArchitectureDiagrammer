@@ -10,15 +10,16 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Map;
+import java.util.Set;
 
 public class PlantUMLClassDiagramTextExporter implements DiagramExporter {
 
     private final String bufferBody;
 
-    public PlantUMLClassDiagramTextExporter(Map<SinkVertex, Integer> graphNodes, Map<Arc<SinkVertex>, Integer> graphEdges) {
+    public PlantUMLClassDiagramTextExporter(Map<SinkVertex, Integer> graphNodes, Map<SinkVertex, Set<Arc<SinkVertex>>> diagram) {
         PlantUMLSinkVertex plantUMLSinkVertex = new PlantUMLSinkVertex(graphNodes);
         StringBuilder plantUMLNodeBuffer = plantUMLSinkVertex.convertSinkVertex();
-        PlantUMLSinkVertexArc plantUMLEdge = new PlantUMLSinkVertexArc(graphEdges);
+        PlantUMLSinkVertexArc plantUMLEdge = new PlantUMLSinkVertexArc(diagram);
         StringBuilder plantUMLEdgeBuffer = plantUMLEdge.convertSinkVertexArc();
         bufferBody = plantUMLNodeBuffer.append("\n\n").append(plantUMLEdgeBuffer) + "\n @enduml";
     }

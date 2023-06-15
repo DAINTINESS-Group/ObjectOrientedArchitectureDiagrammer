@@ -19,14 +19,12 @@ import java.util.*;
 
 public class PackageDiagram {
 
-    private Map<Vertex, Set<Arc<Vertex>>> diagram;
     private final Map<Vertex, Integer> graphNodes;
     private final Map<Arc<Vertex>, Integer> graphEdges;
     private Map<Path, Vertex> vertices;
     private Map<Integer, Pair<Double, Double>> nodesGeometry;
 
     public PackageDiagram() {
-        diagram = new HashMap<>();
         graphNodes = new HashMap<>();
         graphEdges = new HashMap<>();
     }
@@ -34,8 +32,7 @@ public class PackageDiagram {
     public Map<Vertex, Set<Arc<Vertex>>> createDiagram(List<String> chosenFileNames) {
         createNodeCollection(chosenFileNames);
         createEdgeCollection();
-        diagram = convertCollectionsToDiagram();
-        return diagram;
+        return convertCollectionsToDiagram();
     }
 
     public Map<Integer, Pair<Double, Double>> arrangeDiagram() {
@@ -44,11 +41,16 @@ public class PackageDiagram {
         return nodesGeometry;
     }
 
+    public SmartGraphPanel<String, String> visualizeJavaFXGraph(Map<Vertex, Set<Arc<Vertex>>> diagram) {
+        JavaFXVisualization javaFXPackageVisualization = new JavaFXPackageVisualization(diagram);
+        return javaFXPackageVisualization.createGraphView();
+    }
+
     public DiagramExporter createGraphMLExporter() {
         return new GraphMLPackageDiagramExporter(graphNodes, nodesGeometry, graphEdges);
     }
 
-    public DiagramExporter createJavaFXExporter() {
+    public DiagramExporter createJavaFXExporter(Map<Vertex, Set<Arc<Vertex>>> diagram) {
         return new JavaFXPackageDiagramExporter(diagram);
     }
 
@@ -56,18 +58,12 @@ public class PackageDiagram {
         JavaFXPackageDiagramLoader javaFXPackageDiagramLoader = new JavaFXPackageDiagramLoader(graphSavePath);
         Set<Vertex> loadedDiagram = javaFXPackageDiagramLoader.loadDiagram();
         GraphPackageDiagramConverter graphPackageDiagramConverter = new GraphPackageDiagramConverter(loadedDiagram);
-        diagram = graphPackageDiagramConverter.convertGraphToPackageDiagram();
-        return diagram;
+        return graphPackageDiagramConverter.convertGraphToPackageDiagram();
     }
 
     public Map<Vertex, Set<Arc<Vertex>>> convertCollectionsToDiagram() {
         GraphPackageDiagramConverter graphPackageDiagramConverter = new GraphPackageDiagramConverter(graphNodes.keySet());
         return graphPackageDiagramConverter.convertGraphToPackageDiagram();
-    }
-
-    public SmartGraphPanel<String, String> visualizeJavaFXGraph() {
-        JavaFXVisualization javaFXPackageVisualization = new JavaFXPackageVisualization(diagram);
-        return javaFXPackageVisualization.createGraphView();
     }
 
     public DiagramExporter createPlantUMLImageExporter() {
