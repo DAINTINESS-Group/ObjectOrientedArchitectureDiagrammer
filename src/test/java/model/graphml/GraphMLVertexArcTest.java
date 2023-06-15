@@ -26,15 +26,15 @@ public class GraphMLVertexArcTest {
         try {
             PackageDiagramManager packageDiagramManager = new PackageDiagramManager();
             SourceProject sourceProject = packageDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-            packageDiagramManager.createDiagram(List.of(
+            packageDiagramManager.convertTreeToDiagram(List.of(
                 "src.view",
                 "src.model",
                 "src.model.strategies",
                 "src.controller.commands",
                 "src.controller"
             ));
-            Map<Vertex, Integer> graphNodes = packageDiagramManager.getDiagram().getGraphNodes();
-            Map<Arc<Vertex>, Integer> graphEdges = packageDiagramManager.getDiagram().getGraphEdges();
+            Map<Vertex, Integer> graphNodes = packageDiagramManager.getPackageDiagram().getGraphNodes();
+            Map<Arc<Vertex>, Integer> graphEdges = packageDiagramManager.getPackageDiagram().getGraphEdges();
             GraphMLVertexArc graphMLVertexArc = new GraphMLVertexArc(graphNodes);
             StringBuilder actual = graphMLVertexArc.convertVertexArc(graphEdges);
 

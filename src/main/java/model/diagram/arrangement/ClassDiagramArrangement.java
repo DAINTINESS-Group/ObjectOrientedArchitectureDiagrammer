@@ -16,36 +16,45 @@ public class ClassDiagramArrangement implements DiagramArrangement{
     private final Map<Integer, Pair<Double, Double>> nodesGeometry;
     private final Map<SinkVertex, Integer> graphNodes;
     private final Map<Arc<SinkVertex>, Integer> graphEdges;
+    private final Map<SinkVertex, Set<Arc<SinkVertex>>> diagram;
 
-    public ClassDiagramArrangement(Map<SinkVertex, Integer> graphNodes, Map<Arc<SinkVertex>, Integer> graphEdges) {
+    public ClassDiagramArrangement(Map<SinkVertex, Integer> graphNodes, Map<Arc<SinkVertex>, Integer> graphEdges, Map<SinkVertex, Set<Arc<SinkVertex>>> diagram) {
         this.graphNodes = graphNodes;
         this.graphEdges = graphEdges;
+        this.diagram = diagram;
         nodesGeometry = new HashMap<>();
     }
 
     @Override
     public Map<Integer, Pair<Double, Double>> arrangeDiagram() {
-        Graph<Integer, String> graph = new SparseGraph<>();
-        populateClassGraph(graph);
+        Graph<Integer, String> graph = createGraph();
         AbstractLayout<Integer, String> layout = new SpringLayout<>(graph);
         layout.setSize(new Dimension(1500, 1000));
-        populateNodesGeometry(layout);
-        return nodesGeometry;
-    }
-
-    private void populateClassGraph(Graph<Integer, String> graph){
-        for (Integer i : graphNodes.values()) {
-            graph.addVertex(i);
-        }
-        for (Map.Entry<Arc<SinkVertex>, Integer> arc : graphEdges.entrySet()) {
-            graph.addEdge(graphNodes.get(arc.getKey().getSourceVertex()) + " " + graphNodes.get(arc.getKey().getTargetVertex()),
-                    graphNodes.get(arc.getKey().getSourceVertex()), graphNodes.get(arc.getKey().getTargetVertex()), EdgeType.DIRECTED);
-        }
-    }
-
-    private void populateNodesGeometry(AbstractLayout<Integer, String> layout) {
         for (Integer i : graphNodes.values()) {
             nodesGeometry.put(i, new Pair<>(layout.getX(i), layout.getY(i)));
         }
+        return nodesGeometry;
     }
+
+    private Graph<Integer, String> createGraph(){
+        Graph<Integer, String> graph = new SparseGraph<>();
+        for (Integer nodeId: graphNodes.values()) {
+            graph.addVertex(nodeId);
+        }
+
+        for (Arc<SinkVertex> arc : graphEdges.keySet()) {
+            Optional<Arc<SinkVertex>> optionalArc = diagram.get(arc.getSourceVertex()).stream()
+                .filter(sinkVertexArc ->
+                    sinkVertexArc.getTargetVertex().equals(arc.getTargetVertex()) &&
+                    sinkVertexArc.getArcType().equals(arc.getArcType()))
+                .findFirst();
+            if (optionalArc.isEmpty()) {
+                continue;
+            }
+            graph.addEdge(graphNodes.get(arc.getSourceVertex()) + " " + graphNodes.get(arc.getTargetVertex()),
+                graphNodes.get(arc.getSourceVertex()), graphNodes.get(arc.getTargetVertex()), EdgeType.DIRECTED);
+        }
+        return graph;
+    }
+
 }

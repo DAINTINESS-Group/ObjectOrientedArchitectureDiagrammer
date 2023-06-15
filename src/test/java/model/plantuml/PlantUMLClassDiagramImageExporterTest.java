@@ -25,6 +25,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -37,17 +38,18 @@ public class PlantUMLClassDiagramImageExporterTest {
         try {
             ClassDiagramManager classDiagramManager = new ClassDiagramManager();
             SourceProject sourceProject = classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-            classDiagramManager.createDiagram(List.of("StableVersionsStrategy", "VersionsStrategy", "VersionsStrategyFactory", "VolatileVersionsStrategy",
+            classDiagramManager.convertTreeToDiagram(List.of("StableVersionsStrategy", "VersionsStrategy", "VersionsStrategyFactory", "VolatileVersionsStrategy",
                     "VersionsManager", "Document", "DocumentManager"));
 
-            Map<SinkVertex, Integer> graphNodes = classDiagramManager.getDiagram().getGraphNodes();
+            Map<SinkVertex, Integer> graphNodes = classDiagramManager.getClassDiagram().getGraphNodes();
             PlantUMLSinkVertex plantUMLSinkVertex = new PlantUMLSinkVertex(graphNodes);
             String sinkVertexBuffer = plantUMLSinkVertex.convertSinkVertex().toString();
-            Map<Arc<SinkVertex>, Integer> graphEdges = classDiagramManager.getDiagram().getGraphEdges();
-            PlantUMLSinkVertexArc plantUMLEdge = new PlantUMLSinkVertexArc(graphEdges);
+            Map<Arc<SinkVertex>, Integer> graphEdges = classDiagramManager.getClassDiagram().getGraphEdges();
+            Map<SinkVertex, Set<Arc<SinkVertex>>> diagram = classDiagramManager.getDiagram();
+            PlantUMLSinkVertexArc plantUMLEdge = new PlantUMLSinkVertexArc(diagram);
             String sinkVertexArcBuffer = plantUMLEdge.convertSinkVertexArc().toString();
 
-            DiagramExporter graphMLExporter = new PlantUMLClassDiagramImageExporter(graphNodes, graphEdges);
+            DiagramExporter graphMLExporter = new PlantUMLClassDiagramImageExporter(graphNodes, diagram);
             graphMLExporter.exportDiagram(Paths.get(System.getProperty("user.home") + "\\testingExportedFile.png"));
 
             String expected = "@startuml\n" +

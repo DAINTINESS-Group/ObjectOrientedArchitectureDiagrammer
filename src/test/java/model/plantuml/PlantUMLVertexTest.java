@@ -43,7 +43,7 @@ public class PlantUMLVertexTest {
 
             PackageDiagramManager packageDiagramManager = new PackageDiagramManager();
             SourceProject sourceProject = packageDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-            packageDiagramManager.createDiagram(List.of(
+            packageDiagramManager.convertTreeToDiagram(List.of(
                 "src",
                 "src.view",
                 "src.model",
@@ -52,7 +52,7 @@ public class PlantUMLVertexTest {
                 "src.controller"
             ));
 
-            Map<Vertex, Integer> graphNodes = packageDiagramManager.getDiagram().getGraphNodes();
+            Map<Vertex, Integer> graphNodes = packageDiagramManager.getPackageDiagram().getGraphNodes();
             PlantUMLVertex plantUMLVertex = new PlantUMLVertex(graphNodes);
             String actualBuffer = plantUMLVertex.convertVertex().toString();
 

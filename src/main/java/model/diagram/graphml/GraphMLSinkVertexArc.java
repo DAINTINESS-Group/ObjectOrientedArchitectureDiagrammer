@@ -3,9 +3,7 @@ package model.diagram.graphml;
 import model.graph.Arc;
 import model.graph.SinkVertex;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class GraphMLSinkVertexArc {
 
@@ -13,15 +11,26 @@ public class GraphMLSinkVertexArc {
     private static final int EDGES_SOURCE_TYPE = 1;
     private static final int EDGES_TARGET_TYPE = 2;
     private final Map<SinkVertex, Integer> graphNodes;
+    private final Map<SinkVertex, Set<Arc<SinkVertex>>> diagram;
     private final StringBuilder graphMLBuffer;
 
-    public GraphMLSinkVertexArc(Map<SinkVertex, Integer> graphNodes) {
+    public GraphMLSinkVertexArc(Map<SinkVertex, Integer> graphNodes, Map<SinkVertex, Set<Arc<SinkVertex>>> diagram) {
         this.graphNodes = graphNodes;
+        this.diagram = diagram;
         graphMLBuffer = new StringBuilder();
     }
 
     public StringBuilder convertSinkVertexArc(Map<Arc<SinkVertex>, Integer> graphEdges) {
         for (Map.Entry<Arc<SinkVertex>, Integer> arc: graphEdges.entrySet()) {
+            Optional<Arc<SinkVertex>> optionalArc = diagram.get(arc.getKey().getSourceVertex()).stream()
+                .filter(sinkVertexArc ->
+                    sinkVertexArc.getTargetVertex().equals(arc.getKey().getTargetVertex()) &&
+                    sinkVertexArc.getArcType().equals(arc.getKey().getArcType()))
+                .findFirst();
+            if (optionalArc.isEmpty()) {
+                continue;
+            }
+
             graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLSinkVertexArcSyntax(getEdgesProperties(arc.getKey(), arc.getValue())));
         }
         return graphMLBuffer;

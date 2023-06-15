@@ -17,6 +17,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -31,17 +32,18 @@ public class PlantUMLClassDiagramTextExporterTest {
         try {
             ClassDiagramManager classDiagramManager = new ClassDiagramManager();
             SourceProject sourceProject = classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-            classDiagramManager.createDiagram(List.of("StableVersionsStrategy", "VersionsStrategy", "VersionsStrategyFactory", "VolatileVersionsStrategy",
+            classDiagramManager.convertTreeToDiagram(List.of("StableVersionsStrategy", "VersionsStrategy", "VersionsStrategyFactory", "VolatileVersionsStrategy",
                     "VersionsManager", "Document", "DocumentManager"));
 
-            Map<SinkVertex, Integer> graphNodes = classDiagramManager.getDiagram().getGraphNodes();
+            Map<SinkVertex, Integer> graphNodes = classDiagramManager.getClassDiagram().getGraphNodes();
             PlantUMLSinkVertex plantUMLSinkVertex = new PlantUMLSinkVertex(graphNodes);
             String sinkVertexBuffer = plantUMLSinkVertex.convertSinkVertex().toString();
-            Map<Arc<SinkVertex>, Integer> graphEdges = classDiagramManager.getDiagram().getGraphEdges();
-            PlantUMLSinkVertexArc plantUMLEdge = new PlantUMLSinkVertexArc(graphEdges);
+            Map<Arc<SinkVertex>, Integer> graphEdges = classDiagramManager.getClassDiagram().getGraphEdges();
+            Map<SinkVertex, Set<Arc<SinkVertex>>> diagram = classDiagramManager.getDiagram();
+            PlantUMLSinkVertexArc plantUMLEdge = new PlantUMLSinkVertexArc(diagram);
             String sinkVertexArcBuffer = plantUMLEdge.convertSinkVertexArc().toString();
 
-            DiagramExporter graphMLExporter = new PlantUMLClassDiagramTextExporter(graphNodes, graphEdges);
+            DiagramExporter graphMLExporter = new PlantUMLClassDiagramTextExporter(graphNodes, diagram);
             File exportedFile = graphMLExporter.exportDiagram(Paths.get(System.getProperty("user.home") + "\\testingExportedFile.txt"));
             Stream<String> lines = Files.lines(exportedFile.toPath());
             String actualFileContents = lines.collect(Collectors.joining("\n"));

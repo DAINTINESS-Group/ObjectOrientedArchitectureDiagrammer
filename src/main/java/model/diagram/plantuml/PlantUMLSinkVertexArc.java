@@ -4,20 +4,28 @@ import model.graph.Arc;
 import model.graph.ArcType;
 import model.graph.SinkVertex;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class PlantUMLSinkVertexArc {
 
-	private final Map<Arc<SinkVertex>, Integer> graphEdges;
+	private final Map<SinkVertex, Set<Arc<SinkVertex>>> diagram;
 
-	public PlantUMLSinkVertexArc(Map<Arc<SinkVertex>, Integer> graphEdges) {
-		this.graphEdges = graphEdges;
+	public PlantUMLSinkVertexArc(Map<SinkVertex, Set<Arc<SinkVertex>>> diagram) {
+		this.diagram = diagram;
 	}
 
 	public StringBuilder convertSinkVertexArc() {
+		List<Arc<SinkVertex>> arcs = new ArrayList<>();
+		for (Set<Arc<SinkVertex>> arcSet: diagram.values()) {
+			arcs.addAll(arcSet);
+		}
+
 		return new StringBuilder(
-			graphEdges.keySet().stream()
+			arcs.stream()
 				.map(sinkVertexArc ->
 					sinkVertexArc.getSourceVertex().getName() + " " + getRelationship(sinkVertexArc.getArcType()) + " " +
 					sinkVertexArc.getTargetVertex().getName())

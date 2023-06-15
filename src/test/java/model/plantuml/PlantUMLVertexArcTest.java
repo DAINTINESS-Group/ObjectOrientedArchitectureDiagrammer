@@ -35,7 +35,7 @@ class PlantUMLVertexArcTest {
 
 			PackageDiagramManager packageDiagramManager = new PackageDiagramManager();
 			SourceProject sourceProject = packageDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-			packageDiagramManager.createDiagram(List.of(
+			packageDiagramManager.convertTreeToDiagram(List.of(
 				"src.view",
 				"src.model",
 				"src.model.strategies",
@@ -43,7 +43,7 @@ class PlantUMLVertexArcTest {
 				"src.controller"
 			));
 
-			Map<Arc<Vertex>, Integer> graphEdges = packageDiagramManager.getDiagram().getGraphEdges();
+			Map<Arc<Vertex>, Integer> graphEdges = packageDiagramManager.getPackageDiagram().getGraphEdges();
 			PlantUMLVertexArc plantUMLEdge = new PlantUMLVertexArc(graphEdges);
 			String actualBuffer = plantUMLEdge.convertVertexArc().toString();
 
