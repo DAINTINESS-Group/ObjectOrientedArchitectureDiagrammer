@@ -37,7 +37,7 @@ public class DiagramController implements Controller {
 	}
 
 	public File exportPlantUMLDiagram(Path plantUMLSavePath) {
-		return diagramManager.exportPlantUMLDiagram(plantUMLSavePath);
+		return diagramManager.exportPlantUMLImage(plantUMLSavePath);
 	}
 
 	public File exportPlantUMLText(Path textSavePath) {

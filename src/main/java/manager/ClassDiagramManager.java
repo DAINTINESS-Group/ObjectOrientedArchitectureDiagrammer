@@ -56,14 +56,14 @@ public class ClassDiagramManager implements DiagramManager {
     }
 
     @Override
-    public File exportPlantUMLDiagram(Path plantUMLSavePath) {
-        DiagramExporter diagramExporter = Objects.requireNonNull(diagramStack.peek()).createPlantUMLImageExporter();
+    public File exportPlantUMLImage(Path plantUMLSavePath) {
+        DiagramExporter diagramExporter = Objects.requireNonNull(diagramStack.peek()).createPlantUMLImageExporter(diagram);
         return diagramExporter.exportDiagram(plantUMLSavePath);
     }
 
     @Override
     public File exportPlantUMLText(Path textSavePath) {
-        DiagramExporter diagramExporter = Objects.requireNonNull(diagramStack.peek()).createPlantUMLTextExporter();
+        DiagramExporter diagramExporter = Objects.requireNonNull(diagramStack.peek()).createPlantUMLTextExporter(diagram);
         return diagramExporter.exportDiagram(textSavePath);
     }
 

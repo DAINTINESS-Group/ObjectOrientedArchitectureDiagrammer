@@ -44,6 +44,12 @@ public class ClassDiagram {
         return javaFXVisualization.createGraphView();
     }
 
+    public Map<SinkVertex, Set<Arc<SinkVertex>>> loadDiagram(Path graphSavePath) {
+        JavaFXClassDiagramLoader javaFXClassDiagramLoader =  new JavaFXClassDiagramLoader(graphSavePath);
+        Set<SinkVertex> loadedDiagram = javaFXClassDiagramLoader.loadDiagram();
+        return convertCollectionsToDiagram(loadedDiagram);
+    }
+
     public DiagramExporter createGraphMLExporter(Map<SinkVertex, Set<Arc<SinkVertex>>> diagram, Map<Integer, Pair<Double, Double>> diagramGeometry) {
         return new GraphMLClassDiagramExporter(graphNodes, diagramGeometry, graphEdges, diagram);
     }
@@ -52,18 +58,12 @@ public class ClassDiagram {
         return new JavaFXClassDiagramExporter(diagram);
     }
 
-    public Map<SinkVertex, Set<Arc<SinkVertex>>> loadDiagram(Path graphSavePath) {
-        JavaFXClassDiagramLoader javaFXClassDiagramLoader =  new JavaFXClassDiagramLoader(graphSavePath);
-        Set<SinkVertex> loadedDiagram = javaFXClassDiagramLoader.loadDiagram();
-        return convertCollectionsToDiagram(loadedDiagram);
+    public DiagramExporter createPlantUMLImageExporter(Map<SinkVertex, Set<Arc<SinkVertex>>> diagram) {
+        return new PlantUMLClassDiagramImageExporter(graphNodes, diagram);
     }
 
-    public DiagramExporter createPlantUMLImageExporter() {
-        return new PlantUMLClassDiagramImageExporter(graphNodes, graphEdges);
-    }
-
-    public DiagramExporter createPlantUMLTextExporter() {
-        return new PlantUMLClassDiagramTextExporter(graphNodes, graphEdges);
+    public DiagramExporter createPlantUMLTextExporter(Map<SinkVertex, Set<Arc<SinkVertex>>> diagram) {
+        return new PlantUMLClassDiagramTextExporter(graphNodes, diagram);
     }
 
     public void setSinkVertices(Map<Path, SinkVertex> sinkVertices) {

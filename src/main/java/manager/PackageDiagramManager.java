@@ -51,7 +51,7 @@ public class PackageDiagramManager implements DiagramManager {
     }
 
     @Override
-    public File exportPlantUMLDiagram(Path plantUMLSavePath) {
+    public File exportPlantUMLImage(Path plantUMLSavePath) {
         DiagramExporter diagramExporter =  Objects.requireNonNull(diagramStack.peek()).createPlantUMLImageExporter();
         return diagramExporter.exportDiagram(plantUMLSavePath);
     }
