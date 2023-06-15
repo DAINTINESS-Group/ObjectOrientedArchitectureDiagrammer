@@ -16,6 +16,7 @@ public class ClassDiagramManager implements DiagramManager {
 
     private final ArrayDeque<ClassDiagram> diagramStack;
     private Map<SinkVertex, Set<Arc<SinkVertex>>> diagram;
+    private Map<Integer, Pair<Double, Double>> diagramGeometry;
 
     public ClassDiagramManager() {
         diagramStack = new ArrayDeque<>();
@@ -39,7 +40,8 @@ public class ClassDiagramManager implements DiagramManager {
 
     @Override
     public Map<Integer, Pair<Double, Double>> arrangeDiagram(){
-        return Objects.requireNonNull(diagramStack.peek()).arrangeDiagram();
+        diagramGeometry = Objects.requireNonNull(diagramStack.peek()).arrangeDiagram(diagram);
+        return diagramGeometry;
     }
 
     @Override
@@ -49,7 +51,7 @@ public class ClassDiagramManager implements DiagramManager {
 
     @Override
     public File exportDiagramToGraphML(Path graphMLSavePath) {
-        DiagramExporter diagramExporter = Objects.requireNonNull(diagramStack.peek()).createGraphMLExporter();
+        DiagramExporter diagramExporter = Objects.requireNonNull(diagramStack.peek()).createGraphMLExporter(diagram, diagramGeometry);
         return diagramExporter.exportDiagram(graphMLSavePath);
     }
 

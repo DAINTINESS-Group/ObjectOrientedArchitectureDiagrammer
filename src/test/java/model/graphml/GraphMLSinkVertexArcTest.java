@@ -29,8 +29,9 @@ public class GraphMLSinkVertexArcTest {
                     "LoadCommand", "RollbackToPreviousVersionCommand", "SaveCommand"));
             Map<SinkVertex, Integer> graphNodes = classDiagramManager.getClassDiagram().getGraphNodes();
             Map<Arc<SinkVertex>, Integer> graphEdges = classDiagramManager.getClassDiagram().getGraphEdges();
+            Map<SinkVertex, Set<Arc<SinkVertex>>> diagram = classDiagramManager.getDiagram();
 
-            GraphMLSinkVertexArc graphMLSinkVertexArc = new GraphMLSinkVertexArc(graphNodes);
+            GraphMLSinkVertexArc graphMLSinkVertexArc = new GraphMLSinkVertexArc(graphNodes, diagram);
             StringBuilder actual = graphMLSinkVertexArc.convertSinkVertexArc(graphEdges);
 
             StringBuilder expected = new StringBuilder();

@@ -37,12 +37,13 @@ public class GraphMLClassDiagramExporterTest {
             SourceProject sourceProject = classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
             classDiagramManager.convertTreeToDiagram(chosenFiles);
             classDiagramManager.arrangeDiagram();
+            Map<SinkVertex, Set<Arc<SinkVertex>>> diagram = classDiagramManager.getDiagram();
 
             Map<SinkVertex, Integer> graphNodes = classDiagramManager.getClassDiagram().getGraphNodes();
             Map<Arc<SinkVertex>, Integer> graphEdges = classDiagramManager.getClassDiagram().getGraphEdges();
-            DiagramArrangement classDiagramArrangement = new ClassDiagramArrangement(graphNodes, graphEdges);
+            DiagramArrangement classDiagramArrangement = new ClassDiagramArrangement(graphNodes, graphEdges, diagram);
             Map<Integer, Pair<Double, Double>> nodesGeometry = classDiagramArrangement.arrangeDiagram();
-            DiagramExporter graphMLExporter = new GraphMLClassDiagramExporter(graphNodes, nodesGeometry, graphEdges);
+            DiagramExporter graphMLExporter = new GraphMLClassDiagramExporter(graphNodes, nodesGeometry, graphEdges, diagram);
             File exportedFile = graphMLExporter.exportDiagram(Paths.get(System.getProperty("user.home") + "\\testingExportedFile.graphML"));
             Stream<String> lines = Files.lines(exportedFile.toPath());
             String actualFileContents = lines.collect(Collectors.joining("\n"));
@@ -50,7 +51,7 @@ public class GraphMLClassDiagramExporterTest {
 
             GraphMLSinkVertex graphMLSinkVertex = new GraphMLSinkVertex(graphNodes, nodesGeometry);
             StringBuilder graphMLNodeBuffer = graphMLSinkVertex.convertSinkVertex();
-            GraphMLSinkVertexArc graphMLSinkVertexArc = new GraphMLSinkVertexArc(graphNodes);
+            GraphMLSinkVertexArc graphMLSinkVertexArc = new GraphMLSinkVertexArc(graphNodes, diagram);
             StringBuilder graphMLEdgeBuffer = graphMLSinkVertexArc.convertSinkVertexArc(graphEdges);
             String expectedFileContents = "";
             expectedFileContents += (GraphMLSyntax.getInstance().getGraphMLPrefix());

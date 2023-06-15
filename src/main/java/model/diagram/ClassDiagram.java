@@ -22,7 +22,6 @@ public class ClassDiagram {
     private final Map<SinkVertex, Integer> graphNodes;
     private final Map<Arc<SinkVertex>, Integer> graphEdges;
     private Map<Path, SinkVertex> sinkVertices;
-    private Map<Integer, Pair<Double, Double>> nodesGeometry;
 
     public ClassDiagram() {
         graphNodes = new HashMap<>();
@@ -35,10 +34,9 @@ public class ClassDiagram {
         return convertCollectionsToDiagram(graphNodes.keySet());
     }
 
-    public Map<Integer, Pair<Double, Double>> arrangeDiagram() {
-        DiagramArrangement classDiagramArrangement = new ClassDiagramArrangement(graphNodes, graphEdges);
-        nodesGeometry = classDiagramArrangement.arrangeDiagram();
-        return nodesGeometry;
+    public Map<Integer, Pair<Double, Double>> arrangeDiagram(Map<SinkVertex, Set<Arc<SinkVertex>>> diagram) {
+        DiagramArrangement classDiagramArrangement = new ClassDiagramArrangement(graphNodes, graphEdges, diagram);
+        return classDiagramArrangement.arrangeDiagram();
     }
 
     public SmartGraphPanel<String, String> visualizeJavaFXGraph(Map<SinkVertex, Set<Arc<SinkVertex>>> diagram) {
@@ -46,8 +44,8 @@ public class ClassDiagram {
         return javaFXVisualization.createGraphView();
     }
 
-    public DiagramExporter createGraphMLExporter() {
-        return new GraphMLClassDiagramExporter(graphNodes, nodesGeometry, graphEdges);
+    public DiagramExporter createGraphMLExporter(Map<SinkVertex, Set<Arc<SinkVertex>>> diagram, Map<Integer, Pair<Double, Double>> diagramGeometry) {
+        return new GraphMLClassDiagramExporter(graphNodes, diagramGeometry, graphEdges, diagram);
     }
 
     public DiagramExporter createJavaFXExporter(Map<SinkVertex, Set<Arc<SinkVertex>>> diagram) {
