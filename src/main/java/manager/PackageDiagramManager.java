@@ -15,6 +15,7 @@ public class PackageDiagramManager implements DiagramManager {
 
     private final ArrayDeque<PackageDiagram> diagramStack;
     private Map<Vertex, Set<Arc<Vertex>>> diagram;
+    private Map<Integer, Pair<Double, Double>> diagramGeometry;
 
     public PackageDiagramManager() {
         diagramStack = new ArrayDeque<>();
@@ -36,7 +37,8 @@ public class PackageDiagramManager implements DiagramManager {
 
     @Override
     public Map<Integer, Pair<Double, Double>> arrangeDiagram(){
-        return Objects.requireNonNull(diagramStack.peek()).arrangeDiagram();
+        diagramGeometry = Objects.requireNonNull(diagramStack.peek()).arrangeDiagram(diagram);
+        return diagramGeometry;
     }
 
     @Override
@@ -45,20 +47,26 @@ public class PackageDiagramManager implements DiagramManager {
     }
 
     @Override
+    public void loadDiagram(Path graphSavePath) {
+        diagramStack.push(new PackageDiagram());
+        diagram = Objects.requireNonNull(diagramStack.peek()).loadDiagram(graphSavePath);
+    }
+
+    @Override
     public File exportDiagramToGraphML(Path graphMLSavePath) {
-        DiagramExporter diagramExporter = Objects.requireNonNull(diagramStack.peek()).createGraphMLExporter();
+        DiagramExporter diagramExporter = Objects.requireNonNull(diagramStack.peek()).createGraphMLExporter(diagram, diagramGeometry);
         return diagramExporter.exportDiagram(graphMLSavePath);
     }
 
     @Override
     public File exportPlantUMLImage(Path plantUMLSavePath) {
-        DiagramExporter diagramExporter =  Objects.requireNonNull(diagramStack.peek()).createPlantUMLImageExporter();
+        DiagramExporter diagramExporter =  Objects.requireNonNull(diagramStack.peek()).createPlantUMLImageExporter(diagram);
         return diagramExporter.exportDiagram(plantUMLSavePath);
     }
 
     @Override
     public File exportPlantUMLText(Path textSavePath) {
-        DiagramExporter diagramExporter =  Objects.requireNonNull(diagramStack.peek()).createPlantUMLTextExporter();
+        DiagramExporter diagramExporter =  Objects.requireNonNull(diagramStack.peek()).createPlantUMLTextExporter(diagram);
         return diagramExporter.exportDiagram(textSavePath);
     }
 
@@ -66,12 +74,6 @@ public class PackageDiagramManager implements DiagramManager {
     public File saveDiagram(Path graphSavePath) {
         DiagramExporter diagramExporter =  Objects.requireNonNull(diagramStack.peek()).createJavaFXExporter(diagram);
         return diagramExporter.exportDiagram(graphSavePath);
-    }
-
-    @Override
-    public void loadDiagram(Path graphSavePath) {
-        diagramStack.push(new PackageDiagram());
-        diagram = Objects.requireNonNull(diagramStack.peek()).loadDiagram(graphSavePath);
     }
 
     public PackageDiagram getPackageDiagram() {

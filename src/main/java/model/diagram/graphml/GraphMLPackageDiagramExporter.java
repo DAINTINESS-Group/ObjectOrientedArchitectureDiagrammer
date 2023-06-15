@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Map;
+import java.util.Set;
 
 public class GraphMLPackageDiagramExporter implements DiagramExporter {
 
@@ -17,11 +18,11 @@ public class GraphMLPackageDiagramExporter implements DiagramExporter {
     private final StringBuilder graphMLEdgeBuffer;
 
     public GraphMLPackageDiagramExporter(Map<Vertex, Integer> graphNodes, Map<Integer, Pair<Double, Double>> nodesGeometry,
-                                         Map<Arc<Vertex>, Integer> graphEdges) {
+                                         Map<Vertex, Set<Arc<Vertex>>> diagram) {
         GraphMLVertex graphMLVertex = new GraphMLVertex(graphNodes, nodesGeometry);
         graphMLNodeBuffer = graphMLVertex.convertVertex();
-        GraphMLVertexArc graphMLVertexArc = new GraphMLVertexArc(graphNodes);
-        graphMLEdgeBuffer = graphMLVertexArc.convertVertexArc(graphEdges);
+        GraphMLVertexArc graphMLVertexArc = new GraphMLVertexArc(graphNodes, diagram);
+        graphMLEdgeBuffer = graphMLVertexArc.convertVertexArc();
         graphMLFile = new GraphMLFile();
     }
 

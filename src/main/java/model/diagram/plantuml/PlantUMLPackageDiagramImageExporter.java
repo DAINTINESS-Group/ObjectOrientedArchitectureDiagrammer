@@ -10,15 +10,16 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.file.Path;
 import java.util.Map;
+import java.util.Set;
 
 public class PlantUMLPackageDiagramImageExporter implements DiagramExporter {
 
     private final String bufferBody;
 
-    public PlantUMLPackageDiagramImageExporter(Map<Vertex, Integer> graphNodes, Map<Arc<Vertex>, Integer> graphEdges) {
-        PlantUMLVertex plantUMLVertex = new PlantUMLVertex(graphNodes);
+    public PlantUMLPackageDiagramImageExporter(Map<Vertex, Set<Arc<Vertex>>> diagram) {
+        PlantUMLVertex plantUMLVertex = new PlantUMLVertex(diagram);
         StringBuilder plantUMLNodeBuffer = plantUMLVertex.convertVertex();
-        PlantUMLVertexArc plantUMLEdge = new PlantUMLVertexArc(graphEdges);
+        PlantUMLVertexArc plantUMLEdge = new PlantUMLVertexArc(diagram);
         StringBuilder plantUMLEdgeBuffer = plantUMLEdge.convertVertexArc();
         bufferBody = plantUMLNodeBuffer.append("\n\n").append(plantUMLEdgeBuffer) + "\n @enduml";
     }

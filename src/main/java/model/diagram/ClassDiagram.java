@@ -27,7 +27,11 @@ public class ClassDiagram {
     }
 
     public Map<SinkVertex, Set<Arc<SinkVertex>>> createDiagram(List<String> chosenFileNames) {
-        createNodeCollection(chosenFileNames);
+        int nodeId = 0;
+        for (SinkVertex sinkVertex: getChosenNodes(chosenFileNames)) {
+            graphNodes.put(sinkVertex, nodeId);
+            nodeId++;
+        }
         return convertCollectionsToDiagram(graphNodes.keySet());
     }
 
@@ -56,23 +60,15 @@ public class ClassDiagram {
     }
 
     public DiagramExporter createPlantUMLImageExporter(Map<SinkVertex, Set<Arc<SinkVertex>>> diagram) {
-        return new PlantUMLClassDiagramImageExporter(graphNodes, diagram);
+        return new PlantUMLClassDiagramImageExporter(diagram);
     }
 
     public DiagramExporter createPlantUMLTextExporter(Map<SinkVertex, Set<Arc<SinkVertex>>> diagram) {
-        return new PlantUMLClassDiagramTextExporter(graphNodes, diagram);
+        return new PlantUMLClassDiagramTextExporter(diagram);
     }
 
     public void setSinkVertices(Map<Path, SinkVertex> sinkVertices) {
         this.sinkVertices = sinkVertices;
-    }
-
-    private void createNodeCollection(List<String> chosenFilesNames) {
-        int nodeId = 0;
-        for (SinkVertex sinkVertex: getChosenNodes(chosenFilesNames)) {
-            graphNodes.put(sinkVertex, nodeId);
-            nodeId++;
-        }
     }
 
     private List<SinkVertex> getChosenNodes(List<String> chosenClassesNames) {

@@ -17,37 +17,42 @@ public class PackageDiagramArrangement implements DiagramArrangement {
 
     private final Map<Integer, Pair<Double, Double>> nodesGeometry;
     private final Map<Vertex, Integer> graphNodes;
-    private final Map<Arc<Vertex>, Integer> graphEdges;
+    private final Map<Vertex, Set<Arc<Vertex>>> diagram;
 
-    public PackageDiagramArrangement(Map<Vertex, Integer> graphNodes, Map<Arc<Vertex>, Integer> graphEdges) {
+    public PackageDiagramArrangement(Map<Vertex, Integer> graphNodes, Map<Vertex, Set<Arc<Vertex>>> diagram) {
         this.graphNodes = graphNodes;
-        this.graphEdges = graphEdges;
+        this.diagram = diagram;
         nodesGeometry = new HashMap<>();
     }
 
     @Override
     public Map<Integer, Pair<Double, Double>> arrangeDiagram() {
-        Graph<Integer, String> graph = new SparseGraph<>();
-        populatePackageGraph(graphNodes, graphEdges, graph);
+        Graph<Integer, String> graph = populatePackageGraph(graphNodes);
         AbstractLayout<Integer, String> layout = new SpringLayout<>(graph);
         layout.setSize(new Dimension(1500, 1000));
-        populateNodesGeometry(layout, new ArrayList<>(graphNodes.values()));
+        for (Integer i : graphNodes.values()) {
+            nodesGeometry.put(i, new Pair<>(layout.getX(i), layout.getY(i)));
+        }
         return nodesGeometry;
     }
 
-    private void populatePackageGraph(Map<Vertex, Integer> graphNodes, Map<Arc<Vertex>, Integer> graphEdges, Graph<Integer, String> graph) {
+    private Graph<Integer, String> populatePackageGraph(Map<Vertex, Integer> graphNodes) {
+        Graph<Integer, String> graph = new SparseGraph<>();
         for (Integer i : graphNodes.values()) {
             graph.addVertex(i);
         }
-        for (Map.Entry<Arc<Vertex>, Integer> arc : graphEdges.entrySet()) {
-            graph.addEdge(graphNodes.get(arc.getKey().getSourceVertex()) + " " + graphNodes.get(arc.getKey().getTargetVertex()),
-                    graphNodes.get(arc.getKey().getSourceVertex()), graphNodes.get(arc.getKey().getTargetVertex()), EdgeType.DIRECTED);
+
+        List<Arc<Vertex>> arcs = new ArrayList<>();
+        for (Set<Arc<Vertex>> arcSet: diagram.values()) {
+            arcs.addAll(arcSet);
         }
+
+        for (Arc<Vertex> arc: arcs) {
+            graph.addEdge(graphNodes.get(arc.getSourceVertex()) + " " + graphNodes.get(arc.getTargetVertex()),
+                graphNodes.get(arc.getSourceVertex()), graphNodes.get(arc.getTargetVertex()), EdgeType.DIRECTED);
+        }
+
+        return graph;
     }
 
-    private void populateNodesGeometry(AbstractLayout<Integer, String> layout, List<Integer> graphNodesIds) {
-        for (Integer i : graphNodesIds) {
-            nodesGeometry.put(i, new Pair<>(layout.getX(i), layout.getY(i)));
-        }
-    }
 }

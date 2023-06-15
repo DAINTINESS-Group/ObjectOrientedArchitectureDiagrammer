@@ -1,6 +1,7 @@
 package manager;
 
 import model.graph.Arc;
+import model.graph.SinkVertex;
 import model.graph.Vertex;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -15,36 +16,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PackageDiagramManagerTest {
     Path currentDirectory = Path.of(".");
-
-    @Test
-    void populateGraphEdgesTest() {
-        try {
-            PackageDiagramManager packageDiagramManager = new PackageDiagramManager();
-            SourceProject sourceProject = packageDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-            packageDiagramManager.convertTreeToDiagram(List.of(
-                "src.view",
-                "src.model",
-                "src.model.strategies",
-                "src.controller.commands",
-                "src.controller"
-            ));
-            Set<Arc<Vertex>> expectedArcs = packageDiagramManager.getPackageDiagram().getGraphEdges().keySet();
-
-            List<Arc<Vertex>> actualArcs = new ArrayList<>();
-            for (Vertex packageNode : sourceProject.getVertices().values()) {
-                actualArcs.addAll(packageNode.getArcs());
-            }
-            for (Arc<Vertex> arc : expectedArcs) {
-                actualArcs.stream()
-                    .filter(vertexArc ->
-                        vertexArc.getSourceVertex().getName().equals(arc.getSourceVertex().getName()) &&
-                        vertexArc.getTargetVertex().getName().equals(arc.getTargetVertex().getName()))
-                    .findFirst().orElseGet(Assertions::fail);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     @Test
     void populateGraphMLPackageNodeTest() {

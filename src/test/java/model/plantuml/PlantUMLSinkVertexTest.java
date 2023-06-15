@@ -3,16 +3,14 @@ package model.plantuml;
 import manager.ClassDiagramManager;
 import manager.SourceProject;
 import model.diagram.plantuml.PlantUMLSinkVertex;
+import model.graph.Arc;
 import model.graph.SinkVertex;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -102,7 +100,8 @@ public class PlantUMLSinkVertexTest {
                     "VersionsManager", "Document", "DocumentManager"));
 
             Map<SinkVertex, Integer> graphNodes = classDiagramManager.getClassDiagram().getGraphNodes();
-            PlantUMLSinkVertex plantUMLSinkVertex = new PlantUMLSinkVertex(graphNodes);
+            Map<SinkVertex, Set<Arc<SinkVertex>>> diagram = classDiagramManager.getDiagram();
+            PlantUMLSinkVertex plantUMLSinkVertex = new PlantUMLSinkVertex(diagram);
             String actualBuffer = plantUMLSinkVertex.convertSinkVertex().toString();
 
             List<String> expected = Arrays.asList(expectedBuffer.split("\n"));

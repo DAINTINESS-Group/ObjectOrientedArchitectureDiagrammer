@@ -4,16 +4,14 @@ import manager.PackageDiagramManager;
 import manager.SourceProject;
 import model.diagram.GraphPackageDiagramConverter;
 import model.graph.Arc;
+import model.graph.SinkVertex;
 import model.graph.Vertex;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -34,10 +32,14 @@ public class GraphPackageDiagramConverterTest {
                 "src.controller.commands",
                 "src.controller"
             ));
-            Set<Vertex> graphNodes = packageDiagramManager.getPackageDiagram().getGraphNodes().keySet();
-            Set<Arc<Vertex>> graphEdges = packageDiagramManager.getPackageDiagram().getGraphEdges().keySet();
+            Map<Vertex, Set<Arc<Vertex>>> diagram = packageDiagramManager.getDiagram();
 
-            GraphPackageDiagramConverter graphPackageDiagramConverter = new GraphPackageDiagramConverter(graphNodes);
+            List<Arc<Vertex>> arcs = new ArrayList<>();
+            for (Set<Arc<Vertex>> arcSet: diagram.values()) {
+                arcs.addAll(arcSet);
+            }
+
+            GraphPackageDiagramConverter graphPackageDiagramConverter = new GraphPackageDiagramConverter(diagram.keySet());
             Map<Vertex, Set<Arc<Vertex>>> adjacencyList = graphPackageDiagramConverter.convertGraphToPackageDiagram();
 
             Set<Arc<Vertex>> actualArcs = new HashSet<>();
@@ -45,9 +47,9 @@ public class GraphPackageDiagramConverterTest {
                 actualArcs.addAll(value);
             }
 
-            assertEquals(graphEdges.size(), actualArcs.size());
+            assertEquals(arcs.size(), actualArcs.size());
             for (Arc<Vertex> vertexArc: actualArcs) {
-                assertTrue(graphEdges.contains(vertexArc));
+                assertTrue(arcs.contains(vertexArc));
             }
 
         } catch (IOException e) {

@@ -35,14 +35,14 @@ public class PlantUMLClassDiagramTextExporterTest {
             classDiagramManager.convertTreeToDiagram(List.of("StableVersionsStrategy", "VersionsStrategy", "VersionsStrategyFactory", "VolatileVersionsStrategy",
                     "VersionsManager", "Document", "DocumentManager"));
 
-            Map<SinkVertex, Integer> graphNodes = classDiagramManager.getClassDiagram().getGraphNodes();
-            PlantUMLSinkVertex plantUMLSinkVertex = new PlantUMLSinkVertex(graphNodes);
-            String sinkVertexBuffer = plantUMLSinkVertex.convertSinkVertex().toString();
             Map<SinkVertex, Set<Arc<SinkVertex>>> diagram = classDiagramManager.getDiagram();
+            Map<SinkVertex, Integer> graphNodes = classDiagramManager.getClassDiagram().getGraphNodes();
+            PlantUMLSinkVertex plantUMLSinkVertex = new PlantUMLSinkVertex(diagram);
+            String sinkVertexBuffer = plantUMLSinkVertex.convertSinkVertex().toString();
             PlantUMLSinkVertexArc plantUMLEdge = new PlantUMLSinkVertexArc(diagram);
             String sinkVertexArcBuffer = plantUMLEdge.convertSinkVertexArc().toString();
 
-            DiagramExporter graphMLExporter = new PlantUMLClassDiagramTextExporter(graphNodes, diagram);
+            DiagramExporter graphMLExporter = new PlantUMLClassDiagramTextExporter(diagram);
             File exportedFile = graphMLExporter.exportDiagram(Paths.get(System.getProperty("user.home") + "\\testingExportedFile.txt"));
             Stream<String> lines = Files.lines(exportedFile.toPath());
             String actualFileContents = lines.collect(Collectors.joining("\n"));

@@ -4,6 +4,7 @@ import manager.PackageDiagramManager;
 import manager.SourceProject;
 import model.diagram.graphml.GraphMLVertexArc;
 import model.graph.Arc;
+import model.graph.SinkVertex;
 import model.graph.Vertex;
 import org.junit.jupiter.api.Test;
 
@@ -13,6 +14,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -33,36 +35,32 @@ public class GraphMLVertexArcTest {
                 "src.controller.commands",
                 "src.controller"
             ));
+            Map<Vertex, Set<Arc<Vertex>>> diagram = packageDiagramManager.getDiagram();
             Map<Vertex, Integer> graphNodes = packageDiagramManager.getPackageDiagram().getGraphNodes();
-            Map<Arc<Vertex>, Integer> graphEdges = packageDiagramManager.getPackageDiagram().getGraphEdges();
-            GraphMLVertexArc graphMLVertexArc = new GraphMLVertexArc(graphNodes);
-            StringBuilder actual = graphMLVertexArc.convertVertexArc(graphEdges);
+            GraphMLVertexArc graphMLVertexArc = new GraphMLVertexArc(graphNodes, diagram);
+            StringBuilder actual = graphMLVertexArc.convertVertexArc();
 
             StringBuilder expected = new StringBuilder();
-            List<Arc<Vertex>> relationships = new ArrayList<>();
-            for (Vertex packageNode : sourceProject.getVertices().values()) {
-                relationships.addAll(packageNode.getArcs());
+            List<Arc<Vertex>> arcs = new ArrayList<>();
+            for (Set<Arc<Vertex>> arcSet: diagram.values()) {
+                arcs.addAll(arcSet);
             }
+            int edgeId = 0;
 
-            for (Map.Entry<Arc<Vertex>, Integer> e : graphEdges.entrySet()) {
-                String edgesStart = e.getKey().getSourceVertex().getName();
-                String edgesEnd = e.getKey().getTargetVertex().getName();
-                for (Arc<Vertex> relationship : relationships) {
-                    if (relationship.getSourceVertex().getName().equals(edgesStart) && relationship.getTargetVertex().getName().equals(edgesEnd)) {
-                        expected.append(String.format("    <edge id=\"e%s\" source=\"n%s\" target=\"n%s\">\n" +
-                                        "      <data key=\"d9\"/>\n" +
-                                        "      <data key=\"d10\">\n" +
-                                        "        <y:PolyLineEdge>\n" +
-                                        "          <y:Path sx=\"0.0\" sy=\"0.0\" tx=\"0.0\" ty=\"0.0\"/>\n" +
-                                        "          <y:LineStyle color=\"#000000\" type=\"dashed\" width=\"1.0\"/>\n" +
-                                        "          <y:Arrows source=\"none\" target=\"plain\"/>\n" +
-                                        "          <y:BendStyle smoothed=\"false\"/>\n" +
-                                        "        </y:PolyLineEdge>\n" +
-                                        "      </data>\n" +
-                                        "    </edge>", e.getValue(), graphNodes.get(e.getKey().getSourceVertex()),
-                                graphNodes.get(e.getKey().getTargetVertex())));
-                    }
-                }
+            for (Arc<Vertex> e: arcs) {
+                expected.append(
+                    String.format("    <edge id=\"e%s\" source=\"n%s\" target=\"n%s\">\n" +
+                            "      <data key=\"d9\"/>\n" +
+                            "      <data key=\"d10\">\n" +
+                            "        <y:PolyLineEdge>\n" +
+                            "          <y:Path sx=\"0.0\" sy=\"0.0\" tx=\"0.0\" ty=\"0.0\"/>\n" +
+                            "          <y:LineStyle color=\"#000000\" type=\"dashed\" width=\"1.0\"/>\n" +
+                            "          <y:Arrows source=\"none\" target=\"plain\"/>\n" +
+                            "          <y:BendStyle smoothed=\"false\"/>\n" +
+                            "        </y:PolyLineEdge>\n" +
+                            "      </data>\n" +
+                            "    </edge>", edgeId, graphNodes.get(e.getSourceVertex()),
+                    graphNodes.get(e.getTargetVertex())));
             }
             assertEquals(expected.toString(), actual.toString());
         } catch (IOException e) {

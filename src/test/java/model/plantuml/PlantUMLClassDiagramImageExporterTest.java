@@ -42,13 +42,13 @@ public class PlantUMLClassDiagramImageExporterTest {
                     "VersionsManager", "Document", "DocumentManager"));
 
             Map<SinkVertex, Integer> graphNodes = classDiagramManager.getClassDiagram().getGraphNodes();
-            PlantUMLSinkVertex plantUMLSinkVertex = new PlantUMLSinkVertex(graphNodes);
-            String sinkVertexBuffer = plantUMLSinkVertex.convertSinkVertex().toString();
             Map<SinkVertex, Set<Arc<SinkVertex>>> diagram = classDiagramManager.getDiagram();
+            PlantUMLSinkVertex plantUMLSinkVertex = new PlantUMLSinkVertex(diagram);
+            String sinkVertexBuffer = plantUMLSinkVertex.convertSinkVertex().toString();
             PlantUMLSinkVertexArc plantUMLEdge = new PlantUMLSinkVertexArc(diagram);
             String sinkVertexArcBuffer = plantUMLEdge.convertSinkVertexArc().toString();
 
-            DiagramExporter graphMLExporter = new PlantUMLClassDiagramImageExporter(graphNodes, diagram);
+            DiagramExporter graphMLExporter = new PlantUMLClassDiagramImageExporter(diagram);
             graphMLExporter.exportDiagram(Paths.get(System.getProperty("user.home") + "\\testingExportedFile.png"));
 
             String expected = "@startuml\n" +

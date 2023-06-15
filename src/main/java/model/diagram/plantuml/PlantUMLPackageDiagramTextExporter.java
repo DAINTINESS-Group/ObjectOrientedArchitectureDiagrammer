@@ -10,15 +10,16 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Map;
+import java.util.Set;
 
 public class PlantUMLPackageDiagramTextExporter implements DiagramExporter {
 
     private final String bufferBody;
 
-    public PlantUMLPackageDiagramTextExporter(Map<Vertex, Integer> graphNodes, Map<Arc<Vertex>, Integer> graphEdges) {
-        PlantUMLVertex plantUMLVertex = new PlantUMLVertex(graphNodes);
+    public PlantUMLPackageDiagramTextExporter(Map<Vertex, Set<Arc<Vertex>>> diagram) {
+        PlantUMLVertex plantUMLVertex = new PlantUMLVertex(diagram);
         StringBuilder plantUMLNodeBuffer = plantUMLVertex.convertVertex();
-        PlantUMLVertexArc plantUMLEdge = new PlantUMLVertexArc(graphEdges);
+        PlantUMLVertexArc plantUMLEdge = new PlantUMLVertexArc(diagram);
         StringBuilder plantUMLEdgeBuffer = plantUMLEdge.convertVertexArc();
         bufferBody = plantUMLNodeBuffer.append("\n\n").append(plantUMLEdgeBuffer) + "\n @enduml";
     }

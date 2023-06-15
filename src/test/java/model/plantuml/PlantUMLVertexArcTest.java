@@ -10,10 +10,7 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -43,8 +40,8 @@ class PlantUMLVertexArcTest {
 				"src.controller"
 			));
 
-			Map<Arc<Vertex>, Integer> graphEdges = packageDiagramManager.getPackageDiagram().getGraphEdges();
-			PlantUMLVertexArc plantUMLEdge = new PlantUMLVertexArc(graphEdges);
+			Map<Vertex, Set<Arc<Vertex>>> diagram = packageDiagramManager.getDiagram();
+			PlantUMLVertexArc plantUMLEdge = new PlantUMLVertexArc(diagram);
 			String actualBuffer = plantUMLEdge.convertVertexArc().toString();
 
 			List<String> expectedRelationship = Arrays.asList(expectedBuffer.split("\n"));

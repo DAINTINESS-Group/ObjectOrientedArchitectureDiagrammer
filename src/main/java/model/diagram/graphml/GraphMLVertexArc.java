@@ -1,24 +1,31 @@
 package model.diagram.graphml;
 
 import model.graph.Arc;
+import model.graph.SinkVertex;
 import model.graph.Vertex;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class GraphMLVertexArc {
     private final Map<Vertex, Integer> graphNodes;
+    private final Map<Vertex, Set<Arc<Vertex>>> diagram;
     private final StringBuilder graphMLBuffer;
 
-    public GraphMLVertexArc(Map<Vertex, Integer> graphNodes) {
+    public GraphMLVertexArc(Map<Vertex, Integer> graphNodes, Map<Vertex, Set<Arc<Vertex>>> diagram) {
         this.graphNodes = graphNodes;
+        this.diagram = diagram;
         graphMLBuffer = new StringBuilder();
     }
 
-    public StringBuilder convertVertexArc(Map<Arc<Vertex>, Integer> graphEdges) {
-        for (Map.Entry<Arc<Vertex>, Integer> entry: graphEdges.entrySet()) {
-            graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLVertexArcSyntax(getVertexArcProperties(entry.getKey(), entry.getValue())));
+    public StringBuilder convertVertexArc() {
+        List<Arc<Vertex>> arcs = new ArrayList<>();
+        for (Set<Arc<Vertex>> arcSet: diagram.values()) {
+            arcs.addAll(arcSet);
+        }
+
+        int edgeId = 0;
+        for (Arc<Vertex> arc: arcs) {
+            graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLVertexArcSyntax(getVertexArcProperties(arc, edgeId)));
         }
         return graphMLBuffer;
     }
