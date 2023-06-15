@@ -1,6 +1,7 @@
-package model.diagram.plantuml;
+package model.diagram.exportation;
 
-import model.diagram.DiagramExporter;
+import model.diagram.plantuml.PlantUMLVertex;
+import model.diagram.plantuml.PlantUMLVertexArc;
 import model.graph.Arc;
 import model.graph.Vertex;
 

@@ -1,14 +1,14 @@
 package manager;
 
-import model.diagram.DiagramExporter;
+import model.diagram.exportation.DiagramExporter;
 import model.diagram.ShadowCleaner;
 import model.diagram.arrangement.ClassDiagramArrangement;
 import model.diagram.GraphClassDiagramConverter;
 import model.diagram.arrangement.DiagramArrangement;
-import model.diagram.graphml.GraphMLClassDiagramExporter;
+import model.diagram.exportation.GraphMLClassDiagramExporter;
 import model.diagram.graphml.GraphMLSinkVertex;
 import model.diagram.graphml.GraphMLSinkVertexArc;
-import model.diagram.javafx.classdiagram.JavaFXClassDiagramExporter;
+import model.diagram.exportation.JavaFXClassDiagramExporter;
 import model.graph.Arc;
 import model.graph.SinkVertex;
 import model.graph.Vertex;

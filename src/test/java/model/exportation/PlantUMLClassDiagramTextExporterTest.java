@@ -1,9 +1,9 @@
-package model.plantuml;
+package model.exportation;
 
 import manager.ClassDiagramManager;
 import manager.SourceProject;
-import model.diagram.DiagramExporter;
-import model.diagram.plantuml.PlantUMLClassDiagramTextExporter;
+import model.diagram.exportation.DiagramExporter;
+import model.diagram.exportation.PlantUMLClassDiagramTextExporter;
 import model.diagram.plantuml.PlantUMLSinkVertex;
 import model.diagram.plantuml.PlantUMLSinkVertexArc;
 import model.graph.Arc;

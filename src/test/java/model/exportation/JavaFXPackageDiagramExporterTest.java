@@ -1,10 +1,10 @@
-package model.javafx;
+package model.exportation;
 
 import com.google.gson.*;
 import manager.PackageDiagramManager;
-import model.diagram.DiagramExporter;
+import model.diagram.exportation.DiagramExporter;
 import model.diagram.javafx.classdiagram.SinkVertexDeserializer;
-import model.diagram.javafx.packagediagram.JavaFXPackageDiagramExporter;
+import model.diagram.exportation.JavaFXPackageDiagramExporter;
 import model.graph.Arc;
 import model.graph.SinkVertex;
 import model.graph.Vertex;

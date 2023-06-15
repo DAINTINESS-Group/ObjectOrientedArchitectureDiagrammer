@@ -2,7 +2,7 @@ package manager;
 
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import model.diagram.ClassDiagram;
-import model.diagram.DiagramExporter;
+import model.diagram.exportation.DiagramExporter;
 import model.diagram.ShadowCleaner;
 import model.graph.Arc;
 import model.graph.SinkVertex;

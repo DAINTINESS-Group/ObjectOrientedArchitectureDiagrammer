@@ -1,4 +1,6 @@
-package model.diagram.graphml;
+package model.diagram.exportation;
+
+import model.diagram.graphml.GraphMLSyntax;
 
 import java.io.File;
 import java.io.FileWriter;

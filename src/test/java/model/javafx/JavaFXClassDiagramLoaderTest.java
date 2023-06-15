@@ -1,8 +1,8 @@
 package model.javafx;
 
 import manager.ClassDiagramManager;
-import model.diagram.DiagramExporter;
-import model.diagram.javafx.classdiagram.JavaFXClassDiagramExporter;
+import model.diagram.exportation.DiagramExporter;
+import model.diagram.exportation.JavaFXClassDiagramExporter;
 import model.diagram.javafx.classdiagram.JavaFXClassDiagramLoader;
 import model.graph.Arc;
 import model.graph.SinkVertex;

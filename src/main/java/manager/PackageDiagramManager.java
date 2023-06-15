@@ -1,7 +1,7 @@
 package manager;
 
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
-import model.diagram.DiagramExporter;
+import model.diagram.exportation.DiagramExporter;
 import model.diagram.PackageDiagram;
 import model.graph.Arc;
 import model.graph.Vertex;

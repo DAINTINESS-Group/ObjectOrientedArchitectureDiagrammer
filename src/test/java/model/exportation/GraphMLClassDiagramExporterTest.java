@@ -1,11 +1,11 @@
-package model.graphml;
+package model.exportation;
 
 import manager.ClassDiagramManager;
 import manager.SourceProject;
-import model.diagram.DiagramExporter;
+import model.diagram.exportation.DiagramExporter;
 import model.diagram.arrangement.ClassDiagramArrangement;
 import model.diagram.arrangement.DiagramArrangement;
-import model.diagram.graphml.GraphMLClassDiagramExporter;
+import model.diagram.exportation.GraphMLClassDiagramExporter;
 import model.diagram.graphml.GraphMLSinkVertex;
 import model.diagram.graphml.GraphMLSinkVertexArc;
 import model.diagram.graphml.GraphMLSyntax;

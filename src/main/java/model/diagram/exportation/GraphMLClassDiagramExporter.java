@@ -1,8 +1,9 @@
-package model.diagram.graphml;
+package model.diagram.exportation;
 
-import model.diagram.DiagramExporter;
+import model.diagram.graphml.GraphMLSinkVertex;
+import model.diagram.graphml.GraphMLSinkVertexArc;
 import model.graph.Arc;
-import model.graph.Vertex;
+import model.graph.SinkVertex;
 import org.javatuples.Pair;
 
 import java.io.File;
@@ -11,18 +12,18 @@ import java.nio.file.Path;
 import java.util.Map;
 import java.util.Set;
 
-public class GraphMLPackageDiagramExporter implements DiagramExporter {
+public class GraphMLClassDiagramExporter implements DiagramExporter {
 
     private final GraphMLFile graphMLFile;
     private final StringBuilder graphMLNodeBuffer;
     private final StringBuilder graphMLEdgeBuffer;
 
-    public GraphMLPackageDiagramExporter(Map<Vertex, Integer> graphNodes, Map<Integer, Pair<Double, Double>> nodesGeometry,
-                                         Map<Vertex, Set<Arc<Vertex>>> diagram) {
-        GraphMLVertex graphMLVertex = new GraphMLVertex(graphNodes, nodesGeometry);
-        graphMLNodeBuffer = graphMLVertex.convertVertex();
-        GraphMLVertexArc graphMLVertexArc = new GraphMLVertexArc(graphNodes, diagram);
-        graphMLEdgeBuffer = graphMLVertexArc.convertVertexArc();
+    public GraphMLClassDiagramExporter(Map<SinkVertex, Integer> graphNodes, Map<Integer, Pair<Double, Double>> nodesGeometry,
+                                       Map<SinkVertex, Set<Arc<SinkVertex>>> diagram) {
+        GraphMLSinkVertex graphMLSinkVertex = new GraphMLSinkVertex(graphNodes, nodesGeometry);
+        this.graphMLNodeBuffer = graphMLSinkVertex.convertSinkVertex();
+        GraphMLSinkVertexArc graphMLSinkVertexArc = new GraphMLSinkVertexArc(graphNodes, diagram);
+        this.graphMLEdgeBuffer = graphMLSinkVertexArc.convertSinkVertexArc();
         graphMLFile = new GraphMLFile();
     }
 

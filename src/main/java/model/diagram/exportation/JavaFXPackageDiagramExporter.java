@@ -1,8 +1,7 @@
-package model.diagram.javafx.packagediagram;
+package model.diagram.exportation;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import model.diagram.DiagramExporter;
 import model.graph.Arc;
 import model.graph.Vertex;
 

@@ -1,7 +1,6 @@
-package model.diagram.javafx.packagediagram;
+package model.diagram.exportation;
 
 import com.google.gson.*;
-import model.diagram.javafx.classdiagram.SinkVertexSerializer;
 import model.graph.Arc;
 import model.graph.SinkVertex;
 import model.graph.Vertex;

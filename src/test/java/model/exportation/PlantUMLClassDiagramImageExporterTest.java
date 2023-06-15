@@ -1,4 +1,4 @@
-package model.plantuml;
+package model.exportation;
 
 import com.github.romankh3.image.comparison.ImageComparison;
 import com.github.romankh3.image.comparison.ImageComparisonUtil;
@@ -6,8 +6,8 @@ import com.github.romankh3.image.comparison.model.ImageComparisonResult;
 import com.github.romankh3.image.comparison.model.ImageComparisonState;
 import manager.ClassDiagramManager;
 import manager.SourceProject;
-import model.diagram.DiagramExporter;
-import model.diagram.plantuml.PlantUMLClassDiagramImageExporter;
+import model.diagram.exportation.DiagramExporter;
+import model.diagram.exportation.PlantUMLClassDiagramImageExporter;
 import model.diagram.plantuml.PlantUMLSinkVertex;
 import model.diagram.plantuml.PlantUMLSinkVertexArc;
 import model.graph.Arc;

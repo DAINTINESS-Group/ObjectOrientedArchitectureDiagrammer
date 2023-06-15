@@ -1,6 +1,7 @@
-package model.diagram.plantuml;
+package model.diagram.exportation;
 
-import model.diagram.DiagramExporter;
+import model.diagram.plantuml.PlantUMLSinkVertex;
+import model.diagram.plantuml.PlantUMLSinkVertexArc;
 import model.graph.Arc;
 import model.graph.SinkVertex;
 

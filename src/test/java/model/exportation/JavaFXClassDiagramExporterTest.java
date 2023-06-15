@@ -1,11 +1,11 @@
-package model.javafx;
+package model.exportation;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import manager.ClassDiagramManager;
-import model.diagram.DiagramExporter;
-import model.diagram.javafx.classdiagram.JavaFXClassDiagramExporter;
+import model.diagram.exportation.DiagramExporter;
+import model.diagram.exportation.JavaFXClassDiagramExporter;
 import model.graph.Arc;
 import model.graph.SinkVertex;
 import org.junit.jupiter.api.Test;

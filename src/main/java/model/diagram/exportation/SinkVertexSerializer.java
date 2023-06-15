@@ -1,4 +1,4 @@
-package model.diagram.javafx.classdiagram;
+package model.diagram.exportation;
 
 import com.google.gson.*;
 import model.graph.Arc;
