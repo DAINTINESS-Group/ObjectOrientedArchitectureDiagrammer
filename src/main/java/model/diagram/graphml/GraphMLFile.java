@@ -13,7 +13,7 @@ public class GraphMLFile {
 
     public void createGraphMLFile(Path graphMLSavePath) throws IOException {
         graphMLFile = graphMLSavePath.toFile();
-        graphMLWriter = new FileWriter(graphMLSavePath.toFile());
+        graphMLWriter = new FileWriter(graphMLFile);
         graphMLBuffer = new StringBuilder();
         graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLPrefix());
     }
@@ -25,7 +25,7 @@ public class GraphMLFile {
         graphMLWriter.close();
     }
 
-    public void writeToBuffer(String buffer) {
+    public void writeToBuffer(StringBuilder buffer) {
         graphMLBuffer.append(buffer);
     }
 

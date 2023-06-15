@@ -1,23 +1,30 @@
 package controller;
 
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
-import manager.Manager;
-import model.tree.SourceProject;
+import manager.DiagramManager;
+import manager.DiagramManagerFactory;
+import manager.SourceProject;
+import org.javatuples.Pair;
 
 import java.io.File;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 
-public abstract class DiagramController implements Controller {
+public class DiagramController implements Controller {
 
-	protected Manager diagramManager;
+	private final DiagramManager diagramManager;
 
-	public SourceProject createTree(Path sourcePackagePath) {
-		return diagramManager.createTree(sourcePackagePath);
+	public DiagramController(String diagramType) {
+		DiagramManagerFactory diagramManagerFactory = new DiagramManagerFactory();
+		diagramManager = diagramManagerFactory.createDiagramManager(diagramType);
 	}
 
-	public Map<Integer, List<Double>> arrangeDiagram(){
+	public SourceProject createTree(Path sourcePackagePath) {
+		return diagramManager.createSourceProject(sourcePackagePath);
+	}
+
+	public Map<Integer, Pair<Double, Double>> arrangeDiagram(){
 		return diagramManager.arrangeDiagram();
 	}
 
@@ -25,12 +32,12 @@ public abstract class DiagramController implements Controller {
 		return diagramManager.exportDiagramToGraphML(graphMLSavePath);
 	}
 	
-	public void exportPlantUMLDiagram(Path graphSavePath) {
-		diagramManager.exportPlantUMLDiagram(graphSavePath);
+	public File exportPlantUMLDiagram(Path plantUMLSavePath) {
+		return diagramManager.exportPlantUMLDiagram(plantUMLSavePath);
 	}
 	
-	public void exportPlantUMLText(Path textSavePath) {
-		diagramManager.exportPlantUMLText(textSavePath);
+	public File exportPlantUMLText(Path textSavePath) {
+		return diagramManager.exportPlantUMLText(textSavePath);
 	}
 
 	public SmartGraphPanel<String, String> visualizeJavaFXGraph() {
@@ -41,12 +48,12 @@ public abstract class DiagramController implements Controller {
 		return diagramManager.saveDiagram(graphSavePath);
 	}
 
-	public Map<String, Map<String, String>> loadDiagram(Path graphSavePath) {
-		return diagramManager.loadDiagram(graphSavePath);
+	public void loadDiagram(Path graphSavePath) {
+		diagramManager.loadDiagram(graphSavePath);
 	}
 
-	public Map<String, Map<String, String>> convertTreeToDiagram(List<String> chosenClassesNames) {
-		return diagramManager.createDiagram(chosenClassesNames);
+	public void convertTreeToDiagram(List<String> chosenClassesNames) {
+		diagramManager.createDiagram(chosenClassesNames);
 	}
 
 }

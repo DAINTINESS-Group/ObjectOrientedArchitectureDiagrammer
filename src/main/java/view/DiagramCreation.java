@@ -1,7 +1,7 @@
 package view;
 
 import controller.Controller;
-import controller.DiagramControllerFactory;
+import controller.DiagramController;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuBar;
 
@@ -23,27 +23,18 @@ public class DiagramCreation {
     }
 
     public void createProject(String diagramType) {
-        this.diagramType = diagramType;
         if (projectTreeView == null) {
-            PopupWindow.createPopupInfoWindow("You should open a new project first!", "Error");
+            PopupWindow.createPopupInfoWindow("You should load a project first!", "Error");
             return;
         }
-        DiagramControllerFactory diagramControllerFactory = new DiagramControllerFactory();
-        diagramController = diagramControllerFactory.getDiagramController(diagramType);
+        this.diagramType = diagramType;
+        diagramController = new DiagramController(diagramType);
         diagramController.createTree(projectTreeView.getSourceFolderPath());
     }
 
     public void loadProject() {
         projectTreeView.setCheckedItems(projectTreeView.getRootItem());
         diagramController.convertTreeToDiagram(getSelectedFiles(diagramType));
-    }
-
-    private List<String> getSelectedFiles(String diagramType) {
-        if (diagramType.equals("Package")) {
-            return projectTreeView.getSelectedFiles(projectTreeView.getFolderFiles(), "package");
-        }else{
-            return projectTreeView.getSelectedFiles(projectTreeView.getJavaSourceFiles(), "java");
-        }
     }
 
     public void viewProject() {
@@ -58,38 +49,49 @@ public class DiagramCreation {
         viewDiagram();
     }
 
-    private boolean wereFilesChosen() {
-        return !(projectTreeView.getSelectedFiles(projectTreeView.getFolderFiles(), "package").size() == 0 &&
-                projectTreeView.getSelectedFiles(projectTreeView.getJavaSourceFiles(), "java").size() == 0);
-    }
-
     private void viewDiagram(){
         DiagramVisualization diagramVisualization = new DiagramVisualization(menuBar);
         diagramVisualization.setDiagramController(diagramController);
         diagramVisualization.setProjectTreeView(projectTreeView);
-        diagramVisualization.loadDiagramVisualization(diagramController.visualizeJavaFXGraph(), "new");
+        diagramVisualization.loadDiagramVisualization(diagramController.visualizeJavaFXGraph());
     }
 
     public void exportDiagram(){
         File selectedDirectory = FileAndDirectoryUtility.saveFile("Export Diagram", menuBar, "GraphML Files");
-        if (selectedDirectory != null) {
-            diagramController.arrangeDiagram();
-            diagramController.exportDiagramToGraphML(selectedDirectory.toPath());
+        if (selectedDirectory == null) {
+            return;
         }
+        diagramController.arrangeDiagram();
+        diagramController.exportDiagramToGraphML(selectedDirectory.toPath());
     }
-    
-    public void exportPlantUMLDiagram() {
+
+    public void exportPlantUMLImage() {
     	File selectedDirectory = FileAndDirectoryUtility.saveFile("Export Diagram As PlantUML", menuBar, "PlantUML Files");
-        if (selectedDirectory != null) {
-            diagramController.exportPlantUMLDiagram(selectedDirectory.toPath());
+        if (selectedDirectory == null) {
+            return;
         }
+        diagramController.exportPlantUMLDiagram(selectedDirectory.toPath());
     }
-    
+
     public void exportPlantUMLText() {
     	File selectedDirectory = FileAndDirectoryUtility.saveFile("Export PlantUML Text", menuBar, "PlantUML Text Files");
-        if (selectedDirectory != null) {
-            diagramController.exportPlantUMLText(selectedDirectory.toPath());
+        if (selectedDirectory == null) {
+            return;
         }
+        diagramController.exportPlantUMLText(selectedDirectory.toPath());
+    }
+
+    private List<String> getSelectedFiles(String diagramType) {
+        if (diagramType.equals("Package")) {
+            return projectTreeView.getSelectedFiles(projectTreeView.getFolderFiles(), "package");
+        }else{
+            return projectTreeView.getSelectedFiles(projectTreeView.getJavaSourceFiles(), "java");
+        }
+    }
+
+    private boolean wereFilesChosen() {
+        return !(projectTreeView.getSelectedFiles(projectTreeView.getFolderFiles(), "package").size() == 0 &&
+                projectTreeView.getSelectedFiles(projectTreeView.getJavaSourceFiles(), "java").size() == 0);
     }
 
     public void setMenuBar(MenuBar menuBar) {

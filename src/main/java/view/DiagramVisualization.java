@@ -29,7 +29,7 @@ public class DiagramVisualization {
         this.menuBar = menuBar;
     }
 
-    public void loadDiagramVisualization(SmartGraphPanel<String, String> graphView, String diagramType) {
+    public void loadDiagramVisualization(SmartGraphPanel<String, String> graphView) {
         this.graphView = graphView;
         try {
             URL url = getClass().getResource("/fxml/DiagramVisualizationView.fxml");
@@ -39,15 +39,32 @@ public class DiagramVisualization {
 
             DiagramVisualizationController diagramVisualizationController = loader.getController();
             diagramVisualizationController.setDiagramController(diagramController);
-
-            if (diagramType.equals("new")) {
-                diagramVisualizationController.setTreeView(projectTreeView);
-            }
-
+            diagramVisualizationController.setTreeView(projectTreeView);
             addGraphActions();
-            diagramVisualizationController.visualizeGraph(graphView, diagramType);
+            diagramVisualizationController.visualizeGraph(graphView);
 
             Scene diagramVisualizationScene = new Scene(diagramVisualizationParent);
+            Stage window = (Stage) menuBar.getScene().getWindow();
+            window.setScene(diagramVisualizationScene);
+            window.show();
+            graphView.init();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void loadLoadedDiagramVisualization(SmartGraphPanel<String, String> graphView) {
+        this.graphView = graphView;
+        try {
+            URL url = getClass().getResource("/fxml/ProjectLoadView.fxml");
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(url);
+            Parent parent = loader.load();
+
+            ProjectLoadController projectLoadController = loader.getController();
+            projectLoadController.visualizeGraph(graphView);
+
+            Scene diagramVisualizationScene = new Scene(parent);
             Stage window = (Stage) menuBar.getScene().getWindow();
             window.setScene(diagramVisualizationScene);
             window.show();
@@ -63,17 +80,17 @@ public class DiagramVisualization {
     }
 
     private void addVertexActions() {
-        graphView.setVertexDoubleClickAction((graphVertex) ->
-                PopupWindow.createPopupInfoWindow(String.format("Vertex contains element: %s", graphVertex.getUnderlyingVertex().element()),
-                "Node Information"));
+        graphView.setVertexDoubleClickAction(graphVertex ->
+            PopupWindow.createPopupInfoWindow(String.format("Vertex contains element: %s", graphVertex.getUnderlyingVertex().element()),
+            "Node Information"));
     }
 
     private void addEdgeActions() {
-        graphView.setEdgeDoubleClickAction((graphEdge) ->
-                PopupWindow.createPopupInfoWindow(String.format("Edge starting node: %s", graphEdge.getUnderlyingEdge().element().split("_")[EDGE_STARTING_NODE]) +
-                "\n" + String.format("Edge ending node: %s", graphEdge.getUnderlyingEdge().element().split("_")[EDGE_ENDING_NODE]) +
-                "\n" + String.format("Type of relationship: %s", Character.toUpperCase(graphEdge.getUnderlyingEdge().element().split("_")[EDGE_TYPE].charAt(0)) +
-                graphEdge.getUnderlyingEdge().element().split("_")[EDGE_TYPE].substring(1)), "Edge Information"));
+        graphView.setEdgeDoubleClickAction(graphEdge ->
+            PopupWindow.createPopupInfoWindow(String.format("Edge starting node: %s", graphEdge.getUnderlyingEdge().element().split("_")[EDGE_STARTING_NODE]) +
+            "\n" + String.format("Edge ending node: %s", graphEdge.getUnderlyingEdge().element().split("_")[EDGE_ENDING_NODE]) +
+            "\n" + String.format("Type of relationship: %s", Character.toUpperCase(graphEdge.getUnderlyingEdge().element().split("_")[EDGE_TYPE].charAt(0)) +
+            graphEdge.getUnderlyingEdge().element().split("_")[EDGE_TYPE].substring(1)), "Edge Information"));
     }
 
     public void setDiagramController(Controller diagramController) {

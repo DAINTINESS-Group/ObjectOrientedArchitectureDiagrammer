@@ -2,7 +2,6 @@ package view;
 
 import com.brunomnsilva.smartgraph.containers.ContentZoomPane;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
-
 import controller.Controller;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
@@ -30,30 +29,30 @@ public class DiagramVisualizationController {
     private Controller diagramController;
     private ProjectTreeView projectTreeView;
 
-    public void visualizeGraph(SmartGraphPanel<String, String> graphView, String diagramType) {
+    public void visualizeGraph(SmartGraphPanel<String, String> graphView) {
         borderPane.setCenter(new ContentZoomPane(graphView));
-        if (diagramType.equals("new")) {
-            setTreeView(projectTreeView);
-        }
+        setTreeView(projectTreeView);
     }
 
     public void exportDiagramAsImage() {
-        File selectedDirectory = FileAndDirectoryUtility.saveFile("Export Diagram as PNG", menuBar,"PNG files");
-        if (selectedDirectory != null) {
-            WritableImage image = borderPane.getCenter().snapshot(new SnapshotParameters(), null);
-            try {
-                ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", selectedDirectory);
-            }catch (IOException e) {
-                e.printStackTrace();
+        try {
+            File selectedDirectory = FileAndDirectoryUtility.saveFile("Export Diagram as PNG", menuBar,"PNG files");
+            if (selectedDirectory == null) {
+                return;
             }
+            WritableImage image = borderPane.getCenter().snapshot(new SnapshotParameters(), null);
+            ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", selectedDirectory);
+        }catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
     public void exportDiagramAsText() {
         File selectedFile = FileAndDirectoryUtility.saveFile("Save Diagram", menuBar, "Text Files");
-        if (selectedFile != null) {
-            diagramController.saveDiagram(selectedFile.toPath());
+        if (selectedFile == null) {
+            return;
         }
+        diagramController.saveDiagram(selectedFile.toPath());
     }
 
     public void closeDiagram() {
@@ -80,7 +79,7 @@ public class DiagramVisualizationController {
     }
     
     public void exportDiagramAsPlantUML() {
-    	DiagramCreation.getInstance().exportPlantUMLDiagram();
+    	DiagramCreation.getInstance().exportPlantUMLImage();
     }
     
     public void exportDiagramAsPlantUMLText() {

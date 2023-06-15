@@ -99,7 +99,22 @@
         <dependency>
             <groupId>com.github.javaparser</groupId>
             <artifactId>javaparser-core</artifactId>
-            <version>3.25.2</version>
+            <version>3.25.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.javatuples</groupId>
+            <artifactId>javatuples</artifactId>
+            <version>1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.10.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.romankh3</groupId>
+            <artifactId>image-comparison</artifactId>
+            <version>4.4.0</version>
         </dependency>
     </dependencies>
     <build>
