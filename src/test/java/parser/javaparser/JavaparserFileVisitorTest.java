@@ -27,8 +27,7 @@ public class JavaparserFileVisitorTest {
             ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
             Parser parser = projectParserFactory.createProjectParser();
 
-            parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-            Map<Path, PackageNode> packages = parser.getPackageNodes();
+            Map<Path, PackageNode> packages = parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
             PackageNode commandPackage = packages.get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
                     "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands"));
             LeafNode addLatexCommand = commandPackage.getLeafNodes().get("AddLatexCommand");
@@ -52,8 +51,7 @@ public class JavaparserFileVisitorTest {
             ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
             Parser parser = projectParserFactory.createProjectParser();
 
-            parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-            Map<Path, PackageNode> packages = parser.getPackageNodes();
+            Map<Path, PackageNode> packages = parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
             PackageNode commandPackage = packages.get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
                     "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands"));
             LeafNode addLatexCommand = commandPackage.getLeafNodes().get("AddLatexCommand");
@@ -77,8 +75,7 @@ public class JavaparserFileVisitorTest {
             ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
             Parser parser = projectParserFactory.createProjectParser();
 
-            parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-            Map<Path, PackageNode> packages = parser.getPackageNodes();
+            Map<Path, PackageNode> packages = parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
             PackageNode commandPackage = packages.get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
                     "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands"));
             LeafNode addLatexCommand = commandPackage.getLeafNodes().get("AddLatexCommand");
@@ -102,8 +99,7 @@ public class JavaparserFileVisitorTest {
             ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
             Parser parser = projectParserFactory.createProjectParser();
 
-            parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-            Map<Path, PackageNode> packages = parser.getPackageNodes();
+            Map<Path, PackageNode> packages = parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
             PackageNode commandPackage = packages.get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
                     "\\src\\test\\resources\\LatexEditor\\src\\controller"));
             LeafNode latexEditorController = commandPackage.getLeafNodes().get("LatexEditorController");
@@ -127,8 +123,7 @@ public class JavaparserFileVisitorTest {
             ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
             Parser parser = projectParserFactory.createProjectParser();
 
-            parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\ParserTesting"));
-            Map<Path, PackageNode> packages = parser.getPackageNodes();
+            Map<Path, PackageNode> packages = parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\ParserTesting"));
             PackageNode sourcePackage = packages.get(Paths.get(currentDirectory.toRealPath().normalize().toString(), "\\src\\test\\resources\\ParserTesting"));
             LeafNode objectCreationTest = sourcePackage.getLeafNodes().get("ObjectCreationTest");
 
@@ -151,8 +146,7 @@ public class JavaparserFileVisitorTest {
             ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
             Parser parser = projectParserFactory.createProjectParser();
 
-            parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\ParserTesting"));
-            Map<Path, PackageNode> packages = parser.getPackageNodes();
+            Map<Path, PackageNode> packages = parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\ParserTesting"));
             PackageNode inheritancePackage = packages.get(Paths.get(currentDirectory.toRealPath().normalize().toString(), "\\src\\test\\resources\\ParserTesting"));
             List<LeafNode> classLeafs = new ArrayList<>();
             List<LeafNode> interfaceLeafs = new ArrayList<>();

@@ -33,8 +33,7 @@ class JDTRelationshipIdentifierTest {
 			ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
 			Parser parser = projectParserFactory.createProjectParser();
 
-			parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-			Map<Path, PackageNode> packages = parser.getPackageNodes();
+			Map<Path, PackageNode> packages = parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
 			List<String> methodReturnTypes = new ArrayList<>(Arrays.asList("Constructor", "void"));
 			List<String> fieldTypes = new ArrayList<>(List.of("VersionsManager"));
 			List<String> methodParameterTypes = new ArrayList<>(List.of("VersionsManager"));
@@ -74,8 +73,7 @@ class JDTRelationshipIdentifierTest {
 			ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
 			Parser parser = projectParserFactory.createProjectParser();
 
-			parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-			Map<Path, PackageNode> packages = parser.getPackageNodes();
+			Map<Path, PackageNode> packages = parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
 			PackageNode commandPackage = packages.get(Paths.get(currentDirectory.toRealPath().normalize().toString(), "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands"));
 
 			LeafNode addLatexCommand = commandPackage.getLeafNodes().get("AddLatexCommand");
@@ -134,8 +132,7 @@ class JDTRelationshipIdentifierTest {
 			ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
 			Parser parser = projectParserFactory.createProjectParser();
 
-			parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\ParserTesting"));
-			Map<Path, PackageNode> packages = parser.getPackageNodes();
+			Map<Path, PackageNode> packages = parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\ParserTesting"));
 			PackageNode sourcePackage = packages.get(Paths.get(currentDirectory.toRealPath().normalize().toString(), "\\src\\test\\resources\\ParserTesting"));
 
 			LeafNode implementingClassLeaf = sourcePackage.getLeafNodes().get("ImplementingClass");
@@ -172,9 +169,7 @@ class JDTRelationshipIdentifierTest {
 		try {
 			ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
 			Parser parser = projectParserFactory.createProjectParser();
-
-			parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-			Map<Path, PackageNode> packages = parser.getPackageNodes();
+			Map<Path, PackageNode> packages = parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
 
 			PackageNode commands = packages.get(Paths.get(currentDirectory.toRealPath().normalize().toString(), "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands"));
 			List<Relationship<PackageNode>> packageRelationships = commands.getPackageNodeRelationships();
@@ -226,10 +221,9 @@ class JDTRelationshipIdentifierTest {
 		try {
 			ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
 			Parser parser = projectParserFactory.createProjectParser();
-
-			parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\ParserTesting"));
-			Map<Path, PackageNode> packages = parser.getPackageNodes();
+			Map<Path, PackageNode> packages = parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\ParserTesting"));
 			PackageNode sourcePackage = packages.get(Paths.get(currentDirectory.toRealPath().normalize().toString(), "\\src\\test\\resources\\ParserTesting"));
+
 			List<LeafNode> classLeafs = new ArrayList<>();
 			List<LeafNode> interfaceLeafs = new ArrayList<>();
 			classLeafs.add(sourcePackage.getLeafNodes().get("ImplementingClass"));

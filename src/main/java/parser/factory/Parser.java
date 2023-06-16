@@ -15,7 +15,6 @@ public interface Parser {
      * @param sourcePackagePath the path of the project's source folder
      * @return a Map with the internal nodes of the tree, i.e. the valid source packages that contain java source files
      */
-    PackageNode parseSourcePackage(Path sourcePackagePath);
+    Map<Path, PackageNode> parseSourcePackage(Path sourcePackagePath);
 
-    Map<Path, PackageNode> getPackageNodes();
 }

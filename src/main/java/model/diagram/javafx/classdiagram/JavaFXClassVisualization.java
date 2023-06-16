@@ -35,11 +35,11 @@ public class JavaFXClassVisualization implements model.diagram.javafx.JavaFXVisu
         for (SinkVertex sinkVertex: diagram.keySet()) {
             directedGraph.insertVertex(sinkVertex.getName());
         }
-        insertSinkArcs(directedGraph);
+        insertSinkVertexArcs(directedGraph);
         return directedGraph;
     }
 
-    private void insertSinkArcs(Digraph<String, String> directedGraph){
+    private void insertSinkVertexArcs(Digraph<String, String> directedGraph){
         for (Set<Arc<SinkVertex>> arcs : diagram.values()) {
             for (Arc<SinkVertex> arc: arcs) {
                 if (arc.getArcType().equals(ArcType.AGGREGATION)) {

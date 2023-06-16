@@ -26,10 +26,6 @@ class JDTProjectParserTest {
 	@Test
 	void parsingTest() {
 		try {
-			ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
-			Parser parser = projectParserFactory.createProjectParser();
-
-			parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
 			List<Path> sourcesSubPackages = new ArrayList<>(Arrays.asList(
 					Paths.get(currentDirectory.toRealPath().normalize().toString(), "\\src\\test\\resources\\LatexEditor\\src\\controller"),
 					Paths.get(currentDirectory.toRealPath().normalize().toString(), "\\src\\test\\resources\\LatexEditor\\src\\model"),
@@ -67,7 +63,9 @@ class JDTProjectParserTest {
 					Paths.get(currentDirectory.toRealPath().normalize().toString(), "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands\\EnableVersionsManagementCommand.java"),
 					Paths.get(currentDirectory.toRealPath().normalize().toString(), "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands\\RollbackToPreviousVersionCommand.java")
 			));
-			Map<Path, PackageNode> packageNodes = parser.getPackageNodes();
+			ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
+			Parser parser = projectParserFactory.createProjectParser();
+			Map<Path, PackageNode> packageNodes = parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
 
 			PackageNode controllerPackage = packageNodes.get(Paths.get(currentDirectory.toRealPath().normalize().toString(), "src\\test\\resources\\LatexEditor\\src\\controller"));
 			List<Path> testingLeafNodes = new ArrayList<>();

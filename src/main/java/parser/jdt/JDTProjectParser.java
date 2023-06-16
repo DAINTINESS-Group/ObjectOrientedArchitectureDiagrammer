@@ -26,7 +26,7 @@ public class JDTProjectParser implements Parser {
 		packageNodes = new HashMap<>();
 	}
 
-	public PackageNode parseSourcePackage(Path sourcePackagePath) {
+	public Map<Path, PackageNode> parseSourcePackage(Path sourcePackagePath) {
 		PackageNode rootPackageNode = new PackageNode(sourcePackagePath);
 		packageNodes.put(rootPackageNode.getPackageNodesPath(), rootPackageNode);
 		try {
@@ -36,7 +36,7 @@ public class JDTProjectParser implements Parser {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return rootPackageNode;
+		return packageNodes;
 	}
 
 	private void parseFolder(PackageNode currentNode) {
@@ -74,13 +74,6 @@ public class JDTProjectParser implements Parser {
 	
 	private Path getSubNodesPath(PackageNode currentPackage, File file) {
 		return Paths.get(currentPackage.getPackageNodesPath().normalize() + "\\" + file.getName());
-	}
-
-	/** This method returns the map with keys the name of the package and values
-	 * the object of type PackageNode
-	 */
-	public Map<Path, PackageNode> getPackageNodes() {
-		return packageNodes;
 	}
 
 }

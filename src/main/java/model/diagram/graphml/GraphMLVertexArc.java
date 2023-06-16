@@ -26,6 +26,7 @@ public class GraphMLVertexArc {
         int edgeId = 0;
         for (Arc<Vertex> arc: arcs) {
             graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLVertexArcSyntax(getVertexArcProperties(arc, edgeId)));
+            edgeId++;
         }
         return graphMLBuffer;
     }

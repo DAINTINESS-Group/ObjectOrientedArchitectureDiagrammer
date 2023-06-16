@@ -30,15 +30,11 @@ public class JavaFXPackageVisualization implements JavaFXVisualization {
 
     private Graph<String, String> createGraph() {
         Digraph<String, String> directedGraph = new DigraphEdgeList<>();
-        insertVertices(directedGraph);
-        insertVertexArcs(directedGraph);
-        return directedGraph;
-    }
-
-    private void insertVertices(Digraph<String, String> directedGraph) {
         for (Vertex vertex: diagram.keySet()) {
             directedGraph.insertVertex(vertex.getName());
         }
+        insertVertexArcs(directedGraph);
+        return directedGraph;
     }
 
     private void insertVertexArcs(Digraph<String, String> directedGraph){
@@ -46,10 +42,10 @@ public class JavaFXPackageVisualization implements JavaFXVisualization {
             for (Arc<Vertex> arc: arcs) {
                 if (arc.getArcType().equals(ArcType.AGGREGATION)) {
                     directedGraph.insertEdge(arc.getTargetVertex().getName(), arc.getSourceVertex().getName(),
-                            arc.getTargetVertex().getName() + "_" + arc.getSourceVertex().getName() + "_" + arc.getArcType().toString());
+                            arc.getTargetVertex().getName() + "_" + arc.getSourceVertex().getName() + "_" + arc.getArcType().toString().toLowerCase());
                 }else {
                     directedGraph.insertEdge(arc.getSourceVertex().getName(), arc.getTargetVertex().getName(),
-                            arc.getSourceVertex().getName() + "_" +arc.getTargetVertex().getName() + "_" + arc.getArcType().toString());
+                            arc.getSourceVertex().getName() + "_" +arc.getTargetVertex().getName() + "_" + arc.getArcType().toString().toLowerCase());
                 }
             }
         }

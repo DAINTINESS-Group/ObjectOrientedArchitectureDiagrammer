@@ -37,11 +37,12 @@ public class Interpreter {
     public void parseProject(Path sourcePackagePath) {
         ProjectParserFactory projectParserFactory = new ProjectParserFactory(PARSER_TYPE);
         Parser projectParser = projectParserFactory.createProjectParser();
-        projectParser.parseSourcePackage(sourcePackagePath);
-        packageNodes = projectParser.getPackageNodes();
+        packageNodes = projectParser.parseSourcePackage(sourcePackagePath);
     }
 
     public Pair<ArrayList<Vertex>, ArrayList<SinkVertex>> convertTreeToGraph() {
+        PackageNodeCleaner packageNodeCleaner = new PackageNodeCleaner(packageNodes);
+        packageNodes = packageNodeCleaner.removeNonPackageNodes();
         populateVertexMaps();
         addVertexArcs();
         return new Pair<>(new ArrayList<>(vertices.values()), new ArrayList<>(sinkVertices.values()));
