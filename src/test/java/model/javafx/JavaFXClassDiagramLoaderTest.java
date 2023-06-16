@@ -1,6 +1,7 @@
 package model.javafx;
 
 import manager.ClassDiagramManager;
+import model.diagram.GraphClassDiagramConverter;
 import model.diagram.exportation.DiagramExporter;
 import model.diagram.exportation.JavaFXClassDiagramExporter;
 import model.diagram.javafx.classdiagram.JavaFXClassDiagramLoader;
@@ -28,7 +29,11 @@ public class JavaFXClassDiagramLoaderTest {
             ClassDiagramManager classDiagramManager = new ClassDiagramManager();
             List<String> chosenFiles = Arrays.asList("MainWindow", "LatexEditorView", "OpeningWindow");
             classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-            Map<SinkVertex, Set<Arc<SinkVertex>>> createdDiagram = classDiagramManager.getClassDiagram().createDiagram(chosenFiles);
+            classDiagramManager.convertTreeToDiagram(chosenFiles);
+            Map<SinkVertex, Integer> graphNodes = classDiagramManager.getGraphNodes();
+
+            GraphClassDiagramConverter graphClassDiagramConverter = new GraphClassDiagramConverter(graphNodes.keySet());
+            Map<SinkVertex, Set<Arc<SinkVertex>>> createdDiagram = graphClassDiagramConverter.convertGraphToClassDiagram();
 
             DiagramExporter javaFXExporter = new JavaFXClassDiagramExporter(createdDiagram);
             File actualFile = javaFXExporter.exportDiagram(Path.of(System.getProperty("user.home") + "\\testingExportedFile.txt"));

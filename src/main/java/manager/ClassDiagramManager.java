@@ -2,8 +2,14 @@ package manager;
 
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import model.diagram.ClassDiagram;
-import model.diagram.exportation.DiagramExporter;
+import model.diagram.GraphClassDiagramConverter;
+import model.diagram.arrangement.ClassDiagramArrangement;
+import model.diagram.arrangement.DiagramArrangement;
+import model.diagram.exportation.*;
 import model.diagram.ShadowCleaner;
+import model.diagram.javafx.JavaFXVisualization;
+import model.diagram.javafx.classdiagram.JavaFXClassDiagramLoader;
+import model.diagram.javafx.classdiagram.JavaFXClassVisualization;
 import model.graph.Arc;
 import model.graph.SinkVertex;
 import org.javatuples.Pair;
@@ -17,6 +23,7 @@ public class ClassDiagramManager implements DiagramManager {
     private final ArrayDeque<ClassDiagram> diagramStack;
     private Map<SinkVertex, Set<Arc<SinkVertex>>> diagram;
     private Map<Integer, Pair<Double, Double>> diagramGeometry;
+    private Map<SinkVertex, Integer> graphNodes;
 
     public ClassDiagramManager() {
         diagramStack = new ArrayDeque<>();
@@ -33,58 +40,65 @@ public class ClassDiagramManager implements DiagramManager {
 
     @Override
     public void convertTreeToDiagram(List<String> chosenFilesNames) {
-        diagram = Objects.requireNonNull(diagramStack.peek()).createDiagram(chosenFilesNames);
+        graphNodes = Objects.requireNonNull(diagramStack.peek()).createGraphNodes(chosenFilesNames);
+        GraphClassDiagramConverter graphClassDiagramConverter = new GraphClassDiagramConverter(graphNodes.keySet());
+        diagram = graphClassDiagramConverter.convertGraphToClassDiagram();
         ShadowCleaner shadowCleaner = new ShadowCleaner(diagram);
         diagram = shadowCleaner.shadowWeakRelationships();
     }
 
     @Override
     public Map<Integer, Pair<Double, Double>> arrangeDiagram(){
-        diagramGeometry = Objects.requireNonNull(diagramStack.peek()).arrangeDiagram(diagram);
+        DiagramArrangement classDiagramArrangement = new ClassDiagramArrangement(graphNodes, diagram);
+        diagramGeometry = classDiagramArrangement.arrangeDiagram();
         return diagramGeometry;
     }
 
     @Override
     public SmartGraphPanel<String, String> visualizeJavaFXGraph() {
-        return Objects.requireNonNull(diagramStack.peek()).visualizeJavaFXGraph(diagram);
+        JavaFXVisualization javaFXVisualization = new JavaFXClassVisualization(diagram);
+        return javaFXVisualization.createGraphView();
     }
 
     @Override
     public File exportDiagramToGraphML(Path graphMLSavePath) {
-        DiagramExporter diagramExporter = Objects.requireNonNull(diagramStack.peek()).createGraphMLExporter(diagram, diagramGeometry);
+        DiagramExporter diagramExporter = new GraphMLClassDiagramExporter(graphNodes, diagramGeometry, diagram);
         return diagramExporter.exportDiagram(graphMLSavePath);
     }
 
     @Override
     public File exportPlantUMLImage(Path plantUMLSavePath) {
-        DiagramExporter diagramExporter = Objects.requireNonNull(diagramStack.peek()).createPlantUMLImageExporter(diagram);
+        DiagramExporter diagramExporter = new PlantUMLClassDiagramImageExporter(diagram);
         return diagramExporter.exportDiagram(plantUMLSavePath);
     }
 
     @Override
     public File exportPlantUMLText(Path textSavePath) {
-        DiagramExporter diagramExporter = Objects.requireNonNull(diagramStack.peek()).createPlantUMLTextExporter(diagram);
+        DiagramExporter diagramExporter = new PlantUMLClassDiagramTextExporter(diagram);
         return diagramExporter.exportDiagram(textSavePath);
     }
 
     @Override
     public File saveDiagram(Path graphSavePath) {
-        DiagramExporter diagramExporter = Objects.requireNonNull(diagramStack.peek()).createJavaFXExporter(diagram);
+        DiagramExporter diagramExporter = new JavaFXClassDiagramExporter(diagram);
         return diagramExporter.exportDiagram(graphSavePath);
     }
 
     @Override
     public void loadDiagram(Path graphSavePath) {
         diagramStack.push(new ClassDiagram());
-        diagram = Objects.requireNonNull(diagramStack.peek()).loadDiagram(graphSavePath);
+        JavaFXClassDiagramLoader javaFXClassDiagramLoader =  new JavaFXClassDiagramLoader(graphSavePath);
+        Set<SinkVertex> loadedDiagram = javaFXClassDiagramLoader.loadDiagram();
+        GraphClassDiagramConverter graphClassDiagramConverter = new GraphClassDiagramConverter(loadedDiagram);
+        diagram = graphClassDiagramConverter.convertGraphToClassDiagram();
         ShadowCleaner shadowCleaner = new ShadowCleaner(diagram);
         diagram = shadowCleaner.shadowWeakRelationships();
     }
 
-    public ClassDiagram getClassDiagram() {
-        return diagramStack.peek();
-    }
-
     public Map<SinkVertex, Set<Arc<SinkVertex>>> getDiagram() { return  diagram; }
+
+    public Map<SinkVertex, Integer> getGraphNodes() {
+        return graphNodes;
+    }
 
 }

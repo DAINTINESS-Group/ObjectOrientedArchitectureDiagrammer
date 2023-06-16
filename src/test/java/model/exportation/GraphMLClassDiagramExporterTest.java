@@ -39,7 +39,7 @@ public class GraphMLClassDiagramExporterTest {
             classDiagramManager.arrangeDiagram();
             Map<SinkVertex, Set<Arc<SinkVertex>>> diagram = classDiagramManager.getDiagram();
 
-            Map<SinkVertex, Integer> graphNodes = classDiagramManager.getClassDiagram().getGraphNodes();
+            Map<SinkVertex, Integer> graphNodes = classDiagramManager.getGraphNodes();
             DiagramArrangement classDiagramArrangement = new ClassDiagramArrangement(graphNodes, diagram);
             Map<Integer, Pair<Double, Double>> nodesGeometry = classDiagramArrangement.arrangeDiagram();
             DiagramExporter graphMLExporter = new GraphMLClassDiagramExporter(graphNodes, nodesGeometry, diagram);

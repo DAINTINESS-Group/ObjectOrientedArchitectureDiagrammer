@@ -29,7 +29,7 @@ public class PackageDiagramManagerTest {
                 "src.controller.commands",
                 "src.controller"
             ));
-            Map<Vertex, Integer> graphNodes = packageDiagramManager.getPackageDiagram().getGraphNodes();
+            Map<Vertex, Integer> graphNodes = packageDiagramManager.getGraphNodes();
 
             Map<Path, Vertex> packageNodes = sourceProject.getVertices();
             packageNodes.remove(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));

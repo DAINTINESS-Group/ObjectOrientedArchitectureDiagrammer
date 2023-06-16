@@ -27,7 +27,7 @@ public class GraphClassDiagramConverterTest {
             List<String> chosenFiles = Arrays.asList("MainWindow", "LatexEditorView", "OpeningWindow");
             SourceProject sourceProject = classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
             classDiagramManager.convertTreeToDiagram(chosenFiles);
-            Set<SinkVertex> graphNodes = classDiagramManager.getClassDiagram().getGraphNodes().keySet();
+            Set<SinkVertex> graphNodes = classDiagramManager.getGraphNodes().keySet();
             Map<SinkVertex, Set<Arc<SinkVertex>>> diagram = classDiagramManager.getDiagram();
 
             List<Arc<SinkVertex>> arcs = new ArrayList<>();

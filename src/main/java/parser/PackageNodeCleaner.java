@@ -16,7 +16,7 @@ public class PackageNodeCleaner {
     public Map<Path, PackageNode> removeNonPackageNodes() {
         Map<Path, PackageNode> validPackageNodes = new HashMap<>();
         for (PackageNode packageNode: packageNodes.values()) {
-            if (helper(packageNode)) {
+            if (isPackageNodeValid(packageNode)) {
                 validPackageNodes.put(packageNode.getPackageNodesPath(), packageNode);
                 continue;
             }
@@ -30,14 +30,14 @@ public class PackageNodeCleaner {
         return validPackageNodes;
     }
 
-    private boolean helper(PackageNode packageNode) {
+    private boolean isPackageNodeValid(PackageNode packageNode) {
         if (packageNode.getSubNodes().size() == 0) {
             return packageNode.isValid();
         }
 
         boolean result = false;
         for (PackageNode childNode: packageNode.getSubNodes().values()) {
-            result = helper(childNode);
+            result = isPackageNodeValid(childNode);
             if (result) {
                 break;
             }

@@ -36,7 +36,7 @@ public class GraphMLVertexArcTest {
                 "src.controller"
             ));
             Map<Vertex, Set<Arc<Vertex>>> diagram = packageDiagramManager.getDiagram();
-            Map<Vertex, Integer> graphNodes = packageDiagramManager.getPackageDiagram().getGraphNodes();
+            Map<Vertex, Integer> graphNodes = packageDiagramManager.getGraphNodes();
             GraphMLVertexArc graphMLVertexArc = new GraphMLVertexArc(graphNodes, diagram);
             StringBuilder actual = graphMLVertexArc.convertVertexArc();
 
@@ -61,6 +61,7 @@ public class GraphMLVertexArcTest {
                             "      </data>\n" +
                             "    </edge>", edgeId, graphNodes.get(e.getSourceVertex()),
                     graphNodes.get(e.getTargetVertex())));
+                edgeId++;
             }
             assertEquals(expected.toString(), actual.toString());
         } catch (IOException e) {

@@ -2,6 +2,7 @@ package model;
 
 import manager.ClassDiagramManager;
 import manager.SourceProject;
+import model.diagram.GraphClassDiagramConverter;
 import model.diagram.ShadowCleaner;
 import model.graph.Arc;
 import model.graph.ArcType;
@@ -28,7 +29,11 @@ public class ShadowCleanerTest {
             List<String> chosenFiles = Arrays.asList("MainWindow", "LatexEditorView", "ChooseTemplate", "LatexEditorController",
                 "VersionsManager", "DocumentManager", "Document");
             SourceProject sourceProject = classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-            Map<SinkVertex, Set<Arc<SinkVertex>>> shadowedDiagram = new HashMap<>(classDiagramManager.getClassDiagram().createDiagram(chosenFiles));
+            classDiagramManager.convertTreeToDiagram(chosenFiles);
+            Map<SinkVertex, Integer> graphNodes = classDiagramManager.getGraphNodes();
+
+            GraphClassDiagramConverter graphClassDiagramConverter = new GraphClassDiagramConverter(graphNodes.keySet());
+            Map<SinkVertex, Set<Arc<SinkVertex>>> shadowedDiagram = graphClassDiagramConverter.convertGraphToClassDiagram();
             int numberOfArcsBeforeShadowCleaner = 0;
             for (Set<Arc<SinkVertex>> arcs: shadowedDiagram.values()) {
                 numberOfArcsBeforeShadowCleaner += arcs.size();

@@ -31,7 +31,7 @@ class GraphMLVertexTest {
                 "src.controller.commands",
                 "src.controller"
             ));
-            Map<Vertex, Integer> graphNodes = packageDiagramManager.getPackageDiagram().getGraphNodes();
+            Map<Vertex, Integer> graphNodes = packageDiagramManager.getGraphNodes();
 
             GraphMLVertex graphMLVertex = new GraphMLVertex(graphNodes, Map.ofEntries(
                     Map.entry(0, new Pair<>(10.0, 10.0)),

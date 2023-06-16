@@ -41,7 +41,7 @@ public class PlantUMLClassDiagramImageExporterTest {
             classDiagramManager.convertTreeToDiagram(List.of("StableVersionsStrategy", "VersionsStrategy", "VersionsStrategyFactory", "VolatileVersionsStrategy",
                     "VersionsManager", "Document", "DocumentManager"));
 
-            Map<SinkVertex, Integer> graphNodes = classDiagramManager.getClassDiagram().getGraphNodes();
+            Map<SinkVertex, Integer> graphNodes = classDiagramManager.getGraphNodes();
             Map<SinkVertex, Set<Arc<SinkVertex>>> diagram = classDiagramManager.getDiagram();
             PlantUMLSinkVertex plantUMLSinkVertex = new PlantUMLSinkVertex(diagram);
             String sinkVertexBuffer = plantUMLSinkVertex.convertSinkVertex().toString();
