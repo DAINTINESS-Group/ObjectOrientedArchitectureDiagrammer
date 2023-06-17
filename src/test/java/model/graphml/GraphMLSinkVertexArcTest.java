@@ -5,13 +5,15 @@ import manager.SourceProject;
 import model.diagram.graphml.GraphMLSinkVertexArc;
 import model.graph.Arc;
 import model.graph.SinkVertex;
-import model.graph.Vertex;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -27,15 +29,13 @@ public class GraphMLSinkVertexArcTest {
             classDiagramManager.convertTreeToDiagram(List.of("AddLatexCommand", "ChangeVersionsStrategyCommand", "Command", "CommandFactory",
                     "CreateCommand", "DisableVersionsManagementCommand", "EditCommand", "EnableVersionsManagementCommand",
                     "LoadCommand", "RollbackToPreviousVersionCommand", "SaveCommand"));
-            Map<SinkVertex, Integer> graphNodes = classDiagramManager.getGraphNodes();
-            Map<SinkVertex, Set<Arc<SinkVertex>>> diagram = classDiagramManager.getDiagram();
 
-            GraphMLSinkVertexArc graphMLSinkVertexArc = new GraphMLSinkVertexArc(graphNodes, diagram);
+            GraphMLSinkVertexArc graphMLSinkVertexArc = new GraphMLSinkVertexArc(classDiagramManager.getClassDiagram());
             StringBuilder actual = graphMLSinkVertexArc.convertSinkVertexArc();
 
             StringBuilder expected = new StringBuilder();
             List<Arc<SinkVertex>> arcs = new ArrayList<>();
-            for (Set<Arc<SinkVertex>> arcSet: diagram.values()) {
+            for (Set<Arc<SinkVertex>> arcSet: classDiagramManager.getClassDiagram().getDiagram().values()) {
                 arcs.addAll(arcSet);
             }
             int edgeId = 0;
@@ -50,8 +50,8 @@ public class GraphMLSinkVertexArcTest {
                             "          <y:BendStyle smoothed=\"false\"/>\n" +
                             "        </y:PolyLineEdge>\n" +
                             "      </data>\n" +
-                            "    </edge>\n", edgeId, graphNodes.get(e.getSourceVertex()),
-                    graphNodes.get(e.getTargetVertex()), getEdgesDescription(e).get(0),
+                            "    </edge>\n", edgeId, classDiagramManager.getClassDiagram().getGraphNodes().get(e.getSourceVertex()),
+                            classDiagramManager.getClassDiagram().getGraphNodes().get(e.getTargetVertex()), getEdgesDescription(e).get(0),
                     getEdgesDescription(e).get(1),getEdgesDescription(e).get(2)));
             edgeId++;
             }

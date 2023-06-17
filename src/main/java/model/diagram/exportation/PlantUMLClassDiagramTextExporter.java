@@ -1,23 +1,20 @@
 package model.diagram.exportation;
 
+import model.diagram.ClassDiagram;
 import model.diagram.plantuml.PlantUMLSinkVertex;
 import model.diagram.plantuml.PlantUMLSinkVertexArc;
-import model.graph.Arc;
-import model.graph.SinkVertex;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Map;
-import java.util.Set;
 
 public class PlantUMLClassDiagramTextExporter implements DiagramExporter {
 
     private final String bufferBody;
 
-    public PlantUMLClassDiagramTextExporter(Map<SinkVertex, Set<Arc<SinkVertex>>> diagram) {
+    public PlantUMLClassDiagramTextExporter(ClassDiagram diagram) {
         PlantUMLSinkVertex plantUMLSinkVertex = new PlantUMLSinkVertex(diagram);
         StringBuilder plantUMLNodeBuffer = plantUMLSinkVertex.convertSinkVertex();
         PlantUMLSinkVertexArc plantUMLEdge = new PlantUMLSinkVertexArc(diagram);

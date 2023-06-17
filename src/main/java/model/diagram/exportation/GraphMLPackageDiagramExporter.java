@@ -1,16 +1,12 @@
 package model.diagram.exportation;
 
+import model.diagram.PackageDiagram;
 import model.diagram.graphml.GraphMLVertex;
 import model.diagram.graphml.GraphMLVertexArc;
-import model.graph.Arc;
-import model.graph.Vertex;
-import org.javatuples.Pair;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Map;
-import java.util.Set;
 
 public class GraphMLPackageDiagramExporter implements DiagramExporter {
 
@@ -18,11 +14,10 @@ public class GraphMLPackageDiagramExporter implements DiagramExporter {
     private final StringBuilder graphMLNodeBuffer;
     private final StringBuilder graphMLEdgeBuffer;
 
-    public GraphMLPackageDiagramExporter(Map<Vertex, Integer> graphNodes, Map<Integer, Pair<Double, Double>> nodesGeometry,
-                                         Map<Vertex, Set<Arc<Vertex>>> diagram) {
-        GraphMLVertex graphMLVertex = new GraphMLVertex(graphNodes, nodesGeometry);
+    public GraphMLPackageDiagramExporter(PackageDiagram packageDiagram) {
+        GraphMLVertex graphMLVertex = new GraphMLVertex(packageDiagram);
         graphMLNodeBuffer = graphMLVertex.convertVertex();
-        GraphMLVertexArc graphMLVertexArc = new GraphMLVertexArc(graphNodes, diagram);
+        GraphMLVertexArc graphMLVertexArc = new GraphMLVertexArc(packageDiagram);
         graphMLEdgeBuffer = graphMLVertexArc.convertVertexArc();
         graphMLFile = new GraphMLFile();
     }

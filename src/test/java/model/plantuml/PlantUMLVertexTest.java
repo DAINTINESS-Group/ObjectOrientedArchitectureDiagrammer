@@ -3,14 +3,14 @@ package model.plantuml;
 import manager.PackageDiagramManager;
 import manager.SourceProject;
 import model.diagram.plantuml.PlantUMLVertex;
-import model.graph.Arc;
-import model.graph.Vertex;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -50,8 +50,7 @@ public class PlantUMLVertexTest {
                 "src.controller"
             ));
 
-            Map<Vertex, Set<Arc<Vertex>>> diagram = packageDiagramManager.getDiagram();
-            PlantUMLVertex plantUMLVertex = new PlantUMLVertex(diagram);
+            PlantUMLVertex plantUMLVertex = new PlantUMLVertex(packageDiagramManager.getPackageDiagram());
             String actualBuffer = plantUMLVertex.convertVertex().toString();
 
             List<String> expected = Arrays.asList(expectedBuffer.split("\n"));

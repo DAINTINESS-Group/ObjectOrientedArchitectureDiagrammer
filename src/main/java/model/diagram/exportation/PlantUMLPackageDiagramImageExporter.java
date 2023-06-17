@@ -1,23 +1,20 @@
 package model.diagram.exportation;
 
+import model.diagram.PackageDiagram;
 import model.diagram.plantuml.PlantUMLVertex;
 import model.diagram.plantuml.PlantUMLVertexArc;
-import model.graph.Arc;
-import model.graph.Vertex;
 import net.sourceforge.plantuml.SourceStringReader;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.file.Path;
-import java.util.Map;
-import java.util.Set;
 
 public class PlantUMLPackageDiagramImageExporter implements DiagramExporter {
 
     private final String bufferBody;
 
-    public PlantUMLPackageDiagramImageExporter(Map<Vertex, Set<Arc<Vertex>>> diagram) {
+    public PlantUMLPackageDiagramImageExporter(PackageDiagram diagram) {
         PlantUMLVertex plantUMLVertex = new PlantUMLVertex(diagram);
         StringBuilder plantUMLNodeBuffer = plantUMLVertex.convertVertex();
         PlantUMLVertexArc plantUMLEdge = new PlantUMLVertexArc(diagram);

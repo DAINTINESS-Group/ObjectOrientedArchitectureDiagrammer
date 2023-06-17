@@ -4,7 +4,6 @@ import manager.PackageDiagramManager;
 import manager.SourceProject;
 import model.diagram.GraphPackageDiagramConverter;
 import model.graph.Arc;
-import model.graph.SinkVertex;
 import model.graph.Vertex;
 import org.junit.jupiter.api.Test;
 
@@ -32,7 +31,7 @@ public class GraphPackageDiagramConverterTest {
                 "src.controller.commands",
                 "src.controller"
             ));
-            Map<Vertex, Set<Arc<Vertex>>> diagram = packageDiagramManager.getDiagram();
+            Map<Vertex, Set<Arc<Vertex>>> diagram = packageDiagramManager.getPackageDiagram().getDiagram();
 
             List<Arc<Vertex>> arcs = new ArrayList<>();
             for (Set<Arc<Vertex>> arcSet: diagram.values()) {

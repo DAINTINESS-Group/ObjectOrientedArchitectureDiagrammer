@@ -31,9 +31,7 @@ class GraphMLVertexTest {
                 "src.controller.commands",
                 "src.controller"
             ));
-            Map<Vertex, Integer> graphNodes = packageDiagramManager.getGraphNodes();
-
-            GraphMLVertex graphMLVertex = new GraphMLVertex(graphNodes, Map.ofEntries(
+            packageDiagramManager.getPackageDiagram().setDiagramGeometry(Map.ofEntries(
                     Map.entry(0, new Pair<>(10.0, 10.0)),
                     Map.entry(1, new Pair<>(10.0, 10.0)),
                     Map.entry(2, new Pair<>(10.0, 10.0)),
@@ -41,10 +39,11 @@ class GraphMLVertexTest {
                     Map.entry(4, new Pair<>(10.0, 10.0)),
                     Map.entry(5, new Pair<>(10.0, 10.0))
             ));
+            GraphMLVertex graphMLVertex = new GraphMLVertex(packageDiagramManager.getPackageDiagram());
             StringBuilder actual = graphMLVertex.convertVertex();
 
             StringBuilder expected = new StringBuilder();
-            for (Vertex packageNode : graphNodes.keySet()) {
+            for (Vertex packageNode : packageDiagramManager.getPackageDiagram().getGraphNodes().keySet()) {
                 expected.append(String.format("    <node id=\"n%s\">\n" +
                                 "      <data key=\"d4\" xml:space=\"preserve\"/>\n" +
                                 "      <data key=\"d6\">\n" +
@@ -55,7 +54,7 @@ class GraphMLVertexTest {
                                 "          <y:NodeLabel alignment=\"center\" autoSizePolicy=\"content\" fontFamily=\"Dialog\" fontSize=\"12\" fontStyle=\"plain\" hasBackgroundColor=\"false\" hasLineColor=\"false\" height=\"18.701171875\" horizontalTextPosition=\"center\" iconTextGap=\"0\" modelName=\"custom\" textColor=\"#000000\" verticalTextPosition=\"bottom\" visible=\"true\" width=\"57.373046875\" x=\"34.8134765625\" xml:space=\"preserve\" y=\"16.6494140625\">%s<y:LabelModel><y:SmartNodeLabelModel distance=\"4.0\"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX=\"0.0\" labelRatioY=\"0.0\" nodeRatioX=\"0.0\" nodeRatioY=\"0.0\" offsetX=\"0.0\" offsetY=\"0.0\" upX=\"0.0\" upY=\"-1.0\"/></y:ModelParameter></y:NodeLabel>\n" +
                                 "        </y:GenericNode>\n" +
                                 "      </data>\n" +
-                                "    </node>\n", graphNodes.get(packageNode), 10.0,
+                                "    </node>\n", packageDiagramManager.getPackageDiagram().getGraphNodes().get(packageNode), 10.0,
                         10.0, packageNode.getName()));
             }
             assertEquals(expected.toString(), actual.toString());

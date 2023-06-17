@@ -10,8 +10,6 @@ import model.diagram.exportation.DiagramExporter;
 import model.diagram.exportation.PlantUMLClassDiagramImageExporter;
 import model.diagram.plantuml.PlantUMLSinkVertex;
 import model.diagram.plantuml.PlantUMLSinkVertexArc;
-import model.graph.Arc;
-import model.graph.SinkVertex;
 import net.sourceforge.plantuml.SourceStringReader;
 import org.junit.jupiter.api.Test;
 
@@ -24,8 +22,6 @@ import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -41,14 +37,12 @@ public class PlantUMLClassDiagramImageExporterTest {
             classDiagramManager.convertTreeToDiagram(List.of("StableVersionsStrategy", "VersionsStrategy", "VersionsStrategyFactory", "VolatileVersionsStrategy",
                     "VersionsManager", "Document", "DocumentManager"));
 
-            Map<SinkVertex, Integer> graphNodes = classDiagramManager.getGraphNodes();
-            Map<SinkVertex, Set<Arc<SinkVertex>>> diagram = classDiagramManager.getDiagram();
-            PlantUMLSinkVertex plantUMLSinkVertex = new PlantUMLSinkVertex(diagram);
+            PlantUMLSinkVertex plantUMLSinkVertex = new PlantUMLSinkVertex(classDiagramManager.getClassDiagram());
             String sinkVertexBuffer = plantUMLSinkVertex.convertSinkVertex().toString();
-            PlantUMLSinkVertexArc plantUMLEdge = new PlantUMLSinkVertexArc(diagram);
+            PlantUMLSinkVertexArc plantUMLEdge = new PlantUMLSinkVertexArc(classDiagramManager.getClassDiagram());
             String sinkVertexArcBuffer = plantUMLEdge.convertSinkVertexArc().toString();
 
-            DiagramExporter graphMLExporter = new PlantUMLClassDiagramImageExporter(diagram);
+            DiagramExporter graphMLExporter = new PlantUMLClassDiagramImageExporter(classDiagramManager.getClassDiagram());
             graphMLExporter.exportDiagram(Paths.get(System.getProperty("user.home") + "\\testingExportedFile.png"));
 
             String expected = "@startuml\n" +

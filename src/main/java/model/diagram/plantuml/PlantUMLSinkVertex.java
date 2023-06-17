@@ -1,26 +1,25 @@
 package model.diagram.plantuml;
 
-import model.graph.Arc;
+import model.diagram.ClassDiagram;
 import model.graph.ModifierType;
 import model.graph.SinkVertex;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class PlantUMLSinkVertex {
 
-	private final Map<SinkVertex, Set<Arc<SinkVertex>>> diagram;
 
-	public PlantUMLSinkVertex(Map<SinkVertex, Set<Arc<SinkVertex>>> diagram) {
-		this.diagram = diagram;
+	private final ClassDiagram classDiagram;
+
+	public PlantUMLSinkVertex(ClassDiagram diagram) {
+		classDiagram = diagram;
 	}
 
 	public StringBuilder convertSinkVertex() {
 		return new StringBuilder(
-			diagram.keySet().stream()
+			classDiagram.getDiagram().keySet().stream()
 				.map(sinkVertex ->
 					sinkVertex.getVertexType().toString().toLowerCase() + " " + sinkVertex.getName() + " {\n" +
 					convertFields(sinkVertex) + convertMethods(sinkVertex) + "}")

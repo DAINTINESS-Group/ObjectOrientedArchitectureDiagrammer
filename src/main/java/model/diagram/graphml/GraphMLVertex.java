@@ -1,5 +1,6 @@
 package model.diagram.graphml;
 
+import model.diagram.PackageDiagram;
 import model.graph.Vertex;
 import org.javatuples.Pair;
 
@@ -9,20 +10,19 @@ import java.util.Map;
 
 public class GraphMLVertex {
 
-    private final Map<Vertex, Integer> graphNodes;
     private final StringBuilder graphMLBuffer;
-    private final Map<Integer, Pair<Double, Double>> nodesGeometry;
+    private final PackageDiagram packageDiagram;
 
-    public GraphMLVertex(Map<Vertex, Integer> graphNodes, Map<Integer, Pair<Double, Double>> nodesGeometry) {
-        this.graphNodes = graphNodes;
+
+    public GraphMLVertex(PackageDiagram packageDiagram) {
+        this.packageDiagram = packageDiagram;
         this.graphMLBuffer = new StringBuilder();
-        this.nodesGeometry = nodesGeometry;
     }
 
     public StringBuilder convertVertex() {
-        for (Map.Entry<Vertex, Integer> entry: graphNodes.entrySet()) {
+        for (Map.Entry<Vertex, Integer> entry: packageDiagram.getGraphNodes().entrySet()) {
             graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLVertexSyntax(getVertexDescription(entry.getKey(),
-                    entry.getValue(), nodesGeometry.get(entry.getValue()))));
+                    entry.getValue(), packageDiagram.getDiagramGeometry().get(entry.getValue()))));
         }
         return graphMLBuffer;
     }

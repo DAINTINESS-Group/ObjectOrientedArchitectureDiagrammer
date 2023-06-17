@@ -1,99 +1,87 @@
 package manager;
 
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
-import model.diagram.GraphPackageDiagramConverter;
+import model.diagram.PackageDiagram;
 import model.diagram.arrangement.DiagramArrangement;
 import model.diagram.arrangement.PackageDiagramArrangement;
 import model.diagram.exportation.*;
-import model.diagram.PackageDiagram;
 import model.diagram.javafx.JavaFXVisualization;
-import model.diagram.javafx.packagediagram.JavaFXPackageDiagramLoader;
-import model.diagram.javafx.packagediagram.JavaFXPackageVisualization;
-import model.graph.Arc;
-import model.graph.Vertex;
+import model.diagram.javafx.JavaFXPackageDiagramLoader;
+import model.diagram.javafx.JavaFXPackageVisualization;
 import org.javatuples.Pair;
 
 import java.io.File;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 public class PackageDiagramManager implements DiagramManager {
 
-    private final ArrayDeque<PackageDiagram> diagramStack;
-    private Map<Vertex, Set<Arc<Vertex>>> diagram;
-    private Map<Integer, Pair<Double, Double>> diagramGeometry;
-    private Map<Vertex, Integer> graphNodes;
+    private PackageDiagram packageDiagram;
 
     public PackageDiagramManager() {
-        diagramStack = new ArrayDeque<>();
+        packageDiagram = new PackageDiagram();
     }
 
     @Override
     public SourceProject createSourceProject(Path sourcePackagePath) {
         SourceProject sourceProject = new SourceProject();
         sourceProject.createGraph(sourcePackagePath);
-        diagramStack.push(new PackageDiagram());
-        Objects.requireNonNull(diagramStack.peek()).setVertices(sourceProject.getVertices());
+        packageDiagram.setVertices(sourceProject.getVertices());
         return sourceProject;
     }
 
     @Override
     public void convertTreeToDiagram(List<String> chosenFilesNames) {
-        graphNodes = Objects.requireNonNull(diagramStack.peek()).createGraphNodes(chosenFilesNames);
-        GraphPackageDiagramConverter graphPackageDiagramConverter = new GraphPackageDiagramConverter(graphNodes.keySet());
-        diagram =  graphPackageDiagramConverter.convertGraphToPackageDiagram();
+        packageDiagram.createNewDiagram(chosenFilesNames);
     }
 
     @Override
     public Map<Integer, Pair<Double, Double>> arrangeDiagram(){
-        DiagramArrangement diagramArrangement = new PackageDiagramArrangement(graphNodes, diagram);
-        diagramGeometry = diagramArrangement.arrangeDiagram();
+        DiagramArrangement diagramArrangement = new PackageDiagramArrangement(packageDiagram);
+        Map<Integer, Pair<Double, Double>> diagramGeometry = diagramArrangement.arrangeDiagram();
+        packageDiagram.setDiagramGeometry(diagramGeometry);
         return diagramGeometry;
     }
 
     @Override
     public SmartGraphPanel<String, String> visualizeJavaFXGraph() {
-        JavaFXVisualization javaFXPackageVisualization = new JavaFXPackageVisualization(diagram);
+        JavaFXVisualization javaFXPackageVisualization = new JavaFXPackageVisualization(packageDiagram);
         return javaFXPackageVisualization.createGraphView();
     }
 
     @Override
-    public void loadDiagram(Path graphSavePath) {
-        diagramStack.push(new PackageDiagram());
-        JavaFXPackageDiagramLoader javaFXPackageDiagramLoader = new JavaFXPackageDiagramLoader(graphSavePath);
-        Set<Vertex> loadedDiagram = javaFXPackageDiagramLoader.loadDiagram();
-        GraphPackageDiagramConverter graphPackageDiagramConverter = new GraphPackageDiagramConverter(loadedDiagram);
-        diagram = graphPackageDiagramConverter.convertGraphToPackageDiagram();
-    }
-
-    @Override
     public File exportDiagramToGraphML(Path graphMLSavePath) {
-        DiagramExporter diagramExporter = new GraphMLPackageDiagramExporter(graphNodes, diagramGeometry, diagram);
+        DiagramExporter diagramExporter = new GraphMLPackageDiagramExporter(packageDiagram);
         return diagramExporter.exportDiagram(graphMLSavePath);
     }
 
     @Override
     public File exportPlantUMLImage(Path plantUMLSavePath) {
-        DiagramExporter diagramExporter =  new PlantUMLPackageDiagramImageExporter(diagram);
+        DiagramExporter diagramExporter =  new PlantUMLPackageDiagramImageExporter(packageDiagram);
         return diagramExporter.exportDiagram(plantUMLSavePath);
     }
 
     @Override
     public File exportPlantUMLText(Path textSavePath) {
-        DiagramExporter diagramExporter =  new PlantUMLPackageDiagramTextExporter(diagram);
+        DiagramExporter diagramExporter =  new PlantUMLPackageDiagramTextExporter(packageDiagram);
         return diagramExporter.exportDiagram(textSavePath);
     }
 
     @Override
     public File saveDiagram(Path graphSavePath) {
-        DiagramExporter diagramExporter =  new JavaFXPackageDiagramExporter(diagram);
+        DiagramExporter diagramExporter =  new JavaFXPackageDiagramExporter(packageDiagram);
         return diagramExporter.exportDiagram(graphSavePath);
     }
 
-    public Map<Vertex, Set<Arc<Vertex>>> getDiagram() { return  diagram; }
-
-    public Map<Vertex, Integer> getGraphNodes() {
-        return graphNodes;
+    @Override
+    public void loadDiagram(Path graphSavePath) {
+        packageDiagram = new PackageDiagram();
+        JavaFXPackageDiagramLoader javaFXPackageDiagramLoader = new JavaFXPackageDiagramLoader(graphSavePath);
+        packageDiagram.createDiagram(javaFXPackageDiagramLoader.loadDiagram());
     }
 
+    public PackageDiagram getPackageDiagram() {
+        return packageDiagram;
+    }
 }

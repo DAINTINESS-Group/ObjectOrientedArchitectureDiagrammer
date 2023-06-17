@@ -1,5 +1,6 @@
 package model.diagram.graphml;
 
+import model.diagram.ClassDiagram;
 import model.graph.Arc;
 import model.graph.SinkVertex;
 
@@ -10,19 +11,18 @@ public class GraphMLSinkVertexArc {
     private static final int EDGE_TYPE = 0;
     private static final int EDGES_SOURCE_TYPE = 1;
     private static final int EDGES_TARGET_TYPE = 2;
-    private final Map<SinkVertex, Integer> graphNodes;
-    private final Map<SinkVertex, Set<Arc<SinkVertex>>> diagram;
     private final StringBuilder graphMLBuffer;
+    private final ClassDiagram classDiagram;
 
-    public GraphMLSinkVertexArc(Map<SinkVertex, Integer> graphNodes, Map<SinkVertex, Set<Arc<SinkVertex>>> diagram) {
-        this.graphNodes = graphNodes;
-        this.diagram = diagram;
+
+    public GraphMLSinkVertexArc(ClassDiagram classDiagram) {
+        this.classDiagram = classDiagram;
         graphMLBuffer = new StringBuilder();
     }
 
     public StringBuilder convertSinkVertexArc() {
         List<Arc<SinkVertex>> arcs = new ArrayList<>();
-        for (Set<Arc<SinkVertex>> arcSet: diagram.values()) {
+        for (Set<Arc<SinkVertex>> arcSet: classDiagram.getDiagram().values()) {
             arcs.addAll(arcSet);
         }
 
@@ -35,8 +35,8 @@ public class GraphMLSinkVertexArc {
     }
 
     private List<String> getEdgesProperties(Arc<SinkVertex> relationship, Integer edgeId) {
-        return Arrays.asList(String.valueOf(edgeId), String.valueOf(graphNodes.get(relationship.getSourceVertex())),
-                String.valueOf(graphNodes.get(relationship.getTargetVertex())), identifyEdgeType(relationship).get(EDGE_TYPE),
+        return Arrays.asList(String.valueOf(edgeId), String.valueOf(classDiagram.getGraphNodes().get(relationship.getSourceVertex())),
+                String.valueOf(classDiagram.getGraphNodes().get(relationship.getTargetVertex())), identifyEdgeType(relationship).get(EDGE_TYPE),
                 identifyEdgeType(relationship).get(EDGES_SOURCE_TYPE), identifyEdgeType(relationship).get(EDGES_TARGET_TYPE));
     }
 

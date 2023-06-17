@@ -4,7 +4,6 @@ import manager.PackageDiagramManager;
 import manager.SourceProject;
 import model.diagram.graphml.GraphMLVertexArc;
 import model.graph.Arc;
-import model.graph.SinkVertex;
 import model.graph.Vertex;
 import org.junit.jupiter.api.Test;
 
@@ -13,11 +12,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class GraphMLVertexArcTest {
 
@@ -35,14 +32,12 @@ public class GraphMLVertexArcTest {
                 "src.controller.commands",
                 "src.controller"
             ));
-            Map<Vertex, Set<Arc<Vertex>>> diagram = packageDiagramManager.getDiagram();
-            Map<Vertex, Integer> graphNodes = packageDiagramManager.getGraphNodes();
-            GraphMLVertexArc graphMLVertexArc = new GraphMLVertexArc(graphNodes, diagram);
+            GraphMLVertexArc graphMLVertexArc = new GraphMLVertexArc(packageDiagramManager.getPackageDiagram());
             StringBuilder actual = graphMLVertexArc.convertVertexArc();
 
             StringBuilder expected = new StringBuilder();
             List<Arc<Vertex>> arcs = new ArrayList<>();
-            for (Set<Arc<Vertex>> arcSet: diagram.values()) {
+            for (Set<Arc<Vertex>> arcSet: packageDiagramManager.getPackageDiagram().getDiagram().values()) {
                 arcs.addAll(arcSet);
             }
             int edgeId = 0;
@@ -59,8 +54,8 @@ public class GraphMLVertexArcTest {
                             "          <y:BendStyle smoothed=\"false\"/>\n" +
                             "        </y:PolyLineEdge>\n" +
                             "      </data>\n" +
-                            "    </edge>", edgeId, graphNodes.get(e.getSourceVertex()),
-                    graphNodes.get(e.getTargetVertex())));
+                            "    </edge>", edgeId, packageDiagramManager.getPackageDiagram().getGraphNodes().get(e.getSourceVertex()),
+                            packageDiagramManager.getPackageDiagram().getGraphNodes().get(e.getTargetVertex())));
                 edgeId++;
             }
             assertEquals(expected.toString(), actual.toString());

@@ -1,4 +1,4 @@
-package model.diagram.javafx.classdiagram;
+package model.diagram.javafx;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

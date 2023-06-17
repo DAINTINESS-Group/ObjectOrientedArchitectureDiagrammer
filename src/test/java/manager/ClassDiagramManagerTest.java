@@ -1,19 +1,18 @@
 package manager;
 
-import model.diagram.exportation.DiagramExporter;
+import model.diagram.GraphClassDiagramConverter;
 import model.diagram.ShadowCleaner;
 import model.diagram.arrangement.ClassDiagramArrangement;
-import model.diagram.GraphClassDiagramConverter;
 import model.diagram.arrangement.DiagramArrangement;
+import model.diagram.exportation.DiagramExporter;
 import model.diagram.exportation.GraphMLClassDiagramExporter;
+import model.diagram.exportation.JavaFXClassDiagramExporter;
 import model.diagram.graphml.GraphMLSinkVertex;
 import model.diagram.graphml.GraphMLSinkVertexArc;
-import model.diagram.exportation.JavaFXClassDiagramExporter;
 import model.graph.Arc;
 import model.graph.SinkVertex;
 import model.graph.Vertex;
 import org.apache.commons.io.FileUtils;
-import org.javatuples.Pair;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import parser.Interpreter;
@@ -79,7 +78,7 @@ public class ClassDiagramManagerTest {
                     "CreateCommand", "DisableVersionsManagementCommand", "EditCommand", "EnableVersionsManagementCommand",
                     "LoadCommand", "RollbackToPreviousVersionCommand", "SaveCommand"));
 
-            Map<SinkVertex, Integer> graphNodes = classDiagramManager.getGraphNodes();
+            Map<SinkVertex, Integer> graphNodes = classDiagramManager.getClassDiagram().getGraphNodes();
 
             List<String> l1 = new ArrayList<>();
             List<String> l2 = new ArrayList<>();
@@ -110,13 +109,13 @@ public class ClassDiagramManagerTest {
             List<String> chosenFiles = Arrays.asList("MainWindow", "LatexEditorView", "OpeningWindow");
             SourceProject sourceProject = classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
             classDiagramManager.convertTreeToDiagram(chosenFiles);
-            Map<SinkVertex, Set<Arc<SinkVertex>>> testingCreatedDiagram = classDiagramManager.getDiagram();
+            Map<SinkVertex, Set<Arc<SinkVertex>>> testingCreatedDiagram = classDiagramManager.getClassDiagram().getDiagram();
 
-            Map<SinkVertex, Integer> graphNodes = classDiagramManager.getGraphNodes();
+            Map<SinkVertex, Integer> graphNodes = classDiagramManager.getClassDiagram().getGraphNodes();
             GraphClassDiagramConverter graphClassDiagramConverter = new GraphClassDiagramConverter(graphNodes.keySet());
-            Map<SinkVertex, Set<Arc<SinkVertex>>> adjacencyList = graphClassDiagramConverter.convertGraphToClassDiagram();
-            ShadowCleaner shadowCleaner = new ShadowCleaner(adjacencyList);
-            adjacencyList = shadowCleaner.shadowWeakRelationships();
+            classDiagramManager.getClassDiagram().setDiagram(graphClassDiagramConverter.convertGraphToClassDiagram());
+            ShadowCleaner shadowCleaner = new ShadowCleaner(classDiagramManager.getClassDiagram());
+            Map<SinkVertex, Set<Arc<SinkVertex>>> adjacencyList = shadowCleaner.shadowWeakRelationships();
 
             assertEquals(adjacencyList, testingCreatedDiagram);
         } catch (IOException e) {
@@ -133,17 +132,15 @@ public class ClassDiagramManagerTest {
             classDiagramManager.convertTreeToDiagram(chosenFiles);
             classDiagramManager.arrangeDiagram();
             File actualFile = classDiagramManager.exportDiagramToGraphML(Paths.get(System.getProperty("user.home")+"\\testingExportedFile.graphML"));
-            Map<SinkVertex, Set<Arc<SinkVertex>>> diagram = classDiagramManager.getDiagram();
 
-            Map<SinkVertex, Integer> graphNodes = classDiagramManager.getGraphNodes();
-            DiagramArrangement classDiagramArrangement = new ClassDiagramArrangement(graphNodes, diagram);
-            Map<Integer, Pair<Double, Double>> nodesGeometry = classDiagramArrangement.arrangeDiagram();
-            GraphMLSinkVertex graphMLSinkVertex = new GraphMLSinkVertex(graphNodes, nodesGeometry);
+            DiagramArrangement classDiagramArrangement = new ClassDiagramArrangement(classDiagramManager.getClassDiagram());
+            classDiagramManager.getClassDiagram().setDiagramGeometry(classDiagramArrangement.arrangeDiagram());
+            GraphMLSinkVertex graphMLSinkVertex = new GraphMLSinkVertex(classDiagramManager.getClassDiagram());
             StringBuilder graphMLNodeBuffer = graphMLSinkVertex.convertSinkVertex();
-            GraphMLSinkVertexArc graphMLSinkVertexArc = new GraphMLSinkVertexArc(graphNodes, diagram);
+            GraphMLSinkVertexArc graphMLSinkVertexArc = new GraphMLSinkVertexArc(classDiagramManager.getClassDiagram());
             StringBuilder graphMLEdgeBuffer = graphMLSinkVertexArc.convertSinkVertexArc();
 
-            DiagramExporter graphMLExporter = new GraphMLClassDiagramExporter(graphNodes, nodesGeometry, diagram);
+            DiagramExporter graphMLExporter = new GraphMLClassDiagramExporter(classDiagramManager.getClassDiagram());
             File expectedFile = graphMLExporter.exportDiagram(Paths.get(System.getProperty("user.home") + "\\testingExportedFile.graphML"));
             assertTrue(FileUtils.contentEquals(expectedFile, actualFile));
         } catch (IOException e) {
@@ -158,10 +155,9 @@ public class ClassDiagramManagerTest {
             List<String> chosenFiles = Arrays.asList("MainWindow", "LatexEditorView", "OpeningWindow");
             classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
             classDiagramManager.convertTreeToDiagram(chosenFiles);
-            Map<SinkVertex, Set<Arc<SinkVertex>>> createdDiagram = classDiagramManager.getDiagram();
 
             File testingSavedFile = classDiagramManager.saveDiagram(Paths.get(System.getProperty("user.home")+"\\testingExportedFile.txt"));
-            DiagramExporter javaFXExporter = new JavaFXClassDiagramExporter(createdDiagram);
+            DiagramExporter javaFXExporter = new JavaFXClassDiagramExporter(classDiagramManager.getClassDiagram());
             assertTrue(FileUtils.contentEquals(javaFXExporter.exportDiagram(Paths.get(System.getProperty("user.home")+"\\testingExportedFile.txt")), testingSavedFile));
         } catch (IOException e) {
             e.printStackTrace();
@@ -175,10 +171,10 @@ public class ClassDiagramManagerTest {
             List<String> chosenFiles = Arrays.asList("MainWindow", "LatexEditorView", "OpeningWindow");
             classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
             classDiagramManager.convertTreeToDiagram(chosenFiles);
-            Map<SinkVertex, Set<Arc<SinkVertex>>> createdDiagram = classDiagramManager.getDiagram();
+            Map<SinkVertex, Set<Arc<SinkVertex>>> createdDiagram = classDiagramManager.getClassDiagram().getDiagram();
             classDiagramManager.saveDiagram(Paths.get(System.getProperty("user.home")+"\\testingExportedFile.txt"));
             classDiagramManager.loadDiagram(Paths.get(System.getProperty("user.home")+"\\testingExportedFile.txt"));
-            Map<SinkVertex, Set<Arc<SinkVertex>>> loadedDiagram = classDiagramManager.getDiagram();
+            Map<SinkVertex, Set<Arc<SinkVertex>>> loadedDiagram = classDiagramManager.getClassDiagram().getDiagram();
 
             for (SinkVertex sinkVertex: createdDiagram.keySet()) {
                 Optional<SinkVertex> optionalSinkVertex = loadedDiagram.keySet().stream().filter(sinkVertex1 ->

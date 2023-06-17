@@ -3,11 +3,10 @@ package model.exportation;
 import com.google.gson.*;
 import manager.PackageDiagramManager;
 import model.diagram.exportation.DiagramExporter;
-import model.diagram.javafx.classdiagram.SinkVertexDeserializer;
 import model.diagram.exportation.JavaFXPackageDiagramExporter;
+import model.diagram.javafx.SinkVertexDeserializer;
 import model.graph.Arc;
 import model.graph.SinkVertex;
-import model.graph.Vertex;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -37,9 +36,8 @@ public class JavaFXPackageDiagramExporterTest {
                 "src.controller.commands",
                 "src.controller"
             ));
-            Map<Vertex, Set<Arc<Vertex>>> createdDiagram = packageDiagramManager.getDiagram();
             String relativePath = Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src").toString().replaceAll("\\\\", "\\\\\\\\").replaceAll("\\\\", "\\\\\\\\");
-            DiagramExporter javaFXExporter = new JavaFXPackageDiagramExporter(createdDiagram);
+            DiagramExporter javaFXExporter = new JavaFXPackageDiagramExporter(packageDiagramManager.getPackageDiagram());
             File actualFile = javaFXExporter.exportDiagram(Path.of(System.getProperty("user.home") + "\\testingExportedFile.txt"));
 
             String expectedJsonString = "[{\"name\":\"src.view\",\"path\":\""

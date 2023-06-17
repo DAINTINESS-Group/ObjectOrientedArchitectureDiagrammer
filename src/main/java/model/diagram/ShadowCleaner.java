@@ -8,16 +8,16 @@ import java.util.*;
 
 public class ShadowCleaner {
 
-    private final Map<SinkVertex, Set<Arc<SinkVertex>>> diagram;
     private final List<ArcType> strongerToWeakerArcTypes;
+    private final ClassDiagram classDiagram;
 
-    public ShadowCleaner(Map<SinkVertex, Set<Arc<SinkVertex>>> diagram) {
-        this.diagram = diagram;
+    public ShadowCleaner(ClassDiagram diagram) {
+        classDiagram = diagram;
         strongerToWeakerArcTypes = List.of(ArcType.EXTENSION, ArcType.IMPLEMENTATION, ArcType.AGGREGATION, ArcType.ASSOCIATION);
     }
 
     public Map<SinkVertex, Set<Arc<SinkVertex>>> shadowWeakRelationships() {
-        for (Set<Arc<SinkVertex>> arcs: diagram.values()) {
+        for (Set<Arc<SinkVertex>> arcs: classDiagram.getDiagram().values()) {
             Map<SinkVertex, List<Arc<SinkVertex>>> shadowedArcs = new HashMap<>();
             for (Arc<SinkVertex> arc: arcs) {
                 shadowedArcs.computeIfAbsent(arc.getTargetVertex(), sinkVertex -> new ArrayList<>()).add(arc);
@@ -35,7 +35,7 @@ public class ShadowCleaner {
                 }
             }
         }
-        return diagram;
+        return classDiagram.getDiagram();
     }
 
     private boolean doWeakRelationshipsExist(Map.Entry<SinkVertex, List<Arc<SinkVertex>>> arc) {

@@ -30,15 +30,16 @@ public class ShadowCleanerTest {
                 "VersionsManager", "DocumentManager", "Document");
             SourceProject sourceProject = classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
             classDiagramManager.convertTreeToDiagram(chosenFiles);
-            Map<SinkVertex, Integer> graphNodes = classDiagramManager.getGraphNodes();
+            Map<SinkVertex, Integer> graphNodes = classDiagramManager.getClassDiagram().getGraphNodes();
 
             GraphClassDiagramConverter graphClassDiagramConverter = new GraphClassDiagramConverter(graphNodes.keySet());
             Map<SinkVertex, Set<Arc<SinkVertex>>> shadowedDiagram = graphClassDiagramConverter.convertGraphToClassDiagram();
+            classDiagramManager.getClassDiagram().setDiagram(shadowedDiagram);
             int numberOfArcsBeforeShadowCleaner = 0;
             for (Set<Arc<SinkVertex>> arcs: shadowedDiagram.values()) {
                 numberOfArcsBeforeShadowCleaner += arcs.size();
             }
-            ShadowCleaner shadowCleaner = new ShadowCleaner(shadowedDiagram);
+            ShadowCleaner shadowCleaner = new ShadowCleaner(classDiagramManager.getClassDiagram());
             Map<SinkVertex, Set<Arc<SinkVertex>>> diagram = shadowCleaner.shadowWeakRelationships();
             int numberOfArcsAfterShadowCleaner = 0;
             for (Set<Arc<SinkVertex>> arcs: diagram.values()) {

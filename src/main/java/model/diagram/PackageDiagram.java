@@ -1,8 +1,5 @@
 package model.diagram;
 
-import model.diagram.arrangement.DiagramArrangement;
-import model.diagram.arrangement.PackageDiagramArrangement;
-import model.diagram.exportation.*;
 import model.graph.Arc;
 import model.graph.Vertex;
 import org.javatuples.Pair;
@@ -12,24 +9,31 @@ import java.util.*;
 
 public class PackageDiagram {
 
-    private final Map<Vertex, Integer> graphNodes;
+    private Map<Vertex, Set<Arc<Vertex>>> diagram;
     private Map<Path, Vertex> vertices;
+    private final Map<Vertex, Integer> graphNodes;
+    private Map<Integer, Pair<Double, Double>> diagramGeometry;
 
     public PackageDiagram() {
         graphNodes = new HashMap<>();
     }
 
-    public Map<Vertex, Integer> createGraphNodes(List<String> chosenFileNames) {
+    public void createNewDiagram(List<String> chosenFileNames) {
+        createGraphNodes(chosenFileNames);
+        createDiagram(graphNodes.keySet());
+    }
+
+    public void createDiagram(Set<Vertex> vertices) {
+        GraphPackageDiagramConverter packageDiagramConverter = new GraphPackageDiagramConverter(vertices);
+        diagram = packageDiagramConverter.convertGraphToPackageDiagram();
+    }
+
+    private void createGraphNodes(List<String> chosenFileNames) {
         int nodeId = 0;
         for (Vertex vertex: getChosenNodes(chosenFileNames)) {
             graphNodes.put(vertex, nodeId);
             nodeId++;
         }
-        return graphNodes;
-    }
-
-    public void setVertices(Map<Path, Vertex> vertices) {
-        this.vertices = vertices;
     }
 
     public List<Vertex> getChosenNodes(List<String> chosenPackagesNames) {
@@ -45,4 +49,25 @@ public class PackageDiagram {
         }
         return chosenPackages;
     }
+
+    public void setVertices(Map<Path, Vertex> vertices) {
+        this.vertices = vertices;
+    }
+
+    public void setDiagramGeometry(Map<Integer, Pair<Double, Double>> diagramGeometry) {
+        this.diagramGeometry = diagramGeometry;
+    }
+
+    public Map<Vertex, Integer> getGraphNodes() {
+        return graphNodes;
+    }
+
+    public Map<Vertex, Set<Arc<Vertex>>> getDiagram() {
+        return diagram;
+    }
+
+    public Map<Integer, Pair<Double, Double>> getDiagramGeometry() {
+        return diagramGeometry;
+    }
+
 }

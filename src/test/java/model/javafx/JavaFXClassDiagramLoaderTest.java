@@ -4,7 +4,7 @@ import manager.ClassDiagramManager;
 import model.diagram.GraphClassDiagramConverter;
 import model.diagram.exportation.DiagramExporter;
 import model.diagram.exportation.JavaFXClassDiagramExporter;
-import model.diagram.javafx.classdiagram.JavaFXClassDiagramLoader;
+import model.diagram.javafx.JavaFXClassDiagramLoader;
 import model.graph.Arc;
 import model.graph.SinkVertex;
 import org.junit.jupiter.api.Assertions;
@@ -30,12 +30,12 @@ public class JavaFXClassDiagramLoaderTest {
             List<String> chosenFiles = Arrays.asList("MainWindow", "LatexEditorView", "OpeningWindow");
             classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
             classDiagramManager.convertTreeToDiagram(chosenFiles);
-            Map<SinkVertex, Integer> graphNodes = classDiagramManager.getGraphNodes();
+            Map<SinkVertex, Integer> graphNodes = classDiagramManager.getClassDiagram().getGraphNodes();
 
             GraphClassDiagramConverter graphClassDiagramConverter = new GraphClassDiagramConverter(graphNodes.keySet());
             Map<SinkVertex, Set<Arc<SinkVertex>>> createdDiagram = graphClassDiagramConverter.convertGraphToClassDiagram();
 
-            DiagramExporter javaFXExporter = new JavaFXClassDiagramExporter(createdDiagram);
+            DiagramExporter javaFXExporter = new JavaFXClassDiagramExporter(classDiagramManager.getClassDiagram());
             File actualFile = javaFXExporter.exportDiagram(Path.of(System.getProperty("user.home") + "\\testingExportedFile.txt"));
 
             JavaFXClassDiagramLoader javaFXClassDiagramLoader = new JavaFXClassDiagramLoader(actualFile.toPath());

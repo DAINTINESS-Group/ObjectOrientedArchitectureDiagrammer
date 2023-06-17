@@ -6,8 +6,6 @@ import model.diagram.exportation.DiagramExporter;
 import model.diagram.exportation.PlantUMLClassDiagramTextExporter;
 import model.diagram.plantuml.PlantUMLSinkVertex;
 import model.diagram.plantuml.PlantUMLSinkVertexArc;
-import model.graph.Arc;
-import model.graph.SinkVertex;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -16,8 +14,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -35,14 +31,12 @@ public class PlantUMLClassDiagramTextExporterTest {
             classDiagramManager.convertTreeToDiagram(List.of("StableVersionsStrategy", "VersionsStrategy", "VersionsStrategyFactory", "VolatileVersionsStrategy",
                     "VersionsManager", "Document", "DocumentManager"));
 
-            Map<SinkVertex, Set<Arc<SinkVertex>>> diagram = classDiagramManager.getDiagram();
-            Map<SinkVertex, Integer> graphNodes = classDiagramManager.getGraphNodes();
-            PlantUMLSinkVertex plantUMLSinkVertex = new PlantUMLSinkVertex(diagram);
+            PlantUMLSinkVertex plantUMLSinkVertex = new PlantUMLSinkVertex(classDiagramManager.getClassDiagram());
             String sinkVertexBuffer = plantUMLSinkVertex.convertSinkVertex().toString();
-            PlantUMLSinkVertexArc plantUMLEdge = new PlantUMLSinkVertexArc(diagram);
+            PlantUMLSinkVertexArc plantUMLEdge = new PlantUMLSinkVertexArc(classDiagramManager.getClassDiagram());
             String sinkVertexArcBuffer = plantUMLEdge.convertSinkVertexArc().toString();
 
-            DiagramExporter graphMLExporter = new PlantUMLClassDiagramTextExporter(diagram);
+            DiagramExporter graphMLExporter = new PlantUMLClassDiagramTextExporter(classDiagramManager.getClassDiagram());
             File exportedFile = graphMLExporter.exportDiagram(Paths.get(System.getProperty("user.home") + "\\testingExportedFile.txt"));
             Stream<String> lines = Files.lines(exportedFile.toPath());
             String actualFileContents = lines.collect(Collectors.joining("\n"));

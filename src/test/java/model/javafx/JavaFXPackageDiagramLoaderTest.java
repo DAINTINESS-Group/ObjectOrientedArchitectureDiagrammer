@@ -3,7 +3,7 @@ package model.javafx;
 import manager.PackageDiagramManager;
 import model.diagram.exportation.DiagramExporter;
 import model.diagram.exportation.JavaFXPackageDiagramExporter;
-import model.diagram.javafx.packagediagram.JavaFXPackageDiagramLoader;
+import model.diagram.javafx.JavaFXPackageDiagramLoader;
 import model.graph.Arc;
 import model.graph.SinkVertex;
 import model.graph.Vertex;
@@ -38,9 +38,9 @@ public class JavaFXPackageDiagramLoaderTest {
                 "src.controller.commands",
                 "src.controller"
             ));
-            Map<Vertex, Set<Arc<Vertex>>> createdDiagram = packageDiagramManager.getDiagram();
+            Map<Vertex, Set<Arc<Vertex>>> createdDiagram = packageDiagramManager.getPackageDiagram().getDiagram();
 
-            DiagramExporter javaFXExporter = new JavaFXPackageDiagramExporter(createdDiagram);
+            DiagramExporter javaFXExporter = new JavaFXPackageDiagramExporter(packageDiagramManager.getPackageDiagram());
             File actualFile = javaFXExporter.exportDiagram(Path.of(System.getProperty("user.home") + "\\testingExportedFile.txt"));
 
             JavaFXPackageDiagramLoader javaFXLoader = new JavaFXPackageDiagramLoader(actualFile.toPath());

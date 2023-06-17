@@ -1,16 +1,12 @@
 package model.diagram.exportation;
 
+import model.diagram.ClassDiagram;
 import model.diagram.graphml.GraphMLSinkVertex;
 import model.diagram.graphml.GraphMLSinkVertexArc;
-import model.graph.Arc;
-import model.graph.SinkVertex;
-import org.javatuples.Pair;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Map;
-import java.util.Set;
 
 public class GraphMLClassDiagramExporter implements DiagramExporter {
 
@@ -18,11 +14,10 @@ public class GraphMLClassDiagramExporter implements DiagramExporter {
     private final StringBuilder graphMLNodeBuffer;
     private final StringBuilder graphMLEdgeBuffer;
 
-    public GraphMLClassDiagramExporter(Map<SinkVertex, Integer> graphNodes, Map<Integer, Pair<Double, Double>> nodesGeometry,
-                                       Map<SinkVertex, Set<Arc<SinkVertex>>> diagram) {
-        GraphMLSinkVertex graphMLSinkVertex = new GraphMLSinkVertex(graphNodes, nodesGeometry);
+    public GraphMLClassDiagramExporter(ClassDiagram classDiagram) {
+        GraphMLSinkVertex graphMLSinkVertex = new GraphMLSinkVertex(classDiagram);
         this.graphMLNodeBuffer = graphMLSinkVertex.convertSinkVertex();
-        GraphMLSinkVertexArc graphMLSinkVertexArc = new GraphMLSinkVertexArc(graphNodes, diagram);
+        GraphMLSinkVertexArc graphMLSinkVertexArc = new GraphMLSinkVertexArc(classDiagram);
         this.graphMLEdgeBuffer = graphMLSinkVertexArc.convertSinkVertexArc();
         graphMLFile = new GraphMLFile();
     }

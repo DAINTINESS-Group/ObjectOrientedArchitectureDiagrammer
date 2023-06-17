@@ -1,5 +1,6 @@
 package model.diagram.graphml;
 
+import model.diagram.ClassDiagram;
 import model.graph.SinkVertex;
 import model.graph.VertexType;
 import org.javatuples.Pair;
@@ -13,20 +14,18 @@ public class GraphMLSinkVertex {
 
     private static final String CLASS_COLOR = "#FF9900";
     private static final String INTERFACE_COLOR = "#3366FF";
-    private final Map<SinkVertex, Integer> graphNodes;
     private final StringBuilder graphMLBuffer;
-    private final Map<Integer, Pair<Double, Double>> nodesGeometry;
+    private final ClassDiagram classDiagram;
 
-    public GraphMLSinkVertex(Map<SinkVertex, Integer> graphNodes, Map<Integer, Pair<Double, Double>> nodesGeometry) {
-        this.graphNodes = graphNodes;
+    public GraphMLSinkVertex(ClassDiagram classDiagram) {
+        this.classDiagram = classDiagram;
         this.graphMLBuffer = new StringBuilder();
-        this.nodesGeometry = nodesGeometry;
     }
 
     public StringBuilder convertSinkVertex() {
-        for (Map.Entry<SinkVertex, Integer> sinkVertex: graphNodes.entrySet()) {
+        for (Map.Entry<SinkVertex, Integer> sinkVertex: classDiagram.getGraphNodes().entrySet()) {
             graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLSinkVertexSyntax(
-                    getSinkVertexDescription(sinkVertex.getKey(), sinkVertex.getValue(), nodesGeometry.get(sinkVertex.getValue()))));
+                    getSinkVertexDescription(sinkVertex.getKey(), sinkVertex.getValue(), classDiagram.getDiagramGeometry().get(sinkVertex.getValue()))));
         }
         return graphMLBuffer;
     }

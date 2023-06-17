@@ -1,9 +1,6 @@
 package manager;
 
-import model.graph.Arc;
-import model.graph.SinkVertex;
 import model.graph.Vertex;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -29,7 +26,7 @@ public class PackageDiagramManagerTest {
                 "src.controller.commands",
                 "src.controller"
             ));
-            Map<Vertex, Integer> graphNodes = packageDiagramManager.getGraphNodes();
+            Map<Vertex, Integer> graphNodes = packageDiagramManager.getPackageDiagram().getGraphNodes();
 
             Map<Path, Vertex> packageNodes = sourceProject.getVertices();
             packageNodes.remove(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));

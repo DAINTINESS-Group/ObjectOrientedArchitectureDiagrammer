@@ -28,8 +28,7 @@ public class GraphMLSinkVertexTest {
             classDiagramManager.convertTreeToDiagram(List.of("AddLatexCommand", "ChangeVersionsStrategyCommand", "Command", "CommandFactory",
                     "CreateCommand", "DisableVersionsManagementCommand", "EditCommand", "EnableVersionsManagementCommand",
                     "LoadCommand", "RollbackToPreviousVersionCommand", "SaveCommand"));
-            Map<SinkVertex, Integer> graphNodes = classDiagramManager.getGraphNodes();
-            GraphMLSinkVertex graphMLSinkVertex = new GraphMLSinkVertex(graphNodes, Map.ofEntries(
+            classDiagramManager.getClassDiagram().setDiagramGeometry(Map.ofEntries(
                     Map.entry(0, new Pair<>(10.0, 10.0)),
                     Map.entry(1, new Pair<>(10.0, 10.0)),
                     Map.entry(2, new Pair<>(10.0, 10.0)),
@@ -42,10 +41,12 @@ public class GraphMLSinkVertexTest {
                     Map.entry(9, new Pair<>(10.0, 10.0)),
                     Map.entry(10, new Pair<>(10.0, 10.0))
             ));
+
+            GraphMLSinkVertex graphMLSinkVertex = new GraphMLSinkVertex(classDiagramManager.getClassDiagram());
             StringBuilder actual = graphMLSinkVertex.convertSinkVertex();
 
             StringBuilder expected = new StringBuilder();
-            for (SinkVertex leafNode: graphNodes.keySet()) {
+            for (SinkVertex leafNode: classDiagramManager.getClassDiagram().getGraphNodes().keySet()) {
                 expected.append(String.format("    <node id=\"n%s\">\n" +
                                 "      <data key=\"d4\" xml:space=\"preserve\"/>\n" +
                                 "      <data key=\"d5\"/>\n" +
@@ -61,7 +62,7 @@ public class GraphMLSinkVertexTest {
                                 "          </y:UML>\n" +
                                 "        </y:UMLClassNode>\n" +
                                 "      </data>\n" +
-                                "    </node>\n", graphNodes.get(leafNode), 10.0, 10.0, getNodesColor(leafNode), leafNode.getName(),
+                                "    </node>\n", classDiagramManager.getClassDiagram().getGraphNodes().get(leafNode), 10.0, 10.0, getNodesColor(leafNode), leafNode.getName(),
                         getNodesFields(leafNode), getNodesMethods(leafNode)));
             }
             assertEquals(expected.toString(), actual.toString());

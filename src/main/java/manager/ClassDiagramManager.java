@@ -2,103 +2,92 @@ package manager;
 
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import model.diagram.ClassDiagram;
-import model.diagram.GraphClassDiagramConverter;
+import model.diagram.ShadowCleaner;
 import model.diagram.arrangement.ClassDiagramArrangement;
 import model.diagram.arrangement.DiagramArrangement;
 import model.diagram.exportation.*;
-import model.diagram.ShadowCleaner;
 import model.diagram.javafx.JavaFXVisualization;
-import model.diagram.javafx.classdiagram.JavaFXClassDiagramLoader;
-import model.diagram.javafx.classdiagram.JavaFXClassVisualization;
-import model.graph.Arc;
-import model.graph.SinkVertex;
+import model.diagram.javafx.JavaFXClassDiagramLoader;
+import model.diagram.javafx.JavaFXClassVisualization;
 import org.javatuples.Pair;
 
 import java.io.File;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 public class ClassDiagramManager implements DiagramManager {
 
-    private final ArrayDeque<ClassDiagram> diagramStack;
-    private Map<SinkVertex, Set<Arc<SinkVertex>>> diagram;
-    private Map<Integer, Pair<Double, Double>> diagramGeometry;
-    private Map<SinkVertex, Integer> graphNodes;
+    private ClassDiagram classDiagram;
 
     public ClassDiagramManager() {
-        diagramStack = new ArrayDeque<>();
+        classDiagram = new ClassDiagram();
     }
 
     @Override
     public SourceProject createSourceProject(Path sourcePackagePath) {
         SourceProject sourceProject = new SourceProject();
         sourceProject.createGraph(sourcePackagePath);
-        diagramStack.push(new ClassDiagram());
-        Objects.requireNonNull(diagramStack.peek()).setSinkVertices(sourceProject.getSinkVertices());
+        classDiagram.setSinkVertices(sourceProject.getSinkVertices());
         return sourceProject;
     }
 
     @Override
     public void convertTreeToDiagram(List<String> chosenFilesNames) {
-        graphNodes = Objects.requireNonNull(diagramStack.peek()).createGraphNodes(chosenFilesNames);
-        GraphClassDiagramConverter graphClassDiagramConverter = new GraphClassDiagramConverter(graphNodes.keySet());
-        diagram = graphClassDiagramConverter.convertGraphToClassDiagram();
-        ShadowCleaner shadowCleaner = new ShadowCleaner(diagram);
-        diagram = shadowCleaner.shadowWeakRelationships();
+        classDiagram.createNewDiagram(chosenFilesNames);
+        ShadowCleaner shadowCleaner = new ShadowCleaner(classDiagram);
+        classDiagram.setDiagram(shadowCleaner.shadowWeakRelationships());
     }
 
     @Override
     public Map<Integer, Pair<Double, Double>> arrangeDiagram(){
-        DiagramArrangement classDiagramArrangement = new ClassDiagramArrangement(graphNodes, diagram);
-        diagramGeometry = classDiagramArrangement.arrangeDiagram();
+        DiagramArrangement classDiagramArrangement = new ClassDiagramArrangement(classDiagram);
+        Map<Integer, Pair<Double, Double>> diagramGeometry = classDiagramArrangement.arrangeDiagram();
+        classDiagram.setDiagramGeometry(diagramGeometry);
         return diagramGeometry;
     }
 
     @Override
     public SmartGraphPanel<String, String> visualizeJavaFXGraph() {
-        JavaFXVisualization javaFXVisualization = new JavaFXClassVisualization(diagram);
+        JavaFXVisualization javaFXVisualization = new JavaFXClassVisualization(classDiagram);
         return javaFXVisualization.createGraphView();
     }
 
     @Override
     public File exportDiagramToGraphML(Path graphMLSavePath) {
-        DiagramExporter diagramExporter = new GraphMLClassDiagramExporter(graphNodes, diagramGeometry, diagram);
+        DiagramExporter diagramExporter = new GraphMLClassDiagramExporter(classDiagram);
         return diagramExporter.exportDiagram(graphMLSavePath);
     }
 
     @Override
     public File exportPlantUMLImage(Path plantUMLSavePath) {
-        DiagramExporter diagramExporter = new PlantUMLClassDiagramImageExporter(diagram);
+        DiagramExporter diagramExporter = new PlantUMLClassDiagramImageExporter(classDiagram);
         return diagramExporter.exportDiagram(plantUMLSavePath);
     }
 
     @Override
     public File exportPlantUMLText(Path textSavePath) {
-        DiagramExporter diagramExporter = new PlantUMLClassDiagramTextExporter(diagram);
+        DiagramExporter diagramExporter = new PlantUMLClassDiagramTextExporter(classDiagram);
         return diagramExporter.exportDiagram(textSavePath);
     }
 
     @Override
     public File saveDiagram(Path graphSavePath) {
-        DiagramExporter diagramExporter = new JavaFXClassDiagramExporter(diagram);
+        DiagramExporter diagramExporter = new JavaFXClassDiagramExporter(classDiagram);
         return diagramExporter.exportDiagram(graphSavePath);
     }
 
     @Override
     public void loadDiagram(Path graphSavePath) {
-        diagramStack.push(new ClassDiagram());
+        classDiagram = new ClassDiagram();
         JavaFXClassDiagramLoader javaFXClassDiagramLoader =  new JavaFXClassDiagramLoader(graphSavePath);
-        Set<SinkVertex> loadedDiagram = javaFXClassDiagramLoader.loadDiagram();
-        GraphClassDiagramConverter graphClassDiagramConverter = new GraphClassDiagramConverter(loadedDiagram);
-        diagram = graphClassDiagramConverter.convertGraphToClassDiagram();
-        ShadowCleaner shadowCleaner = new ShadowCleaner(diagram);
-        diagram = shadowCleaner.shadowWeakRelationships();
+        classDiagram.createDiagram(javaFXClassDiagramLoader.loadDiagram());
+        ShadowCleaner shadowCleaner = new ShadowCleaner(classDiagram);
+        classDiagram.setDiagram(shadowCleaner.shadowWeakRelationships());
     }
 
-    public Map<SinkVertex, Set<Arc<SinkVertex>>> getDiagram() { return  diagram; }
-
-    public Map<SinkVertex, Integer> getGraphNodes() {
-        return graphNodes;
+    public ClassDiagram getClassDiagram() {
+        return classDiagram;
     }
 
 }

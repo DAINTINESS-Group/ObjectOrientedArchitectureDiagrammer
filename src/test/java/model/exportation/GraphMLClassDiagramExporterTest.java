@@ -2,15 +2,13 @@ package model.exportation;
 
 import manager.ClassDiagramManager;
 import manager.SourceProject;
-import model.diagram.exportation.DiagramExporter;
 import model.diagram.arrangement.ClassDiagramArrangement;
 import model.diagram.arrangement.DiagramArrangement;
+import model.diagram.exportation.DiagramExporter;
 import model.diagram.exportation.GraphMLClassDiagramExporter;
 import model.diagram.graphml.GraphMLSinkVertex;
 import model.diagram.graphml.GraphMLSinkVertexArc;
 import model.diagram.graphml.GraphMLSyntax;
-import model.graph.Arc;
-import model.graph.SinkVertex;
 import org.javatuples.Pair;
 import org.junit.jupiter.api.Test;
 
@@ -19,7 +17,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -37,20 +37,18 @@ public class GraphMLClassDiagramExporterTest {
             SourceProject sourceProject = classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
             classDiagramManager.convertTreeToDiagram(chosenFiles);
             classDiagramManager.arrangeDiagram();
-            Map<SinkVertex, Set<Arc<SinkVertex>>> diagram = classDiagramManager.getDiagram();
 
-            Map<SinkVertex, Integer> graphNodes = classDiagramManager.getGraphNodes();
-            DiagramArrangement classDiagramArrangement = new ClassDiagramArrangement(graphNodes, diagram);
+            DiagramArrangement classDiagramArrangement = new ClassDiagramArrangement(classDiagramManager.getClassDiagram());
             Map<Integer, Pair<Double, Double>> nodesGeometry = classDiagramArrangement.arrangeDiagram();
-            DiagramExporter graphMLExporter = new GraphMLClassDiagramExporter(graphNodes, nodesGeometry, diagram);
+            DiagramExporter graphMLExporter = new GraphMLClassDiagramExporter(classDiagramManager.getClassDiagram());
             File exportedFile = graphMLExporter.exportDiagram(Paths.get(System.getProperty("user.home") + "\\testingExportedFile.graphML"));
             Stream<String> lines = Files.lines(exportedFile.toPath());
             String actualFileContents = lines.collect(Collectors.joining("\n"));
             lines.close();
 
-            GraphMLSinkVertex graphMLSinkVertex = new GraphMLSinkVertex(graphNodes, nodesGeometry);
+            GraphMLSinkVertex graphMLSinkVertex = new GraphMLSinkVertex(classDiagramManager.getClassDiagram());
             StringBuilder graphMLNodeBuffer = graphMLSinkVertex.convertSinkVertex();
-            GraphMLSinkVertexArc graphMLSinkVertexArc = new GraphMLSinkVertexArc(graphNodes, diagram);
+            GraphMLSinkVertexArc graphMLSinkVertexArc = new GraphMLSinkVertexArc(classDiagramManager.getClassDiagram());
             StringBuilder graphMLEdgeBuffer = graphMLSinkVertexArc.convertSinkVertexArc();
             String expectedFileContents = "";
             expectedFileContents += (GraphMLSyntax.getInstance().getGraphMLPrefix());

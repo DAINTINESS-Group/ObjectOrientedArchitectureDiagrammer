@@ -1,25 +1,25 @@
-package model.diagram.javafx.classdiagram;
+package model.diagram.javafx;
 
 import com.brunomnsilva.smartgraph.graph.Digraph;
 import com.brunomnsilva.smartgraph.graph.DigraphEdgeList;
 import com.brunomnsilva.smartgraph.graph.Graph;
 import com.brunomnsilva.smartgraph.graphview.SmartCircularSortedPlacementStrategy;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
+import model.diagram.ClassDiagram;
 import model.graph.Arc;
 import model.graph.ArcType;
 import model.graph.SinkVertex;
 import model.graph.VertexType;
 
-import java.util.Map;
 import java.util.Set;
 
 public class JavaFXClassVisualization implements model.diagram.javafx.JavaFXVisualization {
 
+    private final ClassDiagram classDiagram;
     private SmartGraphPanel<String, String> graphView;
-    private final Map<SinkVertex, Set<Arc<SinkVertex>>> diagram;
 
-    public JavaFXClassVisualization(Map<SinkVertex, Set<Arc<SinkVertex>>> diagram) {
-        this.diagram = diagram;
+    public JavaFXClassVisualization(ClassDiagram diagram) {
+        classDiagram = diagram;
     }
 
     @Override
@@ -32,7 +32,7 @@ public class JavaFXClassVisualization implements model.diagram.javafx.JavaFXVisu
 
     private Graph<String, String> createGraph() {
         Digraph<String, String> directedGraph = new DigraphEdgeList<>();
-        for (SinkVertex sinkVertex: diagram.keySet()) {
+        for (SinkVertex sinkVertex: classDiagram.getDiagram().keySet()) {
             directedGraph.insertVertex(sinkVertex.getName());
         }
         insertSinkVertexArcs(directedGraph);
@@ -40,7 +40,7 @@ public class JavaFXClassVisualization implements model.diagram.javafx.JavaFXVisu
     }
 
     private void insertSinkVertexArcs(Digraph<String, String> directedGraph){
-        for (Set<Arc<SinkVertex>> arcs : diagram.values()) {
+        for (Set<Arc<SinkVertex>> arcs : classDiagram.getDiagram().values()) {
             for (Arc<SinkVertex> arc: arcs) {
                 if (arc.getArcType().equals(ArcType.AGGREGATION)) {
                     directedGraph.insertEdge(arc.getTargetVertex().getName(), arc.getSourceVertex().getName(),
@@ -54,7 +54,7 @@ public class JavaFXClassVisualization implements model.diagram.javafx.JavaFXVisu
     }
 
     private void setSinkVertexCustomStyle() {
-        for (SinkVertex sinkVertex: diagram.keySet()){
+        for (SinkVertex sinkVertex: classDiagram.getDiagram().keySet()){
             if (sinkVertex.getVertexType().equals(VertexType.INTERFACE)) {
                 graphView.getStylableVertex(sinkVertex.getName()).setStyleClass("vertexInterface");
             }else {

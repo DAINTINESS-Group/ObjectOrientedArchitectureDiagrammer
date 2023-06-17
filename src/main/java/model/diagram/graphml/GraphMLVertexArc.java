@@ -1,25 +1,26 @@
 package model.diagram.graphml;
 
+import model.diagram.PackageDiagram;
 import model.graph.Arc;
-import model.graph.SinkVertex;
 import model.graph.Vertex;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
 
 public class GraphMLVertexArc {
-    private final Map<Vertex, Integer> graphNodes;
-    private final Map<Vertex, Set<Arc<Vertex>>> diagram;
     private final StringBuilder graphMLBuffer;
+    private final PackageDiagram packageDiagram;
 
-    public GraphMLVertexArc(Map<Vertex, Integer> graphNodes, Map<Vertex, Set<Arc<Vertex>>> diagram) {
-        this.graphNodes = graphNodes;
-        this.diagram = diagram;
+    public GraphMLVertexArc(PackageDiagram packageDiagram) {
+        this.packageDiagram = packageDiagram;
         graphMLBuffer = new StringBuilder();
     }
 
     public StringBuilder convertVertexArc() {
         List<Arc<Vertex>> arcs = new ArrayList<>();
-        for (Set<Arc<Vertex>> arcSet: diagram.values()) {
+        for (Set<Arc<Vertex>> arcSet: packageDiagram.getDiagram().values()) {
             arcs.addAll(arcSet);
         }
 
@@ -32,8 +33,8 @@ public class GraphMLVertexArc {
     }
 
     private List<String> getVertexArcProperties(Arc<Vertex> relationship, Integer edgeId) {
-        return Arrays.asList(String.valueOf(edgeId), String.valueOf(graphNodes.get(relationship.getSourceVertex())),
-                String.valueOf(graphNodes.get(relationship.getTargetVertex())));
+        return Arrays.asList(String.valueOf(edgeId), String.valueOf(packageDiagram.getGraphNodes().get(relationship.getSourceVertex())),
+                String.valueOf(packageDiagram.getGraphNodes().get(relationship.getTargetVertex())));
     }
 
 }

@@ -27,8 +27,8 @@ public class GraphClassDiagramConverterTest {
             List<String> chosenFiles = Arrays.asList("MainWindow", "LatexEditorView", "OpeningWindow");
             SourceProject sourceProject = classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
             classDiagramManager.convertTreeToDiagram(chosenFiles);
-            Set<SinkVertex> graphNodes = classDiagramManager.getGraphNodes().keySet();
-            Map<SinkVertex, Set<Arc<SinkVertex>>> diagram = classDiagramManager.getDiagram();
+            Set<SinkVertex> graphNodes = classDiagramManager.getClassDiagram().getGraphNodes().keySet();
+            Map<SinkVertex, Set<Arc<SinkVertex>>> diagram = classDiagramManager.getClassDiagram().getDiagram();
 
             List<Arc<SinkVertex>> arcs = new ArrayList<>();
             for (Set<Arc<SinkVertex>> arcSet: diagram.values()) {
@@ -37,7 +37,8 @@ public class GraphClassDiagramConverterTest {
 
             GraphClassDiagramConverter graphClassDiagramConverter = new GraphClassDiagramConverter(diagram.keySet());
             Map<SinkVertex, Set<Arc<SinkVertex>>> adjacencyList = graphClassDiagramConverter.convertGraphToClassDiagram();
-            ShadowCleaner shadowCleaner = new ShadowCleaner(adjacencyList);
+            classDiagramManager.getClassDiagram().setDiagram(adjacencyList);
+            ShadowCleaner shadowCleaner = new ShadowCleaner(classDiagramManager.getClassDiagram());
             adjacencyList = shadowCleaner.shadowWeakRelationships();
 
             Set<Arc<SinkVertex>> actualArcs = new HashSet<>();
