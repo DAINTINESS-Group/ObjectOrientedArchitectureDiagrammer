@@ -1,6 +1,7 @@
 package controller;
 
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
+import com.google.gson.JsonParseException;
 import manager.DiagramManager;
 import manager.DiagramManagerFactory;
 import manager.SourceProject;
@@ -52,7 +53,7 @@ public class DiagramController implements Controller {
 		return diagramManager.saveDiagram(graphSavePath);
 	}
 
-	public void loadDiagram(Path graphSavePath) {
+	public void loadDiagram(Path graphSavePath) throws JsonParseException {
 		diagramManager.loadDiagram(graphSavePath);
 	}
 

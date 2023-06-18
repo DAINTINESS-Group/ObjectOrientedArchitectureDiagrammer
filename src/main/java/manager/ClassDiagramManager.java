@@ -1,6 +1,7 @@
 package manager;
 
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
+import com.google.gson.JsonParseException;
 import model.diagram.ClassDiagram;
 import model.diagram.ShadowCleaner;
 import model.diagram.arrangement.ClassDiagramArrangement;
@@ -78,7 +79,7 @@ public class ClassDiagramManager implements DiagramManager {
     }
 
     @Override
-    public void loadDiagram(Path graphSavePath) {
+    public void loadDiagram(Path graphSavePath) throws JsonParseException {
         classDiagram = new ClassDiagram();
         JavaFXClassDiagramLoader javaFXClassDiagramLoader =  new JavaFXClassDiagramLoader(graphSavePath);
         classDiagram.createDiagram(javaFXClassDiagramLoader.loadDiagram());

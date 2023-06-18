@@ -2,6 +2,7 @@ package model.diagram.javafx;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParseException;
 import model.graph.ArcType;
 import model.graph.Vertex;
 import org.javatuples.Triplet;
@@ -19,7 +20,7 @@ public class JavaFXPackageDiagramLoader {
         this.graphSavePath = graphSavePath;
     }
 
-    public Set<Vertex> loadDiagram(){
+    public Set<Vertex> loadDiagram() throws JsonParseException {
         Set<Vertex> vertices = new HashSet<>();
         try {
             String json = Files.readString(graphSavePath);

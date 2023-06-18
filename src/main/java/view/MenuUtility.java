@@ -1,5 +1,6 @@
 package view;
 
+import com.google.gson.JsonParseException;
 import controller.Controller;
 import controller.DiagramController;
 import javafx.event.ActionEvent;
@@ -81,9 +82,17 @@ public class MenuUtility {
         if (selectedFile == null) {
             return;
         }
-        DiagramVisualization diagramVisualization = new DiagramVisualization(menuBar);
-        diagramVisualization.setDiagramController(diagramController);
-        diagramController.loadDiagram(selectedFile.toPath());
-        diagramVisualization.loadLoadedDiagramVisualization(diagramController.visualizeJavaFXGraph());
+        try {
+            DiagramVisualization diagramVisualization = new DiagramVisualization(menuBar);
+            diagramVisualization.setDiagramController(diagramController);
+            diagramController.loadDiagram(selectedFile.toPath());
+            diagramVisualization.loadLoadedDiagramVisualization(diagramController.visualizeJavaFXGraph());
+        } catch (JsonParseException j) {
+            if (j.getMessage().equals("Wrong diagram type")) {
+                PopupWindow.createPopupInfoWindow("You tried to load the wrong type of diagram", "error");
+            } else {
+                j.printStackTrace();
+            }
+        }
     }
 }

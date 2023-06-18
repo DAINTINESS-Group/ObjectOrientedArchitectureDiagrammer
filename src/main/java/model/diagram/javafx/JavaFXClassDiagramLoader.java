@@ -2,6 +2,7 @@ package model.diagram.javafx;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParseException;
 import model.graph.ArcType;
 import model.graph.SinkVertex;
 import org.javatuples.Triplet;
@@ -19,7 +20,7 @@ public class JavaFXClassDiagramLoader {
         this.graphSavePath = graphSavePath;
     }
 
-    public Set<SinkVertex> loadDiagram(){
+    public Set<SinkVertex> loadDiagram() throws JsonParseException {
         Set<SinkVertex> sinkVertices = new HashSet<>();
         try {
             String json = Files.readString(graphSavePath);

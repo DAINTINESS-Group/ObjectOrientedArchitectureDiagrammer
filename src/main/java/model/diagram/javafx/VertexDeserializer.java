@@ -21,6 +21,13 @@ public class VertexDeserializer implements JsonDeserializer<Vertex> {
         String path = jsonObject.get("path").getAsString();
         String vertexType = jsonObject.get("vertexType").getAsString();
 
+        if (VertexType.valueOf(vertexType.toUpperCase()).equals(VertexType.CLASS) ||
+            VertexType.valueOf(vertexType.toUpperCase()).equals(VertexType.INTERFACE) ||
+            VertexType.valueOf(vertexType.toUpperCase()).equals(VertexType.ENUM))
+        {
+            throw new JsonParseException("Wrong diagram type");
+        }
+
         JsonObject parent = jsonObject.get("parent").getAsJsonObject();
         String parentName = parent.get("name").getAsString();
 

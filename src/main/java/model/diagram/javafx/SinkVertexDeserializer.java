@@ -22,15 +22,10 @@ public class SinkVertexDeserializer implements JsonDeserializer<SinkVertex> {
         String name = jsonObject.get("name").getAsString();
         String path = jsonObject.get("path").getAsString();
         String vertexType = jsonObject.get("vertexType").getAsString();
-        //TODO
-        // both here and in the VertexSerializer we need to check if we are loading the correct diagram type,
-        // e.g. class && package diagrams respectively
-        // otherwise we need to throw an exception
-        /*
+
         if (VertexType.valueOf(vertexType.toUpperCase()).equals(VertexType.PACKAGE)) {
-            throw new JsonParseException("Tried to load a package diagram");
+            throw new JsonParseException("Wrong diagram type");
         }
-        */
 
         sinkVertex = new SinkVertex(Path.of(path), name, VertexType.valueOf(vertexType));
 
