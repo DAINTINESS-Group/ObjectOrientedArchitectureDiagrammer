@@ -5,7 +5,9 @@ import parser.tree.RelationshipIdentifier;
 import parser.tree.RelationshipType;
 
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class JavaparserRelationshipIdentifier extends RelationshipIdentifier {
 
@@ -15,6 +17,14 @@ public class JavaparserRelationshipIdentifier extends RelationshipIdentifier {
 
     @Override
     protected void checkRelationship(int i, int j) {
+        List<String> imports = ((JavaparserLeafNode) allLeafNodes.get(i)).getImports();
+        Optional<String> optional = imports.stream().filter(imprt ->
+            (allLeafNodes.get(j).getParentNode().getName() + "." + allLeafNodes.get(j).getName()).endsWith(imprt))
+        .findFirst();
+        if (optional.isEmpty() && !isSubNode(i, j)) {
+            return;
+        }
+
         if (isDependency(i, j)) {
             createRelationship(i, j, RelationshipType.DEPENDENCY);
         }
@@ -29,6 +39,20 @@ public class JavaparserRelationshipIdentifier extends RelationshipIdentifier {
         }
         if (isImplementation(i, j)) {
             createRelationship(i, j, RelationshipType.IMPLEMENTATION);
+        }
+    }
+
+    private boolean isSubNode(int i, int j) {
+        PackageNode node = allLeafNodes.get(j).getParentNode();
+        while (true) {
+            if (node.equals(allLeafNodes.get(i).getParentNode())) {
+                return true;
+            }
+
+            if (node.getPackageNodesPath().toString().equals("")) {
+                return false;
+            }
+            node = node.getParentNode();
         }
     }
 

@@ -3,6 +3,7 @@ package parser.javaparser;
 import com.github.javaparser.ParserConfiguration;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.*;
 import com.github.javaparser.ast.expr.ObjectCreationExpr;
 import com.github.javaparser.ast.expr.VariableDeclarationExpr;
@@ -17,6 +18,7 @@ import java.io.FileNotFoundException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**This class is responsible for the creation of the AST of a Java source file using Javaparser.
  * Using the different visitors, it parses the file's inheritance declarations, constructor, methods parameters,
@@ -41,6 +43,10 @@ public class JavaparserFileVisitor {
             JavaparserLeafNode javaparserLeafNode = (JavaparserLeafNode) leafNode;
             StaticJavaParser.getParserConfiguration().setLanguageLevel(ParserConfiguration.LanguageLevel.JAVA_17);
             CompilationUnit compilationUnit = StaticJavaParser.parse(file);
+            List<String> imports = compilationUnit.getImports().stream().map(Node::toString)
+                .map(imprt -> imprt.replaceFirst("^import ", "").trim())
+                .map(imprt -> imprt.replaceAll(";$", "")).collect(Collectors.toList());
+            javaparserLeafNode.setImports(imports);
 
             InheritanceVisitor inheritanceVisitor = new InheritanceVisitor(javaparserLeafNode);
             inheritanceVisitor.visit(compilationUnit, null);

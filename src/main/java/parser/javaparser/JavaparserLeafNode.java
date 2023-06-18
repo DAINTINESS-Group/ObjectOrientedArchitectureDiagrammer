@@ -17,6 +17,7 @@ public class JavaparserLeafNode extends LeafNode {
     private String nodeName;
     private String baseClass;
     private NodeType nodeType;
+    private List<String> imports;
 
     public JavaparserLeafNode(Path path) {
         super(path);
@@ -51,6 +52,10 @@ public class JavaparserLeafNode extends LeafNode {
         createdObjects.add(createdObject);
     }
 
+    public void setImports(List<String> imports) {
+        this.imports = imports;
+    }
+
     public List<String> getVariablesTypes() {
         return new ArrayList<>(variables.values());
     }
@@ -67,6 +72,10 @@ public class JavaparserLeafNode extends LeafNode {
         return implementedInterfaces;
     }
 
+    public List<String> getImports() {
+        return imports;
+    }
+
     @Override
     public String getName() {
         return nodeName;
@@ -76,5 +85,4 @@ public class JavaparserLeafNode extends LeafNode {
     public NodeType getType() {
         return nodeType;
     }
-
 }
