@@ -28,7 +28,7 @@ public class PackageDiagramManagerTest {
             ));
             Map<Vertex, Integer> graphNodes = packageDiagramManager.getPackageDiagram().getGraphNodes();
 
-            Map<Path, Vertex> packageNodes = sourceProject.getVertices();
+            Map<Path, Vertex> packageNodes = sourceProject.getInterpreter().getVertices();
             packageNodes.remove(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
             assertEquals(packageNodes.size(), graphNodes.size());
             Iterator<Map.Entry<Path, Vertex>> iter1 = packageNodes.entrySet().iterator();

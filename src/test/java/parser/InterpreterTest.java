@@ -29,14 +29,11 @@ public class InterpreterTest {
     @Test
     public void convertTreeToGraphTest() {
         try {
-            SourceProject sourceProject = new SourceProject();
-            sourceProject.createGraph(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-
             Interpreter interpreter = new Interpreter();
             interpreter.parseProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
+            interpreter.convertTreeToGraph();
             Map<Path, PackageNode> packageNodes = interpreter.getPackageNodes();
-
-            Map<Path, Vertex> vertices = sourceProject.getVertices();
+            Map<Path, Vertex> vertices = interpreter.getVertices();
             assertEquals(packageNodes.size(), vertices.size());
 
             for (Map.Entry<Path, PackageNode> packageNodeEntry: packageNodes.entrySet()) {

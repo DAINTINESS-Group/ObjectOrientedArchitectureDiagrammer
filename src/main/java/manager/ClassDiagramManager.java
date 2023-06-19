@@ -27,9 +27,9 @@ public class ClassDiagramManager implements DiagramManager {
 
     @Override
     public SourceProject createSourceProject(Path sourcePackagePath) {
-        SourceProject sourceProject = new SourceProject();
+        SourceProject sourceProject = new SourceProject(classDiagram);
         sourceProject.createGraph(sourcePackagePath);
-        classDiagram.setSinkVertices(sourceProject.getSinkVertices());
+        sourceProject.setClassDiagramSinkVertices();
         return sourceProject;
     }
 

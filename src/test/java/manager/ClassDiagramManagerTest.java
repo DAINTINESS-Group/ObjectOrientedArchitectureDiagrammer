@@ -35,12 +35,13 @@ public class ClassDiagramManagerTest {
         try {
             ClassDiagramManager classDiagramManager = new ClassDiagramManager();
             SourceProject sourceProject = classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-            Map<Path, Vertex> vertices = sourceProject.getVertices();
+            Map<Path, Vertex> vertices = sourceProject.getInterpreter().getVertices();
             Interpreter interpreter = new Interpreter();
             interpreter.parseProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-            ArrayList<Vertex> interpreterVertices = interpreter.convertTreeToGraph().getKey();
+            interpreter.convertTreeToGraph();
+            ArrayList<Vertex> interpreterVertices = new ArrayList<>(interpreter.getVertices().values());
 
-            assertEquals(vertices.size(), interpreterVertices.size());
+                    assertEquals(vertices.size(), interpreterVertices.size());
             for (Map.Entry<Path, Vertex> vertexEntry: vertices.entrySet()) {
                 Vertex optionalVertex = interpreterVertices.stream()
                     .filter(vertex ->
@@ -82,10 +83,10 @@ public class ClassDiagramManagerTest {
 
             List<String> l1 = new ArrayList<>();
             List<String> l2 = new ArrayList<>();
-            assertEquals(sourceProject.getVertices().get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
+            assertEquals(sourceProject.getInterpreter().getVertices().get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
                     "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands")).getSinkVertices().size(), graphNodes.size());
 
-            Iterator<SinkVertex> iter1 = sourceProject.getVertices().get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
+            Iterator<SinkVertex> iter1 = sourceProject.getInterpreter().getVertices().get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
                     "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands")).getSinkVertices().iterator();
             Iterator<Map.Entry<SinkVertex, Integer>> iter2 = graphNodes.entrySet().iterator();
             while(iter1.hasNext() || iter2.hasNext()) {

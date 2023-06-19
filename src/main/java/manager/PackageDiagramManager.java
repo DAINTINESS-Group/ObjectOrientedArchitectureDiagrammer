@@ -26,9 +26,9 @@ public class PackageDiagramManager implements DiagramManager {
 
     @Override
     public SourceProject createSourceProject(Path sourcePackagePath) {
-        SourceProject sourceProject = new SourceProject();
+        SourceProject sourceProject = new SourceProject(packageDiagram);
         sourceProject.createGraph(sourcePackagePath);
-        packageDiagram.setVertices(sourceProject.getVertices());
+        sourceProject.setPackageDiagramVertices();
         return sourceProject;
     }
 

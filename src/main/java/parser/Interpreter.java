@@ -1,6 +1,5 @@
 package parser;
 
-import javafx.util.Pair;
 import model.graph.ArcType;
 import model.graph.SinkVertex;
 import model.graph.Vertex;
@@ -17,7 +16,6 @@ import parser.tree.PackageNode;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,12 +24,16 @@ public class Interpreter {
 
     private static final ParserType PARSER_TYPE = ParserType.JAVAPARSER;
     private Map<Path, PackageNode> packageNodes;
-    private final Map<PackageNode, Vertex> vertices;
-    private final Map<LeafNode, SinkVertex> sinkVertices;
+    private final Map<PackageNode, Vertex> packageNodeVertexMap;
+    private final Map<LeafNode, SinkVertex> leafNodeSinkVertexMap;
+    private final Map<Path, Vertex> vertices;
+    private final Map<Path, SinkVertex> sinkVertices;
 
     public Interpreter() {
         vertices = new HashMap<>();
         sinkVertices = new HashMap<>();
+        packageNodeVertexMap = new HashMap<>();
+        leafNodeSinkVertexMap = new HashMap<>();
     }
 
     public void parseProject(Path sourcePackagePath) {
@@ -40,39 +42,40 @@ public class Interpreter {
         packageNodes = projectParser.parseSourcePackage(sourcePackagePath);
     }
 
-    public Pair<ArrayList<Vertex>, ArrayList<SinkVertex>> convertTreeToGraph() {
+    public void convertTreeToGraph() {
         PackageNodeCleaner packageNodeCleaner = new PackageNodeCleaner(packageNodes);
         packageNodes = packageNodeCleaner.removeNonPackageNodes();
         populateVertexMaps();
         addVertexArcs();
-        return new Pair<>(new ArrayList<>(vertices.values()), new ArrayList<>(sinkVertices.values()));
+        leafNodeSinkVertexMap.values().forEach(sinkVertex -> sinkVertices.put(sinkVertex.getPath(), sinkVertex));
+        packageNodeVertexMap.values().forEach(vertex -> vertices.put(vertex.getPath(), vertex));
     }
 
     private void populateVertexMaps() {
         for (PackageNode packageNode: packageNodes.values()) {
-            Vertex vertex = vertices.computeIfAbsent(packageNode, k ->
+            Vertex vertex = packageNodeVertexMap.computeIfAbsent(packageNode, k ->
                 new Vertex(packageNode.getPackageNodesPath(), EnumMapper.vertexTypeEnumMap.get(packageNode.getType()),
                 packageNode.getParentNode().getName())
             );
             for (LeafNode leafNode: packageNode.getLeafNodes().values()) {
-                vertex.addSinkVertex(sinkVertices.computeIfAbsent(leafNode, k -> createSinkVertex(leafNode)));
+                vertex.addSinkVertex(leafNodeSinkVertexMap.computeIfAbsent(leafNode, k -> createSinkVertex(leafNode)));
             }
         }
         for (PackageNode packageNode: packageNodes.values()) {
-            vertices.get(packageNode).setParentNode(
-                vertices.getOrDefault(packageNode.getParentNode(), new Vertex(Paths.get(""), VertexType.PACKAGE, ""))
+            packageNodeVertexMap.get(packageNode).setParentNode(
+                packageNodeVertexMap.getOrDefault(packageNode.getParentNode(), new Vertex(Paths.get(""), VertexType.PACKAGE, ""))
             );
             for (PackageNode subNode: packageNode.getSubNodes().values()) {
-                vertices.get(packageNode).addNeighbourVertex(vertices.get(subNode));
+                packageNodeVertexMap.get(packageNode).addNeighbourVertex(packageNodeVertexMap.get(subNode));
             }
         }
     }
 
     private void addVertexArcs() {
         for (PackageNode packageNode: packageNodes.values()) {
-            Vertex vertex = vertices.get(packageNode);
+            Vertex vertex = packageNodeVertexMap.get(packageNode);
             for (Relationship<PackageNode> relationship: packageNode.getPackageNodeRelationships()) {
-                vertex.addArc(vertex, vertices.get(relationship.getEndingNode()), EnumMapper.edgeEnumMap.get(relationship.getRelationshipType()));
+                vertex.addArc(vertex, packageNodeVertexMap.get(relationship.getEndingNode()), EnumMapper.edgeEnumMap.get(relationship.getRelationshipType()));
             }
             addSinkVertexArcs(packageNode);
         }
@@ -80,9 +83,9 @@ public class Interpreter {
 
     private void addSinkVertexArcs(PackageNode packageNode) {
         for (LeafNode leafNode: packageNode.getLeafNodes().values()) {
-            SinkVertex sinkVertex = sinkVertices.get(leafNode);
+            SinkVertex sinkVertex = leafNodeSinkVertexMap.get(leafNode);
             for (Relationship<LeafNode> relationship: leafNode.getLeafNodeRelationships()) {
-                sinkVertex.addArc(sinkVertex, sinkVertices.get(relationship.getEndingNode()), EnumMapper.edgeEnumMap.get(relationship.getRelationshipType()));
+                sinkVertex.addArc(sinkVertex, leafNodeSinkVertexMap.get(relationship.getEndingNode()), EnumMapper.edgeEnumMap.get(relationship.getRelationshipType()));
             }
         }
     }
@@ -100,6 +103,14 @@ public class Interpreter {
 
     public Map<Path, PackageNode> getPackageNodes() {
         return packageNodes;
+    }
+
+    public Map<Path, Vertex> getVertices() {
+        return vertices;
+    }
+
+    public Map<Path, SinkVertex> getSinkVertices() {
+        return sinkVertices;
     }
 
     private static class EnumMapper {

@@ -89,9 +89,9 @@ public class MenuUtility {
             diagramVisualization.loadLoadedDiagramVisualization(diagramController.visualizeJavaFXGraph());
         } catch (JsonParseException j) {
             if (j.getMessage().equals("Wrong diagram type")) {
-                PopupWindow.createPopupInfoWindow("You tried to load the wrong type of diagram", "error");
+                PopupWindow.createPopupInfoWindow("You tried to load the wrong type of diagram", "Error");
             } else {
-                j.printStackTrace();
+                PopupWindow.createPopupInfoWindow("Unsupported type of file", "Error");
             }
         }
     }
