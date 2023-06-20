@@ -19,7 +19,8 @@ public class JavaparserRelationshipIdentifier extends RelationshipIdentifier {
     protected void checkRelationship(int i, int j) {
         List<String> imports = ((JavaparserLeafNode) allLeafNodes.get(i)).getImports();
         Optional<String> optional = imports.stream().filter(imprt ->
-            (allLeafNodes.get(j).getParentNode().getName() + "." + allLeafNodes.get(j).getName()).endsWith(imprt))
+            (allLeafNodes.get(j).getParentNode().getName() + "." + allLeafNodes.get(j).getName()).endsWith(imprt) ||
+            (allLeafNodes.get(j).getParentNode().getName() + "." + "*") .endsWith(imprt))
         .findFirst();
         if (optional.isEmpty() && !isSubNode(i, j)) {
             return;
