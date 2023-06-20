@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
 import model.graph.ArcType;
-import model.graph.Vertex;
+import model.graph.PackageVertex;
 import org.javatuples.Triplet;
 
 import java.io.IOException;
@@ -20,12 +20,12 @@ public class JavaFXPackageDiagramLoader {
         this.graphSavePath = graphSavePath;
     }
 
-    public Set<Vertex> loadDiagram() throws JsonParseException {
-        Set<Vertex> vertices = new HashSet<>();
+    public Set<PackageVertex> loadDiagram() throws JsonParseException {
+        Set<PackageVertex> vertices = new HashSet<>();
         try {
             String json = Files.readString(graphSavePath);
-            Gson gson = new GsonBuilder().registerTypeAdapter(Vertex.class, new VertexDeserializer()).create();
-            Vertex[] verticesArray = gson.fromJson(json, Vertex[].class);
+            Gson gson = new GsonBuilder().registerTypeAdapter(PackageVertex.class, new PackageVertexDeserializer()).create();
+            PackageVertex[] verticesArray = gson.fromJson(json, PackageVertex[].class);
             Collections.addAll(vertices, verticesArray);
             deserializeArcs(vertices);
         } catch (IOException e) {
@@ -34,14 +34,14 @@ public class JavaFXPackageDiagramLoader {
         return vertices;
     }
 
-    private void deserializeArcs(Set<Vertex> vertices) {
-        for (Vertex vertex: vertices) {
+    private void deserializeArcs(Set<PackageVertex> vertices) {
+        for (PackageVertex vertex: vertices) {
             List<Triplet<String, String, String>> deserializedArcs = vertex.getDeserializedArcs();
             for (Triplet<String, String, String> arc: deserializedArcs) {
-                Optional<Vertex> sourceVertex = vertices.stream()
+                Optional<PackageVertex> sourceVertex = vertices.stream()
                     .filter(vertex1 -> vertex1.getName().equals(arc.getValue0()))
                     .findFirst();
-                Optional<Vertex> targetVertex = vertices.stream()
+                Optional<PackageVertex> targetVertex = vertices.stream()
                     .filter(vertex1 -> vertex1.getName().equals(arc.getValue1()))
                     .findFirst();
                 if (sourceVertex.isEmpty() || targetVertex.isEmpty()) {

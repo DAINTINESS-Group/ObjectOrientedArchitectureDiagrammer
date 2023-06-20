@@ -2,7 +2,7 @@ package model.diagram;
 
 import model.graph.Arc;
 import model.graph.ArcType;
-import model.graph.SinkVertex;
+import model.graph.ClassifierVertex;
 
 import java.util.*;
 
@@ -16,14 +16,14 @@ public class ShadowCleaner {
         strongerToWeakerArcTypes = List.of(ArcType.EXTENSION, ArcType.IMPLEMENTATION, ArcType.AGGREGATION, ArcType.ASSOCIATION);
     }
 
-    public Map<SinkVertex, Set<Arc<SinkVertex>>> shadowWeakRelationships() {
-        for (Set<Arc<SinkVertex>> arcs: classDiagram.getDiagram().values()) {
-            Map<SinkVertex, List<Arc<SinkVertex>>> shadowedArcs = new HashMap<>();
-            for (Arc<SinkVertex> arc: arcs) {
+    public Map<ClassifierVertex, Set<Arc<ClassifierVertex>>> shadowWeakRelationships() {
+        for (Set<Arc<ClassifierVertex>> arcs: classDiagram.getDiagram().values()) {
+            Map<ClassifierVertex, List<Arc<ClassifierVertex>>> shadowedArcs = new HashMap<>();
+            for (Arc<ClassifierVertex> arc: arcs) {
                 shadowedArcs.computeIfAbsent(arc.getTargetVertex(), sinkVertex -> new ArrayList<>()).add(arc);
             }
 
-            for (Map.Entry<SinkVertex, List<Arc<SinkVertex>>> arc: shadowedArcs.entrySet()) {
+            for (Map.Entry<ClassifierVertex, List<Arc<ClassifierVertex>>> arc: shadowedArcs.entrySet()) {
                 if (!doWeakRelationshipsExist(arc)) {
                     continue;
                 }
@@ -38,16 +38,16 @@ public class ShadowCleaner {
         return classDiagram.getDiagram();
     }
 
-    private boolean doWeakRelationshipsExist(Map.Entry<SinkVertex, List<Arc<SinkVertex>>> arc) {
+    private boolean doWeakRelationshipsExist(Map.Entry<ClassifierVertex, List<Arc<ClassifierVertex>>> arc) {
         return arc.getValue().size() > 1;
     }
 
-    private boolean doesStrongerRelationshipExist(List<Arc<SinkVertex>> arc, ArcType arcType) {
-        Optional<Arc<SinkVertex>> inheritanceArc = arc.stream().filter(sinkVertexArc -> sinkVertexArc.getArcType().equals(arcType)).findFirst();
+    private boolean doesStrongerRelationshipExist(List<Arc<ClassifierVertex>> arc, ArcType arcType) {
+        Optional<Arc<ClassifierVertex>> inheritanceArc = arc.stream().filter(sinkVertexArc -> sinkVertexArc.getArcType().equals(arcType)).findFirst();
         return inheritanceArc.isPresent();
     }
 
-    private void removeWeakerRelationships(Set<Arc<SinkVertex>> arcs, SinkVertex sinkVertex, ArcType arcType) {
-        arcs.removeIf(arc -> arc.getTargetVertex().equals(sinkVertex) && !arc.getArcType().equals(arcType));
+    private void removeWeakerRelationships(Set<Arc<ClassifierVertex>> arcs, ClassifierVertex classifierVertex, ArcType arcType) {
+        arcs.removeIf(arc -> arc.getTargetVertex().equals(classifierVertex) && !arc.getArcType().equals(arcType));
     }
 }

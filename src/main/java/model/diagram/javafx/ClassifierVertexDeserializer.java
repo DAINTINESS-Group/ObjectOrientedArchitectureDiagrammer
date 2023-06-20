@@ -3,7 +3,7 @@ package model.diagram.javafx;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import model.graph.ModifierType;
-import model.graph.SinkVertex;
+import model.graph.ClassifierVertex;
 import model.graph.VertexType;
 import org.javatuples.Triplet;
 
@@ -13,11 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class SinkVertexDeserializer implements JsonDeserializer<SinkVertex> {
-    private SinkVertex sinkVertex;
+public class ClassifierVertexDeserializer implements JsonDeserializer<ClassifierVertex> {
+    private ClassifierVertex classifierVertex;
 
     @Override
-    public SinkVertex deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
+    public ClassifierVertex deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
         JsonObject jsonObject = jsonElement.getAsJsonObject();
         String name = jsonObject.get("name").getAsString();
         String path = jsonObject.get("path").getAsString();
@@ -27,13 +27,13 @@ public class SinkVertexDeserializer implements JsonDeserializer<SinkVertex> {
             throw new JsonParseException("Wrong diagram type");
         }
 
-        sinkVertex = new SinkVertex(Path.of(path), name, VertexType.valueOf(vertexType));
+        classifierVertex = new ClassifierVertex(Path.of(path), name, VertexType.valueOf(vertexType));
 
         deserializeMethods(jsonObject);
         deserializeFields(jsonObject);
         deserializeArcs(jsonObject);
 
-        return sinkVertex;
+        return classifierVertex;
     }
 
     private void deserializeMethods(JsonObject jsonObject) {
@@ -48,7 +48,7 @@ public class SinkVertexDeserializer implements JsonDeserializer<SinkVertex> {
             String parameters = method.get("parameters").getAsString();
             Map<String, String> methodParameters = gson.fromJson(parameters, new TypeToken<>() {}.getType());
 
-            sinkVertex.addMethod(methodName, returnType, ModifierType.valueOf(modifier), methodParameters);
+            classifierVertex.addMethod(methodName, returnType, ModifierType.valueOf(modifier), methodParameters);
         }
     }
 
@@ -61,7 +61,7 @@ public class SinkVertexDeserializer implements JsonDeserializer<SinkVertex> {
             String returnType = fieldObject.get("returnType").getAsString();
             String modifierType = fieldObject.get("modifier").getAsString();
 
-            sinkVertex.addField(fieldName, returnType, ModifierType.valueOf(modifierType));
+            classifierVertex.addField(fieldName, returnType, ModifierType.valueOf(modifierType));
         }
     }
 
@@ -77,7 +77,7 @@ public class SinkVertexDeserializer implements JsonDeserializer<SinkVertex> {
 
             arcs.add(new Triplet<>(sourceVertex, targetVertex, arcType));
         }
-        sinkVertex.setDeserializedArcs(arcs);
+        classifierVertex.setDeserializedArcs(arcs);
     }
 
 }

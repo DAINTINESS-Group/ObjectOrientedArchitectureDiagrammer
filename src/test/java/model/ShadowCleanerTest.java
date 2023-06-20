@@ -6,7 +6,7 @@ import model.diagram.GraphClassDiagramConverter;
 import model.diagram.ShadowCleaner;
 import model.graph.Arc;
 import model.graph.ArcType;
-import model.graph.SinkVertex;
+import model.graph.ClassifierVertex;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -30,71 +30,71 @@ public class ShadowCleanerTest {
                 "VersionsManager", "DocumentManager", "Document");
             SourceProject sourceProject = classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
             classDiagramManager.convertTreeToDiagram(chosenFiles);
-            Map<SinkVertex, Integer> graphNodes = classDiagramManager.getClassDiagram().getGraphNodes();
+            Map<ClassifierVertex, Integer> graphNodes = classDiagramManager.getClassDiagram().getGraphNodes();
 
             GraphClassDiagramConverter graphClassDiagramConverter = new GraphClassDiagramConverter(graphNodes.keySet());
-            Map<SinkVertex, Set<Arc<SinkVertex>>> shadowedDiagram = graphClassDiagramConverter.convertGraphToClassDiagram();
+            Map<ClassifierVertex, Set<Arc<ClassifierVertex>>> shadowedDiagram = graphClassDiagramConverter.convertGraphToClassDiagram();
             classDiagramManager.getClassDiagram().setDiagram(shadowedDiagram);
             int numberOfArcsBeforeShadowCleaner = 0;
-            for (Set<Arc<SinkVertex>> arcs: shadowedDiagram.values()) {
+            for (Set<Arc<ClassifierVertex>> arcs: shadowedDiagram.values()) {
                 numberOfArcsBeforeShadowCleaner += arcs.size();
             }
             ShadowCleaner shadowCleaner = new ShadowCleaner(classDiagramManager.getClassDiagram());
-            Map<SinkVertex, Set<Arc<SinkVertex>>> diagram = shadowCleaner.shadowWeakRelationships();
+            Map<ClassifierVertex, Set<Arc<ClassifierVertex>>> diagram = shadowCleaner.shadowWeakRelationships();
             int numberOfArcsAfterShadowCleaner = 0;
-            for (Set<Arc<SinkVertex>> arcs: diagram.values()) {
+            for (Set<Arc<ClassifierVertex>> arcs: diagram.values()) {
                 numberOfArcsAfterShadowCleaner += arcs.size();
             }
             assertEquals(numberOfArcsAfterShadowCleaner + 7, numberOfArcsBeforeShadowCleaner);
 
-            SinkVertex chooseTemplate = diagram.keySet().stream().filter(sinkVertex -> sinkVertex.getName().equals("ChooseTemplate")).findFirst().orElseGet(Assertions::fail);
-            List<Arc<SinkVertex>> chooseTemplateLatexEditorViewArc = diagram.get(chooseTemplate).stream()
+            ClassifierVertex chooseTemplate = diagram.keySet().stream().filter(sinkVertex -> sinkVertex.getName().equals("ChooseTemplate")).findFirst().orElseGet(Assertions::fail);
+            List<Arc<ClassifierVertex>> chooseTemplateLatexEditorViewArc = diagram.get(chooseTemplate).stream()
                 .filter(sinkVertexArc ->
                     sinkVertexArc.getTargetVertex().getName().equals("LatexEditorView"))
                 .collect(Collectors.toList());
             assertEquals(1, chooseTemplateLatexEditorViewArc.size());
             assertEquals(ArcType.ASSOCIATION, chooseTemplateLatexEditorViewArc.get(0).getArcType());
 
-            SinkVertex latexEditorView = diagram.keySet().stream().filter(sinkVertex -> sinkVertex.getName().equals("LatexEditorView")).findFirst().orElseGet(Assertions::fail);
-            List<Arc<SinkVertex>> latexEditorViewVersionsManagerArc = diagram.get(latexEditorView).stream()
+            ClassifierVertex latexEditorView = diagram.keySet().stream().filter(sinkVertex -> sinkVertex.getName().equals("LatexEditorView")).findFirst().orElseGet(Assertions::fail);
+            List<Arc<ClassifierVertex>> latexEditorViewVersionsManagerArc = diagram.get(latexEditorView).stream()
                 .filter(sinkVertexArc ->
                     sinkVertexArc.getTargetVertex().getName().equals("VersionsManager"))
                 .collect(Collectors.toList());
         assertEquals(1, latexEditorViewVersionsManagerArc.size());
             assertEquals(ArcType.ASSOCIATION, latexEditorViewVersionsManagerArc.get(0).getArcType());
 
-            List<Arc<SinkVertex>> LatexEditorViewLatexEditorControllerArc = diagram.get(latexEditorView).stream()
+            List<Arc<ClassifierVertex>> LatexEditorViewLatexEditorControllerArc = diagram.get(latexEditorView).stream()
                 .filter(sinkVertexArc ->
                     sinkVertexArc.getTargetVertex().getName().equals("LatexEditorController"))
                 .collect(Collectors.toList());
             assertEquals(1, LatexEditorViewLatexEditorControllerArc.size());
             assertEquals(ArcType.ASSOCIATION, LatexEditorViewLatexEditorControllerArc.get(0).getArcType());
 
-            List<Arc<SinkVertex>> LatexEditorViewDocumentArc = diagram.get(latexEditorView).stream()
+            List<Arc<ClassifierVertex>> LatexEditorViewDocumentArc = diagram.get(latexEditorView).stream()
                 .filter(sinkVertexArc ->
                     sinkVertexArc.getTargetVertex().getName().equals("Document"))
                 .collect(Collectors.toList());
             assertEquals(1, LatexEditorViewDocumentArc.size());
             assertEquals(ArcType.ASSOCIATION, LatexEditorViewDocumentArc.get(0).getArcType());
 
-            SinkVertex mainWindow = diagram.keySet().stream().filter(sinkVertex -> sinkVertex.getName().equals("MainWindow")).findFirst().orElseGet(Assertions::fail);
-            List<Arc<SinkVertex>> mainWindowLatexEditorViewArc = diagram.get(mainWindow).stream()
+            ClassifierVertex mainWindow = diagram.keySet().stream().filter(sinkVertex -> sinkVertex.getName().equals("MainWindow")).findFirst().orElseGet(Assertions::fail);
+            List<Arc<ClassifierVertex>> mainWindowLatexEditorViewArc = diagram.get(mainWindow).stream()
                 .filter(sinkVertexArc ->
                     sinkVertexArc.getTargetVertex().getName().equals("LatexEditorView"))
                 .collect(Collectors.toList());
             assertEquals(1, mainWindowLatexEditorViewArc.size());
             assertEquals(ArcType.ASSOCIATION, mainWindowLatexEditorViewArc.get(0).getArcType());
 
-            SinkVertex versionsManager = diagram.keySet().stream().filter(sinkVertex -> sinkVertex.getName().equals("VersionsManager")).findFirst().orElseGet(Assertions::fail);
-            List<Arc<SinkVertex>> versionsManagerLatexEditorViewArc = diagram.get(versionsManager).stream()
+            ClassifierVertex versionsManager = diagram.keySet().stream().filter(sinkVertex -> sinkVertex.getName().equals("VersionsManager")).findFirst().orElseGet(Assertions::fail);
+            List<Arc<ClassifierVertex>> versionsManagerLatexEditorViewArc = diagram.get(versionsManager).stream()
                 .filter(sinkVertexArc ->
                     sinkVertexArc.getTargetVertex().getName().equals("LatexEditorView"))
                 .collect(Collectors.toList());
             assertEquals(1, versionsManagerLatexEditorViewArc.size());
             assertEquals(ArcType.ASSOCIATION, versionsManagerLatexEditorViewArc.get(0).getArcType());
 
-            SinkVertex documentManager = diagram.keySet().stream().filter(sinkVertex -> sinkVertex.getName().equals("DocumentManager")).findFirst().orElseGet(Assertions::fail);
-            List<Arc<SinkVertex>> documentManagerDocumentArc = diagram.get(documentManager).stream()
+            ClassifierVertex documentManager = diagram.keySet().stream().filter(sinkVertex -> sinkVertex.getName().equals("DocumentManager")).findFirst().orElseGet(Assertions::fail);
+            List<Arc<ClassifierVertex>> documentManagerDocumentArc = diagram.get(documentManager).stream()
                 .filter(sinkVertexArc ->
                     sinkVertexArc.getTargetVertex().getName().equals("Document"))
                 .collect(Collectors.toList());

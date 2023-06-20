@@ -1,24 +1,24 @@
 package model.diagram;
 
 import model.graph.Arc;
-import model.graph.SinkVertex;
+import model.graph.ClassifierVertex;
 
 import java.util.*;
 
 public class GraphClassDiagramConverter {
 
-    private final Set<SinkVertex> sinkVertices;
-    private final Map<SinkVertex, Set<Arc<SinkVertex>>> adjacencyList;
+    private final Set<ClassifierVertex> sinkVertices;
+    private final Map<ClassifierVertex, Set<Arc<ClassifierVertex>>> adjacencyList;
 
-    public GraphClassDiagramConverter(Set<SinkVertex> sinkVertices) {
+    public GraphClassDiagramConverter(Set<ClassifierVertex> sinkVertices) {
         this.sinkVertices = sinkVertices;
         adjacencyList = new HashMap<>();
     }
 
-    public Map<SinkVertex, Set<Arc<SinkVertex>>> convertGraphToClassDiagram() {
-        for (SinkVertex sinkVertex: sinkVertices) {
-            adjacencyList.put(sinkVertex, new HashSet<>());
-            for (Arc<SinkVertex> arc: sinkVertex.getArcs()) {
+    public Map<ClassifierVertex, Set<Arc<ClassifierVertex>>> convertGraphToClassDiagram() {
+        for (ClassifierVertex classifierVertex : sinkVertices) {
+            adjacencyList.put(classifierVertex, new HashSet<>());
+            for (Arc<ClassifierVertex> arc: classifierVertex.getArcs()) {
                 if (!sinkVertices.contains(arc.getTargetVertex())) {
                     continue;
                 }

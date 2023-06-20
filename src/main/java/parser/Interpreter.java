@@ -1,8 +1,8 @@
 package parser;
 
 import model.graph.ArcType;
-import model.graph.SinkVertex;
-import model.graph.Vertex;
+import model.graph.ClassifierVertex;
+import model.graph.PackageVertex;
 import model.graph.VertexType;
 import parser.factory.Parser;
 import parser.factory.ParserType;
@@ -24,10 +24,10 @@ public class Interpreter {
 
     private static final ParserType PARSER_TYPE = ParserType.JAVAPARSER;
     private Map<Path, PackageNode> packageNodes;
-    private final Map<PackageNode, Vertex> packageNodeVertexMap;
-    private final Map<LeafNode, SinkVertex> leafNodeSinkVertexMap;
-    private final Map<Path, Vertex> vertices;
-    private final Map<Path, SinkVertex> sinkVertices;
+    private final Map<PackageNode, PackageVertex> packageNodeVertexMap;
+    private final Map<LeafNode, ClassifierVertex> leafNodeSinkVertexMap;
+    private final Map<Path, PackageVertex> vertices;
+    private final Map<Path, ClassifierVertex> sinkVertices;
 
     public Interpreter() {
         vertices = new HashMap<>();
@@ -53,8 +53,8 @@ public class Interpreter {
 
     private void populateVertexMaps() {
         for (PackageNode packageNode: packageNodes.values()) {
-            Vertex vertex = packageNodeVertexMap.computeIfAbsent(packageNode, k ->
-                new Vertex(packageNode.getPackageNodesPath(), EnumMapper.vertexTypeEnumMap.get(packageNode.getType()),
+            PackageVertex vertex = packageNodeVertexMap.computeIfAbsent(packageNode, k ->
+                new PackageVertex(packageNode.getPackageNodesPath(), EnumMapper.vertexTypeEnumMap.get(packageNode.getType()),
                 packageNode.getParentNode().getName())
             );
             for (LeafNode leafNode: packageNode.getLeafNodes().values()) {
@@ -63,7 +63,7 @@ public class Interpreter {
         }
         for (PackageNode packageNode: packageNodes.values()) {
             packageNodeVertexMap.get(packageNode).setParentNode(
-                packageNodeVertexMap.getOrDefault(packageNode.getParentNode(), new Vertex(Paths.get(""), VertexType.PACKAGE, ""))
+                packageNodeVertexMap.getOrDefault(packageNode.getParentNode(), new PackageVertex(Paths.get(""), VertexType.PACKAGE, ""))
             );
             for (PackageNode subNode: packageNode.getSubNodes().values()) {
                 packageNodeVertexMap.get(packageNode).addNeighbourVertex(packageNodeVertexMap.get(subNode));
@@ -73,7 +73,7 @@ public class Interpreter {
 
     private void addVertexArcs() {
         for (PackageNode packageNode: packageNodes.values()) {
-            Vertex vertex = packageNodeVertexMap.get(packageNode);
+            PackageVertex vertex = packageNodeVertexMap.get(packageNode);
             for (Relationship<PackageNode> relationship: packageNode.getPackageNodeRelationships()) {
                 vertex.addArc(vertex, packageNodeVertexMap.get(relationship.getEndingNode()), EnumMapper.edgeEnumMap.get(relationship.getRelationshipType()));
             }
@@ -83,33 +83,33 @@ public class Interpreter {
 
     private void addSinkVertexArcs(PackageNode packageNode) {
         for (LeafNode leafNode: packageNode.getLeafNodes().values()) {
-            SinkVertex sinkVertex = leafNodeSinkVertexMap.get(leafNode);
+            ClassifierVertex classifierVertex = leafNodeSinkVertexMap.get(leafNode);
             for (Relationship<LeafNode> relationship: leafNode.getLeafNodeRelationships()) {
-                sinkVertex.addArc(sinkVertex, leafNodeSinkVertexMap.get(relationship.getEndingNode()), EnumMapper.edgeEnumMap.get(relationship.getRelationshipType()));
+                classifierVertex.addArc(classifierVertex, leafNodeSinkVertexMap.get(relationship.getEndingNode()), EnumMapper.edgeEnumMap.get(relationship.getRelationshipType()));
             }
         }
     }
 
-    private SinkVertex createSinkVertex(LeafNode leafNode) {
-        SinkVertex sinkVertex = new SinkVertex(leafNode.getLeafNodesPath(), leafNode.getName(), EnumMapper.vertexTypeEnumMap.get(leafNode.getType()));
+    private ClassifierVertex createSinkVertex(LeafNode leafNode) {
+        ClassifierVertex classifierVertex = new ClassifierVertex(leafNode.getLeafNodesPath(), leafNode.getName(), EnumMapper.vertexTypeEnumMap.get(leafNode.getType()));
         leafNode.getFields().forEach(field ->
-            sinkVertex.addField(field.getValue0(), field.getValue1(), EnumMapper.modifierTypeEnumMap.get(field.getValue2()))
+            classifierVertex.addField(field.getValue0(), field.getValue1(), EnumMapper.modifierTypeEnumMap.get(field.getValue2()))
         );
         leafNode.getMethods().forEach((method, parameters) ->
-            sinkVertex.addMethod(method.getValue0().split("\\$")[0], method.getValue1(), EnumMapper.modifierTypeEnumMap.get(method.getValue2()), parameters)
+            classifierVertex.addMethod(method.getValue0().split("\\$")[0], method.getValue1(), EnumMapper.modifierTypeEnumMap.get(method.getValue2()), parameters)
         );
-        return sinkVertex;
+        return classifierVertex;
     }
 
     public Map<Path, PackageNode> getPackageNodes() {
         return packageNodes;
     }
 
-    public Map<Path, Vertex> getVertices() {
+    public Map<Path, PackageVertex> getVertices() {
         return vertices;
     }
 
-    public Map<Path, SinkVertex> getSinkVertices() {
+    public Map<Path, ClassifierVertex> getSinkVertices() {
         return sinkVertices;
     }
 

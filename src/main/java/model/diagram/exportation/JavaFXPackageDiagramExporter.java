@@ -3,7 +3,7 @@ package model.diagram.exportation;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import model.diagram.PackageDiagram;
-import model.graph.Vertex;
+import model.graph.PackageVertex;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -22,7 +22,7 @@ public class JavaFXPackageDiagramExporter implements DiagramExporter {
     public File exportDiagram(Path exportPath) {
         File graphSaveFile = exportPath.toFile();
         try (FileWriter fileWriter = new FileWriter(graphSaveFile)) {
-            Gson gson = new GsonBuilder().registerTypeAdapter(Vertex.class, new VertexSerializer()).create();
+            Gson gson = new GsonBuilder().registerTypeAdapter(PackageVertex.class, new PackageVertexSerializer()).create();
             String json = gson.toJson(packageDiagram.getDiagram().keySet());
             fileWriter.write(json);
         } catch (IOException e) {

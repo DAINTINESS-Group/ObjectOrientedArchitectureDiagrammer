@@ -2,25 +2,25 @@ package model.diagram.exportation;
 
 import com.google.gson.*;
 import model.graph.Arc;
-import model.graph.SinkVertex;
+import model.graph.ClassifierVertex;
 
 import java.lang.reflect.Type;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 
-public class SinkVertexSerializer implements JsonSerializer<SinkVertex> {
+public class ClassifierVertexSerializer implements JsonSerializer<ClassifierVertex> {
 
-    private SinkVertex sinkVertex;
+    private ClassifierVertex classifierVertex;
 
     @Override
-    public JsonElement serialize(SinkVertex sinkVertex, Type type, JsonSerializationContext jsonSerializationContext) {
-        this.sinkVertex = sinkVertex;
+    public JsonElement serialize(ClassifierVertex classifierVertex, Type type, JsonSerializationContext jsonSerializationContext) {
+        this.classifierVertex = classifierVertex;
         JsonObject jsonObject = new JsonObject();
 
-        String name = sinkVertex.getName();
-        Path path = sinkVertex.getPath();
-        String vertexType = sinkVertex.getVertexType().toString();
+        String name = classifierVertex.getName();
+        Path path = classifierVertex.getPath();
+        String vertexType = classifierVertex.getVertexType().toString();
 
         jsonObject.addProperty("name", name);
         jsonObject.addProperty("path", path.toString());
@@ -35,9 +35,9 @@ public class SinkVertexSerializer implements JsonSerializer<SinkVertex> {
 
     private JsonArray serializeMethods() {
         Gson gson = new Gson();
-        List<SinkVertex.Method> methods = sinkVertex.getMethods();
+        List<ClassifierVertex.Method> methods = classifierVertex.getMethods();
         JsonArray methodsArray = new JsonArray(methods.size());
-        for (SinkVertex.Method method: methods) {
+        for (ClassifierVertex.Method method: methods) {
             JsonObject methodObject = new JsonObject();
             String methodName = method.getName();
             String returnType = method.getReturnType();
@@ -56,9 +56,9 @@ public class SinkVertexSerializer implements JsonSerializer<SinkVertex> {
     }
 
     private JsonArray serializeFields() {
-        List<SinkVertex.Field> fields = sinkVertex.getFields();
+        List<ClassifierVertex.Field> fields = classifierVertex.getFields();
         JsonArray fieldsArray = new JsonArray(fields.size());
-        for (SinkVertex.Field field: fields) {
+        for (ClassifierVertex.Field field: fields) {
             JsonObject fieldObject = new JsonObject();
 
             String fieldName = field.getName();
@@ -75,9 +75,9 @@ public class SinkVertexSerializer implements JsonSerializer<SinkVertex> {
     }
 
     private JsonArray serializeArcs() {
-        List<Arc<SinkVertex>> arcs = sinkVertex.getArcs();
+        List<Arc<ClassifierVertex>> arcs = classifierVertex.getArcs();
         JsonArray arcsArray = new JsonArray(arcs.size());
-        for (Arc<SinkVertex> sinkVertexArc : arcs) {
+        for (Arc<ClassifierVertex> sinkVertexArc : arcs) {
             JsonObject arcObject = new JsonObject();
 
             String source = sinkVertexArc.getSourceVertex().getName();

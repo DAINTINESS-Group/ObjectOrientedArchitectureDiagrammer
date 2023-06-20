@@ -1,8 +1,8 @@
 package model.diagram.exportation;
 
 import model.diagram.ClassDiagram;
-import model.diagram.graphml.GraphMLSinkVertex;
-import model.diagram.graphml.GraphMLSinkVertexArc;
+import model.diagram.graphml.GraphMLClassifierVertex;
+import model.diagram.graphml.GraphMLClassifierVertexArc;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,10 +15,10 @@ public class GraphMLClassDiagramExporter implements DiagramExporter {
     private final StringBuilder graphMLEdgeBuffer;
 
     public GraphMLClassDiagramExporter(ClassDiagram classDiagram) {
-        GraphMLSinkVertex graphMLSinkVertex = new GraphMLSinkVertex(classDiagram);
-        this.graphMLNodeBuffer = graphMLSinkVertex.convertSinkVertex();
-        GraphMLSinkVertexArc graphMLSinkVertexArc = new GraphMLSinkVertexArc(classDiagram);
-        this.graphMLEdgeBuffer = graphMLSinkVertexArc.convertSinkVertexArc();
+        GraphMLClassifierVertex graphMLClassifierVertex = new GraphMLClassifierVertex(classDiagram);
+        this.graphMLNodeBuffer = graphMLClassifierVertex.convertSinkVertex();
+        GraphMLClassifierVertexArc graphMLClassifierVertexArc = new GraphMLClassifierVertexArc(classDiagram);
+        this.graphMLEdgeBuffer = graphMLClassifierVertexArc.convertSinkVertexArc();
         graphMLFile = new GraphMLFile();
     }
 

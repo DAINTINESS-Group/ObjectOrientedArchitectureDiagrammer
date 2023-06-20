@@ -2,9 +2,9 @@ package model.graphml;
 
 import manager.PackageDiagramManager;
 import manager.SourceProject;
-import model.diagram.graphml.GraphMLVertexArc;
+import model.diagram.graphml.GraphMLPackageVertexArc;
 import model.graph.Arc;
-import model.graph.Vertex;
+import model.graph.PackageVertex;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -16,7 +16,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class GraphMLVertexArcTest {
+public class GraphMLPackageVertexArcTest {
 
     Path currentDirectory = Path.of(".");
 
@@ -32,17 +32,17 @@ public class GraphMLVertexArcTest {
                 "src.controller.commands",
                 "src.controller"
             ));
-            GraphMLVertexArc graphMLVertexArc = new GraphMLVertexArc(packageDiagramManager.getPackageDiagram());
-            StringBuilder actual = graphMLVertexArc.convertVertexArc();
+            GraphMLPackageVertexArc graphMLPackageVertexArc = new GraphMLPackageVertexArc(packageDiagramManager.getPackageDiagram());
+            StringBuilder actual = graphMLPackageVertexArc.convertVertexArc();
 
             StringBuilder expected = new StringBuilder();
-            List<Arc<Vertex>> arcs = new ArrayList<>();
-            for (Set<Arc<Vertex>> arcSet: packageDiagramManager.getPackageDiagram().getDiagram().values()) {
+            List<Arc<PackageVertex>> arcs = new ArrayList<>();
+            for (Set<Arc<PackageVertex>> arcSet: packageDiagramManager.getPackageDiagram().getDiagram().values()) {
                 arcs.addAll(arcSet);
             }
             int edgeId = 0;
 
-            for (Arc<Vertex> e: arcs) {
+            for (Arc<PackageVertex> e: arcs) {
                 expected.append(
                     String.format("    <edge id=\"e%s\" source=\"n%s\" target=\"n%s\">\n" +
                             "      <data key=\"d9\"/>\n" +

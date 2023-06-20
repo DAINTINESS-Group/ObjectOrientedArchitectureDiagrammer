@@ -1,7 +1,7 @@
 package model.diagram;
 
 import model.graph.Arc;
-import model.graph.SinkVertex;
+import model.graph.ClassifierVertex;
 import org.javatuples.Pair;
 
 import java.nio.file.Path;
@@ -9,9 +9,9 @@ import java.util.*;
 
 public class ClassDiagram {
 
-    private Map<SinkVertex, Set<Arc<SinkVertex>>> diagram;
-    private Map<Path, SinkVertex> sinkVertices;
-    private final Map<SinkVertex, Integer> graphNodes;
+    private Map<ClassifierVertex, Set<Arc<ClassifierVertex>>> diagram;
+    private Map<Path, ClassifierVertex> sinkVertices;
+    private final Map<ClassifierVertex, Integer> graphNodes;
     private Map<Integer, Pair<Double, Double>> diagramGeometry;
 
     public ClassDiagram() {
@@ -23,23 +23,23 @@ public class ClassDiagram {
         createDiagram(graphNodes.keySet());
     }
 
-    public void createDiagram(Set<SinkVertex> sinkVertices) {
+    public void createDiagram(Set<ClassifierVertex> sinkVertices) {
         GraphClassDiagramConverter classDiagramConverter = new GraphClassDiagramConverter(sinkVertices);
         diagram = classDiagramConverter.convertGraphToClassDiagram();
     }
 
     private void createGraphNodes(List<String> chosenFileNames) {
         int nodeId = 0;
-        for (SinkVertex sinkVertex: getChosenNodes(chosenFileNames)) {
-            graphNodes.put(sinkVertex, nodeId);
+        for (ClassifierVertex classifierVertex : getChosenNodes(chosenFileNames)) {
+            graphNodes.put(classifierVertex, nodeId);
             nodeId++;
         }
     }
 
-    private List<SinkVertex> getChosenNodes(List<String> chosenClassesNames) {
-        List<SinkVertex> chosenClasses = new ArrayList<>();
+    private List<ClassifierVertex> getChosenNodes(List<String> chosenClassesNames) {
+        List<ClassifierVertex> chosenClasses = new ArrayList<>();
         for (String chosenClass: chosenClassesNames) {
-            Optional<SinkVertex> optionalSinkVertex = sinkVertices.values().stream()
+            Optional<ClassifierVertex> optionalSinkVertex = sinkVertices.values().stream()
                 .filter(sinkVertex -> sinkVertex.getName().equals(chosenClass))
                 .findFirst();
             if (optionalSinkVertex.isEmpty()) {
@@ -50,11 +50,11 @@ public class ClassDiagram {
         return chosenClasses;
     }
 
-    public void setSinkVertices(Map<Path, SinkVertex> sinkVertices) {
+    public void setSinkVertices(Map<Path, ClassifierVertex> sinkVertices) {
         this.sinkVertices = sinkVertices;
     }
 
-    public void setDiagram(Map<SinkVertex, Set<Arc<SinkVertex>>> diagram) {
+    public void setDiagram(Map<ClassifierVertex, Set<Arc<ClassifierVertex>>> diagram) {
         this.diagram = diagram;
     }
 
@@ -62,11 +62,11 @@ public class ClassDiagram {
         this.diagramGeometry = diagramGeometry;
     }
 
-    public Map<SinkVertex, Set<Arc<SinkVertex>>> getDiagram() {
+    public Map<ClassifierVertex, Set<Arc<ClassifierVertex>>> getDiagram() {
         return diagram;
     }
 
-    public Map<SinkVertex, Integer> getGraphNodes() {
+    public Map<ClassifierVertex, Integer> getGraphNodes() {
         return graphNodes;
     }
 

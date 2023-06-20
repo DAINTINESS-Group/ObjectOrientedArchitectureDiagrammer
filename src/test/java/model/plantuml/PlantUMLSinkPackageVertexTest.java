@@ -2,7 +2,7 @@ package model.plantuml;
 
 import manager.ClassDiagramManager;
 import manager.SourceProject;
-import model.diagram.plantuml.PlantUMLSinkVertex;
+import model.diagram.plantuml.PlantUMLClassifierVertex;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -14,7 +14,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class PlantUMLSinkVertexTest {
+public class PlantUMLSinkPackageVertexTest {
 
     Path currentDirectory = Path.of(".");
 
@@ -99,8 +99,8 @@ public class PlantUMLSinkVertexTest {
             classDiagramManager.convertTreeToDiagram(List.of("StableVersionsStrategy", "VersionsStrategy", "VersionsStrategyFactory", "VolatileVersionsStrategy",
                     "VersionsManager", "Document", "DocumentManager"));
 
-            PlantUMLSinkVertex plantUMLSinkVertex = new PlantUMLSinkVertex(classDiagramManager.getClassDiagram());
-            String actualBuffer = plantUMLSinkVertex.convertSinkVertex().toString();
+            PlantUMLClassifierVertex plantUMLClassifierVertex = new PlantUMLClassifierVertex(classDiagramManager.getClassDiagram());
+            String actualBuffer = plantUMLClassifierVertex.convertSinkVertex().toString();
 
             List<String> expected = Arrays.asList(expectedBuffer.split("\n"));
             List<String> actual = Arrays.asList(actualBuffer.split("\n"));

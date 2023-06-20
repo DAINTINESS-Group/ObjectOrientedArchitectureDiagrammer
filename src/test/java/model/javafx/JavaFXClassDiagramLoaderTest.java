@@ -6,7 +6,7 @@ import model.diagram.exportation.DiagramExporter;
 import model.diagram.exportation.JavaFXClassDiagramExporter;
 import model.diagram.javafx.JavaFXClassDiagramLoader;
 import model.graph.Arc;
-import model.graph.SinkVertex;
+import model.graph.ClassifierVertex;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -30,30 +30,30 @@ public class JavaFXClassDiagramLoaderTest {
             List<String> chosenFiles = Arrays.asList("MainWindow", "LatexEditorView", "OpeningWindow");
             classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
             classDiagramManager.convertTreeToDiagram(chosenFiles);
-            Map<SinkVertex, Integer> graphNodes = classDiagramManager.getClassDiagram().getGraphNodes();
+            Map<ClassifierVertex, Integer> graphNodes = classDiagramManager.getClassDiagram().getGraphNodes();
 
             GraphClassDiagramConverter graphClassDiagramConverter = new GraphClassDiagramConverter(graphNodes.keySet());
-            Map<SinkVertex, Set<Arc<SinkVertex>>> createdDiagram = graphClassDiagramConverter.convertGraphToClassDiagram();
+            Map<ClassifierVertex, Set<Arc<ClassifierVertex>>> createdDiagram = graphClassDiagramConverter.convertGraphToClassDiagram();
 
             DiagramExporter javaFXExporter = new JavaFXClassDiagramExporter(classDiagramManager.getClassDiagram());
             File actualFile = javaFXExporter.exportDiagram(Path.of(System.getProperty("user.home") + "\\testingExportedFile.txt"));
 
             JavaFXClassDiagramLoader javaFXClassDiagramLoader = new JavaFXClassDiagramLoader(actualFile.toPath());
-            Set<SinkVertex> loadedDiagram = javaFXClassDiagramLoader.loadDiagram();
+            Set<ClassifierVertex> loadedDiagram = javaFXClassDiagramLoader.loadDiagram();
 
             assertEquals(createdDiagram.size(), loadedDiagram.size());
-            for (SinkVertex sinkVertex: createdDiagram.keySet()) {
-                Optional<SinkVertex> optionalSinkVertex = loadedDiagram.stream()
+            for (ClassifierVertex classifierVertex : createdDiagram.keySet()) {
+                Optional<ClassifierVertex> optionalSinkVertex = loadedDiagram.stream()
                     .filter(
-                        sinkVertex1 -> sinkVertex1.getName().equals(sinkVertex.getName()) &&
-                        sinkVertex1.getVertexType().equals(sinkVertex.getVertexType()) &&
-                        sinkVertex1.getPath().equals(sinkVertex.getPath())
+                        sinkVertex1 -> sinkVertex1.getName().equals(classifierVertex.getName()) &&
+                        sinkVertex1.getVertexType().equals(classifierVertex.getVertexType()) &&
+                        sinkVertex1.getPath().equals(classifierVertex.getPath())
                     ).findFirst();
                 assertTrue(optionalSinkVertex.isPresent());
 
-                List<Arc<SinkVertex>> arcs = optionalSinkVertex.get().getArcs();
-                assertEquals(createdDiagram.get(sinkVertex).size(), arcs.size());
-                for (Arc<SinkVertex> arc: createdDiagram.get(sinkVertex)) {
+                List<Arc<ClassifierVertex>> arcs = optionalSinkVertex.get().getArcs();
+                assertEquals(createdDiagram.get(classifierVertex).size(), arcs.size());
+                for (Arc<ClassifierVertex> arc: createdDiagram.get(classifierVertex)) {
                     arcs.stream().filter(sinkVertexArc ->
                         sinkVertexArc.getSourceVertex().getName().equals(arc.getSourceVertex().getName()) &&
                         sinkVertexArc.getTargetVertex().getName().equals(arc.getTargetVertex().getName()) &&
@@ -61,9 +61,9 @@ public class JavaFXClassDiagramLoaderTest {
                     .findFirst().orElseGet(Assertions::fail);
                 }
 
-                List<SinkVertex.Method> methods = optionalSinkVertex.get().getMethods();
-                assertEquals(sinkVertex.getMethods().size(), methods.size());
-                for (SinkVertex.Method method: sinkVertex.getMethods()) {
+                List<ClassifierVertex.Method> methods = optionalSinkVertex.get().getMethods();
+                assertEquals(classifierVertex.getMethods().size(), methods.size());
+                for (ClassifierVertex.Method method: classifierVertex.getMethods()) {
                     methods.stream().filter(method1 ->
                         method1.getName().equals(method.getName()) &&
                         method1.getReturnType().equals(method.getReturnType()) &&
@@ -71,9 +71,9 @@ public class JavaFXClassDiagramLoaderTest {
                     .findFirst().orElseGet(Assertions::fail);
                 }
 
-                List<SinkVertex.Field> fields = optionalSinkVertex.get().getFields();
-                assertEquals(sinkVertex.getFields().size(), fields.size());
-                for (SinkVertex.Field field: sinkVertex.getFields()) {
+                List<ClassifierVertex.Field> fields = optionalSinkVertex.get().getFields();
+                assertEquals(classifierVertex.getFields().size(), fields.size());
+                for (ClassifierVertex.Field field: classifierVertex.getFields()) {
                     fields.stream().filter(field1 ->
                         field1.getName().equals(field.getName()) &&
                         field1.getType().equals(field.getType()) &&

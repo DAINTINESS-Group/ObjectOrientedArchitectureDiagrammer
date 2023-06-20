@@ -2,9 +2,9 @@ package model.graphml;
 
 import manager.ClassDiagramManager;
 import manager.SourceProject;
-import model.diagram.graphml.GraphMLSinkVertexArc;
+import model.diagram.graphml.GraphMLClassifierVertexArc;
 import model.graph.Arc;
-import model.graph.SinkVertex;
+import model.graph.ClassifierVertex;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -17,7 +17,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class GraphMLSinkVertexArcTest {
+public class GraphMLSinkPackageVertexArcTest {
 
     Path currentDirectory = Path.of(".");
 
@@ -30,16 +30,16 @@ public class GraphMLSinkVertexArcTest {
                     "CreateCommand", "DisableVersionsManagementCommand", "EditCommand", "EnableVersionsManagementCommand",
                     "LoadCommand", "RollbackToPreviousVersionCommand", "SaveCommand"));
 
-            GraphMLSinkVertexArc graphMLSinkVertexArc = new GraphMLSinkVertexArc(classDiagramManager.getClassDiagram());
-            StringBuilder actual = graphMLSinkVertexArc.convertSinkVertexArc();
+            GraphMLClassifierVertexArc graphMLClassifierVertexArc = new GraphMLClassifierVertexArc(classDiagramManager.getClassDiagram());
+            StringBuilder actual = graphMLClassifierVertexArc.convertSinkVertexArc();
 
             StringBuilder expected = new StringBuilder();
-            List<Arc<SinkVertex>> arcs = new ArrayList<>();
-            for (Set<Arc<SinkVertex>> arcSet: classDiagramManager.getClassDiagram().getDiagram().values()) {
+            List<Arc<ClassifierVertex>> arcs = new ArrayList<>();
+            for (Set<Arc<ClassifierVertex>> arcSet: classDiagramManager.getClassDiagram().getDiagram().values()) {
                 arcs.addAll(arcSet);
             }
             int edgeId = 0;
-            for (Arc<SinkVertex> e: arcs) {
+            for (Arc<ClassifierVertex> e: arcs) {
                 expected.append(
                     String.format("<edge id=\"e%s\" source=\"n%s\" target=\"n%s\">\n" +
                             "      <data key=\"d10\">\n" +
@@ -61,11 +61,11 @@ public class GraphMLSinkVertexArcTest {
         }
     }
 
-    private List<String> getEdgesDescription(Arc<SinkVertex> relationship) {
+    private List<String> getEdgesDescription(Arc<ClassifierVertex> relationship) {
         return Arrays.asList(identifyEdgeType(relationship).get(0),
                 identifyEdgeType(relationship).get(1), identifyEdgeType(relationship).get(2));
     }
-    private List<String> identifyEdgeType(Arc<SinkVertex> relationship){
+    private List<String> identifyEdgeType(Arc<ClassifierVertex> relationship){
         return switch (relationship.getArcType()) {
             case DEPENDENCY -> Arrays.asList("dashed", "none", "plain");
             case AGGREGATION -> Arrays.asList("line", "white_diamond", "none");

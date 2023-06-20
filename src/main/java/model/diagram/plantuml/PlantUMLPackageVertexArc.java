@@ -3,25 +3,25 @@ package model.diagram.plantuml;
 import model.diagram.PackageDiagram;
 import model.graph.Arc;
 import model.graph.ArcType;
-import model.graph.Vertex;
+import model.graph.PackageVertex;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class PlantUMLVertexArc {
+public class PlantUMLPackageVertexArc {
 
 
     private final PackageDiagram packageDiagram;
 
-    public PlantUMLVertexArc(PackageDiagram diagram) {
+    public PlantUMLPackageVertexArc(PackageDiagram diagram) {
         packageDiagram = diagram;
     }
 
     public StringBuilder convertVertexArc() {
-        List<Arc<Vertex>> arcs = new ArrayList<>();
-        for (Set<Arc<Vertex>> arcSet: packageDiagram.getDiagram().values()) {
+        List<Arc<PackageVertex>> arcs = new ArrayList<>();
+        for (Set<Arc<PackageVertex>> arcSet: packageDiagram.getDiagram().values()) {
             arcs.addAll(arcSet);
         }
 

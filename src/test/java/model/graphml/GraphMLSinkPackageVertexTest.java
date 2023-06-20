@@ -2,8 +2,8 @@ package model.graphml;
 
 import manager.ClassDiagramManager;
 import manager.SourceProject;
-import model.diagram.graphml.GraphMLSinkVertex;
-import model.graph.SinkVertex;
+import model.diagram.graphml.GraphMLClassifierVertex;
+import model.graph.ClassifierVertex;
 import model.graph.VertexType;
 import org.javatuples.Pair;
 import org.junit.jupiter.api.Test;
@@ -16,7 +16,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class GraphMLSinkVertexTest {
+public class GraphMLSinkPackageVertexTest {
 
     Path currentDirectory = Path.of(".");
 
@@ -42,11 +42,11 @@ public class GraphMLSinkVertexTest {
                     Map.entry(10, new Pair<>(10.0, 10.0))
             ));
 
-            GraphMLSinkVertex graphMLSinkVertex = new GraphMLSinkVertex(classDiagramManager.getClassDiagram());
-            StringBuilder actual = graphMLSinkVertex.convertSinkVertex();
+            GraphMLClassifierVertex graphMLClassifierVertex = new GraphMLClassifierVertex(classDiagramManager.getClassDiagram());
+            StringBuilder actual = graphMLClassifierVertex.convertSinkVertex();
 
             StringBuilder expected = new StringBuilder();
-            for (SinkVertex leafNode: classDiagramManager.getClassDiagram().getGraphNodes().keySet()) {
+            for (ClassifierVertex leafNode: classDiagramManager.getClassDiagram().getGraphNodes().keySet()) {
                 expected.append(String.format("    <node id=\"n%s\">\n" +
                                 "      <data key=\"d4\" xml:space=\"preserve\"/>\n" +
                                 "      <data key=\"d5\"/>\n" +
@@ -71,29 +71,29 @@ public class GraphMLSinkVertexTest {
         }
     }
 
-    private String getNodesFields(SinkVertex l) {
+    private String getNodesFields(ClassifierVertex l) {
         if (l.getFields().size() == 0) {
             return "";
         }
         StringBuilder fields = new StringBuilder();
-        for (SinkVertex.Field field: l.getFields()) {
+        for (ClassifierVertex.Field field: l.getFields()) {
             fields.append(field.getType()).append(" ").append(field.getName()).append("\n");
         }
         return fields.deleteCharAt(fields.length() - 1).toString();
     }
 
-    private String getNodesMethods(SinkVertex l) {
+    private String getNodesMethods(ClassifierVertex l) {
         if ((l).getMethods().size() == 0) {
             return "";
         }
         StringBuilder methods = new StringBuilder();
-        for (SinkVertex.Method method: l.getMethods()) {
+        for (ClassifierVertex.Method method: l.getMethods()) {
             methods.append(method.getReturnType()).append(" ").append(method.getName()).append("\n");
         }
         return methods.deleteCharAt(methods.length() - 1).toString();
     }
 
-    private String getNodesColor(SinkVertex l) {
+    private String getNodesColor(ClassifierVertex l) {
         if (l.getVertexType().equals(VertexType.INTERFACE)) {
             return "#3366FF";
         }

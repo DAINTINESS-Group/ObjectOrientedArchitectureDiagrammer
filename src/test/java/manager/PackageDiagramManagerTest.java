@@ -1,6 +1,6 @@
 package manager;
 
-import model.graph.Vertex;
+import model.graph.PackageVertex;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -26,19 +26,19 @@ public class PackageDiagramManagerTest {
                 "src.controller.commands",
                 "src.controller"
             ));
-            Map<Vertex, Integer> graphNodes = packageDiagramManager.getPackageDiagram().getGraphNodes();
+            Map<PackageVertex, Integer> graphNodes = packageDiagramManager.getPackageDiagram().getGraphNodes();
 
-            Map<Path, Vertex> packageNodes = sourceProject.getInterpreter().getVertices();
+            Map<Path, PackageVertex> packageNodes = sourceProject.getInterpreter().getVertices();
             packageNodes.remove(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
             assertEquals(packageNodes.size(), graphNodes.size());
-            Iterator<Map.Entry<Path, Vertex>> iter1 = packageNodes.entrySet().iterator();
-            Iterator<Map.Entry<Vertex, Integer>> iter2 = graphNodes.entrySet().iterator();
+            Iterator<Map.Entry<Path, PackageVertex>> iter1 = packageNodes.entrySet().iterator();
+            Iterator<Map.Entry<PackageVertex, Integer>> iter2 = graphNodes.entrySet().iterator();
 
             List<String> l1 = new ArrayList<>();
             List<String> l2 = new ArrayList<>();
             while (iter1.hasNext() || iter2.hasNext()) {
-                Map.Entry<Path, Vertex> e1 = iter1.next();
-                Map.Entry<Vertex, Integer> e2 = iter2.next();
+                Map.Entry<Path, PackageVertex> e1 = iter1.next();
+                Map.Entry<PackageVertex, Integer> e2 = iter2.next();
                 l1.add(e1.getValue().getName());
                 l2.add(e2.getKey().getName());
             }

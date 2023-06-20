@@ -1,8 +1,8 @@
 package model.diagram.javafx;
 
 import com.google.gson.*;
-import model.graph.SinkVertex;
-import model.graph.Vertex;
+import model.graph.ClassifierVertex;
+import model.graph.PackageVertex;
 import model.graph.VertexType;
 import org.javatuples.Triplet;
 
@@ -11,12 +11,12 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VertexDeserializer implements JsonDeserializer<Vertex> {
+public class PackageVertexDeserializer implements JsonDeserializer<PackageVertex> {
 
-    private Vertex vertex;
+    private PackageVertex packageVertex;
 
     @Override
-    public Vertex deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
+    public PackageVertex deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
         JsonObject jsonObject = jsonElement.getAsJsonObject();
         String path = jsonObject.get("path").getAsString();
         String vertexType = jsonObject.get("vertexType").getAsString();
@@ -31,13 +31,13 @@ public class VertexDeserializer implements JsonDeserializer<Vertex> {
         JsonObject parent = jsonObject.get("parent").getAsJsonObject();
         String parentName = parent.get("name").getAsString();
 
-        vertex = new Vertex(Path.of(path), VertexType.valueOf(vertexType), parentName);
+        packageVertex = new PackageVertex(Path.of(path), VertexType.valueOf(vertexType), parentName);
 
         deserializeSinkVertices(jsonObject);
         deserializeNeighbourVertices(jsonObject);
         deserializeArcs(jsonObject);
 
-        return vertex;
+        return packageVertex;
     }
 
     private void deserializeSinkVertices(JsonObject jsonObject) {
@@ -45,9 +45,9 @@ public class VertexDeserializer implements JsonDeserializer<Vertex> {
         for (int i = 0; i < sinkVertices.size(); i++) {
             String json = sinkVertices.get(i).getAsString();
 
-            Gson gson = new GsonBuilder().registerTypeAdapter(SinkVertex.class, new SinkVertexDeserializer()).create();
-            SinkVertex sinkVertex = gson.fromJson(json, SinkVertex.class);
-            vertex.addSinkVertex(sinkVertex);
+            Gson gson = new GsonBuilder().registerTypeAdapter(ClassifierVertex.class, new ClassifierVertexDeserializer()).create();
+            ClassifierVertex classifierVertex = gson.fromJson(json, ClassifierVertex.class);
+            packageVertex.addSinkVertex(classifierVertex);
         }
     }
 
@@ -59,7 +59,7 @@ public class VertexDeserializer implements JsonDeserializer<Vertex> {
             String vertexType = vertexObject.get("vertexType").getAsString();
             String parentName = vertexObject.get("parentName").getAsString();
 
-            vertex.addNeighbourVertex(new Vertex(Path.of(path), VertexType.valueOf(vertexType), parentName));
+            packageVertex.addNeighbourVertex(new PackageVertex(Path.of(path), VertexType.valueOf(vertexType), parentName));
         }
     }
 
@@ -75,7 +75,7 @@ public class VertexDeserializer implements JsonDeserializer<Vertex> {
 
             arcs.add(new Triplet<>(sourceVertex, targetVertex, arcType));
         }
-        vertex.setDeserializedArcs(arcs);
+        packageVertex.setDeserializedArcs(arcs);
     }
 
 }

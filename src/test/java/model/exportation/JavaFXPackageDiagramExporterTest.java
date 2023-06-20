@@ -4,9 +4,9 @@ import com.google.gson.*;
 import manager.PackageDiagramManager;
 import model.diagram.exportation.DiagramExporter;
 import model.diagram.exportation.JavaFXPackageDiagramExporter;
-import model.diagram.javafx.SinkVertexDeserializer;
+import model.diagram.javafx.ClassifierVertexDeserializer;
 import model.graph.Arc;
-import model.graph.SinkVertex;
+import model.graph.ClassifierVertex;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -94,28 +94,28 @@ public class JavaFXPackageDiagramExporterTest {
 
                     JsonArray expJson = JsonParser.parseString(element.getAsJsonObject().get("sinkVertices").toString()).getAsJsonArray();
                     JsonArray actJson = JsonParser.parseString(actualElement.getAsJsonObject().get("sinkVertices").toString()).getAsJsonArray();
-                    List<SinkVertex> expSinkVertices = new ArrayList<>();
-                    List<SinkVertex> actSinkVertices = new ArrayList<>();
+                    List<ClassifierVertex> expSinkVertices = new ArrayList<>();
+                    List<ClassifierVertex> actSinkVertices = new ArrayList<>();
                     for (JsonElement jsonElement: expJson) {
-                        Gson gson = new GsonBuilder().registerTypeAdapter(SinkVertex.class, new SinkVertexDeserializer()).create();
-                        expSinkVertices.add(gson.fromJson(jsonElement.getAsString(), SinkVertex.class));
+                        Gson gson = new GsonBuilder().registerTypeAdapter(ClassifierVertex.class, new ClassifierVertexDeserializer()).create();
+                        expSinkVertices.add(gson.fromJson(jsonElement.getAsString(), ClassifierVertex.class));
                     }
                     for (JsonElement jsonElement: actJson) {
-                        Gson gson = new GsonBuilder().registerTypeAdapter(SinkVertex.class, new SinkVertexDeserializer()).create();
-                        actSinkVertices.add(gson.fromJson(jsonElement.getAsString(), SinkVertex.class));
+                        Gson gson = new GsonBuilder().registerTypeAdapter(ClassifierVertex.class, new ClassifierVertexDeserializer()).create();
+                        actSinkVertices.add(gson.fromJson(jsonElement.getAsString(), ClassifierVertex.class));
                     }
-                    for (SinkVertex sinkVertex: expSinkVertices) {
-                        Optional<SinkVertex> optionalSinkVertex = actSinkVertices.stream().filter(sinkVertex1 ->
-                            sinkVertex1.getName().equals(sinkVertex.getName()) &&
-                            sinkVertex1.getVertexType().equals(sinkVertex.getVertexType()) &&
-                            sinkVertex1.getArcs().size() == sinkVertex.getArcs().size() &&
-                            sinkVertex1.getMethods().size() == sinkVertex.getMethods().size() &&
-                            sinkVertex1.getFields().size() == sinkVertex.getFields().size())
+                    for (ClassifierVertex classifierVertex : expSinkVertices) {
+                        Optional<ClassifierVertex> optionalSinkVertex = actSinkVertices.stream().filter(sinkVertex1 ->
+                            sinkVertex1.getName().equals(classifierVertex.getName()) &&
+                            sinkVertex1.getVertexType().equals(classifierVertex.getVertexType()) &&
+                            sinkVertex1.getArcs().size() == classifierVertex.getArcs().size() &&
+                            sinkVertex1.getMethods().size() == classifierVertex.getMethods().size() &&
+                            sinkVertex1.getFields().size() == classifierVertex.getFields().size())
                         .findFirst();
                         assertTrue(optionalSinkVertex.isPresent());
 
-                        List<SinkVertex.Field> fields = optionalSinkVertex.get().getFields();
-                        for (SinkVertex.Field field: sinkVertex.getFields()) {
+                        List<ClassifierVertex.Field> fields = optionalSinkVertex.get().getFields();
+                        for (ClassifierVertex.Field field: classifierVertex.getFields()) {
                             fields.stream().filter(field1 ->
                                 field1.getName().equals(field.getName()) &&
                                 field1.getType().equals(field.getType()) &&
@@ -123,8 +123,8 @@ public class JavaFXPackageDiagramExporterTest {
                             .findFirst().orElseGet(Assertions::fail);
                         }
 
-                        List<SinkVertex.Method> methods = optionalSinkVertex.get().getMethods();
-                        for (SinkVertex.Method method: sinkVertex.getMethods()) {
+                        List<ClassifierVertex.Method> methods = optionalSinkVertex.get().getMethods();
+                        for (ClassifierVertex.Method method: classifierVertex.getMethods()) {
                             methods.stream().filter(method1 ->
                                 method1.getName().equals(method.getName()) &&
                                 method1.getReturnType().equals(method.getReturnType()) &&
@@ -132,8 +132,8 @@ public class JavaFXPackageDiagramExporterTest {
                             .findFirst().orElseGet(Assertions::fail);
                         }
 
-                        List<Arc<SinkVertex>> arcs = optionalSinkVertex.get().getArcs();
-                        for (Arc<SinkVertex> arc: sinkVertex.getArcs()) {
+                        List<Arc<ClassifierVertex>> arcs = optionalSinkVertex.get().getArcs();
+                        for (Arc<ClassifierVertex> arc: classifierVertex.getArcs()) {
                             arcs.stream().filter(sinkVertexArc ->
                                 sinkVertexArc.getSourceVertex().getName().equals(arc.getSourceVertex().getName()) &&
                                 sinkVertexArc.getTargetVertex().getName().equals(arc.getTargetVertex().getName()) &&

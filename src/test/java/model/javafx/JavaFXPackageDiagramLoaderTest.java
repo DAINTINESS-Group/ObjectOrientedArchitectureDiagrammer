@@ -5,8 +5,8 @@ import model.diagram.exportation.DiagramExporter;
 import model.diagram.exportation.JavaFXPackageDiagramExporter;
 import model.diagram.javafx.JavaFXPackageDiagramLoader;
 import model.graph.Arc;
-import model.graph.SinkVertex;
-import model.graph.Vertex;
+import model.graph.ClassifierVertex;
+import model.graph.PackageVertex;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -38,17 +38,17 @@ public class JavaFXPackageDiagramLoaderTest {
                 "src.controller.commands",
                 "src.controller"
             ));
-            Map<Vertex, Set<Arc<Vertex>>> createdDiagram = packageDiagramManager.getPackageDiagram().getDiagram();
+            Map<PackageVertex, Set<Arc<PackageVertex>>> createdDiagram = packageDiagramManager.getPackageDiagram().getDiagram();
 
             DiagramExporter javaFXExporter = new JavaFXPackageDiagramExporter(packageDiagramManager.getPackageDiagram());
             File actualFile = javaFXExporter.exportDiagram(Path.of(System.getProperty("user.home") + "\\testingExportedFile.txt"));
 
             JavaFXPackageDiagramLoader javaFXLoader = new JavaFXPackageDiagramLoader(actualFile.toPath());
-            Set<Vertex> loadedDiagram = javaFXLoader.loadDiagram();
+            Set<PackageVertex> loadedDiagram = javaFXLoader.loadDiagram();
 
             assertEquals(createdDiagram.size(), loadedDiagram.size());
-            for (Vertex vertex: createdDiagram.keySet()) {
-                Optional<Vertex> optionalVertex = loadedDiagram.stream()
+            for (PackageVertex vertex: createdDiagram.keySet()) {
+                Optional<PackageVertex> optionalVertex = loadedDiagram.stream()
                     .filter(vertex1 ->
                         vertex1.getName().equals(vertex.getName()) &&
                         vertex1.getVertexType().equals(vertex.getVertexType()) &&
@@ -56,9 +56,9 @@ public class JavaFXPackageDiagramLoaderTest {
                     ).findFirst();
                 assertTrue(optionalVertex.isPresent());
 
-                List<Arc<Vertex>> arcs = optionalVertex.get().getArcs();
+                List<Arc<PackageVertex>> arcs = optionalVertex.get().getArcs();
                 assertEquals(createdDiagram.get(vertex).size(), arcs.size());
-                for (Arc<Vertex> arc: createdDiagram.get(vertex)) {
+                for (Arc<PackageVertex> arc: createdDiagram.get(vertex)) {
                     arcs.stream().filter(vertexArc ->
                         vertexArc.getSourceVertex().getName().equals(arc.getSourceVertex().getName()) &&
                         vertexArc.getTargetVertex().getName().equals(arc.getTargetVertex().getName()) &&
@@ -66,19 +66,19 @@ public class JavaFXPackageDiagramLoaderTest {
                     .findFirst().orElseGet(Assertions::fail);
                 }
 
-                List<SinkVertex> sinkVertices = optionalVertex.get().getSinkVertices();
+                List<ClassifierVertex> sinkVertices = optionalVertex.get().getSinkVertices();
                 assertEquals(vertex.getSinkVertices().size(), sinkVertices.size());
-                for (SinkVertex sinkVertex: vertex.getSinkVertices()) {
+                for (ClassifierVertex classifierVertex : vertex.getSinkVertices()) {
                     sinkVertices.stream().filter(sinkVertex1 ->
-                        sinkVertex1.getName().equals(sinkVertex.getName()) &&
-                        sinkVertex1.getVertexType().equals(sinkVertex.getVertexType()) &&
-                        sinkVertex1.getPath().equals(sinkVertex.getPath())
+                        sinkVertex1.getName().equals(classifierVertex.getName()) &&
+                        sinkVertex1.getVertexType().equals(classifierVertex.getVertexType()) &&
+                        sinkVertex1.getPath().equals(classifierVertex.getPath())
                     ).findFirst().orElseGet(Assertions::fail);
                 }
 
-                List<Vertex> neighbours = optionalVertex.get().getNeighbourVertices();
+                List<PackageVertex> neighbours = optionalVertex.get().getNeighbourVertices();
                 assertEquals(vertex.getNeighbourVertices().size(), neighbours.size());
-                for (Vertex neighbour: vertex.getNeighbourVertices()) {
+                for (PackageVertex neighbour: vertex.getNeighbourVertices()) {
                     neighbours.stream().filter(vertex1 ->
                         vertex1.getName().equals(neighbour.getName()) &&
                         vertex1.getVertexType().equals(neighbour.getVertexType()) &&

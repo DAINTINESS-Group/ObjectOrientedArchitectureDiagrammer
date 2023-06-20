@@ -7,7 +7,7 @@ import edu.uci.ics.jung.graph.SparseGraph;
 import edu.uci.ics.jung.graph.util.EdgeType;
 import model.diagram.ClassDiagram;
 import model.graph.Arc;
-import model.graph.SinkVertex;
+import model.graph.ClassifierVertex;
 import org.javatuples.Pair;
 
 import java.awt.*;
@@ -41,12 +41,12 @@ public class ClassDiagramArrangement implements DiagramArrangement{
             graph.addVertex(nodeId);
         }
 
-        List<Arc<SinkVertex>> arcs = new ArrayList<>();
-        for (Set<Arc<SinkVertex>> arcSet: classDiagram.getDiagram().values()) {
+        List<Arc<ClassifierVertex>> arcs = new ArrayList<>();
+        for (Set<Arc<ClassifierVertex>> arcSet: classDiagram.getDiagram().values()) {
             arcs.addAll(arcSet);
         }
 
-        for (Arc<SinkVertex> arc: arcs) {
+        for (Arc<ClassifierVertex> arc: arcs) {
             graph.addEdge(classDiagram.getGraphNodes().get(arc.getSourceVertex()) + " " + classDiagram.getGraphNodes().get(arc.getTargetVertex()),
                     classDiagram.getGraphNodes().get(arc.getSourceVertex()), classDiagram.getGraphNodes().get(arc.getTargetVertex()), EdgeType.DIRECTED);
         }

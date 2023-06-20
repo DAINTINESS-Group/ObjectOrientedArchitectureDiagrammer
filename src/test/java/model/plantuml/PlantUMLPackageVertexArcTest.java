@@ -2,7 +2,7 @@ package model.plantuml;
 
 import manager.PackageDiagramManager;
 import manager.SourceProject;
-import model.diagram.plantuml.PlantUMLVertexArc;
+import model.diagram.plantuml.PlantUMLPackageVertexArc;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -14,7 +14,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class PlantUMLVertexArcTest {
+class PlantUMLPackageVertexArcTest {
 
 	Path currentDirectory = Path.of(".");
 	@Test
@@ -40,7 +40,7 @@ class PlantUMLVertexArcTest {
 				"src.controller"
 			));
 
-			PlantUMLVertexArc plantUMLEdge = new PlantUMLVertexArc(packageDiagramManager.getPackageDiagram());
+			PlantUMLPackageVertexArc plantUMLEdge = new PlantUMLPackageVertexArc(packageDiagramManager.getPackageDiagram());
 			String actualBuffer = plantUMLEdge.convertVertexArc().toString();
 
 			List<String> expectedRelationship = Arrays.asList(expectedBuffer.split("\n"));

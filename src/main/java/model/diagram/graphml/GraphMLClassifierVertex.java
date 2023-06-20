@@ -1,7 +1,7 @@
 package model.diagram.graphml;
 
 import model.diagram.ClassDiagram;
-import model.graph.SinkVertex;
+import model.graph.ClassifierVertex;
 import model.graph.VertexType;
 import org.javatuples.Pair;
 
@@ -10,50 +10,50 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class GraphMLSinkVertex {
+public class GraphMLClassifierVertex {
 
     private static final String CLASS_COLOR = "#FF9900";
     private static final String INTERFACE_COLOR = "#3366FF";
     private final StringBuilder graphMLBuffer;
     private final ClassDiagram classDiagram;
 
-    public GraphMLSinkVertex(ClassDiagram classDiagram) {
+    public GraphMLClassifierVertex(ClassDiagram classDiagram) {
         this.classDiagram = classDiagram;
         this.graphMLBuffer = new StringBuilder();
     }
 
     public StringBuilder convertSinkVertex() {
-        for (Map.Entry<SinkVertex, Integer> sinkVertex: classDiagram.getGraphNodes().entrySet()) {
+        for (Map.Entry<ClassifierVertex, Integer> sinkVertex: classDiagram.getGraphNodes().entrySet()) {
             graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLSinkVertexSyntax(
                     getSinkVertexDescription(sinkVertex.getKey(), sinkVertex.getValue(), classDiagram.getDiagramGeometry().get(sinkVertex.getValue()))));
         }
         return graphMLBuffer;
     }
 
-    private List<String> getSinkVertexDescription(SinkVertex sinkVertex, int nodeId, Pair<Double, Double> nodeGeometry) {
-        return Arrays.asList(String.valueOf(nodeId), getSinkVertexColor(sinkVertex), sinkVertex.getName(), getSinkVertexFields(sinkVertex),
-                getSinkVertexMethods(sinkVertex), String.valueOf(nodeGeometry.getValue0()), String.valueOf(nodeGeometry.getValue1()));
+    private List<String> getSinkVertexDescription(ClassifierVertex classifierVertex, int nodeId, Pair<Double, Double> nodeGeometry) {
+        return Arrays.asList(String.valueOf(nodeId), getSinkVertexColor(classifierVertex), classifierVertex.getName(), getSinkVertexFields(classifierVertex),
+                getSinkVertexMethods(classifierVertex), String.valueOf(nodeGeometry.getValue0()), String.valueOf(nodeGeometry.getValue1()));
     }
 
-    private String getSinkVertexMethods(SinkVertex sinkVertex) {
-        if (sinkVertex.getMethods().size() == 0) {
+    private String getSinkVertexMethods(ClassifierVertex classifierVertex) {
+        if (classifierVertex.getMethods().size() == 0) {
             return "";
         }
-        return sinkVertex.getMethods().stream()
+        return classifierVertex.getMethods().stream()
                 .map(method -> method.getReturnType() + " " + method.getName())
                 .collect(Collectors.joining("\n"));
     }
 
-    private String getSinkVertexFields(SinkVertex sinkVertex) {
-        if (sinkVertex.getFields().size() == 0) {
+    private String getSinkVertexFields(ClassifierVertex classifierVertex) {
+        if (classifierVertex.getFields().size() == 0) {
             return "";
         }
-        return sinkVertex.getFields().stream()
+        return classifierVertex.getFields().stream()
             .map(field -> field.getType() + " " + field.getName())
             .collect(Collectors.joining("\n"));
     }
 
-    private String getSinkVertexColor(SinkVertex leafNode) {
+    private String getSinkVertexColor(ClassifierVertex leafNode) {
         if (leafNode.getVertexType().equals(VertexType.INTERFACE)) {
             return INTERFACE_COLOR;
         }

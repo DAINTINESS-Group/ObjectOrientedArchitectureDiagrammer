@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class SinkVertex {
+public class ClassifierVertex {
 
-    private final List<Arc<SinkVertex>> arcs;
+    private final List<Arc<ClassifierVertex>> arcs;
     private final List<Method> methods;
     private final List<Field> fields;
     private final VertexType vertexType;
@@ -17,7 +17,7 @@ public class SinkVertex {
     private final String name;
     private List<Triplet<String, String, String>> deserializedArcs;
 
-    public SinkVertex(Path path, String name, VertexType vertexType) {
+    public ClassifierVertex(Path path, String name, VertexType vertexType) {
         this.vertexType = vertexType;
         this.path = path;
         this.name = name;
@@ -26,7 +26,7 @@ public class SinkVertex {
         fields = new ArrayList<>();
     }
 
-    public void addArc(SinkVertex sourceVertex, SinkVertex targetVertex, ArcType arcType) {
+    public void addArc(ClassifierVertex sourceVertex, ClassifierVertex targetVertex, ArcType arcType) {
         arcs.add(new Arc<>(sourceVertex, targetVertex, arcType));
     }
 
@@ -50,7 +50,7 @@ public class SinkVertex {
         return vertexType;
     }
 
-    public List<Arc<SinkVertex>> getArcs() {
+    public List<Arc<ClassifierVertex>> getArcs() {
         return arcs;
     }
 

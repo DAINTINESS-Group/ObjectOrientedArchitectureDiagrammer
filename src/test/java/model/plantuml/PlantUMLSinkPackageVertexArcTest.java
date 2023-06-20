@@ -2,7 +2,7 @@ package model.plantuml;
 
 import manager.ClassDiagramManager;
 import manager.SourceProject;
-import model.diagram.plantuml.PlantUMLSinkVertexArc;
+import model.diagram.plantuml.PlantUMLClassifierVertexArc;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -14,7 +14,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class PlantUMLSinkVertexArcTest {
+public class PlantUMLSinkPackageVertexArcTest {
 
     Path currentDirectory = Path.of(".");
 
@@ -38,7 +38,7 @@ public class PlantUMLSinkVertexArcTest {
             classDiagramManager.convertTreeToDiagram(List.of("StableVersionsStrategy", "VersionsStrategy", "VersionsStrategyFactory", "VolatileVersionsStrategy",
                     "VersionsManager", "Document", "DocumentManager"));
 
-            PlantUMLSinkVertexArc plantUMLEdge = new PlantUMLSinkVertexArc(classDiagramManager.getClassDiagram());
+            PlantUMLClassifierVertexArc plantUMLEdge = new PlantUMLClassifierVertexArc(classDiagramManager.getClassDiagram());
             String actualBuffer = plantUMLEdge.convertSinkVertexArc().toString();
 
             List<String> actualRelationships = Arrays.asList(expectedBuffer.split("\n"));

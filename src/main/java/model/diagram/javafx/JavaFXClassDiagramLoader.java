@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
 import model.graph.ArcType;
-import model.graph.SinkVertex;
+import model.graph.ClassifierVertex;
 import org.javatuples.Triplet;
 
 import java.io.IOException;
@@ -20,12 +20,12 @@ public class JavaFXClassDiagramLoader {
         this.graphSavePath = graphSavePath;
     }
 
-    public Set<SinkVertex> loadDiagram() throws JsonParseException {
-        Set<SinkVertex> sinkVertices = new HashSet<>();
+    public Set<ClassifierVertex> loadDiagram() throws JsonParseException {
+        Set<ClassifierVertex> sinkVertices = new HashSet<>();
         try {
             String json = Files.readString(graphSavePath);
-            Gson gson = new GsonBuilder().registerTypeAdapter(SinkVertex.class, new SinkVertexDeserializer()).create();
-            SinkVertex[] sinkVerticesArray = gson.fromJson(json, SinkVertex[].class);
+            Gson gson = new GsonBuilder().registerTypeAdapter(ClassifierVertex.class, new ClassifierVertexDeserializer()).create();
+            ClassifierVertex[] sinkVerticesArray = gson.fromJson(json, ClassifierVertex[].class);
             Collections.addAll(sinkVertices, sinkVerticesArray);
             deserializeArcs(sinkVertices);
         } catch (IOException e) {
@@ -34,20 +34,20 @@ public class JavaFXClassDiagramLoader {
         return sinkVertices;
     }
 
-    private void deserializeArcs(Set<SinkVertex> sinkVertices) {
-        for (SinkVertex sinkVertex: sinkVertices) {
-            List<Triplet<String, String, String>> deserializedArcs = sinkVertex.getDeserializedArcs();
+    private void deserializeArcs(Set<ClassifierVertex> sinkVertices) {
+        for (ClassifierVertex classifierVertex : sinkVertices) {
+            List<Triplet<String, String, String>> deserializedArcs = classifierVertex.getDeserializedArcs();
             for (Triplet<String, String, String> arc: deserializedArcs) {
-                Optional<SinkVertex> sourceVertex = sinkVertices.stream()
+                Optional<ClassifierVertex> sourceVertex = sinkVertices.stream()
                     .filter(sinkVertex1 -> sinkVertex1.getName().equals(arc.getValue0()))
                     .findFirst();
-                Optional<SinkVertex> targetVertex = sinkVertices.stream()
+                Optional<ClassifierVertex> targetVertex = sinkVertices.stream()
                     .filter(sinkVertex1 -> sinkVertex1.getName().equals(arc.getValue1()))
                     .findFirst();
                 if (sourceVertex.isEmpty() || targetVertex.isEmpty()) {
                     continue;
                 }
-                sinkVertex.addArc(sourceVertex.get(), targetVertex.get(), ArcType.valueOf(arc.getValue2()));
+                classifierVertex.addArc(sourceVertex.get(), targetVertex.get(), ArcType.valueOf(arc.getValue2()));
             }
         }
     }

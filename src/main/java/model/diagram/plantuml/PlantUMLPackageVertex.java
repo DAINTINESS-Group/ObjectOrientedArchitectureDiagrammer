@@ -4,12 +4,12 @@ import model.diagram.PackageDiagram;
 
 import java.util.stream.Collectors;
 
-public class PlantUMLVertex {
+public class PlantUMLPackageVertex {
 
 
     private final PackageDiagram packageDiagram;
 
-    public PlantUMLVertex(PackageDiagram diagram) {
+    public PlantUMLPackageVertex(PackageDiagram diagram) {
         packageDiagram = diagram;
     }
 

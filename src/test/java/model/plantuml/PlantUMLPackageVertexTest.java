@@ -2,7 +2,7 @@ package model.plantuml;
 
 import manager.PackageDiagramManager;
 import manager.SourceProject;
-import model.diagram.plantuml.PlantUMLVertex;
+import model.diagram.plantuml.PlantUMLPackageVertex;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -14,7 +14,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class PlantUMLVertexTest {
+public class PlantUMLPackageVertexTest {
 
     Path currentDirectory = Path.of(".");
 
@@ -50,8 +50,8 @@ public class PlantUMLVertexTest {
                 "src.controller"
             ));
 
-            PlantUMLVertex plantUMLVertex = new PlantUMLVertex(packageDiagramManager.getPackageDiagram());
-            String actualBuffer = plantUMLVertex.convertVertex().toString();
+            PlantUMLPackageVertex plantUMLPackageVertex = new PlantUMLPackageVertex(packageDiagramManager.getPackageDiagram());
+            String actualBuffer = plantUMLPackageVertex.convertVertex().toString();
 
             List<String> expected = Arrays.asList(expectedBuffer.split("\n"));
             List<String> actual = Arrays.asList(actualBuffer.split("\n"));

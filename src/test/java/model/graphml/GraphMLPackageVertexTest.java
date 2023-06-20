@@ -2,8 +2,8 @@ package model.graphml;
 
 import manager.PackageDiagramManager;
 import manager.SourceProject;
-import model.diagram.graphml.GraphMLVertex;
-import model.graph.Vertex;
+import model.diagram.graphml.GraphMLPackageVertex;
+import model.graph.PackageVertex;
 import org.javatuples.Pair;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +15,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class GraphMLVertexTest {
+class GraphMLPackageVertexTest {
 
     Path currentDirectory = Path.of(".");
 
@@ -39,11 +39,11 @@ class GraphMLVertexTest {
                     Map.entry(4, new Pair<>(10.0, 10.0)),
                     Map.entry(5, new Pair<>(10.0, 10.0))
             ));
-            GraphMLVertex graphMLVertex = new GraphMLVertex(packageDiagramManager.getPackageDiagram());
-            StringBuilder actual = graphMLVertex.convertVertex();
+            GraphMLPackageVertex graphMLPackageVertex = new GraphMLPackageVertex(packageDiagramManager.getPackageDiagram());
+            StringBuilder actual = graphMLPackageVertex.convertVertex();
 
             StringBuilder expected = new StringBuilder();
-            for (Vertex packageNode : packageDiagramManager.getPackageDiagram().getGraphNodes().keySet()) {
+            for (PackageVertex packageNode : packageDiagramManager.getPackageDiagram().getGraphNodes().keySet()) {
                 expected.append(String.format("    <node id=\"n%s\">\n" +
                                 "      <data key=\"d4\" xml:space=\"preserve\"/>\n" +
                                 "      <data key=\"d6\">\n" +

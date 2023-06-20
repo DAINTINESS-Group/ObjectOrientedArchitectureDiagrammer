@@ -1,8 +1,8 @@
 package model.diagram.exportation;
 
 import model.diagram.PackageDiagram;
-import model.diagram.plantuml.PlantUMLVertex;
-import model.diagram.plantuml.PlantUMLVertexArc;
+import model.diagram.plantuml.PlantUMLPackageVertex;
+import model.diagram.plantuml.PlantUMLPackageVertexArc;
 import net.sourceforge.plantuml.SourceStringReader;
 
 import javax.imageio.ImageIO;
@@ -15,9 +15,9 @@ public class PlantUMLPackageDiagramImageExporter implements DiagramExporter {
     private final String bufferBody;
 
     public PlantUMLPackageDiagramImageExporter(PackageDiagram diagram) {
-        PlantUMLVertex plantUMLVertex = new PlantUMLVertex(diagram);
-        StringBuilder plantUMLNodeBuffer = plantUMLVertex.convertVertex();
-        PlantUMLVertexArc plantUMLEdge = new PlantUMLVertexArc(diagram);
+        PlantUMLPackageVertex plantUMLPackageVertex = new PlantUMLPackageVertex(diagram);
+        StringBuilder plantUMLNodeBuffer = plantUMLPackageVertex.convertVertex();
+        PlantUMLPackageVertexArc plantUMLEdge = new PlantUMLPackageVertexArc(diagram);
         StringBuilder plantUMLEdgeBuffer = plantUMLEdge.convertVertexArc();
         bufferBody = plantUMLNodeBuffer.append("\n\n").append(plantUMLEdgeBuffer) + "\n @enduml";
     }

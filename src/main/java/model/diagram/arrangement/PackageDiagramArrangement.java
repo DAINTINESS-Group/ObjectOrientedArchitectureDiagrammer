@@ -7,7 +7,7 @@ import edu.uci.ics.jung.graph.SparseGraph;
 import edu.uci.ics.jung.graph.util.EdgeType;
 import model.diagram.PackageDiagram;
 import model.graph.Arc;
-import model.graph.Vertex;
+import model.graph.PackageVertex;
 import org.javatuples.Pair;
 
 import java.awt.*;
@@ -41,12 +41,12 @@ public class PackageDiagramArrangement implements DiagramArrangement {
             graph.addVertex(i);
         }
 
-        List<Arc<Vertex>> arcs = new ArrayList<>();
-        for (Set<Arc<Vertex>> arcSet: packageDiagram.getDiagram().values()) {
+        List<Arc<PackageVertex>> arcs = new ArrayList<>();
+        for (Set<Arc<PackageVertex>> arcSet: packageDiagram.getDiagram().values()) {
             arcs.addAll(arcSet);
         }
 
-        for (Arc<Vertex> arc: arcs) {
+        for (Arc<PackageVertex> arc: arcs) {
             graph.addEdge(packageDiagram.getGraphNodes().get(arc.getSourceVertex()) + " " + packageDiagram.getGraphNodes().get(arc.getTargetVertex()),
                     packageDiagram.getGraphNodes().get(arc.getSourceVertex()), packageDiagram.getGraphNodes().get(arc.getTargetVertex()), EdgeType.DIRECTED);
         }

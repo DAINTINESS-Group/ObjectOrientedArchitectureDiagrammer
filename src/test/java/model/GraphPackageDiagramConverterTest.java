@@ -4,7 +4,7 @@ import manager.PackageDiagramManager;
 import manager.SourceProject;
 import model.diagram.GraphPackageDiagramConverter;
 import model.graph.Arc;
-import model.graph.Vertex;
+import model.graph.PackageVertex;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -31,23 +31,23 @@ public class GraphPackageDiagramConverterTest {
                 "src.controller.commands",
                 "src.controller"
             ));
-            Map<Vertex, Set<Arc<Vertex>>> diagram = packageDiagramManager.getPackageDiagram().getDiagram();
+            Map<PackageVertex, Set<Arc<PackageVertex>>> diagram = packageDiagramManager.getPackageDiagram().getDiagram();
 
-            List<Arc<Vertex>> arcs = new ArrayList<>();
-            for (Set<Arc<Vertex>> arcSet: diagram.values()) {
+            List<Arc<PackageVertex>> arcs = new ArrayList<>();
+            for (Set<Arc<PackageVertex>> arcSet: diagram.values()) {
                 arcs.addAll(arcSet);
             }
 
             GraphPackageDiagramConverter graphPackageDiagramConverter = new GraphPackageDiagramConverter(diagram.keySet());
-            Map<Vertex, Set<Arc<Vertex>>> adjacencyList = graphPackageDiagramConverter.convertGraphToPackageDiagram();
+            Map<PackageVertex, Set<Arc<PackageVertex>>> adjacencyList = graphPackageDiagramConverter.convertGraphToPackageDiagram();
 
-            Set<Arc<Vertex>> actualArcs = new HashSet<>();
-            for (Set<Arc<Vertex>> value : adjacencyList.values()) {
+            Set<Arc<PackageVertex>> actualArcs = new HashSet<>();
+            for (Set<Arc<PackageVertex>> value : adjacencyList.values()) {
                 actualArcs.addAll(value);
             }
 
             assertEquals(arcs.size(), actualArcs.size());
-            for (Arc<Vertex> vertexArc: actualArcs) {
+            for (Arc<PackageVertex> vertexArc: actualArcs) {
                 assertTrue(arcs.contains(vertexArc));
             }
 

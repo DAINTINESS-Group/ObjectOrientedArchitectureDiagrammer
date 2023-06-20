@@ -1,8 +1,8 @@
 package model.diagram.exportation;
 
 import model.diagram.PackageDiagram;
-import model.diagram.graphml.GraphMLVertex;
-import model.diagram.graphml.GraphMLVertexArc;
+import model.diagram.graphml.GraphMLPackageVertex;
+import model.diagram.graphml.GraphMLPackageVertexArc;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,10 +15,10 @@ public class GraphMLPackageDiagramExporter implements DiagramExporter {
     private final StringBuilder graphMLEdgeBuffer;
 
     public GraphMLPackageDiagramExporter(PackageDiagram packageDiagram) {
-        GraphMLVertex graphMLVertex = new GraphMLVertex(packageDiagram);
-        graphMLNodeBuffer = graphMLVertex.convertVertex();
-        GraphMLVertexArc graphMLVertexArc = new GraphMLVertexArc(packageDiagram);
-        graphMLEdgeBuffer = graphMLVertexArc.convertVertexArc();
+        GraphMLPackageVertex graphMLPackageVertex = new GraphMLPackageVertex(packageDiagram);
+        graphMLNodeBuffer = graphMLPackageVertex.convertVertex();
+        GraphMLPackageVertexArc graphMLPackageVertexArc = new GraphMLPackageVertexArc(packageDiagram);
+        graphMLEdgeBuffer = graphMLPackageVertexArc.convertVertexArc();
         graphMLFile = new GraphMLFile();
     }
 

@@ -4,8 +4,8 @@ import manager.ClassDiagramManager;
 import manager.SourceProject;
 import model.diagram.exportation.DiagramExporter;
 import model.diagram.exportation.PlantUMLClassDiagramTextExporter;
-import model.diagram.plantuml.PlantUMLSinkVertex;
-import model.diagram.plantuml.PlantUMLSinkVertexArc;
+import model.diagram.plantuml.PlantUMLClassifierVertex;
+import model.diagram.plantuml.PlantUMLClassifierVertexArc;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -31,9 +31,9 @@ public class PlantUMLClassDiagramTextExporterTest {
             classDiagramManager.convertTreeToDiagram(List.of("StableVersionsStrategy", "VersionsStrategy", "VersionsStrategyFactory", "VolatileVersionsStrategy",
                     "VersionsManager", "Document", "DocumentManager"));
 
-            PlantUMLSinkVertex plantUMLSinkVertex = new PlantUMLSinkVertex(classDiagramManager.getClassDiagram());
-            String sinkVertexBuffer = plantUMLSinkVertex.convertSinkVertex().toString();
-            PlantUMLSinkVertexArc plantUMLEdge = new PlantUMLSinkVertexArc(classDiagramManager.getClassDiagram());
+            PlantUMLClassifierVertex plantUMLClassifierVertex = new PlantUMLClassifierVertex(classDiagramManager.getClassDiagram());
+            String sinkVertexBuffer = plantUMLClassifierVertex.convertSinkVertex().toString();
+            PlantUMLClassifierVertexArc plantUMLEdge = new PlantUMLClassifierVertexArc(classDiagramManager.getClassDiagram());
             String sinkVertexArcBuffer = plantUMLEdge.convertSinkVertexArc().toString();
 
             DiagramExporter graphMLExporter = new PlantUMLClassDiagramTextExporter(classDiagramManager.getClassDiagram());

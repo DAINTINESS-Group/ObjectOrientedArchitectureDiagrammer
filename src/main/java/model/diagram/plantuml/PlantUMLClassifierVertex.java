@@ -2,18 +2,18 @@ package model.diagram.plantuml;
 
 import model.diagram.ClassDiagram;
 import model.graph.ModifierType;
-import model.graph.SinkVertex;
+import model.graph.ClassifierVertex;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class PlantUMLSinkVertex {
+public class PlantUMLClassifierVertex {
 
 
 	private final ClassDiagram classDiagram;
 
-	public PlantUMLSinkVertex(ClassDiagram diagram) {
+	public PlantUMLClassifierVertex(ClassDiagram diagram) {
 		classDiagram = diagram;
 	}
 
@@ -27,24 +27,24 @@ public class PlantUMLSinkVertex {
 		);
 	}
 	
-    private String convertFields(SinkVertex sinkVertex) {
-		if (sinkVertex.getFields().size() == 0) {
+    private String convertFields(ClassifierVertex classifierVertex) {
+		if (classifierVertex.getFields().size() == 0) {
 			return "";
 		}
-		return sinkVertex.getFields().stream()
+		return classifierVertex.getFields().stream()
 			.map(field -> getVisibility(field.getModifier()) + field.getName() + ": " + field.getType())
 			.collect(Collectors.joining("\n")) + "\n";
 	}
     
-    private String convertMethods(SinkVertex sinkVertex) {
+    private String convertMethods(ClassifierVertex classifierVertex) {
 		StringBuilder plantUMLMethods = new StringBuilder();
-		List<SinkVertex.Method> constructors = sinkVertex.getMethods().stream()
+		List<ClassifierVertex.Method> constructors = classifierVertex.getMethods().stream()
 			.filter(method -> method.getReturnType().equals("Constructor"))
 			.sorted(Comparator.comparingInt(method -> method.getParameters().size()))
 			.collect(Collectors.toList());
 		convertMethod(plantUMLMethods, constructors);
 
-		List<SinkVertex.Method> methods = sinkVertex.getMethods().stream()
+		List<ClassifierVertex.Method> methods = classifierVertex.getMethods().stream()
 			.filter(method -> !method.getReturnType().equals("Constructor"))
 			.collect(Collectors.toList());
 		convertMethod(plantUMLMethods, methods);
@@ -52,8 +52,8 @@ public class PlantUMLSinkVertex {
 		return plantUMLMethods.toString();
     }
 
-	private void convertMethod(StringBuilder plantUMLMethods, List<SinkVertex.Method> methods) {
-		for (SinkVertex.Method method: methods) {
+	private void convertMethod(StringBuilder plantUMLMethods, List<ClassifierVertex.Method> methods) {
+		for (ClassifierVertex.Method method: methods) {
 			plantUMLMethods.append(getVisibility(method.getModifierType())).append(method.getName()).append("(")
 				.append(method.getParameters().entrySet()
 					.stream()

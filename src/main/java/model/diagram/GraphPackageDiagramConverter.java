@@ -1,7 +1,7 @@
 package model.diagram;
 
 import model.graph.Arc;
-import model.graph.Vertex;
+import model.graph.PackageVertex;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -10,18 +10,18 @@ import java.util.Set;
 
 public class GraphPackageDiagramConverter {
 
-    private final Set<Vertex> vertices;
-    private final Map<Vertex, Set<Arc<Vertex>>> adjacencyList;
+    private final Set<PackageVertex> vertices;
+    private final Map<PackageVertex, Set<Arc<PackageVertex>>> adjacencyList;
 
-    public GraphPackageDiagramConverter(Set<Vertex> vertices) {
+    public GraphPackageDiagramConverter(Set<PackageVertex> vertices) {
         this.vertices = vertices;
         adjacencyList = new HashMap<>();
     }
 
-    public Map<Vertex, Set<Arc<Vertex>>> convertGraphToPackageDiagram() {
-        for (Vertex vertex: vertices) {
+    public Map<PackageVertex, Set<Arc<PackageVertex>>> convertGraphToPackageDiagram() {
+        for (PackageVertex vertex: vertices) {
             adjacencyList.put(vertex, new HashSet<>());
-            for (Arc<Vertex> arc: vertex.getArcs()) {
+            for (Arc<PackageVertex> arc: vertex.getArcs()) {
                 if (!vertices.contains(arc.getTargetVertex())) {
                     continue;
                 }

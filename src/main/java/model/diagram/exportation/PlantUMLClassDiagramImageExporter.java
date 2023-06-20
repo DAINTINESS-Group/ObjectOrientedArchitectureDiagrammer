@@ -1,8 +1,8 @@
 package model.diagram.exportation;
 
 import model.diagram.ClassDiagram;
-import model.diagram.plantuml.PlantUMLSinkVertex;
-import model.diagram.plantuml.PlantUMLSinkVertexArc;
+import model.diagram.plantuml.PlantUMLClassifierVertex;
+import model.diagram.plantuml.PlantUMLClassifierVertexArc;
 import net.sourceforge.plantuml.SourceStringReader;
 
 import javax.imageio.ImageIO;
@@ -15,9 +15,9 @@ public class PlantUMLClassDiagramImageExporter implements DiagramExporter {
 	private final String bufferBody;
 
     public PlantUMLClassDiagramImageExporter(ClassDiagram diagram) {
-		PlantUMLSinkVertex plantUMLSinkVertex = new PlantUMLSinkVertex(diagram);
-		StringBuilder plantUMLNodeBuffer = plantUMLSinkVertex.convertSinkVertex();
-		PlantUMLSinkVertexArc plantUMLEdge = new PlantUMLSinkVertexArc(diagram);
+		PlantUMLClassifierVertex plantUMLClassifierVertex = new PlantUMLClassifierVertex(diagram);
+		StringBuilder plantUMLNodeBuffer = plantUMLClassifierVertex.convertSinkVertex();
+		PlantUMLClassifierVertexArc plantUMLEdge = new PlantUMLClassifierVertexArc(diagram);
 		StringBuilder plantUMLEdgeBuffer = plantUMLEdge.convertSinkVertexArc();
     	bufferBody = plantUMLNodeBuffer.append("\n\n").append(plantUMLEdgeBuffer) + "\n @enduml";
     }

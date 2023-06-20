@@ -6,8 +6,8 @@ import model.diagram.arrangement.ClassDiagramArrangement;
 import model.diagram.arrangement.DiagramArrangement;
 import model.diagram.exportation.DiagramExporter;
 import model.diagram.exportation.GraphMLClassDiagramExporter;
-import model.diagram.graphml.GraphMLSinkVertex;
-import model.diagram.graphml.GraphMLSinkVertexArc;
+import model.diagram.graphml.GraphMLClassifierVertex;
+import model.diagram.graphml.GraphMLClassifierVertexArc;
 import model.diagram.graphml.GraphMLSyntax;
 import org.javatuples.Pair;
 import org.junit.jupiter.api.Test;
@@ -46,10 +46,10 @@ public class GraphMLClassDiagramExporterTest {
             String actualFileContents = lines.collect(Collectors.joining("\n"));
             lines.close();
 
-            GraphMLSinkVertex graphMLSinkVertex = new GraphMLSinkVertex(classDiagramManager.getClassDiagram());
-            StringBuilder graphMLNodeBuffer = graphMLSinkVertex.convertSinkVertex();
-            GraphMLSinkVertexArc graphMLSinkVertexArc = new GraphMLSinkVertexArc(classDiagramManager.getClassDiagram());
-            StringBuilder graphMLEdgeBuffer = graphMLSinkVertexArc.convertSinkVertexArc();
+            GraphMLClassifierVertex graphMLClassifierVertex = new GraphMLClassifierVertex(classDiagramManager.getClassDiagram());
+            StringBuilder graphMLNodeBuffer = graphMLClassifierVertex.convertSinkVertex();
+            GraphMLClassifierVertexArc graphMLClassifierVertexArc = new GraphMLClassifierVertexArc(classDiagramManager.getClassDiagram());
+            StringBuilder graphMLEdgeBuffer = graphMLClassifierVertexArc.convertSinkVertexArc();
             String expectedFileContents = "";
             expectedFileContents += (GraphMLSyntax.getInstance().getGraphMLPrefix());
             expectedFileContents += (graphMLNodeBuffer.toString());

@@ -3,25 +3,25 @@ package model.diagram.plantuml;
 import model.diagram.ClassDiagram;
 import model.graph.Arc;
 import model.graph.ArcType;
-import model.graph.SinkVertex;
+import model.graph.ClassifierVertex;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class PlantUMLSinkVertexArc {
+public class PlantUMLClassifierVertexArc {
 
 
 	private final ClassDiagram classDiagram;
 
-	public PlantUMLSinkVertexArc(ClassDiagram diagram) {
+	public PlantUMLClassifierVertexArc(ClassDiagram diagram) {
 		classDiagram = diagram;
 	}
 
 	public StringBuilder convertSinkVertexArc() {
-		List<Arc<SinkVertex>> arcs = new ArrayList<>();
-		for (Set<Arc<SinkVertex>> arcSet: classDiagram.getDiagram().values()) {
+		List<Arc<ClassifierVertex>> arcs = new ArrayList<>();
+		for (Set<Arc<ClassifierVertex>> arcSet: classDiagram.getDiagram().values()) {
 			arcs.addAll(arcSet);
 		}
 

@@ -8,7 +8,7 @@ import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import model.diagram.ClassDiagram;
 import model.graph.Arc;
 import model.graph.ArcType;
-import model.graph.SinkVertex;
+import model.graph.ClassifierVertex;
 import model.graph.VertexType;
 
 import java.util.Set;
@@ -32,16 +32,16 @@ public class JavaFXClassVisualization implements model.diagram.javafx.JavaFXVisu
 
     private Graph<String, String> createGraph() {
         Digraph<String, String> directedGraph = new DigraphEdgeList<>();
-        for (SinkVertex sinkVertex: classDiagram.getDiagram().keySet()) {
-            directedGraph.insertVertex(sinkVertex.getName());
+        for (ClassifierVertex classifierVertex : classDiagram.getDiagram().keySet()) {
+            directedGraph.insertVertex(classifierVertex.getName());
         }
         insertSinkVertexArcs(directedGraph);
         return directedGraph;
     }
 
     private void insertSinkVertexArcs(Digraph<String, String> directedGraph){
-        for (Set<Arc<SinkVertex>> arcs : classDiagram.getDiagram().values()) {
-            for (Arc<SinkVertex> arc: arcs) {
+        for (Set<Arc<ClassifierVertex>> arcs : classDiagram.getDiagram().values()) {
+            for (Arc<ClassifierVertex> arc: arcs) {
                 if (arc.getArcType().equals(ArcType.AGGREGATION)) {
                     directedGraph.insertEdge(arc.getTargetVertex().getName(), arc.getSourceVertex().getName(),
                         arc.getTargetVertex().getName() + "_" + arc.getSourceVertex().getName() + "_" + arc.getArcType().toString().toLowerCase());
@@ -54,11 +54,11 @@ public class JavaFXClassVisualization implements model.diagram.javafx.JavaFXVisu
     }
 
     private void setSinkVertexCustomStyle() {
-        for (SinkVertex sinkVertex: classDiagram.getDiagram().keySet()){
-            if (sinkVertex.getVertexType().equals(VertexType.INTERFACE)) {
-                graphView.getStylableVertex(sinkVertex.getName()).setStyleClass("vertexInterface");
+        for (ClassifierVertex classifierVertex : classDiagram.getDiagram().keySet()){
+            if (classifierVertex.getVertexType().equals(VertexType.INTERFACE)) {
+                graphView.getStylableVertex(classifierVertex.getName()).setStyleClass("vertexInterface");
             }else {
-                graphView.getStylableVertex(sinkVertex.getName()).setStyleClass("vertexPackage");
+                graphView.getStylableVertex(classifierVertex.getName()).setStyleClass("vertexPackage");
             }
         }
     }

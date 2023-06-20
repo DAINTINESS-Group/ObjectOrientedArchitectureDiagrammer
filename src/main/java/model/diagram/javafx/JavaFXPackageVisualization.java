@@ -8,7 +8,7 @@ import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import model.diagram.PackageDiagram;
 import model.graph.Arc;
 import model.graph.ArcType;
-import model.graph.Vertex;
+import model.graph.PackageVertex;
 import model.graph.VertexType;
 
 import java.util.Set;
@@ -32,7 +32,7 @@ public class JavaFXPackageVisualization implements JavaFXVisualization {
 
     private Graph<String, String> createGraph() {
         Digraph<String, String> directedGraph = new DigraphEdgeList<>();
-        for (Vertex vertex: packageDiagram.getDiagram().keySet()) {
+        for (PackageVertex vertex: packageDiagram.getDiagram().keySet()) {
             directedGraph.insertVertex(vertex.getName());
         }
         insertVertexArcs(directedGraph);
@@ -40,8 +40,8 @@ public class JavaFXPackageVisualization implements JavaFXVisualization {
     }
 
     private void insertVertexArcs(Digraph<String, String> directedGraph){
-        for (Set<Arc<Vertex>> arcs : packageDiagram.getDiagram().values()) {
-            for (Arc<Vertex> arc: arcs) {
+        for (Set<Arc<PackageVertex>> arcs : packageDiagram.getDiagram().values()) {
+            for (Arc<PackageVertex> arc: arcs) {
                 if (arc.getArcType().equals(ArcType.AGGREGATION)) {
                     directedGraph.insertEdge(arc.getTargetVertex().getName(), arc.getSourceVertex().getName(),
                             arc.getTargetVertex().getName() + "_" + arc.getSourceVertex().getName() + "_" + arc.getArcType().toString().toLowerCase());
@@ -54,7 +54,7 @@ public class JavaFXPackageVisualization implements JavaFXVisualization {
     }
 
     private void setVertexCustomStyle() {
-        for (Vertex vertex: packageDiagram.getDiagram().keySet()){
+        for (PackageVertex vertex: packageDiagram.getDiagram().keySet()){
             if (vertex.getVertexType().equals(VertexType.INTERFACE)) {
                 graphView.getStylableVertex(vertex.getName()).setStyleClass("vertexInterface");
             }else {
