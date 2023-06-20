@@ -1,5 +1,7 @@
 package manager;
 
+import com.brunomnsilva.smartgraph.graph.Edge;
+import com.brunomnsilva.smartgraph.graph.Vertex;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import com.google.gson.JsonParseException;
 import model.diagram.PackageDiagram;
@@ -13,12 +15,15 @@ import org.javatuples.Pair;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 public class PackageDiagramManager implements DiagramManager {
 
     private PackageDiagram packageDiagram;
+    private Collection<Edge<String, String>> edgeCollection;
+    private Collection<Vertex<String>> vertexCollection;
 
     public PackageDiagramManager() {
         packageDiagram = new PackageDiagram();
@@ -48,7 +53,20 @@ public class PackageDiagramManager implements DiagramManager {
     @Override
     public SmartGraphPanel<String, String> visualizeJavaFXGraph() {
         JavaFXVisualization javaFXPackageVisualization = new JavaFXPackageVisualization(packageDiagram);
-        return javaFXPackageVisualization.createGraphView();
+        SmartGraphPanel<String, String> graphView = javaFXPackageVisualization.createGraphView();
+        edgeCollection = javaFXPackageVisualization.getEdgeCollection();
+        vertexCollection = javaFXPackageVisualization.getVertexCollection();
+        return graphView;
+    }
+    
+    @Override
+    public Collection<com.brunomnsilva.smartgraph.graph.Vertex<String>> getVertexCollection(){
+    	return vertexCollection;
+    }
+    
+	@Override
+    public Collection<Edge<String, String>> getEdgeCollection(){
+    	return edgeCollection;
     }
 
     @Override

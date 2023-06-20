@@ -1,10 +1,13 @@
 package manager;
 
+import com.brunomnsilva.smartgraph.graph.Edge;
+import com.brunomnsilva.smartgraph.graph.Vertex;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import org.javatuples.Pair;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -58,6 +61,10 @@ public interface DiagramManager {
      * @return the created graphView
      */
     SmartGraphPanel<String, String> visualizeJavaFXGraph();
+    
+	Collection<Edge<String, String>> getEdgeCollection();
+
+	Collection<Vertex<String>> getVertexCollection();
 
     /**This method is responsible for exporting the diagram to a PlantUML image diagram
      * @param plantUMLSavePath the selected path by the designer where the exported diagram will be saved

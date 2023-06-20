@@ -1,5 +1,7 @@
 package manager;
 
+import com.brunomnsilva.smartgraph.graph.Edge;
+import com.brunomnsilva.smartgraph.graph.Vertex;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import com.google.gson.JsonParseException;
 import model.diagram.ClassDiagram;
@@ -14,13 +16,16 @@ import org.javatuples.Pair;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 public class ClassDiagramManager implements DiagramManager {
 
     private ClassDiagram classDiagram;
-
+    private Collection<Edge<String, String>> edgeCollection;
+    private Collection<Vertex<String>> vertexCollection;
+    
     public ClassDiagramManager() {
         classDiagram = new ClassDiagram();
     }
@@ -51,13 +56,26 @@ public class ClassDiagramManager implements DiagramManager {
     @Override
     public SmartGraphPanel<String, String> visualizeJavaFXGraph() {
         JavaFXVisualization javaFXVisualization = new JavaFXClassVisualization(classDiagram);
-        return javaFXVisualization.createGraphView();
+        SmartGraphPanel<String, String> graphView= javaFXVisualization.createGraphView();
+        edgeCollection = javaFXVisualization.getEdgeCollection();
+        vertexCollection = javaFXVisualization.getVertexCollection();
+        return graphView;
     }
 
     @Override
     public File exportDiagramToGraphML(Path graphMLSavePath) {
         DiagramExporter diagramExporter = new GraphMLClassDiagramExporter(classDiagram);
         return diagramExporter.exportDiagram(graphMLSavePath);
+    }
+    
+    @Override
+    public Collection<Vertex<String>> getVertexCollection(){
+    	return vertexCollection;
+    }
+    
+	@Override
+    public Collection<Edge<String, String>> getEdgeCollection(){
+    	return edgeCollection;
     }
 
     @Override

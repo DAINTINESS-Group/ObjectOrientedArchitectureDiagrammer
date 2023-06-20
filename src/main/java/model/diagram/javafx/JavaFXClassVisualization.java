@@ -2,7 +2,9 @@ package model.diagram.javafx;
 
 import com.brunomnsilva.smartgraph.graph.Digraph;
 import com.brunomnsilva.smartgraph.graph.DigraphEdgeList;
+import com.brunomnsilva.smartgraph.graph.Edge;
 import com.brunomnsilva.smartgraph.graph.Graph;
+import com.brunomnsilva.smartgraph.graph.Vertex;
 import com.brunomnsilva.smartgraph.graphview.SmartCircularSortedPlacementStrategy;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import model.diagram.ClassDiagram;
@@ -11,12 +13,15 @@ import model.graph.ArcType;
 import model.graph.ClassifierVertex;
 import model.graph.VertexType;
 
+import java.util.Collection;
 import java.util.Set;
 
 public class JavaFXClassVisualization implements model.diagram.javafx.JavaFXVisualization {
 
     private final ClassDiagram classDiagram;
     private SmartGraphPanel<String, String> graphView;
+    private Collection<Edge<String, String>> edgeCollection;
+    private Collection<Vertex<String>> vertexCollection;
 
     public JavaFXClassVisualization(ClassDiagram diagram) {
         classDiagram = diagram;
@@ -25,9 +30,21 @@ public class JavaFXClassVisualization implements model.diagram.javafx.JavaFXVisu
     @Override
     public SmartGraphPanel<String, String> createGraphView() {
         Graph<String, String> graph = createGraph();
+        edgeCollection = graph.edges();
+        vertexCollection = graph.vertices();
         graphView = new SmartGraphPanel<>(graph, new SmartCircularSortedPlacementStrategy());
         setSinkVertexCustomStyle();
         return graphView;
+    }
+    
+    @Override
+    public Collection<Vertex<String>> getVertexCollection(){
+    	return vertexCollection;
+    }
+    
+	@Override
+    public Collection<Edge<String, String>> getEdgeCollection(){
+    	return edgeCollection;
     }
 
     private Graph<String, String> createGraph() {

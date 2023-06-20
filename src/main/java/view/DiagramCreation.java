@@ -53,7 +53,7 @@ public class DiagramCreation {
         DiagramVisualization diagramVisualization = new DiagramVisualization(menuBar);
         diagramVisualization.setDiagramController(diagramController);
         diagramVisualization.setProjectTreeView(projectTreeView);
-        diagramVisualization.loadDiagramVisualization(diagramController.visualizeJavaFXGraph());
+        diagramVisualization.loadDiagramVisualization(diagramController.visualizeJavaFXGraph(), diagramController.getEdgeCollection(), diagramController.getVertexCollection());
     }
 
     public void exportDiagram(){
