@@ -22,8 +22,17 @@
             <name>PlantUML</name>
             <url>file://${pom.basedir}/libs/PlantUML</url>
         </repository>
+        <repository>
+		    <id>ithaka</id>
+		    <url>http://beckchr.github.io/ithaka-maven/mvnrepo/</url>
+		</repository>
     </repositories>
     <dependencies>
+		<dependency>
+			<groupId>de.odysseus.ithaka</groupId>
+			<artifactId>ithaka-digraph</artifactId>
+			<version>1.0</version>
+		</dependency> 
         <dependency>
             <groupId>org.eclipse.jdt</groupId>
             <artifactId>org.eclipse.jdt.core</artifactId>

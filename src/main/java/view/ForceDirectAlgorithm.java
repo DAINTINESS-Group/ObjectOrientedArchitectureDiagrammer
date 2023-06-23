@@ -13,7 +13,7 @@ import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 
 import javafx.geometry.Point2D;
 
-public class GraphLayoutAlgorithm {
+public class ForceDirectAlgorithm {
 
 	private SmartGraphPanel<String, String> graphView;
 	private Collection<Edge<String, String>> edgeCollection;
@@ -26,7 +26,7 @@ public class GraphLayoutAlgorithm {
     private static final double C = 0.005; // Repulsion factor
     private static final double D = 150.0; // Optimal distance between nodes
 
-	public GraphLayoutAlgorithm(SmartGraphPanel<String, String> graphView, Collection<Edge<String, String>> edgeCollection, Collection<Vertex<String>> vertexCollection) {
+	public ForceDirectAlgorithm(SmartGraphPanel<String, String> graphView, Collection<Edge<String, String>> edgeCollection, Collection<Vertex<String>> vertexCollection) {
 		this.graphView = graphView;
 		this.edgeCollection = edgeCollection;
 		this.vertexCollection = vertexCollection;
@@ -126,7 +126,6 @@ public class GraphLayoutAlgorithm {
 	private void fillNeighboursMap() {
 		for (Edge<String, String> i : edgeCollection){
         	Vertex<String>[] connectedNodes = i.vertices();
-        	System.out.println(connectedNodes[0].element() + "CONNECTED TO: " + connectedNodes[1].element());
         	if (neighbours == null) {
         		neighbours.put(connectedNodes[0], new HashSet<>());
         		neighbours.put(connectedNodes[1], new HashSet<>());

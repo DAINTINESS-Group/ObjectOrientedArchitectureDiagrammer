@@ -51,7 +51,7 @@ public class DiagramVisualization {
             window.setScene(diagramVisualizationScene);
             window.show();
             graphView.init();
-        	GraphLayoutAlgorithm layout = new GraphLayoutAlgorithm(graphView, edgeCollection, vertexCollection);
+        	SugiyamaAlgorithm layout = new SugiyamaAlgorithm(graphView, edgeCollection, vertexCollection);
         	graphView = layout.getUpdatedGraph();
             graphView.update();
         } catch (IOException e) {
