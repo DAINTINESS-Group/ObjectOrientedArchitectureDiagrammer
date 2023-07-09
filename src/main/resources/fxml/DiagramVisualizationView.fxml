@@ -72,9 +72,10 @@
       <HBox prefHeight="734.0" prefWidth="900.0" VBox.vgrow="ALWAYS">
          <children>
             <BorderPane fx:id="borderPane" prefHeight="625.0" prefWidth="917.0" HBox.hgrow="ALWAYS">
-               <right>
-                  <Pane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="625.0" prefWidth="21.0" BorderPane.alignment="CENTER" />
-               </right></BorderPane>
+            	<right>
+            		<Pane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="625.0" prefWidth="21.0" BorderPane.alignment="CENTER" />
+            	</right>
+         	</BorderPane>
          </children>
       </HBox>
    </children>
