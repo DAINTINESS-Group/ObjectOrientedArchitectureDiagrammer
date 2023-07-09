@@ -56,8 +56,16 @@ public interface Controller {
      */
     SmartGraphPanel<String, String> visualizeJavaFXGraph();
     
+    /**This method returns a collection containing Edge Objects by calling the DiagramManager's getEdgeCollection method,
+     * in order to manipulate graph's positions
+     * @return the Edge collection
+     */
     Collection<Edge<String, String>> getEdgeCollection();
     
+    /**This method returns a collection containing Vertex Objects by calling the DiagramManager's getVertexCollection method,
+     * in order to manipulate graph's positions
+     * @return the Edge collection
+     */
     Collection<Vertex<String>> getVertexCollection();
 
     /**This method exports the diagram as an image with the help of PlantUML by calling the DiagramManager's

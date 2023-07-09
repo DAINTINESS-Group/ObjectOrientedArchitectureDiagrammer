@@ -24,8 +24,6 @@ public class SugiyamaAlgorithm {
 	private Collection<Vertex<String>> vertexCollection;
 	private Map<Vertex<String>, Integer> vertexIntMap = new HashMap<>();
 	private SimpleDigraph<Integer> digraph;
-	private static final int WIDTH = 914;
-    private static final int HEIGHT = 637;
 
 	public SugiyamaAlgorithm(SmartGraphPanel<String, String> graphView, Collection<Edge<String, String>> edgeCollection, Collection<Vertex<String>> vertexCollection) {
 		this.graphView = graphView;
@@ -43,21 +41,27 @@ public class SugiyamaAlgorithm {
 				return new DigraphLayoutDimension(20, 20);
 			}
 		};
-		DigrpahLayoutBuilder<Integer,Boolean> builder = new SugiyamaBuilder<Integer,Boolean>(75, 75);
+		DigrpahLayoutBuilder<Integer,Boolean> builder = new SugiyamaBuilder<Integer,Boolean>(125, 50);
 		DigraphLayout<Integer,Boolean> layout = builder.build(digraph, dimensionProvider);
-		
 		for (DigraphLayoutNode<Integer> vertex : layout.getLayoutGraph().vertices()) {
-			System.out.println(vertex.getVertex() + " --> " + vertex.getPoint());
 			for (Map.Entry<Vertex<String>, Integer> entry : vertexIntMap.entrySet()) {
 	            if (entry.getValue() == vertex.getVertex()) {
-	            	graphView.setVertexPosition(entry.getKey(),  vertex.getPoint().x, vertex.getPoint().y);
+	            	double x = vertex.getPoint().x;
+	            	double y = vertex.getPoint().y;
+	            	if (vertex.getPoint().x < 25) {
+	            		x = 25;
+	            	}
+	            	if (vertex.getPoint().y < 25) {
+	            		y = 25;
+	            	}
+	            	graphView.setVertexPosition(entry.getKey(),  x, y);
 	                break; // Found the matching vertex, exit the loop
 	            }
 	        }
 		}
         return graphView;
     }
-	
+
 	private void fillNeighboursMap() {
 		for (Edge<String, String> i : edgeCollection){
         	Vertex<String>[] connectedNodes = i.vertices();

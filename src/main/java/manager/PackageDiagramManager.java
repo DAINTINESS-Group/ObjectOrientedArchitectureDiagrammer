@@ -60,7 +60,7 @@ public class PackageDiagramManager implements DiagramManager {
     }
     
     @Override
-    public Collection<com.brunomnsilva.smartgraph.graph.Vertex<String>> getVertexCollection(){
+    public Collection<Vertex<String>> getVertexCollection(){
     	return vertexCollection;
     }
     
