@@ -35,6 +35,7 @@ public class DiagramCreation {
     public void loadProject() {
         projectTreeView.setCheckedItems(projectTreeView.getRootItem());
         diagramController.convertTreeToDiagram(getSelectedFiles(diagramType));
+        diagramController.arrangeDiagram();
     }
 
     public void viewProject() {
@@ -53,7 +54,7 @@ public class DiagramCreation {
         DiagramVisualization diagramVisualization = new DiagramVisualization(menuBar);
         diagramVisualization.setDiagramController(diagramController);
         diagramVisualization.setProjectTreeView(projectTreeView);
-        diagramVisualization.loadDiagramVisualization(diagramController.visualizeJavaFXGraph(), diagramController.getEdgeCollection(), diagramController.getVertexCollection());
+        diagramVisualization.loadDiagramVisualization(diagramController.visualizeJavaFXGraph());
     }
 
     public void exportDiagram(){
@@ -61,7 +62,6 @@ public class DiagramCreation {
         if (selectedDirectory == null) {
             return;
         }
-        diagramController.arrangeDiagram();
         diagramController.exportDiagramToGraphML(selectedDirectory.toPath());
     }
 

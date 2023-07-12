@@ -1,7 +1,5 @@
 package controller;
 
-import com.brunomnsilva.smartgraph.graph.Edge;
-import com.brunomnsilva.smartgraph.graph.Vertex;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import com.google.gson.JsonParseException;
 import manager.DiagramManager;
@@ -11,7 +9,6 @@ import org.javatuples.Pair;
 
 import java.io.File;
 import java.nio.file.Path;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -32,9 +29,18 @@ public class DiagramController implements Controller {
 		diagramManager.convertTreeToDiagram(chosenClassesNames);
 	}
 
-	public Map<Integer, Pair<Double, Double>> arrangeDiagram(){
+	public Map<String, Pair<Double, Double>> arrangeDiagram(){
 		return diagramManager.arrangeDiagram();
 	}
+	
+	public SmartGraphPanel<String, String> applyLayout(){
+		return diagramManager.applyLayout();
+	}
+	
+    public SmartGraphPanel<String, String> applySpecificLayout(String choice){
+    	return diagramManager.applySpecificLayout(choice);
+    }
+
 
 	public File exportDiagramToGraphML(Path graphMLSavePath) {
 		return diagramManager.exportDiagramToGraphML(graphMLSavePath);
@@ -50,14 +56,6 @@ public class DiagramController implements Controller {
 
 	public SmartGraphPanel<String, String> visualizeJavaFXGraph() {
 		return diagramManager.visualizeJavaFXGraph();
-	}
-	
-	public Collection<Edge<String, String>> getEdgeCollection(){
-		return diagramManager.getEdgeCollection();
-	}
-	
-	public Collection<Vertex<String>> getVertexCollection(){
-		return diagramManager.getVertexCollection();
 	}
 
 	public File saveDiagram(Path graphSavePath) {

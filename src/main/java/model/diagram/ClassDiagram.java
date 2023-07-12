@@ -12,7 +12,8 @@ public class ClassDiagram {
     private Map<ClassifierVertex, Set<Arc<ClassifierVertex>>> diagram;
     private Map<Path, ClassifierVertex> sinkVertices;
     private final Map<ClassifierVertex, Integer> graphNodes;
-    private Map<Integer, Pair<Double, Double>> diagramGeometry;
+    private Map<Integer, Pair<Double, Double>> diagramGeometryGraphML;
+    private Map<String, Pair<Double, Double>> diagramGeometry;
 
     public ClassDiagram() {
         graphNodes = new HashMap<>();
@@ -58,8 +59,12 @@ public class ClassDiagram {
         this.diagram = diagram;
     }
 
-    public void setDiagramGeometry(Map<Integer, Pair<Double, Double>> diagramGeometry) {
-        this.diagramGeometry = diagramGeometry;
+    public void setGraphMLDiagramGeometry(Map<Integer, Pair<Double, Double>> diagramGeometryGraphML) {
+        this.diagramGeometryGraphML = diagramGeometryGraphML;
+    }
+    
+    public void setDiagramGeometry(Map<String, Pair<Double, Double>> diagramGeometry) {
+    	this.diagramGeometry = diagramGeometry;
     }
 
     public Map<ClassifierVertex, Set<Arc<ClassifierVertex>>> getDiagram() {
@@ -70,7 +75,11 @@ public class ClassDiagram {
         return graphNodes;
     }
 
-    public Map<Integer, Pair<Double, Double>> getDiagramGeometry() {
+    public Map<Integer, Pair<Double, Double>> getGraphMLDiagramGeometry() {
+        return diagramGeometryGraphML;
+    }
+    
+    public Map<String, Pair<Double, Double>> getDiagramGeometry() {
         return diagramGeometry;
     }
 

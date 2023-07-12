@@ -32,6 +32,16 @@
                   </Menu>
                   <MenuItem mnemonicParsing="false" onAction="#closeDiagram" text="Close Diagram" />
                   <SeparatorMenuItem mnemonicParsing="false" />
+                  <Menu mnemonicParsing="false" text="Layout Algorithm...">
+                  	<items>
+                  		<MenuItem mnemonicParsing="false" onAction="#applySugiyama" text="Sugiyama" />
+                  		<MenuItem mnemonicParsing="false" onAction="#applyFR" text="Fruchterman-Reingold" />
+                        <MenuItem mnemonicParsing="false" onAction="#applyFR2" text="Advanced Fruchterman-Reingold" />                     	
+                        <MenuItem mnemonicParsing="false" onAction="#applySpring" text="Spring" />
+                        <MenuItem mnemonicParsing="false" onAction="#applySpring2" text="Advanced Spring" />
+                        <MenuItem mnemonicParsing="false" onAction="#applyKK" text="Kamada-Kawai" />	
+                  	</items>
+                  </Menu>
                   <Menu mnemonicParsing="false" text="Export...">
                      <items>
                         <MenuItem mnemonicParsing="false" onAction="#exportDiagramAsPlantUML" text="PlantUML Image" />

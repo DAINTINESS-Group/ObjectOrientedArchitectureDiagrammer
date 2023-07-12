@@ -1,14 +1,11 @@
 package controller;
 
-import com.brunomnsilva.smartgraph.graph.Edge;
-import com.brunomnsilva.smartgraph.graph.Vertex;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import manager.SourceProject;
 import org.javatuples.Pair;
 
 import java.io.File;
 import java.nio.file.Path;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -29,9 +26,13 @@ public interface Controller {
     void convertTreeToDiagram(List<String> chosenFileNames);
 
     /**This method arranges the diagram by calling the DiagramManager's arrangeDiagram method
-     * @return a Map with the nodes' ids as keys and their geometry as value
+     * @return a Map with the nodes' strings as keys and their geometry as value
      */
-    Map<Integer, Pair<Double, Double>> arrangeDiagram();
+    Map<String, Pair<Double, Double>> arrangeDiagram();
+    
+    SmartGraphPanel<String, String> applyLayout();
+    
+    SmartGraphPanel<String, String> applySpecificLayout(String choice);
 
     /**This method exports the diagram to a GraphML file by calling the DiagramManager's exportDiagramToGraphML
      * method
@@ -55,18 +56,6 @@ public interface Controller {
      * @return the created graphView
      */
     SmartGraphPanel<String, String> visualizeJavaFXGraph();
-    
-    /**This method returns a collection containing Edge Objects by calling the DiagramManager's getEdgeCollection method,
-     * in order to manipulate graph's positions
-     * @return the Edge collection
-     */
-    Collection<Edge<String, String>> getEdgeCollection();
-    
-    /**This method returns a collection containing Vertex Objects by calling the DiagramManager's getVertexCollection method,
-     * in order to manipulate graph's positions
-     * @return the Edge collection
-     */
-    Collection<Vertex<String>> getVertexCollection();
 
     /**This method exports the diagram as an image with the help of PlantUML by calling the DiagramManager's
      * exportPlantUMLDiagram method

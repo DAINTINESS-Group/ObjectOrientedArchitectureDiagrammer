@@ -39,7 +39,7 @@ public class GraphMLClassDiagramExporterTest {
             classDiagramManager.arrangeDiagram();
 
             DiagramArrangement classDiagramArrangement = new ClassDiagramArrangement(classDiagramManager.getClassDiagram());
-            Map<Integer, Pair<Double, Double>> nodesGeometry = classDiagramArrangement.arrangeDiagram();
+            Map<Integer, Pair<Double, Double>> nodesGeometry = classDiagramArrangement.arrangeGraphMLDiagram();
             DiagramExporter graphMLExporter = new GraphMLClassDiagramExporter(classDiagramManager.getClassDiagram());
             File exportedFile = graphMLExporter.exportDiagram(Paths.get(System.getProperty("user.home") + "\\testingExportedFile.graphML"));
             Stream<String> lines = Files.lines(exportedFile.toPath());

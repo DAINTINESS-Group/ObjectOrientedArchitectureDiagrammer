@@ -1,7 +1,5 @@
 package view;
 
-import com.brunomnsilva.smartgraph.graph.Edge;
-import com.brunomnsilva.smartgraph.graph.Vertex;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import controller.Controller;
 import javafx.fxml.FXML;
@@ -13,7 +11,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Collection;
 
 public class DiagramVisualization {
 
@@ -32,7 +29,7 @@ public class DiagramVisualization {
         this.menuBar = menuBar;
     }
 
-    public void loadDiagramVisualization(SmartGraphPanel<String, String> graphView,  Collection<Edge<String, String>> edgeCollection, Collection<Vertex<String>> vertexCollection) {
+    public void loadDiagramVisualization(SmartGraphPanel<String, String> graphView) {
         this.graphView = graphView;
         try {
             URL url = getClass().getResource("/fxml/DiagramVisualizationView.fxml");
@@ -51,8 +48,7 @@ public class DiagramVisualization {
             window.setScene(diagramVisualizationScene);
             window.show();
             graphView.init();
-        	SugiyamaAlgorithm layout = new SugiyamaAlgorithm(graphView, edgeCollection, vertexCollection);
-        	graphView = layout.getUpdatedGraph();
+        	graphView = diagramVisualizationController.applyLayout();
             graphView.update();
         } catch (IOException e) {
             e.printStackTrace();

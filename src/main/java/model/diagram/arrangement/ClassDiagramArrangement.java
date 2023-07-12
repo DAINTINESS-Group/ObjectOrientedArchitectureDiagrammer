@@ -1,112 +1,79 @@
 package model.diagram.arrangement;
 
 import edu.uci.ics.jung.algorithms.layout.AbstractLayout;
-import edu.uci.ics.jung.algorithms.layout.FRLayout;
-import edu.uci.ics.jung.algorithms.layout.FRLayout2;
-import edu.uci.ics.jung.algorithms.layout.KKLayout;
 import edu.uci.ics.jung.algorithms.layout.SpringLayout;
-import edu.uci.ics.jung.algorithms.layout.SpringLayout2;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.SparseGraph;
 import edu.uci.ics.jung.graph.util.EdgeType;
-import edu.uci.ics.jung.visualization.VisualizationViewer;
-import edu.uci.ics.jung.visualization.control.DefaultModalGraphMouse;
-import edu.uci.ics.jung.visualization.control.ModalGraphMouse;
-import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
-import edu.uci.ics.jung.visualization.renderers.Renderer.VertexLabel.Position;
 
 import model.diagram.ClassDiagram;
+import model.diagram.arrangement.algorithms.AdvancedFruchtermanReingold;
+import model.diagram.arrangement.algorithms.AdvancedSpring;
+import model.diagram.arrangement.algorithms.FruchtermanReingold;
+import model.diagram.arrangement.algorithms.KamadaKawai;
+import model.diagram.arrangement.algorithms.LayoutAlgorithm;
+import model.diagram.arrangement.algorithms.Spring;
+import model.diagram.arrangement.algorithms.Sugiyama;
 import model.graph.Arc;
 import model.graph.ClassifierVertex;
 import org.javatuples.Pair;
 
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.geom.Rectangle2D;
+import java.awt.Dimension;
 import java.util.*;
-import java.util.List;
-import java.util.function.Function;
-
-import javax.swing.JButton;
-import javax.swing.JFrame;
 
 public class ClassDiagramArrangement implements DiagramArrangement{
-    private final Map<Integer, Pair<Double, Double>> nodesGeometry;
+	
     private final ClassDiagram classDiagram;
-    private Map<String, String> vertexTypes;
-    private Map<String, String> edgeTypes;
-
+    private final Graph<String, String> graph;
 
     public ClassDiagramArrangement(ClassDiagram classDiagram) {
         this.classDiagram = classDiagram;
-        nodesGeometry = new HashMap<>();
-        vertexTypes = new HashMap<>();
-        edgeTypes = new HashMap<>();
+        graph = createGraphWithStrings();
     }
 
     @Override
-    public Map<Integer, Pair<Double, Double>> arrangeDiagram() {
+    public Map<Integer, Pair<Double, Double>> arrangeGraphMLDiagram() {
+    	Map<Integer, Pair<Double, Double>> nodesGeometryGraphML = new HashMap<>();
         Graph<Integer, String> graph = createGraph();
         AbstractLayout<Integer, String> layout = new SpringLayout<>(graph);
         layout.setSize(new Dimension(1500, 1000));
-        
-        Graph<String, String> graph2 = createGraphWithStrings();
-        AbstractLayout<String, String> layout2 = new FRLayout2<>(graph2);
-        layout2.setSize(new Dimension(900, 800));
-        VisualizationViewer<String, String> vv = new VisualizationViewer<String, String>(layout2);
-        vv.setPreferredSize(new Dimension(1000, 900));
-        vv.getRenderContext().setVertexLabelTransformer(new ToStringLabeller());
-        vv.getRenderContext().setEdgeLabelTransformer(edge -> "");
-        Function<String, Shape> vertexShapeTransformer = v -> new Rectangle2D.Double(-20, -10, 80, 20); // 3rd parameter is for the x size
-        vv.getRenderContext().setVertexShapeTransformer(vertexShapeTransformer::apply);
-        vv.getRenderContext().setVertexFillPaintTransformer(v -> {
-            if (vertexTypes.get(v) == "INTERFACE") {
-                return Color.CYAN;
-            } else {
-                return Color.ORANGE;
-            }
-        });
-        vv.getRenderContext().setEdgeStrokeTransformer(e -> {
-            if (edgeTypes.get(e) == "DEPENDENCY" || edgeTypes.get(e) == "IMPLEMENTATION" ) {
-                return new BasicStroke(1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[] {2}, 0);
-          //  } else if (edgeTypes.get(e) == "EXTENSION" ){
-          //  	return new BasicStroke(1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[] {2}, 0);
-          //      return new BasicStroke();
-          //  } else if (edgeTypes.get(e) == "AGGREGATION"){
-          //      return new BasicStroke(1f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_ROUND, 0, new float[] {2}, 0);
-            } else {
-            	return new BasicStroke();
-            }
-        });
-        
-        vv.getRenderer().getVertexLabelRenderer().setPosition(Position.CNTR);
-        DefaultModalGraphMouse<String, Integer> gm = new DefaultModalGraphMouse<>();
-        gm.setMode(ModalGraphMouse.Mode.PICKING);
-        vv.setGraphMouse(gm);
-        JButton layoutChangeButton = new JButton("Change Layout");
-        layoutChangeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-            	AbstractLayout<String, String> frLayout = new KKLayout<>(graph2);
-                vv.setGraphLayout(frLayout);
-                vv.repaint();
-            }
-        });
-        JFrame frame = new JFrame("UML Class Diagram Visualization");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.getContentPane().add(vv, BorderLayout.CENTER);
-        frame.add(layoutChangeButton, BorderLayout.SOUTH);
-        frame.pack();
-        frame.setVisible(true);
-
-        
         for (Integer i : classDiagram.getGraphNodes().values()) {
-            nodesGeometry.put(i, new Pair<>(layout.getX(i), layout.getY(i)));
+            nodesGeometryGraphML.put(i, new Pair<>(layout.getX(i), layout.getY(i)));
         }
-        return nodesGeometry;
+        return nodesGeometryGraphML;
     }
-
+    
+    @Override
+    public Map<String, Pair<Double, Double>> arrangeDiagram() {
+    	LayoutAlgorithm sugiyama = new Sugiyama(graph);
+        return sugiyama.arrangeDiagram();
+    }
+    
+    @Override
+    public Map<String, Pair<Double, Double>> applyNewLayout(String choice){
+    	LayoutAlgorithm layout;
+    	switch (choice) {
+    		case "spring":
+    			layout = new Spring(graph);
+    			return layout.arrangeDiagram();
+    		case "spring2":
+    			layout = new AdvancedSpring(graph);
+    			return layout.arrangeDiagram();
+    		case "fr":
+    			layout = new FruchtermanReingold(graph);
+    			return layout.arrangeDiagram();
+    		case "fr2":
+    			layout = new AdvancedFruchtermanReingold(graph);
+    			return layout.arrangeDiagram();
+    		case "kk":
+    			layout = new KamadaKawai(graph);
+    			return layout.arrangeDiagram();
+    		default:
+    			layout = new Sugiyama(graph);
+    	        return layout.arrangeDiagram();	
+    	}
+    }
+    
     private Graph<Integer, String> createGraph(){
         Graph<Integer, String> graph = new SparseGraph<>();
         for (Integer nodeId: classDiagram.getGraphNodes().values()) {
@@ -130,7 +97,6 @@ public class ClassDiagramArrangement implements DiagramArrangement{
         Graph<String, String> graph = new SparseGraph<>();
         for (ClassifierVertex vertex: classDiagram.getGraphNodes().keySet()) {
             graph.addVertex(vertex.getName());
-            vertexTypes.put(vertex.getName(), vertex.getVertexType().toString());
         }
 
         List<Arc<ClassifierVertex>> arcs = new ArrayList<>();
@@ -140,9 +106,8 @@ public class ClassDiagramArrangement implements DiagramArrangement{
 
         for (Arc<ClassifierVertex> arc: arcs) {
         	graph.addEdge(arc.getSourceVertex().getName() + " " + arc.getTargetVertex().getName(), arc.getSourceVertex().getName(), arc.getTargetVertex().getName(), EdgeType.DIRECTED);
-        	edgeTypes.put(arc.getSourceVertex().getName() + " " + arc.getTargetVertex().getName(), arc.getArcType().toString());
         }
-
+        
         return graph;
     }
     

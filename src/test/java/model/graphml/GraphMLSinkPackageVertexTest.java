@@ -28,7 +28,7 @@ public class GraphMLSinkPackageVertexTest {
             classDiagramManager.convertTreeToDiagram(List.of("AddLatexCommand", "ChangeVersionsStrategyCommand", "Command", "CommandFactory",
                     "CreateCommand", "DisableVersionsManagementCommand", "EditCommand", "EnableVersionsManagementCommand",
                     "LoadCommand", "RollbackToPreviousVersionCommand", "SaveCommand"));
-            classDiagramManager.getClassDiagram().setDiagramGeometry(Map.ofEntries(
+            classDiagramManager.getClassDiagram().setGraphMLDiagramGeometry(Map.ofEntries(
                     Map.entry(0, new Pair<>(10.0, 10.0)),
                     Map.entry(1, new Pair<>(10.0, 10.0)),
                     Map.entry(2, new Pair<>(10.0, 10.0)),

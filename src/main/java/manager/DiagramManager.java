@@ -1,13 +1,10 @@
 package manager;
 
-import com.brunomnsilva.smartgraph.graph.Edge;
-import com.brunomnsilva.smartgraph.graph.Vertex;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import org.javatuples.Pair;
 
 import java.io.File;
 import java.nio.file.Path;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -34,7 +31,7 @@ public interface DiagramManager {
      *
      * @return a Map with the nodes' ids as keys and their geometry as value
      */
-    Map<Integer, Pair<Double, Double>> arrangeDiagram();
+    Map<String, Pair<Double, Double>> arrangeDiagram();
 
     /**This method exports the created diagram to a file, to the path selected by the designer, in GraphMLFormat, by
      * converting the nodes and edges to GraphML syntax
@@ -61,16 +58,6 @@ public interface DiagramManager {
      * @return the created graphView
      */
     SmartGraphPanel<String, String> visualizeJavaFXGraph();
-    
-    /**This method feeds the Controller with every Edge object information
-     * @return the Edge collection
-     */
-	Collection<Edge<String, String>> getEdgeCollection();
-
-	/**This method feeds the Controller with every Vertex object information
-     * @return the Vertex collection
-     */
-	Collection<Vertex<String>> getVertexCollection();
 
     /**This method is responsible for exporting the diagram to a PlantUML image diagram
      * @param plantUMLSavePath the selected path by the designer where the exported diagram will be saved
@@ -83,4 +70,9 @@ public interface DiagramManager {
      * @return the exported file
      */
     File exportPlantUMLText(Path textSavePath);
+    
+    SmartGraphPanel<String, String> applyLayout();
+    
+    SmartGraphPanel<String, String> applySpecificLayout(String choice);
+    
 }

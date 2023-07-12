@@ -112,4 +112,39 @@ public class DiagramVisualizationController {
         this.projectTreeView = projectTreeView;
         borderPane.setLeft(projectTreeView.treeView);
     }
+    
+    public SmartGraphPanel<String, String> applyLayout() {
+    	return diagramController.applyLayout();
+    }
+    
+    public void applySugiyama() {
+    	SmartGraphPanel<String, String> graphView = diagramController.applySpecificLayout("Sugiyama");
+        graphView.update();
+    }
+    
+    public void applyFR() {
+    	SmartGraphPanel<String, String> graphView = diagramController.applySpecificLayout("fr");
+        graphView.update();
+    }
+    
+    public void applyFR2() {
+    	SmartGraphPanel<String, String> graphView = diagramController.applySpecificLayout("fr2");
+        graphView.update();
+    }
+    
+    public void applySpring() {
+    	SmartGraphPanel<String, String> graphView = diagramController.applySpecificLayout("spring");
+        graphView.update();
+    }
+    
+    public void applySpring2() {
+    	SmartGraphPanel<String, String> graphView = diagramController.applySpecificLayout("spring2");
+        graphView.update();
+    }
+    
+    public void applyKK() {
+    	SmartGraphPanel<String, String> graphView = diagramController.applySpecificLayout("kk");
+        graphView.update();
+    }
+    
 }

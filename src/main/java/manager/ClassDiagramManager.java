@@ -1,6 +1,5 @@
 package manager;
 
-import com.brunomnsilva.smartgraph.graph.Edge;
 import com.brunomnsilva.smartgraph.graph.Vertex;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import com.google.gson.JsonParseException;
@@ -23,8 +22,9 @@ import java.util.Map;
 public class ClassDiagramManager implements DiagramManager {
 
     private ClassDiagram classDiagram;
-    private Collection<Edge<String, String>> edgeCollection;
+    private DiagramArrangement classDiagramArrangement;
     private Collection<Vertex<String>> vertexCollection;
+    private SmartGraphPanel<String, String> graphView;
     
     public ClassDiagramManager() {
         classDiagram = new ClassDiagram();
@@ -46,9 +46,9 @@ public class ClassDiagramManager implements DiagramManager {
     }
 
     @Override
-    public Map<Integer, Pair<Double, Double>> arrangeDiagram(){
-        DiagramArrangement classDiagramArrangement = new ClassDiagramArrangement(classDiagram);
-        Map<Integer, Pair<Double, Double>> diagramGeometry = classDiagramArrangement.arrangeDiagram();
+    public Map<String, Pair<Double, Double>> arrangeDiagram(){
+        classDiagramArrangement = new ClassDiagramArrangement(classDiagram);
+        Map<String, Pair<Double, Double>> diagramGeometry = classDiagramArrangement.arrangeDiagram();
         classDiagram.setDiagramGeometry(diagramGeometry);
         return diagramGeometry;
     }
@@ -56,26 +56,16 @@ public class ClassDiagramManager implements DiagramManager {
     @Override
     public SmartGraphPanel<String, String> visualizeJavaFXGraph() {
         JavaFXVisualization javaFXVisualization = new JavaFXClassVisualization(classDiagram);
-        SmartGraphPanel<String, String> graphView= javaFXVisualization.createGraphView();
-        edgeCollection = javaFXVisualization.getEdgeCollection();
+        graphView = javaFXVisualization.createGraphView();
         vertexCollection = javaFXVisualization.getVertexCollection();
         return graphView;
     }
 
     @Override
     public File exportDiagramToGraphML(Path graphMLSavePath) {
+        classDiagram.setGraphMLDiagramGeometry(classDiagramArrangement.arrangeGraphMLDiagram());
         DiagramExporter diagramExporter = new GraphMLClassDiagramExporter(classDiagram);
         return diagramExporter.exportDiagram(graphMLSavePath);
-    }
-    
-    @Override
-    public Collection<Vertex<String>> getVertexCollection(){
-    	return vertexCollection;
-    }
-    
-	@Override
-    public Collection<Edge<String, String>> getEdgeCollection(){
-    	return edgeCollection;
     }
 
     @Override
@@ -107,6 +97,25 @@ public class ClassDiagramManager implements DiagramManager {
 
     public ClassDiagram getClassDiagram() {
         return classDiagram;
+    }
+    
+    public SmartGraphPanel<String, String> applyLayout() {
+    	Map<String, Pair<Double, Double>> nodesGeometry = classDiagram.getDiagramGeometry();
+    	for(Vertex<String> vertex : vertexCollection) {
+    		 Pair<Double, Double> coordinates = nodesGeometry.get(vertex.element());
+    		 graphView.setVertexPosition(vertex,  coordinates.getValue0(), coordinates.getValue1());
+
+    	}
+    	return graphView;
+    }
+    
+    public SmartGraphPanel<String, String> applySpecificLayout(String choice){
+    	Map<String, Pair<Double, Double>> nodesGeometry = classDiagramArrangement.applyNewLayout(choice);
+    	for(Vertex<String> vertex : vertexCollection) {
+    		Pair<Double, Double> coordinates = nodesGeometry.get(vertex.element());
+    		graphView.setVertexPosition(vertex,  coordinates.getValue0(), coordinates.getValue1());
+    	}
+    	return graphView;
     }
 
 }

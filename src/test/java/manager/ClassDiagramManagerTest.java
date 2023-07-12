@@ -135,7 +135,7 @@ public class ClassDiagramManagerTest {
             File actualFile = classDiagramManager.exportDiagramToGraphML(Paths.get(System.getProperty("user.home")+"\\testingExportedFile.graphML"));
 
             DiagramArrangement classDiagramArrangement = new ClassDiagramArrangement(classDiagramManager.getClassDiagram());
-            classDiagramManager.getClassDiagram().setDiagramGeometry(classDiagramArrangement.arrangeDiagram());
+            classDiagramManager.getClassDiagram().setGraphMLDiagramGeometry(classDiagramArrangement.arrangeGraphMLDiagram());
             GraphMLClassifierVertex graphMLClassifierVertex = new GraphMLClassifierVertex(classDiagramManager.getClassDiagram());
             StringBuilder graphMLNodeBuffer = graphMLClassifierVertex.convertSinkVertex();
             GraphMLClassifierVertexArc graphMLClassifierVertexArc = new GraphMLClassifierVertexArc(classDiagramManager.getClassDiagram());
