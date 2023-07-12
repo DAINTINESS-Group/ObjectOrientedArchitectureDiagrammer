@@ -102,9 +102,13 @@ public class ClassDiagramManager implements DiagramManager {
     public SmartGraphPanel<String, String> applyLayout() {
     	Map<String, Pair<Double, Double>> nodesGeometry = classDiagram.getDiagramGeometry();
     	for(Vertex<String> vertex : vertexCollection) {
-    		 Pair<Double, Double> coordinates = nodesGeometry.get(vertex.element());
-    		 graphView.setVertexPosition(vertex,  coordinates.getValue0(), coordinates.getValue1());
-
+    		if (nodesGeometry.containsKey(vertex.element())) {
+    			Pair<Double, Double> coordinates = nodesGeometry.get(vertex.element());
+    			graphView.setVertexPosition(vertex,  coordinates.getValue0(), coordinates.getValue1());
+    		}
+    		else {
+    			System.out.println(vertex.element());
+    		}
     	}
     	return graphView;
     }
@@ -112,8 +116,13 @@ public class ClassDiagramManager implements DiagramManager {
     public SmartGraphPanel<String, String> applySpecificLayout(String choice){
     	Map<String, Pair<Double, Double>> nodesGeometry = classDiagramArrangement.applyNewLayout(choice);
     	for(Vertex<String> vertex : vertexCollection) {
-    		Pair<Double, Double> coordinates = nodesGeometry.get(vertex.element());
-    		graphView.setVertexPosition(vertex,  coordinates.getValue0(), coordinates.getValue1());
+    		if (nodesGeometry.containsKey(vertex.element())) {
+    			Pair<Double, Double> coordinates = nodesGeometry.get(vertex.element());
+    			graphView.setVertexPosition(vertex,  coordinates.getValue0(), coordinates.getValue1());
+    		}
+    		else {
+    			System.out.println(vertex.element());
+    		}
     	}
     	return graphView;
     }

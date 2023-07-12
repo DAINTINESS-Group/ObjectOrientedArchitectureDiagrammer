@@ -22,15 +22,11 @@ public class AdvancedSpring implements LayoutAlgorithm{
 	public Map<String, Pair<Double, Double>> arrangeDiagram() {
 		Map<String, Pair<Double, Double>> nodesGeometry = new HashMap<>();
 		AbstractLayout<String, String> layout = new SpringLayout2<>(graph);
-        layout.setSize(new Dimension(900, 800));
+        layout.setSize(new Dimension(1200, 725));
         for (String vertex : graph.getVertices()) {
             Point2D coordinates = layout.apply(vertex);
             nodesGeometry.put(vertex, new Pair<>(coordinates.getX(), coordinates.getY()));
-            double x = coordinates.getX();
-            double y = coordinates.getY();
-            System.out.println("Vertex: " + vertex + ", Coordinates: (" + x + ", " + y + ")");
         }
-
 		return nodesGeometry;
 	}
 }
