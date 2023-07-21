@@ -2,6 +2,8 @@ package model.diagram.arrangement;
 
 import org.javatuples.Pair;
 
+import model.diagram.arrangement.algorithms.DiagramGeometry;
+
 import java.util.Map;
 
 public interface DiagramArrangement {
@@ -20,8 +22,8 @@ public interface DiagramArrangement {
      *
      * @return a Map with the nodes' id as key and geometry(x,y) as value
      */
-    Map<String, Pair<Double, Double>> arrangeDiagram();
+    DiagramGeometry arrangeDiagram();
     
-    Map<String, Pair<Double, Double>> applyNewLayout(String choice);
+    DiagramGeometry applyNewLayout(String choice);
 
 }

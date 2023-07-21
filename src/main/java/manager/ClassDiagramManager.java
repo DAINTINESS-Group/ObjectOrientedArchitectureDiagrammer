@@ -7,6 +7,7 @@ import model.diagram.ClassDiagram;
 import model.diagram.ShadowCleaner;
 import model.diagram.arrangement.ClassDiagramArrangement;
 import model.diagram.arrangement.DiagramArrangement;
+import model.diagram.arrangement.algorithms.DiagramGeometry;
 import model.diagram.exportation.*;
 import model.diagram.javafx.JavaFXVisualization;
 import model.diagram.javafx.JavaFXClassDiagramLoader;
@@ -17,7 +18,6 @@ import java.io.File;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 public class ClassDiagramManager implements DiagramManager {
 
@@ -46,11 +46,10 @@ public class ClassDiagramManager implements DiagramManager {
     }
 
     @Override
-    public Map<String, Pair<Double, Double>> arrangeDiagram(){
+    public void arrangeDiagram(){
         classDiagramArrangement = new ClassDiagramArrangement(classDiagram);
-        Map<String, Pair<Double, Double>> diagramGeometry = classDiagramArrangement.arrangeDiagram();
+        DiagramGeometry diagramGeometry = classDiagramArrangement.arrangeDiagram();
         classDiagram.setDiagramGeometry(diagramGeometry);
-        return diagramGeometry;
     }
 
     @Override
@@ -100,10 +99,10 @@ public class ClassDiagramManager implements DiagramManager {
     }
     
     public SmartGraphPanel<String, String> applyLayout() {
-    	Map<String, Pair<Double, Double>> nodesGeometry = classDiagram.getDiagramGeometry();
+    	DiagramGeometry nodesGeometry = classDiagram.getDiagramGeometry();
     	for(Vertex<String> vertex : vertexCollection) {
     		if (nodesGeometry.containsKey(vertex.element())) {
-    			Pair<Double, Double> coordinates = nodesGeometry.get(vertex.element());
+    			Pair<Double, Double> coordinates = nodesGeometry.getVertexGeometry(vertex.element());
     			graphView.setVertexPosition(vertex,  coordinates.getValue0(), coordinates.getValue1());
     		}
     		else {
@@ -114,10 +113,10 @@ public class ClassDiagramManager implements DiagramManager {
     }
     
     public SmartGraphPanel<String, String> applySpecificLayout(String choice){
-    	Map<String, Pair<Double, Double>> nodesGeometry = classDiagramArrangement.applyNewLayout(choice);
+    	DiagramGeometry nodesGeometry = classDiagramArrangement.applyNewLayout(choice);
     	for(Vertex<String> vertex : vertexCollection) {
     		if (nodesGeometry.containsKey(vertex.element())) {
-    			Pair<Double, Double> coordinates = nodesGeometry.get(vertex.element());
+    			Pair<Double, Double> coordinates = nodesGeometry.getVertexGeometry(vertex.element());
     			graphView.setVertexPosition(vertex,  coordinates.getValue0(), coordinates.getValue1());
     		}
     		else {

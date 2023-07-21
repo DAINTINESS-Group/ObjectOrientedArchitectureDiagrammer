@@ -1,12 +1,10 @@
 package manager;
 
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
-import org.javatuples.Pair;
 
 import java.io.File;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.Map;
 
 public interface DiagramManager {
 
@@ -28,10 +26,8 @@ public interface DiagramManager {
     /**
      * This method arranges the createdDiagram's node geometry by creating a Jung Graph and then applying the SpringLayout
      * algorithm, implemented by the Jung library
-     *
-     * @return a Map with the nodes' ids as keys and their geometry as value
      */
-    Map<String, Pair<Double, Double>> arrangeDiagram();
+    void arrangeDiagram();
 
     /**This method exports the created diagram to a file, to the path selected by the designer, in GraphMLFormat, by
      * converting the nodes and edges to GraphML syntax

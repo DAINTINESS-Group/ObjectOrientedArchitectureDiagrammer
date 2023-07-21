@@ -1,9 +1,5 @@
 package model.diagram.arrangement.algorithms;
 
-import java.util.Map;
-
-import org.javatuples.Pair;
-
 public interface LayoutAlgorithm {
 	
     /**
@@ -12,5 +8,5 @@ public interface LayoutAlgorithm {
      *
      * @return a Map with the nodes' names as key and geometry(x,y) as value
      */
-	Map<String, Pair<Double, Double>> arrangeDiagram();
+	DiagramGeometry arrangeDiagram();
 }

@@ -9,6 +9,7 @@ import edu.uci.ics.jung.graph.util.EdgeType;
 import model.diagram.ClassDiagram;
 import model.diagram.arrangement.algorithms.AdvancedFruchtermanReingold;
 import model.diagram.arrangement.algorithms.AdvancedSpring;
+import model.diagram.arrangement.algorithms.DiagramGeometry;
 import model.diagram.arrangement.algorithms.FruchtermanReingold;
 import model.diagram.arrangement.algorithms.KamadaKawai;
 import model.diagram.arrangement.algorithms.LayoutAlgorithm;
@@ -44,13 +45,13 @@ public class ClassDiagramArrangement implements DiagramArrangement{
     }
     
     @Override
-    public Map<String, Pair<Double, Double>> arrangeDiagram() {
+    public DiagramGeometry arrangeDiagram() {
     	LayoutAlgorithm sugiyama = new Sugiyama(graph);
         return sugiyama.arrangeDiagram();
     }
     
     @Override
-    public Map<String, Pair<Double, Double>> applyNewLayout(String choice){
+    public DiagramGeometry applyNewLayout(String choice){
     	LayoutAlgorithm layout;
     	switch (choice) {
     		case "spring":

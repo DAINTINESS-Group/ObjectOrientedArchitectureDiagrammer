@@ -2,12 +2,10 @@ package controller;
 
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import manager.SourceProject;
-import org.javatuples.Pair;
 
 import java.io.File;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.Map;
 
 public interface Controller {
 
@@ -28,7 +26,7 @@ public interface Controller {
     /**This method arranges the diagram by calling the DiagramManager's arrangeDiagram method
      * @return a Map with the nodes' strings as keys and their geometry as value
      */
-    Map<String, Pair<Double, Double>> arrangeDiagram();
+    void arrangeDiagram();
     
     SmartGraphPanel<String, String> applyLayout();
     

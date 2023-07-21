@@ -3,8 +3,6 @@ package model.diagram.arrangement.algorithms;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.javatuples.Pair;
-
 import de.odysseus.ithaka.digraph.SimpleDigraph;
 import de.odysseus.ithaka.digraph.SimpleDigraphAdapter;
 import de.odysseus.ithaka.digraph.layout.DigraphLayout;
@@ -28,8 +26,8 @@ public class Sugiyama implements LayoutAlgorithm{
 	}
 	
 	@Override
-	public Map<String, Pair<Double, Double>> arrangeDiagram() {
-		Map<String, Pair<Double, Double>> nodesGeometry = new HashMap<>();
+	public DiagramGeometry arrangeDiagram() {
+		DiagramGeometry diagramGeometry = new DiagramGeometry();
 		digraph = new SimpleDigraphAdapter<Integer>();
 		fillVertexMap();
 		fillNeighboursMap();
@@ -52,12 +50,12 @@ public class Sugiyama implements LayoutAlgorithm{
 	            	if (vertex.getPoint().y < 25) {
 	            		y = 25;
 	            	}
-	            	nodesGeometry.put(entryVertex.getKey(), new Pair<>(x, y));
+	            	diagramGeometry.addGeometry(entryVertex.getKey(), x, y);
 	                break; // Found the matching vertex, exit the loop
 	            }
 	        }
 		}
-        return nodesGeometry;
+        return diagramGeometry;
 	}
 	
 	private void fillNeighboursMap() {

@@ -5,12 +5,10 @@ import com.google.gson.JsonParseException;
 import manager.DiagramManager;
 import manager.DiagramManagerFactory;
 import manager.SourceProject;
-import org.javatuples.Pair;
 
 import java.io.File;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.Map;
 
 public class DiagramController implements Controller {
 
@@ -29,8 +27,8 @@ public class DiagramController implements Controller {
 		diagramManager.convertTreeToDiagram(chosenClassesNames);
 	}
 
-	public Map<String, Pair<Double, Double>> arrangeDiagram(){
-		return diagramManager.arrangeDiagram();
+	public void arrangeDiagram(){
+		 diagramManager.arrangeDiagram();
 	}
 	
 	public SmartGraphPanel<String, String> applyLayout(){
