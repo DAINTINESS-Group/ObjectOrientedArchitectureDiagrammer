@@ -45,7 +45,6 @@ public class JavaFXPackageDiagramLoaderTest {
 
             JavaFXPackageDiagramLoader javaFXLoader = new JavaFXPackageDiagramLoader(actualFile.toPath());
             Set<PackageVertex> loadedDiagram = javaFXLoader.loadDiagram();
-
             assertEquals(createdDiagram.size(), loadedDiagram.size());
             for (PackageVertex vertex: createdDiagram.keySet()) {
                 Optional<PackageVertex> optionalVertex = loadedDiagram.stream()

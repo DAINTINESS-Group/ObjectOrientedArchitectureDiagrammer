@@ -15,7 +15,7 @@ import model.graph.VertexType;
 import java.util.Collection;
 import java.util.Set;
 
-public class JavaFXClassVisualization implements model.diagram.javafx.JavaFXVisualization {
+public class JavaFXClassVisualization implements JavaFXVisualization {
 
     private final ClassDiagram classDiagram;
     private SmartGraphPanel<String, String> graphView;

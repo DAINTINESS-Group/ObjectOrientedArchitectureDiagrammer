@@ -37,9 +37,9 @@ public class GraphMLClassDiagramExporterTest {
             SourceProject sourceProject = classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
             classDiagramManager.convertTreeToDiagram(chosenFiles);
             classDiagramManager.arrangeDiagram();
-
             DiagramArrangement classDiagramArrangement = new ClassDiagramArrangement(classDiagramManager.getClassDiagram());
             Map<Integer, Pair<Double, Double>> nodesGeometry = classDiagramArrangement.arrangeGraphMLDiagram();
+            classDiagramManager.getClassDiagram().setGraphMLDiagramGeometry(nodesGeometry);
             DiagramExporter graphMLExporter = new GraphMLClassDiagramExporter(classDiagramManager.getClassDiagram());
             File exportedFile = graphMLExporter.exportDiagram(Paths.get(System.getProperty("user.home") + "\\testingExportedFile.graphML"));
             Stream<String> lines = Files.lines(exportedFile.toPath());
