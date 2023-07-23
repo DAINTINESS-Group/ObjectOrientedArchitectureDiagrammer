@@ -21,7 +21,15 @@ public class Spring implements LayoutAlgorithm{
         layout.setSize(new Dimension(1200, 725));
         for (String vertex : graph.getVertices()) {
             Point2D coordinates = layout.apply(vertex);
-            diagramGeometry.addGeometry(vertex, coordinates.getX(), coordinates.getY());
+            double x = coordinates.getX();
+            double y = coordinates.getY();            
+        	if (x < 25) {
+        		x = 25;
+        	}
+        	if (y < 25) {
+        		y = 25;
+        	}
+            diagramGeometry.addGeometry(vertex, x, y);
         }
 		return diagramGeometry;
 	}

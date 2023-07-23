@@ -42,7 +42,9 @@ public class JavaFXPackageVisualization implements JavaFXVisualization {
     private Graph<String, String> createGraph() {
         Digraph<String, String> directedGraph = new DigraphEdgeList<>();
         for (PackageVertex vertex: packageDiagram.getDiagram().keySet()) {
-            directedGraph.insertVertex(vertex.getName());
+        	if(vertex.getSinkVertices().size() > 0) {
+                directedGraph.insertVertex(vertex.getName());
+        	}
         }
         insertVertexArcs(directedGraph);
         return directedGraph;
@@ -67,7 +69,9 @@ public class JavaFXPackageVisualization implements JavaFXVisualization {
             if (vertex.getVertexType().equals(VertexType.INTERFACE)) {
                 graphView.getStylableVertex(vertex.getName()).setStyleClass("vertexInterface");
             }else {
-                graphView.getStylableVertex(vertex.getName()).setStyleClass("vertexPackage");
+            	if(vertex.getSinkVertices().size() > 0) {
+            		graphView.getStylableVertex(vertex.getName()).setStyleClass("vertexPackage");
+            	}
             }
         }
     }

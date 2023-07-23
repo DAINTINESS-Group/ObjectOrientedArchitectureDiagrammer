@@ -113,9 +113,6 @@ public class PackageDiagramManager implements DiagramManager {
     			Pair<Double, Double> coordinates = nodesGeometry.getVertexGeometry(vertex.element());
     			graphView.setVertexPosition(vertex,  coordinates.getValue0(), coordinates.getValue1());
     		}
-    		else {
-    			System.out.println(vertex.element());
-    		}
     	}
     	return graphView;
     }
