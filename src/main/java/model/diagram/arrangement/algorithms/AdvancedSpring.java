@@ -11,9 +11,14 @@ public class AdvancedSpring implements LayoutAlgorithm{
 
 	private Graph<String, String> graph;
 	
-	public AdvancedSpring(Graph<String, String> graph) {
-        this.graph = graph;
+	public AdvancedSpring() {
     }
+	
+	@Override
+	public void setGraph(Graph<String, String> graph) {
+		this.graph = graph;
+	}
+	
 	@Override
 	public DiagramGeometry arrangeDiagram() {
 		DiagramGeometry diagramGeometry = new DiagramGeometry();

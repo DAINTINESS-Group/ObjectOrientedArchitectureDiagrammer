@@ -20,9 +20,13 @@ public class Sugiyama implements LayoutAlgorithm{
 	private SimpleDigraph<Integer> digraph;
 
 	
-	public Sugiyama(Graph<String, String> graph) {
-		this.graph = graph;
+	public Sugiyama() {
 		verticesMap = new HashMap<>();
+	}
+
+	@Override
+	public void setGraph(Graph<String, String> graph) {
+		this.graph = graph;
 	}
 	
 	@Override
@@ -51,7 +55,7 @@ public class Sugiyama implements LayoutAlgorithm{
 	            		y = 25;
 	            	}
 	            	diagramGeometry.addGeometry(entryVertex.getKey(), x, y);
-	                break; // Found the matching vertex, exit the loop
+	                break;
 	            }
 	        }
 		}

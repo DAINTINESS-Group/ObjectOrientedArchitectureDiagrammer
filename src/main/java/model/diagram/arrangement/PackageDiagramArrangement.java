@@ -7,14 +7,9 @@ import edu.uci.ics.jung.graph.SparseGraph;
 import edu.uci.ics.jung.graph.util.EdgeType;
 
 import model.diagram.PackageDiagram;
-import model.diagram.arrangement.algorithms.AdvancedFruchtermanReingold;
-import model.diagram.arrangement.algorithms.AdvancedSpring;
 import model.diagram.arrangement.algorithms.DiagramGeometry;
-import model.diagram.arrangement.algorithms.FruchtermanReingold;
-import model.diagram.arrangement.algorithms.KamadaKawai;
 import model.diagram.arrangement.algorithms.LayoutAlgorithm;
-import model.diagram.arrangement.algorithms.Spring;
-import model.diagram.arrangement.algorithms.Sugiyama;
+import model.diagram.arrangement.algorithms.LayoutAlgorithmFactory;
 import model.graph.Arc;
 import model.graph.PackageVertex;
 import org.javatuples.Pair;
@@ -46,33 +41,18 @@ public class PackageDiagramArrangement implements DiagramArrangement {
     
     @Override
     public DiagramGeometry arrangeDiagram() {
-    	LayoutAlgorithm sugiyama = new Sugiyama(graph);
+    	LayoutAlgorithmFactory layoutAlgorithmFactory = new LayoutAlgorithmFactory();
+    	LayoutAlgorithm sugiyama = layoutAlgorithmFactory.createLayoutAlgorithm("Sugiyama");
+		sugiyama.setGraph(graph);
         return sugiyama.arrangeDiagram();
     }
     
     @Override
-    public DiagramGeometry applyNewLayout(String choice){
-    	LayoutAlgorithm layout;
-    	switch (choice) {
-    		case "spring":
-    			layout = new Spring(graph);
-    			return layout.arrangeDiagram();
-    		case "spring2":
-    			layout = new AdvancedSpring(graph);
-    			return layout.arrangeDiagram();
-    		case "fr":
-    			layout = new FruchtermanReingold(graph);
-    			return layout.arrangeDiagram();
-    		case "fr2":
-    			layout = new AdvancedFruchtermanReingold(graph);
-    			return layout.arrangeDiagram();
-    		case "kk":
-    			layout = new KamadaKawai(graph);
-    			return layout.arrangeDiagram();
-    		default:
-    			layout = new Sugiyama(graph);
-    	        return layout.arrangeDiagram();	
-    	}
+    public DiagramGeometry applyNewLayout(String algorithmType){
+    	LayoutAlgorithmFactory layoutAlgorithmFactory = new LayoutAlgorithmFactory();
+    	LayoutAlgorithm layout = layoutAlgorithmFactory.createLayoutAlgorithm(algorithmType);
+    	layout.setGraph(graph);
+    	return layout.arrangeDiagram();
     }
 
     private Graph<Integer, String> populatePackageGraph() {

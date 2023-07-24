@@ -35,11 +35,11 @@
                   <Menu mnemonicParsing="false" text="Layout Algorithm...">
                   	<items>
                   		<MenuItem mnemonicParsing="false" onAction="#applySugiyama" text="Sugiyama" />
-                  		<MenuItem mnemonicParsing="false" onAction="#applyFR" text="Fruchterman-Reingold" />
-                        <MenuItem mnemonicParsing="false" onAction="#applyFR2" text="Advanced Fruchterman-Reingold" />                     	
+                  		<MenuItem mnemonicParsing="false" onAction="#applyFruchtermanReingold" text="Fruchterman-Reingold" />
+                        <MenuItem mnemonicParsing="false" onAction="#applyAdvancedFruchtermanReingold" text="Advanced Fruchterman-Reingold" />                     	
                         <MenuItem mnemonicParsing="false" onAction="#applySpring" text="Spring" />
-                        <MenuItem mnemonicParsing="false" onAction="#applySpring2" text="Advanced Spring" />
-                        <MenuItem mnemonicParsing="false" onAction="#applyKK" text="Kamada-Kawai" />	
+                        <MenuItem mnemonicParsing="false" onAction="#applyAdvancedSpring" text="Advanced Spring" />
+                        <MenuItem mnemonicParsing="false" onAction="#applyKamadaKawai" text="Kamada-Kawai" />	
                   	</items>
                   </Menu>
                   <Menu mnemonicParsing="false" text="Export...">

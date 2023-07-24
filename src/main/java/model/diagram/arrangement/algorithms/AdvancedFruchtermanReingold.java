@@ -11,9 +11,14 @@ public class AdvancedFruchtermanReingold implements LayoutAlgorithm{
 
 	private Graph<String, String> graph;
 	
-	public AdvancedFruchtermanReingold(Graph<String, String> graph) {
-        this.graph = graph;
+	public AdvancedFruchtermanReingold() {
     }
+	
+	@Override
+	public void setGraph(Graph<String, String> graph) {
+		this.graph = graph;
+	}
+	
 	@Override
 	public DiagramGeometry arrangeDiagram() {
 		DiagramGeometry diagramGeometry = new DiagramGeometry();

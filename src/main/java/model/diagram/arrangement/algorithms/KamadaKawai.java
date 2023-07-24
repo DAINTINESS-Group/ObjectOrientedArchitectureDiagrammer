@@ -11,9 +11,14 @@ public class KamadaKawai implements LayoutAlgorithm{
 
 	private Graph<String, String> graph;
 	
-	public KamadaKawai(Graph<String, String> graph) {
-        this.graph = graph;
+	public KamadaKawai() {
     }
+	
+	@Override
+	public void setGraph(Graph<String, String> graph) {
+		this.graph = graph;
+	}
+	
 	@Override
 	public DiagramGeometry arrangeDiagram() {
 		DiagramGeometry diagramGeometry = new DiagramGeometry();

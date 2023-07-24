@@ -1,5 +1,7 @@
 package model.diagram.arrangement.algorithms;
 
+import edu.uci.ics.jung.graph.Graph;
+
 public interface LayoutAlgorithm {
 	
     /**
@@ -9,4 +11,6 @@ public interface LayoutAlgorithm {
      * @return a Map with the nodes' names as key and geometry(x,y) as value
      */
 	DiagramGeometry arrangeDiagram();
+
+	void setGraph(Graph<String, String> graph);
 }

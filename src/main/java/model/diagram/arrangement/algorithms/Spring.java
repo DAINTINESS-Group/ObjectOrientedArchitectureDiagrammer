@@ -11,9 +11,14 @@ public class Spring implements LayoutAlgorithm{
 
 	private Graph<String, String> graph;
 	
-	public Spring(Graph<String, String> graph) {
-        this.graph = graph;
+	public Spring() {
     }
+	
+	@Override
+	public void setGraph(Graph<String, String> graph) {
+		this.graph = graph;
+	}
+	
 	@Override
 	public DiagramGeometry arrangeDiagram() {
 		DiagramGeometry diagramGeometry = new DiagramGeometry();

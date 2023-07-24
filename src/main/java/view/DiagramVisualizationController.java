@@ -122,28 +122,28 @@ public class DiagramVisualizationController {
         graphView.update();
     }
     
-    public void applyFR() {
-    	SmartGraphPanel<String, String> graphView = diagramController.applySpecificLayout("fr");
+    public void applyFruchtermanReingold() {
+    	SmartGraphPanel<String, String> graphView = diagramController.applySpecificLayout("Fruchterman_Reingold");
         graphView.update();
     }
     
-    public void applyFR2() {
-    	SmartGraphPanel<String, String> graphView = diagramController.applySpecificLayout("fr2");
+    public void applyAdvancedFruchtermanReingold() {
+    	SmartGraphPanel<String, String> graphView = diagramController.applySpecificLayout("Advanced_Fruchterman_Reingold");
         graphView.update();
     }
     
     public void applySpring() {
-    	SmartGraphPanel<String, String> graphView = diagramController.applySpecificLayout("spring");
+    	SmartGraphPanel<String, String> graphView = diagramController.applySpecificLayout("Spring");
         graphView.update();
     }
     
-    public void applySpring2() {
-    	SmartGraphPanel<String, String> graphView = diagramController.applySpecificLayout("spring2");
+    public void applyAdvancedSpring() {
+    	SmartGraphPanel<String, String> graphView = diagramController.applySpecificLayout("Advanced_Spring");
         graphView.update();
     }
     
-    public void applyKK() {
-    	SmartGraphPanel<String, String> graphView = diagramController.applySpecificLayout("kk");
+    public void applyKamadaKawai() {
+    	SmartGraphPanel<String, String> graphView = diagramController.applySpecificLayout("Kamada_Kawai");
         graphView.update();
     }
     
