@@ -27,8 +27,10 @@ public class ClassifierVertexDeserializer implements JsonDeserializer<Classifier
             throw new JsonParseException("Wrong diagram type");
         }
 
+        String coordinateX = jsonObject.get("coordinate x").getAsString();
+        String coordinateY = jsonObject.get("coordinate y").getAsString();
         classifierVertex = new ClassifierVertex(Path.of(path), name, VertexType.valueOf(vertexType));
-
+        classifierVertex.setCoordinates(Double.parseDouble(coordinateX), Double.parseDouble(coordinateY));
         deserializeMethods(jsonObject);
         deserializeFields(jsonObject);
         deserializeArcs(jsonObject);

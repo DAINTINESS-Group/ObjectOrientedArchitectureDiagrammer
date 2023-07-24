@@ -54,6 +54,11 @@ public interface Controller {
      * @return the created graphView
      */
     SmartGraphPanel<String, String> visualizeJavaFXGraph();
+    
+    /**This method creates the Loaded Diagram's JavaFX graphView by calling the DiagramManager's visualizeLoadedJavaFXGraph method
+     * @return the created graphView
+     */
+    SmartGraphPanel<String, String> visualizeLoadedJavaFXGraph();
 
     /**This method exports the diagram as an image with the help of PlantUML by calling the DiagramManager's
      * exportPlantUMLDiagram method

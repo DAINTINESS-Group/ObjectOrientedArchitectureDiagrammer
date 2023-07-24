@@ -75,4 +75,17 @@ public class JavaFXPackageVisualization implements JavaFXVisualization {
             }
         }
     }
+    
+    @Override
+    public SmartGraphPanel<String, String> getLoadedGraph() {
+    	for (Vertex<String> vertex : vertexCollection) {
+	    	for (PackageVertex packageVertex: packageDiagram.getDiagram().keySet()){
+	    		if(packageVertex.getName().equals(vertex.element())) {
+	    			graphView.setVertexPosition(vertex, packageVertex.getCoordinates().getValue0(), packageVertex.getCoordinates().getValue1());
+	    			break;
+	    		}
+	    	}
+    	}
+    	return graphView;
+    }
 }

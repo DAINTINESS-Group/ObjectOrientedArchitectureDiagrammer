@@ -30,9 +30,10 @@ public class PackageVertexDeserializer implements JsonDeserializer<PackageVertex
 
         JsonObject parent = jsonObject.get("parent").getAsJsonObject();
         String parentName = parent.get("name").getAsString();
-
+        String coordinateX = jsonObject.get("coordinate x").getAsString();
+        String coordinateY = jsonObject.get("coordinate y").getAsString();
         packageVertex = new PackageVertex(Path.of(path), VertexType.valueOf(vertexType), parentName);
-
+        packageVertex.setCoordinates(Double.parseDouble(coordinateX), Double.parseDouble(coordinateY));
         deserializeSinkVertices(jsonObject);
         deserializeNeighbourVertices(jsonObject);
         deserializeArcs(jsonObject);

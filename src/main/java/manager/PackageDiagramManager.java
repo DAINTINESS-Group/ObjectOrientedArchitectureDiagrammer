@@ -58,6 +58,15 @@ public class PackageDiagramManager implements DiagramManager {
     }
     
     @Override
+    public SmartGraphPanel<String, String> visualizeLoadedJavaFXGraph() {
+        JavaFXVisualization javaFXPackageVisualization = new JavaFXPackageVisualization(packageDiagram);
+        javaFXPackageVisualization.createGraphView();
+        graphView = javaFXPackageVisualization.getLoadedGraph();
+        vertexCollection = javaFXPackageVisualization.getVertexCollection();
+        return graphView;
+    }
+    
+    @Override
     public File exportDiagramToGraphML(Path graphMLSavePath) {
         packageDiagram.setGraphMLDiagramGeometry(packageDiagramArrangement.arrangeGraphMLDiagram());
         DiagramExporter diagramExporter = new GraphMLPackageDiagramExporter(packageDiagram);
@@ -78,6 +87,8 @@ public class PackageDiagramManager implements DiagramManager {
 
     @Override
     public File saveDiagram(Path graphSavePath) {
+    	CoordinatesUpdater coordinatesUpdater = new CoordinatesUpdater(packageDiagram);
+    	coordinatesUpdater.updatePackageCoordinates(vertexCollection, graphView);
         DiagramExporter diagramExporter =  new JavaFXPackageDiagramExporter(packageDiagram);
         return diagramExporter.exportDiagram(graphSavePath);
     }

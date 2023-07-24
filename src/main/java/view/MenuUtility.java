@@ -86,7 +86,7 @@ public class MenuUtility {
             DiagramVisualization diagramVisualization = new DiagramVisualization(menuBar);
             diagramVisualization.setDiagramController(diagramController);
             diagramController.loadDiagram(selectedFile.toPath());
-            diagramVisualization.loadLoadedDiagramVisualization(diagramController.visualizeJavaFXGraph());
+            diagramVisualization.loadLoadedDiagramVisualization(diagramController.visualizeLoadedJavaFXGraph());
         } catch (JsonParseException j) {
             if (j.getMessage().equals("Wrong diagram type")) {
                 PopupWindow.createPopupInfoWindow("You tried to load the wrong type of diagram", "Error");

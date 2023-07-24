@@ -9,4 +9,6 @@ public interface JavaFXVisualization {
     SmartGraphPanel<String, String> createGraphView();
 	
 	Collection<Vertex<String>> getVertexCollection();
+	
+	SmartGraphPanel<String, String> getLoadedGraph();
 }

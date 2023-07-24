@@ -71,4 +71,6 @@ public interface DiagramManager {
     
     SmartGraphPanel<String, String> applySpecificLayout(String choice);
     
+    SmartGraphPanel<String, String> visualizeLoadedJavaFXGraph();
+    
 }

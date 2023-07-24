@@ -55,6 +55,10 @@ public class DiagramController implements Controller {
 	public SmartGraphPanel<String, String> visualizeJavaFXGraph() {
 		return diagramManager.visualizeJavaFXGraph();
 	}
+	
+	public SmartGraphPanel<String, String> visualizeLoadedJavaFXGraph(){
+		return diagramManager.visualizeLoadedJavaFXGraph();
+	}
 
 	public File saveDiagram(Path graphSavePath) {
 		return diagramManager.saveDiagram(graphSavePath);

@@ -12,6 +12,7 @@ import model.diagram.exportation.*;
 import model.diagram.javafx.JavaFXVisualization;
 import model.diagram.javafx.JavaFXClassDiagramLoader;
 import model.diagram.javafx.JavaFXClassVisualization;
+
 import org.javatuples.Pair;
 
 import java.io.File;
@@ -59,6 +60,15 @@ public class ClassDiagramManager implements DiagramManager {
         vertexCollection = javaFXVisualization.getVertexCollection();
         return graphView;
     }
+    
+    @Override
+    public SmartGraphPanel<String, String> visualizeLoadedJavaFXGraph() {
+        JavaFXVisualization javaFXVisualization = new JavaFXClassVisualization(classDiagram);
+        javaFXVisualization.createGraphView();
+        graphView = javaFXVisualization.getLoadedGraph();
+        vertexCollection = javaFXVisualization.getVertexCollection();
+        return graphView;
+    }
 
     @Override
     public File exportDiagramToGraphML(Path graphMLSavePath) {
@@ -81,6 +91,8 @@ public class ClassDiagramManager implements DiagramManager {
 
     @Override
     public File saveDiagram(Path graphSavePath) {
+    	CoordinatesUpdater coordinatesUpdater = new CoordinatesUpdater(classDiagram);
+    	coordinatesUpdater.updateClassCoordinates(vertexCollection, graphView);
         DiagramExporter diagramExporter = new JavaFXClassDiagramExporter(classDiagram);
         return diagramExporter.exportDiagram(graphSavePath);
     }
@@ -106,7 +118,7 @@ public class ClassDiagramManager implements DiagramManager {
     			graphView.setVertexPosition(vertex,  coordinates.getValue0(), coordinates.getValue1());
     		}
     		else {
-    			System.out.println(vertex.element());
+    			// NON CONNECTED VERTEX
     		}
     	}
     	return graphView;
@@ -120,7 +132,7 @@ public class ClassDiagramManager implements DiagramManager {
     			graphView.setVertexPosition(vertex,  coordinates.getValue0(), coordinates.getValue1());
     		}
     		else {
-    			System.out.println(vertex.element());
+    			// NON CONNECTED VERTEX
     		}
     	}
     	return graphView;
