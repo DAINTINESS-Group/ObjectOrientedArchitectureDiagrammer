@@ -1,6 +1,7 @@
 package model.diagram.arrangement.algorithms;
 
 import edu.uci.ics.jung.graph.Graph;
+import model.diagram.arrangement.geometry.DiagramGeometry;
 import edu.uci.ics.jung.algorithms.layout.AbstractLayout;
 import edu.uci.ics.jung.algorithms.layout.SpringLayout2;
 

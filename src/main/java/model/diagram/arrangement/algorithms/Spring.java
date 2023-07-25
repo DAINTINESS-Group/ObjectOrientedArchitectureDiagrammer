@@ -3,6 +3,7 @@ package model.diagram.arrangement.algorithms;
 import edu.uci.ics.jung.algorithms.layout.AbstractLayout;
 import edu.uci.ics.jung.algorithms.layout.SpringLayout;
 import edu.uci.ics.jung.graph.Graph;
+import model.diagram.arrangement.geometry.DiagramGeometry;
 
 import java.awt.Dimension;
 import java.awt.geom.Point2D;

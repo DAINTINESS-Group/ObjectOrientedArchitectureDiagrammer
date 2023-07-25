@@ -5,9 +5,9 @@ import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import com.google.gson.JsonParseException;
 import model.diagram.ClassDiagram;
 import model.diagram.ShadowCleaner;
-import model.diagram.arrangement.ClassDiagramArrangement;
-import model.diagram.arrangement.DiagramArrangement;
-import model.diagram.arrangement.algorithms.DiagramGeometry;
+import model.diagram.arrangement.ClassDiagramArrangementManager;
+import model.diagram.arrangement.DiagramArrangementManagerInterface;
+import model.diagram.arrangement.geometry.DiagramGeometry;
 import model.diagram.exportation.*;
 import model.diagram.javafx.JavaFXVisualization;
 import model.diagram.javafx.JavaFXClassDiagramLoader;
@@ -23,7 +23,7 @@ import java.util.List;
 public class ClassDiagramManager implements DiagramManager {
 
     private ClassDiagram classDiagram;
-    private DiagramArrangement classDiagramArrangement;
+    private DiagramArrangementManagerInterface classDiagramArrangement;
     private Collection<Vertex<String>> vertexCollection;
     private SmartGraphPanel<String, String> graphView;
     
@@ -48,7 +48,7 @@ public class ClassDiagramManager implements DiagramManager {
 
     @Override
     public void arrangeDiagram(){
-        classDiagramArrangement = new ClassDiagramArrangement(classDiagram);
+        classDiagramArrangement = new ClassDiagramArrangementManager(classDiagram);
         DiagramGeometry diagramGeometry = classDiagramArrangement.arrangeDiagram();
         classDiagram.setDiagramGeometry(diagramGeometry);
     }

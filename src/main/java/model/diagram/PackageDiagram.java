@@ -1,6 +1,6 @@
 package model.diagram;
 
-import model.diagram.arrangement.algorithms.DiagramGeometry;
+import model.diagram.arrangement.geometry.DiagramGeometry;
 import model.graph.Arc;
 import model.graph.PackageVertex;
 import org.javatuples.Pair;

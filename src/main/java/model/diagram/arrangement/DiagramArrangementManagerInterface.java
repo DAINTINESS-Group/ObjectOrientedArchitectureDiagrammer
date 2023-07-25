@@ -2,11 +2,11 @@ package model.diagram.arrangement;
 
 import org.javatuples.Pair;
 
-import model.diagram.arrangement.algorithms.DiagramGeometry;
+import model.diagram.arrangement.geometry.DiagramGeometry;
 
 import java.util.Map;
 
-public interface DiagramArrangement {
+public interface DiagramArrangementManagerInterface {
 
     /**
      * This method is responsible for the arrangement of the graph by creating a graph of the Jung library

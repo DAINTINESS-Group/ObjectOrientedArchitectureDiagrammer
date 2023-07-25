@@ -1,6 +1,7 @@
 package model.diagram.arrangement.algorithms;
 
 import edu.uci.ics.jung.graph.Graph;
+import model.diagram.arrangement.geometry.DiagramGeometry;
 
 public interface LayoutAlgorithm {
 	

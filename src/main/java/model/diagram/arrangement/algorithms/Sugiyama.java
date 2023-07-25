@@ -12,6 +12,7 @@ import de.odysseus.ithaka.digraph.layout.DigraphLayoutNode;
 import de.odysseus.ithaka.digraph.layout.DigrpahLayoutBuilder;
 import de.odysseus.ithaka.digraph.layout.sugiyama.SugiyamaBuilder;
 import edu.uci.ics.jung.graph.Graph;
+import model.diagram.arrangement.geometry.DiagramGeometry;
 
 public class Sugiyama implements LayoutAlgorithm{
 	

@@ -7,9 +7,9 @@ import edu.uci.ics.jung.graph.SparseGraph;
 import edu.uci.ics.jung.graph.util.EdgeType;
 
 import model.diagram.ClassDiagram;
-import model.diagram.arrangement.algorithms.DiagramGeometry;
 import model.diagram.arrangement.algorithms.LayoutAlgorithm;
 import model.diagram.arrangement.algorithms.LayoutAlgorithmFactory;
+import model.diagram.arrangement.geometry.DiagramGeometry;
 import model.graph.Arc;
 import model.graph.ClassifierVertex;
 import org.javatuples.Pair;
@@ -17,12 +17,12 @@ import org.javatuples.Pair;
 import java.awt.Dimension;
 import java.util.*;
 
-public class ClassDiagramArrangement implements DiagramArrangement{
+public class ClassDiagramArrangementManager implements DiagramArrangementManagerInterface{
 	
     private final ClassDiagram classDiagram;
     private final Graph<String, String> graph;
 
-    public ClassDiagramArrangement(ClassDiagram classDiagram) {
+    public ClassDiagramArrangementManager(ClassDiagram classDiagram) {
         this.classDiagram = classDiagram;
         graph = createGraphWithStrings();
     }

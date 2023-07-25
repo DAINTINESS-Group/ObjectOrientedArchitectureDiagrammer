@@ -2,8 +2,8 @@ package model.exportation;
 
 import manager.ClassDiagramManager;
 import manager.SourceProject;
-import model.diagram.arrangement.ClassDiagramArrangement;
-import model.diagram.arrangement.DiagramArrangement;
+import model.diagram.arrangement.ClassDiagramArrangementManager;
+import model.diagram.arrangement.DiagramArrangementManagerInterface;
 import model.diagram.exportation.DiagramExporter;
 import model.diagram.exportation.GraphMLClassDiagramExporter;
 import model.diagram.graphml.GraphMLClassifierVertex;
@@ -37,7 +37,7 @@ public class GraphMLClassDiagramExporterTest {
             SourceProject sourceProject = classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
             classDiagramManager.convertTreeToDiagram(chosenFiles);
             classDiagramManager.arrangeDiagram();
-            DiagramArrangement classDiagramArrangement = new ClassDiagramArrangement(classDiagramManager.getClassDiagram());
+            DiagramArrangementManagerInterface classDiagramArrangement = new ClassDiagramArrangementManager(classDiagramManager.getClassDiagram());
             Map<Integer, Pair<Double, Double>> nodesGeometry = classDiagramArrangement.arrangeGraphMLDiagram();
             classDiagramManager.getClassDiagram().setGraphMLDiagramGeometry(nodesGeometry);
             DiagramExporter graphMLExporter = new GraphMLClassDiagramExporter(classDiagramManager.getClassDiagram());
