@@ -92,7 +92,9 @@ public class ClassDiagramManager implements DiagramManager {
     @Override
     public File saveDiagram(Path graphSavePath) {
     	CoordinatesUpdater coordinatesUpdater = new CoordinatesUpdater(classDiagram);
-    	coordinatesUpdater.updateClassCoordinates(vertexCollection, graphView);
+    	if(vertexCollection!=null) { // for testing.
+    		coordinatesUpdater.updateClassCoordinates(vertexCollection, graphView);
+    	}
         DiagramExporter diagramExporter = new JavaFXClassDiagramExporter(classDiagram);
         return diagramExporter.exportDiagram(graphSavePath);
     }
