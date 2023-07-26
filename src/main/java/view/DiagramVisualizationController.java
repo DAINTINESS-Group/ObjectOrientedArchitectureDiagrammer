@@ -12,9 +12,11 @@ import javafx.scene.SnapshotParameters;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.WritableImage;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.scene.transform.Scale;
 
 import javax.imageio.ImageIO;
 import java.io.File;
@@ -27,25 +29,40 @@ public class DiagramVisualizationController {
     BorderPane borderPane;
     @FXML
     MenuBar menuBar;
+    
+    private SmartGraphPanel<String, String> graphView;
 
     private Controller diagramController;
     private ProjectTreeView projectTreeView;
+    private double graphViewNormalScaleX;
+    private double graphViewNormalScaleY;
 
     public void visualizeGraph(SmartGraphPanel<String, String> graphView) {
+    	this.graphView = graphView;
     	ContentZoomPane zoomPane = new ContentZoomPane(graphView);
     	ScrollPane scrollPane = new ScrollPane(zoomPane);
         scrollPane.setPannable(false);
+        graphViewNormalScaleX = graphView.getScaleX();
+        graphViewNormalScaleY = graphView.getScaleY();
+        String graphViewBackgroundColor = "#F4FFFB";
+        Color zoomPaneBackgroundColor = Color.web(graphViewBackgroundColor);
+        zoomPane.setBackground(new Background(new BackgroundFill(zoomPaneBackgroundColor, null, null)));
         graphView.minWidthProperty().bind(borderPane.widthProperty());
         graphView.minHeightProperty().bind(borderPane.heightProperty());
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
     	borderPane.setCenter(scrollPane);
-    	double initialScaleFactor = 1.0; // 1.0 means no scaling
-        Scale contentScale = new Scale(initialScaleFactor, initialScaleFactor);
-        zoomPane.getTransforms().add(contentScale);
-        graphView.minWidthProperty().bind(borderPane.widthProperty().multiply(1.0 / initialScaleFactor));
-        graphView.minHeightProperty().bind(borderPane.heightProperty().multiply(1.0 / initialScaleFactor));
         setTreeView(projectTreeView);
+        zoomPane.setOnScroll(event -> {
+            double zoomFactor = 1.1;
+            if (event.getDeltaY() >= 0) {
+            	graphView.setScaleX(graphView.getScaleX() * zoomFactor);
+            	graphView.setScaleY(graphView.getScaleY() * zoomFactor);
+            } else {
+            	graphView.setScaleX(graphView.getScaleX() / zoomFactor);
+            	graphView.setScaleY(graphView.getScaleY() / zoomFactor);
+            }
+        });
     }
 
     public void exportDiagramAsImage() {
@@ -54,8 +71,14 @@ public class DiagramVisualizationController {
             if (selectedDirectory == null) {
                 return;
             }
-            WritableImage image = borderPane.getCenter().snapshot(new SnapshotParameters(), null);
+            double changeScaleX = graphView.getScaleX();
+            double changeScaleY = graphView.getScaleY();
+            graphView.setScaleX(graphViewNormalScaleX);
+            graphView.setScaleY(graphViewNormalScaleY);
+            WritableImage image = graphView.snapshot(new SnapshotParameters(), null);
             ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", selectedDirectory);
+            graphView.setScaleX(changeScaleX);
+            graphView.setScaleY(changeScaleY);
         }catch (IOException e) {
             e.printStackTrace();
         }
