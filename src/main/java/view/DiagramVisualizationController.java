@@ -10,9 +10,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import javafx.scene.transform.Scale;
 
 import javax.imageio.ImageIO;
 import java.io.File;
@@ -30,7 +32,19 @@ public class DiagramVisualizationController {
     private ProjectTreeView projectTreeView;
 
     public void visualizeGraph(SmartGraphPanel<String, String> graphView) {
-        borderPane.setCenter(new ContentZoomPane(graphView));
+    	ContentZoomPane zoomPane = new ContentZoomPane(graphView);
+    	ScrollPane scrollPane = new ScrollPane(zoomPane);
+        scrollPane.setPannable(false);
+        graphView.minWidthProperty().bind(borderPane.widthProperty());
+        graphView.minHeightProperty().bind(borderPane.heightProperty());
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+    	borderPane.setCenter(scrollPane);
+    	double initialScaleFactor = 1.0; // 1.0 means no scaling
+        Scale contentScale = new Scale(initialScaleFactor, initialScaleFactor);
+        zoomPane.getTransforms().add(contentScale);
+        graphView.minWidthProperty().bind(borderPane.widthProperty().multiply(1.0 / initialScaleFactor));
+        graphView.minHeightProperty().bind(borderPane.heightProperty().multiply(1.0 / initialScaleFactor));
         setTreeView(projectTreeView);
     }
 

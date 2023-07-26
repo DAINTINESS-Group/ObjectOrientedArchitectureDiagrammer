@@ -24,12 +24,14 @@ public class ProjectTreeView {
     private final List<String> folderFiles;
     private final List<String> javaSourceFiles;
     private final Path sourceFolderPath;
+    private final TreeViewResizer resizer;
 
     public ProjectTreeView(TreeView<String> treeView, Path sourceFolderPath) {
         this.sourceFolderPath = sourceFolderPath;
         this.treeView = treeView;
         folderFiles = new ArrayList<>();
         javaSourceFiles = new ArrayList<>();
+        resizer = new TreeViewResizer();
     }
 
     public void createTreeView(){
@@ -37,7 +39,7 @@ public class ProjectTreeView {
                 .substring(sourceFolderPath.normalize().toString().lastIndexOf("\\") + 1));
         treeView.setShowRoot(true);
         treeView.setCellFactory(CheckBoxTreeCell.forTreeView());
-
+        resizer.makeResizable(treeView);
         try (DirectoryStream<Path> folderStream = Files.newDirectoryStream(sourceFolderPath)) {
             for (Path path: folderStream) {
                 createTree(path, rootItem);
