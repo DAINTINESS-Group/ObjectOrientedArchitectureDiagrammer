@@ -44,7 +44,8 @@ public class JavaFXClassDiagramLoaderTest {
             for (ClassifierVertex classifierVertex : createdDiagram.keySet()) {
                 Optional<ClassifierVertex> optionalSinkVertex = loadedDiagram.stream()
                     .filter(
-                        sinkVertex1 -> sinkVertex1.getName().equals(classifierVertex.getName())
+                        sinkVertex1 -> sinkVertex1.getName().equals(classifierVertex.getName()) &&
+                        sinkVertex1.getVertexType().equals(classifierVertex.getVertexType())
                     ).findFirst();
                 assertTrue(optionalSinkVertex.isPresent());
 
