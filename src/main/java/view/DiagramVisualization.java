@@ -65,6 +65,7 @@ public class DiagramVisualization {
 
             ProjectLoadController projectLoadController = loader.getController();
             projectLoadController.visualizeGraph(graphView);
+            projectLoadController.setDiagramController(diagramController);
 
             Scene diagramVisualizationScene = new Scene(parent);
             Stage window = (Stage) menuBar.getScene().getWindow();

@@ -76,11 +76,11 @@ public class MenuUtility {
         window.close();
     }
 
-    public static void loadDiagram(MenuBar menuBar, ActionEvent event) {
+    public static String loadDiagram(MenuBar menuBar, ActionEvent event) {
         Controller diagramController = new DiagramController(((MenuItem) event.getSource()).getText());
         File selectedFile = FileAndDirectoryUtility.loadFile(String.format("Load %s Diagram", ((MenuItem) event.getSource()).getText()), menuBar);
         if (selectedFile == null) {
-            return;
+            return null;
         }
         try {
             DiagramVisualization diagramVisualization = new DiagramVisualization(menuBar);
@@ -94,5 +94,6 @@ public class MenuUtility {
                 PopupWindow.createPopupInfoWindow("Unsupported type of file", "Error");
             }
         }
+        return selectedFile.getName();
     }
 }
