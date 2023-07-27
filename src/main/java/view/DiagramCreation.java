@@ -1,7 +1,7 @@
 package view;
 
 import controller.Controller;
-import controller.DiagramController;
+import controller.ControllerFactory;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuBar;
 
@@ -28,7 +28,8 @@ public class DiagramCreation {
             return;
         }
         this.diagramType = diagramType;
-        diagramController = new DiagramController(diagramType);
+        ControllerFactory controllerFactory = new ControllerFactory();
+        diagramController = controllerFactory.createController("Uml_Diagram", diagramType);
         diagramController.createTree(projectTreeView.getSourceFolderPath());
     }
 
