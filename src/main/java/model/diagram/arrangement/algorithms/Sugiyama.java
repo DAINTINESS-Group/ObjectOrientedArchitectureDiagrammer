@@ -13,6 +13,7 @@ import de.odysseus.ithaka.digraph.layout.DigrpahLayoutBuilder;
 import de.odysseus.ithaka.digraph.layout.sugiyama.SugiyamaBuilder;
 import edu.uci.ics.jung.graph.Graph;
 import model.diagram.arrangement.geometry.DiagramGeometry;
+import model.diagram.arrangement.geometry.GeometryNode;
 
 public class Sugiyama implements LayoutAlgorithm{
 	
@@ -49,13 +50,14 @@ public class Sugiyama implements LayoutAlgorithm{
 	            if (entryVertex.getValue() == vertex.getVertex()) {
 	            	double x = vertex.getPoint().x;
 	            	double y = vertex.getPoint().y;
+	                GeometryNode geometryNode = new GeometryNode(entryVertex.getKey());
 	            	if (vertex.getPoint().x < 25) {
 	            		x = 25;
 	            	}
 	            	if (vertex.getPoint().y < 25) {
 	            		y = 25;
 	            	}
-	            	diagramGeometry.addGeometry(entryVertex.getKey(), x, y);
+	            	diagramGeometry.addGeometry(geometryNode, x, y);
 	                break;
 	            }
 	        }

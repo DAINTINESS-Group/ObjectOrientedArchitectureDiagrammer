@@ -13,16 +13,24 @@ public class DiagramGeometry {
         this.geometryMap = new HashMap<>();
     }
 	
-	public void addGeometry(String key, double x, double y) {
-        geometryMap.put(key, new Pair<>(x, y));
+	public void addGeometry(GeometryNode key, double x, double y) {
+        geometryMap.put(key.getNodeName(), new Pair<>(x, y));
     }
 	
-	public Pair<Double, Double> getVertexGeometry(String key) {
-        return geometryMap.get(key);
+	public Pair<Double, Double> getVertexGeometry(GeometryNode key) {
+        return geometryMap.get(key.getNodeName());
     }
 	
-	public boolean containsKey(String key) {
-        return geometryMap.containsKey(key);
+	public Pair<Double, Double> getVertexGeometry(String stringKey){
+		return geometryMap.get(stringKey);
+	}
+	
+	public boolean containsKey(GeometryNode key) {
+        return geometryMap.containsKey(key.getNodeName());
     }
+	
+	public boolean containsKey(String stringKey) {
+		return geometryMap.containsKey(stringKey);
+	}
 	
 }

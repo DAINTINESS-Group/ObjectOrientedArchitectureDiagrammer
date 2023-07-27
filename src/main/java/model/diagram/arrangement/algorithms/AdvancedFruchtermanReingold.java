@@ -2,6 +2,7 @@ package model.diagram.arrangement.algorithms;
 
 import edu.uci.ics.jung.graph.Graph;
 import model.diagram.arrangement.geometry.DiagramGeometry;
+import model.diagram.arrangement.geometry.GeometryNode;
 import edu.uci.ics.jung.algorithms.layout.AbstractLayout;
 import edu.uci.ics.jung.algorithms.layout.FRLayout2;
 
@@ -27,6 +28,7 @@ public class AdvancedFruchtermanReingold implements LayoutAlgorithm{
         layout.setSize(new Dimension(1200, 725));
         for (String vertex : graph.getVertices()) {
             Point2D coordinates = layout.apply(vertex);
+            GeometryNode geometryNode = new GeometryNode(vertex);
             double x = coordinates.getX();
             double y = coordinates.getY();            
         	if (x < 25) {
@@ -35,7 +37,7 @@ public class AdvancedFruchtermanReingold implements LayoutAlgorithm{
         	if (y < 25) {
         		y = 25;
         	}
-            diagramGeometry.addGeometry(vertex, x, y);
+            diagramGeometry.addGeometry(geometryNode, x, y);
         }
 		return diagramGeometry;
 	}

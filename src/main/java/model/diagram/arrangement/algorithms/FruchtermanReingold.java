@@ -4,6 +4,7 @@ import edu.uci.ics.jung.algorithms.layout.AbstractLayout;
 import edu.uci.ics.jung.algorithms.layout.FRLayout;
 import edu.uci.ics.jung.graph.Graph;
 import model.diagram.arrangement.geometry.DiagramGeometry;
+import model.diagram.arrangement.geometry.GeometryNode;
 
 import java.awt.Dimension;
 import java.awt.geom.Point2D;
@@ -27,6 +28,7 @@ public class FruchtermanReingold implements LayoutAlgorithm{
         layout.setSize(new Dimension(1200, 725));
         for (String vertex : graph.getVertices()) {
             Point2D coordinates = layout.apply(vertex);
+            GeometryNode geometryNode = new GeometryNode(vertex);
             double x = coordinates.getX();
             double y = coordinates.getY();            
         	if (x < 25) {
@@ -35,7 +37,7 @@ public class FruchtermanReingold implements LayoutAlgorithm{
         	if (y < 25) {
         		y = 25;
         	}
-            diagramGeometry.addGeometry(vertex, x, y);        
+            diagramGeometry.addGeometry(geometryNode, x, y);        
         }
 		return diagramGeometry;
 	}
