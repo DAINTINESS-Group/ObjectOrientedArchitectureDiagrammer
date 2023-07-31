@@ -37,7 +37,7 @@ public class PlantUMLClassifierVertexArc {
     private String getRelationship(ArcType relationshipType) {
 		return switch (relationshipType) {
 			case EXTENSION -> "--|>";
-			case AGGREGATION -> "--o";
+			case AGGREGATION -> "o--";
 			case DEPENDENCY -> "..>";
 			case IMPLEMENTATION -> "..|>";
 			default -> "-->"; // ASSOCIATION
