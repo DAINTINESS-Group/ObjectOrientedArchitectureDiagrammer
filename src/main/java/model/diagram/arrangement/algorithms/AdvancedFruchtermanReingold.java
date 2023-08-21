@@ -7,7 +7,6 @@ import edu.uci.ics.jung.algorithms.layout.AbstractLayout;
 import edu.uci.ics.jung.algorithms.layout.FRLayout2;
 
 import java.awt.Dimension;
-import java.awt.geom.Point2D;
 
 public class AdvancedFruchtermanReingold implements LayoutAlgorithm{
 
@@ -31,10 +30,9 @@ public class AdvancedFruchtermanReingold implements LayoutAlgorithm{
 		AbstractLayout<String, String> layout = new FRLayout2<>(graph);
         layout.setSize(new Dimension(GRAPH_X_SIZE, GRAPH_Y_SIZE));
         for (String vertex : graph.getVertices()) {
-            Point2D coordinates = layout.apply(vertex);
             GeometryNode geometryNode = new GeometryNode(vertex);
-            double x = coordinates.getX();
-            double y = coordinates.getY();            
+            double x = layout.getX(vertex);
+            double y = layout.getY(vertex);            
         	if (x < MIN_X_WINDOW_VALUE) {
         		x = MIN_X_WINDOW_VALUE;
         	}
