@@ -1,26 +1,32 @@
 package manager;
 
+import com.brunomnsilva.smartgraph.graph.Vertex;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import com.google.gson.JsonParseException;
 import model.diagram.ClassDiagram;
 import model.diagram.ShadowCleaner;
-import model.diagram.arrangement.ClassDiagramArrangement;
-import model.diagram.arrangement.DiagramArrangement;
+import model.diagram.arrangement.ClassDiagramArrangementManager;
+import model.diagram.arrangement.DiagramArrangementManagerInterface;
+import model.diagram.arrangement.geometry.DiagramGeometry;
 import model.diagram.exportation.*;
 import model.diagram.javafx.JavaFXVisualization;
 import model.diagram.javafx.JavaFXClassDiagramLoader;
 import model.diagram.javafx.JavaFXClassVisualization;
+
 import org.javatuples.Pair;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 public class ClassDiagramManager implements DiagramManager {
 
     private ClassDiagram classDiagram;
-
+    private DiagramArrangementManagerInterface classDiagramArrangement;
+    private Collection<Vertex<String>> vertexCollection;
+    private SmartGraphPanel<String, String> graphView;
+    
     public ClassDiagramManager() {
         classDiagram = new ClassDiagram();
     }
@@ -41,21 +47,32 @@ public class ClassDiagramManager implements DiagramManager {
     }
 
     @Override
-    public Map<Integer, Pair<Double, Double>> arrangeDiagram(){
-        DiagramArrangement classDiagramArrangement = new ClassDiagramArrangement(classDiagram);
-        Map<Integer, Pair<Double, Double>> diagramGeometry = classDiagramArrangement.arrangeDiagram();
+    public void arrangeDiagram(){
+        classDiagramArrangement = new ClassDiagramArrangementManager(classDiagram);
+        DiagramGeometry diagramGeometry = classDiagramArrangement.arrangeDiagram();
         classDiagram.setDiagramGeometry(diagramGeometry);
-        return diagramGeometry;
     }
 
     @Override
     public SmartGraphPanel<String, String> visualizeJavaFXGraph() {
         JavaFXVisualization javaFXVisualization = new JavaFXClassVisualization(classDiagram);
-        return javaFXVisualization.createGraphView();
+        graphView = javaFXVisualization.createGraphView();
+        vertexCollection = javaFXVisualization.getVertexCollection();
+        return graphView;
+    }
+    
+    @Override
+    public SmartGraphPanel<String, String> visualizeLoadedJavaFXGraph() {
+        JavaFXVisualization javaFXVisualization = new JavaFXClassVisualization(classDiagram);
+        javaFXVisualization.createGraphView();
+        graphView = javaFXVisualization.getLoadedGraph();
+        vertexCollection = javaFXVisualization.getVertexCollection();
+        return graphView;
     }
 
     @Override
     public File exportDiagramToGraphML(Path graphMLSavePath) {
+        classDiagram.setGraphMLDiagramGeometry(classDiagramArrangement.arrangeGraphMLDiagram());
         DiagramExporter diagramExporter = new GraphMLClassDiagramExporter(classDiagram);
         return diagramExporter.exportDiagram(graphMLSavePath);
     }
@@ -74,6 +91,10 @@ public class ClassDiagramManager implements DiagramManager {
 
     @Override
     public File saveDiagram(Path graphSavePath) {
+    	CoordinatesUpdater coordinatesUpdater = new CoordinatesUpdater(classDiagram);
+    	if(vertexCollection!=null) { // for testing.
+    		coordinatesUpdater.updateClassCoordinates(vertexCollection, graphView);
+    	}
         DiagramExporter diagramExporter = new JavaFXClassDiagramExporter(classDiagram);
         return diagramExporter.exportDiagram(graphSavePath);
     }
@@ -89,6 +110,34 @@ public class ClassDiagramManager implements DiagramManager {
 
     public ClassDiagram getClassDiagram() {
         return classDiagram;
+    }
+    
+    public SmartGraphPanel<String, String> applyLayout() {
+    	DiagramGeometry nodesGeometry = classDiagram.getDiagramGeometry();
+    	for(Vertex<String> vertex : vertexCollection) {
+    		if (nodesGeometry.containsKey(vertex.element())) {
+    			Pair<Double, Double> coordinates = nodesGeometry.getVertexGeometry(vertex.element());
+    			graphView.setVertexPosition(vertex,  coordinates.getValue0(), coordinates.getValue1());
+    		}
+    		else {
+    			// NON CONNECTED VERTEX
+    		}
+    	}
+    	return graphView;
+    }
+    
+    public SmartGraphPanel<String, String> applySpecificLayout(String choice){
+    	DiagramGeometry nodesGeometry = classDiagramArrangement.applyNewLayout(choice);
+    	for(Vertex<String> vertex : vertexCollection) {
+    		if (nodesGeometry.containsKey(vertex.element())) {
+    			Pair<Double, Double> coordinates = nodesGeometry.getVertexGeometry(vertex.element());
+    			graphView.setVertexPosition(vertex,  coordinates.getValue0(), coordinates.getValue1());
+    		}
+    		else {
+    			// NON CONNECTED VERTEX
+    		}
+    	}
+    	return graphView;
     }
 
 }

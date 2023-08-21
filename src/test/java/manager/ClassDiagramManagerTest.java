@@ -2,8 +2,8 @@ package manager;
 
 import model.diagram.GraphClassDiagramConverter;
 import model.diagram.ShadowCleaner;
-import model.diagram.arrangement.ClassDiagramArrangement;
-import model.diagram.arrangement.DiagramArrangement;
+import model.diagram.arrangement.ClassDiagramArrangementManager;
+import model.diagram.arrangement.DiagramArrangementManagerInterface;
 import model.diagram.exportation.DiagramExporter;
 import model.diagram.exportation.GraphMLClassDiagramExporter;
 import model.diagram.exportation.JavaFXClassDiagramExporter;
@@ -134,8 +134,8 @@ public class ClassDiagramManagerTest {
             classDiagramManager.arrangeDiagram();
             File actualFile = classDiagramManager.exportDiagramToGraphML(Paths.get(System.getProperty("user.home")+"\\testingExportedFile.graphML"));
 
-            DiagramArrangement classDiagramArrangement = new ClassDiagramArrangement(classDiagramManager.getClassDiagram());
-            classDiagramManager.getClassDiagram().setDiagramGeometry(classDiagramArrangement.arrangeDiagram());
+            DiagramArrangementManagerInterface classDiagramArrangement = new ClassDiagramArrangementManager(classDiagramManager.getClassDiagram());
+            classDiagramManager.getClassDiagram().setGraphMLDiagramGeometry(classDiagramArrangement.arrangeGraphMLDiagram());
             GraphMLClassifierVertex graphMLClassifierVertex = new GraphMLClassifierVertex(classDiagramManager.getClassDiagram());
             StringBuilder graphMLNodeBuffer = graphMLClassifierVertex.convertSinkVertex();
             GraphMLClassifierVertexArc graphMLClassifierVertexArc = new GraphMLClassifierVertexArc(classDiagramManager.getClassDiagram());

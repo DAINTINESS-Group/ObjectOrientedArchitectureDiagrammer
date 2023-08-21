@@ -47,7 +47,9 @@ public class DiagramVisualization {
             Stage window = (Stage) menuBar.getScene().getWindow();
             window.setScene(diagramVisualizationScene);
             window.show();
-            graphView.init();
+	        graphView.init();
+	        graphView = diagramVisualizationController.applyLayout();
+	        graphView.update();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -63,12 +65,20 @@ public class DiagramVisualization {
 
             ProjectLoadController projectLoadController = loader.getController();
             projectLoadController.visualizeGraph(graphView);
+            projectLoadController.setDiagramController(diagramController);
 
             Scene diagramVisualizationScene = new Scene(parent);
             Stage window = (Stage) menuBar.getScene().getWindow();
             window.setScene(diagramVisualizationScene);
             window.show();
-            graphView.init();
+            try {
+	            graphView = diagramController.visualizeLoadedJavaFXGraph();
+	            graphView.init();
+	            graphView.update();
+            } catch (IllegalStateException e) {
+	            // Just continue. Handling here the expection in order not showing the error to the user.
+	        	// We do this, because this error doesn't affect the system.
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

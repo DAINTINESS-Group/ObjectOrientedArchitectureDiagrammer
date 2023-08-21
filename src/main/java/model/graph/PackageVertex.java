@@ -1,5 +1,6 @@
 package model.graph;
 
+import org.javatuples.Pair;
 import org.javatuples.Triplet;
 
 import java.nio.file.Path;
@@ -17,6 +18,8 @@ public class PackageVertex {
     private final String name;
     private PackageVertex parentPackageVertex;
     private List<Triplet<String, String, String>> deserializedArcs;
+    private double x;
+    private double y;
 
     public PackageVertex(Path path, VertexType vertexType, String parentName) {
         this.path = path;
@@ -80,4 +83,14 @@ public class PackageVertex {
     }
 
     public ModifierType getModifierType() { return VERTEX_MODIFIER_TYPE; }
+    
+    public void setCoordinates(double x, double y) {
+    	this.x = x;
+    	this.y = y;
+    }
+    
+    public Pair<Double, Double> getCoordinates(){
+    	Pair<Double, Double> coordinates = new Pair<>(x, y);
+    	return coordinates;
+    }
 }

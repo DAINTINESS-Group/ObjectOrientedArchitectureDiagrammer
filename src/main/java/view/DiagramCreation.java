@@ -1,7 +1,7 @@
 package view;
 
 import controller.Controller;
-import controller.DiagramController;
+import controller.ControllerFactory;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuBar;
 
@@ -28,13 +28,15 @@ public class DiagramCreation {
             return;
         }
         this.diagramType = diagramType;
-        diagramController = new DiagramController(diagramType);
+        ControllerFactory controllerFactory = new ControllerFactory();
+        diagramController = controllerFactory.createController("Uml_Diagram", diagramType);
         diagramController.createTree(projectTreeView.getSourceFolderPath());
     }
 
     public void loadProject() {
         projectTreeView.setCheckedItems(projectTreeView.getRootItem());
         diagramController.convertTreeToDiagram(getSelectedFiles(diagramType));
+        diagramController.arrangeDiagram();
     }
 
     public void viewProject() {
@@ -61,7 +63,6 @@ public class DiagramCreation {
         if (selectedDirectory == null) {
             return;
         }
-        diagramController.arrangeDiagram();
         diagramController.exportDiagramToGraphML(selectedDirectory.toPath());
     }
 

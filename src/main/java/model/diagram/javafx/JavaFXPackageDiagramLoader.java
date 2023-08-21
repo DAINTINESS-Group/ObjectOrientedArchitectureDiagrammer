@@ -8,6 +8,7 @@ import model.graph.PackageVertex;
 import org.javatuples.Triplet;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
@@ -23,7 +24,8 @@ public class JavaFXPackageDiagramLoader {
     public Set<PackageVertex> loadDiagram() throws JsonParseException {
         Set<PackageVertex> vertices = new HashSet<>();
         try {
-            String json = Files.readString(graphSavePath);
+        	byte[] encodedBytes = Files.readAllBytes(graphSavePath);
+        	String json = new String(encodedBytes, StandardCharsets.ISO_8859_1);
             Gson gson = new GsonBuilder().registerTypeAdapter(PackageVertex.class, new PackageVertexDeserializer()).create();
             PackageVertex[] verticesArray = gson.fromJson(json, PackageVertex[].class);
             Collections.addAll(vertices, verticesArray);

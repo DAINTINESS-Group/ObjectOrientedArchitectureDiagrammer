@@ -1,5 +1,6 @@
 package model.graph;
 
+import org.javatuples.Pair;
 import org.javatuples.Triplet;
 
 import java.nio.file.Path;
@@ -16,6 +17,8 @@ public class ClassifierVertex {
     private final Path path;
     private final String name;
     private List<Triplet<String, String, String>> deserializedArcs;
+    private double x;
+    private double y;
 
     public ClassifierVertex(Path path, String name, VertexType vertexType) {
         this.vertexType = vertexType;
@@ -125,4 +128,15 @@ public class ClassifierVertex {
             return modifier;
         }
     }
+    
+    public void setCoordinates(double x, double y) {
+    	this.x = x;
+    	this.y = y;
+    }
+    
+    public Pair<Double, Double> getCoordinates(){
+    	Pair<Double, Double> coordinates = new Pair<>(x, y);
+    	return coordinates;
+    }
+    
 }

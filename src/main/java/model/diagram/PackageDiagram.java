@@ -1,5 +1,6 @@
 package model.diagram;
 
+import model.diagram.arrangement.geometry.DiagramGeometry;
 import model.graph.Arc;
 import model.graph.PackageVertex;
 import org.javatuples.Pair;
@@ -12,7 +13,8 @@ public class PackageDiagram {
     private Map<PackageVertex, Set<Arc<PackageVertex>>> diagram;
     private Map<Path, PackageVertex> vertices;
     private final Map<PackageVertex, Integer> graphNodes;
-    private Map<Integer, Pair<Double, Double>> diagramGeometry;
+    private Map<Integer, Pair<Double, Double>> diagramGeometryGraphML;
+    private DiagramGeometry diagramGeometry;
 
     public PackageDiagram() {
         graphNodes = new HashMap<>();
@@ -54,7 +56,11 @@ public class PackageDiagram {
         this.vertices = vertices;
     }
 
-    public void setDiagramGeometry(Map<Integer, Pair<Double, Double>> diagramGeometry) {
+    public void setGraphMLDiagramGeometry(Map<Integer, Pair<Double, Double>> diagramGeometryGraphML) {
+        this.diagramGeometryGraphML = diagramGeometryGraphML;
+    }
+    
+    public void setDiagramGeometry(DiagramGeometry diagramGeometry) {
         this.diagramGeometry = diagramGeometry;
     }
 
@@ -66,7 +72,11 @@ public class PackageDiagram {
         return diagram;
     }
 
-    public Map<Integer, Pair<Double, Double>> getDiagramGeometry() {
+    public Map<Integer, Pair<Double, Double>> getGraphMLDiagramGeometry() {
+        return diagramGeometryGraphML;
+    }
+    
+    public DiagramGeometry getDiagramGeometry() {
         return diagramGeometry;
     }
 

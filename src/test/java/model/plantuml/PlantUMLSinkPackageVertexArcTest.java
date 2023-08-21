@@ -22,13 +22,13 @@ public class PlantUMLSinkPackageVertexArcTest {
     void convertSinkVertexArcTest() {
         try {
             String expectedBuffer = "VersionsStrategy ..> Document\n" +
-                    "DocumentManager --o Document\n" +
+                    "DocumentManager o-- Document\n" +
                     "VersionsStrategyFactory ..> VolatileVersionsStrategy\n" +
                     "StableVersionsStrategy ..|> VersionsStrategy\n" +
-                    "VersionsStrategyFactory --o VersionsStrategy\n" +
+                    "VersionsStrategyFactory o-- VersionsStrategy\n" +
                     "StableVersionsStrategy ..> Document\n" +
                     "VersionsManager --> VersionsStrategy\n" +
-                    "VolatileVersionsStrategy --o Document\n" +
+                    "VolatileVersionsStrategy o-- Document\n" +
                     "VersionsManager ..> Document\n" +
                     "VersionsStrategyFactory ..> StableVersionsStrategy\n" +
                     "VolatileVersionsStrategy ..|> VersionsStrategy\n";

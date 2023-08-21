@@ -32,6 +32,16 @@
                   </Menu>
                   <MenuItem mnemonicParsing="false" onAction="#closeDiagram" text="Close Diagram" />
                   <SeparatorMenuItem mnemonicParsing="false" />
+                  <Menu mnemonicParsing="false" text="Layout Algorithm...">
+                  	<items>
+                  		<MenuItem mnemonicParsing="false" onAction="#applySugiyama" text="Sugiyama" />
+                  		<MenuItem mnemonicParsing="false" onAction="#applyFruchtermanReingold" text="Fruchterman-Reingold" />
+                        <MenuItem mnemonicParsing="false" onAction="#applyAdvancedFruchtermanReingold" text="Advanced Fruchterman-Reingold" />                     	
+                        <MenuItem mnemonicParsing="false" onAction="#applySpring" text="Spring" />
+                        <MenuItem mnemonicParsing="false" onAction="#applyAdvancedSpring" text="Advanced Spring" />
+                        <MenuItem mnemonicParsing="false" onAction="#applyKamadaKawai" text="Kamada-Kawai" />	
+                  	</items>
+                  </Menu>
                   <Menu mnemonicParsing="false" text="Export...">
                      <items>
                         <MenuItem mnemonicParsing="false" onAction="#exportDiagramAsPlantUML" text="PlantUML Image" />
@@ -72,9 +82,10 @@
       <HBox prefHeight="734.0" prefWidth="900.0" VBox.vgrow="ALWAYS">
          <children>
             <BorderPane fx:id="borderPane" prefHeight="625.0" prefWidth="917.0" HBox.hgrow="ALWAYS">
-               <right>
-                  <Pane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="625.0" prefWidth="21.0" BorderPane.alignment="CENTER" />
-               </right></BorderPane>
+            	<right>
+            		<Pane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="625.0" prefWidth="21.0" BorderPane.alignment="CENTER" />
+            	</right>
+         	</BorderPane>
          </children>
       </HBox>
    </children>

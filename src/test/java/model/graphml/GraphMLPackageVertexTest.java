@@ -31,7 +31,7 @@ class GraphMLPackageVertexTest {
                 "src.controller.commands",
                 "src.controller"
             ));
-            packageDiagramManager.getPackageDiagram().setDiagramGeometry(Map.ofEntries(
+            packageDiagramManager.getPackageDiagram().setGraphMLDiagramGeometry(Map.ofEntries(
                     Map.entry(0, new Pair<>(10.0, 10.0)),
                     Map.entry(1, new Pair<>(10.0, 10.0)),
                     Map.entry(2, new Pair<>(10.0, 10.0)),

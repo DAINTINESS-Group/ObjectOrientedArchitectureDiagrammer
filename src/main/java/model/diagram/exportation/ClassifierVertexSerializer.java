@@ -25,7 +25,8 @@ public class ClassifierVertexSerializer implements JsonSerializer<ClassifierVert
         jsonObject.addProperty("name", name);
         jsonObject.addProperty("path", path.toString());
         jsonObject.addProperty("vertexType", vertexType);
-
+        jsonObject.addProperty("coordinate_x", classifierVertex.getCoordinates().getValue0());
+        jsonObject.addProperty("coordinate_y", classifierVertex.getCoordinates().getValue1()); 
         jsonObject.add("methods", serializeMethods());
         jsonObject.add("fields", serializeFields());
         jsonObject.add("arcs", serializeArcs());

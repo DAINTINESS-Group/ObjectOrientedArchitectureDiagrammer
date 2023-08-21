@@ -2,7 +2,7 @@ package view;
 
 import com.google.gson.JsonParseException;
 import controller.Controller;
-import controller.DiagramController;
+import controller.ControllerFactory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -76,17 +76,18 @@ public class MenuUtility {
         window.close();
     }
 
-    public static void loadDiagram(MenuBar menuBar, ActionEvent event) {
-        Controller diagramController = new DiagramController(((MenuItem) event.getSource()).getText());
+    public static String loadDiagram(MenuBar menuBar, ActionEvent event) {
+        ControllerFactory controllerFactory = new ControllerFactory();
+        Controller diagramController = controllerFactory.createController("Uml_Diagram", ((MenuItem) event.getSource()).getText());
         File selectedFile = FileAndDirectoryUtility.loadFile(String.format("Load %s Diagram", ((MenuItem) event.getSource()).getText()), menuBar);
         if (selectedFile == null) {
-            return;
+            return null;
         }
         try {
             DiagramVisualization diagramVisualization = new DiagramVisualization(menuBar);
             diagramVisualization.setDiagramController(diagramController);
             diagramController.loadDiagram(selectedFile.toPath());
-            diagramVisualization.loadLoadedDiagramVisualization(diagramController.visualizeJavaFXGraph());
+            diagramVisualization.loadLoadedDiagramVisualization(diagramController.visualizeLoadedJavaFXGraph());
         } catch (JsonParseException j) {
             if (j.getMessage().equals("Wrong diagram type")) {
                 PopupWindow.createPopupInfoWindow("You tried to load the wrong type of diagram", "Error");
@@ -94,5 +95,6 @@ public class MenuUtility {
                 PopupWindow.createPopupInfoWindow("Unsupported type of file", "Error");
             }
         }
+        return selectedFile.getName();
     }
 }

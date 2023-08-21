@@ -22,8 +22,17 @@
             <name>PlantUML</name>
             <url>file://${pom.basedir}/libs/PlantUML</url>
         </repository>
+        <repository>
+		    <id>ithaka</id>
+		    <url>http://beckchr.github.io/ithaka-maven/mvnrepo/</url>
+		</repository>
     </repositories>
     <dependencies>
+		<dependency>
+			<groupId>de.odysseus.ithaka</groupId>
+			<artifactId>ithaka-digraph</artifactId>
+			<version>1.0</version>
+		</dependency> 
         <dependency>
             <groupId>org.eclipse.jdt</groupId>
             <artifactId>org.eclipse.jdt.core</artifactId>
@@ -35,6 +44,17 @@
             <version>2.11.0</version>
         </dependency>
           <dependency>
+              <groupId>junit</groupId>
+              <artifactId>junit</artifactId>
+              <version>4.13.2</version>
+              <scope>test</scope>
+          </dependency>
+          <dependency>
+    		<groupId>org.junit.platform</groupId>
+    		<artifactId>junit-platform-suite-engine</artifactId>
+    		<version>1.8.1</version>
+		</dependency>
+		          <dependency>
               <groupId>org.junit.jupiter</groupId>
               <artifactId>junit-jupiter-api</artifactId>
               <version>5.9.2</version>
@@ -43,12 +63,6 @@
               <groupId>org.junit.jupiter</groupId>
               <artifactId>junit-jupiter</artifactId>
               <version>5.9.2</version>
-              <scope>test</scope>
-          </dependency>
-          <dependency>
-              <groupId>junit</groupId>
-              <artifactId>junit</artifactId>
-              <version>4.13.2</version>
               <scope>test</scope>
           </dependency>
           <dependency>

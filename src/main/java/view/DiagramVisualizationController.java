@@ -10,8 +10,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.WritableImage;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import javax.imageio.ImageIO;
@@ -25,13 +29,40 @@ public class DiagramVisualizationController {
     BorderPane borderPane;
     @FXML
     MenuBar menuBar;
+    
+    private SmartGraphPanel<String, String> graphView;
 
     private Controller diagramController;
     private ProjectTreeView projectTreeView;
+    private double graphViewNormalScaleX;
+    private double graphViewNormalScaleY;
 
     public void visualizeGraph(SmartGraphPanel<String, String> graphView) {
-        borderPane.setCenter(new ContentZoomPane(graphView));
+    	this.graphView = graphView;
+    	ContentZoomPane zoomPane = new ContentZoomPane(graphView);
+    	ScrollPane scrollPane = new ScrollPane(zoomPane);
+        scrollPane.setPannable(false);
+        graphViewNormalScaleX = graphView.getScaleX();
+        graphViewNormalScaleY = graphView.getScaleY();
+        String graphViewBackgroundColor = "#F4FFFB";
+        Color zoomPaneBackgroundColor = Color.web(graphViewBackgroundColor);
+        zoomPane.setBackground(new Background(new BackgroundFill(zoomPaneBackgroundColor, null, null)));
+        graphView.minWidthProperty().bind(borderPane.widthProperty());
+        graphView.minHeightProperty().bind(borderPane.heightProperty());
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+    	borderPane.setCenter(scrollPane);
         setTreeView(projectTreeView);
+        zoomPane.setOnScroll(event -> {
+            double zoomFactor = 1.1;
+            if (event.getDeltaY() >= 0) {
+            	graphView.setScaleX(graphView.getScaleX() * zoomFactor);
+            	graphView.setScaleY(graphView.getScaleY() * zoomFactor);
+            } else {
+            	graphView.setScaleX(graphView.getScaleX() / zoomFactor);
+            	graphView.setScaleY(graphView.getScaleY() / zoomFactor);
+            }
+        });
     }
 
     public void exportDiagramAsImage() {
@@ -40,8 +71,14 @@ public class DiagramVisualizationController {
             if (selectedDirectory == null) {
                 return;
             }
-            WritableImage image = borderPane.getCenter().snapshot(new SnapshotParameters(), null);
+            double changeScaleX = graphView.getScaleX();
+            double changeScaleY = graphView.getScaleY();
+            graphView.setScaleX(graphViewNormalScaleX);
+            graphView.setScaleY(graphViewNormalScaleY);
+            WritableImage image = graphView.snapshot(new SnapshotParameters(), null);
             ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", selectedDirectory);
+            graphView.setScaleX(changeScaleX);
+            graphView.setScaleY(changeScaleY);
         }catch (IOException e) {
             e.printStackTrace();
         }
@@ -112,4 +149,39 @@ public class DiagramVisualizationController {
         this.projectTreeView = projectTreeView;
         borderPane.setLeft(projectTreeView.treeView);
     }
+    
+    public SmartGraphPanel<String, String> applyLayout() {
+    	return diagramController.applyLayout();
+    }
+    
+    public void applySugiyama() {
+    	SmartGraphPanel<String, String> graphView = diagramController.applySpecificLayout("Sugiyama");
+        graphView.update();
+    }
+    
+    public void applyFruchtermanReingold() {
+    	SmartGraphPanel<String, String> graphView = diagramController.applySpecificLayout("Fruchterman_Reingold");
+        graphView.update();
+    }
+    
+    public void applyAdvancedFruchtermanReingold() {
+    	SmartGraphPanel<String, String> graphView = diagramController.applySpecificLayout("Advanced_Fruchterman_Reingold");
+        graphView.update();
+    }
+    
+    public void applySpring() {
+    	SmartGraphPanel<String, String> graphView = diagramController.applySpecificLayout("Spring");
+        graphView.update();
+    }
+    
+    public void applyAdvancedSpring() {
+    	SmartGraphPanel<String, String> graphView = diagramController.applySpecificLayout("Advanced_Spring");
+        graphView.update();
+    }
+    
+    public void applyKamadaKawai() {
+    	SmartGraphPanel<String, String> graphView = diagramController.applySpecificLayout("Kamada_Kawai");
+        graphView.update();
+    }
+    
 }

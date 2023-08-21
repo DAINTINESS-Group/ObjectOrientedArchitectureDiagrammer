@@ -8,6 +8,7 @@ import model.graph.ClassifierVertex;
 import org.javatuples.Triplet;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
@@ -23,7 +24,8 @@ public class JavaFXClassDiagramLoader {
     public Set<ClassifierVertex> loadDiagram() throws JsonParseException {
         Set<ClassifierVertex> sinkVertices = new HashSet<>();
         try {
-            String json = Files.readString(graphSavePath);
+        	byte[] encodedBytes = Files.readAllBytes(graphSavePath);
+        	String json = new String(encodedBytes, StandardCharsets.ISO_8859_1);
             Gson gson = new GsonBuilder().registerTypeAdapter(ClassifierVertex.class, new ClassifierVertexDeserializer()).create();
             ClassifierVertex[] sinkVerticesArray = gson.fromJson(json, ClassifierVertex[].class);
             Collections.addAll(sinkVertices, sinkVerticesArray);

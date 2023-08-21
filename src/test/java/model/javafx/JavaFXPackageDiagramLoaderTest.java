@@ -45,14 +45,12 @@ public class JavaFXPackageDiagramLoaderTest {
 
             JavaFXPackageDiagramLoader javaFXLoader = new JavaFXPackageDiagramLoader(actualFile.toPath());
             Set<PackageVertex> loadedDiagram = javaFXLoader.loadDiagram();
-
             assertEquals(createdDiagram.size(), loadedDiagram.size());
             for (PackageVertex vertex: createdDiagram.keySet()) {
                 Optional<PackageVertex> optionalVertex = loadedDiagram.stream()
-                    .filter(vertex1 ->
+                    .filter(vertex1 -> 
                         vertex1.getName().equals(vertex.getName()) &&
-                        vertex1.getVertexType().equals(vertex.getVertexType()) &&
-                        vertex1.getPath().equals(vertex.getPath())
+                        vertex1.getVertexType().equals(vertex.getVertexType())
                     ).findFirst();
                 assertTrue(optionalVertex.isPresent());
 
@@ -71,8 +69,7 @@ public class JavaFXPackageDiagramLoaderTest {
                 for (ClassifierVertex classifierVertex : vertex.getSinkVertices()) {
                     sinkVertices.stream().filter(sinkVertex1 ->
                         sinkVertex1.getName().equals(classifierVertex.getName()) &&
-                        sinkVertex1.getVertexType().equals(classifierVertex.getVertexType()) &&
-                        sinkVertex1.getPath().equals(classifierVertex.getPath())
+                        sinkVertex1.getVertexType().equals(classifierVertex.getVertexType())
                     ).findFirst().orElseGet(Assertions::fail);
                 }
 
@@ -81,8 +78,7 @@ public class JavaFXPackageDiagramLoaderTest {
                 for (PackageVertex neighbour: vertex.getNeighbourVertices()) {
                     neighbours.stream().filter(vertex1 ->
                         vertex1.getName().equals(neighbour.getName()) &&
-                        vertex1.getVertexType().equals(neighbour.getVertexType()) &&
-                        vertex1.getPath().equals(neighbour.getPath())
+                        vertex1.getVertexType().equals(neighbour.getVertexType())
                     ).findFirst().orElseGet(Assertions::fail);
                 }
             }

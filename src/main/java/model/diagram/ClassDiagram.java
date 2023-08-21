@@ -1,5 +1,6 @@
 package model.diagram;
 
+import model.diagram.arrangement.geometry.DiagramGeometry;
 import model.graph.Arc;
 import model.graph.ClassifierVertex;
 import org.javatuples.Pair;
@@ -12,7 +13,8 @@ public class ClassDiagram {
     private Map<ClassifierVertex, Set<Arc<ClassifierVertex>>> diagram;
     private Map<Path, ClassifierVertex> sinkVertices;
     private final Map<ClassifierVertex, Integer> graphNodes;
-    private Map<Integer, Pair<Double, Double>> diagramGeometry;
+    private Map<Integer, Pair<Double, Double>> diagramGeometryGraphML;
+    private DiagramGeometry diagramGeometry;
 
     public ClassDiagram() {
         graphNodes = new HashMap<>();
@@ -58,8 +60,12 @@ public class ClassDiagram {
         this.diagram = diagram;
     }
 
-    public void setDiagramGeometry(Map<Integer, Pair<Double, Double>> diagramGeometry) {
-        this.diagramGeometry = diagramGeometry;
+    public void setGraphMLDiagramGeometry(Map<Integer, Pair<Double, Double>> diagramGeometryGraphML) {
+        this.diagramGeometryGraphML = diagramGeometryGraphML;
+    }
+    
+    public void setDiagramGeometry(DiagramGeometry diagramGeometry) {
+    	this.diagramGeometry = diagramGeometry;
     }
 
     public Map<ClassifierVertex, Set<Arc<ClassifierVertex>>> getDiagram() {
@@ -70,7 +76,11 @@ public class ClassDiagram {
         return graphNodes;
     }
 
-    public Map<Integer, Pair<Double, Double>> getDiagramGeometry() {
+    public Map<Integer, Pair<Double, Double>> getGraphMLDiagramGeometry() {
+        return diagramGeometryGraphML;
+    }
+    
+    public DiagramGeometry getDiagramGeometry() {
         return diagramGeometry;
     }
 

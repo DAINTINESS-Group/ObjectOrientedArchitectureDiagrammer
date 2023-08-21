@@ -25,7 +25,7 @@ public class GraphMLClassifierVertex {
     public StringBuilder convertSinkVertex() {
         for (Map.Entry<ClassifierVertex, Integer> sinkVertex: classDiagram.getGraphNodes().entrySet()) {
             graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLSinkVertexSyntax(
-                    getSinkVertexDescription(sinkVertex.getKey(), sinkVertex.getValue(), classDiagram.getDiagramGeometry().get(sinkVertex.getValue()))));
+                    getSinkVertexDescription(sinkVertex.getKey(), sinkVertex.getValue(), classDiagram.getGraphMLDiagramGeometry().get(sinkVertex.getValue()))));
         }
         return graphMLBuffer;
     }

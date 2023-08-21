@@ -56,7 +56,7 @@ public class DiagramCreationController {
     }
 
     public void loadDiagram(ActionEvent event) {
-        MenuUtility.loadDiagram(menuBar, event);
+        FileAndDirectoryUtility.setLoadedDiagramName(MenuUtility.loadDiagram(menuBar, event));
     }
 
     public void aboutPage() { MenuUtility.aboutPage(menuBar); }

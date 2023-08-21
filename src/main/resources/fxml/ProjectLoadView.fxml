@@ -55,8 +55,14 @@
                 <MenuItem mnemonicParsing="false" onAction="#loadDiagram" text="Package" />
               </items>
             </Menu>
-            <SeparatorMenuItem mnemonicParsing="false" />
             <MenuItem mnemonicParsing="false" onAction="#closeDiagram" text="Close Diagram" />
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <Menu mnemonicParsing="false" text="Export..." fx:id="exportMenu" visible="false">
+            	<items>
+            		<MenuItem mnemonicParsing="false" onAction="#exportDiagramAsImage" text="Image" />
+            		<MenuItem mnemonicParsing="false" onAction="#exportDiagramAsText" text="Text" />
+        		</items>
+          	</Menu>
           </items>
         </Menu>
         <Menu mnemonicParsing="false" text="Help">

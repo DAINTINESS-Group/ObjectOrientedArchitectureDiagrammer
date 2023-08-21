@@ -22,7 +22,7 @@ public class GraphMLPackageVertex {
     public StringBuilder convertVertex() {
         for (Map.Entry<PackageVertex, Integer> entry: packageDiagram.getGraphNodes().entrySet()) {
             graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLVertexSyntax(getVertexDescription(entry.getKey(),
-                    entry.getValue(), packageDiagram.getDiagramGeometry().get(entry.getValue()))));
+                    entry.getValue(), packageDiagram.getGraphMLDiagramGeometry().get(entry.getValue()))));
         }
         return graphMLBuffer;
     }

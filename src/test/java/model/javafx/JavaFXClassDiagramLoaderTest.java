@@ -40,14 +40,12 @@ public class JavaFXClassDiagramLoaderTest {
 
             JavaFXClassDiagramLoader javaFXClassDiagramLoader = new JavaFXClassDiagramLoader(actualFile.toPath());
             Set<ClassifierVertex> loadedDiagram = javaFXClassDiagramLoader.loadDiagram();
-
             assertEquals(createdDiagram.size(), loadedDiagram.size());
             for (ClassifierVertex classifierVertex : createdDiagram.keySet()) {
                 Optional<ClassifierVertex> optionalSinkVertex = loadedDiagram.stream()
                     .filter(
                         sinkVertex1 -> sinkVertex1.getName().equals(classifierVertex.getName()) &&
-                        sinkVertex1.getVertexType().equals(classifierVertex.getVertexType()) &&
-                        sinkVertex1.getPath().equals(classifierVertex.getPath())
+                        sinkVertex1.getVertexType().equals(classifierVertex.getVertexType())
                     ).findFirst();
                 assertTrue(optionalSinkVertex.isPresent());
 

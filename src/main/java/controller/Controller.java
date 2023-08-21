@@ -2,12 +2,10 @@ package controller;
 
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import manager.SourceProject;
-import org.javatuples.Pair;
 
 import java.io.File;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.Map;
 
 public interface Controller {
 
@@ -26,9 +24,13 @@ public interface Controller {
     void convertTreeToDiagram(List<String> chosenFileNames);
 
     /**This method arranges the diagram by calling the DiagramManager's arrangeDiagram method
-     * @return a Map with the nodes' ids as keys and their geometry as value
+     * @return a Map with the nodes' strings as keys and their geometry as value
      */
-    Map<Integer, Pair<Double, Double>> arrangeDiagram();
+    void arrangeDiagram();
+    
+    SmartGraphPanel<String, String> applyLayout();
+    
+    SmartGraphPanel<String, String> applySpecificLayout(String choice);
 
     /**This method exports the diagram to a GraphML file by calling the DiagramManager's exportDiagramToGraphML
      * method
@@ -52,6 +54,11 @@ public interface Controller {
      * @return the created graphView
      */
     SmartGraphPanel<String, String> visualizeJavaFXGraph();
+    
+    /**This method creates the Loaded Diagram's JavaFX graphView by calling the DiagramManager's visualizeLoadedJavaFXGraph method
+     * @return the created graphView
+     */
+    SmartGraphPanel<String, String> visualizeLoadedJavaFXGraph();
 
     /**This method exports the diagram as an image with the help of PlantUML by calling the DiagramManager's
      * exportPlantUMLDiagram method
