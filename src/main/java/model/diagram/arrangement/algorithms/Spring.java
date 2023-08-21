@@ -12,6 +12,10 @@ import java.awt.geom.Point2D;
 public class Spring implements LayoutAlgorithm{
 
 	private Graph<String, String> graph;
+	final static int MIN_X_WINDOW_VALUE = 25;
+	final static int MIN_Y_WINDOW_VALUE = 25;
+	final static int GRAPH_X_SIZE = 1200;
+	final static int GRAPH_Y_SIZE = 725;
 	
 	public Spring() {
     }
@@ -25,17 +29,17 @@ public class Spring implements LayoutAlgorithm{
 	public DiagramGeometry arrangeDiagram() {
 		DiagramGeometry diagramGeometry = new DiagramGeometry();
 		AbstractLayout<String, String> layout = new SpringLayout<>(graph);
-        layout.setSize(new Dimension(1200, 725));
+        layout.setSize(new Dimension(GRAPH_X_SIZE, GRAPH_Y_SIZE));
         for (String vertex : graph.getVertices()) {
             Point2D coordinates = layout.apply(vertex);
             GeometryNode geometryNode = new GeometryNode(vertex);
             double x = coordinates.getX();
             double y = coordinates.getY();            
-        	if (x < 25) {
-        		x = 25;
+        	if (x < MIN_X_WINDOW_VALUE) {
+        		x = MIN_X_WINDOW_VALUE;
         	}
-        	if (y < 25) {
-        		y = 25;
+        	if (y < MIN_Y_WINDOW_VALUE) {
+        		y = MIN_Y_WINDOW_VALUE;
         	}
             diagramGeometry.addGeometry(geometryNode, x, y);
         }

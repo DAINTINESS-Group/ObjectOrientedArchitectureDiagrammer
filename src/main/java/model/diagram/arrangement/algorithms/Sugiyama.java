@@ -20,7 +20,12 @@ public class Sugiyama implements LayoutAlgorithm{
 	private Graph<String, String> graph;
 	private Map<String, Integer> verticesMap;
 	private SimpleDigraph<Integer> digraph;
-
+	final static int MIN_X_WINDOW_VALUE = 25;
+	final static int MIN_Y_WINDOW_VALUE = 25;
+	final static int VERTEX_X_SIZE = 20;
+	final static int VERTEX_Y_SIZE = 20;
+	final static int HORIZONTAL_SPACING = 125;
+	final static int VERTICAL_SPACING = 50;
 	
 	public Sugiyama() {
 		verticesMap = new HashMap<>();
@@ -40,10 +45,10 @@ public class Sugiyama implements LayoutAlgorithm{
 		DigraphLayoutDimensionProvider<Integer> dimensionProvider = new DigraphLayoutDimensionProvider<Integer>() {
 			@Override
 			public DigraphLayoutDimension getDimension(Integer node) {
-				return new DigraphLayoutDimension(20, 20);
+				return new DigraphLayoutDimension(VERTEX_X_SIZE, VERTEX_Y_SIZE); // we use OOAD vertices' size, in order to evaluate vertices coordinates based on our vertices sizes.
 			}
 		};
-		DigrpahLayoutBuilder<Integer,Boolean> builder = new SugiyamaBuilder<Integer,Boolean>(125, 50);
+		DigrpahLayoutBuilder<Integer,Boolean> builder = new SugiyamaBuilder<Integer,Boolean>(HORIZONTAL_SPACING, VERTICAL_SPACING);
 		DigraphLayout<Integer,Boolean> layout = builder.build(digraph, dimensionProvider);
 		for (DigraphLayoutNode<Integer> vertex : layout.getLayoutGraph().vertices()) {
 			for (Map.Entry<String, Integer> entryVertex : verticesMap.entrySet()) {
@@ -51,11 +56,11 @@ public class Sugiyama implements LayoutAlgorithm{
 	            	double x = vertex.getPoint().x;
 	            	double y = vertex.getPoint().y;
 	                GeometryNode geometryNode = new GeometryNode(entryVertex.getKey());
-	            	if (vertex.getPoint().x < 25) {
-	            		x = 25;
+	            	if (vertex.getPoint().x < MIN_X_WINDOW_VALUE) {
+	            		x = MIN_X_WINDOW_VALUE;
 	            	}
-	            	if (vertex.getPoint().y < 25) {
-	            		y = 25;
+	            	if (vertex.getPoint().y < MIN_Y_WINDOW_VALUE) {
+	            		y = MIN_Y_WINDOW_VALUE;
 	            	}
 	            	diagramGeometry.addGeometry(geometryNode, x, y);
 	                break;
