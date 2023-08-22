@@ -14,7 +14,7 @@ public class Spring implements LayoutAlgorithm{
 	private Graph<String, String> graph;
 	private final static int MIN_X_WINDOW_VALUE = 25;
 	private final static int MIN_Y_WINDOW_VALUE = 25;
-	private final static int GRAPH_X_SIZE = 1200;
+	private final static int GRAPH_X_SIZE = 1250;
 	private final static int GRAPH_Y_SIZE = 725;
 	
 	public Spring() {
@@ -28,7 +28,9 @@ public class Spring implements LayoutAlgorithm{
 	@Override
 	public DiagramGeometry arrangeDiagram() {
 		DiagramGeometry diagramGeometry = new DiagramGeometry();
-		AbstractLayout<String, String> layout = new SpringLayout<>(graph);
+		SpringLayout<String, String> layout = new SpringLayout<>(graph);
+		layout.setForceMultiplier(0.1);
+		layout.setRepulsionRange(600);
 		VisualizationViewer<String, String> vv = new VisualizationViewer<String, String>(layout);
 		// layout.setSize(new Dimension(GRAPH_X_SIZE, GRAPH_Y_SIZE));
         for (String vertex : graph.getVertices()) {

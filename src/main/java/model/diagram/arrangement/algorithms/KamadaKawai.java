@@ -28,7 +28,9 @@ public class KamadaKawai implements LayoutAlgorithm{
 	@Override
 	public DiagramGeometry arrangeDiagram() {
 		DiagramGeometry diagramGeometry = new DiagramGeometry();
-		AbstractLayout<String, String> layout = new KKLayout<>(graph);
+		KKLayout<String, String> layout = new KKLayout<>(graph);
+		layout.setSize(new Dimension(GRAPH_X_SIZE, GRAPH_Y_SIZE));
+		layout.setLengthFactor(1.5);
 		VisualizationViewer<String, String> vv = new VisualizationViewer<String, String>(layout);
         // layout.setSize(new Dimension(GRAPH_X_SIZE, GRAPH_Y_SIZE));
         for (String vertex : graph.getVertices()) {
