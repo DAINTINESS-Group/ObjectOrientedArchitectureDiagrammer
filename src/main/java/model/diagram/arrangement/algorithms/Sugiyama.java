@@ -20,12 +20,12 @@ public class Sugiyama implements LayoutAlgorithm{
 	private Graph<String, String> graph;
 	private Map<String, Integer> verticesMap;
 	private SimpleDigraph<Integer> digraph;
-	final static int MIN_X_WINDOW_VALUE = 25;
-	final static int MIN_Y_WINDOW_VALUE = 25;
-	final static int VERTEX_X_SIZE = 20;
-	final static int VERTEX_Y_SIZE = 20;
-	final static int HORIZONTAL_SPACING = 125;
-	final static int VERTICAL_SPACING = 50;
+	private final static int MIN_X_WINDOW_VALUE = 25;
+	private final static int MIN_Y_WINDOW_VALUE = 25;
+	private final static int VERTEX_X_SIZE = 20;
+	private final static int VERTEX_Y_SIZE = 20;
+	private final static int HORIZONTAL_SPACING = 125;
+	private final static int VERTICAL_SPACING = 50;
 	
 	public Sugiyama() {
 		verticesMap = new HashMap<>();
