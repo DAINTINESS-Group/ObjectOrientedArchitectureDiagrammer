@@ -38,6 +38,8 @@ public class Sugiyama implements LayoutAlgorithm{
 	
 	@Override
 	public DiagramGeometry arrangeDiagram() {
+		double maxXdistance = 0.0;
+		double maxYdistance = 0.0;
 		DiagramGeometry diagramGeometry = new DiagramGeometry();
 		digraph = new SimpleDigraphAdapter<Integer>();
 		fillVertexMap();
@@ -57,16 +59,23 @@ public class Sugiyama implements LayoutAlgorithm{
 	            	double y = vertex.getPoint().y;
 	                GeometryNode geometryNode = new GeometryNode(entryVertex.getKey());
 	            	if (vertex.getPoint().x < MIN_X_WINDOW_VALUE) {
-	            		x = MIN_X_WINDOW_VALUE;
+	            		double difference = MIN_X_WINDOW_VALUE - x;
+	            		if(difference > maxXdistance) {
+	            			maxXdistance = difference;
+	            		}
 	            	}
 	            	if (vertex.getPoint().y < MIN_Y_WINDOW_VALUE) {
-	            		y = MIN_Y_WINDOW_VALUE;
+	            		double difference = MIN_Y_WINDOW_VALUE - y;
+	            		if(difference > maxYdistance) {
+	            			maxYdistance = difference;
+	            		}
 	            	}
 	            	diagramGeometry.addGeometry(geometryNode, x, y);
 	                break;
 	            }
 	        }
 		}
+        diagramGeometry.correctPositions(maxXdistance, maxYdistance);
         return diagramGeometry;
 	}
 	

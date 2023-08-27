@@ -1,6 +1,5 @@
 package model.diagram.arrangement.algorithms;
 
-import edu.uci.ics.jung.algorithms.layout.AbstractLayout;
 import edu.uci.ics.jung.algorithms.layout.SpringLayout;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
@@ -14,7 +13,7 @@ public class Spring implements LayoutAlgorithm{
 	private Graph<String, String> graph;
 	private final static int MIN_X_WINDOW_VALUE = 25;
 	private final static int MIN_Y_WINDOW_VALUE = 25;
-	private final static int GRAPH_X_SIZE = 1250;
+	private final static int GRAPH_X_SIZE = 1500;
 	private final static int GRAPH_Y_SIZE = 725;
 	
 	public Spring() {
@@ -27,25 +26,34 @@ public class Spring implements LayoutAlgorithm{
 	
 	@Override
 	public DiagramGeometry arrangeDiagram() {
+		double maxXdistance = 0.0;
+		double maxYdistance = 0.0;
 		DiagramGeometry diagramGeometry = new DiagramGeometry();
 		SpringLayout<String, String> layout = new SpringLayout<>(graph);
 		layout.setForceMultiplier(0.1);
-		layout.setRepulsionRange(600);
-		VisualizationViewer<String, String> vv = new VisualizationViewer<String, String>(layout);
+		layout.setRepulsionRange(500);
 		// layout.setSize(new Dimension(GRAPH_X_SIZE, GRAPH_Y_SIZE));
+		VisualizationViewer<String, String> vv = new VisualizationViewer<String, String>(layout);
         for (String vertex : graph.getVertices()) {
-            GeometryNode geometryNode = new GeometryNode(vertex);
-            double x = layout.getX(vertex);
-            double y = layout.getY(vertex);            
+        	GeometryNode geometryNode = new GeometryNode(vertex);
+        	double x = layout.getX(vertex);
+        	double y = layout.getY(vertex);
         	if (x < MIN_X_WINDOW_VALUE) {
-        		x = MIN_X_WINDOW_VALUE;
+        		double difference = MIN_X_WINDOW_VALUE - x;
+        		if(difference > maxXdistance) {
+        			maxXdistance = difference;
+        		}
         	}
         	if (y < MIN_Y_WINDOW_VALUE) {
-        		y = MIN_Y_WINDOW_VALUE;
+        		double difference = MIN_Y_WINDOW_VALUE - y;
+        		if(difference > maxYdistance) {
+        			maxYdistance = difference;
+        		}
         	}
-            diagramGeometry.addGeometry(geometryNode, x, y);
+        	diagramGeometry.addGeometry(geometryNode, x, y);
         }
-		return diagramGeometry;
+        diagramGeometry.correctPositions(maxXdistance, maxYdistance);
+        return diagramGeometry;
 	}
 
 }
