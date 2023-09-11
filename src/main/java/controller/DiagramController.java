@@ -4,6 +4,7 @@ import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import com.google.gson.JsonParseException;
 import manager.DiagramManager;
 import manager.DiagramManagerFactory;
+import manager.DiagramType;
 import manager.SourceProject;
 
 import java.io.File;
@@ -16,7 +17,8 @@ public class DiagramController implements Controller {
 
 	public DiagramController(String diagramType) {
 		DiagramManagerFactory diagramManagerFactory = new DiagramManagerFactory();
-		diagramManager = diagramManagerFactory.createDiagramManager(diagramType);
+		DiagramType diagramEnumType = DiagramType.valueOf(diagramType.toUpperCase());
+		diagramManager = diagramManagerFactory.createDiagramManager(diagramEnumType);
 	}
 
 	public SourceProject createTree(Path sourcePackagePath) {

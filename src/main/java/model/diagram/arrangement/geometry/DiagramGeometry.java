@@ -36,7 +36,7 @@ public class DiagramGeometry {
 	}
 	
 	public void correctPositions(double x, double y) {
-		// We hold minX and minY coordinates of the system, in order to bring the graph to match the left side and upper side of the window.
+		// We store minX and minY coordinates of the system, in order to bring the graph to match the left side and upper side of the window.
 		double minX = Double.POSITIVE_INFINITY;
 		double minY = Double.POSITIVE_INFINITY;
 		double xDifference;

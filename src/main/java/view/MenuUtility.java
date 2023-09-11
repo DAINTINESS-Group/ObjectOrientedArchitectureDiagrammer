@@ -3,6 +3,7 @@ package view;
 import com.google.gson.JsonParseException;
 import controller.Controller;
 import controller.ControllerFactory;
+import controller.ControllerType;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -78,7 +79,8 @@ public class MenuUtility {
 
     public static String loadDiagram(MenuBar menuBar, ActionEvent event) {
         ControllerFactory controllerFactory = new ControllerFactory();
-        Controller diagramController = controllerFactory.createController("Uml_Diagram", ((MenuItem) event.getSource()).getText());
+        
+        Controller diagramController = controllerFactory.createController(ControllerType.UML_DIAGRAM, ((MenuItem) event.getSource()).getText());
         File selectedFile = FileAndDirectoryUtility.loadFile(String.format("Load %s Diagram", ((MenuItem) event.getSource()).getText()), menuBar);
         if (selectedFile == null) {
             return null;

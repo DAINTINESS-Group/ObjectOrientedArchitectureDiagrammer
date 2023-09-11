@@ -9,6 +9,7 @@ import edu.uci.ics.jung.graph.util.EdgeType;
 import model.diagram.ClassDiagram;
 import model.diagram.arrangement.algorithms.LayoutAlgorithm;
 import model.diagram.arrangement.algorithms.LayoutAlgorithmFactory;
+import model.diagram.arrangement.algorithms.LayoutAlgorithmType;
 import model.diagram.arrangement.geometry.DiagramGeometry;
 import model.graph.Arc;
 import model.graph.ClassifierVertex;
@@ -42,7 +43,7 @@ public class ClassDiagramArrangementManager implements DiagramArrangementManager
     @Override
     public DiagramGeometry arrangeDiagram() {
     	LayoutAlgorithmFactory layoutAlgorithmFactory = new LayoutAlgorithmFactory();
-    	LayoutAlgorithm sugiyama = layoutAlgorithmFactory.createLayoutAlgorithm("Sugiyama");
+    	LayoutAlgorithm sugiyama = layoutAlgorithmFactory.createLayoutAlgorithm(LayoutAlgorithmType.SUGIYAMA);
     	sugiyama.setGraph(graph);
         return sugiyama.arrangeDiagram();
     }
@@ -50,7 +51,8 @@ public class ClassDiagramArrangementManager implements DiagramArrangementManager
     @Override
     public DiagramGeometry applyNewLayout(String algorithmType){
     	LayoutAlgorithmFactory layoutAlgorithmFactory = new LayoutAlgorithmFactory();
-    	LayoutAlgorithm layout = layoutAlgorithmFactory.createLayoutAlgorithm(algorithmType);
+    	LayoutAlgorithmType algorithmEnumType = LayoutAlgorithmType.valueOf(algorithmType.toUpperCase());
+    	LayoutAlgorithm layout = layoutAlgorithmFactory.createLayoutAlgorithm(algorithmEnumType);
     	layout.setGraph(graph);
     	return layout.arrangeDiagram();
     }

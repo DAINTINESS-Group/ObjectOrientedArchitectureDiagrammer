@@ -2,10 +2,10 @@ package manager;
 
 public class DiagramManagerFactory {
 
-    public DiagramManager createDiagramManager(String diagramType) {
-        if (DiagramType.valueOf(diagramType.toUpperCase()).equals(DiagramType.CLASS)) {
+    public DiagramManager createDiagramManager(DiagramType diagramType) {
+        if (diagramType == DiagramType.CLASS) {
             return new ClassDiagramManager();
-        }else if (DiagramType.valueOf(diagramType.toUpperCase()).equals(DiagramType.PACKAGE)) {
+        }else if (diagramType == DiagramType.PACKAGE) {
             return new PackageDiagramManager();
         }else {
             throw new RuntimeException();
