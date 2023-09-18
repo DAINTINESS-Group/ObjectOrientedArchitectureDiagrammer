@@ -1,7 +1,6 @@
 package model.graphml;
 
 import manager.ClassDiagramManager;
-import manager.SourceProject;
 import model.diagram.graphml.GraphMLClassifierVertex;
 import model.graph.ClassifierVertex;
 import model.graph.VertexType;
@@ -24,7 +23,7 @@ public class GraphMLSinkPackageVertexTest {
     void convertSinkVerticesToGraphMLTest() {
         try {
             ClassDiagramManager classDiagramManager = new ClassDiagramManager();
-            SourceProject sourceProject = classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
+            classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
             classDiagramManager.convertTreeToDiagram(List.of("AddLatexCommand", "ChangeVersionsStrategyCommand", "Command", "CommandFactory",
                     "CreateCommand", "DisableVersionsManagementCommand", "EditCommand", "EnableVersionsManagementCommand",
                     "LoadCommand", "RollbackToPreviousVersionCommand", "SaveCommand"));

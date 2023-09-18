@@ -1,7 +1,6 @@
 package model;
 
 import manager.ClassDiagramManager;
-import manager.SourceProject;
 import model.diagram.GraphClassDiagramConverter;
 import model.diagram.ShadowCleaner;
 import model.graph.Arc;
@@ -25,7 +24,7 @@ public class GraphClassDiagramConverterTest {
         try {
             ClassDiagramManager classDiagramManager = new ClassDiagramManager();
             List<String> chosenFiles = Arrays.asList("MainWindow", "LatexEditorView", "OpeningWindow");
-            SourceProject sourceProject = classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
+            classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
             classDiagramManager.convertTreeToDiagram(chosenFiles);
             Set<ClassifierVertex> graphNodes = classDiagramManager.getClassDiagram().getGraphNodes().keySet();
             Map<ClassifierVertex, Set<Arc<ClassifierVertex>>> diagram = classDiagramManager.getClassDiagram().getDiagram();

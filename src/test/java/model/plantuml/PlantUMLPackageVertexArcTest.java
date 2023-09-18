@@ -1,7 +1,6 @@
 package model.plantuml;
 
 import manager.PackageDiagramManager;
-import manager.SourceProject;
 import model.diagram.plantuml.PlantUMLPackageVertexArc;
 import org.junit.jupiter.api.Test;
 
@@ -31,7 +30,7 @@ class PlantUMLPackageVertexArcTest {
 					"src.view ..> src.model.strategies\n";
 
 			PackageDiagramManager packageDiagramManager = new PackageDiagramManager();
-			SourceProject sourceProject = packageDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
+			packageDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
 			packageDiagramManager.convertTreeToDiagram(List.of(
 				"src.view",
 				"src.model",

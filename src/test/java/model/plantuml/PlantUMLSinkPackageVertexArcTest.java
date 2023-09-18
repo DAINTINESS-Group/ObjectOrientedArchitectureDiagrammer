@@ -1,7 +1,6 @@
 package model.plantuml;
 
 import manager.ClassDiagramManager;
-import manager.SourceProject;
 import model.diagram.plantuml.PlantUMLClassifierVertexArc;
 import org.junit.jupiter.api.Test;
 
@@ -34,7 +33,7 @@ public class PlantUMLSinkPackageVertexArcTest {
                     "VolatileVersionsStrategy ..|> VersionsStrategy\n";
 
             ClassDiagramManager classDiagramManager = new ClassDiagramManager();
-            SourceProject sourceProject = classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
+            classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
             classDiagramManager.convertTreeToDiagram(List.of("StableVersionsStrategy", "VersionsStrategy", "VersionsStrategyFactory", "VolatileVersionsStrategy",
                     "VersionsManager", "Document", "DocumentManager"));
 

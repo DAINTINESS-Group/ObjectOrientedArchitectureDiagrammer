@@ -1,7 +1,6 @@
 package model;
 
 import manager.ClassDiagramManager;
-import manager.SourceProject;
 import model.diagram.GraphClassDiagramConverter;
 import model.diagram.ShadowCleaner;
 import model.graph.Arc;
@@ -28,7 +27,7 @@ public class ShadowCleanerTest {
             ClassDiagramManager classDiagramManager = new ClassDiagramManager();
             List<String> chosenFiles = Arrays.asList("MainWindow", "LatexEditorView", "ChooseTemplate", "LatexEditorController",
                 "VersionsManager", "DocumentManager", "Document");
-            SourceProject sourceProject = classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
+            classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
             classDiagramManager.convertTreeToDiagram(chosenFiles);
             Map<ClassifierVertex, Integer> graphNodes = classDiagramManager.getClassDiagram().getGraphNodes();
 

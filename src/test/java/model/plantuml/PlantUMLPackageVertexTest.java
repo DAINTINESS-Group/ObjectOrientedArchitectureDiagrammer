@@ -1,7 +1,6 @@
 package model.plantuml;
 
 import manager.PackageDiagramManager;
-import manager.SourceProject;
 import model.diagram.plantuml.PlantUMLPackageVertex;
 import org.junit.jupiter.api.Test;
 
@@ -40,7 +39,7 @@ public class PlantUMLPackageVertexTest {
                 "}\n\n";
 
             PackageDiagramManager packageDiagramManager = new PackageDiagramManager();
-            SourceProject sourceProject = packageDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
+            packageDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
             packageDiagramManager.convertTreeToDiagram(List.of(
                 "src",
                 "src.view",

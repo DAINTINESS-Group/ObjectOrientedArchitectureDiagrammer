@@ -1,7 +1,6 @@
 package model.exportation;
 
 import manager.ClassDiagramManager;
-import manager.SourceProject;
 import model.diagram.exportation.DiagramExporter;
 import model.diagram.exportation.PlantUMLClassDiagramTextExporter;
 import model.diagram.plantuml.PlantUMLClassifierVertex;
@@ -27,7 +26,7 @@ public class PlantUMLClassDiagramTextExporterTest {
     void exportDiagramTest() {
         try {
             ClassDiagramManager classDiagramManager = new ClassDiagramManager();
-            SourceProject sourceProject = classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
+            classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
             classDiagramManager.convertTreeToDiagram(List.of("StableVersionsStrategy", "VersionsStrategy", "VersionsStrategyFactory", "VolatileVersionsStrategy",
                     "VersionsManager", "Document", "DocumentManager"));
 

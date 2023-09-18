@@ -1,7 +1,6 @@
 package model.graphml;
 
 import manager.PackageDiagramManager;
-import manager.SourceProject;
 import model.diagram.graphml.GraphMLPackageVertex;
 import model.graph.PackageVertex;
 import org.javatuples.Pair;
@@ -23,7 +22,7 @@ class GraphMLPackageVertexTest {
     void convertVerticesToGraphMLTest() {
         try {
             PackageDiagramManager packageDiagramManager = new PackageDiagramManager();
-            SourceProject sourceProject = packageDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
+            packageDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
             packageDiagramManager.convertTreeToDiagram(List.of(
                 "src.view",
                 "src.model",

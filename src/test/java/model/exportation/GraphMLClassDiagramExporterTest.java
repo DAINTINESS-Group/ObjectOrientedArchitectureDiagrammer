@@ -1,7 +1,6 @@
 package model.exportation;
 
 import manager.ClassDiagramManager;
-import manager.SourceProject;
 import model.diagram.arrangement.ClassDiagramArrangementManager;
 import model.diagram.arrangement.DiagramArrangementManagerInterface;
 import model.diagram.exportation.DiagramExporter;
@@ -34,7 +33,7 @@ public class GraphMLClassDiagramExporterTest {
         try {
             ClassDiagramManager classDiagramManager = new ClassDiagramManager();
             List<String> chosenFiles = Arrays.asList("MainWindow", "LatexEditorView", "OpeningWindow");
-            SourceProject sourceProject = classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
+            classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
             classDiagramManager.convertTreeToDiagram(chosenFiles);
             classDiagramManager.arrangeDiagram();
             DiagramArrangementManagerInterface classDiagramArrangement = new ClassDiagramArrangementManager(classDiagramManager.getClassDiagram());

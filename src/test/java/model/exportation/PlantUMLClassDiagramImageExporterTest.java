@@ -5,7 +5,6 @@ import com.github.romankh3.image.comparison.ImageComparisonUtil;
 import com.github.romankh3.image.comparison.model.ImageComparisonResult;
 import com.github.romankh3.image.comparison.model.ImageComparisonState;
 import manager.ClassDiagramManager;
-import manager.SourceProject;
 import model.diagram.exportation.DiagramExporter;
 import model.diagram.exportation.PlantUMLClassDiagramImageExporter;
 import model.diagram.plantuml.PlantUMLClassifierVertex;
@@ -33,7 +32,7 @@ public class PlantUMLClassDiagramImageExporterTest {
     void exportDiagramTest() {
         try {
             ClassDiagramManager classDiagramManager = new ClassDiagramManager();
-            SourceProject sourceProject = classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
+            classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
             classDiagramManager.convertTreeToDiagram(List.of("StableVersionsStrategy", "VersionsStrategy", "VersionsStrategyFactory", "VolatileVersionsStrategy",
                     "VersionsManager", "Document", "DocumentManager"));
 

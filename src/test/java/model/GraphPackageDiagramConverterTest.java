@@ -1,7 +1,6 @@
 package model;
 
 import manager.PackageDiagramManager;
-import manager.SourceProject;
 import model.diagram.GraphPackageDiagramConverter;
 import model.graph.Arc;
 import model.graph.PackageVertex;
@@ -23,7 +22,7 @@ public class GraphPackageDiagramConverterTest {
     void convertGraphToPackageDiagramTest() {
         try {
             PackageDiagramManager packageDiagramManager = new PackageDiagramManager();
-            SourceProject sourceProject = packageDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
+            packageDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
             packageDiagramManager.convertTreeToDiagram(List.of(
                 "src.view",
                 "src.model",
