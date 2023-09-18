@@ -13,7 +13,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class PlantUMLSinkPackageVertexArcTest {
+public class PlantUMLClassifierVertexArcTest {
 
     Path currentDirectory = Path.of(".");
 
