@@ -8,15 +8,13 @@ import edu.uci.ics.jung.algorithms.layout.FRLayout2;
 
 import edu.uci.ics.jung.visualization.VisualizationViewer;
 
-import java.awt.Dimension;
-
 public class AdvancedFruchtermanReingold implements LayoutAlgorithm{
 
 	private Graph<String, String> graph;
 	private final static int MIN_X_WINDOW_VALUE = 25;
 	private final static int MIN_Y_WINDOW_VALUE = 25;
-	private final static int GRAPH_X_SIZE = 1200;
-	private final static int GRAPH_Y_SIZE = 725;
+	// private final static int GRAPH_X_SIZE = 1200;
+	// private final static int GRAPH_Y_SIZE = 725;
 	
 	public AdvancedFruchtermanReingold() {
     }
@@ -32,7 +30,8 @@ public class AdvancedFruchtermanReingold implements LayoutAlgorithm{
 		double maxYdistance = 0.0;
 		DiagramGeometry diagramGeometry = new DiagramGeometry();
 		AbstractLayout<String, String> layout = new FRLayout2<>(graph);
-        VisualizationViewer<String, String> vv = new VisualizationViewer<String, String>(layout);
+        @SuppressWarnings("unused")
+		VisualizationViewer<String, String> vv = new VisualizationViewer<String, String>(layout);
         // layout.setSize(new Dimension(GRAPH_X_SIZE, GRAPH_Y_SIZE));
         for (String vertex : graph.getVertices()) {
         	GeometryNode geometryNode = new GeometryNode(vertex);
