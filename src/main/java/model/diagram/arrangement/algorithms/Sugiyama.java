@@ -82,7 +82,7 @@ public class Sugiyama implements LayoutAlgorithm{
 	private void fillNeighboursMap() {
 		for (String edge : graph.getEdges()){
 			String[] vertices = edge.split(" ");
-        	digraph.add(verticesMap.get(vertices[0]), verticesMap.get(vertices[1]));
+			digraph.add(verticesMap.get(vertices[0]), verticesMap.get(vertices[1]));
 		}
 	}
 	

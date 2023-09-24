@@ -32,7 +32,7 @@ public class AdvancedFruchtermanReingold implements LayoutAlgorithm{
 		AbstractLayout<String, String> layout = new FRLayout2<>(graph);
 		@SuppressWarnings("unused")
 		VisualizationViewer<String, String> vv = new VisualizationViewer<String, String>(layout);
-        // layout.setSize(new Dimension(GRAPH_X_SIZE, GRAPH_Y_SIZE));
+		// layout.setSize(new Dimension(GRAPH_X_SIZE, GRAPH_Y_SIZE));
 		for (String vertex : graph.getVertices()) {
 			GeometryNode geometryNode = new GeometryNode(vertex);
 			double x = layout.getX(vertex);
