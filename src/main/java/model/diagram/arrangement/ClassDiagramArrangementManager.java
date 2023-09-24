@@ -45,7 +45,7 @@ public class ClassDiagramArrangementManager implements DiagramArrangementManager
     	LayoutAlgorithmFactory layoutAlgorithmFactory = new LayoutAlgorithmFactory();
     	LayoutAlgorithm sugiyama = layoutAlgorithmFactory.createLayoutAlgorithm(LayoutAlgorithmType.SUGIYAMA);
     	sugiyama.setGraph(graph);
-        return sugiyama.arrangeDiagram();
+    	return sugiyama.arrangeDiagram();
     }
     
     @Override
@@ -60,16 +60,16 @@ public class ClassDiagramArrangementManager implements DiagramArrangementManager
     private Graph<Integer, String> createGraph(){
         Graph<Integer, String> graph = new SparseGraph<>();
         for (Integer nodeId: classDiagram.getGraphNodes().values()) {
-            graph.addVertex(nodeId);
+        	graph.addVertex(nodeId);
         }
 
         List<Arc<ClassifierVertex>> arcs = new ArrayList<>();
         for (Set<Arc<ClassifierVertex>> arcSet: classDiagram.getDiagram().values()) {
-            arcs.addAll(arcSet);
+        	arcs.addAll(arcSet);
         }
 
         for (Arc<ClassifierVertex> arc: arcs) {
-            graph.addEdge(classDiagram.getGraphNodes().get(arc.getSourceVertex()) + " " + classDiagram.getGraphNodes().get(arc.getTargetVertex()),
+        	graph.addEdge(classDiagram.getGraphNodes().get(arc.getSourceVertex()) + " " + classDiagram.getGraphNodes().get(arc.getTargetVertex()),
                     classDiagram.getGraphNodes().get(arc.getSourceVertex()), classDiagram.getGraphNodes().get(arc.getTargetVertex()), EdgeType.DIRECTED);
         }
 
@@ -79,12 +79,12 @@ public class ClassDiagramArrangementManager implements DiagramArrangementManager
     private Graph<String, String> createGraphWithStrings(){
         Graph<String, String> graph = new SparseGraph<>();
         for (ClassifierVertex vertex: classDiagram.getGraphNodes().keySet()) {
-            graph.addVertex(vertex.getName());
+        	graph.addVertex(vertex.getName());
         }
 
         List<Arc<ClassifierVertex>> arcs = new ArrayList<>();
         for (Set<Arc<ClassifierVertex>> arcSet: classDiagram.getDiagram().values()) {
-            arcs.addAll(arcSet);
+        	arcs.addAll(arcSet);
         }
 
         for (Arc<ClassifierVertex> arc: arcs) {

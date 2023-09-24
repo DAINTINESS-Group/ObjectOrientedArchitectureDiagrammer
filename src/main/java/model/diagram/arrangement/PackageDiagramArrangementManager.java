@@ -35,7 +35,7 @@ public class PackageDiagramArrangementManager implements DiagramArrangementManag
         AbstractLayout<Integer, String> layout = new SpringLayout<>(graph);
         layout.setSize(new Dimension(1500, 1000));
         for (Integer i : packageDiagram.getGraphNodes().values()) {
-            nodesGeometryGraphML.put(i, new Pair<>(layout.getX(i), layout.getY(i)));
+        	nodesGeometryGraphML.put(i, new Pair<>(layout.getX(i), layout.getY(i)));
         }
         return nodesGeometryGraphML;
     }
@@ -60,16 +60,16 @@ public class PackageDiagramArrangementManager implements DiagramArrangementManag
     private Graph<Integer, String> populatePackageGraph() {
         Graph<Integer, String> graph = new SparseGraph<>();
         for (Integer i : packageDiagram.getGraphNodes().values()) {
-            graph.addVertex(i);
+        	graph.addVertex(i);
         }
 
         List<Arc<PackageVertex>> arcs = new ArrayList<>();
         for (Set<Arc<PackageVertex>> arcSet: packageDiagram.getDiagram().values()) {
-            arcs.addAll(arcSet);
+        	arcs.addAll(arcSet);
         }
 
         for (Arc<PackageVertex> arc: arcs) {
-            graph.addEdge(packageDiagram.getGraphNodes().get(arc.getSourceVertex()) + " " + packageDiagram.getGraphNodes().get(arc.getTargetVertex()),
+        	graph.addEdge(packageDiagram.getGraphNodes().get(arc.getSourceVertex()) + " " + packageDiagram.getGraphNodes().get(arc.getTargetVertex()),
                     packageDiagram.getGraphNodes().get(arc.getSourceVertex()), packageDiagram.getGraphNodes().get(arc.getTargetVertex()), EdgeType.DIRECTED);
         }
 
@@ -79,12 +79,12 @@ public class PackageDiagramArrangementManager implements DiagramArrangementManag
     private Graph<String, String> populatePackageGraphWithStrings(){
         Graph<String, String> graph = new SparseGraph<>();
         for (PackageVertex vertex: packageDiagram.getGraphNodes().keySet()) {
-            graph.addVertex(vertex.getName());
+        	graph.addVertex(vertex.getName());
         }
 
         List<Arc<PackageVertex>> arcs = new ArrayList<>();
         for (Set<Arc<PackageVertex>> arcSet: packageDiagram.getDiagram().values()) {
-            arcs.addAll(arcSet);
+        	arcs.addAll(arcSet);
         }
 
         for (Arc<PackageVertex> arc: arcs) {

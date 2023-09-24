@@ -6,35 +6,35 @@ import java.util.Map;
 import org.javatuples.Pair;
 
 public class DiagramGeometry {
-	
+
 	private Map<String, Pair<Double, Double>> geometryMap;
 	private final static int MIN_X_WINDOW_VALUE = 25;
 	private final static int MIN_Y_WINDOW_VALUE = 25;
-	
-    public DiagramGeometry() {
-        this.geometryMap = new HashMap<>();
-    }
-	
+
+	public DiagramGeometry() {
+		this.geometryMap = new HashMap<>();
+	}
+
 	public void addGeometry(GeometryNode key, double x, double y) {
-        geometryMap.put(key.getNodeName(), new Pair<>(x, y));
+		geometryMap.put(key.getNodeName(), new Pair<>(x, y));
     }
-	
+
 	public Pair<Double, Double> getVertexGeometry(GeometryNode key) {
-        return geometryMap.get(key.getNodeName());
+		return geometryMap.get(key.getNodeName());
     }
-	
+
 	public Pair<Double, Double> getVertexGeometry(String stringKey){
 		return geometryMap.get(stringKey);
 	}
-	
+
 	public boolean containsKey(GeometryNode key) {
-        return geometryMap.containsKey(key.getNodeName());
+		return geometryMap.containsKey(key.getNodeName());
     }
-	
+
 	public boolean containsKey(String stringKey) {
 		return geometryMap.containsKey(stringKey);
 	}
-	
+
 	public void correctPositions(double x, double y) {
 		// We store minX and minY coordinates of the system, in order to bring the graph to match the left side and upper side of the window.
 		double minX = Double.POSITIVE_INFINITY;
@@ -58,5 +58,5 @@ public class DiagramGeometry {
 			geometryMap.put(entry.getKey(), new Pair<>(entry.getValue().getValue0() - xDifference, entry.getValue().getValue1() - yDifference));
 		}
 	}
-	
+
 }

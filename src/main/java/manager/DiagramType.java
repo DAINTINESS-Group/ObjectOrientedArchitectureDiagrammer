@@ -1,5 +1,5 @@
 package manager;
 
 public enum DiagramType {
-    CLASS, PACKAGE
+	CLASS, PACKAGE
 }

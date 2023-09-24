@@ -54,34 +54,34 @@ public class Sugiyama implements LayoutAlgorithm{
 		DigraphLayout<Integer,Boolean> layout = builder.build(digraph, dimensionProvider);
 		for (DigraphLayoutNode<Integer> vertex : layout.getLayoutGraph().vertices()) {
 			for (Map.Entry<String, Integer> entryVertex : verticesMap.entrySet()) {
-	            if (entryVertex.getValue() == vertex.getVertex()) {
-	            	double x = vertex.getPoint().x;
-	            	double y = vertex.getPoint().y;
-	                GeometryNode geometryNode = new GeometryNode(entryVertex.getKey());
-	            	if (vertex.getPoint().x < MIN_X_WINDOW_VALUE) {
-	            		double difference = MIN_X_WINDOW_VALUE - x;
-	            		if(difference > maxXdistance) {
-	            			maxXdistance = difference;
-	            		}
-	            	}
-	            	if (vertex.getPoint().y < MIN_Y_WINDOW_VALUE) {
-	            		double difference = MIN_Y_WINDOW_VALUE - y;
-	            		if(difference > maxYdistance) {
-	            			maxYdistance = difference;
-	            		}
-	            	}
-	            	diagramGeometry.addGeometry(geometryNode, x, y);
-	                break;
-	            }
-	        }
+				if (entryVertex.getValue() == vertex.getVertex()) {
+					double x = vertex.getPoint().x;
+					double y = vertex.getPoint().y;
+					GeometryNode geometryNode = new GeometryNode(entryVertex.getKey());
+					if (vertex.getPoint().x < MIN_X_WINDOW_VALUE) {
+						double difference = MIN_X_WINDOW_VALUE - x;
+						if(difference > maxXdistance) {
+							maxXdistance = difference;
+						}
+					}
+					if (vertex.getPoint().y < MIN_Y_WINDOW_VALUE) {
+						double difference = MIN_Y_WINDOW_VALUE - y;
+						if(difference > maxYdistance) {
+							maxYdistance = difference;
+						}
+					}
+					diagramGeometry.addGeometry(geometryNode, x, y);
+					break;
+				}
+			}
 		}
-        diagramGeometry.correctPositions(maxXdistance, maxYdistance);
-        return diagramGeometry;
+		diagramGeometry.correctPositions(maxXdistance, maxYdistance);
+		return diagramGeometry;
 	}
-	
+
 	private void fillNeighboursMap() {
 		for (String edge : graph.getEdges()){
-        	String[] vertices = edge.split(" ");
+			String[] vertices = edge.split(" ");
         	digraph.add(verticesMap.get(vertices[0]), verticesMap.get(vertices[1]));
 		}
 	}

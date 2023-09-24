@@ -7,7 +7,7 @@ public class GeometryNode {
 	public GeometryNode(String nodeName) {
 		this.nodeName = nodeName;
 	}
-	
+
 	public String getNodeName() {
 		return nodeName;
 	}

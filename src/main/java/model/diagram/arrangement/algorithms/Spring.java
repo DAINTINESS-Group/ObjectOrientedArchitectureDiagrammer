@@ -16,7 +16,7 @@ public class Spring implements LayoutAlgorithm{
 	// private final static int GRAPH_Y_SIZE = 725;
 	
 	public Spring() {
-    }
+	}
 	
 	@Override
 	public void setGraph(Graph<String, String> graph) {
@@ -34,26 +34,26 @@ public class Spring implements LayoutAlgorithm{
 		// layout.setSize(new Dimension(GRAPH_X_SIZE, GRAPH_Y_SIZE));
 		@SuppressWarnings("unused")
 		VisualizationViewer<String, String> vv = new VisualizationViewer<String, String>(layout);
-        for (String vertex : graph.getVertices()) {
-        	GeometryNode geometryNode = new GeometryNode(vertex);
-        	double x = layout.getX(vertex);
-        	double y = layout.getY(vertex);
-        	if (x < MIN_X_WINDOW_VALUE) {
-        		double difference = MIN_X_WINDOW_VALUE - x;
-        		if(difference > maxXdistance) {
-        			maxXdistance = difference;
-        		}
-        	}
-        	if (y < MIN_Y_WINDOW_VALUE) {
-        		double difference = MIN_Y_WINDOW_VALUE - y;
-        		if(difference > maxYdistance) {
-        			maxYdistance = difference;
-        		}
-        	}
-        	diagramGeometry.addGeometry(geometryNode, x, y);
-        }
-        diagramGeometry.correctPositions(maxXdistance, maxYdistance);
-        return diagramGeometry;
+		for (String vertex : graph.getVertices()) {
+			GeometryNode geometryNode = new GeometryNode(vertex);
+			double x = layout.getX(vertex);
+			double y = layout.getY(vertex);
+			if (x < MIN_X_WINDOW_VALUE) {
+				double difference = MIN_X_WINDOW_VALUE - x;
+				if(difference > maxXdistance) {
+					maxXdistance = difference;
+				}
+			}
+			if (y < MIN_Y_WINDOW_VALUE) {
+				double difference = MIN_Y_WINDOW_VALUE - y;
+				if(difference > maxYdistance) {
+					maxYdistance = difference;
+				}
+			}
+			diagramGeometry.addGeometry(geometryNode, x, y);
+		}
+		diagramGeometry.correctPositions(maxXdistance, maxYdistance);
+		return diagramGeometry;
 	}
 
 }
