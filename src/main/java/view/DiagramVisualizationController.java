@@ -31,7 +31,6 @@ public class DiagramVisualizationController {
     MenuBar menuBar;
     
     private SmartGraphPanel<String, String> graphView;
-
     private Controller diagramController;
     private ProjectTreeView projectTreeView;
     private double graphViewNormalScaleX;

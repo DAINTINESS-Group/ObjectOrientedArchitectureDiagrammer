@@ -6,7 +6,8 @@ import com.brunomnsilva.smartgraph.graph.Vertex;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 
 public interface JavaFXVisualization {
-    SmartGraphPanel<String, String> createGraphView();
+
+	SmartGraphPanel<String, String> createGraphView();
 	
 	Collection<Vertex<String>> getVertexCollection();
 	

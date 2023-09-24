@@ -34,7 +34,7 @@ public class ProjectLoadController {
     private SmartGraphPanel<String, String> graphView;
     private double graphViewNormalScaleX;
     private double graphViewNormalScaleY;
-	private Controller diagramController;
+    private Controller diagramController;
 
     public void openProject() {
         MenuUtility.openProject(menuBar);
@@ -114,7 +114,7 @@ public class ProjectLoadController {
         exportMenu.setVisible(false);
     }
 
-	public void setDiagramController(Controller diagramController) {
-		this.diagramController = diagramController;
-	}
+    public void setDiagramController(Controller diagramController) {
+        this.diagramController = diagramController;
+    }
 }

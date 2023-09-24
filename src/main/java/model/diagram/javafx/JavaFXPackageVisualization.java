@@ -43,7 +43,7 @@ public class JavaFXPackageVisualization implements JavaFXVisualization {
         Digraph<String, String> directedGraph = new DigraphEdgeList<>();
         for (PackageVertex vertex: packageDiagram.getDiagram().keySet()) {
         	if(vertex.getSinkVertices().size() > 0) {
-                directedGraph.insertVertex(vertex.getName());
+        		directedGraph.insertVertex(vertex.getName());
         	}
         }
         insertVertexArcs(directedGraph);

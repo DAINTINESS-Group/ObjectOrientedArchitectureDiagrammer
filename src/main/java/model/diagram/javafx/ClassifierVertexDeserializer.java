@@ -28,8 +28,8 @@ public class ClassifierVertexDeserializer implements JsonDeserializer<Classifier
         }
         classifierVertex = new ClassifierVertex(Path.of(path), name, VertexType.valueOf(vertexType));
         if(jsonObject.has("coordinate_x") && jsonObject.has("coordinate_x")) {
-        	Double coordinateX = jsonObject.get("coordinate_x").getAsDouble();
-        	Double coordinateY = jsonObject.get("coordinate_y").getAsDouble();
+            Double coordinateX = jsonObject.get("coordinate_x").getAsDouble();
+            Double coordinateY = jsonObject.get("coordinate_y").getAsDouble();
             classifierVertex.setCoordinates(coordinateX, coordinateY);
         }
         deserializeMethods(jsonObject);

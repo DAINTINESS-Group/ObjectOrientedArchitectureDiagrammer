@@ -17,11 +17,11 @@ public class DiagramGeometry {
 
 	public void addGeometry(GeometryNode key, double x, double y) {
 		geometryMap.put(key.getNodeName(), new Pair<>(x, y));
-    }
+	}
 
 	public Pair<Double, Double> getVertexGeometry(GeometryNode key) {
 		return geometryMap.get(key.getNodeName());
-    }
+	}
 
 	public Pair<Double, Double> getVertexGeometry(String stringKey){
 		return geometryMap.get(stringKey);
@@ -29,7 +29,7 @@ public class DiagramGeometry {
 
 	public boolean containsKey(GeometryNode key) {
 		return geometryMap.containsKey(key.getNodeName());
-    }
+	}
 
 	public boolean containsKey(String stringKey) {
 		return geometryMap.containsKey(stringKey);
