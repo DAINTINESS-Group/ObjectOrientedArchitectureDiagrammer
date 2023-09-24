@@ -37,10 +37,9 @@ public class DiagramController implements Controller {
 		return diagramManager.applyLayout();
 	}
 	
-    public SmartGraphPanel<String, String> applySpecificLayout(String choice){
-    	return diagramManager.applySpecificLayout(choice);
-    }
-
+	public SmartGraphPanel<String, String> applySpecificLayout(String choice){
+		return diagramManager.applySpecificLayout(choice);
+	}
 
 	public File exportDiagramToGraphML(Path graphMLSavePath) {
 		return diagramManager.exportDiagramToGraphML(graphMLSavePath);
