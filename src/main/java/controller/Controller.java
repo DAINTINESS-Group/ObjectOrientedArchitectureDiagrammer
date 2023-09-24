@@ -13,7 +13,7 @@ public interface Controller {
      * @param sourcePackagePath the project's source package path
      * @return the SourceProject created
      */
-    SourceProject createTree(Path sourcePackagePath);
+	SourceProject createTree(Path sourcePackagePath);
 
     /**
      * This method converts the created tree to a diagram, by creating the corresponding DiagramManager
@@ -65,12 +65,12 @@ public interface Controller {
      * @param graphSavePath the selected path by the designer where the diagram's image will be saved
      * @return the created PlantUML diagram
      */
-	File exportPlantUMLDiagram(Path graphSavePath);
+    File exportPlantUMLDiagram(Path graphSavePath);
 	
     /**This method saves the PlantUML code to a text file by calling the DiagramManager's exportPlantUMLText method
      * @param textSavePath the selected path by the designer where the text file will be saved
      * @return the create PlantUML text file
      */
-	File exportPlantUMLText(Path textSavePath);
+    File exportPlantUMLText(Path textSavePath);
 
 }
