@@ -141,11 +141,19 @@ public class JavaparserFileVisitor {
         @Override
         public void visit(FieldDeclaration fieldDeclaration, Void arg) {
             super.visit(fieldDeclaration, arg);
-
             fieldDeclaration.getVariables().forEach(variable -> {
                 ModifierType modifierType;
                 if (fieldDeclaration.getModifiers().size() > 0) {
-                    modifierType = ModifierType.valueOf(fieldDeclaration.getModifiers().get(0).toString().toUpperCase().trim());
+                    String firstModifierString = fieldDeclaration.getModifiers().get(0).toString().toUpperCase().trim();
+                    try {
+                        modifierType = ModifierType.valueOf(firstModifierString);
+                        // The string corresponds to a valid enum value
+                    } catch (IllegalArgumentException e) {
+                        // The string does not match any enum value
+                        // It starts with (final, static, volatile or transient)
+                        // So its visibility is package private.
+                        modifierType = ModifierType.PACKAGE_PRIVATE;
+                    }
                 }else {
                     modifierType = ModifierType.PACKAGE_PRIVATE;
                 }
@@ -189,10 +197,20 @@ public class JavaparserFileVisitor {
         @Override
         public void visit(MethodDeclaration methodDeclaration, Void arg) {
             super.visit(methodDeclaration, arg);
-
-            ModifierType modifierType = ModifierType.PACKAGE_PRIVATE;
+            ModifierType modifierType;
             if (methodDeclaration.getModifiers().size() > 0) {
-                modifierType = ModifierType.valueOf(methodDeclaration.getModifiers().get(0).toString().toUpperCase().trim());
+                String firstModifierString = methodDeclaration.getModifiers().get(0).toString().toUpperCase().trim();
+                try {
+                    modifierType = ModifierType.valueOf(firstModifierString);
+                    // The string corresponds to a valid enum value
+                } catch (IllegalArgumentException e) {
+                    // The string does not match any enum value
+                    // It starts with (final, static, volatile or transient)
+                    // So its visibility is package private.
+                    modifierType = ModifierType.PACKAGE_PRIVATE;
+                }
+            }else {
+                modifierType = ModifierType.PACKAGE_PRIVATE;
             }
 
             Map<String, String> parameters = new HashMap<>();
