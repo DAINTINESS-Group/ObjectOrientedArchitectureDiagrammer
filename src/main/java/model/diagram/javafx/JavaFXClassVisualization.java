@@ -17,72 +17,72 @@ import java.util.Set;
 
 public class JavaFXClassVisualization implements JavaFXVisualization {
 
-    private final ClassDiagram classDiagram;
-    private SmartGraphPanel<String, String> graphView;
-    private Collection<Vertex<String>> vertexCollection;
+	private final ClassDiagram classDiagram;
+	private SmartGraphPanel<String, String> graphView;
+	private Collection<Vertex<String>> vertexCollection;
 
-    public JavaFXClassVisualization(ClassDiagram diagram) {
-        classDiagram = diagram;
-    }
+	public JavaFXClassVisualization(ClassDiagram diagram) {
+		classDiagram = diagram;
+	}
 
-    @Override
-    public SmartGraphPanel<String, String> createGraphView() {
-        Graph<String, String> graph = createGraph();
-        vertexCollection = graph.vertices();
-        graphView = new SmartGraphPanel<>(graph, new SmartCircularSortedPlacementStrategy());
-        setSinkVertexCustomStyle();
-        return graphView;
-    }
-    
-    @Override
-    public Collection<Vertex<String>> getVertexCollection(){
-    	return vertexCollection;
-    }
+	@Override
+	public SmartGraphPanel<String, String> createGraphView() {
+		Graph<String, String> graph = createGraph();
+		vertexCollection = graph.vertices();
+		graphView = new SmartGraphPanel<>(graph, new SmartCircularSortedPlacementStrategy());
+		setSinkVertexCustomStyle();
+		return graphView;
+	}
 
-    private Graph<String, String> createGraph() {
-        Digraph<String, String> directedGraph = new DigraphEdgeList<>();
-        for (ClassifierVertex classifierVertex : classDiagram.getDiagram().keySet()) {
-            directedGraph.insertVertex(classifierVertex.getName());
-        }
-        insertSinkVertexArcs(directedGraph);
-        return directedGraph;
-    }
+	@Override
+	public Collection<Vertex<String>> getVertexCollection(){
+		return vertexCollection;
+	}
 
-    private void insertSinkVertexArcs(Digraph<String, String> directedGraph){
-        for (Set<Arc<ClassifierVertex>> arcs : classDiagram.getDiagram().values()) {
-            for (Arc<ClassifierVertex> arc: arcs) {
-                if (arc.getArcType().equals(ArcType.AGGREGATION)) {
-                    directedGraph.insertEdge(arc.getTargetVertex().getName(), arc.getSourceVertex().getName(),
-                        arc.getTargetVertex().getName() + "_" + arc.getSourceVertex().getName() + "_" + arc.getArcType().toString().toLowerCase());
-                }else {
-                    directedGraph.insertEdge(arc.getSourceVertex().getName(), arc.getTargetVertex().getName(),
-                        arc.getSourceVertex().getName() + "_" + arc.getTargetVertex().getName() + "_" + arc.getArcType().toString().toLowerCase());
-                }
-            }
-        }
-    }
+	private Graph<String, String> createGraph() {
+		Digraph<String, String> directedGraph = new DigraphEdgeList<>();
+		for (ClassifierVertex classifierVertex : classDiagram.getDiagram().keySet()) {
+			directedGraph.insertVertex(classifierVertex.getName());
+		}
+		insertSinkVertexArcs(directedGraph);
+		return directedGraph;
+	}
 
-    private void setSinkVertexCustomStyle() {
-        for (ClassifierVertex classifierVertex : classDiagram.getDiagram().keySet()){
-            if (classifierVertex.getVertexType().equals(VertexType.INTERFACE)) {
-                graphView.getStylableVertex(classifierVertex.getName()).setStyleClass("vertexInterface");
-            }else {
-                graphView.getStylableVertex(classifierVertex.getName()).setStyleClass("vertexPackage");
-            }
-        }
-    }
-    
-    @Override
-    public SmartGraphPanel<String, String> getLoadedGraph() {
-    	for (Vertex<String> vertex : vertexCollection) {
-	    	for (ClassifierVertex classifierVertex: classDiagram.getDiagram().keySet()){
-	    		if(classifierVertex.getName().equals(vertex.element())) {
-	    			graphView.setVertexPosition(vertex, classifierVertex.getCoordinates().getValue0(), classifierVertex.getCoordinates().getValue1());
-	    			break;
-	    		}
-	    	}
-    	}
-    	return graphView;
-    }
+	private void insertSinkVertexArcs(Digraph<String, String> directedGraph){
+		for (Set<Arc<ClassifierVertex>> arcs : classDiagram.getDiagram().values()) {
+			for (Arc<ClassifierVertex> arc: arcs) {
+				if (arc.getArcType().equals(ArcType.AGGREGATION)) {
+					directedGraph.insertEdge(arc.getTargetVertex().getName(), arc.getSourceVertex().getName(),
+							arc.getTargetVertex().getName() + "_" + arc.getSourceVertex().getName() + "_" + arc.getArcType().toString().toLowerCase());
+				}else {
+					directedGraph.insertEdge(arc.getSourceVertex().getName(), arc.getTargetVertex().getName(),
+							arc.getSourceVertex().getName() + "_" + arc.getTargetVertex().getName() + "_" + arc.getArcType().toString().toLowerCase());
+				}
+			}
+		}
+	}
+
+	private void setSinkVertexCustomStyle() {
+		for (ClassifierVertex classifierVertex : classDiagram.getDiagram().keySet()){
+			if (classifierVertex.getVertexType().equals(VertexType.INTERFACE)) {
+				graphView.getStylableVertex(classifierVertex.getName()).setStyleClass("vertexInterface");
+			}else {
+				graphView.getStylableVertex(classifierVertex.getName()).setStyleClass("vertexPackage");
+			}
+		}
+	}
+
+	@Override
+	public SmartGraphPanel<String, String> getLoadedGraph() {
+		for (Vertex<String> vertex : vertexCollection) {
+			for (ClassifierVertex classifierVertex: classDiagram.getDiagram().keySet()){
+				if(classifierVertex.getName().equals(vertex.element())) {
+					graphView.setVertexPosition(vertex, classifierVertex.getCoordinates().getValue0(), classifierVertex.getCoordinates().getValue1());
+					break;
+				}
+			}
+		}
+		return graphView;
+	}
 
 }

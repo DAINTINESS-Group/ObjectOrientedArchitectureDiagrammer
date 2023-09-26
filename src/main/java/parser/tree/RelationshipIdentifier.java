@@ -44,7 +44,7 @@ public abstract class RelationshipIdentifier {
 	protected boolean isAssociation(int i, int j) {
 		return doesRelationshipExist(allLeafNodes.get(i).getFieldsTypes(), allLeafNodes.get(j).getName());
 	}
-	
+
 	protected boolean isAggregation(int i, int j) {
 		return isRelationshipAggregation(allLeafNodes.get(i).getFieldsTypes(), allLeafNodes.get(j).getName());
 	}
@@ -66,7 +66,7 @@ public abstract class RelationshipIdentifier {
 		}
 		return false;
 	}
-	
+
 	private boolean doesFieldBelongToClass(String leafNodesType, String leafNodesName) {
 		for (String type: leafNodesType.replace("[", ",").replace("]", ",").split(",")) {
 			if (leafNodesName.equals(type)) {
@@ -75,12 +75,12 @@ public abstract class RelationshipIdentifier {
 		}
 		return false;
 	}
-	
+
 	private boolean isFieldOfTypeCollection(String s, String leafNodesName) {
 		return (s.startsWith("List") || s.startsWith("ArrayList") || s.startsWith("Map") || s.startsWith("HashMap")
 				|| s.contains(leafNodesName+"[") || s.startsWith("ArrayDeque") ||  s.startsWith("LinkedList") || s.startsWith("PriorityQueue"));
 	}
-	
+
 	protected void createRelationship(int i, int j, RelationshipType relationshipType) {
 		allLeafNodes.get(i).addLeafNodeRelationship(new Relationship<>(allLeafNodes.get(i), allLeafNodes.get(j), relationshipType));
 		relationshipsCreated++;

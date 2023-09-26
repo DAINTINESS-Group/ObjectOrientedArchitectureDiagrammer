@@ -19,7 +19,7 @@ public class PackageNode {
 	private PackageNode parentNode;
 	private final List<Relationship<PackageNode>> packageNodeRelationships;
 	private boolean isValid;
-	
+
 	public PackageNode(Path path) {
 		this.path = path;
 		packageNodeRelationships = new ArrayList<>();
@@ -27,11 +27,11 @@ public class PackageNode {
 		subNodes = new HashMap<>();
 		leafNodes = new HashMap<>();
 	}
-	
+
 	public void addLeafNode(LeafNode leafNode) {
 		leafNodes.put(leafNode.getName(), leafNode);
 	}
-	
+
 	public void addSubNode(PackageNode packageNode) {
 		subNodes.put(packageNode.getPackageNodesPath(), packageNode);
 	}

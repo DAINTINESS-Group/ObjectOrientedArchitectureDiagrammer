@@ -20,78 +20,78 @@ import java.util.*;
 
 public class PackageDiagramArrangementManager implements DiagramArrangementManagerInterface {
 
-    private final Graph<String, String> graph;
-    private final PackageDiagram packageDiagram;
+	private final Graph<String, String> graph;
+	private final PackageDiagram packageDiagram;
 
-    public PackageDiagramArrangementManager(PackageDiagram packageDiagram) {
-        this.packageDiagram = packageDiagram;
-        graph = populatePackageGraphWithStrings();
-    }
+	public PackageDiagramArrangementManager(PackageDiagram packageDiagram) {
+		this.packageDiagram = packageDiagram;
+		graph = populatePackageGraphWithStrings();
+	}
 
-    @Override
-    public Map<Integer, Pair<Double, Double>> arrangeGraphMLDiagram() {
-    	Map<Integer, Pair<Double, Double>> nodesGeometryGraphML = new HashMap<>();
-        Graph<Integer, String> graph = populatePackageGraph();
-        AbstractLayout<Integer, String> layout = new SpringLayout<>(graph);
-        layout.setSize(new Dimension(1500, 1000));
-        for (Integer i : packageDiagram.getGraphNodes().values()) {
-        	nodesGeometryGraphML.put(i, new Pair<>(layout.getX(i), layout.getY(i)));
-        }
-        return nodesGeometryGraphML;
-    }
-    
-    @Override
-    public DiagramGeometry arrangeDiagram() {
-    	LayoutAlgorithmFactory layoutAlgorithmFactory = new LayoutAlgorithmFactory();
-    	LayoutAlgorithm sugiyama = layoutAlgorithmFactory.createLayoutAlgorithm(LayoutAlgorithmType.SUGIYAMA);
+	@Override
+	public Map<Integer, Pair<Double, Double>> arrangeGraphMLDiagram() {
+		Map<Integer, Pair<Double, Double>> nodesGeometryGraphML = new HashMap<>();
+		Graph<Integer, String> graph = populatePackageGraph();
+		AbstractLayout<Integer, String> layout = new SpringLayout<>(graph);
+		layout.setSize(new Dimension(1500, 1000));
+		for (Integer i : packageDiagram.getGraphNodes().values()) {
+			nodesGeometryGraphML.put(i, new Pair<>(layout.getX(i), layout.getY(i)));
+		}
+		return nodesGeometryGraphML;
+	}
+
+	@Override
+	public DiagramGeometry arrangeDiagram() {
+		LayoutAlgorithmFactory layoutAlgorithmFactory = new LayoutAlgorithmFactory();
+		LayoutAlgorithm sugiyama = layoutAlgorithmFactory.createLayoutAlgorithm(LayoutAlgorithmType.SUGIYAMA);
 		sugiyama.setGraph(graph);
-        return sugiyama.arrangeDiagram();
-    }
-    
-    @Override
-    public DiagramGeometry applyNewLayout(String algorithmType){
-    	LayoutAlgorithmFactory layoutAlgorithmFactory = new LayoutAlgorithmFactory();
-    	LayoutAlgorithmType algorithmEnumType = LayoutAlgorithmType.valueOf(algorithmType.toUpperCase());
-    	LayoutAlgorithm layout = layoutAlgorithmFactory.createLayoutAlgorithm(algorithmEnumType);
-    	layout.setGraph(graph);
-    	return layout.arrangeDiagram();
-    }
+		return sugiyama.arrangeDiagram();
+	}
 
-    private Graph<Integer, String> populatePackageGraph() {
-        Graph<Integer, String> graph = new SparseGraph<>();
-        for (Integer i : packageDiagram.getGraphNodes().values()) {
-        	graph.addVertex(i);
-        }
+	@Override
+	public DiagramGeometry applyNewLayout(String algorithmType){
+		LayoutAlgorithmFactory layoutAlgorithmFactory = new LayoutAlgorithmFactory();
+		LayoutAlgorithmType algorithmEnumType = LayoutAlgorithmType.valueOf(algorithmType.toUpperCase());
+		LayoutAlgorithm layout = layoutAlgorithmFactory.createLayoutAlgorithm(algorithmEnumType);
+		layout.setGraph(graph);
+		return layout.arrangeDiagram();
+	}
 
-        List<Arc<PackageVertex>> arcs = new ArrayList<>();
-        for (Set<Arc<PackageVertex>> arcSet: packageDiagram.getDiagram().values()) {
-        	arcs.addAll(arcSet);
-        }
+	private Graph<Integer, String> populatePackageGraph() {
+		Graph<Integer, String> graph = new SparseGraph<>();
+		for (Integer i : packageDiagram.getGraphNodes().values()) {
+			graph.addVertex(i);
+		}
 
-        for (Arc<PackageVertex> arc: arcs) {
-        	graph.addEdge(packageDiagram.getGraphNodes().get(arc.getSourceVertex()) + " " + packageDiagram.getGraphNodes().get(arc.getTargetVertex()),
-                    packageDiagram.getGraphNodes().get(arc.getSourceVertex()), packageDiagram.getGraphNodes().get(arc.getTargetVertex()), EdgeType.DIRECTED);
-        }
+		List<Arc<PackageVertex>> arcs = new ArrayList<>();
+		for (Set<Arc<PackageVertex>> arcSet: packageDiagram.getDiagram().values()) {
+			arcs.addAll(arcSet);
+		}
 
-        return graph;
-    }
+		for (Arc<PackageVertex> arc: arcs) {
+			graph.addEdge(packageDiagram.getGraphNodes().get(arc.getSourceVertex()) + " " + packageDiagram.getGraphNodes().get(arc.getTargetVertex()),
+					packageDiagram.getGraphNodes().get(arc.getSourceVertex()), packageDiagram.getGraphNodes().get(arc.getTargetVertex()), EdgeType.DIRECTED);
+		}
 
-    private Graph<String, String> populatePackageGraphWithStrings(){
-        Graph<String, String> graph = new SparseGraph<>();
-        for (PackageVertex vertex: packageDiagram.getGraphNodes().keySet()) {
-        	graph.addVertex(vertex.getName());
-        }
+		return graph;
+	}
 
-        List<Arc<PackageVertex>> arcs = new ArrayList<>();
-        for (Set<Arc<PackageVertex>> arcSet: packageDiagram.getDiagram().values()) {
-        	arcs.addAll(arcSet);
-        }
+	private Graph<String, String> populatePackageGraphWithStrings(){
+		Graph<String, String> graph = new SparseGraph<>();
+		for (PackageVertex vertex: packageDiagram.getGraphNodes().keySet()) {
+			graph.addVertex(vertex.getName());
+		}
 
-        for (Arc<PackageVertex> arc: arcs) {
-        	graph.addEdge(arc.getSourceVertex().getName() + " " + arc.getTargetVertex().getName(), arc.getSourceVertex().getName(), arc.getTargetVertex().getName(), EdgeType.DIRECTED);
-        }
+		List<Arc<PackageVertex>> arcs = new ArrayList<>();
+		for (Set<Arc<PackageVertex>> arcSet: packageDiagram.getDiagram().values()) {
+			arcs.addAll(arcSet);
+		}
 
-        return graph;
-    }
+		for (Arc<PackageVertex> arc: arcs) {
+			graph.addEdge(arc.getSourceVertex().getName() + " " + arc.getTargetVertex().getName(), arc.getSourceVertex().getName(), arc.getTargetVertex().getName(), EdgeType.DIRECTED);
+		}
+
+		return graph;
+	}
 
 }

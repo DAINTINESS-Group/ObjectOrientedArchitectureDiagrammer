@@ -16,7 +16,7 @@ import model.diagram.arrangement.geometry.DiagramGeometry;
 import model.diagram.arrangement.geometry.GeometryNode;
 
 public class Sugiyama implements LayoutAlgorithm{
-	
+
 	private Graph<String, String> graph;
 	private Map<String, Integer> verticesMap;
 	private SimpleDigraph<Integer> digraph;
@@ -26,7 +26,7 @@ public class Sugiyama implements LayoutAlgorithm{
 	private final static int VERTEX_Y_SIZE = 20;
 	private final static int HORIZONTAL_SPACING = 125;
 	private final static int VERTICAL_SPACING = 50;
-	
+
 	public Sugiyama() {
 		verticesMap = new HashMap<>();
 	}
@@ -35,7 +35,7 @@ public class Sugiyama implements LayoutAlgorithm{
 	public void setGraph(Graph<String, String> graph) {
 		this.graph = graph;
 	}
-	
+
 	@Override
 	public DiagramGeometry arrangeDiagram() {
 		double maxXdistance = 0.0;
@@ -85,7 +85,7 @@ public class Sugiyama implements LayoutAlgorithm{
 			digraph.add(verticesMap.get(vertices[0]), verticesMap.get(vertices[1]));
 		}
 	}
-	
+
 	private void fillVertexMap() {
 		int counter = 1;
 		for (String vertex : graph.getVertices()) {

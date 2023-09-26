@@ -18,11 +18,11 @@ public class CoordinatesUpdater {
 	public CoordinatesUpdater(PackageDiagram packageDiagram) {
 		this.packageDiagram = packageDiagram;
 	}
-	
+
 	public CoordinatesUpdater(ClassDiagram classDiagram) {
 		this.classDiagram = classDiagram;
 	}
-	
+
 	public void updatePackageCoordinates(Collection<Vertex<String>> vertexCollection, SmartGraphPanel<String, String> graphView) {
 		for(Vertex<String> vertex : vertexCollection) {
 			double x = graphView.getVertexPositionX(vertex);
@@ -35,7 +35,7 @@ public class CoordinatesUpdater {
 			}
 		}
 	}
-	
+
 	public void updateClassCoordinates(Collection<Vertex<String>> vertexCollection, SmartGraphPanel<String, String> graphView) {
 		for(Vertex<String> vertex : vertexCollection) {
 			double x = graphView.getVertexPositionX(vertex);
@@ -48,5 +48,5 @@ public class CoordinatesUpdater {
 			}
 		}
 	}
-	
+
 }

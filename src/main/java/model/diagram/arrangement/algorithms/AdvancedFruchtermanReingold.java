@@ -15,15 +15,15 @@ public class AdvancedFruchtermanReingold implements LayoutAlgorithm{
 	private final static int MIN_Y_WINDOW_VALUE = 25;
 	// private final static int GRAPH_X_SIZE = 1200;
 	// private final static int GRAPH_Y_SIZE = 725;
-	
+
 	public AdvancedFruchtermanReingold() {
 	}
-	
+
 	@Override
 	public void setGraph(Graph<String, String> graph) {
 		this.graph = graph;
 	}
-	
+
 	@Override
 	public DiagramGeometry arrangeDiagram() {
 		double maxXdistance = 0.0;

@@ -5,17 +5,17 @@ import parser.jdt.JDTProjectParser;
 
 public class ProjectParserFactory {
 
-    private final ParserType parserType;
+	private final ParserType parserType;
 
-    public ProjectParserFactory(ParserType parserType) {
-        this.parserType = parserType;
-    }
+	public ProjectParserFactory(ParserType parserType) {
+		this.parserType = parserType;
+	}
 
-    public Parser createProjectParser() {
-        if (parserType.equals(ParserType.JDT)) {
-            return new JDTProjectParser();
-        }
+	public Parser createProjectParser() {
+		if (parserType.equals(ParserType.JDT)) {
+			return new JDTProjectParser();
+		}
 
-        return new JavaparserProjectParser();
-    }
+		return new JavaparserProjectParser();
+	}
 }

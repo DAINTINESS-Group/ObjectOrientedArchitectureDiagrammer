@@ -5,5 +5,5 @@ import java.nio.file.Path;
 
 public interface DiagramExporter {
 
-    File exportDiagram(Path exportPath);
+	File exportDiagram(Path exportPath);
 }

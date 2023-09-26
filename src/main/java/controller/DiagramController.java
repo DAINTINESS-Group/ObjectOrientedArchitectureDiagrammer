@@ -30,13 +30,13 @@ public class DiagramController implements Controller {
 	}
 
 	public void arrangeDiagram(){
-		 diagramManager.arrangeDiagram();
+		diagramManager.arrangeDiagram();
 	}
-	
+
 	public SmartGraphPanel<String, String> applyLayout(){
 		return diagramManager.applyLayout();
 	}
-	
+
 	public SmartGraphPanel<String, String> applySpecificLayout(String choice){
 		return diagramManager.applySpecificLayout(choice);
 	}
@@ -56,7 +56,7 @@ public class DiagramController implements Controller {
 	public SmartGraphPanel<String, String> visualizeJavaFXGraph() {
 		return diagramManager.visualizeJavaFXGraph();
 	}
-	
+
 	public SmartGraphPanel<String, String> visualizeLoadedJavaFXGraph(){
 		return diagramManager.visualizeLoadedJavaFXGraph();
 	}

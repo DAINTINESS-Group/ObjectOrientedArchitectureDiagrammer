@@ -32,12 +32,12 @@ class PlantUMLPackageVertexArcTest {
 			PackageDiagramManager packageDiagramManager = new PackageDiagramManager();
 			packageDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
 			packageDiagramManager.convertTreeToDiagram(List.of(
-				"src.view",
-				"src.model",
-				"src.model.strategies",
-				"src.controller.commands",
-				"src.controller"
-			));
+					"src.view",
+					"src.model",
+					"src.model.strategies",
+					"src.controller.commands",
+					"src.controller"
+					));
 
 			PlantUMLPackageVertexArc plantUMLEdge = new PlantUMLPackageVertexArc(packageDiagramManager.getPackageDiagram());
 			String actualBuffer = plantUMLEdge.convertVertexArc().toString();
@@ -52,5 +52,5 @@ class PlantUMLPackageVertexArcTest {
 			e.printStackTrace();
 		}
 	}
-	
+
 }

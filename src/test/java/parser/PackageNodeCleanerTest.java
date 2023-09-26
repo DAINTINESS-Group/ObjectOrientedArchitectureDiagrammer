@@ -12,42 +12,42 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class PackageNodeCleanerTest {
 
-    Path currentDirectory = Path.of(".");
+	Path currentDirectory = Path.of(".");
 
-    @Test
-    void removeNonPackageNodesTest() {
-        try {
-            Interpreter interpreter = new Interpreter();
-            interpreter.parseProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\BookstoreAdvancedV01"));
-            Map<Path, PackageNode> packageNodes = interpreter.getPackageNodes();
+	@Test
+	void removeNonPackageNodesTest() {
+		try {
+			Interpreter interpreter = new Interpreter();
+			interpreter.parseProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\BookstoreAdvancedV01"));
+			Map<Path, PackageNode> packageNodes = interpreter.getPackageNodes();
 
-            PackageNodeCleaner packageNodeCleaner = new PackageNodeCleaner(packageNodes);
-            Map<Path, PackageNode> validPackageNodes = packageNodeCleaner.removeNonPackageNodes();
+			PackageNodeCleaner packageNodeCleaner = new PackageNodeCleaner(packageNodes);
+			Map<Path, PackageNode> validPackageNodes = packageNodeCleaner.removeNonPackageNodes();
 
-            assertEquals(packageNodes.size(), validPackageNodes.size() + 7);
+			assertEquals(packageNodes.size(), validPackageNodes.size() + 7);
 
-            assertTrue(validPackageNodes.containsKey(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\BookstoreAdvancedV01\\src")));
-            assertTrue(validPackageNodes.containsKey(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\BookstoreAdvancedV01\\src\\bookstore")));
-            assertTrue(validPackageNodes.containsKey(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\BookstoreAdvancedV01\\src\\gui")));
-            assertTrue(validPackageNodes.containsKey(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\BookstoreAdvancedV01\\src\\testPackage")));
-            assertTrue(validPackageNodes.containsKey(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\BookstoreAdvancedV01")));
+			assertTrue(validPackageNodes.containsKey(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\BookstoreAdvancedV01\\src")));
+			assertTrue(validPackageNodes.containsKey(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\BookstoreAdvancedV01\\src\\bookstore")));
+			assertTrue(validPackageNodes.containsKey(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\BookstoreAdvancedV01\\src\\gui")));
+			assertTrue(validPackageNodes.containsKey(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\BookstoreAdvancedV01\\src\\testPackage")));
+			assertTrue(validPackageNodes.containsKey(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\BookstoreAdvancedV01")));
 
-            assertFalse(validPackageNodes.containsKey(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\BookstoreAdvancedV01\\src\\.settings")));
-            assertFalse(validPackageNodes.containsKey(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\BookstoreAdvancedV01\\src\\bin")));
-            assertFalse(validPackageNodes.containsKey(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\BookstoreAdvancedV01\\src\\bin\\bookstore")));
-            assertFalse(validPackageNodes.containsKey(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\BookstoreAdvancedV01\\src\\bin\\gui")));
-            assertFalse(validPackageNodes.containsKey(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\BookstoreAdvancedV01\\src\\bin\\testPackage")));
-            assertFalse(validPackageNodes.containsKey(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\BookstoreAdvancedV01\\src\\lib")));
-            assertFalse(validPackageNodes.containsKey(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\BookstoreAdvancedV01\\src\\test")));
+			assertFalse(validPackageNodes.containsKey(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\BookstoreAdvancedV01\\src\\.settings")));
+			assertFalse(validPackageNodes.containsKey(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\BookstoreAdvancedV01\\src\\bin")));
+			assertFalse(validPackageNodes.containsKey(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\BookstoreAdvancedV01\\src\\bin\\bookstore")));
+			assertFalse(validPackageNodes.containsKey(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\BookstoreAdvancedV01\\src\\bin\\gui")));
+			assertFalse(validPackageNodes.containsKey(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\BookstoreAdvancedV01\\src\\bin\\testPackage")));
+			assertFalse(validPackageNodes.containsKey(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\BookstoreAdvancedV01\\src\\lib")));
+			assertFalse(validPackageNodes.containsKey(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\BookstoreAdvancedV01\\src\\test")));
 
-            PackageNode sourcePackage = validPackageNodes.get(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\BookstoreAdvancedV01"));
-            Map<Path, PackageNode> sourcePackageSubNodes = sourcePackage.getSubNodes();
-            assertEquals(sourcePackageSubNodes.size(), 1);
-            assertTrue(sourcePackageSubNodes.containsKey(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\BookstoreAdvancedV01\\src")));
+			PackageNode sourcePackage = validPackageNodes.get(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\BookstoreAdvancedV01"));
+			Map<Path, PackageNode> sourcePackageSubNodes = sourcePackage.getSubNodes();
+			assertEquals(sourcePackageSubNodes.size(), 1);
+			assertTrue(sourcePackageSubNodes.containsKey(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\BookstoreAdvancedV01\\src")));
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
-    }
+	}
 }

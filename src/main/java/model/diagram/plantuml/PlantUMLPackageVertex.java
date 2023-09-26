@@ -7,18 +7,18 @@ import java.util.stream.Collectors;
 public class PlantUMLPackageVertex {
 
 
-    private final PackageDiagram packageDiagram;
+	private final PackageDiagram packageDiagram;
 
-    public PlantUMLPackageVertex(PackageDiagram diagram) {
-        packageDiagram = diagram;
-    }
+	public PlantUMLPackageVertex(PackageDiagram diagram) {
+		packageDiagram = diagram;
+	}
 
-    public StringBuilder convertVertex() {
-        return new StringBuilder(
-                packageDiagram.getDiagram().keySet().stream()
-                .map(vertex -> vertex.getVertexType().toString().toLowerCase() + " " + vertex.getName() + " {\n" + "}\n")
-                .collect(Collectors.joining("\n"))
-        );
+	public StringBuilder convertVertex() {
+		return new StringBuilder(
+				packageDiagram.getDiagram().keySet().stream()
+				.map(vertex -> vertex.getVertexType().toString().toLowerCase() + " " + vertex.getName() + " {\n" + "}\n")
+				.collect(Collectors.joining("\n"))
+				);
 	}
 
 }

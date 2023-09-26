@@ -26,7 +26,7 @@ public class ClassDiagramManager implements DiagramManager {
 	private DiagramArrangementManagerInterface classDiagramArrangement;
 	private Collection<Vertex<String>> vertexCollection;
 	private SmartGraphPanel<String, String> graphView;
-    
+
 	public ClassDiagramManager() {
 		classDiagram = new ClassDiagram();
 	}
@@ -60,7 +60,7 @@ public class ClassDiagramManager implements DiagramManager {
 		vertexCollection = javaFXVisualization.getVertexCollection();
 		return graphView;
 	}
-    
+
 	@Override
 	public SmartGraphPanel<String, String> visualizeLoadedJavaFXGraph() {
 		JavaFXVisualization javaFXVisualization = new JavaFXClassVisualization(classDiagram);

@@ -26,26 +26,26 @@ public class PlantUMLClassifierVertexArc {
 		}
 
 		return new StringBuilder(
-			arcs.stream()
+				arcs.stream()
 				.map(sinkVertexArc ->
-					sinkVertexArc.getSourceVertex().getName() + " " + getRelationship(sinkVertexArc.getArcType()) + " " +
-					sinkVertexArc.getTargetVertex().getName())
+				sinkVertexArc.getSourceVertex().getName() + " " + getRelationship(sinkVertexArc.getArcType()) + " " +
+				sinkVertexArc.getTargetVertex().getName())
 				.collect(Collectors.joining("\n"))
-		);
+				);
 	}
-    
-    private String getRelationship(ArcType relationshipType) {
+
+	private String getRelationship(ArcType relationshipType) {
 		return switch (relationshipType) {
 			case EXTENSION -> "--|>";
 			case AGGREGATION -> "o--";
 			case DEPENDENCY -> "..>";
 			case IMPLEMENTATION -> "..|>";
 			default -> "-->"; // ASSOCIATION
-			//case SELFREFERENCE: // SELF-REFERENCING
-			//	return "";		// A -- A , SAME CLASS WITH -- IN BETWEEN
-			//case COMPOSITION:
-			//	return "--*";
+		//case SELFREFERENCE: // SELF-REFERENCING
+		//	return "";		// A -- A , SAME CLASS WITH -- IN BETWEEN
+		//case COMPOSITION:
+		//	return "--*";
 		};
-    }
+	}
 
 }

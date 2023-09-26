@@ -67,11 +67,11 @@ public class JDTProjectParser implements Parser {
 		fileVisitor.createAST(file, leafNode);
 		currentNode.addLeafNode(leafNode);
 	}
-	
+
 	private boolean isExtensionJava(String filePath) {
 		return filePath.toLowerCase().endsWith(".java");
 	}
-	
+
 	private Path getSubNodesPath(PackageNode currentPackage, File file) {
 		return Paths.get(currentPackage.getPackageNodesPath().normalize() + "\\" + file.getName());
 	}

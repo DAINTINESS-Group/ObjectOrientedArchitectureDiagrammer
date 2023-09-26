@@ -24,97 +24,97 @@ import javafx.scene.paint.Color;
 
 public class ProjectLoadController {
 
-    @FXML
-    MenuBar menuBar;
-    @FXML
-    BorderPane borderPane;
-    @FXML
-    Menu exportMenu;
-    
-    private SmartGraphPanel<String, String> graphView;
-    private double graphViewNormalScaleX;
-    private double graphViewNormalScaleY;
-    private Controller diagramController;
+	@FXML
+	MenuBar menuBar;
+	@FXML
+	BorderPane borderPane;
+	@FXML
+	Menu exportMenu;
 
-    public void openProject() {
-        MenuUtility.openProject(menuBar);
-    }
+	private SmartGraphPanel<String, String> graphView;
+	private double graphViewNormalScaleX;
+	private double graphViewNormalScaleY;
+	private Controller diagramController;
 
-    public void closeProject() {
-        MenuUtility.closeProject(menuBar);
-    }
+	public void openProject() {
+		MenuUtility.openProject(menuBar);
+	}
 
-    public void quitApp() {
-        MenuUtility.quitApp(menuBar);
-    }
+	public void closeProject() {
+		MenuUtility.closeProject(menuBar);
+	}
 
-    public void aboutPage() { MenuUtility.aboutPage(menuBar); }
+	public void quitApp() {
+		MenuUtility.quitApp(menuBar);
+	}
 
-    public void loadDiagram(ActionEvent event) {
-        FileAndDirectoryUtility.setLoadedDiagramName(MenuUtility.loadDiagram(menuBar, event));
-    }
+	public void aboutPage() { MenuUtility.aboutPage(menuBar); }
 
-    public void visualizeGraph(SmartGraphPanel<String, String> graphView) {
-    	this.graphView = graphView;
-    	ContentZoomPane zoomPane = new ContentZoomPane(graphView);
-    	ScrollPane scrollPane = new ScrollPane(zoomPane);
-        scrollPane.setPannable(false);
-        graphViewNormalScaleX = graphView.getScaleX();
-        graphViewNormalScaleY = graphView.getScaleY();
-        String graphViewBackgroundColor = "#F4FFFB";
-        Color zoomPaneBackgroundColor = Color.web(graphViewBackgroundColor);
-        zoomPane.setBackground(new Background(new BackgroundFill(zoomPaneBackgroundColor, null, null)));
-        graphView.minWidthProperty().bind(borderPane.widthProperty());
-        graphView.minHeightProperty().bind(borderPane.heightProperty());
-        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-    	borderPane.setCenter(scrollPane);
-        zoomPane.setOnScroll(event -> {
-            double zoomFactor = 1.1;
-            if (event.getDeltaY() >= 0) {
-            	graphView.setScaleX(graphView.getScaleX() * zoomFactor);
-            	graphView.setScaleY(graphView.getScaleY() * zoomFactor);
-            } else {
-            	graphView.setScaleX(graphView.getScaleX() / zoomFactor);
-            	graphView.setScaleY(graphView.getScaleY() / zoomFactor);
-            }
-        });
-        exportMenu.setVisible(true);
-    }
-    
-    public void exportDiagramAsImage() {
-        try {
-            File selectedDirectory = FileAndDirectoryUtility.saveLoadedFile("Export Diagram as PNG", menuBar,"PNG files");
-            if (selectedDirectory == null) {
-                return;
-            }
-            double changeScaleX = graphView.getScaleX();
-            double changeScaleY = graphView.getScaleY();
-            graphView.setScaleX(graphViewNormalScaleX);
-            graphView.setScaleY(graphViewNormalScaleY);
-            WritableImage image = graphView.snapshot(new SnapshotParameters(), null);
-            ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", selectedDirectory);
-            graphView.setScaleX(changeScaleX);
-            graphView.setScaleY(changeScaleY);
-        }catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+	public void loadDiagram(ActionEvent event) {
+		FileAndDirectoryUtility.setLoadedDiagramName(MenuUtility.loadDiagram(menuBar, event));
+	}
 
-    public void exportDiagramAsText() {
-        File selectedFile = FileAndDirectoryUtility.saveLoadedFile("Save Diagram", menuBar, "Text Files");
-        if (selectedFile == null) {
-            return;
-        }
-        diagramController.saveDiagram(selectedFile.toPath());
-    }
+	public void visualizeGraph(SmartGraphPanel<String, String> graphView) {
+		this.graphView = graphView;
+		ContentZoomPane zoomPane = new ContentZoomPane(graphView);
+		ScrollPane scrollPane = new ScrollPane(zoomPane);
+		scrollPane.setPannable(false);
+		graphViewNormalScaleX = graphView.getScaleX();
+		graphViewNormalScaleY = graphView.getScaleY();
+		String graphViewBackgroundColor = "#F4FFFB";
+		Color zoomPaneBackgroundColor = Color.web(graphViewBackgroundColor);
+		zoomPane.setBackground(new Background(new BackgroundFill(zoomPaneBackgroundColor, null, null)));
+		graphView.minWidthProperty().bind(borderPane.widthProperty());
+		graphView.minHeightProperty().bind(borderPane.heightProperty());
+		scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+		scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+		borderPane.setCenter(scrollPane);
+		zoomPane.setOnScroll(event -> {
+			double zoomFactor = 1.1;
+			if (event.getDeltaY() >= 0) {
+				graphView.setScaleX(graphView.getScaleX() * zoomFactor);
+				graphView.setScaleY(graphView.getScaleY() * zoomFactor);
+			} else {
+				graphView.setScaleX(graphView.getScaleX() / zoomFactor);
+				graphView.setScaleY(graphView.getScaleY() / zoomFactor);
+			}
+		});
+		exportMenu.setVisible(true);
+	}
 
-    public void closeDiagram() {
-        MenuUtility.closeProject(menuBar);
-        exportMenu.setVisible(false);
-    }
+	public void exportDiagramAsImage() {
+		try {
+			File selectedDirectory = FileAndDirectoryUtility.saveLoadedFile("Export Diagram as PNG", menuBar,"PNG files");
+			if (selectedDirectory == null) {
+				return;
+			}
+			double changeScaleX = graphView.getScaleX();
+			double changeScaleY = graphView.getScaleY();
+			graphView.setScaleX(graphViewNormalScaleX);
+			graphView.setScaleY(graphViewNormalScaleY);
+			WritableImage image = graphView.snapshot(new SnapshotParameters(), null);
+			ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", selectedDirectory);
+			graphView.setScaleX(changeScaleX);
+			graphView.setScaleY(changeScaleY);
+		}catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
-    public void setDiagramController(Controller diagramController) {
-        this.diagramController = diagramController;
-    }
+	public void exportDiagramAsText() {
+		File selectedFile = FileAndDirectoryUtility.saveLoadedFile("Save Diagram", menuBar, "Text Files");
+		if (selectedFile == null) {
+			return;
+		}
+		diagramController.saveDiagram(selectedFile.toPath());
+	}
+
+	public void closeDiagram() {
+		MenuUtility.closeProject(menuBar);
+		exportMenu.setVisible(false);
+	}
+
+	public void setDiagramController(Controller diagramController) {
+		this.diagramController = diagramController;
+	}
 }

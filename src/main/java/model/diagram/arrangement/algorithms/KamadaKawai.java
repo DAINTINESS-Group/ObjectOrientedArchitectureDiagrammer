@@ -23,7 +23,7 @@ public class KamadaKawai implements LayoutAlgorithm{
 	public void setGraph(Graph<String, String> graph) {
 		this.graph = graph;
 	}
-	
+
 	@Override
 	public DiagramGeometry arrangeDiagram() {
 		double maxXdistance = 0.0;

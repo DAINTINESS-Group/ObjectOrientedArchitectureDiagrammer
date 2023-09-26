@@ -15,51 +15,51 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class PlantUMLPackageVertexTest {
 
-    Path currentDirectory = Path.of(".");
+	Path currentDirectory = Path.of(".");
 
-    @Test
-    void convertVertexTest() {
-        try {
-            String expectedBuffer = "package src.controller {\n" +
-                "}\n" +
-                "\n" +
-                "package src.controller.commands {\n" +
-                "}\n" +
-                "\n" +
-                "package src.model {\n" +
-                "}\n" +
-                "\n" +
-                "package src {\n" +
-                "}\n" +
-                "\n" +
-                "package src.view {\n" +
-                "}\n" +
-                "\n" +
-                "package src.model.strategies {\n" +
-                "}\n\n";
+	@Test
+	void convertVertexTest() {
+		try {
+			String expectedBuffer = "package src.controller {\n" +
+					"}\n" +
+					"\n" +
+					"package src.controller.commands {\n" +
+					"}\n" +
+					"\n" +
+					"package src.model {\n" +
+					"}\n" +
+					"\n" +
+					"package src {\n" +
+					"}\n" +
+					"\n" +
+					"package src.view {\n" +
+					"}\n" +
+					"\n" +
+					"package src.model.strategies {\n" +
+					"}\n\n";
 
-            PackageDiagramManager packageDiagramManager = new PackageDiagramManager();
-            packageDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-            packageDiagramManager.convertTreeToDiagram(List.of(
-                "src",
-                "src.view",
-                "src.model",
-                "src.model.strategies",
-                "src.controller.commands",
-                "src.controller"
-            ));
+			PackageDiagramManager packageDiagramManager = new PackageDiagramManager();
+			packageDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
+			packageDiagramManager.convertTreeToDiagram(List.of(
+					"src",
+					"src.view",
+					"src.model",
+					"src.model.strategies",
+					"src.controller.commands",
+					"src.controller"
+					));
 
-            PlantUMLPackageVertex plantUMLPackageVertex = new PlantUMLPackageVertex(packageDiagramManager.getPackageDiagram());
-            String actualBuffer = plantUMLPackageVertex.convertVertex().toString();
+			PlantUMLPackageVertex plantUMLPackageVertex = new PlantUMLPackageVertex(packageDiagramManager.getPackageDiagram());
+			String actualBuffer = plantUMLPackageVertex.convertVertex().toString();
 
-            List<String> expected = Arrays.asList(expectedBuffer.split("\n"));
-            List<String> actual = Arrays.asList(actualBuffer.split("\n"));
+			List<String> expected = Arrays.asList(expectedBuffer.split("\n"));
+			List<String> actual = Arrays.asList(actualBuffer.split("\n"));
 
-            Collections.sort(expected);
-            Collections.sort(actual);
-            assertEquals(expected, actual);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+			Collections.sort(expected);
+			Collections.sort(actual);
+			assertEquals(expected, actual);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }

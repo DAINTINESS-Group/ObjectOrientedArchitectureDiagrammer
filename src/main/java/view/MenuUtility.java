@@ -18,85 +18,85 @@ import java.util.Objects;
 
 public class MenuUtility {
 
-    private MenuUtility(){
-        throw new java.lang.UnsupportedOperationException("Not to be instantiated");
-    }
+	private MenuUtility(){
+		throw new java.lang.UnsupportedOperationException("Not to be instantiated");
+	}
 
-    public static void openProject(MenuBar menuBar){
-        try {
-            File selectedDirectory = FileAndDirectoryUtility.chooseDirectory("Load the Project's Source Folder", menuBar);
-            if (selectedDirectory == null) {
-                PopupWindow.createPopupInfoWindow("You should select a directory!", "Error");
-                return;
-            }
-            URL url = MenuUtility.class.getResource("/fxml/DiagramCreationView.fxml");
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(url);
-            Parent diagramCreationParent = loader.load();
+	public static void openProject(MenuBar menuBar){
+		try {
+			File selectedDirectory = FileAndDirectoryUtility.chooseDirectory("Load the Project's Source Folder", menuBar);
+			if (selectedDirectory == null) {
+				PopupWindow.createPopupInfoWindow("You should select a directory!", "Error");
+				return;
+			}
+			URL url = MenuUtility.class.getResource("/fxml/DiagramCreationView.fxml");
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(url);
+			Parent diagramCreationParent = loader.load();
 
-            DiagramCreationController diagramCreationController = loader.getController();
-            diagramCreationController.createTreeView(selectedDirectory.toPath());
+			DiagramCreationController diagramCreationController = loader.getController();
+			diagramCreationController.createTreeView(selectedDirectory.toPath());
 
-            Scene diagramCreationScene = new Scene(diagramCreationParent);
-            Stage window = (Stage) menuBar.getScene().getWindow();
-            window.setScene(diagramCreationScene);
-            window.show();
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-    }
+			Scene diagramCreationScene = new Scene(diagramCreationParent);
+			Stage window = (Stage) menuBar.getScene().getWindow();
+			window.setScene(diagramCreationScene);
+			window.show();
+		} catch (Exception e){
+			e.printStackTrace();
+		}
+	}
 
-    public static void closeProject(MenuBar menuBar){
-        try {
-            URL url = MenuUtility.class.getResource("/fxml/ProjectLoadView.fxml");
-            Parent diagramCreationParent = FXMLLoader.load(Objects.requireNonNull(url));
-            Scene diagramCreationScene = new Scene(diagramCreationParent);
-            Stage window = (Stage) menuBar.getScene().getWindow();
-            window.setScene(diagramCreationScene);
-            window.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+	public static void closeProject(MenuBar menuBar){
+		try {
+			URL url = MenuUtility.class.getResource("/fxml/ProjectLoadView.fxml");
+			Parent diagramCreationParent = FXMLLoader.load(Objects.requireNonNull(url));
+			Scene diagramCreationScene = new Scene(diagramCreationParent);
+			Stage window = (Stage) menuBar.getScene().getWindow();
+			window.setScene(diagramCreationScene);
+			window.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-    public static void aboutPage(MenuBar menuBar) {
-        try {
-            URL url = MenuUtility.class.getResource("/fxml/AboutPageView.fxml");
-            Parent aboutPageParent = FXMLLoader.load(Objects.requireNonNull(url));
-            Scene diagramCreationScene = new Scene(aboutPageParent);
-            Stage window = (Stage) menuBar.getScene().getWindow();
-            window.setScene(diagramCreationScene);
-            window.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+	public static void aboutPage(MenuBar menuBar) {
+		try {
+			URL url = MenuUtility.class.getResource("/fxml/AboutPageView.fxml");
+			Parent aboutPageParent = FXMLLoader.load(Objects.requireNonNull(url));
+			Scene diagramCreationScene = new Scene(aboutPageParent);
+			Stage window = (Stage) menuBar.getScene().getWindow();
+			window.setScene(diagramCreationScene);
+			window.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-    public static void quitApp(MenuBar menuBar){
-        Stage window = (Stage) menuBar.getScene().getWindow();
-        window.close();
-    }
+	public static void quitApp(MenuBar menuBar){
+		Stage window = (Stage) menuBar.getScene().getWindow();
+		window.close();
+	}
 
-    public static String loadDiagram(MenuBar menuBar, ActionEvent event) {
-        ControllerFactory controllerFactory = new ControllerFactory();
-        
-        Controller diagramController = controllerFactory.createController(ControllerType.UML_DIAGRAM, ((MenuItem) event.getSource()).getText());
-        File selectedFile = FileAndDirectoryUtility.loadFile(String.format("Load %s Diagram", ((MenuItem) event.getSource()).getText()), menuBar);
-        if (selectedFile == null) {
-            return null;
-        }
-        try {
-            DiagramVisualization diagramVisualization = new DiagramVisualization(menuBar);
-            diagramVisualization.setDiagramController(diagramController);
-            diagramController.loadDiagram(selectedFile.toPath());
-            diagramVisualization.loadLoadedDiagramVisualization(diagramController.visualizeLoadedJavaFXGraph());
-        } catch (JsonParseException j) {
-            if (j.getMessage().equals("Wrong diagram type")) {
-                PopupWindow.createPopupInfoWindow("You tried to load the wrong type of diagram", "Error");
-            } else {
-                PopupWindow.createPopupInfoWindow("Unsupported type of file", "Error");
-            }
-        }
-        return selectedFile.getName();
-    }
+	public static String loadDiagram(MenuBar menuBar, ActionEvent event) {
+		ControllerFactory controllerFactory = new ControllerFactory();
+
+		Controller diagramController = controllerFactory.createController(ControllerType.UML_DIAGRAM, ((MenuItem) event.getSource()).getText());
+		File selectedFile = FileAndDirectoryUtility.loadFile(String.format("Load %s Diagram", ((MenuItem) event.getSource()).getText()), menuBar);
+		if (selectedFile == null) {
+			return null;
+		}
+		try {
+			DiagramVisualization diagramVisualization = new DiagramVisualization(menuBar);
+			diagramVisualization.setDiagramController(diagramController);
+			diagramController.loadDiagram(selectedFile.toPath());
+			diagramVisualization.loadLoadedDiagramVisualization(diagramController.visualizeLoadedJavaFXGraph());
+		} catch (JsonParseException j) {
+			if (j.getMessage().equals("Wrong diagram type")) {
+				PopupWindow.createPopupInfoWindow("You tried to load the wrong type of diagram", "Error");
+			} else {
+				PopupWindow.createPopupInfoWindow("Unsupported type of file", "Error");
+			}
+		}
+		return selectedFile.getName();
+	}
 }

@@ -25,7 +25,7 @@ public class JDTFileVisitor {
 	 * @param file the Java source file
 	 * @param leafNode the leaf node representing the Java source file
 	 */
-    public void createAST(File file, LeafNode leafNode) {
+	public void createAST(File file, LeafNode leafNode) {
 		try {
 			ASTParser parser = ASTParser.newParser(AST.JLS17);
 			this.sourceFile = ReadFileToCharArray(file.getAbsolutePath()).split("\\n");
@@ -37,67 +37,67 @@ public class JDTFileVisitor {
 			e.printStackTrace();
 		}
 	}
-    
-    private  void processJavaFile(JDTLeafNode jdtLeafNode) throws MalformedTreeException {
-	    // to iterate through methods
-    	List<AbstractTypeDeclaration> types = new ArrayList<>();
-    	for (Object o: unit.types()) {
-    		types.add((AbstractTypeDeclaration)(o));
-    	}
+
+	private  void processJavaFile(JDTLeafNode jdtLeafNode) throws MalformedTreeException {
+		// to iterate through methods
+		List<AbstractTypeDeclaration> types = new ArrayList<>();
+		for (Object o: unit.types()) {
+			types.add((AbstractTypeDeclaration)(o));
+		}
 		if (types.isEmpty()) {
 			jdtLeafNode.setInheritanceLine(new String[]{"enum"});
 		}
-	    for (AbstractTypeDeclaration type : types) {
-	        if (type.getNodeType() == ASTNode.TYPE_DECLARATION) {
+		for (AbstractTypeDeclaration type : types) {
+			if (type.getNodeType() == ASTNode.TYPE_DECLARATION) {
 				jdtLeafNode.setInheritanceLine(convertInheritanceLine(type));
-	            List<BodyDeclaration> bodies = new ArrayList<>();
-	        	for (Object o: type.bodyDeclarations()) {
-	        		bodies.add((BodyDeclaration)(o));
-	        	}
-	            for (BodyDeclaration body : bodies) {
-	            	if (isField(body)) {
+				List<BodyDeclaration> bodies = new ArrayList<>();
+				for (Object o: type.bodyDeclarations()) {
+					bodies.add((BodyDeclaration)(o));
+				}
+				for (BodyDeclaration body : bodies) {
+					if (isField(body)) {
 						String fieldName = "";
-	            		FieldDeclaration field = (FieldDeclaration)body;
-	            		List<VariableDeclarationFragment> fragments = new ArrayList<>();
-	    	        	for (Object o: field.fragments()) {
-	    	        		fragments.add((VariableDeclarationFragment)(o));
-	    	        	}
-	            		for(VariableDeclarationFragment fragment: fragments) {
+						FieldDeclaration field = (FieldDeclaration)body;
+						List<VariableDeclarationFragment> fragments = new ArrayList<>();
+						for (Object o: field.fragments()) {
+							fragments.add((VariableDeclarationFragment)(o));
+						}
+						for(VariableDeclarationFragment fragment: fragments) {
 							fieldName = fragment.getName().toString();
-		            		Map<Object, Object> map = new HashMap<>();
-		            		for (Object ob: fragment.properties().keySet()) {
-		            			map.put(ob, map.get(ob));
-		            		}
-		            	}
-	            		int fieldModifiers = field.getModifiers();
+							Map<Object, Object> map = new HashMap<>();
+							for (Object ob: fragment.properties().keySet()) {
+								map.put(ob, map.get(ob));
+							}
+						}
+						int fieldModifiers = field.getModifiers();
 						jdtLeafNode.addField(fieldName, field.getType().toString().replaceAll("<", "[").replaceAll(">", "]"), getVisibility(fieldModifiers));
-	            	}
-	                if (isMethod(body)) {
-	                    MethodDeclaration method = (MethodDeclaration)body;
-	                    String methodName = method.getName().getFullyQualifiedName();
-	                    Type returnType = method.getReturnType2();
-	                    
-	                    String returnTypeName;
-	                    if (returnType==null) returnTypeName = "Constructor";
-	                    else returnTypeName = returnType.toString();
-	                    
+					}
+					if (isMethod(body)) {
+						MethodDeclaration method = (MethodDeclaration)body;
+						String methodName = method.getName().getFullyQualifiedName();
+						Type returnType = method.getReturnType2();
+
+						String returnTypeName;
+						if (returnType==null) returnTypeName = "Constructor";
+						else returnTypeName = returnType.toString();
+
 						Map<String, String> parameters = new HashMap<>();
 
-	                    for (Object parameter : method.parameters()) {
-	                        VariableDeclaration variableDeclaration = (VariableDeclaration) parameter;
+						for (Object parameter : method.parameters()) {
+							VariableDeclaration variableDeclaration = (VariableDeclaration) parameter;
 							String variableType = variableDeclaration.
 									getStructuralProperty(SingleVariableDeclaration.TYPE_PROPERTY).toString() + "[]".repeat(Math.max(0, variableDeclaration.getExtraDimensions()));
-	                        
+
 							parameters.put(variableDeclaration.getName().getIdentifier(),
 									variableType.replaceAll("<", "[").replaceAll(">", "]"));
-	                    }
+						}
 
-	                    int methodModifiers = method.getModifiers();
-	                    jdtLeafNode.addMethod(methodName, returnTypeName.replaceAll("<", "[").replaceAll(">", "]"), getVisibility(methodModifiers), parameters);
-	                }
-	            }
-	        }
-	    }
+						int methodModifiers = method.getModifiers();
+						jdtLeafNode.addMethod(methodName, returnTypeName.replaceAll("<", "[").replaceAll(">", "]"), getVisibility(methodModifiers), parameters);
+					}
+				}
+			}
+		}
 	}//end processJavaFile
 
 	private String[] convertInheritanceLine(AbstractTypeDeclaration type) {
@@ -123,11 +123,11 @@ public class JDTFileVisitor {
 	private boolean isField(BodyDeclaration body) {
 		return body.getNodeType() == ASTNode.FIELD_DECLARATION;
 	}
-	
+
 	private String ReadFileToCharArray(String filePath) throws IOException {
 		StringBuilder fileData = new StringBuilder(1000);
 		BufferedReader reader = new BufferedReader(new FileReader(filePath));
- 
+
 		char[] buf = new char[10];
 		int numRead;
 		while ((numRead = reader.read(buf)) != -1) {
@@ -135,22 +135,22 @@ public class JDTFileVisitor {
 			fileData.append(readData);
 			buf = new char[1024];
 		}
- 
+
 		reader.close();
- 
+
 		return  fileData.toString();	
 	}//end ReadFileToCharArray
 
-	
-    private static ModifierType getVisibility(int modifiers) {
-    	if(Modifier.isPublic(modifiers)) {
-    		return ModifierType.PUBLIC;
-    	} else if (Modifier.isProtected(modifiers)) {
-    		return ModifierType.PROTECTED;
-    	} else if (Modifier.isPrivate(modifiers)) {
-    		return ModifierType.PRIVATE;
-    	} else {
-    		return ModifierType.PACKAGE_PRIVATE;
-    	}
-    }
+
+	private static ModifierType getVisibility(int modifiers) {
+		if(Modifier.isPublic(modifiers)) {
+			return ModifierType.PUBLIC;
+		} else if (Modifier.isProtected(modifiers)) {
+			return ModifierType.PROTECTED;
+		} else if (Modifier.isPrivate(modifiers)) {
+			return ModifierType.PRIVATE;
+		} else {
+			return ModifierType.PACKAGE_PRIVATE;
+		}
+	}
 }

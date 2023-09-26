@@ -10,78 +10,78 @@ import java.util.*;
 
 public class ClassDiagram {
 
-    private Map<ClassifierVertex, Set<Arc<ClassifierVertex>>> diagram;
-    private Map<Path, ClassifierVertex> sinkVertices;
-    private final Map<ClassifierVertex, Integer> graphNodes;
-    private Map<Integer, Pair<Double, Double>> diagramGeometryGraphML;
-    private DiagramGeometry diagramGeometry;
+	private Map<ClassifierVertex, Set<Arc<ClassifierVertex>>> diagram;
+	private Map<Path, ClassifierVertex> sinkVertices;
+	private final Map<ClassifierVertex, Integer> graphNodes;
+	private Map<Integer, Pair<Double, Double>> diagramGeometryGraphML;
+	private DiagramGeometry diagramGeometry;
 
-    public ClassDiagram() {
-        graphNodes = new HashMap<>();
-    }
+	public ClassDiagram() {
+		graphNodes = new HashMap<>();
+	}
 
-    public void createNewDiagram(List<String> chosenFilesNames) {
-        createGraphNodes(chosenFilesNames);
-        createDiagram(graphNodes.keySet());
-    }
+	public void createNewDiagram(List<String> chosenFilesNames) {
+		createGraphNodes(chosenFilesNames);
+		createDiagram(graphNodes.keySet());
+	}
 
-    public void createDiagram(Set<ClassifierVertex> sinkVertices) {
-        GraphClassDiagramConverter classDiagramConverter = new GraphClassDiagramConverter(sinkVertices);
-        diagram = classDiagramConverter.convertGraphToClassDiagram();
-    }
+	public void createDiagram(Set<ClassifierVertex> sinkVertices) {
+		GraphClassDiagramConverter classDiagramConverter = new GraphClassDiagramConverter(sinkVertices);
+		diagram = classDiagramConverter.convertGraphToClassDiagram();
+	}
 
-    private void createGraphNodes(List<String> chosenFileNames) {
-        int nodeId = 0;
-        for (ClassifierVertex classifierVertex : getChosenNodes(chosenFileNames)) {
-            graphNodes.put(classifierVertex, nodeId);
-            nodeId++;
-        }
-    }
+	private void createGraphNodes(List<String> chosenFileNames) {
+		int nodeId = 0;
+		for (ClassifierVertex classifierVertex : getChosenNodes(chosenFileNames)) {
+			graphNodes.put(classifierVertex, nodeId);
+			nodeId++;
+		}
+	}
 
-    private List<ClassifierVertex> getChosenNodes(List<String> chosenClassesNames) {
-        List<ClassifierVertex> chosenClasses = new ArrayList<>();
-        for (String chosenClass: chosenClassesNames) {
-            Optional<ClassifierVertex> optionalSinkVertex = sinkVertices.values().stream()
-                .filter(sinkVertex -> sinkVertex.getName().equals(chosenClass))
-                .findFirst();
-            if (optionalSinkVertex.isEmpty()) {
-                continue;
-            }
-            chosenClasses.add(optionalSinkVertex.get());
-        }
-        return chosenClasses;
-    }
+	private List<ClassifierVertex> getChosenNodes(List<String> chosenClassesNames) {
+		List<ClassifierVertex> chosenClasses = new ArrayList<>();
+		for (String chosenClass: chosenClassesNames) {
+			Optional<ClassifierVertex> optionalSinkVertex = sinkVertices.values().stream()
+					.filter(sinkVertex -> sinkVertex.getName().equals(chosenClass))
+					.findFirst();
+			if (optionalSinkVertex.isEmpty()) {
+				continue;
+			}
+			chosenClasses.add(optionalSinkVertex.get());
+		}
+		return chosenClasses;
+	}
 
-    public void setSinkVertices(Map<Path, ClassifierVertex> sinkVertices) {
-        this.sinkVertices = sinkVertices;
-    }
+	public void setSinkVertices(Map<Path, ClassifierVertex> sinkVertices) {
+		this.sinkVertices = sinkVertices;
+	}
 
-    public void setDiagram(Map<ClassifierVertex, Set<Arc<ClassifierVertex>>> diagram) {
-        this.diagram = diagram;
-    }
+	public void setDiagram(Map<ClassifierVertex, Set<Arc<ClassifierVertex>>> diagram) {
+		this.diagram = diagram;
+	}
 
-    public void setGraphMLDiagramGeometry(Map<Integer, Pair<Double, Double>> diagramGeometryGraphML) {
-        this.diagramGeometryGraphML = diagramGeometryGraphML;
-    }
-    
-    public void setDiagramGeometry(DiagramGeometry diagramGeometry) {
-    	this.diagramGeometry = diagramGeometry;
-    }
+	public void setGraphMLDiagramGeometry(Map<Integer, Pair<Double, Double>> diagramGeometryGraphML) {
+		this.diagramGeometryGraphML = diagramGeometryGraphML;
+	}
 
-    public Map<ClassifierVertex, Set<Arc<ClassifierVertex>>> getDiagram() {
-        return diagram;
-    }
+	public void setDiagramGeometry(DiagramGeometry diagramGeometry) {
+		this.diagramGeometry = diagramGeometry;
+	}
 
-    public Map<ClassifierVertex, Integer> getGraphNodes() {
-        return graphNodes;
-    }
+	public Map<ClassifierVertex, Set<Arc<ClassifierVertex>>> getDiagram() {
+		return diagram;
+	}
 
-    public Map<Integer, Pair<Double, Double>> getGraphMLDiagramGeometry() {
-        return diagramGeometryGraphML;
-    }
-    
-    public DiagramGeometry getDiagramGeometry() {
-        return diagramGeometry;
-    }
+	public Map<ClassifierVertex, Integer> getGraphNodes() {
+		return graphNodes;
+	}
+
+	public Map<Integer, Pair<Double, Double>> getGraphMLDiagramGeometry() {
+		return diagramGeometryGraphML;
+	}
+
+	public DiagramGeometry getDiagramGeometry() {
+		return diagramGeometry;
+	}
 
 }

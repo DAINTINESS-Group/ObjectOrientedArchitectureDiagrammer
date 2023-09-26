@@ -35,21 +35,21 @@ class JDTProjectParserTest {
 					Paths.get(currentDirectory.toRealPath().normalize().toString(), "\\src\\test\\resources\\LatexEditor\\src\\view\\LatexEditorView.java"),
 					Paths.get(currentDirectory.toRealPath().normalize().toString(), "\\src\\test\\resources\\LatexEditor\\src\\view\\MainWindow.java"),
 					Paths.get(currentDirectory.toRealPath().normalize().toString(), "\\src\\test\\resources\\LatexEditor\\src\\view\\OpeningWindow.java")
-			));
+					));
 			List<Path> controllersLeafNodes = new ArrayList<>(List.of(
 					Paths.get(currentDirectory.toRealPath().normalize().toString(), "\\src\\test\\resources\\LatexEditor\\src\\controller\\LatexEditorController.java")
-			));
+					));
 			List<Path> strategiesLeafNodes = new ArrayList<>(Arrays.asList(
 					Paths.get(currentDirectory.toRealPath().normalize().toString(), "\\src\\test\\resources\\LatexEditor\\src\\model\\strategies\\StableVersionsStrategy.java"),
 					Paths.get(currentDirectory.toRealPath().normalize().toString(), "\\src\\test\\resources\\LatexEditor\\src\\model\\strategies\\VersionsStrategy.java"),
 					Paths.get(currentDirectory.toRealPath().normalize().toString(), "\\src\\test\\resources\\LatexEditor\\src\\model\\strategies\\VolatileVersionsStrategy.java"),
 					Paths.get(currentDirectory.toRealPath().normalize().toString(), "\\src\\test\\resources\\LatexEditor\\src\\model\\strategies\\VersionsStrategyFactory.java")
-			));
+					));
 			List<Path> modelsLeafNodes = new ArrayList<>(Arrays.asList(
 					Paths.get(currentDirectory.toRealPath().normalize().toString(), "\\src\\test\\resources\\LatexEditor\\src\\model\\Document.java"),
 					Paths.get(currentDirectory.toRealPath().normalize().toString(), "\\src\\test\\resources\\LatexEditor\\src\\model\\DocumentManager.java"),
 					Paths.get(currentDirectory.toRealPath().normalize().toString(), "\\src\\test\\resources\\LatexEditor\\src\\model\\VersionsManager.java")
-			));
+					));
 			List<Path> commandsLeafNodes = new ArrayList<>(Arrays.asList(
 					Paths.get(currentDirectory.toRealPath().normalize().toString(), "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands\\AddLatexCommand.java"),
 					Paths.get(currentDirectory.toRealPath().normalize().toString(), "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands\\Command.java"),
@@ -62,7 +62,7 @@ class JDTProjectParserTest {
 					Paths.get(currentDirectory.toRealPath().normalize().toString(), "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands\\DisableVersionsManagementCommand.java"),
 					Paths.get(currentDirectory.toRealPath().normalize().toString(), "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands\\EnableVersionsManagementCommand.java"),
 					Paths.get(currentDirectory.toRealPath().normalize().toString(), "\\src\\test\\resources\\LatexEditor\\src\\controller\\commands\\RollbackToPreviousVersionCommand.java")
-			));
+					));
 			ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
 			Parser parser = projectParserFactory.createProjectParser();
 			Map<Path, PackageNode> packageNodes = parser.parseSourcePackage(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
@@ -76,7 +76,7 @@ class JDTProjectParserTest {
 			assertTrue(controllerPackage.isValid(), "message");
 			Map<Path, PackageNode> subNodes = controllerPackage.getSubNodes();
 			assertEquals(Paths.get(currentDirectory.toRealPath().normalize().toString(),
-							"\\src\\test\\resources\\LatexEditor\\src\\controller\\commands"),
+					"\\src\\test\\resources\\LatexEditor\\src\\controller\\commands"),
 					subNodes.get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
 							"\\src\\test\\resources\\LatexEditor\\src\\controller\\commands")).getPackageNodesPath());
 
@@ -122,7 +122,7 @@ class JDTProjectParserTest {
 			assertTrue(modelPackage.isValid());
 			subNodes = modelPackage.getSubNodes();
 			assertEquals(Paths.get(currentDirectory.toRealPath().normalize().toString(),
-							"\\src\\test\\resources\\LatexEditor\\src\\model\\strategies"),
+					"\\src\\test\\resources\\LatexEditor\\src\\model\\strategies"),
 					subNodes.get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
 							"\\src\\test\\resources\\LatexEditor\\src\\model\\strategies")).getPackageNodesPath());
 			for (LeafNode l : modelPackage.getLeafNodes().values()) {

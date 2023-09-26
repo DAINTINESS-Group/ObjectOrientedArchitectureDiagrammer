@@ -26,39 +26,39 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class GraphMLClassDiagramExporterTest {
 
-    Path currentDirectory = Path.of(".");
+	Path currentDirectory = Path.of(".");
 
-    @Test
-    void exportDiagramTest() {
-        try {
-            ClassDiagramManager classDiagramManager = new ClassDiagramManager();
-            List<String> chosenFiles = Arrays.asList("MainWindow", "LatexEditorView", "OpeningWindow");
-            classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-            classDiagramManager.convertTreeToDiagram(chosenFiles);
-            classDiagramManager.arrangeDiagram();
-            DiagramArrangementManagerInterface classDiagramArrangement = new ClassDiagramArrangementManager(classDiagramManager.getClassDiagram());
-            Map<Integer, Pair<Double, Double>> nodesGeometry = classDiagramArrangement.arrangeGraphMLDiagram();
-            classDiagramManager.getClassDiagram().setGraphMLDiagramGeometry(nodesGeometry);
-            DiagramExporter graphMLExporter = new GraphMLClassDiagramExporter(classDiagramManager.getClassDiagram());
-            File exportedFile = graphMLExporter.exportDiagram(Paths.get(System.getProperty("user.home") + "\\testingExportedFile.graphML"));
-            Stream<String> lines = Files.lines(exportedFile.toPath());
-            String actualFileContents = lines.collect(Collectors.joining("\n"));
-            lines.close();
+	@Test
+	void exportDiagramTest() {
+		try {
+			ClassDiagramManager classDiagramManager = new ClassDiagramManager();
+			List<String> chosenFiles = Arrays.asList("MainWindow", "LatexEditorView", "OpeningWindow");
+			classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
+			classDiagramManager.convertTreeToDiagram(chosenFiles);
+			classDiagramManager.arrangeDiagram();
+			DiagramArrangementManagerInterface classDiagramArrangement = new ClassDiagramArrangementManager(classDiagramManager.getClassDiagram());
+			Map<Integer, Pair<Double, Double>> nodesGeometry = classDiagramArrangement.arrangeGraphMLDiagram();
+			classDiagramManager.getClassDiagram().setGraphMLDiagramGeometry(nodesGeometry);
+			DiagramExporter graphMLExporter = new GraphMLClassDiagramExporter(classDiagramManager.getClassDiagram());
+			File exportedFile = graphMLExporter.exportDiagram(Paths.get(System.getProperty("user.home") + "\\testingExportedFile.graphML"));
+			Stream<String> lines = Files.lines(exportedFile.toPath());
+			String actualFileContents = lines.collect(Collectors.joining("\n"));
+			lines.close();
 
-            GraphMLClassifierVertex graphMLClassifierVertex = new GraphMLClassifierVertex(classDiagramManager.getClassDiagram());
-            StringBuilder graphMLNodeBuffer = graphMLClassifierVertex.convertSinkVertex();
-            GraphMLClassifierVertexArc graphMLClassifierVertexArc = new GraphMLClassifierVertexArc(classDiagramManager.getClassDiagram());
-            StringBuilder graphMLEdgeBuffer = graphMLClassifierVertexArc.convertSinkVertexArc();
-            String expectedFileContents = "";
-            expectedFileContents += (GraphMLSyntax.getInstance().getGraphMLPrefix());
-            expectedFileContents += (graphMLNodeBuffer.toString());
-            expectedFileContents += (graphMLEdgeBuffer.toString());
-            expectedFileContents += (GraphMLSyntax.getInstance().getGraphMLSuffix());
+			GraphMLClassifierVertex graphMLClassifierVertex = new GraphMLClassifierVertex(classDiagramManager.getClassDiagram());
+			StringBuilder graphMLNodeBuffer = graphMLClassifierVertex.convertSinkVertex();
+			GraphMLClassifierVertexArc graphMLClassifierVertexArc = new GraphMLClassifierVertexArc(classDiagramManager.getClassDiagram());
+			StringBuilder graphMLEdgeBuffer = graphMLClassifierVertexArc.convertSinkVertexArc();
+			String expectedFileContents = "";
+			expectedFileContents += (GraphMLSyntax.getInstance().getGraphMLPrefix());
+			expectedFileContents += (graphMLNodeBuffer.toString());
+			expectedFileContents += (graphMLEdgeBuffer.toString());
+			expectedFileContents += (GraphMLSyntax.getInstance().getGraphMLSuffix());
 
-            assertEquals(expectedFileContents, actualFileContents);
+			assertEquals(expectedFileContents, actualFileContents);
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }

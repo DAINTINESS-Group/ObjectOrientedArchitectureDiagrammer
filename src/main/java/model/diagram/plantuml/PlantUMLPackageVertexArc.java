@@ -13,39 +13,39 @@ import java.util.stream.Collectors;
 public class PlantUMLPackageVertexArc {
 
 
-    private final PackageDiagram packageDiagram;
+	private final PackageDiagram packageDiagram;
 
-    public PlantUMLPackageVertexArc(PackageDiagram diagram) {
-        packageDiagram = diagram;
-    }
+	public PlantUMLPackageVertexArc(PackageDiagram diagram) {
+		packageDiagram = diagram;
+	}
 
-    public StringBuilder convertVertexArc() {
-        List<Arc<PackageVertex>> arcs = new ArrayList<>();
-        for (Set<Arc<PackageVertex>> arcSet: packageDiagram.getDiagram().values()) {
-            arcs.addAll(arcSet);
-        }
+	public StringBuilder convertVertexArc() {
+		List<Arc<PackageVertex>> arcs = new ArrayList<>();
+		for (Set<Arc<PackageVertex>> arcSet: packageDiagram.getDiagram().values()) {
+			arcs.addAll(arcSet);
+		}
 
-        return new StringBuilder(
-        arcs.stream()
-            .map(vertexArc ->
-                vertexArc.getSourceVertex().getName() + " " + getRelationship(vertexArc.getArcType()) + " " +
-                vertexArc.getTargetVertex().getName())
-            .collect(Collectors.joining("\n"))
-        );
-    }
+		return new StringBuilder(
+				arcs.stream()
+				.map(vertexArc ->
+				vertexArc.getSourceVertex().getName() + " " + getRelationship(vertexArc.getArcType()) + " " +
+				vertexArc.getTargetVertex().getName())
+				.collect(Collectors.joining("\n"))
+				);
+	}
 
-    private String getRelationship(ArcType relationshipType) {
-        return switch (relationshipType) {
-            case EXTENSION -> "--|>";
-            case AGGREGATION -> "o--";
-            case DEPENDENCY -> "..>";
-            case IMPLEMENTATION -> "..|>";
-            default -> "-->"; // ASSOCIATION
-            //case SELFREFERENCE: // SELF-REFERENCING
-            //	return "";		// A -- A , SAME CLASS WITH -- IN BETWEEN
-            //case COMPOSITION:
-            //	return "--*";
-        };
-    }
+	private String getRelationship(ArcType relationshipType) {
+		return switch (relationshipType) {
+			case EXTENSION -> "--|>";
+			case AGGREGATION -> "o--";
+			case DEPENDENCY -> "..>";
+			case IMPLEMENTATION -> "..|>";
+			default -> "-->"; // ASSOCIATION
+		//case SELFREFERENCE: // SELF-REFERENCING
+		//	return "";		// A -- A , SAME CLASS WITH -- IN BETWEEN
+		//case COMPOSITION:
+		//	return "--*";
+		};
+	}
 
 }
