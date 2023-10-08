@@ -42,7 +42,7 @@ public class JavaparserProjectParserTest {
 			));
 		List<Path> controllersLeafNodes = new ArrayList<>(
 			List.of(
-				Paths.get(PathConstructor.getCurrentPath().normalize().toString(), "/src/test/resources/LatexEditor/src/controller/LatexEditorController.java")
+				Paths.get(PathConstructor.getCurrentPath().normalize().toString(), PathConstructor.constructPath("src", "test", "resources", "LatexEditor", "src", "controller", "LatexEditorController.java"))
 			));
 		List<Path> strategiesLeafNodes = new ArrayList<>(
 			Arrays.asList(
@@ -72,8 +72,7 @@ public class JavaparserProjectParserTest {
 				Paths.get(PathConstructor.getCurrentPath().normalize().toString(), PathConstructor.constructPath("src", "test", "resources", "LatexEditor", "src", "controller", "commands", "RollbackToPreviousVersionCommand.java"))
 			));
 
-		ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
-		Parser parser = projectParserFactory.createProjectParser();
+		Parser parser = ProjectParserFactory.createProjectParser(parserType);
 		Map<Path, PackageNode> packageNodes = parser.parseSourcePackage(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "LatexEditor", "src")));
 
 		PackageNode controllerPackage = packageNodes.get(Paths.get(PathConstructor.getCurrentPath().normalize().toString(), PathConstructor.constructPath("src", "test", "resources", "LatexEditor", "src", "controller")));
@@ -96,9 +95,11 @@ public class JavaparserProjectParserTest {
 		}
 		Collections.sort(testingLeafNodes);
 		Collections.sort(controllersLeafNodes);
-		assertTrue(testingLeafNodes.size() == controllersLeafNodes.size()
-				&& controllersLeafNodes.containsAll(testingLeafNodes)
-				&& testingLeafNodes.containsAll(controllersLeafNodes));
+		assertTrue(
+			testingLeafNodes.size() == controllersLeafNodes.size() &&
+		    controllersLeafNodes.containsAll(testingLeafNodes) &&
+			testingLeafNodes.containsAll(controllersLeafNodes));
+
 		testingLeafNodes.clear();
 
 		PackageNode commandsPackage = packageNodes.get(Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
@@ -117,9 +118,11 @@ public class JavaparserProjectParserTest {
 		}
 		Collections.sort(testingLeafNodes);
 		Collections.sort(commandsLeafNodes);
-		assertTrue(testingLeafNodes.size() == commandsLeafNodes.size()
-				&& commandsLeafNodes.containsAll(testingLeafNodes)
-				&& testingLeafNodes.containsAll(commandsLeafNodes));
+		assertTrue(
+			testingLeafNodes.size() == commandsLeafNodes.size() &&
+		    commandsLeafNodes.containsAll(testingLeafNodes) &&
+		    testingLeafNodes.containsAll(commandsLeafNodes));
+
 		testingLeafNodes.clear();
 
 		PackageNode modelPackage = packageNodes.get(Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
@@ -141,9 +144,11 @@ public class JavaparserProjectParserTest {
 		}
 		Collections.sort(testingLeafNodes);
 		Collections.sort(modelsLeafNodes);
-		assertTrue(testingLeafNodes.size() == modelsLeafNodes.size()
-				&& modelsLeafNodes.containsAll(testingLeafNodes)
-				&& testingLeafNodes.containsAll(modelsLeafNodes));
+		assertTrue(
+			testingLeafNodes.size() == modelsLeafNodes.size() &&
+		    modelsLeafNodes.containsAll(testingLeafNodes) &&
+		    testingLeafNodes.containsAll(modelsLeafNodes));
+
 		testingLeafNodes.clear();
 
 		PackageNode strategiesPackage = packageNodes.get(Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
@@ -162,9 +167,11 @@ public class JavaparserProjectParserTest {
 		}
 		Collections.sort(testingLeafNodes);
 		Collections.sort(strategiesLeafNodes);
-		assertTrue(testingLeafNodes.size() == strategiesLeafNodes.size()
-				&& strategiesLeafNodes.containsAll(testingLeafNodes)
-				&& testingLeafNodes.containsAll(strategiesLeafNodes));
+		assertTrue(
+			testingLeafNodes.size() == strategiesLeafNodes.size() &&
+		     strategiesLeafNodes.containsAll(testingLeafNodes) &&
+		     testingLeafNodes.containsAll(strategiesLeafNodes));
+
 		testingLeafNodes.clear();
 
 		PackageNode viewPackage = packageNodes.get(Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
@@ -183,9 +190,10 @@ public class JavaparserProjectParserTest {
 		}
 		Collections.sort(testingLeafNodes);
 		Collections.sort(viewsLeafNodes);
-		assertTrue(testingLeafNodes.size() == viewsLeafNodes.size()
-				&& viewsLeafNodes.containsAll(testingLeafNodes)
-				&& testingLeafNodes.containsAll(viewsLeafNodes));
+		assertTrue(
+			testingLeafNodes.size() == viewsLeafNodes.size() &&
+			viewsLeafNodes.containsAll(testingLeafNodes) &&
+		    testingLeafNodes.containsAll(viewsLeafNodes));
 		testingLeafNodes.clear();
 
 		PackageNode sourcePackage = packageNodes.get(Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
@@ -204,7 +212,8 @@ public class JavaparserProjectParserTest {
 		assertTrue(
 			testingSubPackages.size() == sourcesSubPackages.size() &&
 			sourcesSubPackages.containsAll(testingSubPackages) &&
-			testingSubPackages.containsAll(sourcesSubPackages));
+			testingSubPackages.containsAll(sourcesSubPackages)
+		);
 		assertEquals(0, sourcePackage.getLeafNodes().size());
 	}
 

@@ -25,8 +25,11 @@ public class PlantUMLClassDiagramTextExporterTest {
 		try {
 			ClassDiagramManager classDiagramManager = new ClassDiagramManager();
 			classDiagramManager.createSourceProject(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "LatexEditor", "src")));
-			classDiagramManager.convertTreeToDiagram(List.of("StableVersionsStrategy", "VersionsStrategy", "VersionsStrategyFactory", "VolatileVersionsStrategy",
-					"VersionsManager", "Document", "DocumentManager"));
+			classDiagramManager.convertTreeToDiagram(
+				List.of(
+					"StableVersionsStrategy", "VersionsStrategy", "VersionsStrategyFactory", "VolatileVersionsStrategy",
+					"VersionsManager", "Document", "DocumentManager"
+				));
 
 			PlantUMLClassifierVertex plantUMLClassifierVertex = new PlantUMLClassifierVertex(classDiagramManager.getClassDiagram());
 			String sinkVertexBuffer = plantUMLClassifierVertex.convertSinkVertex().toString();
@@ -34,7 +37,7 @@ public class PlantUMLClassDiagramTextExporterTest {
 			String sinkVertexArcBuffer = plantUMLEdge.convertSinkVertexArc().toString();
 
 			DiagramExporter graphMLExporter = new PlantUMLClassDiagramTextExporter(classDiagramManager.getClassDiagram());
-			File exportedFile = graphMLExporter.exportDiagram(Paths.get(System.getProperty("user.home") + "/testingExportedFile.txt"));
+			File exportedFile = graphMLExporter.exportDiagram(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "testingExportedFile.txt")));
 			Stream<String> lines = Files.lines(exportedFile.toPath());
 			String actualFileContents = lines.collect(Collectors.joining("\n"));
 			lines.close();

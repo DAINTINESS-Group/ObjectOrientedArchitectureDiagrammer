@@ -3,12 +3,15 @@ package model.diagram;
 import model.graph.Arc;
 import model.graph.ClassifierVertex;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class GraphClassDiagramConverter {
 
-	private final Set<ClassifierVertex> sinkVertices;
 	private final Map<ClassifierVertex, Set<Arc<ClassifierVertex>>> adjacencyList;
+	private final Set<ClassifierVertex> 							sinkVertices;
 
 	public GraphClassDiagramConverter(Set<ClassifierVertex> sinkVertices) {
 		this.sinkVertices = sinkVertices;
@@ -19,10 +22,10 @@ public class GraphClassDiagramConverter {
 		for (ClassifierVertex classifierVertex : sinkVertices) {
 			adjacencyList.put(classifierVertex, new HashSet<>());
 			for (Arc<ClassifierVertex> arc: classifierVertex.getArcs()) {
-				if (!sinkVertices.contains(arc.getTargetVertex())) {
+				if (!sinkVertices.contains(arc.targetVertex())) {
 					continue;
 				}
-				adjacencyList.get(arc.getSourceVertex()).add(arc);
+				adjacencyList.get(arc.sourceVertex()).add(arc);
 			}
 		}
 		return adjacencyList;

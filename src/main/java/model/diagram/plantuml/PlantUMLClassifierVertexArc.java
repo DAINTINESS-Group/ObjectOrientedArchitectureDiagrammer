@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 
 public class PlantUMLClassifierVertexArc {
 
-
 	private final ClassDiagram classDiagram;
 
 	public PlantUMLClassifierVertexArc(ClassDiagram diagram) {
@@ -25,26 +24,24 @@ public class PlantUMLClassifierVertexArc {
 			arcs.addAll(arcSet);
 		}
 
-		return new StringBuilder(
-				arcs.stream()
+		return
+			new StringBuilder(arcs
+				.stream()
 				.map(sinkVertexArc ->
-				sinkVertexArc.getSourceVertex().getName() + " " + getRelationship(sinkVertexArc.getArcType()) + " " +
-				sinkVertexArc.getTargetVertex().getName())
+					sinkVertexArc.sourceVertex().getName() + " " + getRelationship(sinkVertexArc.arcType()) + " " +
+					sinkVertexArc.targetVertex().getName())
 				.collect(Collectors.joining("\n"))
-				);
+		);
 	}
 
 	private String getRelationship(ArcType relationshipType) {
 		return switch (relationshipType) {
-			case EXTENSION -> "--|>";
-			case AGGREGATION -> "o--";
-			case DEPENDENCY -> "..>";
+			case EXTENSION 		-> "--|>";
+			case AGGREGATION 	-> "o--";
+			case DEPENDENCY 	-> "..>";
 			case IMPLEMENTATION -> "..|>";
-			default -> "-->"; // ASSOCIATION
-		//case SELFREFERENCE: // SELF-REFERENCING
-		//	return "";		// A -- A , SAME CLASS WITH -- IN BETWEEN
-		//case COMPOSITION:
-		//	return "--*";
+			// ASSOCIATION
+			default 			-> "-->";
 		};
 	}
 

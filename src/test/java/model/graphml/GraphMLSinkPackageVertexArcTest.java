@@ -48,8 +48,8 @@ public class GraphMLSinkPackageVertexArcTest {
 							"          <y:BendStyle smoothed=\"false\"/>\n" +
 							"        </y:PolyLineEdge>\n" +
 							"      </data>\n" +
-							"    </edge>\n", edgeId, classDiagramManager.getClassDiagram().getGraphNodes().get(e.getSourceVertex()),
-							classDiagramManager.getClassDiagram().getGraphNodes().get(e.getTargetVertex()), getEdgesDescription(e).get(0),
+							"    </edge>\n", edgeId, classDiagramManager.getClassDiagram().getGraphNodes().get(e.sourceVertex()),
+							classDiagramManager.getClassDiagram().getGraphNodes().get(e.targetVertex()), getEdgesDescription(e).get(0),
 							getEdgesDescription(e).get(1),getEdgesDescription(e).get(2)));
 			edgeId++;
 		}
@@ -61,7 +61,7 @@ public class GraphMLSinkPackageVertexArcTest {
 				identifyEdgeType(relationship).get(1), identifyEdgeType(relationship).get(2));
 	}
 	private List<String> identifyEdgeType(Arc<ClassifierVertex> relationship){
-		return switch (relationship.getArcType()) {
+		return switch (relationship.arcType()) {
 		case DEPENDENCY -> Arrays.asList("dashed", "none", "plain");
 		case AGGREGATION -> Arrays.asList("line", "white_diamond", "none");
 		case ASSOCIATION -> Arrays.asList("line", "none", "standard");

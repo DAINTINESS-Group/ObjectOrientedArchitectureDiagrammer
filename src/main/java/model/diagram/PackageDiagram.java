@@ -10,11 +10,11 @@ import java.util.*;
 
 public class PackageDiagram {
 
-	private Map<PackageVertex, Set<Arc<PackageVertex>>> diagram;
-	private Map<Path, PackageVertex> vertices;
-	private final Map<PackageVertex, Integer> graphNodes;
-	private Map<Integer, Pair<Double, Double>> diagramGeometryGraphML;
-	private DiagramGeometry diagramGeometry;
+	private final Map<PackageVertex, Integer> 				  graphNodes;
+	private 	  Map<PackageVertex, Set<Arc<PackageVertex>>> diagram;
+	private 	  Map<Path, PackageVertex> 					  vertices;
+	private 	  Map<Integer, Pair<Double, Double>> 		  diagramGeometryGraphML;
+	private 	  DiagramGeometry 							  diagramGeometry;
 
 	public PackageDiagram() {
 		graphNodes = new HashMap<>();
@@ -41,9 +41,10 @@ public class PackageDiagram {
 	public List<PackageVertex> getChosenNodes(List<String> chosenPackagesNames) {
 		List<PackageVertex> chosenPackages = new ArrayList<>();
 		for (String chosenPackage: chosenPackagesNames) {
-			Optional<PackageVertex> vertex = vertices.values().stream()
-					.filter(vertex1 -> vertex1.getName().equals(chosenPackage))
-					.findFirst();
+			Optional<PackageVertex> vertex = vertices.values()
+				.stream()
+				.filter(vertex1 -> vertex1.getName().equals(chosenPackage))
+				.findFirst();
 			if (vertex.isEmpty()) {
 				continue;
 			}

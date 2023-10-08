@@ -7,23 +7,31 @@ import model.diagram.PackageDiagram;
 import model.diagram.arrangement.DiagramArrangementManagerInterface;
 import model.diagram.arrangement.PackageDiagramArrangementManager;
 import model.diagram.arrangement.geometry.DiagramGeometry;
-import model.diagram.exportation.*;
-import model.diagram.javafx.JavaFXVisualization;
+import model.diagram.exportation.CoordinatesUpdater;
+import model.diagram.exportation.DiagramExporter;
+import model.diagram.exportation.GraphMLPackageDiagramExporter;
+import model.diagram.exportation.JavaFXPackageDiagramExporter;
+import model.diagram.exportation.PlantUMLPackageDiagramImageExporter;
+import model.diagram.exportation.PlantUMLPackageDiagramTextExporter;
 import model.diagram.javafx.JavaFXPackageDiagramLoader;
 import model.diagram.javafx.JavaFXPackageVisualization;
+import model.diagram.javafx.JavaFXVisualization;
 import org.javatuples.Pair;
 
 import java.io.File;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class PackageDiagramManager implements DiagramManager {
 
-	private PackageDiagram packageDiagram;
-	private DiagramArrangementManagerInterface packageDiagramArrangement;
-	private Collection<Vertex<String>> vertexCollection;
-	private SmartGraphPanel<String, String> graphView;
+	private static final Logger 							logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private 			 PackageDiagram 					packageDiagram;
+	private 			 DiagramArrangementManagerInterface packageDiagramArrangement;
+	private 			 Collection<Vertex<String>> 		vertexCollection;
+	private 			 SmartGraphPanel<String, String> 	graphView;
 
 	public PackageDiagramManager() {
 		packageDiagram = new PackageDiagram();
@@ -95,8 +103,8 @@ public class PackageDiagramManager implements DiagramManager {
 
 	@Override
 	public void loadDiagram(Path graphSavePath) throws JsonParseException {
-		packageDiagram = new PackageDiagram();
 		JavaFXPackageDiagramLoader javaFXPackageDiagramLoader = new JavaFXPackageDiagramLoader(graphSavePath);
+		packageDiagram = new PackageDiagram();
 		packageDiagram.createDiagram(javaFXPackageDiagramLoader.loadDiagram());
 	}
 
@@ -107,23 +115,24 @@ public class PackageDiagramManager implements DiagramManager {
 	public SmartGraphPanel<String, String> applyLayout() {
 		DiagramGeometry nodesGeometry = packageDiagram.getDiagramGeometry();
 		for(Vertex<String> vertex : vertexCollection) {
-			if(nodesGeometry.containsKey(vertex.element())) {
-				Pair<Double, Double> coordinates = nodesGeometry.getVertexGeometry(vertex.element());
-				graphView.setVertexPosition(vertex,  coordinates.getValue0(), coordinates.getValue1());
-			}else {
-				System.out.println(vertex.element());
-			}
-		}
+            if (!nodesGeometry.containsKey(vertex.element())) {
+                logger.log(Level.INFO, vertex.element());
+				continue;
+            }
+			Pair<Double, Double> coordinates = nodesGeometry.getVertexGeometry(vertex.element());
+			graphView.setVertexPosition(vertex,  coordinates.getValue0(), coordinates.getValue1());
+        }
 		return graphView;
 	}
 
 	public SmartGraphPanel<String, String> applySpecificLayout(String choice){
 		DiagramGeometry nodesGeometry = packageDiagramArrangement.applyNewLayout(choice);
 		for(Vertex<String> vertex : vertexCollection) {
-			if(nodesGeometry.containsKey(vertex.element())) {
-				Pair<Double, Double> coordinates = nodesGeometry.getVertexGeometry(vertex.element());
-				graphView.setVertexPosition(vertex,  coordinates.getValue0(), coordinates.getValue1());
+			if(!nodesGeometry.containsKey(vertex.element())) {
+				continue;
 			}
+			Pair<Double, Double> coordinates = nodesGeometry.getVertexGeometry(vertex.element());
+			graphView.setVertexPosition(vertex,  coordinates.getValue0(), coordinates.getValue1());
 		}
 		return graphView;
 	}

@@ -1,9 +1,9 @@
 package parser.javaparser;
 
 import parser.factory.Parser;
-import parser.tree.RelationshipIdentifier;
 import parser.tree.LeafNode;
 import parser.tree.PackageNode;
+import parser.tree.RelationshipIdentifier;
 
 import java.io.File;
 import java.nio.file.DirectoryStream;

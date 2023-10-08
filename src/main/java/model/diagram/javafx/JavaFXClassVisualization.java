@@ -17,9 +17,9 @@ import java.util.Set;
 
 public class JavaFXClassVisualization implements JavaFXVisualization {
 
-	private final ClassDiagram classDiagram;
-	private SmartGraphPanel<String, String> graphView;
-	private Collection<Vertex<String>> vertexCollection;
+	private final ClassDiagram 					  classDiagram;
+	private 	  SmartGraphPanel<String, String> graphView;
+	private 	  Collection<Vertex<String>> 	  vertexCollection;
 
 	public JavaFXClassVisualization(ClassDiagram diagram) {
 		classDiagram = diagram;
@@ -51,12 +51,14 @@ public class JavaFXClassVisualization implements JavaFXVisualization {
 	private void insertSinkVertexArcs(Digraph<String, String> directedGraph){
 		for (Set<Arc<ClassifierVertex>> arcs : classDiagram.getDiagram().values()) {
 			for (Arc<ClassifierVertex> arc: arcs) {
-				if (arc.getArcType().equals(ArcType.AGGREGATION)) {
-					directedGraph.insertEdge(arc.getTargetVertex().getName(), arc.getSourceVertex().getName(),
-							arc.getTargetVertex().getName() + "_" + arc.getSourceVertex().getName() + "_" + arc.getArcType().toString().toLowerCase());
+				if (arc.arcType().equals(ArcType.AGGREGATION)) {
+					directedGraph.insertEdge(
+						arc.targetVertex().getName(), arc.sourceVertex().getName(),
+						arc.targetVertex().getName() + "_" + arc.sourceVertex().getName() + "_" + arc.arcType().toString().toLowerCase());
 				}else {
-					directedGraph.insertEdge(arc.getSourceVertex().getName(), arc.getTargetVertex().getName(),
-							arc.getSourceVertex().getName() + "_" + arc.getTargetVertex().getName() + "_" + arc.getArcType().toString().toLowerCase());
+					directedGraph.insertEdge(
+						arc.sourceVertex().getName(), arc.targetVertex().getName(),
+						arc.sourceVertex().getName() + "_" + arc.targetVertex().getName() + "_" + arc.arcType().toString().toLowerCase());
 				}
 			}
 		}
@@ -76,11 +78,16 @@ public class JavaFXClassVisualization implements JavaFXVisualization {
 	public SmartGraphPanel<String, String> getLoadedGraph() {
 		for (Vertex<String> vertex : vertexCollection) {
 			for (ClassifierVertex classifierVertex: classDiagram.getDiagram().keySet()){
-				if(classifierVertex.getName().equals(vertex.element())) {
-					graphView.setVertexPosition(vertex, classifierVertex.getCoordinates().getValue0(), classifierVertex.getCoordinates().getValue1());
-					break;
+                if (!classifierVertex.getName().equals(vertex.element())) {
+					continue;
 				}
-			}
+				graphView.setVertexPosition(
+					vertex,
+					classifierVertex.getCoordinates().getValue0(),
+					classifierVertex.getCoordinates().getValue1()
+				);
+				break;
+            }
 		}
 		return graphView;
 	}

@@ -10,7 +10,7 @@ import java.nio.file.Path;
 
 public class GraphMLPackageDiagramExporter implements DiagramExporter {
 
-	private final GraphMLFile graphMLFile;
+	private final GraphMLFile   graphMLFile;
 	private final StringBuilder graphMLNodeBuffer;
 	private final StringBuilder graphMLEdgeBuffer;
 
@@ -28,13 +28,14 @@ public class GraphMLPackageDiagramExporter implements DiagramExporter {
 			graphMLFile.createGraphMLFile(exportPath);
 			generateGraphMLGraph(graphMLNodeBuffer, graphMLEdgeBuffer);
 			graphMLFile.closeGraphMLFile();
-		}catch (IOException e){
+		}catch (IOException e) {
 			e.printStackTrace();
 		}
 		return graphMLFile.getGraphMLFile();
 	}
 
-	private void generateGraphMLGraph(StringBuilder nodeBuffer, StringBuilder edgeBuffer){
+	private void generateGraphMLGraph(StringBuilder nodeBuffer,
+									  StringBuilder edgeBuffer){
 		graphMLFile.writeToBuffer(nodeBuffer);
 		graphMLFile.writeToBuffer(edgeBuffer);
 	}

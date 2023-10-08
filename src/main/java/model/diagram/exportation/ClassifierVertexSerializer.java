@@ -1,6 +1,11 @@
 package model.diagram.exportation;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 import model.graph.Arc;
 import model.graph.ClassifierVertex;
 
@@ -14,12 +19,13 @@ public class ClassifierVertexSerializer implements JsonSerializer<ClassifierVert
 	private ClassifierVertex classifierVertex;
 
 	@Override
-	public JsonElement serialize(ClassifierVertex classifierVertex, Type type, JsonSerializationContext jsonSerializationContext) {
+	public JsonElement serialize(ClassifierVertex classifierVertex, Type type,
+								 JsonSerializationContext 			jsonSerializationContext) {
 		this.classifierVertex = classifierVertex;
 		JsonObject jsonObject = new JsonObject();
 
-		String name = classifierVertex.getName();
-		Path path = classifierVertex.getPath();
+		String name 	  = classifierVertex.getName();
+		Path path 		  = classifierVertex.getPath();
 		String vertexType = classifierVertex.getVertexType().toString();
 
 		jsonObject.addProperty("name", name);
@@ -40,10 +46,10 @@ public class ClassifierVertexSerializer implements JsonSerializer<ClassifierVert
 		JsonArray methodsArray = new JsonArray(methods.size());
 		for (ClassifierVertex.Method method: methods) {
 			JsonObject methodObject = new JsonObject();
-			String methodName = method.getName();
-			String returnType = method.getReturnType();
-			String modifier = method.getModifierType().toString();
-			Map<String, String> parameters = method.getParameters();
+			String methodName = method.name();
+			String returnType = method.returnType();
+			String modifier = method.modifier().toString();
+			Map<String, String> parameters = method.parameters();
 			String json = gson.toJson(parameters);
 
 			methodObject.addProperty("name", methodName);
@@ -62,9 +68,9 @@ public class ClassifierVertexSerializer implements JsonSerializer<ClassifierVert
 		for (ClassifierVertex.Field field: fields) {
 			JsonObject fieldObject = new JsonObject();
 
-			String fieldName = field.getName();
-			String returnType = field.getType();
-			String modifier = field.getModifier().toString();
+			String fieldName  = field.name();
+			String returnType = field.type();
+			String modifier   = field.modifier().toString();
 
 			fieldObject.addProperty("name", fieldName);
 			fieldObject.addProperty("returnType", returnType);
@@ -81,9 +87,9 @@ public class ClassifierVertexSerializer implements JsonSerializer<ClassifierVert
 		for (Arc<ClassifierVertex> sinkVertexArc : arcs) {
 			JsonObject arcObject = new JsonObject();
 
-			String source = sinkVertexArc.getSourceVertex().getName();
-			String target = sinkVertexArc.getTargetVertex().getName();
-			String arcType = sinkVertexArc.getArcType().toString();
+			String source  = sinkVertexArc.sourceVertex().getName();
+			String target  = sinkVertexArc.targetVertex().getName();
+			String arcType = sinkVertexArc.arcType().toString();
 
 			arcObject.addProperty("source", source);
 			arcObject.addProperty("target", target);

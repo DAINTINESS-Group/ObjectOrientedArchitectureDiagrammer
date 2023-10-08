@@ -24,6 +24,7 @@ public interface DiagramArrangementManagerInterface {
 	 */
 	DiagramGeometry arrangeDiagram();
 
+	// TODO JavaDoc
 	DiagramGeometry applyNewLayout(String choice);
 
 }

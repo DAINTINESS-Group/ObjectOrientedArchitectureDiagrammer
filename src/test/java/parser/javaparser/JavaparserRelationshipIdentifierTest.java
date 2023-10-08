@@ -29,8 +29,7 @@ public class JavaparserRelationshipIdentifierTest {
 
 	@Test
 	void getFieldAndMethodTypesTest() {
-		ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
-		Parser parser = projectParserFactory.createProjectParser();
+		Parser parser = ProjectParserFactory.createProjectParser(parserType);
 
 		Map<Path, PackageNode> packages = parser.parseSourcePackage(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "LatexEditor", "src")));
 		List<String> methodReturnTypes = new ArrayList<>(Arrays.asList("Constructor", "void"));
@@ -48,25 +47,27 @@ public class JavaparserRelationshipIdentifierTest {
 		methodReturnTypesTest = addLatexCommand.getMethodsReturnTypes();
 		Collections.sort(methodReturnTypesTest);
 		Collections.sort(methodReturnTypes);
-		assertTrue(methodReturnTypesTest.size() == methodReturnTypes.size()
-				&& methodReturnTypes.containsAll(methodReturnTypesTest)
-				&& methodReturnTypesTest.containsAll(methodReturnTypes));
+		assertTrue(
+			methodReturnTypesTest.size() == methodReturnTypes.size() &&
+		     methodReturnTypes.containsAll(methodReturnTypesTest) &&
+		     methodReturnTypesTest.containsAll(methodReturnTypes));
 		Collections.sort(fieldTypesTest);
 		Collections.sort(fieldTypes);
-		assertTrue(fieldTypesTest.size() == fieldTypes.size()
-				&& fieldTypes.containsAll(fieldTypesTest)
-				&& fieldTypesTest.containsAll(fieldTypes));
+		assertTrue(
+			fieldTypesTest.size() == fieldTypes.size() &&
+			fieldTypes.containsAll(fieldTypesTest) &&
+			fieldTypesTest.containsAll(fieldTypes));
 		Collections.sort(methodParameterTypesTest);
 		Collections.sort(methodParameterTypes);
-		assertTrue(methodParameterTypesTest.size() == methodParameterTypes.size()
-				&& methodParameterTypes.containsAll(methodParameterTypesTest)
-				&& methodParameterTypesTest.containsAll(methodParameterTypes));
+		assertTrue(
+			methodParameterTypesTest.size() == methodParameterTypes.size() &&
+			methodParameterTypes.containsAll(methodParameterTypesTest) &&
+			methodParameterTypesTest.containsAll(methodParameterTypes));
 	}
 
 	@Test
 	void leafNodeRelationshipsTest() {
-		ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
-		Parser parser = projectParserFactory.createProjectParser();
+		Parser parser = ProjectParserFactory.createProjectParser(parserType);
 
 		Map<Path, PackageNode> packages = parser.parseSourcePackage(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "LatexEditor", "src")));
 		PackageNode commandPackage = packages.get(Paths.get(PathConstructor.getCurrentPath().normalize().toString(), PathConstructor.constructPath("src", "test", "resources", "LatexEditor", "src", "controller", "commands")));
@@ -77,14 +78,14 @@ public class JavaparserRelationshipIdentifierTest {
 		boolean foundObligatoryRelationship = false;
 		int relationshipCounter = 0;
 		for (Relationship<LeafNode> relationship : nodeRelationships) {
-			if ((relationship.getStartingNode().getName().equals("AddLatexCommand")) && (relationship.getEndingNode().getName().equals("VersionsManager"))) {
-				if (relationship.getRelationshipType().equals(RelationshipType.DEPENDENCY)) {
+			if ((relationship.startingNode().getName().equals("AddLatexCommand")) && (relationship.endingNode().getName().equals("VersionsManager"))) {
+				if (relationship.relationshipType().equals(RelationshipType.DEPENDENCY)) {
 					foundObligatoryRelationship = true;
 				} else {
-					foundObligatoryRelationship = relationship.getRelationshipType().equals(RelationshipType.ASSOCIATION);
+					foundObligatoryRelationship = relationship.relationshipType().equals(RelationshipType.ASSOCIATION);
 				}
-			} else if ((relationship.getStartingNode().getName().equals("AddLatexCommand")) && (relationship.getEndingNode().getName().equals("Command"))) {
-				assertEquals(RelationshipType.IMPLEMENTATION, relationship.getRelationshipType());
+			} else if ((relationship.startingNode().getName().equals("AddLatexCommand")) && (relationship.endingNode().getName().equals("Command"))) {
+				assertEquals(RelationshipType.IMPLEMENTATION, relationship.relationshipType());
 				foundObligatoryRelationship = true;
 			} else {
 				foundObligatoryRelationship = false;
@@ -103,17 +104,17 @@ public class JavaparserRelationshipIdentifierTest {
 		boolean foundObligatoryRelationships_CommandFactoryToAddLatexCommand = false;
 		relationshipCounter = 0;
 		for (Relationship<LeafNode> relationship : nodeRelationships) {
-			if ((relationship.getStartingNode().getName().equals("CommandFactory")) && (relationship.getEndingNode().getName().equals("VersionsManager"))) {
-				if (relationship.getRelationshipType().equals(RelationshipType.DEPENDENCY)) {
+			if ((relationship.startingNode().getName().equals("CommandFactory")) && (relationship.endingNode().getName().equals("VersionsManager"))) {
+				if (relationship.relationshipType().equals(RelationshipType.DEPENDENCY)) {
 					foundObligatoryRelationships_CommandFactoryToVersionsManager = true;
 				}else {
-					foundObligatoryRelationships_CommandFactoryToVersionsManager = relationship.getRelationshipType().equals(RelationshipType.ASSOCIATION);
+					foundObligatoryRelationships_CommandFactoryToVersionsManager = relationship.relationshipType().equals(RelationshipType.ASSOCIATION);
 				}
-			} else if ((relationship.getStartingNode().getName().equals("CommandFactory")) && (relationship.getEndingNode().getName().equals("Command"))) {
-				if (relationship.getRelationshipType().equals(RelationshipType.DEPENDENCY))
+			} else if ((relationship.startingNode().getName().equals("CommandFactory")) && (relationship.endingNode().getName().equals("Command"))) {
+				if (relationship.relationshipType().equals(RelationshipType.DEPENDENCY))
 					foundObligatoryRelationships_CommandFactoryToCommand = true;
-			}else if ((relationship.getStartingNode().getName().equals("CommandFactory")) && (relationship.getEndingNode().getName().equals("AddLatexCommand"))) {
-				if (relationship.getRelationshipType().equals(RelationshipType.DEPENDENCY))
+			}else if ((relationship.startingNode().getName().equals("CommandFactory")) && (relationship.endingNode().getName().equals("AddLatexCommand"))) {
+				if (relationship.relationshipType().equals(RelationshipType.DEPENDENCY))
 					foundObligatoryRelationships_CommandFactoryToAddLatexCommand = true;
 			}
 			relationshipCounter++;
@@ -125,8 +126,7 @@ public class JavaparserRelationshipIdentifierTest {
 		assertEquals(13, relationshipCounter);
 		assertEquals(NodeType.CLASS, commandFactory.getType());
 
-		projectParserFactory = new ProjectParserFactory(parserType);
-		parser = projectParserFactory.createProjectParser();
+		parser = ProjectParserFactory.createProjectParser(parserType);
 
 		packages = parser.parseSourcePackage(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "ParserTesting")));
 		PackageNode sourcePackage = packages.get(Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
@@ -138,17 +138,17 @@ public class JavaparserRelationshipIdentifierTest {
 		foundObligatoryRelationship = false;
 		relationshipCounter = 0;
 		for (Relationship<LeafNode> relationship : nodeRelationships) {
-			if ((relationship.getStartingNode().getName().equals("ObjectCreationTest")) && (relationship.getEndingNode().getName().equals("ExtensionClass"))) {
-				if (relationship.getRelationshipType().equals(RelationshipType.DEPENDENCY)) {
+			if ((relationship.startingNode().getName().equals("ObjectCreationTest")) && (relationship.endingNode().getName().equals("ExtensionClass"))) {
+				if (relationship.relationshipType().equals(RelationshipType.DEPENDENCY)) {
 					foundObligatoryRelationship = true;
 				}else {
-					foundObligatoryRelationship = relationship.getRelationshipType().equals(RelationshipType.ASSOCIATION);
+					foundObligatoryRelationship = relationship.relationshipType().equals(RelationshipType.ASSOCIATION);
 				}
-			}else if ((relationship.getStartingNode().getName().equals("ObjectCreationTest")) && (relationship.getEndingNode().getName().equals("TestingInterface"))) {
-				assertEquals(RelationshipType.DEPENDENCY, relationship.getRelationshipType());
+			}else if ((relationship.startingNode().getName().equals("ObjectCreationTest")) && (relationship.endingNode().getName().equals("TestingInterface"))) {
+				assertEquals(RelationshipType.DEPENDENCY, relationship.relationshipType());
 				foundObligatoryRelationship = true;
-			}else if ((relationship.getStartingNode().getName().equals("ObjectCreationTest")) && (relationship.getEndingNode().getName().equals("ImplementingClass"))) {
-				assertEquals(RelationshipType.DEPENDENCY, relationship.getRelationshipType());
+			}else if ((relationship.startingNode().getName().equals("ObjectCreationTest")) && (relationship.endingNode().getName().equals("ImplementingClass"))) {
+				assertEquals(RelationshipType.DEPENDENCY, relationship.relationshipType());
 				foundObligatoryRelationship = true;
 			}else {
 				foundObligatoryRelationship = false;
@@ -161,8 +161,7 @@ public class JavaparserRelationshipIdentifierTest {
 
 	@Test
 	void leafNodeInheritanceRelationshipTest() {
-		ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
-		Parser parser = projectParserFactory.createProjectParser();
+		Parser parser = ProjectParserFactory.createProjectParser(parserType);
 
 		Map<Path, PackageNode> packages = parser.parseSourcePackage(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "ParserTesting")));
 		PackageNode sourcePackage = packages.get(Paths.get(PathConstructor.getCurrentPath().normalize().toString(), PathConstructor.constructPath("src", "test", "resources", "ParserTesting")));
@@ -173,14 +172,14 @@ public class JavaparserRelationshipIdentifierTest {
 		boolean foundObligatoryRelationship = false;
 		int relationshipCounter = 0;
 		for (Relationship<LeafNode> relationship : nodeRelationships) {
-			if ((relationship.getStartingNode().getName().equals("ImplementingClass")) && (relationship.getEndingNode().getName().equals("TestingInterface2"))) {
-				assertEquals(RelationshipType.IMPLEMENTATION, relationship.getRelationshipType());
+			if ((relationship.startingNode().getName().equals("ImplementingClass")) && (relationship.endingNode().getName().equals("TestingInterface2"))) {
+				assertEquals(RelationshipType.IMPLEMENTATION, relationship.relationshipType());
 				foundObligatoryRelationship = true;
-			} else if ((relationship.getStartingNode().getName().equals("ImplementingClass")) && (relationship.getEndingNode().getName().equals("ExtensionClass"))) {
-				assertEquals(RelationshipType.EXTENSION, relationship.getRelationshipType());
+			} else if ((relationship.startingNode().getName().equals("ImplementingClass")) && (relationship.endingNode().getName().equals("ExtensionClass"))) {
+				assertEquals(RelationshipType.EXTENSION, relationship.relationshipType());
 				foundObligatoryRelationship = true;
-			} else if ((relationship.getStartingNode().getName().equals("ImplementingClass")) && (relationship.getEndingNode().getName().equals("TestingInterface"))) {
-				assertEquals(RelationshipType.IMPLEMENTATION, relationship.getRelationshipType());
+			} else if ((relationship.startingNode().getName().equals("ImplementingClass")) && (relationship.endingNode().getName().equals("TestingInterface"))) {
+				assertEquals(RelationshipType.IMPLEMENTATION, relationship.relationshipType());
 				foundObligatoryRelationship = true;
 			} else {
 				foundObligatoryRelationship = false;
@@ -195,8 +194,7 @@ public class JavaparserRelationshipIdentifierTest {
 
 	@Test
 	void packageNodeRelationshipsTest() {
-		ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
-		Parser parser = projectParserFactory.createProjectParser();
+		Parser parser = ProjectParserFactory.createProjectParser(parserType);
 
 		Map<Path, PackageNode> packages = parser.parseSourcePackage(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "LatexEditor", "src")));
 
@@ -206,8 +204,8 @@ public class JavaparserRelationshipIdentifierTest {
 		boolean foundObligatoryRelationship = false;
 		int relationshipCounter = 0;
 		for (Relationship<PackageNode> relationship : packageRelationships) {
-			if ((relationship.getStartingNode().getName().equals("src.controller.commands")) && (relationship.getEndingNode().getName().equals("src.model"))) {
-				assertEquals(RelationshipType.DEPENDENCY, relationship.getRelationshipType());
+			if ((relationship.startingNode().getName().equals("src.controller.commands")) && (relationship.endingNode().getName().equals("src.model"))) {
+				assertEquals(RelationshipType.DEPENDENCY, relationship.relationshipType());
 				foundObligatoryRelationship = true;
 			} else {
 				foundObligatoryRelationship = false;
@@ -225,11 +223,11 @@ public class JavaparserRelationshipIdentifierTest {
 		foundObligatoryRelationship = false;
 		relationshipCounter = 0;
 		for (Relationship<PackageNode> relationship : packageRelationships) {
-			if ((relationship.getStartingNode().getName().equals("src.controller")) && (relationship.getEndingNode().getName().equals("src.model"))) {
-				assertEquals(RelationshipType.DEPENDENCY, relationship.getRelationshipType());
+			if ((relationship.startingNode().getName().equals("src.controller")) && (relationship.endingNode().getName().equals("src.model"))) {
+				assertEquals(RelationshipType.DEPENDENCY, relationship.relationshipType());
 				foundObligatoryRelationship = true;
-			} else if ((relationship.getStartingNode().getName().equals("src.controller")) && (relationship.getEndingNode().getName().equals("src.controller.commands"))) {
-				assertEquals(RelationshipType.DEPENDENCY, relationship.getRelationshipType());
+			} else if ((relationship.startingNode().getName().equals("src.controller")) && (relationship.endingNode().getName().equals("src.controller.commands"))) {
+				assertEquals(RelationshipType.DEPENDENCY, relationship.relationshipType());
 				foundObligatoryRelationship = true;
 			} else {
 				foundObligatoryRelationship = false;
@@ -244,8 +242,7 @@ public class JavaparserRelationshipIdentifierTest {
 
 	@Test
 	void leafNodeTypesTest() {
-		ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
-		Parser parser = projectParserFactory.createProjectParser();
+		Parser parser = ProjectParserFactory.createProjectParser(parserType);
 
 		Map<Path, PackageNode> packages = parser.parseSourcePackage(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "ParserTesting")));
 		PackageNode sourcePackage = packages.get(Paths.get(PathConstructor.getCurrentPath().normalize().toString(), PathConstructor.constructPath("src", "test", "resources", "ParserTesting")));

@@ -8,9 +8,9 @@ import java.nio.file.Path;
 
 public class SourceProject {
 
-	private final Interpreter interpreter;
-	private ClassDiagram classDiagram;
-	private PackageDiagram packageDiagram;
+	private final Interpreter 	 interpreter;
+	private 	  ClassDiagram 	 classDiagram;
+	private 	  PackageDiagram packageDiagram;
 
 	public SourceProject(ClassDiagram classDiagram) {
 		interpreter = new Interpreter();

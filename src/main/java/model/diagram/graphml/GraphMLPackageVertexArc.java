@@ -10,12 +10,12 @@ import java.util.List;
 import java.util.Set;
 
 public class GraphMLPackageVertexArc {
-	private final StringBuilder graphMLBuffer;
+	private final StringBuilder  graphMLBuffer;
 	private final PackageDiagram packageDiagram;
 
 	public GraphMLPackageVertexArc(PackageDiagram packageDiagram) {
 		this.packageDiagram = packageDiagram;
-		graphMLBuffer = new StringBuilder();
+		graphMLBuffer 	    = new StringBuilder();
 	}
 
 	public StringBuilder convertVertexArc() {
@@ -33,8 +33,11 @@ public class GraphMLPackageVertexArc {
 	}
 
 	private List<String> getVertexArcProperties(Arc<PackageVertex> relationship, Integer edgeId) {
-		return Arrays.asList(String.valueOf(edgeId), String.valueOf(packageDiagram.getGraphNodes().get(relationship.getSourceVertex())),
-				String.valueOf(packageDiagram.getGraphNodes().get(relationship.getTargetVertex())));
+		return Arrays.asList(
+			String.valueOf(edgeId),
+			String.valueOf(packageDiagram.getGraphNodes().get(relationship.sourceVertex())),
+			String.valueOf(packageDiagram.getGraphNodes().get(relationship.targetVertex()))
+		);
 	}
 
 }

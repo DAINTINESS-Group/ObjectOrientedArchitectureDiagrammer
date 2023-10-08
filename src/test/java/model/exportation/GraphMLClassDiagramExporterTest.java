@@ -38,25 +38,30 @@ public class GraphMLClassDiagramExporterTest {
 			Map<Integer, Pair<Double, Double>> nodesGeometry = classDiagramArrangement.arrangeGraphMLDiagram();
 			classDiagramManager.getClassDiagram().setGraphMLDiagramGeometry(nodesGeometry);
 			DiagramExporter graphMLExporter = new GraphMLClassDiagramExporter(classDiagramManager.getClassDiagram());
-			File exportedFile = graphMLExporter.exportDiagram(Paths.get(System.getProperty("user.home") + "/testingExportedFile.graphML"));
+			File exportedFile = graphMLExporter.exportDiagram(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "testingExportedFile.txt")));
 			Stream<String> lines = Files.lines(exportedFile.toPath());
-			String actualFileContents = lines.collect(Collectors.joining("\n"));
+			String actualFileContents = lines.collect(Collectors.joining("\n")) + "\n";
 			lines.close();
 
-			GraphMLClassifierVertex graphMLClassifierVertex = new GraphMLClassifierVertex(classDiagramManager.getClassDiagram());
-			StringBuilder graphMLNodeBuffer = graphMLClassifierVertex.convertSinkVertex();
-			GraphMLClassifierVertexArc graphMLClassifierVertexArc = new GraphMLClassifierVertexArc(classDiagramManager.getClassDiagram());
-			StringBuilder graphMLEdgeBuffer = graphMLClassifierVertexArc.convertSinkVertexArc();
-			String expectedFileContents = "";
-			expectedFileContents += (GraphMLSyntax.getInstance().getGraphMLPrefix());
-			expectedFileContents += (graphMLNodeBuffer.toString());
-			expectedFileContents += (graphMLEdgeBuffer.toString());
-			expectedFileContents += (GraphMLSyntax.getInstance().getGraphMLSuffix());
-
+			String expectedFileContents = getExpectedFileContents(classDiagramManager);
 			assertEquals(expectedFileContents, actualFileContents);
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private static String getExpectedFileContents(ClassDiagramManager classDiagramManager)
+	{
+		GraphMLClassifierVertex graphMLClassifierVertex = new GraphMLClassifierVertex(classDiagramManager.getClassDiagram());
+		StringBuilder graphMLNodeBuffer = graphMLClassifierVertex.convertSinkVertex();
+		GraphMLClassifierVertexArc graphMLClassifierVertexArc = new GraphMLClassifierVertexArc(classDiagramManager.getClassDiagram());
+		StringBuilder graphMLEdgeBuffer = graphMLClassifierVertexArc.convertSinkVertexArc();
+		String expectedFileContents = "";
+		expectedFileContents += (GraphMLSyntax.getInstance().getGraphMLPrefix());
+		expectedFileContents += (graphMLNodeBuffer.toString());
+		expectedFileContents += (graphMLEdgeBuffer.toString());
+		expectedFileContents += (GraphMLSyntax.getInstance().getGraphMLSuffix());
+		return expectedFileContents;
 	}
 }

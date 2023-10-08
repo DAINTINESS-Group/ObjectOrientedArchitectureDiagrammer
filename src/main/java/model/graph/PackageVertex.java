@@ -10,24 +10,27 @@ import java.util.List;
 public class PackageVertex {
 
 	private static final ModifierType VERTEX_MODIFIER_TYPE = ModifierType.PACKAGE_PRIVATE;
-	private final List<Arc<PackageVertex>> arcs;
-	private final List<ClassifierVertex> sinkVertices;
-	private final List<PackageVertex> neighbourVertices;
-	private final VertexType vertexType;
-	private final Path path;
-	private final String name;
-	private PackageVertex parentPackageVertex;
-	private List<Triplet<String, String, String>> deserializedArcs;
-	private double x;
-	private double y;
 
-	public PackageVertex(Path path, VertexType vertexType, String parentName) {
-		this.path = path;
-		this.vertexType = vertexType;
-		arcs = new ArrayList<>();
-		sinkVertices = new ArrayList<>();
+	private final List<Arc<PackageVertex>> 				arcs;
+	private final List<ClassifierVertex> 				sinkVertices;
+	private final List<PackageVertex> 					neighbourVertices;
+	private final VertexType 							vertexType;
+	private final Path 									path;
+	private final String 								name;
+	private 	  List<Triplet<String, String, String>> deserializedArcs;
+	private 	  PackageVertex 						parentPackageVertex;
+	private 	  double 								x;
+	private 	  double 								y;
+
+	public PackageVertex(Path 		path,
+						 VertexType vertexType,
+						 String 	parentName) {
+		this.path 		  = path;
+		this.vertexType   = vertexType;
+		arcs 			  = new ArrayList<>();
+		sinkVertices 	  = new ArrayList<>();
 		neighbourVertices = new ArrayList<>();
-		name = (parentName.equals("")) ? path.getFileName().toString() : parentName + "." + path.getFileName().toString();
+		name 			  = (parentName.isEmpty()) ? path.getFileName().toString() : parentName + "." + path.getFileName().toString();
 	}
 
 	public void addArc(PackageVertex sourceVertex, PackageVertex targetVertex, ArcType arcType) {
@@ -89,8 +92,7 @@ public class PackageVertex {
 		this.y = y;
 	}
 
-	public Pair<Double, Double> getCoordinates(){
-		Pair<Double, Double> coordinates = new Pair<>(x, y);
-		return coordinates;
+	public Pair<Double, Double> getCoordinates() {
+        return new Pair<>(x, y);
 	}
 }

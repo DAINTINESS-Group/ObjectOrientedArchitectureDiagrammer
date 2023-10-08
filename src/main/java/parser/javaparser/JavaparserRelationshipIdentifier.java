@@ -18,10 +18,11 @@ public class JavaparserRelationshipIdentifier extends RelationshipIdentifier {
 	@Override
 	protected void checkRelationship(int i, int j) {
 		List<String> imports = ((JavaparserLeafNode) allLeafNodes.get(i)).getImports();
-		Optional<String> optional = imports.stream()
+		Optional<String> optional = imports
+			.stream()
 			.filter(imprt ->
-				(allLeafNodes.get(j).getParentNode().getName() + "." + allLeafNodes.get(j).getName()).endsWith(imprt) ||
-				(allLeafNodes.get(j).getParentNode().getName() + "." + "*").endsWith(imprt))
+				(allLeafNodes.get(j).getParentNode().getName() + "." + allLeafNodes.get(j).getName()).endsWith(imprt)
+				|| (allLeafNodes.get(j).getParentNode().getName() + "." + "*").endsWith(imprt))
 			.findFirst();
 
 		if (optional.isEmpty() && !isSubNode(i, j)) {
@@ -51,7 +52,7 @@ public class JavaparserRelationshipIdentifier extends RelationshipIdentifier {
 				return true;
 			}
 
-			if (node.getPackageNodesPath().toString().equals("")) {
+			if (node.getPackageNodesPath().toString().isEmpty()) {
 				return false;
 			}
 			node = node.getParentNode();
@@ -60,10 +61,13 @@ public class JavaparserRelationshipIdentifier extends RelationshipIdentifier {
 
 	@Override
 	protected boolean isDependency(int i, int j) {
-		return doesRelationshipExist(allLeafNodes.get(i).getMethodParameterTypes(), allLeafNodes.get(j).getName()) ||
-				doesRelationshipExist(allLeafNodes.get(i).getMethodsReturnTypes(), allLeafNodes.get(j).getName()) ||
-				doesRelationshipExist(getLeafNode(i).getVariablesTypes(), allLeafNodes.get(j).getName()) ||
-				doesRelationshipExist(getLeafNode(i).getCreatedObjects(), allLeafNodes.get(j).getName());
+		return
+			doesRelationshipExist(
+				allLeafNodes.get(i).getMethodParameterTypes(), allLeafNodes.get(j).getName())
+			   || doesRelationshipExist(allLeafNodes.get(i).getMethodsReturnTypes(), allLeafNodes.get(j).getName())
+			   || doesRelationshipExist(getLeafNode(i).getVariablesTypes(), allLeafNodes.get(j).getName())
+			   || doesRelationshipExist(getLeafNode(i).getCreatedObjects(), allLeafNodes.get(j).getName()
+		);
 	}
 
 	@Override
@@ -76,7 +80,7 @@ public class JavaparserRelationshipIdentifier extends RelationshipIdentifier {
 
 	@Override
 	protected boolean isImplementation(int i, int j) {
-		if (getLeafNode(i).getImplementedInterfaces().size() == 0) {
+		if (getLeafNode(i).getImplementedInterfaces().isEmpty()) {
 			return false;
 		}
 

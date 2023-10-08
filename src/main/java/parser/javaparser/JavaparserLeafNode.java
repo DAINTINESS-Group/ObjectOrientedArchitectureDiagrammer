@@ -11,13 +11,13 @@ import java.util.Map;
 
 public class JavaparserLeafNode extends LeafNode {
 
-	private final List<String> implementedInterfaces;
+	private final List<String> 		  implementedInterfaces;
 	private final Map<String, String> variables;
-	private final List<String> createdObjects;
-	private String nodeName;
-	private String baseClass;
-	private NodeType nodeType;
-	private List<String> imports;
+	private final List<String> 		  createdObjects;
+	private 	  String 			  nodeName;
+	private 	  String 			  baseClass;
+	private 	  NodeType 			  nodeType;
+	private 	  List<String> 		  imports;
 
 	public JavaparserLeafNode(Path path) {
 		super(path);

@@ -9,12 +9,12 @@ import java.nio.file.Path;
 
 public class GraphMLFile {
 
-	private FileWriter graphMLWriter;
+	private FileWriter    graphMLWriter;
 	private StringBuilder graphMLBuffer;
-	private File graphMLFile;
+	private File          graphMLFile;
 
 	public void createGraphMLFile(Path graphMLSavePath) throws IOException {
-		graphMLFile = graphMLSavePath.toFile();
+		graphMLFile   = graphMLSavePath.toFile();
 		graphMLWriter = new FileWriter(graphMLFile);
 		graphMLBuffer = new StringBuilder();
 		graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLPrefix());

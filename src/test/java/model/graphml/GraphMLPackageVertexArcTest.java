@@ -8,8 +8,6 @@ import org.junit.jupiter.api.Test;
 import utils.PathConstructor;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,8 +51,8 @@ public class GraphMLPackageVertexArcTest {
 							"          <y:BendStyle smoothed=\"false\"/>\n" +
 							"        </y:PolyLineEdge>\n" +
 							"      </data>\n" +
-							"    </edge>", edgeId, packageDiagramManager.getPackageDiagram().getGraphNodes().get(e.getSourceVertex()),
-							packageDiagramManager.getPackageDiagram().getGraphNodes().get(e.getTargetVertex())));
+							"    </edge>", edgeId, packageDiagramManager.getPackageDiagram().getGraphNodes().get(e.sourceVertex()),
+							packageDiagramManager.getPackageDiagram().getGraphNodes().get(e.targetVertex())));
 			edgeId++;
 		}
 		assertEquals(expected.toString(), actual.toString());

@@ -73,7 +73,7 @@ public class GraphMLSinkPackageVertexTest {
 		}
 		StringBuilder fields = new StringBuilder();
 		for (ClassifierVertex.Field field: l.getFields()) {
-			fields.append(field.getType()).append(" ").append(field.getName()).append("\n");
+			fields.append(field.type()).append(" ").append(field.name()).append("\n");
 		}
 		return fields.deleteCharAt(fields.length() - 1).toString();
 	}
@@ -84,7 +84,7 @@ public class GraphMLSinkPackageVertexTest {
 		}
 		StringBuilder methods = new StringBuilder();
 		for (ClassifierVertex.Method method: l.getMethods()) {
-			methods.append(method.getReturnType()).append(" ").append(method.getName()).append("\n");
+			methods.append(method.returnType()).append(" ").append(method.name()).append("\n");
 		}
 		return methods.deleteCharAt(methods.length() - 1).toString();
 	}

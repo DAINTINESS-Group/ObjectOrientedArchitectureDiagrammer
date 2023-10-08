@@ -10,8 +10,8 @@ import java.util.Set;
 
 public class GraphPackageDiagramConverter {
 
-	private final Set<PackageVertex> vertices;
 	private final Map<PackageVertex, Set<Arc<PackageVertex>>> adjacencyList;
+	private final Set<PackageVertex> 						  vertices;
 
 	public GraphPackageDiagramConverter(Set<PackageVertex> vertices) {
 		this.vertices = vertices;
@@ -22,10 +22,10 @@ public class GraphPackageDiagramConverter {
 		for (PackageVertex vertex: vertices) {
 			adjacencyList.put(vertex, new HashSet<>());
 			for (Arc<PackageVertex> arc: vertex.getArcs()) {
-				if (!vertices.contains(arc.getTargetVertex())) {
+				if (!vertices.contains(arc.targetVertex())) {
 					continue;
 				}
-				adjacencyList.get(arc.getSourceVertex()).add(arc);
+				adjacencyList.get(arc.sourceVertex()).add(arc);
 			}
 		}
 		return adjacencyList;

@@ -19,6 +19,7 @@ public enum GraphMLSyntaxIds {
     PACKAGE_NAME         (1);
 
     private final int id;
+
     GraphMLSyntaxIds(int id) {
         this.id = id;
     }

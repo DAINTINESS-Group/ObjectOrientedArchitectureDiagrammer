@@ -1,32 +1,36 @@
 package parser.jdt;
 
-import parser.tree.LeafNode;
-import parser.tree.NodeType;
-import parser.tree.PackageNode;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import parser.factory.Parser;
 import parser.factory.ParserType;
 import parser.factory.ProjectParserFactory;
+import parser.tree.LeafNode;
+import parser.tree.NodeType;
+import parser.tree.PackageNode;
 import utils.PathConstructor;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Disabled
 class JDTFileVisitorTest {
 
-	Path currentDirectory = Path.of(".");
 	ParserType parserType = ParserType.JDT;
 
+	@Deprecated
 	@Test
 	void methodReturnTypesTest() {
-		ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
-		Parser parser = projectParserFactory.createProjectParser();
+		Parser parser = ProjectParserFactory.createProjectParser(parserType);
 
 		Map<Path, PackageNode> packages = parser.parseSourcePackage(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "LatexEditor", "src")));
 		PackageNode commandPackage = packages.get(Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
@@ -43,10 +47,10 @@ class JDTFileVisitorTest {
 				&& methodReturnTypesTest.containsAll(methodReturnTypes));
 	}
 
+	@Deprecated
 	@Test
 	void methodParameterTypesTest() {
-		ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
-		Parser parser = projectParserFactory.createProjectParser();
+		Parser parser = ProjectParserFactory.createProjectParser(parserType);
 
 		Map<Path, PackageNode> packages = parser.parseSourcePackage(Paths.get(PathConstructor.getCurrentPath() + PathConstructor.constructPath("src", "test", "resources", "LatexEditor", "src")));
 		PackageNode commandPackage = packages.get(Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
@@ -64,10 +68,10 @@ class JDTFileVisitorTest {
 			methodParameterTypesTest.containsAll(methodParameterTypes));
 	}
 
+	@Deprecated
 	@Test
 	void fieldTypesTest() {
-		ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
-		Parser parser = projectParserFactory.createProjectParser();
+		Parser parser = ProjectParserFactory.createProjectParser(parserType);
 
 		Map<Path, PackageNode> packages = parser.parseSourcePackage(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "LatexEditor", "src")));
 		PackageNode commandPackage = packages.get(Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
@@ -85,10 +89,10 @@ class JDTFileVisitorTest {
 			fieldTypesTest.containsAll(fieldTypes));
 	}
 
+	@Deprecated
 	@Test
 	void leafNodeTypesTest() {
-		ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
-		Parser parser = projectParserFactory.createProjectParser();
+		Parser parser = ProjectParserFactory.createProjectParser(parserType);
 
 		Map<Path, PackageNode> packages = parser.parseSourcePackage(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "ParserTesting")));
 		PackageNode inheritancePackage = packages.get(Paths.get(PathConstructor.getCurrentPath().normalize().toString(), PathConstructor.constructPath("src", "test", "resources", "ParserTesting")));

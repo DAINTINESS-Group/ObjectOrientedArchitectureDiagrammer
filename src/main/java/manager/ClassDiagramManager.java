@@ -2,17 +2,20 @@ package manager;
 
 import com.brunomnsilva.smartgraph.graph.Vertex;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
-import com.google.gson.JsonParseException;
 import model.diagram.ClassDiagram;
 import model.diagram.ShadowCleaner;
 import model.diagram.arrangement.ClassDiagramArrangementManager;
 import model.diagram.arrangement.DiagramArrangementManagerInterface;
 import model.diagram.arrangement.geometry.DiagramGeometry;
-import model.diagram.exportation.*;
-import model.diagram.javafx.JavaFXVisualization;
+import model.diagram.exportation.CoordinatesUpdater;
+import model.diagram.exportation.DiagramExporter;
+import model.diagram.exportation.GraphMLClassDiagramExporter;
+import model.diagram.exportation.JavaFXClassDiagramExporter;
+import model.diagram.exportation.PlantUMLClassDiagramImageExporter;
+import model.diagram.exportation.PlantUMLClassDiagramTextExporter;
 import model.diagram.javafx.JavaFXClassDiagramLoader;
 import model.diagram.javafx.JavaFXClassVisualization;
-
+import model.diagram.javafx.JavaFXVisualization;
 import org.javatuples.Pair;
 
 import java.io.File;
@@ -22,10 +25,10 @@ import java.util.List;
 
 public class ClassDiagramManager implements DiagramManager {
 
-	private ClassDiagram classDiagram;
+	private ClassDiagram 					   classDiagram;
 	private DiagramArrangementManagerInterface classDiagramArrangement;
-	private Collection<Vertex<String>> vertexCollection;
-	private SmartGraphPanel<String, String> graphView;
+	private Collection<Vertex<String>> 		   vertexCollection;
+	private SmartGraphPanel<String, String>    graphView;
 
 	public ClassDiagramManager() {
 		classDiagram = new ClassDiagram();
@@ -92,17 +95,15 @@ public class ClassDiagramManager implements DiagramManager {
 	@Override
 	public File saveDiagram(Path graphSavePath) {
 		CoordinatesUpdater coordinatesUpdater = new CoordinatesUpdater(classDiagram);
-		if(vertexCollection!=null) { // for testing.
-			coordinatesUpdater.updateClassCoordinates(vertexCollection, graphView);
-		}
+		coordinatesUpdater.updateClassCoordinates(vertexCollection, graphView);
 		DiagramExporter diagramExporter = new JavaFXClassDiagramExporter(classDiagram);
 		return diagramExporter.exportDiagram(graphSavePath);
 	}
 
 	@Override
-	public void loadDiagram(Path graphSavePath) throws JsonParseException {
-		classDiagram = new ClassDiagram();
+	public void loadDiagram(Path graphSavePath) {
 		JavaFXClassDiagramLoader javaFXClassDiagramLoader =  new JavaFXClassDiagramLoader(graphSavePath);
+		classDiagram = new ClassDiagram();
 		classDiagram.createDiagram(javaFXClassDiagramLoader.loadDiagram());
 		ShadowCleaner shadowCleaner = new ShadowCleaner(classDiagram);
 		classDiagram.setDiagram(shadowCleaner.shadowWeakRelationships());
@@ -115,13 +116,11 @@ public class ClassDiagramManager implements DiagramManager {
 	public SmartGraphPanel<String, String> applyLayout() {
 		DiagramGeometry nodesGeometry = classDiagram.getDiagramGeometry();
 		for(Vertex<String> vertex : vertexCollection) {
-			if (nodesGeometry.containsKey(vertex.element())) {
-				Pair<Double, Double> coordinates = nodesGeometry.getVertexGeometry(vertex.element());
-				graphView.setVertexPosition(vertex,  coordinates.getValue0(), coordinates.getValue1());
+			if (!nodesGeometry.containsKey(vertex.element())) {
+				continue;
 			}
-			else {
-				// NON CONNECTED VERTEX
-			}
+			Pair<Double, Double> coordinates = nodesGeometry.getVertexGeometry(vertex.element());
+			graphView.setVertexPosition(vertex,  coordinates.getValue0(), coordinates.getValue1());
 		}
 		return graphView;
 	}
@@ -129,13 +128,11 @@ public class ClassDiagramManager implements DiagramManager {
 	public SmartGraphPanel<String, String> applySpecificLayout(String choice){
 		DiagramGeometry nodesGeometry = classDiagramArrangement.applyNewLayout(choice);
 		for(Vertex<String> vertex : vertexCollection) {
-			if (nodesGeometry.containsKey(vertex.element())) {
-				Pair<Double, Double> coordinates = nodesGeometry.getVertexGeometry(vertex.element());
-				graphView.setVertexPosition(vertex,  coordinates.getValue0(), coordinates.getValue1());
+			if (!nodesGeometry.containsKey(vertex.element())) {
+				continue;
 			}
-			else {
-				// NON CONNECTED VERTEX
-			}
+			Pair<Double, Double> coordinates = nodesGeometry.getVertexGeometry(vertex.element());
+			graphView.setVertexPosition(vertex,  coordinates.getValue0(), coordinates.getValue1());
 		}
 		return graphView;
 	}

@@ -11,9 +11,9 @@ import java.util.Map;
  * The branches are also directed with a starting and an ending node
  */
 public abstract class RelationshipIdentifier {
-	private final Map<Path, PackageNode> packageNodes;
-	protected final List<LeafNode> allLeafNodes;
-	private int relationshipsCreated;
+	private   final Map<Path, PackageNode> packageNodes;
+	protected final List<LeafNode> 		   allLeafNodes;
+	private 		int 				   relationshipsCreated;
 
 	/**
 	 * This method is responsible for retrieving the leaf nodes that have been created
@@ -51,7 +51,8 @@ public abstract class RelationshipIdentifier {
 		return isRelationshipAggregation(allLeafNodes.get(i).getFieldsTypes(), allLeafNodes.get(j).getName());
 	}
 
-	protected boolean doesRelationshipExist(List<String> leafNodesTypes, String leafNodesName) {
+	protected boolean doesRelationshipExist(List<String> leafNodesTypes,
+											String 		 leafNodesName) {
 		for (String leafNodesType : leafNodesTypes) {
 			if (doesFieldBelongToClass(leafNodesType, leafNodesName)) {
 				return true;
@@ -60,7 +61,8 @@ public abstract class RelationshipIdentifier {
 		return false;
 	}
 
-	private boolean isRelationshipAggregation(List<String> leafNodesTypes, String leafNodesName) {
+	private boolean isRelationshipAggregation(List<String> leafNodesTypes,
+											  String 	   leafNodesName) {
 		for (String leafNodeType: leafNodesTypes) {
 			if (isFieldOfTypeCollection(leafNodeType, leafNodesName) && doesFieldBelongToClass(leafNodeType, leafNodesName)){
 				return true;
@@ -69,7 +71,8 @@ public abstract class RelationshipIdentifier {
 		return false;
 	}
 
-	private boolean doesFieldBelongToClass(String leafNodesType, String leafNodesName) {
+	private boolean doesFieldBelongToClass(String leafNodesType,
+										   String leafNodesName) {
 		for (String type: leafNodesType.replace("[", ",").replace("]", ",").split(",")) {
 			if (leafNodesName.equals(type)) {
 				return true;
@@ -78,12 +81,15 @@ public abstract class RelationshipIdentifier {
 		return false;
 	}
 
-	private boolean isFieldOfTypeCollection(String s, String leafNodesName) {
+	private boolean isFieldOfTypeCollection(String s,
+											String leafNodesName) {
 		return (s.startsWith("List") || s.startsWith("ArrayList") || s.startsWith("Map") || s.startsWith("HashMap")
 				|| s.contains(leafNodesName+"[") || s.startsWith("ArrayDeque") ||  s.startsWith("LinkedList") || s.startsWith("PriorityQueue"));
 	}
 
-	protected void createRelationship(int i, int j, RelationshipType relationshipType) {
+	protected void createRelationship(int 			   i,
+									  int 			   j,
+									  RelationshipType relationshipType) {
 		allLeafNodes.get(i).addLeafNodeRelationship(new Relationship<>(allLeafNodes.get(i), allLeafNodes.get(j), relationshipType));
 		relationshipsCreated++;
 		for (Relationship<PackageNode> r: allLeafNodes.get(i).getParentNode().getPackageNodeRelationships()) {
@@ -99,8 +105,8 @@ public abstract class RelationshipIdentifier {
 		relationshipsCreated++;
 	}
 
-	private boolean doesPackageRelationshipAlreadyExist(int j, Relationship<PackageNode> r) {
-		return r.getEndingNode().equals(allLeafNodes.get(j).getParentNode());
+	private boolean doesPackageRelationshipAlreadyExist(int j, Relationship<PackageNode> relationship) {
+		return relationship.endingNode().equals(allLeafNodes.get(j).getParentNode());
 	}
 
 	private boolean isRelationshipBetweenTheSamePackages(int i, int j) {

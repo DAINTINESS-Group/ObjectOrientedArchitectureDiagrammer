@@ -7,7 +7,11 @@ import net.sourceforge.plantuml.SourceStringReader;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Path;
 
 public class PlantUMLClassDiagramImageExporter implements DiagramExporter {
@@ -32,8 +36,7 @@ public class PlantUMLClassDiagramImageExporter implements DiagramExporter {
 	}
 
 	private void exportImage(File plantUMLFile, String plantCode) {
-		try {
-			ByteArrayOutputStream png = new ByteArrayOutputStream();
+		try (ByteArrayOutputStream png = new ByteArrayOutputStream()) {
 			SourceStringReader reader = new SourceStringReader(plantCode);
 			reader.outputImage(png).getDescription();
 			byte [] data = png.toByteArray();
@@ -41,17 +44,16 @@ public class PlantUMLClassDiagramImageExporter implements DiagramExporter {
 			BufferedImage convImg = ImageIO.read(in);
 			int width = convImg.getWidth();
 			int wrapWidth = 150;
-			//int stringChangerCounter = 0;
 			if (width == 4096) {
-				png = new ByteArrayOutputStream();
-				plantCode = wrapWidthChanger(plantCode, wrapWidth);
-				reader = new SourceStringReader(plantCode);
-				reader.outputImage(png).getDescription();
-				data = png.toByteArray();
-				in = new ByteArrayInputStream(data);
-				convImg = ImageIO.read(in);
-				width = convImg.getWidth();
-				//stringChangerCounter ++;
+				try (ByteArrayOutputStream newPng = new ByteArrayOutputStream())
+				{
+					plantCode = wrapWidthChanger(plantCode, wrapWidth);
+					reader = new SourceStringReader(plantCode);
+					reader.outputImage(newPng).getDescription();
+					data = newPng.toByteArray();
+					in = new ByteArrayInputStream(data);
+					convImg = ImageIO.read(in);
+				}
 			}
 			ImageIO.write(convImg, "png", plantUMLFile);
 		} catch (IOException e) {
@@ -66,24 +68,31 @@ public class PlantUMLClassDiagramImageExporter implements DiagramExporter {
 		String firstPart = plantCode.substring(0, indexOfNewLine + 1);
 		String secondPart = plantCode.substring(indexOfNewLine + 1);
 		updatedString = firstPart + "skinparam wrapWidth " + wrapWidth + "\n" + secondPart;
-		// !! COMMENTED CODE HERE - KEEP REDUCING THE WRAPWIDTH PARAMETER IN ORDER TO FIT PROPERLY THE IMAGE
-		// DOESNT WORK PROPERLY, COMMENTED JUST TO KEEP THE IDEA.
-		// POP UP MESSAGE CAN BE ADDED TO INFORM THE USER THAT THE IMAGE HE REQUESTED IS OVER 4096x4096
-		// SO WE REDUCE THE WRAPWIDTH TO REDUCE EXTRACTED IMAGE'S WIDTH. NOW THE USER CAN SEE MORE CLASSES.
-		//    	}else {
-		//    		String[] lines = plantCode.split("\n");
-		//    		lines[1] = "skinparam wrapWidth " + wrapWidth;
-		//    		updatedString = String.join("\n", lines);
-		//    	}
+		// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
+		// KEEP REDUCING THE WRAPWIDTH PARAMETER IN ORDER TO FIT PROPERLY THE IMAGE //
+		// DOESNT WORK PROPERLY, COMMENTED JUST TO KEEP THE IDEA.					//
+		// POP UP MESSAGE CAN BE ADDED TO INFORM THE USER THAT THE IMAGE HE			//
+		// REQUESTED IS OVER 4096x4096 SO WE REDUCE THE WRAPWIDTH TO REDUCE			//
+		// EXTRACTED IMAGE'S WIDTH. NOW THE USER CAN SEE MORE CLASSES.				//
+		//    	}else {																//
+		//    		String[] lines = plantCode.split("\n");							//
+		//    		lines[1] = "skinparam wrapWidth " + wrapWidth;					//
+		//    		updatedString = String.join("\n", lines);						//
+		//    	}																	//
+		// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
 		return updatedString;
 	}
 
 	private String getClassText() {
-		return "@startuml\n" +
-				"skinparam class {\n" +
-				"    BackgroundColor lightyellow\n" +
-				"    BorderColor black\n" +
-				"    ArrowColor black\n" +
-				"}\n\n";
+		return
+			"""
+				@startuml
+				skinparam class {
+				    BackgroundColor lightyellow
+				    BorderColor black
+				    ArrowColor black
+				}
+
+				""";
 	}
 }

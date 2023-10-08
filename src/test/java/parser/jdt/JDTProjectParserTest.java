@@ -1,9 +1,15 @@
 package parser.jdt;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import parser.factory.Parser;
+import parser.factory.ParserType;
+import parser.factory.ProjectParserFactory;
+import parser.tree.LeafNode;
+import parser.tree.PackageNode;
+import utils.PathConstructor;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -12,18 +18,16 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.jupiter.api.Test;
-import parser.tree.LeafNode;
-import parser.tree.PackageNode;
-import parser.factory.Parser;
-import parser.factory.ParserType;
-import parser.factory.ProjectParserFactory;
-import utils.PathConstructor;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Disabled
 class JDTProjectParserTest {
 
 	ParserType parserType = ParserType.JDT;
 
+	@Deprecated
 	@Test
 	void parsingTest() {
 		List<Path> sourcesSubPackages = new ArrayList<>(Arrays.asList(
@@ -63,8 +67,7 @@ class JDTProjectParserTest {
 				Paths.get(PathConstructor.getCurrentPath().normalize().toString(), "/src/test/resources/LatexEditor/src/controller/commands/EnableVersionsManagementCommand.java"),
 				Paths.get(PathConstructor.getCurrentPath().normalize().toString(), "/src/test/resources/LatexEditor/src/controller/commands/RollbackToPreviousVersionCommand.java")
 				));
-		ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
-		Parser parser = projectParserFactory.createProjectParser();
+		Parser parser = ProjectParserFactory.createProjectParser(parserType);
 		Map<Path, PackageNode> packageNodes = parser.parseSourcePackage(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "LatexEditor", "src")));
 
 		PackageNode controllerPackage = packageNodes.get(Paths.get(PathConstructor.getCurrentPath().normalize().toString(), "src/test/resources/LatexEditor/src/controller"));

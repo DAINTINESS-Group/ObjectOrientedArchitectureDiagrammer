@@ -15,12 +15,12 @@ import java.util.stream.Collectors;
  * the branches that start from that node and also the field/method/method parameter types
  */
 public abstract class LeafNode {
-	protected final Path path;
-	private PackageNode parentNode;
-	private final List<Relationship<LeafNode>> leafNodeRelationships;
-	private final List<Triplet<String, String, ModifierType>> fields;
-	private final Map<Triplet<String, String, ModifierType>, Map<String, String>> methods;
-	private int methodId;
+	private   final 	Map<Triplet<String, String, ModifierType>, Map<String, String>> methods;
+	private   final     List<Relationship<LeafNode>> 									leafNodeRelationships;
+	private   final 	List<Triplet<String, String, ModifierType>> 					fields;
+	protected final 	Path 															path;
+	private 			PackageNode 													parentNode;
+	private 			int 															methodId;
 
 	public LeafNode(Path path) {
 		this.path = path;
@@ -38,8 +38,17 @@ public abstract class LeafNode {
 	 * @param modifierType the method's modifier type
 	 * @param parameters the method's parameters
 	 */
-	public void addMethod(String name, String returnType, ModifierType modifierType, Map<String, String> parameters) {
-		methods.put(new Triplet<>(name + "$" + methodId, returnType, modifierType), parameters);
+	public void addMethod(String			  name,
+						  String 			  returnType,
+						  ModifierType 		  modifierType,
+						  Map<String, String> parameters) {
+		methods.put(
+			new Triplet<>(
+				name + "$" + methodId,
+				returnType,
+				modifierType
+			),
+			parameters);
 		methodId++;
 	}
 
@@ -49,8 +58,15 @@ public abstract class LeafNode {
 	 * @param fieldType the field's type
 	 * @param modifierType the field's modifier type
 	 */
-	public void addField(String fieldName, String fieldType, ModifierType modifierType) {
-		fields.add(new Triplet<>(fieldName, fieldType, modifierType));
+	public void addField(String 	  fieldName,
+						 String 	  fieldType,
+						 ModifierType modifierType) {
+		fields.add(
+			new Triplet<>(
+				fieldName,
+				fieldType,
+				modifierType)
+		);
 	}
 
 	public void setParentNode(PackageNode p) {
@@ -83,7 +99,9 @@ public abstract class LeafNode {
 
 	public List<String> getMethodParameterTypes() {
 		List<String> parameterTypes = new ArrayList<>();
-		methods.forEach((method, parameters) -> parameterTypes.addAll(new ArrayList<>(parameters.values())));
+		methods.forEach(
+			(method, parameters) -> parameterTypes.addAll(new ArrayList<>(parameters.values()))
+		);
 		return parameterTypes;
 	}
 

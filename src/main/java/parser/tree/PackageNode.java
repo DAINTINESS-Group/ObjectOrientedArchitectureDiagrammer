@@ -14,12 +14,12 @@ import java.util.Map;
  * current package), a flag to identify if a package is empty or not
  */
 public class PackageNode {
-	private final Map<Path, PackageNode> subNodes;
-	private final Map<String, LeafNode> leafNodes;
-	private final Path path;
-	private PackageNode parentNode;
+	private final Map<Path, PackageNode>		  subNodes;
+	private final Map<String, LeafNode> 		  leafNodes;
+	private final Path 							  path;
 	private final List<Relationship<PackageNode>> packageNodeRelationships;
-	private boolean isValid;
+	private 	  PackageNode 					  parentNode;
+	private 	  boolean 						  isValid;
 
 	public PackageNode(Path path) {
 		this.path = path;

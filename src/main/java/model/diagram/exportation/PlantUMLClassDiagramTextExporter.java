@@ -40,11 +40,15 @@ public class PlantUMLClassDiagramTextExporter implements DiagramExporter {
 	}
 
 	private String getClassText() {
-		return	"@startuml\n" +
-				"skinparam class {\n" +
-				"    BackgroundColor lightyellow\n" +
-				"    BorderColor black\n" +
-				"    ArrowColor black\n" +
-				"}\n\n";
+		return
+			"""
+				@startuml
+				skinparam class {
+				    BackgroundColor lightyellow
+				    BorderColor black
+				    ArrowColor black
+				}
+
+				""";
 	}
 }

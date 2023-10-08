@@ -7,7 +7,11 @@ import net.sourceforge.plantuml.SourceStringReader;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Path;
 
 public class PlantUMLPackageDiagramImageExporter implements DiagramExporter {
@@ -33,8 +37,7 @@ public class PlantUMLPackageDiagramImageExporter implements DiagramExporter {
 	}
 
 	private void exportImage(File plantUMLFile, String plantCode) {
-		try {
-			ByteArrayOutputStream png = new ByteArrayOutputStream();
+		try (ByteArrayOutputStream png = new ByteArrayOutputStream()) {
 			SourceStringReader reader = new SourceStringReader(plantCode);
 			reader.outputImage(png).getDescription();
 			byte [] data = png.toByteArray();
@@ -44,15 +47,16 @@ public class PlantUMLPackageDiagramImageExporter implements DiagramExporter {
 			int wrapWidth = 150;
 			//int stringChangerCounter = 0;
 			if (width == 4096) {
-				png = new ByteArrayOutputStream();
-				plantCode = wrapWidthChanger(plantCode, wrapWidth);
-				reader = new SourceStringReader(plantCode);
-				reader.outputImage(png).getDescription();
-				data = png.toByteArray();
-				in = new ByteArrayInputStream(data);
-				convImg = ImageIO.read(in);
-				width = convImg.getWidth();
-				//stringChangerCounter ++;
+				try (ByteArrayOutputStream newPng = new ByteArrayOutputStream())
+				{
+					plantCode = wrapWidthChanger(plantCode, wrapWidth);
+					reader = new SourceStringReader(plantCode);
+					reader.outputImage(newPng).getDescription();
+					data = newPng.toByteArray();
+					in = new ByteArrayInputStream(data);
+					convImg = ImageIO.read(in);
+					width = convImg.getWidth();
+				}
 			}
 			ImageIO.write(convImg, "png", plantUMLFile);
 		} catch (IOException e) {
@@ -62,20 +66,22 @@ public class PlantUMLPackageDiagramImageExporter implements DiagramExporter {
 
 	private String wrapWidthChanger(String plantCode, int wrapWidth){
 		String updatedString;
-		//if (counter == 0) {
 		int indexOfNewLine = plantCode.indexOf("\n");
 		String firstPart = plantCode.substring(0, indexOfNewLine + 1);
 		String secondPart = plantCode.substring(indexOfNewLine + 1);
 		updatedString = firstPart + "skinparam wrapWidth " + wrapWidth + "\n" + secondPart;
-		// !! COMMENTED CODE HERE - KEEP REDUCING THE WRAPWIDTH PARAMETER IN ORDER TO FIT PROPERLY THE IMAGE
-		// DOESNT WORK PROPERLY, COMMENTED JUST TO KEEP THE IDEA.
-		// POP UP MESSAGE CAN BE ADDED TO INFORM THE USER THAT THE IMAGE HE REQUESTED IS OVER 4096x4096
-		// SO WE REDUCE THE WRAPWIDTH TO REDUCE EXTRACTED IMAGE'S WIDTH. NOW THE USER CAN SEE MORE CLASSES.
-		//    	}else {
-		//    		String[] lines = plantCode.split("\n");
-		//    		lines[1] = "skinparam wrapWidth " + wrapWidth;
-		//    		updatedString = String.join("\n", lines);
-		//    	}
+		// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
+		// KEEP REDUCING THE WRAPWIDTH PARAMETER IN ORDER TO FIT PROPERLY THE IMAGE //
+		// DOESNT WORK PROPERLY, COMMENTED JUST TO KEEP THE IDEA.					//
+		// POP UP MESSAGE CAN BE ADDED TO INFORM THE USER THAT THE IMAGE HE			//
+		// REQUESTED IS OVER 4096x4096 SO WE REDUCE THE WRAPWIDTH TO REDUCE			//
+		// EXTRACTED IMAGE'S WIDTH. NOW THE USER CAN SEE MORE CLASSES.				//
+		//    	}else {																//
+		//    		String[] lines = plantCode.split("\n");							//
+		//    		lines[1] = "skinparam wrapWidth " + wrapWidth;					//
+		//    		updatedString = String.join("\n", lines);						//
+		//    	}																	//
+		// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
 		return updatedString;
 	}
 
@@ -98,13 +104,17 @@ public class PlantUMLPackageDiagramImageExporter implements DiagramExporter {
 	}
 
 	private String getPackageText() {
-		return "@startuml\n" +
-				"skinparam package {\n" +
-				"    BackgroundColor lightyellow\n" +
-				"    BorderColor black\n" +
-				"    ArrowColor black\n" +
-				"    Shadowing true\n" +
-				"}\n\n";
+		return
+			"""
+				@startuml
+				skinparam package {
+				    BackgroundColor lightyellow
+				    BorderColor black
+				    ArrowColor black
+				    Shadowing true
+				}
+
+				""";
 	}
 
 }

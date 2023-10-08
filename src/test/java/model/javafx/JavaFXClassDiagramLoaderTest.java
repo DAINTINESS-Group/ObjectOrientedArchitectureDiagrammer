@@ -37,7 +37,7 @@ public class JavaFXClassDiagramLoaderTest {
 		Map<ClassifierVertex, Set<Arc<ClassifierVertex>>> createdDiagram = graphClassDiagramConverter.convertGraphToClassDiagram();
 
 		DiagramExporter javaFXExporter = new JavaFXClassDiagramExporter(classDiagramManager.getClassDiagram());
-		File actualFile = javaFXExporter.exportDiagram(Path.of(System.getProperty("user.home") + "/testingExportedFile.txt"));
+		File actualFile = javaFXExporter.exportDiagram(Path.of(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "testingExportedFile.txt")));
 
 		JavaFXClassDiagramLoader javaFXClassDiagramLoader = new JavaFXClassDiagramLoader(actualFile.toPath());
 		Set<ClassifierVertex> loadedDiagram = javaFXClassDiagramLoader.loadDiagram();
@@ -53,31 +53,37 @@ public class JavaFXClassDiagramLoaderTest {
 			List<Arc<ClassifierVertex>> arcs = optionalSinkVertex.get().getArcs();
 			assertEquals(createdDiagram.get(classifierVertex).size(), arcs.size());
 			for (Arc<ClassifierVertex> arc: createdDiagram.get(classifierVertex)) {
-				arcs.stream().filter(sinkVertexArc ->
-				sinkVertexArc.getSourceVertex().getName().equals(arc.getSourceVertex().getName()) &&
-				sinkVertexArc.getTargetVertex().getName().equals(arc.getTargetVertex().getName()) &&
-				sinkVertexArc.getArcType().equals(arc.getArcType()))
-				.findFirst().orElseGet(Assertions::fail);
+				assertTrue(arcs.stream()
+					.anyMatch(sinkVertexArc ->
+						sinkVertexArc.sourceVertex().getName().equals(arc.sourceVertex().getName()) &&
+						sinkVertexArc.targetVertex().getName().equals(arc.targetVertex().getName()) &&
+						sinkVertexArc.arcType().equals(arc.arcType())
+					)
+				);
 			}
 
 			List<ClassifierVertex.Method> methods = optionalSinkVertex.get().getMethods();
 			assertEquals(classifierVertex.getMethods().size(), methods.size());
 			for (ClassifierVertex.Method method: classifierVertex.getMethods()) {
-				methods.stream().filter(method1 ->
-				method1.getName().equals(method.getName()) &&
-				method1.getReturnType().equals(method.getReturnType()) &&
-				method1.getModifierType().equals(method.getModifierType()))
-				.findFirst().orElseGet(Assertions::fail);
+				assertTrue(methods.stream()
+					.anyMatch(method1 ->
+						method1.name().equals(method.name()) &&
+						method1.returnType().equals(method.returnType()) &&
+						method1.modifier().equals(method.modifier())
+					)
+				);
 			}
 
 			List<ClassifierVertex.Field> fields = optionalSinkVertex.get().getFields();
 			assertEquals(classifierVertex.getFields().size(), fields.size());
 			for (ClassifierVertex.Field field: classifierVertex.getFields()) {
-				fields.stream().filter(field1 ->
-				field1.getName().equals(field.getName()) &&
-				field1.getType().equals(field.getType()) &&
-				field1.getModifier().equals(field.getModifier()))
-				.findFirst().orElseGet(Assertions::fail);
+				assertTrue(fields.stream()
+					.anyMatch(field1 ->
+						field1.name().equals(field.name()) &&
+						field1.type().equals(field.type()) &&
+						field1.modifier().equals(field.modifier())
+					)
+				);
 			}
 		}
 	}

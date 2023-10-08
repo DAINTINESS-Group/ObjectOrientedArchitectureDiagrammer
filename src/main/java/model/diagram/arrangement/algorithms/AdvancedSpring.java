@@ -1,21 +1,14 @@
 package model.diagram.arrangement.algorithms;
 
+import edu.uci.ics.jung.algorithms.layout.SpringLayout2;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
 import model.diagram.arrangement.geometry.DiagramGeometry;
 import model.diagram.arrangement.geometry.GeometryNode;
-import edu.uci.ics.jung.algorithms.layout.SpringLayout2;
 
 public class AdvancedSpring implements LayoutAlgorithm{
 
 	private Graph<String, String> graph;
-	private final static int MIN_X_WINDOW_VALUE = 25;
-	private final static int MIN_Y_WINDOW_VALUE = 25;
-	// private final static int GRAPH_X_SIZE = 1200;
-	// private final static int GRAPH_Y_SIZE = 725;
-
-	public AdvancedSpring() {
-	}
 
 	@Override
 	public void setGraph(Graph<String, String> graph) {

@@ -39,7 +39,7 @@ public class JavaFXPackageDiagramLoaderTest {
 		Map<PackageVertex, Set<Arc<PackageVertex>>> createdDiagram = packageDiagramManager.getPackageDiagram().getDiagram();
 
 		DiagramExporter javaFXExporter = new JavaFXPackageDiagramExporter(packageDiagramManager.getPackageDiagram());
-		File actualFile = javaFXExporter.exportDiagram(Path.of(System.getProperty("user.home") + "/testingExportedFile.txt"));
+		File actualFile = javaFXExporter.exportDiagram(Path.of(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "testingExportedFile.txt")));
 
 		JavaFXPackageDiagramLoader javaFXLoader = new JavaFXPackageDiagramLoader(actualFile.toPath());
 		Set<PackageVertex> loadedDiagram = javaFXLoader.loadDiagram();
@@ -56,9 +56,9 @@ public class JavaFXPackageDiagramLoaderTest {
 			assertEquals(createdDiagram.get(vertex).size(), arcs.size());
 			for (Arc<PackageVertex> arc: createdDiagram.get(vertex)) {
 				arcs.stream().filter(vertexArc ->
-				vertexArc.getSourceVertex().getName().equals(arc.getSourceVertex().getName()) &&
-				vertexArc.getTargetVertex().getName().equals(arc.getTargetVertex().getName()) &&
-				vertexArc.getArcType().equals(arc.getArcType()))
+				vertexArc.sourceVertex().getName().equals(arc.sourceVertex().getName()) &&
+				vertexArc.targetVertex().getName().equals(arc.targetVertex().getName()) &&
+				vertexArc.arcType().equals(arc.arcType()))
 				.findFirst().orElseGet(Assertions::fail);
 			}
 

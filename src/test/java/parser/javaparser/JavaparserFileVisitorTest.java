@@ -27,8 +27,7 @@ public class JavaparserFileVisitorTest {
 
 	@Test
 	void methodReturnTypesTest() {
-		ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
-		Parser parser = projectParserFactory.createProjectParser();
+		Parser parser = ProjectParserFactory.createProjectParser(parserType);
 
 		Map<Path, PackageNode> packages = parser.parseSourcePackage(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "LatexEditor", "src")));
 		PackageNode commandPackage = packages.get(Paths.get(PathConstructor.getCurrentPath().normalize().toString(), PathConstructor.constructPath("src", "test", "resources", "LatexEditor", "src", "controller", "commands")));
@@ -47,8 +46,7 @@ public class JavaparserFileVisitorTest {
 
 	@Test
 	void methodParameterTypesTest() {
-		ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
-		Parser parser = projectParserFactory.createProjectParser();
+		Parser parser = ProjectParserFactory.createProjectParser(parserType);
 
 		Map<Path, PackageNode> packages = parser.parseSourcePackage(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "LatexEditor", "src")));
 		PackageNode commandPackage = packages.get(Paths.get(PathConstructor.getCurrentPath().normalize().toString(), PathConstructor.constructPath("src", "test", "resources", "LatexEditor", "src", "controller", "commands")));
@@ -67,8 +65,7 @@ public class JavaparserFileVisitorTest {
 
 	@Test
 	void fieldTypesTest() {
-		ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
-		Parser parser = projectParserFactory.createProjectParser();
+		Parser parser = ProjectParserFactory.createProjectParser(parserType);
 
 		Map<Path, PackageNode> packages = parser.parseSourcePackage(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "LatexEditor", "src")));
 		PackageNode commandPackage = packages.get(Paths.get(PathConstructor.getCurrentPath().normalize().toString(), PathConstructor.constructPath("src", "test", "resources", "LatexEditor", "src", "controller", "commands")));
@@ -79,15 +76,15 @@ public class JavaparserFileVisitorTest {
 
 		Collections.sort(fieldTypesTest);
 		Collections.sort(fieldTypes);
-		assertTrue(fieldTypesTest.size() == fieldTypes.size()
-				&& fieldTypes.containsAll(fieldTypesTest)
-				&& fieldTypesTest.containsAll(fieldTypes));
+		assertTrue(
+			fieldTypesTest.size() == fieldTypes.size() &&
+	   		fieldTypes.containsAll(fieldTypesTest) &&
+		    fieldTypesTest.containsAll(fieldTypes));
 	}
 
 	@Test
 	void variableTypesTest() {
-		ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
-		Parser parser = projectParserFactory.createProjectParser();
+		Parser parser = ProjectParserFactory.createProjectParser(parserType);
 
 		Map<Path, PackageNode> packages = parser.parseSourcePackage(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "LatexEditor", "src")));
 		PackageNode commandPackage = packages.get(Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
@@ -107,8 +104,7 @@ public class JavaparserFileVisitorTest {
 
 	@Test
 	void objectCreationTest() {
-		ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
-		Parser parser = projectParserFactory.createProjectParser();
+		Parser parser = ProjectParserFactory.createProjectParser(parserType);
 
 		Map<Path, PackageNode> packages = parser.parseSourcePackage(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "ParserTesting")));
 		PackageNode sourcePackage = packages.get(Paths.get(PathConstructor.getCurrentPath().normalize().toString(), PathConstructor.constructPath("src", "test", "resources", "ParserTesting")));
@@ -127,8 +123,7 @@ public class JavaparserFileVisitorTest {
 
 	@Test
 	void leafNodeTypesTest() {
-		ProjectParserFactory projectParserFactory = new ProjectParserFactory(parserType);
-		Parser parser = projectParserFactory.createProjectParser();
+		Parser parser = ProjectParserFactory.createProjectParser(parserType);
 
 		Map<Path, PackageNode> packages = parser.parseSourcePackage(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "ParserTesting")));
 		PackageNode inheritancePackage = packages.get(Paths.get(PathConstructor.getCurrentPath().normalize().toString(), PathConstructor.constructPath("src", "test", "resources", "ParserTesting")));

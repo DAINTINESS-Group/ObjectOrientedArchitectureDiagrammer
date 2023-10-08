@@ -8,7 +8,8 @@ import java.util.List;
 
 public interface DiagramManager {
 
-	/**This method creates the tree of the project by parsing the project's source package that the designer has loaded
+	/**
+	 * This method creates the tree of the project by parsing the project's source package that the designer has loaded
 	 * @param sourcePackagePath the project's source package path
 	 * @return the SourceProject created, representing the model of the tree
 	 */
@@ -29,48 +30,56 @@ public interface DiagramManager {
 	 */
 	void arrangeDiagram();
 
-	/**This method exports the created diagram to a file, to the path selected by the designer, in GraphMLFormat, by
+	/**
+	 * This method exports the created diagram to a file, to the path selected by the designer, in GraphMLFormat, by
 	 * converting the nodes and edges to GraphML syntax
 	 * @param graphMLSavePath the selected path by the designer where the diagram will be saved
 	 * @return the created File in which the diagram was saved
 	 */
 	File exportDiagramToGraphML(Path graphMLSavePath);
 
-	/**This method saves the created JavaFX diagram to a text file, to the path selected by the designer, by implementing
+	/**
+	 * This method saves the created JavaFX diagram to a text file, to the path selected by the designer, by implementing
 	 * a Map that stores the diagrams' nodes as keys and a Map of their edges and the relationship type as their values
 	 * @param graphSavePath the selected path by the designer where the diagram will be saved
 	 * @return the created File in which the diagram was saved
 	 */
 	File saveDiagram(Path graphSavePath);
 
-	/**This method loads a JavaFX diagram from a file, selected by the designer, by creating an object of the class
+	/**
+	 * This method loads a JavaFX diagram from a file, selected by the designer, by creating an object of the class
 	 * Diagram and populating the createdDiagram Collection with the contents of the file. The createdDiagram is a Map
 	 * as described in the method above
 	 * @param graphSavePath the file's path where the diagram is saved
 	 */
 	void loadDiagram(Path graphSavePath);
 
-	/**This method creates the JavaFX's graphView that will be rendered by view in the JavaFX Pane
+	/**This method creates the JavaFX graphView that will be rendered by view in the JavaFX Pane
 	 * @return the created graphView
 	 */
 	SmartGraphPanel<String, String> visualizeJavaFXGraph();
 
-	/**This method is responsible for exporting the diagram to a PlantUML image diagram
+	/**
+	 * This method is responsible for exporting the diagram to a PlantUML image diagram
 	 * @param plantUMLSavePath the selected path by the designer where the exported diagram will be saved
 	 * @return the exported file
 	 */
 	File exportPlantUMLImage(Path plantUMLSavePath);
 
-	/**This method is responsible for exporting the diagram to a PlantUML text file
+	/**
+	 * This method is responsible for exporting the diagram to a PlantUML text file
 	 * @param textSavePath the selected path by the designer where the exported diagram will be saved
 	 * @return the exported file
 	 */
 	File exportPlantUMLText(Path textSavePath);
 
+	// TODO JavaDoc
 	SmartGraphPanel<String, String> applyLayout();
 
+	// TODO JavaDoc
 	SmartGraphPanel<String, String> applySpecificLayout(String choice);
 
+	// TODO JavaDoc
 	SmartGraphPanel<String, String> visualizeLoadedJavaFXGraph();
 
 }

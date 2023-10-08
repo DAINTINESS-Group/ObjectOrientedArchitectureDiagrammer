@@ -59,12 +59,16 @@ public class PlantUMLPackageDiagramTextExporter implements DiagramExporter {
 	}
 
 	private String getPackageText() {
-		return "@startuml\n" +
-				"skinparam package {\n" +
-				"    BackgroundColor lightyellow\n" +
-				"    BorderColor black\n" +
-				"    ArrowColor black\n" +
-				"    Shadowing true\n" +
-				"}\n\n";
+		return
+			"""
+				@startuml
+				skinparam package {
+				    BackgroundColor lightyellow
+				    BorderColor black
+				    ArrowColor black
+				    Shadowing true
+				}
+
+				""";
 	}
 }

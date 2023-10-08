@@ -6,15 +6,20 @@ import model.graph.ClassifierVertex;
 import org.javatuples.Pair;
 
 import java.nio.file.Path;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 public class ClassDiagram {
 
-	private Map<ClassifierVertex, Set<Arc<ClassifierVertex>>> diagram;
-	private Map<Path, ClassifierVertex> sinkVertices;
-	private final Map<ClassifierVertex, Integer> graphNodes;
-	private Map<Integer, Pair<Double, Double>> diagramGeometryGraphML;
-	private DiagramGeometry diagramGeometry;
+	private final Map<ClassifierVertex, Integer> 					graphNodes;
+	private 	  Map<ClassifierVertex, Set<Arc<ClassifierVertex>>> diagram;
+	private 	  Map<Path, ClassifierVertex> 						sinkVertices;
+	private 	  Map<Integer, Pair<Double, Double>> 				diagramGeometryGraphML;
+	private 	  DiagramGeometry 									diagramGeometry;
 
 	public ClassDiagram() {
 		graphNodes = new HashMap<>();
@@ -41,9 +46,10 @@ public class ClassDiagram {
 	private List<ClassifierVertex> getChosenNodes(List<String> chosenClassesNames) {
 		List<ClassifierVertex> chosenClasses = new ArrayList<>();
 		for (String chosenClass: chosenClassesNames) {
-			Optional<ClassifierVertex> optionalSinkVertex = sinkVertices.values().stream()
-					.filter(sinkVertex -> sinkVertex.getName().equals(chosenClass))
-					.findFirst();
+			Optional<ClassifierVertex> optionalSinkVertex = sinkVertices.values()
+				.stream()
+				.filter(sinkVertex -> sinkVertex.getName().equals(chosenClass))
+				.findFirst();
 			if (optionalSinkVertex.isEmpty()) {
 				continue;
 			}

@@ -11,7 +11,11 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 public class JavaFXPackageDiagramLoader {
 
@@ -40,12 +44,14 @@ public class JavaFXPackageDiagramLoader {
 		for (PackageVertex vertex: vertices) {
 			List<Triplet<String, String, String>> deserializedArcs = vertex.getDeserializedArcs();
 			for (Triplet<String, String, String> arc: deserializedArcs) {
-				Optional<PackageVertex> sourceVertex = vertices.stream()
-						.filter(vertex1 -> vertex1.getName().equals(arc.getValue0()))
-						.findFirst();
-				Optional<PackageVertex> targetVertex = vertices.stream()
-						.filter(vertex1 -> vertex1.getName().equals(arc.getValue1()))
-						.findFirst();
+				Optional<PackageVertex> sourceVertex = vertices
+					.stream()
+					.filter(vertex1 -> vertex1.getName().equals(arc.getValue0()))
+					.findFirst();
+				Optional<PackageVertex> targetVertex = vertices
+					.stream()
+					.filter(vertex1 -> vertex1.getName().equals(arc.getValue1()))
+					.findFirst();
 				if (sourceVertex.isEmpty() || targetVertex.isEmpty()) {
 					continue;
 				}

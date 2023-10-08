@@ -1,5 +1,6 @@
 package controller;
 
+// potentially ,SEQUENCE_DIAGRAM
 public enum ControllerType {
-	UML_DIAGRAM // potentially ,SEQUENCE_DIAGRAM
+	UML_DIAGRAM
 }

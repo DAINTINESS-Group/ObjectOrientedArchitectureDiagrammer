@@ -1,6 +1,12 @@
 package model.diagram.exportation;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 import model.graph.Arc;
 import model.graph.ClassifierVertex;
 import model.graph.PackageVertex;
@@ -14,12 +20,14 @@ public class PackageVertexSerializer implements JsonSerializer<PackageVertex> {
 	private PackageVertex packageVertex;
 
 	@Override
-	public JsonElement serialize(PackageVertex vertex, Type type, JsonSerializationContext jsonSerializationContext) {
-		this.packageVertex = vertex;
+	public JsonElement serialize(PackageVertex 			  vertex,
+								 Type 		   			  type,
+								 JsonSerializationContext jsonSerializationContext) {
+		this.packageVertex    = vertex;
 		JsonObject jsonObject = new JsonObject();
 
-		String name = vertex.getName();
-		Path path = vertex.getPath();
+		String name 	  = vertex.getName();
+		Path path 		  = vertex.getPath();
 		String vertexType = vertex.getVertexType().toString();
 
 		jsonObject.addProperty("name", name);
@@ -65,8 +73,8 @@ public class PackageVertexSerializer implements JsonSerializer<PackageVertex> {
 		JsonArray neighbourVerticesArray = new JsonArray(neighbourVertices.size());
 		for (PackageVertex v: neighbourVertices) {
 			JsonObject neighbourVertexObject = new JsonObject();
-			String name = v.getName();
-			String path = v.getPath().toString();
+			String name 	  = v.getName();
+			String path 	  = v.getPath().toString();
 			String vertexType = v.getVertexType().toString();
 			String parentName = v.getParentVertex().getName();
 
@@ -86,9 +94,9 @@ public class PackageVertexSerializer implements JsonSerializer<PackageVertex> {
 		for (Arc<PackageVertex> vertexArc : arcs) {
 			JsonObject arcObject = new JsonObject();
 
-			String source = vertexArc.getSourceVertex().getName();
-			String target = vertexArc.getTargetVertex().getName();
-			String arcType = vertexArc.getArcType().toString();
+			String source  = vertexArc.sourceVertex().getName();
+			String target  = vertexArc.targetVertex().getName();
+			String arcType = vertexArc.arcType().toString();
 
 			arcObject.addProperty("source", source);
 			arcObject.addProperty("target", target);

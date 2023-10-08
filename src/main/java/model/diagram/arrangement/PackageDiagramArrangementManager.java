@@ -5,7 +5,6 @@ import edu.uci.ics.jung.algorithms.layout.SpringLayout;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.SparseGraph;
 import edu.uci.ics.jung.graph.util.EdgeType;
-
 import model.diagram.PackageDiagram;
 import model.diagram.arrangement.algorithms.LayoutAlgorithm;
 import model.diagram.arrangement.algorithms.LayoutAlgorithmFactory;
@@ -15,13 +14,17 @@ import model.graph.Arc;
 import model.graph.PackageVertex;
 import org.javatuples.Pair;
 
-import java.awt.Dimension;
-import java.util.*;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class PackageDiagramArrangementManager implements DiagramArrangementManagerInterface {
 
 	private final Graph<String, String> graph;
-	private final PackageDiagram packageDiagram;
+	private final PackageDiagram 		packageDiagram;
 
 	public PackageDiagramArrangementManager(PackageDiagram packageDiagram) {
 		this.packageDiagram = packageDiagram;
@@ -42,17 +45,15 @@ public class PackageDiagramArrangementManager implements DiagramArrangementManag
 
 	@Override
 	public DiagramGeometry arrangeDiagram() {
-		LayoutAlgorithmFactory layoutAlgorithmFactory = new LayoutAlgorithmFactory();
-		LayoutAlgorithm sugiyama = layoutAlgorithmFactory.createLayoutAlgorithm(LayoutAlgorithmType.SUGIYAMA);
+		LayoutAlgorithm sugiyama = LayoutAlgorithmFactory.createLayoutAlgorithm(LayoutAlgorithmType.SUGIYAMA);
 		sugiyama.setGraph(graph);
 		return sugiyama.arrangeDiagram();
 	}
 
 	@Override
 	public DiagramGeometry applyNewLayout(String algorithmType){
-		LayoutAlgorithmFactory layoutAlgorithmFactory = new LayoutAlgorithmFactory();
 		LayoutAlgorithmType algorithmEnumType = LayoutAlgorithmType.valueOf(algorithmType.toUpperCase());
-		LayoutAlgorithm layout = layoutAlgorithmFactory.createLayoutAlgorithm(algorithmEnumType);
+		LayoutAlgorithm layout = LayoutAlgorithmFactory.createLayoutAlgorithm(algorithmEnumType);
 		layout.setGraph(graph);
 		return layout.arrangeDiagram();
 	}
@@ -69,8 +70,10 @@ public class PackageDiagramArrangementManager implements DiagramArrangementManag
 		}
 
 		for (Arc<PackageVertex> arc: arcs) {
-			graph.addEdge(packageDiagram.getGraphNodes().get(arc.getSourceVertex()) + " " + packageDiagram.getGraphNodes().get(arc.getTargetVertex()),
-					packageDiagram.getGraphNodes().get(arc.getSourceVertex()), packageDiagram.getGraphNodes().get(arc.getTargetVertex()), EdgeType.DIRECTED);
+			graph.addEdge(
+				packageDiagram.getGraphNodes().get(arc.sourceVertex()) + " " + packageDiagram.getGraphNodes().get(arc.targetVertex()),
+				packageDiagram.getGraphNodes().get(arc.sourceVertex()),
+				packageDiagram.getGraphNodes().get(arc.targetVertex()), EdgeType.DIRECTED);
 		}
 
 		return graph;
@@ -88,7 +91,10 @@ public class PackageDiagramArrangementManager implements DiagramArrangementManag
 		}
 
 		for (Arc<PackageVertex> arc: arcs) {
-			graph.addEdge(arc.getSourceVertex().getName() + " " + arc.getTargetVertex().getName(), arc.getSourceVertex().getName(), arc.getTargetVertex().getName(), EdgeType.DIRECTED);
+			graph.addEdge(
+				arc.sourceVertex().getName() + " " + arc.targetVertex().getName(),
+				arc.sourceVertex().getName(),
+				arc.targetVertex().getName(), EdgeType.DIRECTED);
 		}
 
 		return graph;
