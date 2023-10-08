@@ -16,6 +16,7 @@ import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import parser.Interpreter;
+import utils.PathConstructor;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,100 +29,88 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ClassDiagramManagerTest {
 
-	Path currentDirectory = Path.of(".");
-
 	@Test
 	void createSourceProjectTest() {
-		try {
-			ClassDiagramManager classDiagramManager = new ClassDiagramManager();
-			SourceProject sourceProject = classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-			Map<Path, PackageVertex> vertices = sourceProject.getInterpreter().getVertices();
-			Interpreter interpreter = new Interpreter();
-			interpreter.parseProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-			interpreter.convertTreeToGraph();
-			ArrayList<PackageVertex> interpreterVertices = new ArrayList<>(interpreter.getVertices().values());
+		ClassDiagramManager classDiagramManager = new ClassDiagramManager();
+		SourceProject sourceProject = classDiagramManager.createSourceProject(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "LatexEditor", "src")));
+		Map<Path, PackageVertex> vertices = sourceProject.getInterpreter().getVertices();
+		Interpreter interpreter = new Interpreter();
+		interpreter.parseProject(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "LatexEditor", "src")));
+		interpreter.convertTreeToGraph();
+		ArrayList<PackageVertex> interpreterVertices = new ArrayList<>(interpreter.getVertices().values());
 
-			assertEquals(vertices.size(), interpreterVertices.size());
-			for (Map.Entry<Path, PackageVertex> vertexEntry: vertices.entrySet()) {
-				PackageVertex optionalPackageVertex = interpreterVertices.stream()
-						.filter(vertex ->
-						vertex.getName().equals(vertexEntry.getValue().getName()) &&
-						vertex.getParentVertex().getName().equals(vertexEntry.getValue().getParentVertex().getName()))
-						.findFirst().orElseGet(Assertions::fail);
+		assertEquals(vertices.size(), interpreterVertices.size());
+		for (Map.Entry<Path, PackageVertex> vertexEntry: vertices.entrySet()) {
+			PackageVertex optionalPackageVertex = interpreterVertices.stream()
+					.filter(vertex ->
+					vertex.getName().equals(vertexEntry.getValue().getName()) &&
+					vertex.getParentVertex().getName().equals(vertexEntry.getValue().getParentVertex().getName()))
+					.findFirst().orElseGet(Assertions::fail);
 
-				assertEquals(vertexEntry.getValue().getNeighbourVertices().size(), optionalPackageVertex.getNeighbourVertices().size());
-				for (PackageVertex neighbourPackageVertex : vertexEntry.getValue().getNeighbourVertices()) {
-					Optional<PackageVertex> optionalNeighbourVertex = optionalPackageVertex.getNeighbourVertices().stream()
-							.filter(neighbour -> neighbour.getName().equals(neighbourPackageVertex.getName()))
-							.findAny();
-					assertTrue(optionalNeighbourVertex.isPresent());
-				}
-
-				assertEquals(vertexEntry.getValue().getSinkVertices().size(), optionalPackageVertex.getSinkVertices().size());
-				for (ClassifierVertex classifierVertex : vertexEntry.getValue().getSinkVertices()) {
-					Optional<ClassifierVertex> optionalSinkVertex = optionalPackageVertex.getSinkVertices().stream()
-							.filter(sinkVertex1 -> sinkVertex1.getName().equals(classifierVertex.getName()))
-							.findAny();
-					assertTrue(optionalSinkVertex.isPresent());
-				}
+			assertEquals(vertexEntry.getValue().getNeighbourVertices().size(), optionalPackageVertex.getNeighbourVertices().size());
+			for (PackageVertex neighbourPackageVertex : vertexEntry.getValue().getNeighbourVertices()) {
+				Optional<PackageVertex> optionalNeighbourVertex = optionalPackageVertex.getNeighbourVertices().stream()
+						.filter(neighbour -> neighbour.getName().equals(neighbourPackageVertex.getName()))
+						.findAny();
+				assertTrue(optionalNeighbourVertex.isPresent());
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
+
+			assertEquals(vertexEntry.getValue().getSinkVertices().size(), optionalPackageVertex.getSinkVertices().size());
+			for (ClassifierVertex classifierVertex : vertexEntry.getValue().getSinkVertices()) {
+				Optional<ClassifierVertex> optionalSinkVertex = optionalPackageVertex.getSinkVertices().stream()
+						.filter(sinkVertex1 -> sinkVertex1.getName().equals(classifierVertex.getName()))
+						.findAny();
+				assertTrue(optionalSinkVertex.isPresent());
+			}
 		}
 	}
 
 	@Test
 	void populateGraphNodesTest() {
-		try {
-			ClassDiagramManager classDiagramManager = new ClassDiagramManager();
-			SourceProject sourceProject = classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-			classDiagramManager.convertTreeToDiagram(List.of("AddLatexCommand", "ChangeVersionsStrategyCommand", "Command", "CommandFactory",
-					"CreateCommand", "DisableVersionsManagementCommand", "EditCommand", "EnableVersionsManagementCommand",
-					"LoadCommand", "RollbackToPreviousVersionCommand", "SaveCommand"));
+		ClassDiagramManager classDiagramManager = new ClassDiagramManager();
+		SourceProject sourceProject = classDiagramManager.createSourceProject(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "LatexEditor", "src")));
+		classDiagramManager.convertTreeToDiagram(List.of("AddLatexCommand", "ChangeVersionsStrategyCommand", "Command", "CommandFactory",
+				"CreateCommand", "DisableVersionsManagementCommand", "EditCommand", "EnableVersionsManagementCommand",
+				"LoadCommand", "RollbackToPreviousVersionCommand", "SaveCommand"));
 
-			Map<ClassifierVertex, Integer> graphNodes = classDiagramManager.getClassDiagram().getGraphNodes();
+		Map<ClassifierVertex, Integer> graphNodes = classDiagramManager.getClassDiagram().getGraphNodes();
 
-			List<String> l1 = new ArrayList<>();
-			List<String> l2 = new ArrayList<>();
-			assertEquals(sourceProject.getInterpreter().getVertices().get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
-					"\\src\\test\\resources\\LatexEditor\\src\\controller\\commands")).getSinkVertices().size(), graphNodes.size());
+		List<String> l1 = new ArrayList<>();
+		List<String> l2 = new ArrayList<>();
+		assertEquals(sourceProject.getInterpreter().getVertices().get(
+			Paths.get(PathConstructor.getCurrentPath().normalize().toString(), PathConstructor.constructPath("src", "test", "resources", "LatexEditor", "src", "controller", "commands")))
+		 	.getSinkVertices().size(), graphNodes.size());
 
-			Iterator<ClassifierVertex> iter1 = sourceProject.getInterpreter().getVertices().get(Paths.get(currentDirectory.toRealPath().normalize().toString(),
-					"\\src\\test\\resources\\LatexEditor\\src\\controller\\commands")).getSinkVertices().iterator();
-			Iterator<Map.Entry<ClassifierVertex, Integer>> iter2 = graphNodes.entrySet().iterator();
-			while(iter1.hasNext() || iter2.hasNext()) {
-				ClassifierVertex e1 = iter1.next();
-				Map.Entry<ClassifierVertex, Integer> e2 = iter2.next();
-				l1.add(e1.getName());
-				l2.add(e2.getKey().getName());
-			}
-			Collections.sort(l1);
-			Collections.sort(l2);
-			assertTrue(l1.size() == l2.size() && l1.containsAll(l2) && l2.containsAll(l1));
-		} catch (IOException e) {
-			e.printStackTrace();
+		Iterator<ClassifierVertex> iter1 = sourceProject.getInterpreter().getVertices()
+			.get(Paths.get(PathConstructor.getCurrentPath().normalize().toString(), PathConstructor.constructPath("src", "test", "resources", "LatexEditor", "src", "controller", "commands")))
+			.getSinkVertices().iterator();
+		Iterator<Map.Entry<ClassifierVertex, Integer>> iter2 = graphNodes.entrySet().iterator();
+		while(iter1.hasNext() || iter2.hasNext()) {
+			ClassifierVertex e1 = iter1.next();
+			Map.Entry<ClassifierVertex, Integer> e2 = iter2.next();
+			l1.add(e1.getName());
+			l2.add(e2.getKey().getName());
 		}
+		Collections.sort(l1);
+		Collections.sort(l2);
+		assertTrue(l1.size() == l2.size() && l1.containsAll(l2) && l2.containsAll(l1));
 	}
 
 	@Test
 	void createDiagramTest() {
-		try {
-			ClassDiagramManager classDiagramManager = new ClassDiagramManager();
-			List<String> chosenFiles = Arrays.asList("MainWindow", "LatexEditorView", "OpeningWindow");
-			classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-			classDiagramManager.convertTreeToDiagram(chosenFiles);
-			Map<ClassifierVertex, Set<Arc<ClassifierVertex>>> testingCreatedDiagram = classDiagramManager.getClassDiagram().getDiagram();
+		ClassDiagramManager classDiagramManager = new ClassDiagramManager();
+		List<String> chosenFiles = Arrays.asList("MainWindow", "LatexEditorView", "OpeningWindow");
+		classDiagramManager.createSourceProject(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "LatexEditor", "src")));
+		classDiagramManager.convertTreeToDiagram(chosenFiles);
+		Map<ClassifierVertex, Set<Arc<ClassifierVertex>>> testingCreatedDiagram = classDiagramManager.getClassDiagram().getDiagram();
 
-			Map<ClassifierVertex, Integer> graphNodes = classDiagramManager.getClassDiagram().getGraphNodes();
-			GraphClassDiagramConverter graphClassDiagramConverter = new GraphClassDiagramConverter(graphNodes.keySet());
-			classDiagramManager.getClassDiagram().setDiagram(graphClassDiagramConverter.convertGraphToClassDiagram());
-			ShadowCleaner shadowCleaner = new ShadowCleaner(classDiagramManager.getClassDiagram());
-			Map<ClassifierVertex, Set<Arc<ClassifierVertex>>> adjacencyList = shadowCleaner.shadowWeakRelationships();
+		Map<ClassifierVertex, Integer> graphNodes = classDiagramManager.getClassDiagram().getGraphNodes();
+		GraphClassDiagramConverter graphClassDiagramConverter = new GraphClassDiagramConverter(graphNodes.keySet());
+		classDiagramManager.getClassDiagram().setDiagram(graphClassDiagramConverter.convertGraphToClassDiagram());
+		ShadowCleaner shadowCleaner = new ShadowCleaner(classDiagramManager.getClassDiagram());
+		Map<ClassifierVertex, Set<Arc<ClassifierVertex>>> adjacencyList = shadowCleaner.shadowWeakRelationships();
 
-			assertEquals(adjacencyList, testingCreatedDiagram);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		assertEquals(adjacencyList, testingCreatedDiagram);
 	}
 
 	@Test
@@ -129,10 +118,10 @@ public class ClassDiagramManagerTest {
 		try {
 			ClassDiagramManager classDiagramManager = new ClassDiagramManager();
 			List<String> chosenFiles = Arrays.asList("MainWindow", "LatexEditorView", "OpeningWindow");
-			classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
+			classDiagramManager.createSourceProject(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "LatexEditor", "src")));
 			classDiagramManager.convertTreeToDiagram(chosenFiles);
 			classDiagramManager.arrangeDiagram();
-			File actualFile = classDiagramManager.exportDiagramToGraphML(Paths.get(System.getProperty("user.home")+"\\testingExportedFile.graphML"));
+			File actualFile = classDiagramManager.exportDiagramToGraphML(Paths.get(System.getProperty("user.home")+"/testingExportedFile.graphML"));
 
 			DiagramArrangementManagerInterface classDiagramArrangement = new ClassDiagramArrangementManager(classDiagramManager.getClassDiagram());
 			classDiagramManager.getClassDiagram().setGraphMLDiagramGeometry(classDiagramArrangement.arrangeGraphMLDiagram());
@@ -142,7 +131,7 @@ public class ClassDiagramManagerTest {
 			graphMLClassifierVertexArc.convertSinkVertexArc();
 
 			DiagramExporter graphMLExporter = new GraphMLClassDiagramExporter(classDiagramManager.getClassDiagram());
-			File expectedFile = graphMLExporter.exportDiagram(Paths.get(System.getProperty("user.home") + "\\testingExportedFile.graphML"));
+			File expectedFile = graphMLExporter.exportDiagram(Paths.get(System.getProperty("user.home") + "/testingExportedFile.graphML"));
 			assertTrue(FileUtils.contentEquals(expectedFile, actualFile));
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -154,12 +143,12 @@ public class ClassDiagramManagerTest {
 		try {
 			ClassDiagramManager classDiagramManager = new ClassDiagramManager();
 			List<String> chosenFiles = Arrays.asList("MainWindow", "LatexEditorView", "OpeningWindow");
-			classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
+			classDiagramManager.createSourceProject(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "LatexEditor", "src")));
 			classDiagramManager.convertTreeToDiagram(chosenFiles);
 
-			File testingSavedFile = classDiagramManager.saveDiagram(Paths.get(System.getProperty("user.home")+"\\testingExportedFile.txt"));
+			File testingSavedFile = classDiagramManager.saveDiagram(Paths.get(System.getProperty("user.home")+"/testingExportedFile.txt"));
 			DiagramExporter javaFXExporter = new JavaFXClassDiagramExporter(classDiagramManager.getClassDiagram());
-			assertTrue(FileUtils.contentEquals(javaFXExporter.exportDiagram(Paths.get(System.getProperty("user.home")+"\\testingExportedFile.txt")), testingSavedFile));
+			assertTrue(FileUtils.contentEquals(javaFXExporter.exportDiagram(Paths.get(System.getProperty("user.home")+"/testingExportedFile.txt")), testingSavedFile));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -167,35 +156,29 @@ public class ClassDiagramManagerTest {
 
 	@Test
 	void loadDiagramTest() {
-		try {
-			ClassDiagramManager classDiagramManager = new ClassDiagramManager();
-			List<String> chosenFiles = Arrays.asList("MainWindow", "LatexEditorView", "OpeningWindow");
-			classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-			classDiagramManager.convertTreeToDiagram(chosenFiles);
-			Map<ClassifierVertex, Set<Arc<ClassifierVertex>>> createdDiagram = classDiagramManager.getClassDiagram().getDiagram();
-			classDiagramManager.saveDiagram(Paths.get(System.getProperty("user.home")+"\\testingExportedFile.txt"));
-			classDiagramManager.loadDiagram(Paths.get(System.getProperty("user.home")+"\\testingExportedFile.txt"));
-			Map<ClassifierVertex, Set<Arc<ClassifierVertex>>> loadedDiagram = classDiagramManager.getClassDiagram().getDiagram();
+		ClassDiagramManager classDiagramManager = new ClassDiagramManager();
+		List<String> chosenFiles = Arrays.asList("MainWindow", "LatexEditorView", "OpeningWindow");
+		classDiagramManager.createSourceProject(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "LatexEditor", "src")));
+		classDiagramManager.convertTreeToDiagram(chosenFiles);
+		Map<ClassifierVertex, Set<Arc<ClassifierVertex>>> createdDiagram = classDiagramManager.getClassDiagram().getDiagram();
+		classDiagramManager.saveDiagram(Paths.get(System.getProperty("user.home")+"/testingExportedFile.txt"));
+		classDiagramManager.loadDiagram(Paths.get(System.getProperty("user.home")+"/testingExportedFile.txt"));
+		Map<ClassifierVertex, Set<Arc<ClassifierVertex>>> loadedDiagram = classDiagramManager.getClassDiagram().getDiagram();
 
-			for (ClassifierVertex classifierVertex : createdDiagram.keySet()) {
-				Optional<ClassifierVertex> optionalSinkVertex = loadedDiagram.keySet().stream().filter(sinkVertex1 ->
-				sinkVertex1.getName().equals(classifierVertex.getName())
-						).findFirst();
-				assertTrue(optionalSinkVertex.isPresent());
+		for (ClassifierVertex classifierVertex : createdDiagram.keySet()) {
+			Optional<ClassifierVertex> optionalSinkVertex = loadedDiagram.keySet().stream().filter(sinkVertex1 ->
+			sinkVertex1.getName().equals(classifierVertex.getName())
+					).findFirst();
+			assertTrue(optionalSinkVertex.isPresent());
 
-				assertEquals(createdDiagram.get(classifierVertex).size(), loadedDiagram.get(optionalSinkVertex.get()).size());
-				for (Arc<ClassifierVertex> arc: createdDiagram.get(classifierVertex)) {
-					loadedDiagram.get(optionalSinkVertex.get()).stream().filter(a ->
-					a.getSourceVertex().getName().equals(arc.getSourceVertex().getName()) &&
-					a.getTargetVertex().getName().equals(arc.getTargetVertex().getName()) &&
-					a.getArcType().equals(arc.getArcType()))
-					.findFirst().orElseGet(Assertions::fail);
-				}
+			assertEquals(createdDiagram.get(classifierVertex).size(), loadedDiagram.get(optionalSinkVertex.get()).size());
+			for (Arc<ClassifierVertex> arc: createdDiagram.get(classifierVertex)) {
+				loadedDiagram.get(optionalSinkVertex.get()).stream().filter(a ->
+				a.getSourceVertex().getName().equals(arc.getSourceVertex().getName()) &&
+				a.getTargetVertex().getName().equals(arc.getTargetVertex().getName()) &&
+				a.getArcType().equals(arc.getArcType()))
+				.findFirst().orElseGet(Assertions::fail);
 			}
-
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 	}
-
 }

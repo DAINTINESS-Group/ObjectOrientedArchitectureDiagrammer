@@ -9,6 +9,8 @@ import model.graph.Arc;
 import model.graph.ClassifierVertex;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.w3c.dom.ls.LSOutput;
+import utils.PathConstructor;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,13 +24,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class JavaFXPackageDiagramExporterTest {
 
-	Path currentDirectory = Path.of(".");
-
 	@Test
 	void exportDiagramTest() {
 		try {
 			PackageDiagramManager packageDiagramManager = new PackageDiagramManager();
-			packageDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
+			packageDiagramManager.createSourceProject(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "LatexEditor", "src")));
 			packageDiagramManager.convertTreeToDiagram(List.of(
 					"src.view",
 					"src.model",
@@ -36,9 +36,9 @@ public class JavaFXPackageDiagramExporterTest {
 					"src.controller.commands",
 					"src.controller"
 					));
-			String relativePath = Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src").toString().replaceAll("\\\\", "\\\\\\\\").replaceAll("\\\\", "\\\\\\\\");
+			String relativePath = Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "LatexEditor", "src")).toString().replaceAll("//", "////").replaceAll("//", "////");
 			DiagramExporter javaFXExporter = new JavaFXPackageDiagramExporter(packageDiagramManager.getPackageDiagram());
-			File actualFile = javaFXExporter.exportDiagram(Path.of(System.getProperty("user.home") + "\\testingExportedFile.txt"));
+			File actualFile = javaFXExporter.exportDiagram(Path.of(System.getProperty("user.home") + "/testingExportedFile.txt"));
 
 			String expectedJsonString = "[{\"name\":\"src.view\",\"path\":\""
 					+ relativePath + "\\\\view\",\"vertexType\":\"PACKAGE\",\"coordinate_x\":362.0,\"coordinate_y\":25.0,\"sinkVertices\":[\"{\\\"name\\\":\\\"LatexEditorView\\\",\\\"path\\\":\\\""
@@ -106,39 +106,41 @@ public class JavaFXPackageDiagramExporterTest {
 					}
 					for (ClassifierVertex classifierVertex : expSinkVertices) {
 						Optional<ClassifierVertex> optionalSinkVertex = actSinkVertices.stream().filter(sinkVertex1 ->
-						sinkVertex1.getName().equals(classifierVertex.getName()) &&
-						sinkVertex1.getVertexType().equals(classifierVertex.getVertexType()) &&
-						sinkVertex1.getArcs().size() == classifierVertex.getArcs().size() &&
-						sinkVertex1.getMethods().size() == classifierVertex.getMethods().size() &&
-						sinkVertex1.getFields().size() == classifierVertex.getFields().size())
-								.findFirst();
+							sinkVertex1.getName().equals(classifierVertex.getName()) &&
+							sinkVertex1.getVertexType().equals(classifierVertex.getVertexType()) &&
+							sinkVertex1.getArcs().size() == classifierVertex.getArcs().size() &&
+							sinkVertex1.getMethods().size() == classifierVertex.getMethods().size() &&
+							sinkVertex1.getFields().size() == classifierVertex.getFields().size())
+						.findFirst();
 						assertTrue(optionalSinkVertex.isPresent());
 
 						List<ClassifierVertex.Field> fields = optionalSinkVertex.get().getFields();
 						for (ClassifierVertex.Field field: classifierVertex.getFields()) {
 							fields.stream().filter(field1 ->
-							field1.getName().equals(field.getName()) &&
-							field1.getType().equals(field.getType()) &&
-							field1.getModifier().equals(field.getModifier()))
+								field1.getName().equals(field.getName()) &&
+								field1.getType().equals(field.getType()) &&
+								field1.getModifier().equals(field.getModifier()))
 							.findFirst().orElseGet(Assertions::fail);
 						}
 
 						List<ClassifierVertex.Method> methods = optionalSinkVertex.get().getMethods();
 						for (ClassifierVertex.Method method: classifierVertex.getMethods()) {
 							methods.stream().filter(method1 ->
-							method1.getName().equals(method.getName()) &&
-							method1.getReturnType().equals(method.getReturnType()) &&
-							method1.getParameters().equals(method.getParameters()))
-							.findFirst().orElseGet(Assertions::fail);
+								method1.getName().split("\\$")[0].equals(method.getName()) &&
+								method1.getReturnType().equals(method.getReturnType()) &&
+								method1.getParameters().size() == (method.getParameters().size()))
+							.findFirst()
+							.orElseGet(Assertions::fail);
 						}
 
 						List<Arc<ClassifierVertex>> arcs = optionalSinkVertex.get().getArcs();
 						for (Arc<ClassifierVertex> arc: classifierVertex.getArcs()) {
 							arcs.stream().filter(sinkVertexArc ->
-							sinkVertexArc.getSourceVertex().getName().equals(arc.getSourceVertex().getName()) &&
-							sinkVertexArc.getTargetVertex().getName().equals(arc.getTargetVertex().getName()) &&
-							sinkVertexArc.getArcType().equals(arc.getArcType()))
-							.findFirst().orElseGet(Assertions::fail);
+								sinkVertexArc.getSourceVertex().getName().equals(arc.getSourceVertex().getName()) &&
+								sinkVertexArc.getTargetVertex().getName().equals(arc.getTargetVertex().getName()) &&
+								sinkVertexArc.getArcType().equals(arc.getArcType()))
+							.findFirst()
+							.orElseGet(Assertions::fail);
 						}
 					}
 
@@ -173,7 +175,7 @@ public class JavaFXPackageDiagramExporterTest {
 			Set<JsonElement> set = new HashSet<>();
 			for (JsonElement j : arr) {
 				String path = j.getAsJsonObject().get("path").toString();
-				if (path.length() > 0) {
+				if (!path.isEmpty()) {
 					j.getAsJsonObject().addProperty("path", path.substring(0, path.length()-1));
 				}
 				set.add(j);

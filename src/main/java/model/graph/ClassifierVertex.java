@@ -73,7 +73,16 @@ public class ClassifierVertex {
 		return fields;
 	}
 
-	public class Method {
+	public void setCoordinates(double x, double y) {
+		this.x = x;
+		this.y = y;
+	}
+
+	public Pair<Double, Double> getCoordinates(){
+		return new Pair<>(x, y);
+	}
+
+	public static class Method {
 
 		private final Map<String, String> parameters;
 		private final ModifierType modifierType;
@@ -98,13 +107,12 @@ public class ClassifierVertex {
 		public Map<String, String> getParameters() {
 			return parameters;
 		}
-
 		public String getReturnType() {
 			return returnType;
 		}
-	}
 
-	public class Field {
+	}
+	public static class Field {
 
 		private final String name;
 		private final String type;
@@ -123,20 +131,10 @@ public class ClassifierVertex {
 		public String getType() {
 			return type;
 		}
-
 		public ModifierType getModifier() {
 			return modifier;
 		}
-	}
 
-	public void setCoordinates(double x, double y) {
-		this.x = x;
-		this.y = y;
-	}
-
-	public Pair<Double, Double> getCoordinates(){
-		Pair<Double, Double> coordinates = new Pair<>(x, y);
-		return coordinates;
 	}
 
 }

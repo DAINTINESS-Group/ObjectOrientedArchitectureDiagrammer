@@ -37,7 +37,7 @@ public class FileAndDirectoryUtility {
 		fileChooser.setTitle(windowTitle);
 		fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
 		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(fileType, availableExtensionTypes.get(fileType)));
-		String[] directoryPath = selectedDirectory.getAbsolutePath().split("\\\\");
+		String[] directoryPath = selectedDirectory.getAbsolutePath().split("//");
 		String directoryName = directoryPath[directoryPath.length - 1];
 		if (fileType.equals("PlantUML Files") || fileType.equals("PlantUML Text Files")) {
 			fileChooser.setInitialFileName(String.format(directoryName + "_plantUML%s", availableExtensionTypes.get(fileType).substring(1)));

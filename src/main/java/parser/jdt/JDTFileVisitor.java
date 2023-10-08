@@ -28,7 +28,7 @@ public class JDTFileVisitor {
 	public void createAST(File file, LeafNode leafNode) {
 		try {
 			ASTParser parser = ASTParser.newParser(AST.JLS17);
-			this.sourceFile = ReadFileToCharArray(file.getAbsolutePath()).split("\\n");
+			this.sourceFile = ReadFileToCharArray(file.getAbsolutePath()).split("/n");
 			parser.setSource(ReadFileToCharArray(file.getAbsolutePath()).toCharArray());
 			this.unit = (CompilationUnit)parser.createAST(null);
 			JDTLeafNode jdtLeafNode = (JDTLeafNode) leafNode;

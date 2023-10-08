@@ -69,7 +69,7 @@ public class JavaparserProjectParser implements Parser {
 	}
 
 	private Path getSubNodesPath(PackageNode currentPackage, File file) {
-		return Paths.get(currentPackage.getPackageNodesPath().normalize() + "\\" + file.getName());
+		return Paths.get(currentPackage.getPackageNodesPath().normalize() + "/" + file.getName());
 	}
 
 }

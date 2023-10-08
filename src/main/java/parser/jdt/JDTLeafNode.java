@@ -26,7 +26,7 @@ public class JDTLeafNode extends LeafNode {
 	}
 
 	public String getName() {
-		return path.normalize().toString().substring(path.normalize().toString().lastIndexOf("\\") + 1, path.normalize().toString().lastIndexOf("."));
+		return path.normalize().toString().substring(path.normalize().toString().lastIndexOf("/") + 1, path.normalize().toString().lastIndexOf("."));
 	}
 
 	public NodeType getType() {

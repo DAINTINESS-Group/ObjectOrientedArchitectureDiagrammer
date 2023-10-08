@@ -9,7 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-/**This class is responsible for the implementation of a leaf node in the tree.
+/**
+ * This class is responsible for the implementation of a leaf node in the tree.
  * Each node has a parent node(the parent package), the path of the source file,
  * the branches that start from that node and also the field/method/method parameter types
  */
@@ -29,7 +30,8 @@ public abstract class LeafNode {
 		methodId = 0;
 	}
 
-	/**This method is responsible for adding the nodes' method's name, return type, modifier type & its parameters
+	/**
+	 * This method is responsible for adding the nodes' method's name, return type, modifier type & its parameters
 	 * that include the name and the type
 	 * @param name the method's name
 	 * @param returnType the method's return type
@@ -41,7 +43,8 @@ public abstract class LeafNode {
 		methodId++;
 	}
 
-	/**This method is responsible for adding the nodes' field's name, type & modifier type
+	/**
+	 * This method is responsible for adding the nodes' field's name, type & modifier type
 	 * @param fieldName the field's name
 	 * @param fieldType the field's type
 	 * @param modifierType the field's modifier type

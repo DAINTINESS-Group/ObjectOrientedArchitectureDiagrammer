@@ -18,14 +18,15 @@ public class JavaparserRelationshipIdentifier extends RelationshipIdentifier {
 	@Override
 	protected void checkRelationship(int i, int j) {
 		List<String> imports = ((JavaparserLeafNode) allLeafNodes.get(i)).getImports();
-		Optional<String> optional = imports.stream().filter(imprt ->
-		(allLeafNodes.get(j).getParentNode().getName() + "." + allLeafNodes.get(j).getName()).endsWith(imprt) ||
-		(allLeafNodes.get(j).getParentNode().getName() + "." + "*") .endsWith(imprt))
-				.findFirst();
+		Optional<String> optional = imports.stream()
+			.filter(imprt ->
+				(allLeafNodes.get(j).getParentNode().getName() + "." + allLeafNodes.get(j).getName()).endsWith(imprt) ||
+				(allLeafNodes.get(j).getParentNode().getName() + "." + "*").endsWith(imprt))
+			.findFirst();
+
 		if (optional.isEmpty() && !isSubNode(i, j)) {
 			return;
 		}
-
 		if (isDependency(i, j)) {
 			createRelationship(i, j, RelationshipType.DEPENDENCY);
 		}

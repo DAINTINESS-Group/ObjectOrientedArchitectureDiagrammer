@@ -53,10 +53,11 @@ public class Interpreter {
 
 	private void populateVertexMaps() {
 		for (PackageNode packageNode: packageNodes.values()) {
-			PackageVertex vertex = packageNodeVertexMap.computeIfAbsent(packageNode, k ->
-			new PackageVertex(packageNode.getPackageNodesPath(), EnumMapper.vertexTypeEnumMap.get(packageNode.getType()),
+			PackageVertex vertex = packageNodeVertexMap
+				.computeIfAbsent(packageNode, k ->
+					new PackageVertex(packageNode.getPackageNodesPath(), EnumMapper.vertexTypeEnumMap.get(packageNode.getType()),
 					packageNode.getParentNode().getName())
-					);
+				);
 			for (LeafNode leafNode: packageNode.getLeafNodes().values()) {
 				vertex.addSinkVertex(leafNodeSinkVertexMap.computeIfAbsent(leafNode, k -> createSinkVertex(leafNode)));
 			}
@@ -64,7 +65,7 @@ public class Interpreter {
 		for (PackageNode packageNode: packageNodes.values()) {
 			packageNodeVertexMap.get(packageNode).setParentNode(
 					packageNodeVertexMap.getOrDefault(packageNode.getParentNode(), new PackageVertex(Paths.get(""), VertexType.PACKAGE, ""))
-					);
+				);
 			for (PackageNode subNode: packageNode.getSubNodes().values()) {
 				packageNodeVertexMap.get(packageNode).addNeighbourVertex(packageNodeVertexMap.get(subNode));
 			}
@@ -92,12 +93,14 @@ public class Interpreter {
 
 	private ClassifierVertex createSinkVertex(LeafNode leafNode) {
 		ClassifierVertex classifierVertex = new ClassifierVertex(leafNode.getLeafNodesPath(), leafNode.getName(), EnumMapper.vertexTypeEnumMap.get(leafNode.getType()));
-		leafNode.getFields().forEach(field ->
-		classifierVertex.addField(field.getValue0(), field.getValue1(), EnumMapper.modifierTypeEnumMap.get(field.getValue2()))
-				);
-		leafNode.getMethods().forEach((method, parameters) ->
-		classifierVertex.addMethod(method.getValue0().split("\\$")[0], method.getValue1(), EnumMapper.modifierTypeEnumMap.get(method.getValue2()), parameters)
-				);
+		leafNode.getFields()
+			.forEach(field ->
+				classifierVertex.addField(field.getValue0(), field.getValue1(), EnumMapper.modifierTypeEnumMap.get(field.getValue2()))
+			);
+		leafNode.getMethods()
+			.forEach((method, parameters) ->
+				classifierVertex.addMethod(method.getValue0().split("\\$")[0], method.getValue1(), EnumMapper.modifierTypeEnumMap.get(method.getValue2()), parameters)
+			);
 		return classifierVertex;
 	}
 

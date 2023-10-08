@@ -21,7 +21,7 @@ public class PackageNodeCleaner {
 				continue;
 			}
 			PackageNode parentNode = packageNode.getParentNode();
-			if (parentNode.getPackageNodesPath().toString().equals("")) {
+			if (parentNode.getPackageNodesPath().toString().isEmpty()) {
 				continue;
 			}
 			parentNode.getSubNodes().remove(packageNode.getPackageNodesPath());
@@ -31,7 +31,7 @@ public class PackageNodeCleaner {
 	}
 
 	private boolean isPackageNodeValid(PackageNode packageNode) {
-		if (packageNode.getSubNodes().size() == 0) {
+		if (packageNode.getSubNodes().isEmpty()) {
 			return packageNode.isValid();
 		}
 

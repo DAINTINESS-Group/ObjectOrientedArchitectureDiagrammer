@@ -11,11 +11,13 @@ import model.diagram.plantuml.PlantUMLClassifierVertex;
 import model.diagram.plantuml.PlantUMLClassifierVertexArc;
 import net.sourceforge.plantuml.SourceStringReader;
 import org.junit.jupiter.api.Test;
+import utils.PathConstructor;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
@@ -26,13 +28,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class PlantUMLClassDiagramImageExporterTest {
 
-	Path currentDirectory = Path.of(".");
-
 	@Test
 	void exportDiagramTest() {
 		try {
 			ClassDiagramManager classDiagramManager = new ClassDiagramManager();
-			classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
+			classDiagramManager.createSourceProject(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "LatexEditor", "src")));
 			classDiagramManager.convertTreeToDiagram(List.of("StableVersionsStrategy", "VersionsStrategy", "VersionsStrategyFactory", "VolatileVersionsStrategy",
 					"VersionsManager", "Document", "DocumentManager"));
 
@@ -42,7 +42,7 @@ public class PlantUMLClassDiagramImageExporterTest {
 			String sinkVertexArcBuffer = plantUMLEdge.convertSinkVertexArc().toString();
 
 			DiagramExporter graphMLExporter = new PlantUMLClassDiagramImageExporter(classDiagramManager.getClassDiagram());
-			graphMLExporter.exportDiagram(Paths.get(System.getProperty("user.home") + "\\testingExportedFile.png"));
+			graphMLExporter.exportDiagram(Paths.get(System.getProperty("user.home") + "/testingExportedFile.png"));
 
 			String expected = "@startuml\n" +
 					"skinparam class {\n" +
@@ -57,10 +57,10 @@ public class PlantUMLClassDiagramImageExporterTest {
 			byte[] data = png.toByteArray();
 			InputStream in = new ByteArrayInputStream(data);
 			BufferedImage convImg = ImageIO.read(in);
-			ImageIO.write(convImg, "png", Path.of(System.getProperty("user.home") + "\\actualExportedFile.png").toFile());
+			ImageIO.write(convImg, "png", Path.of(System.getProperty("user.home") + "/actualExportedFile.png").toFile());
 
-			BufferedImage expectedImage = ImageComparisonUtil.readImageFromResources(Path.of(System.getProperty("user.home") + "\\testingExportedFile.png").toString());
-			BufferedImage actualImage = ImageComparisonUtil.readImageFromResources(Path.of(System.getProperty("user.home") + "\\actualExportedFile.png").toString());
+			BufferedImage expectedImage = ImageComparisonUtil.readImageFromResources(Path.of(System.getProperty("user.home") + "/testingExportedFile.png").toString());
+			BufferedImage actualImage = ImageComparisonUtil.readImageFromResources(Path.of(System.getProperty("user.home") + "/actualExportedFile.png").toString());
 			ImageComparisonResult imageComparisonResult = new ImageComparison(expectedImage, actualImage).compareImages();
 			assertEquals(ImageComparisonState.MATCH, imageComparisonResult.getImageComparisonState());
 		} catch (IOException e) {

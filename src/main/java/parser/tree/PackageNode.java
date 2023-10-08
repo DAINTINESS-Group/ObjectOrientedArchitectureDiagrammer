@@ -7,7 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**This class is responsible for the implementation of a package node in the tree.
+/**
+ * This class is responsible for the implementation of a package node in the tree.
  * Each has node has a parent node(the parent package), the path of the package folder,
  * the nodes children(the sub packages), the nodes leafs(the Java source files inside the
  * current package), a flag to identify if a package is empty or not

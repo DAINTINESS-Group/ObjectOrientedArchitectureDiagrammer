@@ -174,16 +174,17 @@ public class JavaparserFileVisitor {
 		@Override
 		public void visit(VariableDeclarationExpr variableDeclarationExpr, List<String> createdAssignedObjects) {
 			super.visit(variableDeclarationExpr, createdAssignedObjects);
-			Pattern pattern = Pattern.compile("new ([A-Za-z]+)\\([^)]*\\)");
+			Pattern pattern = Pattern.compile("[A-Za-z0-9]+ [A-Za-z0-9]+ = new ([A-Za-z0-9]+)\\([A-Za-z0-9]*[, A-Za-z0-9*]*\\)");
 			Matcher matcher = pattern.matcher(variableDeclarationExpr.toString());
 			if (!matcher.find()) {
 				return;
 			}
 			createdAssignedObjects.add(matcher.group(1));
 
-			variableDeclarationExpr.getVariables().forEach(variableDeclaration -> leafNode.addVariable(variableDeclaration.getNameAsString(),
+			variableDeclarationExpr.getVariables().forEach(
+				variableDeclaration -> leafNode.addVariable(variableDeclaration.getNameAsString(),
 					variableDeclaration.getTypeAsString().replaceAll("<", "[").replaceAll(">", "]"))
-					);
+				);
 		}
 	}
 
