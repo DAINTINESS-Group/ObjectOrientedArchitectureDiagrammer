@@ -51,4 +51,5 @@ jobs:
       if: always()
       with:
         name: surefire-reports
-        path: target/surefire-reports/**
+        path: /home/runner/work
+        
