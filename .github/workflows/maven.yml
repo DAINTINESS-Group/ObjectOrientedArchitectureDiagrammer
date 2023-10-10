@@ -27,6 +27,9 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
+
+    - name: Set Up
+      run: mvn install -Dmaven.test.skip=true
         
     - name: Build with Maven
       run: mvn -B package --file pom.xml --update-snapshots verify
