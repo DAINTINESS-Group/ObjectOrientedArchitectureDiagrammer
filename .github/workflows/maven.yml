@@ -45,3 +45,10 @@ jobs:
         path: '*.xml'
         reporter: java-junit
         fail-on-error: true
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v1
+      if: always()
+      with:
+        name: surefire-reports
+        path: target/surefire-reports/**
