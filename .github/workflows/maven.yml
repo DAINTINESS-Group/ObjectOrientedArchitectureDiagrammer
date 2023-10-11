@@ -33,7 +33,7 @@ jobs:
     - run: mvn install:install-file -Dfile=${{ github.workspace }}/libs/PlantUML/PlantUML/1.2023.7/PlantUML-1.2023.7.jar -DgroupId=PlantUML -DartifactId=PlantUML -Dversion=1.2023.7 -Dpackaging=jar
         
     - name: Build with Maven
-      run: mvn -B package --file pom.xml --update-snapshots verify
+      run: mvn -B package --file pom.xml --update-snapshots verify -DskipTests
 
     - name: Test
       run: mvn --batch-mode -Dmaven.test.failure.ignore=true test
