@@ -43,7 +43,7 @@ jobs:
       if: success()
       with:
         name: Maven Tests
-        path: '*.xml'
+        path: 'reports/junit-*.xml'
         reporter: java-junit
         fail-on-error: true
 
