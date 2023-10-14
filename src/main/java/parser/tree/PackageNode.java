@@ -22,19 +22,19 @@ public class PackageNode {
 	private 	  boolean 						  isValid;
 
 	public PackageNode(Path path) {
-		this.path = path;
-		packageNodeRelationships = new ArrayList<>();
-		this.isValid = false;
-		subNodes = new HashMap<>();
-		leafNodes = new HashMap<>();
+		this.packageNodeRelationships = new ArrayList<>();
+		this.subNodes 				  = new HashMap<>();
+		this.leafNodes 				  = new HashMap<>();
+		this.path 					  = path;
+		this.isValid 				  = false;
 	}
 
 	public void addLeafNode(LeafNode leafNode) {
-		leafNodes.put(leafNode.getName(), leafNode);
+		this.leafNodes.put(leafNode.getName(), leafNode);
 	}
 
 	public void addSubNode(PackageNode packageNode) {
-		subNodes.put(packageNode.getPackageNodesPath(), packageNode);
+		this.subNodes.put(packageNode.getPackageNodesPath(), packageNode);
 	}
 
 	public void setValid() {
@@ -46,42 +46,42 @@ public class PackageNode {
 	}
 
 	public void addPackageNodeRelationship(Relationship<PackageNode> relationship) {
-		packageNodeRelationships.add(relationship);
+		this.packageNodeRelationships.add(relationship);
 	}
 
 	public boolean isValid() {
-		return isValid;
+		return this.isValid;
 	}
 
 	public List<Relationship<PackageNode>> getPackageNodeRelationships() {
-		return packageNodeRelationships;
+		return this.packageNodeRelationships;
 	}
 
 	public Path getPackageNodesPath() {
-		return path;
+		return this.path;
 	}
 
 	public PackageNode getParentNode() {
-		if (parentNode != null) {
-			return parentNode;
+		if (this.parentNode != null) {
+			return this.parentNode;
 		}else {
 			return new PackageNode(Paths.get(""));
 		}
 	}
 
 	public Map<Path, PackageNode> getSubNodes() {
-		return subNodes;
+		return this.subNodes;
 	}
 
 	public Map<String, LeafNode> getLeafNodes() {
-		return leafNodes;
+		return this.leafNodes;
 	}
 
 	public String getName() {
 		if (doesParentNodeExist()) {
-			return getParentNodesName() + "." + path.getFileName().toString();
+			return String.join(".", getParentNodesName(), this.path.getFileName().toString());
 		}
-		return path.getFileName().toString();
+		return this.path.getFileName().toString();
 	}
 
 	private boolean doesParentNodeExist() {

@@ -24,13 +24,13 @@ public class GraphMLClassifierVertex {
 	}
 
 	public StringBuilder convertSinkVertex() {
-		for (Map.Entry<ClassifierVertex, Integer> sinkVertex: classDiagram.getGraphNodes().entrySet()) {
-			graphMLBuffer.append(
+		for (Map.Entry<ClassifierVertex, Integer> sinkVertex: this.classDiagram.getGraphNodes().entrySet()) {
+			this.graphMLBuffer.append(
 				GraphMLSyntax.getInstance().getGraphMLSinkVertexSyntax(
-					getSinkVertexDescription(sinkVertex.getKey(), sinkVertex.getValue(), classDiagram.getGraphMLDiagramGeometry().get(sinkVertex.getValue())))
+					getSinkVertexDescription(sinkVertex.getKey(), sinkVertex.getValue(), this.classDiagram.getGraphMLDiagramGeometry().get(sinkVertex.getValue())))
 			);
 		}
-		return graphMLBuffer;
+		return this.graphMLBuffer;
 	}
 
 	private List<String> getSinkVertexDescription(ClassifierVertex classifierVertex, int nodeId, Pair<Double, Double> nodeGeometry) {

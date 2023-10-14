@@ -12,11 +12,10 @@ import java.util.List;
 
 public class DiagramController implements Controller {
 
-	private final DiagramManager diagramManager;
+	private static DiagramManager diagramManager;
 
 	public DiagramController(String diagramType) {
-		DiagramType diagramEnumType = DiagramType.valueOf(diagramType.toUpperCase());
-		diagramManager = DiagramManagerFactory.createDiagramManager(diagramEnumType);
+		diagramManager = DiagramManagerFactory.createDiagramManager(diagramType);
 	}
 
 	public SourceProject createTree(Path sourcePackagePath) {

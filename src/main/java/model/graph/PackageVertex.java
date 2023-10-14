@@ -9,40 +9,40 @@ import java.util.List;
 
 public class PackageVertex {
 
-	private static final ModifierType VERTEX_MODIFIER_TYPE = ModifierType.PACKAGE_PRIVATE;
+	private static final ModifierType 						   VERTEX_MODIFIER_TYPE = ModifierType.PACKAGE_PRIVATE;
 
-	private final List<Arc<PackageVertex>> 				arcs;
-	private final List<ClassifierVertex> 				sinkVertices;
-	private final List<PackageVertex> 					neighbourVertices;
-	private final VertexType 							vertexType;
-	private final Path 									path;
-	private final String 								name;
-	private 	  List<Triplet<String, String, String>> deserializedArcs;
-	private 	  PackageVertex 						parentPackageVertex;
-	private 	  double 								x;
-	private 	  double 								y;
+	private 	   final List<Arc<PackageVertex>> 			   arcs;
+	private 	   final List<ClassifierVertex> 			   sinkVertices;
+	private 	   final List<PackageVertex> 				   neighbourVertices;
+	private 	   final VertexType 						   vertexType;
+	private 	   final Path 								   path;
+	private 	   final String 							   name;
+	private 	  		 List<Triplet<String, String, String>> deserializedArcs;
+	private 	  		 PackageVertex 						   parentPackageVertex;
+	private 	  		 double 							   x;
+	private 	  		 double 							   y;
 
 	public PackageVertex(Path 		path,
 						 VertexType vertexType,
 						 String 	parentName) {
-		this.path 		  = path;
-		this.vertexType   = vertexType;
-		arcs 			  = new ArrayList<>();
-		sinkVertices 	  = new ArrayList<>();
-		neighbourVertices = new ArrayList<>();
-		name 			  = (parentName.isEmpty()) ? path.getFileName().toString() : parentName + "." + path.getFileName().toString();
+		this.path 		  	   = path;
+		this.vertexType   	   = vertexType;
+		this.arcs 			   = new ArrayList<>();
+		this.sinkVertices 	   = new ArrayList<>();
+		this.neighbourVertices = new ArrayList<>();
+		this.name 			   = (parentName.isEmpty()) ? path.getFileName().toString() : parentName + "." + path.getFileName().toString();
 	}
 
 	public void addArc(PackageVertex sourceVertex, PackageVertex targetVertex, ArcType arcType) {
-		arcs.add(new Arc<>(sourceVertex, targetVertex, arcType));
+		this.arcs.add(new Arc<>(sourceVertex, targetVertex, arcType));
 	}
 
 	public void addSinkVertex(ClassifierVertex classifierVertex) {
-		sinkVertices.add(classifierVertex);
+		this.sinkVertices.add(classifierVertex);
 	}
 
 	public void addNeighbourVertex(PackageVertex vertex) {
-		neighbourVertices.add(vertex);
+		this.neighbourVertices.add(vertex);
 	}
 
 	public void setParentNode(PackageVertex parentPackageVertex) {
@@ -54,35 +54,35 @@ public class PackageVertex {
 	}
 
 	public List<Triplet<String, String, String>> getDeserializedArcs() {
-		return deserializedArcs;
+		return this.deserializedArcs;
 	}
 
 	public List<Arc<PackageVertex>> getArcs() {
-		return arcs;
+		return this.arcs;
 	}
 
 	public List<ClassifierVertex> getSinkVertices() {
-		return sinkVertices;
+		return this.sinkVertices;
 	}
 
 	public List<PackageVertex> getNeighbourVertices() {
-		return neighbourVertices;
+		return this.neighbourVertices;
 	}
 
 	public Path getPath() {
-		return path;
+		return this.path;
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public VertexType getVertexType() {
-		return vertexType;
+		return this.vertexType;
 	}
 
 	public PackageVertex getParentVertex() {
-		return parentPackageVertex;
+		return this.parentPackageVertex;
 	}
 
 	public ModifierType getModifierType() { return VERTEX_MODIFIER_TYPE; }

@@ -21,9 +21,9 @@ public abstract class RelationshipIdentifier {
 	 * @param packageNodes a collection with the package nodes created by the parser
 	 */
 	public RelationshipIdentifier(Map<Path, PackageNode> packageNodes) {
-		this.packageNodes = packageNodes;
-		allLeafNodes = new ArrayList<>();
-		relationshipsCreated = 0;
+		this.packageNodes 		  = packageNodes;
+		this.allLeafNodes 		  = new ArrayList<>();
+		this.relationshipsCreated = 0;
 		populateLeafNodes();
 	}
 
@@ -38,17 +38,19 @@ public abstract class RelationshipIdentifier {
 	}
 
 	private void populateLeafNodes() {
-		for (PackageNode p: packageNodes.values()) {
-			allLeafNodes.addAll(p.getLeafNodes().values());
+		for (PackageNode p: this.packageNodes.values()) {
+			this.allLeafNodes.addAll(p.getLeafNodes().values());
 		}
 	}
 
 	protected boolean isAssociation(int i, int j) {
-		return doesRelationshipExist(allLeafNodes.get(i).getFieldsTypes(), allLeafNodes.get(j).getName());
+		return doesRelationshipExist(this.allLeafNodes.get(i).getFieldsTypes(),
+									 this.allLeafNodes.get(j).getName());
 	}
 
 	protected boolean isAggregation(int i, int j) {
-		return isRelationshipAggregation(allLeafNodes.get(i).getFieldsTypes(), allLeafNodes.get(j).getName());
+		return isRelationshipAggregation(this.allLeafNodes.get(i).getFieldsTypes(),
+										 this.allLeafNodes.get(j).getName());
 	}
 
 	protected boolean doesRelationshipExist(List<String> leafNodesTypes,
@@ -83,16 +85,19 @@ public abstract class RelationshipIdentifier {
 
 	private boolean isFieldOfTypeCollection(String s,
 											String leafNodesName) {
-		return (s.startsWith("List") || s.startsWith("ArrayList") || s.startsWith("Map") || s.startsWith("HashMap")
-				|| s.contains(leafNodesName+"[") || s.startsWith("ArrayDeque") ||  s.startsWith("LinkedList") || s.startsWith("PriorityQueue"));
+		return
+			(
+				s.startsWith("List") || s.startsWith("ArrayList") || s.startsWith("Map") || s.startsWith("HashMap") ||
+				s.contains(leafNodesName+"[") || s.startsWith("ArrayDeque") ||  s.startsWith("LinkedList") || s.startsWith("PriorityQueue")
+			);
 	}
 
 	protected void createRelationship(int 			   i,
 									  int 			   j,
 									  RelationshipType relationshipType) {
-		allLeafNodes.get(i).addLeafNodeRelationship(new Relationship<>(allLeafNodes.get(i), allLeafNodes.get(j), relationshipType));
-		relationshipsCreated++;
-		for (Relationship<PackageNode> r: allLeafNodes.get(i).getParentNode().getPackageNodeRelationships()) {
+		this.allLeafNodes.get(i).addLeafNodeRelationship(new Relationship<>(this.allLeafNodes.get(i), this.allLeafNodes.get(j), relationshipType));
+		this.relationshipsCreated++;
+		for (Relationship<PackageNode> r: this.allLeafNodes.get(i).getParentNode().getPackageNodeRelationships()) {
 			if (doesPackageRelationshipAlreadyExist(j, r)) {
 				return;
 			}
@@ -100,9 +105,10 @@ public abstract class RelationshipIdentifier {
 		if (isRelationshipBetweenTheSamePackages(i, j)) {
 			return;
 		}
-		allLeafNodes.get(i).getParentNode().addPackageNodeRelationship(new Relationship<>(allLeafNodes.get(i).getParentNode(),
-				allLeafNodes.get(j).getParentNode(), RelationshipType.DEPENDENCY));
-		relationshipsCreated++;
+		this.allLeafNodes.get(i).getParentNode().addPackageNodeRelationship(new Relationship<>(this.allLeafNodes.get(i).getParentNode(),
+																							   this.allLeafNodes.get(j).getParentNode(),
+																							   RelationshipType.DEPENDENCY));
+		this.relationshipsCreated++;
 	}
 
 	private boolean doesPackageRelationshipAlreadyExist(int j, Relationship<PackageNode> relationship) {
@@ -110,7 +116,7 @@ public abstract class RelationshipIdentifier {
 	}
 
 	private boolean isRelationshipBetweenTheSamePackages(int i, int j) {
-		return allLeafNodes.get(i).getParentNode().equals(allLeafNodes.get(j).getParentNode());
+		return this.allLeafNodes.get(i).getParentNode().equals(this.allLeafNodes.get(j).getParentNode());
 	}
 
 	protected abstract void checkRelationship(int i, int j);

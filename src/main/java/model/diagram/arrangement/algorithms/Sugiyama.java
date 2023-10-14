@@ -17,17 +17,17 @@ import model.diagram.arrangement.geometry.GeometryNode;
 
 public class Sugiyama implements LayoutAlgorithm{
 
-	private final static int VERTEX_X_SIZE = 20;
-	private final static int VERTEX_Y_SIZE = 20;
+	private final static int VERTEX_X_SIZE 		= 20;
+	private final static int VERTEX_Y_SIZE 		= 20;
 	private final static int HORIZONTAL_SPACING = 125;
-	private final static int VERTICAL_SPACING = 50;
+	private final static int VERTICAL_SPACING 	= 50;
 
-	private Graph<String, String>  graph;
-	private Map<String, Integer>   verticesMap;
-	private SimpleDigraph<Integer> digraph;
+	private final Map<String, Integer>   verticesMap;
+	private       Graph<String, String>  graph;
+	private       SimpleDigraph<Integer> digraph;
 
 	public Sugiyama() {
-		verticesMap = new HashMap<>();
+		this.verticesMap = new HashMap<>();
 	}
 
 	@Override
@@ -40,20 +40,18 @@ public class Sugiyama implements LayoutAlgorithm{
 		double maxXdistance = 0.0;
 		double maxYdistance = 0.0;
 		DiagramGeometry diagramGeometry = new DiagramGeometry();
-		digraph = new SimpleDigraphAdapter<Integer>();
+		digraph = new SimpleDigraphAdapter<>();
 		fillVertexMap();
 		fillNeighboursMap();
-		DigraphLayoutDimensionProvider<Integer> dimensionProvider = new DigraphLayoutDimensionProvider<Integer>() {
-			@Override
-			public DigraphLayoutDimension getDimension(Integer node) {
-				return new DigraphLayoutDimension(VERTEX_X_SIZE, VERTEX_Y_SIZE); // we use OOAD vertices' size, in order to evaluate vertices coordinates based on our vertices sizes.
-			}
-		};
-		DigrpahLayoutBuilder<Integer,Boolean> builder = new SugiyamaBuilder<Integer,Boolean>(HORIZONTAL_SPACING, VERTICAL_SPACING);
+		DigraphLayoutDimensionProvider<Integer> dimensionProvider = node -> {
+			// we use OOAD vertices' size, in order to evaluate vertices coordinates based on our vertices sizes.
+            return new DigraphLayoutDimension(VERTEX_X_SIZE, VERTEX_Y_SIZE);
+        };
+		DigrpahLayoutBuilder<Integer,Boolean> builder = new SugiyamaBuilder<>(HORIZONTAL_SPACING, VERTICAL_SPACING);
 		DigraphLayout<Integer,Boolean> layout = builder.build(digraph, dimensionProvider);
 		for (DigraphLayoutNode<Integer> vertex : layout.getLayoutGraph().vertices()) {
-			for (Map.Entry<String, Integer> entryVertex : verticesMap.entrySet()) {
-				if (entryVertex.getValue() == vertex.getVertex()) {
+			for (Map.Entry<String, Integer> entryVertex : this.verticesMap.entrySet()) {
+				if (entryVertex.getValue().equals(vertex.getVertex())) {
 					double x = vertex.getPoint().x;
 					double y = vertex.getPoint().y;
 					GeometryNode geometryNode = new GeometryNode(entryVertex.getKey());

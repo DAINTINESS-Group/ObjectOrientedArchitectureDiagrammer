@@ -10,19 +10,19 @@ import java.util.*;
 
 public class PackageDiagram {
 
-	private final Map<PackageVertex, Integer> 				  graphNodes;
-	private 	  Map<PackageVertex, Set<Arc<PackageVertex>>> diagram;
-	private 	  Map<Path, PackageVertex> 					  vertices;
-	private 	  Map<Integer, Pair<Double, Double>> 		  diagramGeometryGraphML;
-	private 	  DiagramGeometry 							  diagramGeometry;
+	private final Map<PackageVertex, Integer> 				   graphNodes;
+	private static Map<PackageVertex, Set<Arc<PackageVertex>>> diagram;
+	private static Map<Path, PackageVertex> 				   vertices;
+	private static Map<Integer, Pair<Double, Double>> 		   diagramGeometryGraphML;
+	private static DiagramGeometry 							   diagramGeometry;
 
 	public PackageDiagram() {
-		graphNodes = new HashMap<>();
+		this.graphNodes = new HashMap<>();
 	}
 
 	public void createNewDiagram(List<String> chosenFileNames) {
 		createGraphNodes(chosenFileNames);
-		createDiagram(graphNodes.keySet());
+		createDiagram(this.graphNodes.keySet());
 	}
 
 	public void createDiagram(Set<PackageVertex> vertices) {
@@ -33,7 +33,7 @@ public class PackageDiagram {
 	private void createGraphNodes(List<String> chosenFileNames) {
 		int nodeId = 0;
 		for (PackageVertex vertex: getChosenNodes(chosenFileNames)) {
-			graphNodes.put(vertex, nodeId);
+			this.graphNodes.put(vertex, nodeId);
 			nodeId++;
 		}
 	}
@@ -54,15 +54,15 @@ public class PackageDiagram {
 	}
 
 	public void setVertices(Map<Path, PackageVertex> vertices) {
-		this.vertices = vertices;
+		PackageDiagram.vertices = vertices;
 	}
 
 	public void setGraphMLDiagramGeometry(Map<Integer, Pair<Double, Double>> diagramGeometryGraphML) {
-		this.diagramGeometryGraphML = diagramGeometryGraphML;
+		PackageDiagram.diagramGeometryGraphML = diagramGeometryGraphML;
 	}
 
 	public void setDiagramGeometry(DiagramGeometry diagramGeometry) {
-		this.diagramGeometry = diagramGeometry;
+		PackageDiagram.diagramGeometry = diagramGeometry;
 	}
 
 	public Map<PackageVertex, Integer> getGraphNodes() {

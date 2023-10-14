@@ -32,15 +32,15 @@ public class ClassifierVertex {
 	}
 
 	public void addArc(ClassifierVertex sourceVertex, ClassifierVertex targetVertex, ArcType arcType) {
-		arcs.add(new Arc<>(sourceVertex, targetVertex, arcType));
+		this.arcs.add(new Arc<>(sourceVertex, targetVertex, arcType));
 	}
 
 	public void addMethod(String name, String returnType, ModifierType modifier, Map<String, String> parameters) {
-		methods.add(new Method(name, returnType, modifier, parameters));
+		this.methods.add(new Method(name, returnType, modifier, parameters));
 	}
 
 	public void addField(String name, String type, ModifierType modifier) {
-		fields.add(new Field(name, type, modifier));
+		this.fields.add(new Field(name, type, modifier));
 	}
 
 	public void setDeserializedArcs(List<Triplet<String, String, String>> deserializedArcs) {
@@ -48,31 +48,31 @@ public class ClassifierVertex {
 	}
 
 	public List<Triplet<String, String, String>> getDeserializedArcs() {
-		return deserializedArcs;
+		return this.deserializedArcs;
 	}
 
 	public VertexType getVertexType() {
-		return vertexType;
+		return this.vertexType;
 	}
 
 	public List<Arc<ClassifierVertex>> getArcs() {
-		return arcs;
+		return this.arcs;
 	}
 
 	public Path getPath() {
-		return path;
+		return this.path;
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public List<Method> getMethods() {
-		return methods;
+		return this.methods;
 	}
 
 	public List<Field> getFields() {
-		return fields;
+		return this.fields;
 	}
 
 	public void setCoordinates(double x, double y) {

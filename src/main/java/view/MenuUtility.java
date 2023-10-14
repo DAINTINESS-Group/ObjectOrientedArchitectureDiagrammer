@@ -78,7 +78,7 @@ public class MenuUtility {
 	}
 
 	public static String loadDiagram(MenuBar menuBar, ActionEvent event) {
-		Controller diagramController = ControllerFactory.createController(ControllerType.UML_DIAGRAM, ((MenuItem) event.getSource()).getText());
+		Controller diagramController = ControllerFactory.createController("uml", ((MenuItem) event.getSource()).getText());
 		File selectedFile = FileAndDirectoryUtility.loadFile(String.format("Load %s Diagram", ((MenuItem) event.getSource()).getText()), menuBar);
 		if (selectedFile == null) {
 			return null;

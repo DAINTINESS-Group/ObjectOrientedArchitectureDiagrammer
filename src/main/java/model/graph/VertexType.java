@@ -1,18 +1,26 @@
 package model.graph;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 public enum VertexType {
-	CLASS("class"),
-	INTERFACE("interface"),
-	ENUM("enum"),
-	PACKAGE("package");
+	CLASS,
+	INTERFACE,
+	ENUM,
+	PACKAGE;
 
-	private final String type;
+	public static final Map<String, VertexType> VERTEX_TYPE;
 
-	VertexType(String type) {
-		this.type = type;
+	static {
+		Map<String, VertexType> map = new HashMap<>();
+		for (VertexType vertexType: VertexType.values()) {
+			map.put(vertexType.toString().toLowerCase(), vertexType);
+		}
+		VERTEX_TYPE = Collections.unmodifiableMap(map);
 	}
 
-	public String getType() {
-		return type;
+	public static VertexType get(String vertexType) {
+		return VERTEX_TYPE.get(vertexType.toLowerCase().trim());
 	}
 }

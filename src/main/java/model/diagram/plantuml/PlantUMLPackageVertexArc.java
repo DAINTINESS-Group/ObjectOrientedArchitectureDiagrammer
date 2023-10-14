@@ -15,12 +15,12 @@ public class PlantUMLPackageVertexArc {
 	private final PackageDiagram packageDiagram;
 
 	public PlantUMLPackageVertexArc(PackageDiagram diagram) {
-		packageDiagram = diagram;
+		this.packageDiagram = diagram;
 	}
 
 	public StringBuilder convertVertexArc() {
 		List<Arc<PackageVertex>> arcs = new ArrayList<>();
-		for (Set<Arc<PackageVertex>> arcSet: packageDiagram.getDiagram().values()) {
+		for (Set<Arc<PackageVertex>> arcSet: this.packageDiagram.getDiagram().values()) {
 			arcs.addAll(arcSet);
 		}
 

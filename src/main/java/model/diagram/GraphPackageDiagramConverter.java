@@ -15,20 +15,20 @@ public class GraphPackageDiagramConverter {
 
 	public GraphPackageDiagramConverter(Set<PackageVertex> vertices) {
 		this.vertices = vertices;
-		adjacencyList = new HashMap<>();
+		this.adjacencyList = new HashMap<>();
 	}
 
 	public Map<PackageVertex, Set<Arc<PackageVertex>>> convertGraphToPackageDiagram() {
-		for (PackageVertex vertex: vertices) {
-			adjacencyList.put(vertex, new HashSet<>());
+		for (PackageVertex vertex: this.vertices) {
+			this.adjacencyList.put(vertex, new HashSet<>());
 			for (Arc<PackageVertex> arc: vertex.getArcs()) {
-				if (!vertices.contains(arc.targetVertex())) {
+				if (!this.vertices.contains(arc.targetVertex())) {
 					continue;
 				}
-				adjacencyList.get(arc.sourceVertex()).add(arc);
+				this.adjacencyList.get(arc.sourceVertex()).add(arc);
 			}
 		}
-		return adjacencyList;
+		return this.adjacencyList;
 	}
 
 }

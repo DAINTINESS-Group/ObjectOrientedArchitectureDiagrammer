@@ -15,19 +15,19 @@ import java.util.Set;
 
 public class ClassDiagram {
 
-	private final Map<ClassifierVertex, Integer> 					graphNodes;
-	private 	  Map<ClassifierVertex, Set<Arc<ClassifierVertex>>> diagram;
-	private 	  Map<Path, ClassifierVertex> 						sinkVertices;
-	private 	  Map<Integer, Pair<Double, Double>> 				diagramGeometryGraphML;
-	private 	  DiagramGeometry 									diagramGeometry;
+	private final  Map<ClassifierVertex, Integer> 					 graphNodes;
+	private static Map<ClassifierVertex, Set<Arc<ClassifierVertex>>> diagram;
+	private static Map<Path, ClassifierVertex> 						 sinkVertices;
+	private static Map<Integer, Pair<Double, Double>> 				 diagramGeometryGraphML;
+	private static DiagramGeometry 									 diagramGeometry;
 
 	public ClassDiagram() {
-		graphNodes = new HashMap<>();
+		this.graphNodes = new HashMap<>();
 	}
 
 	public void createNewDiagram(List<String> chosenFilesNames) {
 		createGraphNodes(chosenFilesNames);
-		createDiagram(graphNodes.keySet());
+		createDiagram(this.graphNodes.keySet());
 	}
 
 	public void createDiagram(Set<ClassifierVertex> sinkVertices) {
@@ -38,7 +38,7 @@ public class ClassDiagram {
 	private void createGraphNodes(List<String> chosenFileNames) {
 		int nodeId = 0;
 		for (ClassifierVertex classifierVertex : getChosenNodes(chosenFileNames)) {
-			graphNodes.put(classifierVertex, nodeId);
+			this.graphNodes.put(classifierVertex, nodeId);
 			nodeId++;
 		}
 	}
@@ -59,19 +59,19 @@ public class ClassDiagram {
 	}
 
 	public void setSinkVertices(Map<Path, ClassifierVertex> sinkVertices) {
-		this.sinkVertices = sinkVertices;
+		ClassDiagram.sinkVertices = sinkVertices;
 	}
 
 	public void setDiagram(Map<ClassifierVertex, Set<Arc<ClassifierVertex>>> diagram) {
-		this.diagram = diagram;
+		ClassDiagram.diagram = diagram;
 	}
 
 	public void setGraphMLDiagramGeometry(Map<Integer, Pair<Double, Double>> diagramGeometryGraphML) {
-		this.diagramGeometryGraphML = diagramGeometryGraphML;
+		ClassDiagram.diagramGeometryGraphML = diagramGeometryGraphML;
 	}
 
 	public void setDiagramGeometry(DiagramGeometry diagramGeometry) {
-		this.diagramGeometry = diagramGeometry;
+		ClassDiagram.diagramGeometry = diagramGeometry;
 	}
 
 	public Map<ClassifierVertex, Set<Arc<ClassifierVertex>>> getDiagram() {

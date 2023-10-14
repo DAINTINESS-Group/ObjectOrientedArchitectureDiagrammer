@@ -23,8 +23,9 @@ import java.util.Set;
 
 public class ClassDiagramArrangementManager implements DiagramArrangementManagerInterface{
 
-	private final ClassDiagram 			classDiagram;
-	private final Graph<String, String> graph;
+	public static final LayoutAlgorithmType 	LAYOUT_ALGORITHM_TYPE = LayoutAlgorithmType.SUGIYAMA;
+	private 	  final ClassDiagram 			classDiagram;
+	private 	  final Graph<String, String> 	graph;
 
 	public ClassDiagramArrangementManager(ClassDiagram classDiagram) {
 		this.classDiagram = classDiagram;
@@ -37,7 +38,7 @@ public class ClassDiagramArrangementManager implements DiagramArrangementManager
 		Graph<Integer, String> graph = createGraph();
 		AbstractLayout<Integer, String> layout = new SpringLayout<>(graph);
 		layout.setSize(new Dimension(1500, 1000));
-		for (Integer i : classDiagram.getGraphNodes().values()) {
+		for (Integer i : this.classDiagram.getGraphNodes().values()) {
 			nodesGeometryGraphML.put(i, new Pair<>(layout.getX(i), layout.getY(i)));
 		}
 		return nodesGeometryGraphML;
@@ -45,48 +46,47 @@ public class ClassDiagramArrangementManager implements DiagramArrangementManager
 
 	@Override
 	public DiagramGeometry arrangeDiagram() {
-		LayoutAlgorithm sugiyama = LayoutAlgorithmFactory.createLayoutAlgorithm(LayoutAlgorithmType.SUGIYAMA);
-		sugiyama.setGraph(graph);
-		return sugiyama.arrangeDiagram();
+		LayoutAlgorithm layoutAlgorithm = LayoutAlgorithmFactory.createLayoutAlgorithm(LAYOUT_ALGORITHM_TYPE);
+		layoutAlgorithm.setGraph(this.graph);
+		return layoutAlgorithm.arrangeDiagram();
 	}
 
 	@Override
 	public DiagramGeometry applyNewLayout(String algorithmType){
 		LayoutAlgorithmType algorithmEnumType = LayoutAlgorithmType.valueOf(algorithmType.toUpperCase());
 		LayoutAlgorithm layout = LayoutAlgorithmFactory.createLayoutAlgorithm(algorithmEnumType);
-		layout.setGraph(graph);
+		layout.setGraph(this.graph);
 		return layout.arrangeDiagram();
 	}
 
 	private Graph<Integer, String> createGraph(){
 		Graph<Integer, String> graph = new SparseGraph<>();
-		for (Integer nodeId: classDiagram.getGraphNodes().values()) {
+		for (Integer nodeId: this.classDiagram.getGraphNodes().values()) {
 			graph.addVertex(nodeId);
 		}
 
 		List<Arc<ClassifierVertex>> arcs = new ArrayList<>();
-		for (Set<Arc<ClassifierVertex>> arcSet: classDiagram.getDiagram().values()) {
+		for (Set<Arc<ClassifierVertex>> arcSet: this.classDiagram.getDiagram().values()) {
 			arcs.addAll(arcSet);
 		}
 
 		for (Arc<ClassifierVertex> arc: arcs) {
 			graph.addEdge(
-				classDiagram.getGraphNodes().get(arc.sourceVertex()) + " " + classDiagram.getGraphNodes().get(arc.targetVertex()),
-				classDiagram.getGraphNodes().get(arc.sourceVertex()),
-				classDiagram.getGraphNodes().get(arc.targetVertex()), EdgeType.DIRECTED);
+				this.classDiagram.getGraphNodes().get(arc.sourceVertex()) + " " + this.classDiagram.getGraphNodes().get(arc.targetVertex()),
+				this.classDiagram.getGraphNodes().get(arc.sourceVertex()),
+				this.classDiagram.getGraphNodes().get(arc.targetVertex()), EdgeType.DIRECTED);
 		}
-
 		return graph;
 	}
 
 	private Graph<String, String> createGraphWithStrings(){
 		Graph<String, String> graph = new SparseGraph<>();
-		for (ClassifierVertex vertex: classDiagram.getGraphNodes().keySet()) {
+		for (ClassifierVertex vertex: this.classDiagram.getGraphNodes().keySet()) {
 			graph.addVertex(vertex.getName());
 		}
 
 		List<Arc<ClassifierVertex>> arcs = new ArrayList<>();
-		for (Set<Arc<ClassifierVertex>> arcSet: classDiagram.getDiagram().values()) {
+		for (Set<Arc<ClassifierVertex>> arcSet: this.classDiagram.getDiagram().values()) {
 			arcs.addAll(arcSet);
 		}
 
@@ -96,7 +96,6 @@ public class ClassDiagramArrangementManager implements DiagramArrangementManager
 				arc.sourceVertex().getName(),
 				arc.targetVertex().getName(), EdgeType.DIRECTED);
 		}
-
 		return graph;
 	}
 

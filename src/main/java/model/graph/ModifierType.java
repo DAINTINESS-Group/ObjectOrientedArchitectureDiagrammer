@@ -10,16 +10,16 @@ public enum ModifierType {
 	PROTECTED(),
 	PACKAGE_PRIVATE();
 
-	private static final Map<String, ModifierType> STRING_MODIFIER_TYPE_MAP;
+	private static final Map<String, ModifierType> MODIFIER_TYPE;
 
 	static {
 		Map<String, ModifierType> temp = new HashMap<>();
 		for (ModifierType modifierType: ModifierType.values()) {
 			temp.put(modifierType.toString().toLowerCase(), modifierType);
 		}
-		STRING_MODIFIER_TYPE_MAP = Collections.unmodifiableMap(temp);
+		MODIFIER_TYPE = Collections.unmodifiableMap(temp);
 	}
 	public static ModifierType get(String modifier) {
-		return STRING_MODIFIER_TYPE_MAP.get(modifier);
+		return MODIFIER_TYPE.get(modifier.toLowerCase());
 	}
 }

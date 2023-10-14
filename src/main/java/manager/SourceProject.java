@@ -8,18 +8,18 @@ import java.nio.file.Path;
 
 public class SourceProject {
 
-	private final Interpreter 	 interpreter;
-	private 	  ClassDiagram 	 classDiagram;
-	private 	  PackageDiagram packageDiagram;
+	private static Interpreter    interpreter;
+	private static ClassDiagram   classDiagram;
+	private static PackageDiagram packageDiagram;
 
 	public SourceProject(ClassDiagram classDiagram) {
-		interpreter = new Interpreter();
-		this.classDiagram = classDiagram;
+		interpreter 			   = new Interpreter();
+		SourceProject.classDiagram = classDiagram;
 	}
 
 	public SourceProject(PackageDiagram packageDiagram) {
-		interpreter = new Interpreter();
-		this.packageDiagram = packageDiagram;
+		interpreter 				 = new Interpreter();
+		SourceProject.packageDiagram = packageDiagram;
 	}
 
 

@@ -28,7 +28,7 @@ public enum ArcType {
 	}
 
 	public static Integer get(String arcTypeName) {
-		return DEGREE_MAP.get(arcTypeName);
+		return DEGREE_MAP.get(arcTypeName.toLowerCase());
 	}
 
 	public int getDegree() {

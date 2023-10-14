@@ -15,12 +15,12 @@ public class PlantUMLClassifierVertexArc {
 	private final ClassDiagram classDiagram;
 
 	public PlantUMLClassifierVertexArc(ClassDiagram diagram) {
-		classDiagram = diagram;
+		this.classDiagram = diagram;
 	}
 
 	public StringBuilder convertSinkVertexArc() {
 		List<Arc<ClassifierVertex>> arcs = new ArrayList<>();
-		for (Set<Arc<ClassifierVertex>> arcSet: classDiagram.getDiagram().values()) {
+		for (Set<Arc<ClassifierVertex>> arcSet: this.classDiagram.getDiagram().values()) {
 			arcs.addAll(arcSet);
 		}
 

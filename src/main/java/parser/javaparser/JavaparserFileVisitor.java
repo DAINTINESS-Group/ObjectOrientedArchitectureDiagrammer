@@ -39,8 +39,8 @@ public class JavaparserFileVisitor {
 	private final List<String> createdAssignedObjects;
 
 	public JavaparserFileVisitor(){
-		allCreatedObjects = new ArrayList<>();
-		createdAssignedObjects = new ArrayList<>();
+		this.allCreatedObjects 		= new ArrayList<>();
+		this.createdAssignedObjects = new ArrayList<>();
 	}
 
 	/**
@@ -61,26 +61,27 @@ public class JavaparserFileVisitor {
 				.map(imprt -> imprt.replaceAll(";$", "")).collect(Collectors.toList());
 			javaparserLeafNode.setImports(imports);
 
-			InheritanceVisitor inheritanceVisitor = new InheritanceVisitor(javaparserLeafNode);
+			InheritanceVisitor inheritanceVisitor 	 		= new InheritanceVisitor(javaparserLeafNode);
 			inheritanceVisitor.visit(compilationUnit, null);
 
-			VoidVisitor<Void> constructorVisitor = new ConstructorVisitor(javaparserLeafNode);
+			VoidVisitor<Void> constructorVisitor  	 		= new ConstructorVisitor(javaparserLeafNode);
 			constructorVisitor.visit(compilationUnit, null);
 
-			VoidVisitor<Void> fieldNameVisitor = new FieldVisitor(javaparserLeafNode);
+			VoidVisitor<Void> fieldNameVisitor		 		= new FieldVisitor(javaparserLeafNode);
 			fieldNameVisitor.visit(compilationUnit, null);
 
-			VoidVisitor<List<String>> variableVisitor = new VariableVisitor(javaparserLeafNode);
-			variableVisitor.visit(compilationUnit, createdAssignedObjects);
+			VoidVisitor<List<String>> variableVisitor 		= new VariableVisitor(javaparserLeafNode);
+			variableVisitor.visit(compilationUnit, this.createdAssignedObjects);
 
-			VoidVisitor<Void> methodNameVisitor = new MethodVisitor(javaparserLeafNode);
+			VoidVisitor<Void> methodNameVisitor 	  		= new MethodVisitor(javaparserLeafNode);
 			methodNameVisitor.visit(compilationUnit, null);
 
 			VoidVisitor<List<String>> objectCreationVisitor = new ObjectCreationVisitor();
-			objectCreationVisitor.visit(compilationUnit, allCreatedObjects);
+			objectCreationVisitor.visit(compilationUnit, this.allCreatedObjects);
 			populateCreatedObjects(javaparserLeafNode);
 
-			VoidVisitor<Void> enumVisitor = new EnumVisitor(javaparserLeafNode, inheritanceVisitor.isClassOrInterface());
+			VoidVisitor<Void> enumVisitor 					= new EnumVisitor(javaparserLeafNode,
+																			  inheritanceVisitor.isClassOrInterface());
 			enumVisitor.visit(compilationUnit, null);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -89,7 +90,7 @@ public class JavaparserFileVisitor {
 
 	private static class InheritanceVisitor extends VoidVisitorAdapter<Void> {
 		private final JavaparserLeafNode leafNode;
-		private 	  boolean 			 isClassOrInterface;
+		private 	  boolean 			 isClassOrInterface = false;
 
 		public InheritanceVisitor(JavaparserLeafNode leafNode) {
 			this.leafNode = leafNode;
@@ -98,28 +99,24 @@ public class JavaparserFileVisitor {
 		@Override
 		public void visit(ClassOrInterfaceDeclaration classOrInterfaceDeclaration, Void arg) {
 			super.visit(classOrInterfaceDeclaration, arg);
-			leafNode.setNodeName(classOrInterfaceDeclaration.getNameAsString());
-			isClassOrInterface = true;
+			this.leafNode.setNodeName(classOrInterfaceDeclaration.getNameAsString());
+			this.isClassOrInterface = true;
 
 			if (classOrInterfaceDeclaration.isInterface()) {
-				leafNode.setNodeType(NodeType.INTERFACE);
+				this.leafNode.setNodeType(NodeType.INTERFACE);
 				return;
 			}
 
-			leafNode.setNodeType(NodeType.CLASS);
+			this.leafNode.setNodeType(NodeType.CLASS);
 			classOrInterfaceDeclaration.getExtendedTypes()
-				.forEach(classOrInterfaceType ->
-					leafNode.setBaseClass(classOrInterfaceType.getNameAsString())
-				);
+				.forEach(classOrInterfaceType -> this.leafNode.setBaseClass(classOrInterfaceType.getNameAsString()));
 
 			classOrInterfaceDeclaration.getImplementedTypes()
-				.forEach(classOrInterfaceType ->
-					leafNode.addImplementedInterface(classOrInterfaceType.getNameAsString())
-				);
+				.forEach(classOrInterfaceType -> this.leafNode.addImplementedInterface(classOrInterfaceType.getNameAsString()));
 		}
 
 		public boolean isClassOrInterface() {
-			return isClassOrInterface;
+			return this.isClassOrInterface;
 		}
 	}
 
@@ -135,15 +132,17 @@ public class JavaparserFileVisitor {
 			super.visit(constructorDeclaration, arg);
 			ModifierType modifierType = ModifierType.PACKAGE_PRIVATE;
 			if (!constructorDeclaration.getModifiers().isEmpty()) {
-				modifierType = ModifierType.valueOf(constructorDeclaration.getModifiers().get(0).toString().toUpperCase().trim());
+				modifierType 		  = ModifierType.get(constructorDeclaration.getModifiers().get(0).toString());
 			}
 
 			Map<String, String> parameters = new HashMap<>();
 			constructorDeclaration.getParameters()
-				.forEach(parameter ->
-					parameters.put(parameter.getNameAsString(), parameter.getTypeAsString().replaceAll("<", "[").replaceAll(">", "]"))
-				);
-			leafNode.addMethod(constructorDeclaration.getNameAsString(), "Constructor", modifierType, parameters);
+				.forEach(parameter -> parameters.put(parameter.getNameAsString(),
+													 getType(parameter.getTypeAsString())));
+			this.leafNode.addMethod(constructorDeclaration.getNameAsString(),
+									"Constructor",
+									modifierType,
+									parameters);
 		}
 	}
 
@@ -158,26 +157,13 @@ public class JavaparserFileVisitor {
 		public void visit(FieldDeclaration fieldDeclaration, Void arg) {
 			super.visit(fieldDeclaration, arg);
 			fieldDeclaration.getVariables().forEach(variable -> {
-				ModifierType modifierType;
+				ModifierType modifierType = ModifierType.PACKAGE_PRIVATE;
 				if (!fieldDeclaration.getModifiers().isEmpty()) {
-					String firstModifierString = fieldDeclaration.getModifiers().get(0).toString().toUpperCase().trim();
-					try {
-						modifierType = ModifierType.valueOf(firstModifierString);
-						// The string corresponds to a valid enum value
-					} catch (IllegalArgumentException e) {
-						// The string does not match any enum value
-						// It starts with (final, static, volatile or transient)
-						// So its visibility is package private.
-						modifierType = ModifierType.PACKAGE_PRIVATE;
-					}
-				}else {
-					modifierType = ModifierType.PACKAGE_PRIVATE;
+					modifierType = ModifierType.get(fieldDeclaration.getModifiers().get(0).toString());
 				}
-
-				leafNode.addField(
-					variable.getNameAsString(),
-					variable.getTypeAsString().replaceAll("<", "[").replaceAll(">", "]"), modifierType
-				);
+				this.leafNode.addField(variable.getNameAsString(),
+									   getType(variable.getTypeAsString()),
+									   modifierType);
 			});
 		}
 	}
@@ -201,10 +187,8 @@ public class JavaparserFileVisitor {
 			createdAssignedObjects.add(matcher.group(1));
 
 			variableDeclarationExpr.getVariables()
-				.forEach(
-					variableDeclaration -> leafNode.addVariable(variableDeclaration.getNameAsString(),
-					variableDeclaration.getTypeAsString().replaceAll("<", "[").replaceAll(">", "]"))
-				);
+				.forEach(variableDeclaration -> leafNode.addVariable(variableDeclaration.getNameAsString(),
+																	 getType(variableDeclaration.getTypeAsString())));
 		}
 	}
 
@@ -218,35 +202,20 @@ public class JavaparserFileVisitor {
 		@Override
 		public void visit(MethodDeclaration methodDeclaration, Void arg) {
 			super.visit(methodDeclaration, arg);
-			ModifierType modifierType;
+			ModifierType modifierType = ModifierType.PACKAGE_PRIVATE;
 			if (!methodDeclaration.getModifiers().isEmpty()) {
-				String firstModifierString = methodDeclaration.getModifiers().get(0).toString().toUpperCase().trim();
-				try {
-					modifierType = ModifierType.valueOf(firstModifierString);
-					// The string corresponds to a valid enum value
-				} catch (IllegalArgumentException e) {
-					// The string does not match any enum value
-					// It starts with (final, static, volatile or transient)
-					// So its visibility is package private.
-					modifierType = ModifierType.PACKAGE_PRIVATE;
-				}
-			}else {
-				modifierType = ModifierType.PACKAGE_PRIVATE;
+				modifierType = ModifierType.get(methodDeclaration.getModifiers().get(0).toString());
 			}
 
 			Map<String, String> parameters = new HashMap<>();
-			methodDeclaration.getParameters().forEach(parameter ->
-			parameters.put(
-				parameter.getNameAsString(),
-				parameter.getTypeAsString().replaceAll("<", "[").replaceAll(">", "]"))
-			);
+			methodDeclaration.getParameters()
+				.forEach(parameter -> parameters.put(parameter.getNameAsString(),
+													 getType(parameter.getTypeAsString())));
 
-			leafNode.addMethod(
-				methodDeclaration.getNameAsString(),
-				methodDeclaration.getTypeAsString().replaceAll("<", "[").replaceAll(">", "]"),
-				modifierType,
-				parameters
-			);
+			this.leafNode.addMethod(methodDeclaration.getNameAsString(),
+							   		getType(methodDeclaration.getTypeAsString()),
+							   		modifierType,
+							   		parameters);
 		}
 	}
 
@@ -256,7 +225,7 @@ public class JavaparserFileVisitor {
 		public void visit(ObjectCreationExpr objectCreationExpr,
 						  List<String> 		 createdObjects) {
 			super.visit(objectCreationExpr, createdObjects);
-			createdObjects.add(objectCreationExpr.asObjectCreationExpr().getType().asString().replaceAll("<", "[").replaceAll(">", "]"));
+			createdObjects.add(getType(objectCreationExpr.asObjectCreationExpr().getType().asString()));
 		}
 	}
 
@@ -265,26 +234,26 @@ public class JavaparserFileVisitor {
 		private final boolean 			 isClassOrInterface;
 
 		public EnumVisitor(JavaparserLeafNode leafNode, boolean isClassOrInterface) {
-			this.leafNode = leafNode;
+			this.leafNode 			= leafNode;
 			this.isClassOrInterface = isClassOrInterface;
 		}
 
 		@Override
 		public void visit(EnumDeclaration enumDeclaration, Void arg) {
 			super.visit(enumDeclaration, arg);
-			if (!enumDeclaration.isEnumDeclaration() || isClassOrInterface) {
+			if (!enumDeclaration.isEnumDeclaration() || this.isClassOrInterface) {
 				return;
 			}
-			leafNode.setNodeName(enumDeclaration.getNameAsString());
-			leafNode.setNodeType(NodeType.ENUM);
+			this.leafNode.setNodeName(enumDeclaration.getNameAsString());
+			this.leafNode.setNodeType(NodeType.ENUM);
 		}
 
 	}
 
 	private void populateCreatedObjects(JavaparserLeafNode leafNode) {
-		List<String> notAssignedCreatedObjects = getNotAssignedCreatedObjects(leafNode.getFieldsTypes(), allCreatedObjects);
-		notAssignedCreatedObjects = getNotAssignedCreatedObjects(leafNode.getVariablesTypes(), notAssignedCreatedObjects);
-		notAssignedCreatedObjects = getNotAssignedCreatedObjects(createdAssignedObjects, notAssignedCreatedObjects);
+		List<String> notAssignedCreatedObjects = getNotAssignedCreatedObjects(leafNode.getFieldsTypes(), this.allCreatedObjects);
+		notAssignedCreatedObjects 			   = getNotAssignedCreatedObjects(leafNode.getVariablesTypes(), notAssignedCreatedObjects);
+		notAssignedCreatedObjects 			   = getNotAssignedCreatedObjects(this.createdAssignedObjects, notAssignedCreatedObjects);
 		notAssignedCreatedObjects.forEach(leafNode::addCreatedObject);
 	}
 
@@ -313,6 +282,10 @@ public class JavaparserFileVisitor {
 				i++;
 			}
 		return newList;
+	}
+
+	private static String getType(String type) {
+		return type.replaceAll("<", "[").replaceAll(">", "]");
 	}
 
 }

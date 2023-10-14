@@ -18,12 +18,12 @@ public class PlantUMLClassifierVertex {
 
 	public StringBuilder convertSinkVertex() {
 		return new StringBuilder(
-				classDiagram.getDiagram().keySet()
-					.stream()
-					.map(sinkVertex ->
-						sinkVertex.getVertexType().toString().toLowerCase() + " " + sinkVertex.getName() + " {\n" +
-						convertFields(sinkVertex) + convertMethods(sinkVertex) + "}")
-					.collect(Collectors.joining("\n\n"))
+				this.classDiagram.getDiagram().keySet()
+						.stream()
+						.map(sinkVertex ->
+							sinkVertex.getVertexType().toString().toLowerCase() + " " + sinkVertex.getName() + " {\n" +
+							convertFields(sinkVertex) + convertMethods(sinkVertex) + "}")
+						.collect(Collectors.joining("\n\n"))
 		);
 	}
 

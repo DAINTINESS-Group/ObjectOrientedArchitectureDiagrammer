@@ -12,21 +12,24 @@ import java.nio.file.Path;
 
 public class PlantUMLClassDiagramTextExporter implements DiagramExporter {
 
-	private final String bufferBody;
+	private final StringBuilder bufferBody;
 
 	public PlantUMLClassDiagramTextExporter(ClassDiagram diagram) {
 		PlantUMLClassifierVertex plantUMLClassifierVertex = new PlantUMLClassifierVertex(diagram);
-		StringBuilder plantUMLNodeBuffer = plantUMLClassifierVertex.convertSinkVertex();
-		PlantUMLClassifierVertexArc plantUMLEdge = new PlantUMLClassifierVertexArc(diagram);
-		StringBuilder plantUMLEdgeBuffer = plantUMLEdge.convertSinkVertexArc();
-		bufferBody = plantUMLNodeBuffer.append("\n\n").append(plantUMLEdgeBuffer) + "\n @enduml";
+		StringBuilder plantUMLNodeBuffer 				  = plantUMLClassifierVertex.convertSinkVertex();
+		PlantUMLClassifierVertexArc plantUMLEdge 		  = new PlantUMLClassifierVertexArc(diagram);
+		StringBuilder plantUMLEdgeBuffer 				  = plantUMLEdge.convertSinkVertexArc();
+		this.bufferBody 								  = plantUMLNodeBuffer
+														      .append("\n\n")
+															  .append(plantUMLEdgeBuffer)
+															  .append("\n @enduml");
 	}
 
 	@Override
 	public File exportDiagram(Path exportPath) {
-		File plantUMLFile = exportPath.toFile();
+		File plantUMLFile   = exportPath.toFile();
 		String plantUMLCode = getClassText();
-		plantUMLCode += bufferBody;
+		plantUMLCode 		+= this.bufferBody;
 		writeFile(plantUMLFile, plantUMLCode);
 		return plantUMLFile;
 	}

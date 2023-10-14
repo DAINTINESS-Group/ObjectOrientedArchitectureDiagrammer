@@ -14,21 +14,21 @@ public class GraphClassDiagramConverter {
 	private final Set<ClassifierVertex> 							sinkVertices;
 
 	public GraphClassDiagramConverter(Set<ClassifierVertex> sinkVertices) {
-		this.sinkVertices = sinkVertices;
-		adjacencyList = new HashMap<>();
+		this.sinkVertices  = sinkVertices;
+		this.adjacencyList = new HashMap<>();
 	}
 
 	public Map<ClassifierVertex, Set<Arc<ClassifierVertex>>> convertGraphToClassDiagram() {
-		for (ClassifierVertex classifierVertex : sinkVertices) {
-			adjacencyList.put(classifierVertex, new HashSet<>());
+		for (ClassifierVertex classifierVertex : this.sinkVertices) {
+			this.adjacencyList.put(classifierVertex, new HashSet<>());
 			for (Arc<ClassifierVertex> arc: classifierVertex.getArcs()) {
-				if (!sinkVertices.contains(arc.targetVertex())) {
+				if (!this.sinkVertices.contains(arc.targetVertex())) {
 					continue;
 				}
-				adjacencyList.get(arc.sourceVertex()).add(arc);
+				this.adjacencyList.get(arc.sourceVertex()).add(arc);
 			}
 		}
-		return adjacencyList;
+		return this.adjacencyList;
 	}
 
 }

@@ -23,12 +23,13 @@ import java.util.Set;
 
 public class PackageDiagramArrangementManager implements DiagramArrangementManagerInterface {
 
-	private final Graph<String, String> graph;
-	private final PackageDiagram 		packageDiagram;
+	public static final LayoutAlgorithmType   LAYOUT_ALGORITHM_TYPE = LayoutAlgorithmType.SUGIYAMA;
+	private 	  final Graph<String, String> graph;
+	private 	  final PackageDiagram 		  packageDiagram;
 
 	public PackageDiagramArrangementManager(PackageDiagram packageDiagram) {
 		this.packageDiagram = packageDiagram;
-		graph = populatePackageGraphWithStrings();
+		this.graph = populatePackageGraphWithStrings();
 	}
 
 	@Override
@@ -37,7 +38,7 @@ public class PackageDiagramArrangementManager implements DiagramArrangementManag
 		Graph<Integer, String> graph = populatePackageGraph();
 		AbstractLayout<Integer, String> layout = new SpringLayout<>(graph);
 		layout.setSize(new Dimension(1500, 1000));
-		for (Integer i : packageDiagram.getGraphNodes().values()) {
+		for (Integer i : this.packageDiagram.getGraphNodes().values()) {
 			nodesGeometryGraphML.put(i, new Pair<>(layout.getX(i), layout.getY(i)));
 		}
 		return nodesGeometryGraphML;
@@ -45,35 +46,35 @@ public class PackageDiagramArrangementManager implements DiagramArrangementManag
 
 	@Override
 	public DiagramGeometry arrangeDiagram() {
-		LayoutAlgorithm sugiyama = LayoutAlgorithmFactory.createLayoutAlgorithm(LayoutAlgorithmType.SUGIYAMA);
-		sugiyama.setGraph(graph);
-		return sugiyama.arrangeDiagram();
+		LayoutAlgorithm layoutAlgorithm = LayoutAlgorithmFactory.createLayoutAlgorithm(LAYOUT_ALGORITHM_TYPE);
+		layoutAlgorithm.setGraph(this.graph);
+		return layoutAlgorithm.arrangeDiagram();
 	}
 
 	@Override
 	public DiagramGeometry applyNewLayout(String algorithmType){
 		LayoutAlgorithmType algorithmEnumType = LayoutAlgorithmType.valueOf(algorithmType.toUpperCase());
 		LayoutAlgorithm layout = LayoutAlgorithmFactory.createLayoutAlgorithm(algorithmEnumType);
-		layout.setGraph(graph);
+		layout.setGraph(this.graph);
 		return layout.arrangeDiagram();
 	}
 
 	private Graph<Integer, String> populatePackageGraph() {
 		Graph<Integer, String> graph = new SparseGraph<>();
-		for (Integer i : packageDiagram.getGraphNodes().values()) {
+		for (Integer i : this.packageDiagram.getGraphNodes().values()) {
 			graph.addVertex(i);
 		}
 
 		List<Arc<PackageVertex>> arcs = new ArrayList<>();
-		for (Set<Arc<PackageVertex>> arcSet: packageDiagram.getDiagram().values()) {
+		for (Set<Arc<PackageVertex>> arcSet: this.packageDiagram.getDiagram().values()) {
 			arcs.addAll(arcSet);
 		}
 
 		for (Arc<PackageVertex> arc: arcs) {
 			graph.addEdge(
-				packageDiagram.getGraphNodes().get(arc.sourceVertex()) + " " + packageDiagram.getGraphNodes().get(arc.targetVertex()),
-				packageDiagram.getGraphNodes().get(arc.sourceVertex()),
-				packageDiagram.getGraphNodes().get(arc.targetVertex()), EdgeType.DIRECTED);
+				this.packageDiagram.getGraphNodes().get(arc.sourceVertex()) + " " + this.packageDiagram.getGraphNodes().get(arc.targetVertex()),
+				this.packageDiagram.getGraphNodes().get(arc.sourceVertex()),
+				this.packageDiagram.getGraphNodes().get(arc.targetVertex()), EdgeType.DIRECTED);
 		}
 
 		return graph;
@@ -81,18 +82,18 @@ public class PackageDiagramArrangementManager implements DiagramArrangementManag
 
 	private Graph<String, String> populatePackageGraphWithStrings(){
 		Graph<String, String> graph = new SparseGraph<>();
-		for (PackageVertex vertex: packageDiagram.getGraphNodes().keySet()) {
+		for (PackageVertex vertex: this.packageDiagram.getGraphNodes().keySet()) {
 			graph.addVertex(vertex.getName());
 		}
 
 		List<Arc<PackageVertex>> arcs = new ArrayList<>();
-		for (Set<Arc<PackageVertex>> arcSet: packageDiagram.getDiagram().values()) {
+		for (Set<Arc<PackageVertex>> arcSet: this.packageDiagram.getDiagram().values()) {
 			arcs.addAll(arcSet);
 		}
 
 		for (Arc<PackageVertex> arc: arcs) {
 			graph.addEdge(
-				arc.sourceVertex().getName() + " " + arc.targetVertex().getName(),
+				String.join(" ", arc.sourceVertex().getName(), arc.targetVertex().getName()),
 				arc.sourceVertex().getName(),
 				arc.targetVertex().getName(), EdgeType.DIRECTED);
 		}

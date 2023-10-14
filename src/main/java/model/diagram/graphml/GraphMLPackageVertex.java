@@ -19,20 +19,21 @@ public class GraphMLPackageVertex {
 	}
 
 	public StringBuilder convertVertex() {
-		for (Map.Entry<PackageVertex, Integer> entry: packageDiagram.getGraphNodes().entrySet()) {
-			graphMLBuffer.append(
+		for (Map.Entry<PackageVertex, Integer> entry: this.packageDiagram.getGraphNodes().entrySet()) {
+			this.graphMLBuffer.append(
 				GraphMLSyntax.getInstance().getGraphMLVertexSyntax(getVertexDescription(entry.getKey(),
-				entry.getValue(), packageDiagram.getGraphMLDiagramGeometry().get(entry.getValue())))
+				entry.getValue(), this.packageDiagram.getGraphMLDiagramGeometry().get(entry.getValue())))
 			);
 		}
-		return graphMLBuffer;
+		return this.graphMLBuffer;
 	}
 
 	private List<String> getVertexDescription(PackageVertex packageNode, int nodeId, Pair<Double, Double> nodeGeometry) {
 		return Arrays.asList(
 			String.valueOf(nodeId), packageNode.getName(),
 			String.valueOf(nodeGeometry.getValue0()),
-			String.valueOf(nodeGeometry.getValue1()));
+			String.valueOf(nodeGeometry.getValue1())
+		);
 	}
 
 }

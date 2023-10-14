@@ -29,7 +29,7 @@ public class DiagramCreation {
 			return;
 		}
 		this.diagramType = diagramType;
-		diagramController = ControllerFactory.createController(ControllerType.UML_DIAGRAM, diagramType);
+		diagramController = ControllerFactory.createController("uml", diagramType);
 		diagramController.createTree(projectTreeView.getSourceFolderPath());
 	}
 

@@ -24,13 +24,12 @@ public class PackageNodeCleanerTest {
 		PackageNodeCleaner packageNodeCleaner = new PackageNodeCleaner(packageNodes);
 		Map<Path, PackageNode> validPackageNodes = packageNodeCleaner.removeNonPackageNodes();
 
-		assertEquals(packageNodes.size(), validPackageNodes.size() + 7);
+		assertEquals(packageNodes.size(), validPackageNodes.size() + 5);
 
 		// Valid Package Nodes
 		assertTrue(validPackageNodes.containsKey(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "BookstoreAdvancedV01", "src"))));
 		assertTrue(validPackageNodes.containsKey(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "BookstoreAdvancedV01", "src", "bookstore"))));
 		assertTrue(validPackageNodes.containsKey(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "BookstoreAdvancedV01", "src", "gui"))));
-		assertTrue(validPackageNodes.containsKey(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "BookstoreAdvancedV01", "src", "testPackage"))));
 		assertTrue(validPackageNodes.containsKey(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "BookstoreAdvancedV01"))));
 
 		// Non Valid Package Nodes
@@ -38,9 +37,7 @@ public class PackageNodeCleanerTest {
 		assertFalse(validPackageNodes.containsKey(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "BookstoreAdvancedV01", "src", "bin"))));
 		assertFalse(validPackageNodes.containsKey(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "BookstoreAdvancedV01", "src", "bin", "bookstore"))));
 		assertFalse(validPackageNodes.containsKey(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "BookstoreAdvancedV01", "src", "bin", "gui"))));
-		assertFalse(validPackageNodes.containsKey(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "BookstoreAdvancedV01", "src", "bin", "testPackage"))));
 		assertFalse(validPackageNodes.containsKey(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "BookstoreAdvancedV01", "src", "lib"))));
-		assertFalse(validPackageNodes.containsKey(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "BookstoreAdvancedV01", "src", "test"))));
 
 		PackageNode sourcePackage = validPackageNodes.get(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "BookstoreAdvancedV01")));
 		Map<Path, PackageNode> sourcePackageSubNodes = sourcePackage.getSubNodes();

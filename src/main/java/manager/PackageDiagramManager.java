@@ -28,10 +28,11 @@ import java.util.logging.Logger;
 public class PackageDiagramManager implements DiagramManager {
 
 	private static final Logger 							logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private 			 PackageDiagram 					packageDiagram;
-	private 			 DiagramArrangementManagerInterface packageDiagramArrangement;
-	private 			 Collection<Vertex<String>> 		vertexCollection;
-	private 			 SmartGraphPanel<String, String> 	graphView;
+
+	private static		 PackageDiagram 					packageDiagram;
+	private static		 DiagramArrangementManagerInterface packageDiagramArrangement;
+	private static		 Collection<Vertex<String>> 		vertexCollection;
+	private static		 SmartGraphPanel<String, String> 	graphView;
 
 	public PackageDiagramManager() {
 		packageDiagram = new PackageDiagram();
@@ -52,7 +53,7 @@ public class PackageDiagramManager implements DiagramManager {
 
 	@Override
 	public void arrangeDiagram(){
-		packageDiagramArrangement = new PackageDiagramArrangementManager(packageDiagram);
+		packageDiagramArrangement  		= new PackageDiagramArrangementManager(packageDiagram);
 		DiagramGeometry diagramGeometry = packageDiagramArrangement.arrangeDiagram();
 		packageDiagram.setDiagramGeometry(diagramGeometry);
 	}
@@ -60,8 +61,8 @@ public class PackageDiagramManager implements DiagramManager {
 	@Override
 	public SmartGraphPanel<String, String> visualizeJavaFXGraph() {
 		JavaFXVisualization javaFXPackageVisualization = new JavaFXPackageVisualization(packageDiagram);
-		graphView = javaFXPackageVisualization.createGraphView();
-		vertexCollection = javaFXPackageVisualization.getVertexCollection();
+		graphView 									   = javaFXPackageVisualization.createGraphView();
+		vertexCollection							   = javaFXPackageVisualization.getVertexCollection();
 		return graphView;
 	}
 
@@ -69,8 +70,8 @@ public class PackageDiagramManager implements DiagramManager {
 	public SmartGraphPanel<String, String> visualizeLoadedJavaFXGraph() {
 		JavaFXVisualization javaFXPackageVisualization = new JavaFXPackageVisualization(packageDiagram);
 		javaFXPackageVisualization.createGraphView();
-		graphView = javaFXPackageVisualization.getLoadedGraph();
-		vertexCollection = javaFXPackageVisualization.getVertexCollection();
+		graphView 									   = javaFXPackageVisualization.getLoadedGraph();
+		vertexCollection 							   = javaFXPackageVisualization.getVertexCollection();
 		return graphView;
 	}
 
@@ -97,14 +98,14 @@ public class PackageDiagramManager implements DiagramManager {
 	public File saveDiagram(Path graphSavePath) {
 		CoordinatesUpdater coordinatesUpdater = new CoordinatesUpdater(packageDiagram);
 		coordinatesUpdater.updatePackageCoordinates(vertexCollection, graphView);
-		DiagramExporter diagramExporter =  new JavaFXPackageDiagramExporter(packageDiagram);
+		DiagramExporter diagramExporter 	  =  new JavaFXPackageDiagramExporter(packageDiagram);
 		return diagramExporter.exportDiagram(graphSavePath);
 	}
 
 	@Override
 	public void loadDiagram(Path graphSavePath) throws JsonParseException {
 		JavaFXPackageDiagramLoader javaFXPackageDiagramLoader = new JavaFXPackageDiagramLoader(graphSavePath);
-		packageDiagram = new PackageDiagram();
+		packageDiagram 										  = new PackageDiagram();
 		packageDiagram.createDiagram(javaFXPackageDiagramLoader.loadDiagram());
 	}
 

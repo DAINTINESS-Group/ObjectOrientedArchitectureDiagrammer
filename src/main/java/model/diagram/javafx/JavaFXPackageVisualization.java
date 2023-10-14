@@ -17,19 +17,20 @@ import java.util.Set;
 
 public class JavaFXPackageVisualization implements JavaFXVisualization {
 
-	private final PackageDiagram 				  packageDiagram;
-	private 	  SmartGraphPanel<String, String> graphView;
-	private 	  Collection<Vertex<String>> 	  vertexCollection;
+	private final  PackageDiagram 				   packageDiagram;
+	private static SmartGraphPanel<String, String> graphView;
+	private static Collection<Vertex<String>> 	   vertexCollection;
 
 	public JavaFXPackageVisualization(PackageDiagram diagram) {
-		packageDiagram = diagram;
+		this.packageDiagram = diagram;
 	}
 
 	@Override
 	public SmartGraphPanel<String, String> createGraphView() {
 		Graph<String, String> graph = createGraph();
-		vertexCollection = graph.vertices();
-		graphView = new SmartGraphPanel<>(graph, new SmartCircularSortedPlacementStrategy());
+		vertexCollection 			= graph.vertices();
+		graphView 					= new SmartGraphPanel<>(graph,
+															new SmartCircularSortedPlacementStrategy());
 		setVertexCustomStyle();
 		return graphView;
 	}
@@ -41,7 +42,7 @@ public class JavaFXPackageVisualization implements JavaFXVisualization {
 
 	private Graph<String, String> createGraph() {
 		Digraph<String, String> directedGraph = new DigraphEdgeList<>();
-		for (PackageVertex vertex: packageDiagram.getDiagram().keySet()) {
+		for (PackageVertex vertex: this.packageDiagram.getDiagram().keySet()) {
             if (vertex.getSinkVertices().isEmpty()) {
 				continue;
 			}
@@ -52,7 +53,7 @@ public class JavaFXPackageVisualization implements JavaFXVisualization {
 	}
 
 	private void insertVertexArcs(Digraph<String, String> directedGraph){
-		for (Set<Arc<PackageVertex>> arcs : packageDiagram.getDiagram().values()) {
+		for (Set<Arc<PackageVertex>> arcs : this.packageDiagram.getDiagram().values()) {
 			for (Arc<PackageVertex> arc: arcs) {
 				if (arc.arcType().equals(ArcType.AGGREGATION)) {
 					directedGraph.insertEdge(
@@ -72,7 +73,7 @@ public class JavaFXPackageVisualization implements JavaFXVisualization {
 	}
 
 	private void setVertexCustomStyle() {
-		for (PackageVertex vertex: packageDiagram.getDiagram().keySet()){
+		for (PackageVertex vertex: this.packageDiagram.getDiagram().keySet()){
 			if (vertex.getVertexType().equals(VertexType.INTERFACE)) {
 				graphView.getStylableVertex(vertex.getName()).setStyleClass("vertexInterface");
 			}else {
@@ -87,11 +88,13 @@ public class JavaFXPackageVisualization implements JavaFXVisualization {
 	@Override
 	public SmartGraphPanel<String, String> getLoadedGraph() {
 		for (Vertex<String> vertex : vertexCollection) {
-			for (PackageVertex packageVertex: packageDiagram.getDiagram().keySet()){
+			for (PackageVertex packageVertex: this.packageDiagram.getDiagram().keySet()){
 				if(!packageVertex.getName().equals(vertex.element())) {
 					continue;
 				}
-				graphView.setVertexPosition(vertex, packageVertex.getCoordinates().getValue0(), packageVertex.getCoordinates().getValue1());
+				graphView.setVertexPosition(vertex,
+											packageVertex.getCoordinates().getValue0(),
+											packageVertex.getCoordinates().getValue1());
 				break;
 			}
 		}

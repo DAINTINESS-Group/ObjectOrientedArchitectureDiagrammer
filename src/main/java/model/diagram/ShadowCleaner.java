@@ -9,16 +9,22 @@ import java.util.*;
 public class ShadowCleaner {
 
 	// TODO Replace with the new ArcType Map
-	private static final List<ArcType> strongerToWeakerArcTypes = List.of(ArcType.EXTENSION, ArcType.IMPLEMENTATION, ArcType.AGGREGATION, ArcType.ASSOCIATION);
+	private static final List<ArcType> strongerToWeakerArcTypes =
+		List.of(
+			ArcType.EXTENSION,
+			ArcType.IMPLEMENTATION,
+			ArcType.AGGREGATION,
+			ArcType.ASSOCIATION
+		);
 
-	private final ClassDiagram classDiagram;
+	private final ClassDiagram 		   classDiagram;
 
 	public ShadowCleaner(ClassDiagram diagram) {
-		classDiagram = diagram;
+		this.classDiagram = diagram;
 	}
 
 	public Map<ClassifierVertex, Set<Arc<ClassifierVertex>>> shadowWeakRelationships() {
-		for (Set<Arc<ClassifierVertex>> arcs: classDiagram.getDiagram().values()) {
+		for (Set<Arc<ClassifierVertex>> arcs: this.classDiagram.getDiagram().values()) {
 			Map<ClassifierVertex, List<Arc<ClassifierVertex>>> shadowedArcs = new HashMap<>();
 			for (Arc<ClassifierVertex> arc: arcs) {
 				shadowedArcs.computeIfAbsent(arc.targetVertex(), sinkVertex -> new ArrayList<>()).add(arc);
@@ -37,7 +43,7 @@ public class ShadowCleaner {
                 }
 			}
 		}
-		return classDiagram.getDiagram();
+		return this.classDiagram.getDiagram();
 	}
 
 	private boolean doWeakRelationshipsExist(Map.Entry<ClassifierVertex, List<Arc<ClassifierVertex>>> arc) {

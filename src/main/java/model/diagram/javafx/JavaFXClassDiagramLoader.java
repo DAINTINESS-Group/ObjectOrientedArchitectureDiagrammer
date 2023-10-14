@@ -28,9 +28,11 @@ public class JavaFXClassDiagramLoader {
 	public Set<ClassifierVertex> loadDiagram() throws JsonParseException {
 		Set<ClassifierVertex> sinkVertices = new HashSet<>();
 		try {
-			byte[] encodedBytes = Files.readAllBytes(graphSavePath);
-			String json = new String(encodedBytes, StandardCharsets.ISO_8859_1);
-			Gson gson = new GsonBuilder().registerTypeAdapter(ClassifierVertex.class, new ClassifierVertexDeserializer()).create();
+			byte[] encodedBytes 				 = Files.readAllBytes(this.graphSavePath);
+			String json 						 = new String(encodedBytes, StandardCharsets.ISO_8859_1);
+			Gson gson		    				 = new GsonBuilder().registerTypeAdapter(ClassifierVertex.class,
+																						 new ClassifierVertexDeserializer())
+																						 .create();
 			ClassifierVertex[] sinkVerticesArray = gson.fromJson(json, ClassifierVertex[].class);
 			Collections.addAll(sinkVertices, sinkVerticesArray);
 			deserializeArcs(sinkVertices);
@@ -44,12 +46,14 @@ public class JavaFXClassDiagramLoader {
 		for (ClassifierVertex classifierVertex : sinkVertices) {
 			List<Triplet<String, String, String>> deserializedArcs = classifierVertex.getDeserializedArcs();
 			for (Triplet<String, String, String> arc: deserializedArcs) {
-				Optional<ClassifierVertex> sourceVertex = sinkVertices.stream()
-						.filter(sinkVertex1 -> sinkVertex1.getName().equals(arc.getValue0()))
-						.findFirst();
-				Optional<ClassifierVertex> targetVertex = sinkVertices.stream()
-						.filter(sinkVertex1 -> sinkVertex1.getName().equals(arc.getValue1()))
-						.findFirst();
+				Optional<ClassifierVertex> sourceVertex = sinkVertices
+					.stream()
+					.filter(sinkVertex1 -> sinkVertex1.getName().equals(arc.getValue0()))
+					.findFirst();
+				Optional<ClassifierVertex> targetVertex = sinkVertices
+					.stream()
+					.filter(sinkVertex1 -> sinkVertex1.getName().equals(arc.getValue1()))
+					.findFirst();
 				if (sourceVertex.isEmpty() || targetVertex.isEmpty()) {
 					continue;
 				}

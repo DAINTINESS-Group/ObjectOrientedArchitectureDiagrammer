@@ -146,7 +146,7 @@ public class ClassDiagramManagerTest {
 			classDiagramManager.createSourceProject(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "LatexEditor", "src")));
 			classDiagramManager.convertTreeToDiagram(chosenFiles);
 
-			File testingSavedFile = classDiagramManager.saveDiagram(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "testingExportedFile.txt")));
+			File testingSavedFile = classDiagramManager.saveDiagram(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "testingSavedFile.txt")));
 			DiagramExporter javaFXExporter = new JavaFXClassDiagramExporter(classDiagramManager.getClassDiagram());
 			assertTrue(FileUtils.contentEquals(javaFXExporter.exportDiagram(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "testingExportedFile.txt"))), testingSavedFile));
 		} catch (IOException e) {

@@ -16,31 +16,29 @@ import java.util.Map;
 
 public class ClassifierVertexSerializer implements JsonSerializer<ClassifierVertex> {
 
-	private ClassifierVertex classifierVertex;
-
 	@Override
-	public JsonElement serialize(ClassifierVertex classifierVertex, Type type,
+	public JsonElement serialize(ClassifierVertex 					classifierVertex,
+								 Type 								type,
 								 JsonSerializationContext 			jsonSerializationContext) {
-		this.classifierVertex = classifierVertex;
 		JsonObject jsonObject = new JsonObject();
 
-		String name 	  = classifierVertex.getName();
-		Path path 		  = classifierVertex.getPath();
-		String vertexType = classifierVertex.getVertexType().toString();
+		String name 	  	  = classifierVertex.getName();
+		Path path 		  	  = classifierVertex.getPath();
+		String vertexType 	  = classifierVertex.getVertexType().toString();
 
 		jsonObject.addProperty("name", name);
 		jsonObject.addProperty("path", path.toString());
 		jsonObject.addProperty("vertexType", vertexType);
 		jsonObject.addProperty("coordinate_x", classifierVertex.getCoordinates().getValue0());
 		jsonObject.addProperty("coordinate_y", classifierVertex.getCoordinates().getValue1()); 
-		jsonObject.add("methods", serializeMethods());
-		jsonObject.add("fields", serializeFields());
-		jsonObject.add("arcs", serializeArcs());
+		jsonObject.add("methods", serializeMethods(classifierVertex));
+		jsonObject.add("fields", serializeFields(classifierVertex));
+		jsonObject.add("arcs", serializeArcs(classifierVertex));
 
 		return jsonObject;
 	}
 
-	private JsonArray serializeMethods() {
+	private JsonArray serializeMethods(ClassifierVertex classifierVertex) {
 		Gson gson = new Gson();
 		List<ClassifierVertex.Method> methods = classifierVertex.getMethods();
 		JsonArray methodsArray = new JsonArray(methods.size());
@@ -62,7 +60,7 @@ public class ClassifierVertexSerializer implements JsonSerializer<ClassifierVert
 		return methodsArray;
 	}
 
-	private JsonArray serializeFields() {
+	private JsonArray serializeFields(ClassifierVertex classifierVertex) {
 		List<ClassifierVertex.Field> fields = classifierVertex.getFields();
 		JsonArray fieldsArray = new JsonArray(fields.size());
 		for (ClassifierVertex.Field field: fields) {
@@ -81,7 +79,7 @@ public class ClassifierVertexSerializer implements JsonSerializer<ClassifierVert
 		return fieldsArray;
 	}
 
-	private JsonArray serializeArcs() {
+	private JsonArray serializeArcs(ClassifierVertex classifierVertex) {
 		List<Arc<ClassifierVertex>> arcs = classifierVertex.getArcs();
 		JsonArray arcsArray = new JsonArray(arcs.size());
 		for (Arc<ClassifierVertex> sinkVertexArc : arcs) {

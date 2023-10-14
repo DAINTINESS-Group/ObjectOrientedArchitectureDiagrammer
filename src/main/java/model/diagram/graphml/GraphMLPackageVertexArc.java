@@ -15,28 +15,27 @@ public class GraphMLPackageVertexArc {
 
 	public GraphMLPackageVertexArc(PackageDiagram packageDiagram) {
 		this.packageDiagram = packageDiagram;
-		graphMLBuffer 	    = new StringBuilder();
+		this.graphMLBuffer  = new StringBuilder();
 	}
 
 	public StringBuilder convertVertexArc() {
 		List<Arc<PackageVertex>> arcs = new ArrayList<>();
-		for (Set<Arc<PackageVertex>> arcSet: packageDiagram.getDiagram().values()) {
+		for (Set<Arc<PackageVertex>> arcSet: this.packageDiagram.getDiagram().values()) {
 			arcs.addAll(arcSet);
 		}
-
 		int edgeId = 0;
 		for (Arc<PackageVertex> arc: arcs) {
-			graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLVertexArcSyntax(getVertexArcProperties(arc, edgeId)));
+			this.graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLVertexArcSyntax(getVertexArcProperties(arc, edgeId)));
 			edgeId++;
 		}
-		return graphMLBuffer;
+		return this.graphMLBuffer;
 	}
 
 	private List<String> getVertexArcProperties(Arc<PackageVertex> relationship, Integer edgeId) {
 		return Arrays.asList(
 			String.valueOf(edgeId),
-			String.valueOf(packageDiagram.getGraphNodes().get(relationship.sourceVertex())),
-			String.valueOf(packageDiagram.getGraphNodes().get(relationship.targetVertex()))
+			String.valueOf(this.packageDiagram.getGraphNodes().get(relationship.sourceVertex())),
+			String.valueOf(this.packageDiagram.getGraphNodes().get(relationship.targetVertex()))
 		);
 	}
 

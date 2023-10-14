@@ -25,10 +25,10 @@ import java.util.List;
 
 public class ClassDiagramManager implements DiagramManager {
 
-	private ClassDiagram 					   classDiagram;
-	private DiagramArrangementManagerInterface classDiagramArrangement;
-	private Collection<Vertex<String>> 		   vertexCollection;
-	private SmartGraphPanel<String, String>    graphView;
+	private static ClassDiagram 					  classDiagram;
+	private static DiagramArrangementManagerInterface classDiagramArrangement;
+	private static Collection<Vertex<String>> 		  vertexCollection;
+	private static SmartGraphPanel<String, String>    graphView;
 
 	public ClassDiagramManager() {
 		classDiagram = new ClassDiagram();
@@ -51,7 +51,7 @@ public class ClassDiagramManager implements DiagramManager {
 
 	@Override
 	public void arrangeDiagram(){
-		classDiagramArrangement = new ClassDiagramArrangementManager(classDiagram);
+		classDiagramArrangement			= new ClassDiagramArrangementManager(classDiagram);
 		DiagramGeometry diagramGeometry = classDiagramArrangement.arrangeDiagram();
 		classDiagram.setDiagramGeometry(diagramGeometry);
 	}
@@ -59,8 +59,8 @@ public class ClassDiagramManager implements DiagramManager {
 	@Override
 	public SmartGraphPanel<String, String> visualizeJavaFXGraph() {
 		JavaFXVisualization javaFXVisualization = new JavaFXClassVisualization(classDiagram);
-		graphView = javaFXVisualization.createGraphView();
-		vertexCollection = javaFXVisualization.getVertexCollection();
+		graphView 		  						= javaFXVisualization.createGraphView();
+		vertexCollection 						= javaFXVisualization.getVertexCollection();
 		return graphView;
 	}
 
@@ -68,8 +68,8 @@ public class ClassDiagramManager implements DiagramManager {
 	public SmartGraphPanel<String, String> visualizeLoadedJavaFXGraph() {
 		JavaFXVisualization javaFXVisualization = new JavaFXClassVisualization(classDiagram);
 		javaFXVisualization.createGraphView();
-		graphView = javaFXVisualization.getLoadedGraph();
-		vertexCollection = javaFXVisualization.getVertexCollection();
+		graphView 		  						= javaFXVisualization.getLoadedGraph();
+		vertexCollection 						= javaFXVisualization.getVertexCollection();
 		return graphView;
 	}
 
@@ -96,16 +96,16 @@ public class ClassDiagramManager implements DiagramManager {
 	public File saveDiagram(Path graphSavePath) {
 		CoordinatesUpdater coordinatesUpdater = new CoordinatesUpdater(classDiagram);
 		coordinatesUpdater.updateClassCoordinates(vertexCollection, graphView);
-		DiagramExporter diagramExporter = new JavaFXClassDiagramExporter(classDiagram);
+		DiagramExporter diagramExporter 	  = new JavaFXClassDiagramExporter(classDiagram);
 		return diagramExporter.exportDiagram(graphSavePath);
 	}
 
 	@Override
 	public void loadDiagram(Path graphSavePath) {
-		JavaFXClassDiagramLoader javaFXClassDiagramLoader =  new JavaFXClassDiagramLoader(graphSavePath);
-		classDiagram = new ClassDiagram();
+		JavaFXClassDiagramLoader javaFXClassDiagramLoader = new JavaFXClassDiagramLoader(graphSavePath);
+		classDiagram 									  = new ClassDiagram();
 		classDiagram.createDiagram(javaFXClassDiagramLoader.loadDiagram());
-		ShadowCleaner shadowCleaner = new ShadowCleaner(classDiagram);
+		ShadowCleaner shadowCleaner 					  = new ShadowCleaner(classDiagram);
 		classDiagram.setDiagram(shadowCleaner.shadowWeakRelationships());
 	}
 
@@ -120,7 +120,7 @@ public class ClassDiagramManager implements DiagramManager {
 				continue;
 			}
 			Pair<Double, Double> coordinates = nodesGeometry.getVertexGeometry(vertex.element());
-			graphView.setVertexPosition(vertex,  coordinates.getValue0(), coordinates.getValue1());
+			graphView.setVertexPosition(vertex, coordinates.getValue0(), coordinates.getValue1());
 		}
 		return graphView;
 	}
