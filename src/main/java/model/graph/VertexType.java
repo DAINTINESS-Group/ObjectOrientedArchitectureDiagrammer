@@ -23,4 +23,8 @@ public enum VertexType {
 	public static VertexType get(String vertexType) {
 		return VERTEX_TYPE.get(vertexType.toLowerCase().trim());
 	}
+
+	public String toString() {
+		return super.toString().toLowerCase();
+	}
 }

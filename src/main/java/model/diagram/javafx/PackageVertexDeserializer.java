@@ -36,7 +36,7 @@ public class PackageVertexDeserializer implements JsonDeserializer<PackageVertex
 
 		JsonObject parent 	   = jsonObject.get("parent").getAsJsonObject();
 		String parentName 	   = parent.get("name").getAsString();
-		this.packageVertex 	   = new PackageVertex(Path.of(path), VertexType.valueOf(vertexType), parentName);
+		this.packageVertex 	   = new PackageVertex(Path.of(path), VertexType.get(vertexType), parentName);
 		if (jsonObject.has("coordinate_x") && jsonObject.has("coordinate_x")) {
 			double coordinateX = jsonObject.get("coordinate_x").getAsDouble();
 			double coordinateY = jsonObject.get("coordinate_y").getAsDouble();
@@ -69,7 +69,9 @@ public class PackageVertexDeserializer implements JsonDeserializer<PackageVertex
 			String path 	  		= vertexObject.get("path").getAsString();
 			String vertexType 		= vertexObject.get("vertexType").getAsString();
 			String parentName 		= vertexObject.get("parentName").getAsString();
-			this.packageVertex.addNeighbourVertex(new PackageVertex(Path.of(path), VertexType.valueOf(vertexType), parentName));
+			this.packageVertex.addNeighbourVertex(new PackageVertex(Path.of(path),
+																	VertexType.get(vertexType),
+																	parentName));
 		}
 	}
 

@@ -4,5 +4,9 @@ public enum NodeType {
 	CLASS,
 	INTERFACE,
 	ENUM,
-	PACKAGE
+	PACKAGE;
+
+	public String toString() {
+		return super.toString().toLowerCase();
+	}
 }

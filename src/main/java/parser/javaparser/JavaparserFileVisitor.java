@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 /**
  * This class is responsible for the creation of the AST of a Java source file using Javaparser.
  * Using the different visitors, it parses the file's inheritance declarations, constructor, methods parameters,
- * return types, field & local variable declarations as well as the instantiated objects that aren't assigned to a variable
+ * return types, field & local variable declarations as well as the instantiated objects that aren't assigned to a variable.
  */
 public class JavaparserFileVisitor {
 
@@ -44,9 +44,10 @@ public class JavaparserFileVisitor {
 	}
 
 	/**
-	 * This method is responsible for the creation of the AST
-	 * @param file the Java source file
-	 * @param leafNode the leaf node representing the Java source file
+	 * This method is responsible for the creation of the AST.
+	 *
+	 * @param file	    the Java source file
+	 * @param leafNode  the leaf node representing the Java source file
 	 */
 	public void createAST(File 	   file,
 						  LeafNode leafNode) {

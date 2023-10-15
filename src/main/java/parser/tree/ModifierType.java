@@ -23,4 +23,8 @@ public enum ModifierType {
 	public static ModifierType get(String modifierType) {
 		return MODIFIER_TYPE.get(modifierType.toLowerCase().trim());
 	}
+
+	public String toString() {
+		return super.toString().toLowerCase();
+	}
 }

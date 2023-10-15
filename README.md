@@ -65,7 +65,7 @@ The purpose of this project is to develop an independent software tool that prod
 
 1. Run
   ```bash
-  mvn compile
+  ./mvnw compile
   ```
 to build the project.
 
@@ -77,7 +77,7 @@ to build the project.
 
 1. Run
   ```bash
-  mvn package
+  ./mvnw package
   ```
 to create the jar **ObjectOrientedArchitectureDiagrammer-0.0.1-SNAPSHOT-jar-with-dependencies.jar**
 
@@ -93,7 +93,7 @@ Check the [User Documentation][userDocumentation-url] regarding more about the u
 
 To run the tests simply run
   ```bash
-  mvn test
+  ./mvnw test
   ```
 
 ## Contributing / Reporting issues
@@ -102,22 +102,25 @@ To run the tests simply run
 
 Any contributions you make are **greatly appreciated**.
 
-If you have a suggestion that would make this better, please fork the repo and create a pull request. Don't forget to give the project a star!
+If you want to contribute to the development of our tool, please fork the repo and create a pull request.<br>
+[!IMPORTANT]
+Please adhere to the current code style.<br>
+Don't forget to give the project a star! :star:
 
-1. Fork the Project
-2. Create your Feature Branch
+1. Fork the Project.
+2. Create your Feature Branch.
   ```bash
   git checkout -b feature/NewFeature
   ```
-3. Commit your Changes
+3. Commit your Changes.
   ```bash
   git commit -m 'Add some NewFeature'
   ```
-4. Push to the Branch
+4. Push to the Branch.
   ```bash
   git push origin feature/NewFeature
   ```
-5. Open a Pull Request
+5. Open a Pull Request.
 
 ### Issues
 

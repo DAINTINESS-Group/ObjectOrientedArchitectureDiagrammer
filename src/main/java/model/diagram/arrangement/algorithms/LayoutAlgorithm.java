@@ -7,11 +7,12 @@ public interface LayoutAlgorithm {
 	int MIN_X_WINDOW_VALUE = 25;
 	int MIN_Y_WINDOW_VALUE = 25;
 
+	// TODO Update JavaDoc
 	/**
 	 * This method is responsible for the arrangement of the graph by creating a graph of the Jung library
-	 * and using this graph's coordinates in our front end
+	 * and using this graph's coordinates in our front end.
 	 *
-	 * @return a Map with the nodes' names as key and geometry(x,y) as value
+	 * @return a {@link DiagramGeometry} object which represents the diagram's geometry
 	 */
 	DiagramGeometry arrangeDiagram();
 

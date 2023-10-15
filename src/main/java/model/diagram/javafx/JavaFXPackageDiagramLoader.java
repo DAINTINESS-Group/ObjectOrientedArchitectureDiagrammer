@@ -26,13 +26,13 @@ public class JavaFXPackageDiagramLoader {
 	}
 
 	public Set<PackageVertex> loadDiagram() throws JsonParseException {
-		Set<PackageVertex> vertices = new HashSet<>();
+		Set<PackageVertex> vertices 	 = new HashSet<>();
 		try {
-			byte[] encodedBytes 		  = Files.readAllBytes(this.graphSavePath);
-			String json 				  = new String(encodedBytes, StandardCharsets.ISO_8859_1);
-			Gson gson 					  = new GsonBuilder().registerTypeAdapter(PackageVertex.class,
-																			new PackageVertexDeserializer())
-																			.create();
+			byte[] 		   encodedBytes  = Files.readAllBytes(this.graphSavePath);
+			String 		   json 		 = new String(encodedBytes, StandardCharsets.ISO_8859_1);
+			Gson 		   gson 		 = new GsonBuilder().registerTypeAdapter(PackageVertex.class,
+																				 new PackageVertexDeserializer())
+																			 	.create();
 			PackageVertex[] verticesArray = gson.fromJson(json, PackageVertex[].class);
 			Collections.addAll(vertices, verticesArray);
 			deserializeArcs(vertices);
@@ -57,7 +57,7 @@ public class JavaFXPackageDiagramLoader {
 				if (sourceVertex.isEmpty() || targetVertex.isEmpty()) {
 					continue;
 				}
-				vertex.addArc(sourceVertex.get(), targetVertex.get(), ArcType.valueOf(arc.getValue2()));
+				vertex.addArc(sourceVertex.get(), targetVertex.get(), ArcType.get(arc.getValue2()));
 			}
 		}
 	}

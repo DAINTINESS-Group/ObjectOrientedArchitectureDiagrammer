@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 /**
  * This class is responsible for the implementation of a leaf node in the tree.
  * Each node has a parent node(the parent package), the path of the source file,
- * the branches that start from that node and also the field/method/method parameter types
+ * the branches that start from that node and also the field/method/method parameter types.
  */
 public abstract class LeafNode {
 	private   final Map<Triplet<String, String, ModifierType>, Map<String, String>> methods;
@@ -32,11 +32,12 @@ public abstract class LeafNode {
 
 	/**
 	 * This method is responsible for adding the nodes' method's name, return type, modifier type & its parameters
-	 * that include the name and the type
-	 * @param name the method's name
-	 * @param returnType the method's return type
-	 * @param modifierType the method's modifier type
-	 * @param parameters the method's parameters
+	 * that include the name and the type.
+	 *
+	 * @param name 			the method's name
+	 * @param returnType 	the method's return type
+	 * @param modifierType  the method's modifier type
+	 * @param parameters 	the method's parameters
 	 */
 	public void addMethod(String			  name,
 						  String 			  returnType,
@@ -53,10 +54,10 @@ public abstract class LeafNode {
 	}
 
 	/**
-	 * This method is responsible for adding the nodes' field's name, type & modifier type
-	 * @param fieldName the field's name
-	 * @param fieldType the field's type
-	 * @param modifierType the field's modifier type
+	 * This method is responsible for adding the nodes' field's name, type & modifier type.
+	 * @param fieldName 	the field's name
+	 * @param fieldType	 	the field's type
+	 * @param modifierType  the field's modifier type
 	 */
 	public void addField(String 	  fieldName,
 						 String 	  fieldType,

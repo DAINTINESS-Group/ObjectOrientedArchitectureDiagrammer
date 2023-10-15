@@ -5,6 +5,7 @@ import javafx.scene.Cursor;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Region;
 
+// TODO Add Javadoc
 public class TreeViewResizer {
 
 	private static final int MIN_TREEVIEW_WIDTH = 100;

@@ -32,11 +32,10 @@ public class GraphMLPackageVertexArc {
 	}
 
 	private List<String> getVertexArcProperties(Arc<PackageVertex> relationship, Integer edgeId) {
-		return Arrays.asList(
-			String.valueOf(edgeId),
-			String.valueOf(this.packageDiagram.getGraphNodes().get(relationship.sourceVertex())),
-			String.valueOf(this.packageDiagram.getGraphNodes().get(relationship.targetVertex()))
-		);
+		return
+			Arrays.asList(String.valueOf(edgeId),
+						  String.valueOf(this.packageDiagram.getGraphNodes().get(relationship.sourceVertex())),
+						  String.valueOf(this.packageDiagram.getGraphNodes().get(relationship.targetVertex())));
 	}
 
 }

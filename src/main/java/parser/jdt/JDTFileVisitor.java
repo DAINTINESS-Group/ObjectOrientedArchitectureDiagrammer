@@ -31,17 +31,19 @@ import static org.eclipse.jdt.core.dom.ASTNode.METHOD_DECLARATION;
 
 /**
  * This class is responsible for the creation of the AST of a Java source file using JDT.
- * The ASTNode API parses the files methods parameters, return types and field declarations
+ * The ASTNode API parses the files methods parameters, return types and field declarations.
+ *
  */
 public class JDTFileVisitor {
 
 	private CompilationUnit unit;
-	private String 			sourceFile [];
+	private String[]        sourceFile;
 
 	/**
-	 * This method is responsible for the creation of the AST
-	 * @param file the Java source file
-	 * @param leafNode the leaf node representing the Java source file
+	 * This method is responsible for the creation of the AST.
+	 *
+	 * @param file 		the Java source file
+	 * @param leafNode  the leaf node representing the Java source file
 	 */
 	public void createAST(File file, LeafNode leafNode) {
 		try {

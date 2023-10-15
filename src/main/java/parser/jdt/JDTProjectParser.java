@@ -17,7 +17,8 @@ import java.util.Map;
 /**
  * This class is responsible for the parsing of a Java project. While parsing the project
  * it creates a tree where nodes are the packages and leafs are the Java source files.
- * In order to create the tree it uses the ASTNode API from the JDT library
+ * In order to create the tree it uses the ASTNode API from the JDT library.
+ *
  */
 public class JDTProjectParser implements Parser {
 	private final Map<Path, PackageNode> packageNodes;

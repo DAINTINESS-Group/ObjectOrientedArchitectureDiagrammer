@@ -20,6 +20,11 @@ public enum ModifierType {
 		MODIFIER_TYPE = Collections.unmodifiableMap(temp);
 	}
 	public static ModifierType get(String modifier) {
-		return MODIFIER_TYPE.get(modifier.toLowerCase());
+		return MODIFIER_TYPE.get(modifier.toLowerCase().trim());
+	}
+
+
+	public String toString() {
+		return super.toString().toLowerCase();
 	}
 }

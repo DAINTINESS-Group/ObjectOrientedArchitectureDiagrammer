@@ -19,7 +19,10 @@ public enum DiagramType {
 	}
 
 	public static DiagramType get(String diagramType) {
-		return DIAGRAM_TYPE.get(diagramType.toLowerCase());
+		return DIAGRAM_TYPE.get(diagramType.toLowerCase().trim());
 	}
 
+	public String toString() {
+		return super.toString().toLowerCase();
+	}
 }

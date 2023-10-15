@@ -56,17 +56,13 @@ public class JavaFXPackageVisualization implements JavaFXVisualization {
 		for (Set<Arc<PackageVertex>> arcs : this.packageDiagram.getDiagram().values()) {
 			for (Arc<PackageVertex> arc: arcs) {
 				if (arc.arcType().equals(ArcType.AGGREGATION)) {
-					directedGraph.insertEdge(
-						arc.targetVertex().getName(),
-						arc.sourceVertex().getName(),
-						arc.targetVertex().getName() + "_" + arc.sourceVertex().getName() + "_" + arc.arcType().toString().toLowerCase()
-					);
+					directedGraph.insertEdge(arc.targetVertex().getName(),
+											 arc.sourceVertex().getName(),
+											 arc.targetVertex().getName() + "_" + arc.sourceVertex().getName() + "_" + arc.arcType());
 				}else {
-					directedGraph.insertEdge(
-						arc.sourceVertex().getName(),
-						arc.targetVertex().getName(),
-						arc.sourceVertex().getName() + "_" +arc.targetVertex().getName() + "_" + arc.arcType().toString().toLowerCase()
-					);
+					directedGraph.insertEdge(arc.sourceVertex().getName(),
+											 arc.targetVertex().getName(),
+											 arc.sourceVertex().getName() + "_" +arc.targetVertex().getName() + "_" + arc.arcType());
 				}
 			}
 		}

@@ -15,9 +15,8 @@ public class PlantUMLPackageVertex {
 	public StringBuilder convertVertex() {
 		return new StringBuilder(this.packageDiagram.getDiagram().keySet()
 				.stream()
-				.map(vertex -> vertex.getVertexType().toString().toLowerCase() + " " + vertex.getName() + " {\n" + "}\n")
-				.collect(Collectors.joining("\n"))
-		);
+				.map(vertex -> vertex.getVertexType() + " " + vertex.getName() + " {\n" + "}\n")
+				.collect(Collectors.joining("\n")));
 	}
 
 }

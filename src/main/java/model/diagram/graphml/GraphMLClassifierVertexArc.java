@@ -38,11 +38,10 @@ public class GraphMLClassifierVertexArc {
 	}
 
 	private List<String> getEdgesProperties(Arc<ClassifierVertex> relationship, Integer edgeId) {
-		return Arrays.asList(
-			String.valueOf(edgeId), String.valueOf(this.classDiagram.getGraphNodes().get(relationship.sourceVertex())),
-			String.valueOf(this.classDiagram.getGraphNodes().get(relationship.targetVertex())), identifyEdgeType(relationship).get(EDGE_TYPE),
-			identifyEdgeType(relationship).get(EDGES_SOURCE_TYPE), identifyEdgeType(relationship).get(EDGES_TARGET_TYPE)
-		);
+		return
+			Arrays.asList(String.valueOf(edgeId), String.valueOf(this.classDiagram.getGraphNodes().get(relationship.sourceVertex())),
+						  String.valueOf(this.classDiagram.getGraphNodes().get(relationship.targetVertex())), identifyEdgeType(relationship).get(EDGE_TYPE),
+						  identifyEdgeType(relationship).get(EDGES_SOURCE_TYPE), identifyEdgeType(relationship).get(EDGES_TARGET_TYPE));
 	}
 
 	private List<String> identifyEdgeType(Arc<ClassifierVertex> relationship){

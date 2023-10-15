@@ -5,5 +5,9 @@ public enum RelationshipType {
 	AGGREGATION,
 	ASSOCIATION,
 	EXTENSION,
-	IMPLEMENTATION
+	IMPLEMENTATION;
+
+	public String toString() {
+		return super.toString().toLowerCase();
+	}
 }

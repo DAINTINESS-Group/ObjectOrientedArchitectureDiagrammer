@@ -33,7 +33,7 @@ public class ClassifierVertexDeserializer implements JsonDeserializer<Classifier
 		if (VertexType.get(vertexType).equals(VertexType.PACKAGE)) {
 			throw new JsonParseException("Wrong diagram type");
 		}
-		this.classifierVertex  = new ClassifierVertex(Path.of(path), name, VertexType.valueOf(vertexType));
+		this.classifierVertex  = new ClassifierVertex(Path.of(path), name, VertexType.get(vertexType));
 		if (jsonObject.has("coordinate_x") && jsonObject.has("coordinate_x")) {
 			double coordinateX = jsonObject.get("coordinate_x").getAsDouble();
 			double coordinateY = jsonObject.get("coordinate_y").getAsDouble();
@@ -57,7 +57,7 @@ public class ClassifierVertexDeserializer implements JsonDeserializer<Classifier
 			String parameters = method.get("parameters").getAsString();
 			this.classifierVertex.addMethod(methodName,
 									   		returnType,
-									   		ModifierType.valueOf(modifier),
+									   		ModifierType.get(modifier),
 									   		gson.fromJson(parameters,
 														  new TypeToken<>() {}.getType())
 			);
@@ -73,7 +73,7 @@ public class ClassifierVertexDeserializer implements JsonDeserializer<Classifier
 			String modifierType    = fieldObject.get("modifier").getAsString();
 			this.classifierVertex.addField(fieldName,
 									  	   returnType,
-										   ModifierType.valueOf(modifierType)
+										   ModifierType.get(modifierType)
 			);
 		}
 	}

@@ -9,13 +9,10 @@ import java.util.*;
 public class ShadowCleaner {
 
 	// TODO Replace with the new ArcType Map
-	private static final List<ArcType> strongerToWeakerArcTypes =
-		List.of(
-			ArcType.EXTENSION,
-			ArcType.IMPLEMENTATION,
-			ArcType.AGGREGATION,
-			ArcType.ASSOCIATION
-		);
+	private static final List<ArcType> strongerToWeakerArcTypes = List.of(ArcType.EXTENSION,
+																		  ArcType.IMPLEMENTATION,
+																		  ArcType.AGGREGATION,
+																		  ArcType.ASSOCIATION);
 
 	private final ClassDiagram 		   classDiagram;
 

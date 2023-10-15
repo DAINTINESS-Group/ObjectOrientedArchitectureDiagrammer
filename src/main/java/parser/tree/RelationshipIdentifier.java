@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * This class is responsible for the creation of the branches between the Java
  * source files. The branches have a type, e.g., inheritance, implementation.
- * The branches are also directed with a starting and an ending node
+ * The branches are also directed with a starting and an ending node.
  */
 public abstract class RelationshipIdentifier {
 	private   final Map<Path, PackageNode> packageNodes;
@@ -17,8 +17,9 @@ public abstract class RelationshipIdentifier {
 
 	/**
 	 * This method is responsible for retrieving the leaf nodes that have been created
-	 * and then creating the branches between them
-	 * @param packageNodes a collection with the package nodes created by the parser
+	 * and then creating the branches between them.
+	 *
+	 * @param packageNodes  a collection with the package nodes created by the parser
 	 */
 	public RelationshipIdentifier(Map<Path, PackageNode> packageNodes) {
 		this.packageNodes 		  = packageNodes;

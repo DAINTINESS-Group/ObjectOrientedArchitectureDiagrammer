@@ -23,9 +23,9 @@ import java.util.Set;
 
 public class ClassDiagramArrangementManager implements DiagramArrangementManagerInterface{
 
-	public static final LayoutAlgorithmType 	LAYOUT_ALGORITHM_TYPE = LayoutAlgorithmType.SUGIYAMA;
-	private 	  final ClassDiagram 			classDiagram;
-	private 	  final Graph<String, String> 	graph;
+	public static final LayoutAlgorithmType   LAYOUT_ALGORITHM_TYPE = LayoutAlgorithmType.SUGIYAMA;
+	private 	  final ClassDiagram 		  classDiagram;
+	private 	  final Graph<String, String> graph;
 
 	public ClassDiagramArrangementManager(ClassDiagram classDiagram) {
 		this.classDiagram = classDiagram;

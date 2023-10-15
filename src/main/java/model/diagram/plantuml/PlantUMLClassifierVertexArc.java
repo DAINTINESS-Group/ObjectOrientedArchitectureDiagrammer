@@ -19,29 +19,24 @@ public class PlantUMLClassifierVertexArc {
 	}
 
 	public StringBuilder convertSinkVertexArc() {
-		List<Arc<ClassifierVertex>> arcs = new ArrayList<>();
-		for (Set<Arc<ClassifierVertex>> arcSet: this.classDiagram.getDiagram().values()) {
-			arcs.addAll(arcSet);
-		}
-
-		return
-			new StringBuilder(arcs
-				.stream()
-				.map(sinkVertexArc ->
-					sinkVertexArc.sourceVertex().getName() + " " + getRelationship(sinkVertexArc.arcType()) + " " +
-					sinkVertexArc.targetVertex().getName())
-				.collect(Collectors.joining("\n"))
-		);
+		return new StringBuilder(this.classDiagram.getDiagram().values()
+								 .stream().flatMap(sinkVertexStream -> sinkVertexStream
+								 .stream()
+								 .map(sinkVertexArc -> String.join(" ",
+																   sinkVertexArc.sourceVertex().getName(),
+																   getRelationship(sinkVertexArc.arcType()),
+																   sinkVertexArc.targetVertex().getName())))
+								 .collect(Collectors.joining("\n")));
 	}
 
 	private String getRelationship(ArcType relationshipType) {
 		return switch (relationshipType) {
-			case EXTENSION 		-> "--|>";
-			case AGGREGATION 	-> "o--";
-			case DEPENDENCY 	-> "..>";
-			case IMPLEMENTATION -> "..|>";
+			case 	EXTENSION 	   -> "--|>";
+			case 	AGGREGATION    -> "o--";
+			case 	DEPENDENCY 	   -> "..>";
+			case 	IMPLEMENTATION -> "..|>";
 			// ASSOCIATION
-			default 			-> "-->";
+			default 			   -> "-->";
 		};
 	}
 

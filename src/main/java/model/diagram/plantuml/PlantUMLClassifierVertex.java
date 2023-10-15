@@ -19,12 +19,11 @@ public class PlantUMLClassifierVertex {
 	public StringBuilder convertSinkVertex() {
 		return new StringBuilder(
 				this.classDiagram.getDiagram().keySet()
-						.stream()
-						.map(sinkVertex ->
-							sinkVertex.getVertexType().toString().toLowerCase() + " " + sinkVertex.getName() + " {\n" +
-							convertFields(sinkVertex) + convertMethods(sinkVertex) + "}")
-						.collect(Collectors.joining("\n\n"))
-		);
+					.stream()
+					.map(sinkVertex ->
+						 sinkVertex.getVertexType() + " " + sinkVertex.getName() + " {\n" +
+						 convertFields(sinkVertex) + convertMethods(sinkVertex) + "}")
+					.collect(Collectors.joining("\n\n")));
 	}
 
 	private String convertFields(ClassifierVertex classifierVertex) {
@@ -33,9 +32,8 @@ public class PlantUMLClassifierVertex {
 		}
 		return classifierVertex.getFields()
 			   .stream()
-			   .map(field ->
-					getVisibility(field.modifier()) + field.name() + ": " + field.type())
-			   .collect(Collectors.joining("\n")) + "\n";
+			   .map(field -> getVisibility(field.modifier()) + field.name() + ": " + field.type())
+		       .collect(Collectors.joining("\n")) + "\n";
 	}
 
 	private String convertMethods(ClassifierVertex classifierVertex) {
@@ -69,10 +67,10 @@ public class PlantUMLClassifierVertex {
 
 	private String getVisibility(ModifierType visibilityEnum) {
 		return switch (visibilityEnum) {
-			case PRIVATE   -> "-";
-			case PUBLIC    -> "+";
-			case PROTECTED -> "#";
-			default 	   -> "~";
+			case    PRIVATE   -> "-";
+			case    PUBLIC    -> "+";
+			case    PROTECTED -> "#";
+			default    	      -> "~";
 		};
 	}
 

@@ -20,4 +20,8 @@ public enum ControllerType {
 	public static ControllerType get(String controllerType) {
 		return CONTROLLER_TYPE.get(controllerType.toLowerCase());
 	}
+
+	public String toString() {
+		return super.toString().toLowerCase();
+	}
 }

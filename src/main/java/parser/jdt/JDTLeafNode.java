@@ -15,8 +15,9 @@ public class JDTLeafNode extends LeafNode {
 
 	/**
 	 * This method is responsible for setting the nodes line that contains the declaration
-	 *  of the source file
-	 * @param inheritanceLine the Java source file's line holding the information regarding its inheritance
+	 *  of the source file.
+	 *
+	 * @param inheritanceLine  the Java source file's line holding the information regarding its inheritance
 	 */
 	public void setInheritanceLine(String[] inheritanceLine) {
 		this.inheritanceLine = inheritanceLine;

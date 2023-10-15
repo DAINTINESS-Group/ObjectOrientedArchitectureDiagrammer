@@ -20,10 +20,10 @@ public class GraphMLPackageVertex {
 
 	public StringBuilder convertVertex() {
 		for (Map.Entry<PackageVertex, Integer> entry: this.packageDiagram.getGraphNodes().entrySet()) {
-			this.graphMLBuffer.append(
-				GraphMLSyntax.getInstance().getGraphMLVertexSyntax(getVertexDescription(entry.getKey(),
-				entry.getValue(), this.packageDiagram.getGraphMLDiagramGeometry().get(entry.getValue())))
-			);
+			this.graphMLBuffer.append(GraphMLSyntax.getInstance()
+										  		   .getGraphMLVertexSyntax(getVertexDescription(entry.getKey(),
+																								entry.getValue(),
+																								this.packageDiagram.getGraphMLDiagramGeometry().get(entry.getValue()))));
 		}
 		return this.graphMLBuffer;
 	}
