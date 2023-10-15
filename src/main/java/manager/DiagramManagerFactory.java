@@ -2,14 +2,11 @@ package manager;
 
 public class DiagramManagerFactory {
 
-	public DiagramManager createDiagramManager(DiagramType diagramType) {
-		if (diagramType == DiagramType.CLASS) {
-			return new ClassDiagramManager();
-		}else if (diagramType == DiagramType.PACKAGE) {
-			return new PackageDiagramManager();
-		}else {
-			throw new RuntimeException();
-		}
+	public static DiagramManager createDiagramManager(String diagramType) {
+		return switch (DiagramType.get(diagramType)) {
+			case CLASS -> new ClassDiagramManager();
+			case PACKAGE -> new PackageDiagramManager();
+		};
 	}
 
 }

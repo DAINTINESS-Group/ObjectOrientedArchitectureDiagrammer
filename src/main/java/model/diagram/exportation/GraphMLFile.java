@@ -9,30 +9,40 @@ import java.nio.file.Path;
 
 public class GraphMLFile {
 
-	private FileWriter graphMLWriter;
+	private FileWriter    graphMLWriter;
 	private StringBuilder graphMLBuffer;
-	private File graphMLFile;
+	private File          graphMLFile;
 
-	public void createGraphMLFile(Path graphMLSavePath) throws IOException {
-		graphMLFile = graphMLSavePath.toFile();
-		graphMLWriter = new FileWriter(graphMLFile);
-		graphMLBuffer = new StringBuilder();
-		graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLPrefix());
+	public void createGraphMLFile(Path graphMLSavePath) {
+		try {
+			this.graphMLFile   = graphMLSavePath.toFile();
+			this.graphMLWriter = new FileWriter(this.graphMLFile);
+			this.graphMLBuffer = new StringBuilder();
+			this.graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLPrefix());
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 
-	public void closeGraphMLFile() throws IOException {
-		graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLSuffix());
-		graphMLWriter.write(graphMLBuffer.toString());
-		graphMLWriter.close();
+	public void closeGraphMLFile() {
+		try {
+			this.graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLSuffix());
+			this.graphMLWriter.write(this.graphMLBuffer.toString());
+			this.graphMLWriter.close();
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void writeToBuffer(StringBuilder buffer) {
-		graphMLBuffer.append(buffer);
+		this.graphMLBuffer.append(buffer);
 	}
 
 	public File getGraphMLFile() {
-		return graphMLFile;
+		return this.graphMLFile;
 	}
 
 }

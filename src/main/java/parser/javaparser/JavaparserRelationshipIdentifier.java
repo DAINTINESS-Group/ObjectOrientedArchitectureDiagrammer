@@ -17,15 +17,17 @@ public class JavaparserRelationshipIdentifier extends RelationshipIdentifier {
 
 	@Override
 	protected void checkRelationship(int i, int j) {
-		List<String> imports = ((JavaparserLeafNode) allLeafNodes.get(i)).getImports();
-		Optional<String> optional = imports.stream().filter(imprt ->
-		(allLeafNodes.get(j).getParentNode().getName() + "." + allLeafNodes.get(j).getName()).endsWith(imprt) ||
-		(allLeafNodes.get(j).getParentNode().getName() + "." + "*") .endsWith(imprt))
-				.findFirst();
+		List<String> imports = ((JavaparserLeafNode) this.allLeafNodes.get(i)).getImports();
+		Optional<String> optional = imports
+			.stream()
+			.filter(imprt ->
+				(this.allLeafNodes.get(j).getParentNode().getName() + "." + this.allLeafNodes.get(j).getName()).endsWith(imprt) ||
+				(this.allLeafNodes.get(j).getParentNode().getName() + "." + "*").endsWith(imprt))
+			.findFirst();
+
 		if (optional.isEmpty() && !isSubNode(i, j)) {
 			return;
 		}
-
 		if (isDependency(i, j)) {
 			createRelationship(i, j, RelationshipType.DEPENDENCY);
 		}
@@ -44,13 +46,13 @@ public class JavaparserRelationshipIdentifier extends RelationshipIdentifier {
 	}
 
 	private boolean isSubNode(int i, int j) {
-		PackageNode node = allLeafNodes.get(j).getParentNode();
+		PackageNode node = this.allLeafNodes.get(j).getParentNode();
 		while (true) {
-			if (node.equals(allLeafNodes.get(i).getParentNode())) {
+			if (node.equals(this.allLeafNodes.get(i).getParentNode())) {
 				return true;
 			}
 
-			if (node.getPackageNodesPath().toString().equals("")) {
+			if (node.getPackageNodesPath().toString().isEmpty()) {
 				return false;
 			}
 			node = node.getParentNode();
@@ -59,10 +61,13 @@ public class JavaparserRelationshipIdentifier extends RelationshipIdentifier {
 
 	@Override
 	protected boolean isDependency(int i, int j) {
-		return doesRelationshipExist(allLeafNodes.get(i).getMethodParameterTypes(), allLeafNodes.get(j).getName()) ||
-				doesRelationshipExist(allLeafNodes.get(i).getMethodsReturnTypes(), allLeafNodes.get(j).getName()) ||
-				doesRelationshipExist(getLeafNode(i).getVariablesTypes(), allLeafNodes.get(j).getName()) ||
-				doesRelationshipExist(getLeafNode(i).getCreatedObjects(), allLeafNodes.get(j).getName());
+		return
+			doesRelationshipExist(
+				this.allLeafNodes.get(i).getMethodParameterTypes(), this.allLeafNodes.get(j).getName())||
+				doesRelationshipExist(this.allLeafNodes.get(i).getMethodsReturnTypes(), this.allLeafNodes.get(j).getName()) ||
+				doesRelationshipExist(getLeafNode(i).getVariablesTypes(), this.allLeafNodes.get(j).getName()) ||
+				doesRelationshipExist(getLeafNode(i).getCreatedObjects(), this.allLeafNodes.get(j).getName()
+			);
 	}
 
 	@Override
@@ -70,17 +75,17 @@ public class JavaparserRelationshipIdentifier extends RelationshipIdentifier {
 		if (getLeafNode(i).getBaseClass().isEmpty()) {
 			return false;
 		}
-		return getLeafNode(i).getBaseClass().equals(allLeafNodes.get(j).getName());
+		return getLeafNode(i).getBaseClass().equals(this.allLeafNodes.get(j).getName());
 	}
 
 	@Override
 	protected boolean isImplementation(int i, int j) {
-		if (getLeafNode(i).getImplementedInterfaces().size() == 0) {
+		if (getLeafNode(i).getImplementedInterfaces().isEmpty()) {
 			return false;
 		}
 
 		for (String implementedInterface: getLeafNode(i).getImplementedInterfaces()) {
-			if (implementedInterface.equals(allLeafNodes.get(j).getName())) {
+			if (implementedInterface.equals(this.allLeafNodes.get(j).getName())) {
 				return true;
 			}
 		}
@@ -88,6 +93,6 @@ public class JavaparserRelationshipIdentifier extends RelationshipIdentifier {
 	}
 
 	private JavaparserLeafNode getLeafNode(int i) {
-		return (JavaparserLeafNode) allLeafNodes.get(i);
+		return (JavaparserLeafNode) this.allLeafNodes.get(i);
 	}
 }

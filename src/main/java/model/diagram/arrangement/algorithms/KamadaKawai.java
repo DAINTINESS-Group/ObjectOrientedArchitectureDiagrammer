@@ -6,18 +6,14 @@ import edu.uci.ics.jung.visualization.VisualizationViewer;
 import model.diagram.arrangement.geometry.DiagramGeometry;
 import model.diagram.arrangement.geometry.GeometryNode;
 
-import java.awt.Dimension;
+import java.awt.*;
 
 public class KamadaKawai implements LayoutAlgorithm{
 
-	private Graph<String, String> graph;
-	private final static int MIN_X_WINDOW_VALUE = 25;
-	private final static int MIN_Y_WINDOW_VALUE = 25;
 	private final static int GRAPH_X_SIZE = 1200;
 	private final static int GRAPH_Y_SIZE = 725;
 
-	public KamadaKawai() {
-	}
+	private Graph<String, String> graph;
 
 	@Override
 	public void setGraph(Graph<String, String> graph) {

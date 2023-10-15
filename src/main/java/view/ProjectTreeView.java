@@ -36,7 +36,7 @@ public class ProjectTreeView {
 
 	public void createTreeView(){
 		rootItem = new CheckBoxTreeItem<>(sourceFolderPath.normalize().toString()
-				.substring(sourceFolderPath.normalize().toString().lastIndexOf("\\") + 1));
+				.substring(sourceFolderPath.normalize().toString().lastIndexOf("/") + 1));
 		treeView.setShowRoot(true);
 		treeView.setCellFactory(CheckBoxTreeCell.forTreeView());
 		resizer.makeResizable(treeView);
@@ -71,7 +71,7 @@ public class ProjectTreeView {
 
 	private String getRelativePath(Path path) {
 		return path.normalize().toString().replace(sourceFolderPath.normalize().toString().substring(0,
-				sourceFolderPath.normalize().toString().lastIndexOf("\\") + 1), "").replace("\\", ".");
+				sourceFolderPath.normalize().toString().lastIndexOf("/") + 1), "").replace("/", ".");
 	}
 
 	public List<String> getSelectedFiles(List<String> files, String fileType) {

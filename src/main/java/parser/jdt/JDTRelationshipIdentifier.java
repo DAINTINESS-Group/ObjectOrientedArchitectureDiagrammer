@@ -9,10 +9,10 @@ import java.util.Map;
 
 public class JDTRelationshipIdentifier extends RelationshipIdentifier {
 
-	public static final int DECLARATION_LINE_STANDARD_SIZE = 2;
-	public static final int INHERITANCE_TYPE = 2;
-	public static final int SUPERCLASS_NAME = 3;
-	public static final int MULTIPLE_IMPLEMENTATIONS = 5;
+	public static final int DECLARATION_LINE_STANDARD_SIZE 				   = 2;
+	public static final int INHERITANCE_TYPE							   = 2;
+	public static final int SUPERCLASS_NAME 							   = 3;
+	public static final int MULTIPLE_IMPLEMENTATIONS 					   = 5;
 	public static final int INHERITANCE_TYPE_WITH_MULTIPLE_IMPLEMENTATIONS = 4;
 
 	public JDTRelationshipIdentifier(Map<Path, PackageNode> packageNodes) {
@@ -41,13 +41,13 @@ public class JDTRelationshipIdentifier extends RelationshipIdentifier {
 
 	@Override
 	protected boolean isDependency(int i, int j) {
-		return doesRelationshipExist(allLeafNodes.get(i).getMethodParameterTypes(), allLeafNodes.get(j).getName()) ||
-				doesRelationshipExist(allLeafNodes.get(i).getMethodsReturnTypes(), allLeafNodes.get(j).getName());
+		return doesRelationshipExist(allLeafNodes.get(i).getMethodParameterTypes(), allLeafNodes.get(j).getName())
+			   || doesRelationshipExist(allLeafNodes.get(i).getMethodsReturnTypes(), allLeafNodes.get(j).getName());
 	}
 
 	@Override
 	protected boolean isExtension(int i, int j) {
-		if ( getNodesInheritanceLine(i)[INHERITANCE_TYPE].equals("extends") ) {
+		if (getNodesInheritanceLine(i)[INHERITANCE_TYPE].equals("extends")) {
 			for (int k = 0; k < allLeafNodes.size(); k++) {
 				if (getNodesInheritanceLine(i)[SUPERCLASS_NAME].equals(allLeafNodes.get(j).getName())) {
 					return true;
@@ -59,14 +59,14 @@ public class JDTRelationshipIdentifier extends RelationshipIdentifier {
 
 	@Override
 	protected boolean isImplementation(int i, int j) {
-		if (getNodesInheritanceLine(i)[INHERITANCE_TYPE].equals("implements") ) {
+		if (getNodesInheritanceLine(i)[INHERITANCE_TYPE].equals("implements")) {
 			for (int l = 3; l < getNodesInheritanceLine(i).length; l++) {
 				if (getNodesInheritanceLine(i)[l].equals(allLeafNodes.get(j).getName())) {
 					return true;
 				}
 			}
-		}else if (getNodesInheritanceLine(i).length > MULTIPLE_IMPLEMENTATIONS &&
-				getNodesInheritanceLine(i)[INHERITANCE_TYPE_WITH_MULTIPLE_IMPLEMENTATIONS].equals("implements")) {
+		}else if (getNodesInheritanceLine(i).length > MULTIPLE_IMPLEMENTATIONS
+				  && getNodesInheritanceLine(i)[INHERITANCE_TYPE_WITH_MULTIPLE_IMPLEMENTATIONS].equals("implements")) {
 			for (int l = 5; l < getNodesInheritanceLine(i).length; l++) {
 				if (getNodesInheritanceLine(i)[l].equals(allLeafNodes.get(j).getName())) {
 					return true;

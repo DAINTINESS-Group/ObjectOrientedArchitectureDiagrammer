@@ -10,13 +10,6 @@ import model.diagram.arrangement.geometry.GeometryNode;
 public class Spring implements LayoutAlgorithm{
 
 	private Graph<String, String> graph;
-	private final static int MIN_X_WINDOW_VALUE = 25;
-	private final static int MIN_Y_WINDOW_VALUE = 25;
-	// private final static int GRAPH_X_SIZE = 1500;
-	// private final static int GRAPH_Y_SIZE = 725;
-
-	public Spring() {
-	}
 
 	@Override
 	public void setGraph(Graph<String, String> graph) {

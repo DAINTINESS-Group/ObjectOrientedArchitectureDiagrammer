@@ -12,22 +12,24 @@ import java.nio.file.Path;
 
 public class PlantUMLPackageDiagramTextExporter implements DiagramExporter {
 
-	private final String bufferBody;
+	private final StringBuilder bufferBody;
 
 	public PlantUMLPackageDiagramTextExporter(PackageDiagram diagram) {
 		PlantUMLPackageVertex plantUMLPackageVertex = new PlantUMLPackageVertex(diagram);
-		StringBuilder plantUMLNodeBuffer = plantUMLPackageVertex.convertVertex();
-		PlantUMLPackageVertexArc plantUMLEdge = new PlantUMLPackageVertexArc(diagram);
-		StringBuilder plantUMLEdgeBuffer = plantUMLEdge.convertVertexArc();
-		bufferBody = plantUMLNodeBuffer.append("\n\n").append(plantUMLEdgeBuffer) + "\n @enduml";
+		StringBuilder plantUMLNodeBuffer 			= plantUMLPackageVertex.convertVertex();
+		PlantUMLPackageVertexArc plantUMLEdge 		= new PlantUMLPackageVertexArc(diagram);
+		StringBuilder plantUMLEdgeBuffer 			= plantUMLEdge.convertVertexArc();
+		this.bufferBody 							= plantUMLNodeBuffer.append("\n\n")
+																		.append(plantUMLEdgeBuffer)
+																		.append("\n @enduml");
 	}
 
 	@Override
 	public File exportDiagram(Path exportPath) {
-		File plantUMLFile = exportPath.toFile();
+		File plantUMLFile   = exportPath.toFile();
 		String plantUMLCode = getPackageText();
-		plantUMLCode += bufferBody;
-		plantUMLCode = dotChanger(plantUMLCode);
+		plantUMLCode 		+= this.bufferBody;
+		plantUMLCode 		= dotChanger(plantUMLCode);
 		writeFile(plantUMLFile, plantUMLCode);
 		return plantUMLFile;
 	}
@@ -42,7 +44,7 @@ public class PlantUMLPackageDiagramTextExporter implements DiagramExporter {
 
 	private String dotChanger(String plantUMLCode) {
 		StringBuilder newString = new StringBuilder();
-		String[] lines = plantUMLCode.split("\n");
+		String[] lines 			= plantUMLCode.split("\n");
 		for (String line: lines) {
 			String[] splittedLine = line.split(" ");
 			for (String word: splittedLine) {
@@ -59,12 +61,16 @@ public class PlantUMLPackageDiagramTextExporter implements DiagramExporter {
 	}
 
 	private String getPackageText() {
-		return "@startuml\n" +
-				"skinparam package {\n" +
-				"    BackgroundColor lightyellow\n" +
-				"    BorderColor black\n" +
-				"    ArrowColor black\n" +
-				"    Shadowing true\n" +
-				"}\n\n";
+		return
+			"""
+				@startuml
+				skinparam package {
+				    BackgroundColor lightyellow
+				    BorderColor black
+				    ArrowColor black
+				    Shadowing true
+				}
+
+				""";
 	}
 }

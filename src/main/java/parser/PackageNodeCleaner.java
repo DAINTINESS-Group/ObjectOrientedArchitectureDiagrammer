@@ -15,13 +15,13 @@ public class PackageNodeCleaner {
 
 	public Map<Path, PackageNode> removeNonPackageNodes() {
 		Map<Path, PackageNode> validPackageNodes = new HashMap<>();
-		for (PackageNode packageNode: packageNodes.values()) {
+		for (PackageNode packageNode: this.packageNodes.values()) {
 			if (isPackageNodeValid(packageNode)) {
 				validPackageNodes.put(packageNode.getPackageNodesPath(), packageNode);
 				continue;
 			}
 			PackageNode parentNode = packageNode.getParentNode();
-			if (parentNode.getPackageNodesPath().toString().equals("")) {
+			if (parentNode.getPackageNodesPath().toString().isEmpty()) {
 				continue;
 			}
 			parentNode.getSubNodes().remove(packageNode.getPackageNodesPath());
@@ -31,18 +31,18 @@ public class PackageNodeCleaner {
 	}
 
 	private boolean isPackageNodeValid(PackageNode packageNode) {
-		if (packageNode.getSubNodes().size() == 0) {
+		if (packageNode.getSubNodes().isEmpty()) {
 			return packageNode.isValid();
 		}
 
-		boolean result = false;
+		boolean flag = false;
 		for (PackageNode childNode: packageNode.getSubNodes().values()) {
-			result = isPackageNodeValid(childNode);
-			if (result) {
+			flag = isPackageNodeValid(childNode);
+			if (flag) {
 				break;
 			}
 		}
 
-		return result || packageNode.isValid();
+		return flag || packageNode.isValid();
 	}
 }

@@ -5,37 +5,33 @@ import model.diagram.graphml.GraphMLPackageVertex;
 import model.diagram.graphml.GraphMLPackageVertexArc;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Path;
 
 public class GraphMLPackageDiagramExporter implements DiagramExporter {
 
-	private final GraphMLFile graphMLFile;
+	private final GraphMLFile   graphMLFile;
 	private final StringBuilder graphMLNodeBuffer;
 	private final StringBuilder graphMLEdgeBuffer;
 
 	public GraphMLPackageDiagramExporter(PackageDiagram packageDiagram) {
-		GraphMLPackageVertex graphMLPackageVertex = new GraphMLPackageVertex(packageDiagram);
-		graphMLNodeBuffer = graphMLPackageVertex.convertVertex();
+		GraphMLPackageVertex graphMLPackageVertex 		= new GraphMLPackageVertex(packageDiagram);
+		this.graphMLNodeBuffer 						  	= graphMLPackageVertex.convertVertex();
 		GraphMLPackageVertexArc graphMLPackageVertexArc = new GraphMLPackageVertexArc(packageDiagram);
-		graphMLEdgeBuffer = graphMLPackageVertexArc.convertVertexArc();
-		graphMLFile = new GraphMLFile();
+		this.graphMLEdgeBuffer 							= graphMLPackageVertexArc.convertVertexArc();
+		this.graphMLFile 								= new GraphMLFile();
 	}
 
 	@Override
 	public File exportDiagram(Path exportPath) {
-		try {
-			graphMLFile.createGraphMLFile(exportPath);
-			generateGraphMLGraph(graphMLNodeBuffer, graphMLEdgeBuffer);
-			graphMLFile.closeGraphMLFile();
-		}catch (IOException e){
-			e.printStackTrace();
-		}
-		return graphMLFile.getGraphMLFile();
+		this.graphMLFile.createGraphMLFile(exportPath);
+		generateGraphMLGraph(this.graphMLNodeBuffer, this.graphMLEdgeBuffer);
+		this.graphMLFile.closeGraphMLFile();
+		return this.graphMLFile.getGraphMLFile();
 	}
 
-	private void generateGraphMLGraph(StringBuilder nodeBuffer, StringBuilder edgeBuffer){
-		graphMLFile.writeToBuffer(nodeBuffer);
-		graphMLFile.writeToBuffer(edgeBuffer);
+	private void generateGraphMLGraph(StringBuilder nodeBuffer,
+									  StringBuilder edgeBuffer) {
+		this.graphMLFile.writeToBuffer(nodeBuffer);
+		this.graphMLFile.writeToBuffer(edgeBuffer);
 	}
 }

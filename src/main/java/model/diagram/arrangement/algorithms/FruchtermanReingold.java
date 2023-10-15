@@ -10,13 +10,6 @@ import model.diagram.arrangement.geometry.GeometryNode;
 public class FruchtermanReingold implements LayoutAlgorithm{
 
 	private Graph<String, String> graph;
-	private final static int MIN_X_WINDOW_VALUE = 25;
-	private final static int MIN_Y_WINDOW_VALUE = 25;
-	// private final static int GRAPH_X_SIZE = 1200;
-	// private final static int GRAPH_Y_SIZE = 725;
-
-	public FruchtermanReingold() {
-	}
 
 	@Override
 	public void setGraph(Graph<String, String> graph) {

@@ -1,9 +1,9 @@
 package parser.jdt;
 
-import parser.tree.RelationshipIdentifier;
+import parser.factory.Parser;
 import parser.tree.LeafNode;
 import parser.tree.PackageNode;
-import parser.factory.Parser;
+import parser.tree.RelationshipIdentifier;
 
 import java.io.File;
 import java.nio.file.DirectoryStream;
@@ -17,7 +17,8 @@ import java.util.Map;
 /**
  * This class is responsible for the parsing of a Java project. While parsing the project
  * it creates a tree where nodes are the packages and leafs are the Java source files.
- * In order to create the tree it uses the ASTNode API from the JDT library
+ * In order to create the tree it uses the ASTNode API from the JDT library.
+ *
  */
 public class JDTProjectParser implements Parser {
 	private final Map<Path, PackageNode> packageNodes;
@@ -73,7 +74,7 @@ public class JDTProjectParser implements Parser {
 	}
 
 	private Path getSubNodesPath(PackageNode currentPackage, File file) {
-		return Paths.get(currentPackage.getPackageNodesPath().normalize() + "\\" + file.getName());
+		return Paths.get(currentPackage.getPackageNodesPath().normalize() + "/" + file.getName());
 	}
 
 }

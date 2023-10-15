@@ -12,39 +12,31 @@ import java.util.stream.Collectors;
 
 public class PlantUMLClassifierVertexArc {
 
-
 	private final ClassDiagram classDiagram;
 
 	public PlantUMLClassifierVertexArc(ClassDiagram diagram) {
-		classDiagram = diagram;
+		this.classDiagram = diagram;
 	}
 
 	public StringBuilder convertSinkVertexArc() {
-		List<Arc<ClassifierVertex>> arcs = new ArrayList<>();
-		for (Set<Arc<ClassifierVertex>> arcSet: classDiagram.getDiagram().values()) {
-			arcs.addAll(arcSet);
-		}
-
-		return new StringBuilder(
-				arcs.stream()
-				.map(sinkVertexArc ->
-				sinkVertexArc.getSourceVertex().getName() + " " + getRelationship(sinkVertexArc.getArcType()) + " " +
-				sinkVertexArc.getTargetVertex().getName())
-				.collect(Collectors.joining("\n"))
-				);
+		return new StringBuilder(this.classDiagram.getDiagram().values()
+								 .stream().flatMap(sinkVertexStream -> sinkVertexStream
+								 .stream()
+								 .map(sinkVertexArc -> String.join(" ",
+																   sinkVertexArc.sourceVertex().getName(),
+																   getRelationship(sinkVertexArc.arcType()),
+																   sinkVertexArc.targetVertex().getName())))
+								 .collect(Collectors.joining("\n")));
 	}
 
 	private String getRelationship(ArcType relationshipType) {
 		return switch (relationshipType) {
-			case EXTENSION -> "--|>";
-			case AGGREGATION -> "o--";
-			case DEPENDENCY -> "..>";
-			case IMPLEMENTATION -> "..|>";
-			default -> "-->"; // ASSOCIATION
-		//case SELFREFERENCE: // SELF-REFERENCING
-		//	return "";		// A -- A , SAME CLASS WITH -- IN BETWEEN
-		//case COMPOSITION:
-		//	return "--*";
+			case 	EXTENSION 	   -> "--|>";
+			case 	AGGREGATION    -> "o--";
+			case 	DEPENDENCY 	   -> "..>";
+			case 	IMPLEMENTATION -> "..|>";
+			// ASSOCIATION
+			default 			   -> "-->";
 		};
 	}
 

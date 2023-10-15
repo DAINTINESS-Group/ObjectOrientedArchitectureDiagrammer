@@ -1,19 +1,21 @@
 package model.diagram.exportation;
 
-import java.util.Collection;
-
 import com.brunomnsilva.smartgraph.graph.Vertex;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
-
 import model.diagram.ClassDiagram;
 import model.diagram.PackageDiagram;
 import model.graph.ClassifierVertex;
 import model.graph.PackageVertex;
 
-public class CoordinatesUpdater {
+import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-	private PackageDiagram packageDiagram;
-	private ClassDiagram classDiagram;
+public class CoordinatesUpdater {
+	private static final Logger         logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+
+	private              PackageDiagram packageDiagram;
+	private              ClassDiagram   classDiagram;
 
 	public CoordinatesUpdater(PackageDiagram packageDiagram) {
 		this.packageDiagram = packageDiagram;
@@ -23,28 +25,40 @@ public class CoordinatesUpdater {
 		this.classDiagram = classDiagram;
 	}
 
-	public void updatePackageCoordinates(Collection<Vertex<String>> vertexCollection, SmartGraphPanel<String, String> graphView) {
+	public void updatePackageCoordinates(Collection<Vertex<String>> 	 vertexCollection,
+										 SmartGraphPanel<String, String> graphView) {
+		if (vertexCollection == null) {
+			logger.log(Level.INFO, "Vertex Collection is null");
+			return;
+		}
+
 		for(Vertex<String> vertex : vertexCollection) {
 			double x = graphView.getVertexPositionX(vertex);
 			double y = graphView.getVertexPositionY(vertex);
-			for(PackageVertex packageVertex : packageDiagram.getGraphNodes().keySet()) {
-				if(packageVertex.getName().equals(vertex.element())) {
-					packageVertex.setCoordinates(x, y);
-					break;
+			for(PackageVertex packageVertex : this.packageDiagram.getGraphNodes().keySet()) {
+				if(!packageVertex.getName().equals(vertex.element())) {
+					continue;
 				}
+				packageVertex.setCoordinates(x, y);
 			}
 		}
 	}
 
-	public void updateClassCoordinates(Collection<Vertex<String>> vertexCollection, SmartGraphPanel<String, String> graphView) {
+	public void updateClassCoordinates(Collection<Vertex<String>> 	   vertexCollection,
+									   SmartGraphPanel<String, String> graphView) {
+		if (vertexCollection == null) {
+			logger.log(Level.INFO, "Vertex Collection is null");
+			return;
+		}
+
 		for(Vertex<String> vertex : vertexCollection) {
 			double x = graphView.getVertexPositionX(vertex);
 			double y = graphView.getVertexPositionY(vertex);
-			for(ClassifierVertex classifierVertex : classDiagram.getGraphNodes().keySet()) {
-				if(classifierVertex.getName().equals(vertex.element())) {
-					classifierVertex.setCoordinates(x, y);
-					break;
+			for(ClassifierVertex classifierVertex : this.classDiagram.getGraphNodes().keySet()) {
+				if (!classifierVertex.getName().equals(vertex.element())) {
+					continue;
 				}
+				classifierVertex.setCoordinates(x, y);
 			}
 		}
 	}

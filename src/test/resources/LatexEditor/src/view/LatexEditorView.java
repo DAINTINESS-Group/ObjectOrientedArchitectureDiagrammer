@@ -89,16 +89,16 @@ public class LatexEditorView {
 		type = "emptyTemplate";
 		
 		fileContents = fileContents.trim();
-		if(fileContents.startsWith("\\documentclass[11pt,twocolumn,a4paper]{article}")) {
+		if(fileContents.startsWith("/documentclass[11pt,twocolumn,a4paper]{article}")) {
 			type = "articleTemplate";
 		}
-		else if(fileContents.startsWith("\\documentclass[11pt,a4paper]{book}")) {
+		else if(fileContents.startsWith("/documentclass[11pt,a4paper]{book}")) {
 			type = "bookTemplate";
 		}
-		else if(fileContents.startsWith("\\documentclass[11pt,a4paper]{report}")) {
+		else if(fileContents.startsWith("/documentclass[11pt,a4paper]{report}")) {
 			type = "reportTemplate";
 		}
-		else if(fileContents.startsWith("\\documentclass{letter}")) {
+		else if(fileContents.startsWith("/documentclass{letter}")) {
 			type = "letterTemplate";
 		}
 	}

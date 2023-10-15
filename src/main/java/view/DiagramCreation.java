@@ -29,8 +29,7 @@ public class DiagramCreation {
 			return;
 		}
 		this.diagramType = diagramType;
-		ControllerFactory controllerFactory = new ControllerFactory();
-		diagramController = controllerFactory.createController(ControllerType.UML_DIAGRAM, diagramType);
+		diagramController = ControllerFactory.createController("uml", diagramType);
 		diagramController.createTree(projectTreeView.getSourceFolderPath());
 	}
 
@@ -92,8 +91,8 @@ public class DiagramCreation {
 	}
 
 	private boolean wereFilesChosen() {
-		return !(projectTreeView.getSelectedFiles(projectTreeView.getFolderFiles(), "package").size() == 0 &&
-				projectTreeView.getSelectedFiles(projectTreeView.getJavaSourceFiles(), "java").size() == 0);
+		return !(projectTreeView.getSelectedFiles(projectTreeView.getFolderFiles(), "package").isEmpty() &&
+                 projectTreeView.getSelectedFiles(projectTreeView.getJavaSourceFiles(), "java").isEmpty());
 	}
 
 	public void setMenuBar(MenuBar menuBar) {

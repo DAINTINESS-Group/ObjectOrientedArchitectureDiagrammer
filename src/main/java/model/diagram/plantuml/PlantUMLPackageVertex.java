@@ -6,19 +6,17 @@ import java.util.stream.Collectors;
 
 public class PlantUMLPackageVertex {
 
-
 	private final PackageDiagram packageDiagram;
 
 	public PlantUMLPackageVertex(PackageDiagram diagram) {
-		packageDiagram = diagram;
+		this.packageDiagram = diagram;
 	}
 
 	public StringBuilder convertVertex() {
-		return new StringBuilder(
-				packageDiagram.getDiagram().keySet().stream()
-				.map(vertex -> vertex.getVertexType().toString().toLowerCase() + " " + vertex.getName() + " {\n" + "}\n")
-				.collect(Collectors.joining("\n"))
-				);
+		return new StringBuilder(this.packageDiagram.getDiagram().keySet()
+				.stream()
+				.map(vertex -> vertex.getVertexType() + " " + vertex.getName() + " {\n" + "}\n")
+				.collect(Collectors.joining("\n")));
 	}
 
 }

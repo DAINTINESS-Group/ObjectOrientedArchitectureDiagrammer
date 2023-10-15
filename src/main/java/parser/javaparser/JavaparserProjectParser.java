@@ -1,9 +1,9 @@
 package parser.javaparser;
 
 import parser.factory.Parser;
-import parser.tree.RelationshipIdentifier;
 import parser.tree.LeafNode;
 import parser.tree.PackageNode;
+import parser.tree.RelationshipIdentifier;
 
 import java.io.File;
 import java.nio.file.DirectoryStream;
@@ -18,21 +18,21 @@ public class JavaparserProjectParser implements Parser {
 	private final Map<Path, PackageNode> packageNodes;
 
 	public JavaparserProjectParser() {
-		packageNodes = new HashMap<>();
+		this.packageNodes = new HashMap<>();
 	}
 
 	@Override
 	public Map<Path, PackageNode> parseSourcePackage(Path sourcePackagePath) {
 		PackageNode rootPackageNode = new PackageNode(sourcePackagePath);
-		packageNodes.put(rootPackageNode.getPackageNodesPath(), rootPackageNode);
+		this.packageNodes.put(rootPackageNode.getPackageNodesPath(), rootPackageNode);
 		try {
 			parseFolder(rootPackageNode);
-			RelationshipIdentifier relationshipIdentifier = new JavaparserRelationshipIdentifier(packageNodes);
+			RelationshipIdentifier relationshipIdentifier = new JavaparserRelationshipIdentifier(this.packageNodes);
 			relationshipIdentifier.createLeafNodesRelationships();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return packageNodes;
+		return this.packageNodes;
 	}
 
 	private void parseFolder(PackageNode currentNode) {
@@ -51,7 +51,7 @@ public class JavaparserProjectParser implements Parser {
 
 	private void createPackageSubNode(PackageNode currentNode, PackageNode subNode){
 		subNode.setParentNode(currentNode);
-		packageNodes.put(subNode.getPackageNodesPath(), subNode);
+		this.packageNodes.put(subNode.getPackageNodesPath(), subNode);
 		currentNode.addSubNode(subNode);
 		parseFolder(subNode);
 	}
@@ -69,7 +69,7 @@ public class JavaparserProjectParser implements Parser {
 	}
 
 	private Path getSubNodesPath(PackageNode currentPackage, File file) {
-		return Paths.get(currentPackage.getPackageNodesPath().normalize() + "\\" + file.getName());
+		return Paths.get(currentPackage.getPackageNodesPath().normalize() + "/" + file.getName());
 	}
 
 }

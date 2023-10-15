@@ -7,15 +7,17 @@ import java.nio.file.Path;
 
 public class JDTLeafNode extends LeafNode {
 
-	private String inheritanceLine[];
+	private String[] inheritanceLine;
 
 	public JDTLeafNode(Path path) {
 		super(path);
 	}
 
-	/**This method is responsible for setting the nodes line that contains the declaration
-	 *  of the source file
-	 * @param inheritanceLine the Java source file's line holding the information regarding its inheritance
+	/**
+	 * This method is responsible for setting the nodes line that contains the declaration
+	 *  of the source file.
+	 *
+	 * @param inheritanceLine  the Java source file's line holding the information regarding its inheritance
 	 */
 	public void setInheritanceLine(String[] inheritanceLine) {
 		this.inheritanceLine = inheritanceLine;
@@ -26,7 +28,7 @@ public class JDTLeafNode extends LeafNode {
 	}
 
 	public String getName() {
-		return path.normalize().toString().substring(path.normalize().toString().lastIndexOf("\\") + 1, path.normalize().toString().lastIndexOf("."));
+		return path.normalize().toString().substring(path.normalize().toString().lastIndexOf("/") + 1, path.normalize().toString().lastIndexOf("."));
 	}
 
 	public NodeType getType() {

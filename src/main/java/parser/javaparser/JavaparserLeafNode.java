@@ -11,25 +11,25 @@ import java.util.Map;
 
 public class JavaparserLeafNode extends LeafNode {
 
-	private final List<String> implementedInterfaces;
+	private final List<String> 		  implementedInterfaces;
 	private final Map<String, String> variables;
-	private final List<String> createdObjects;
-	private String nodeName;
-	private String baseClass;
-	private NodeType nodeType;
-	private List<String> imports;
+	private final List<String> 		  createdObjects;
+	private 	  String 			  nodeName;
+	private 	  String 			  baseClass;
+	private 	  NodeType 			  nodeType;
+	private 	  List<String> 		  imports;
 
 	public JavaparserLeafNode(Path path) {
 		super(path);
-		implementedInterfaces = new ArrayList<>();
-		variables = new HashMap<>();
-		createdObjects = new ArrayList<>();
-		baseClass = "";
-		nodeName = "";
+		this.implementedInterfaces = new ArrayList<>();
+		this.variables 			   = new HashMap<>();
+		this.createdObjects 	   = new ArrayList<>();
+		this.baseClass 			   = "";
+		this.nodeName 			   = "";
 	}
 
 	public void addVariable(String variableName, String variableType) {
-		variables.put(variableName, variableType);
+		this.variables.put(variableName, variableType);
 	}
 
 	public void setNodeType(NodeType nodeType) {
@@ -45,11 +45,11 @@ public class JavaparserLeafNode extends LeafNode {
 	}
 
 	public void addImplementedInterface(String interfaceName) {
-		implementedInterfaces.add(interfaceName);
+		this.implementedInterfaces.add(interfaceName);
 	}
 
 	public void addCreatedObject(String createdObject) {
-		createdObjects.add(createdObject);
+		this.createdObjects.add(createdObject);
 	}
 
 	public void setImports(List<String> imports) {
@@ -57,32 +57,32 @@ public class JavaparserLeafNode extends LeafNode {
 	}
 
 	public List<String> getVariablesTypes() {
-		return new ArrayList<>(variables.values());
+		return new ArrayList<>(this.variables.values());
 	}
 
 	public String getBaseClass() {
-		return baseClass;
+		return this.baseClass;
 	}
 
 	public List<String> getCreatedObjects() {
-		return createdObjects;
+		return this.createdObjects;
 	}
 
 	public List<String> getImplementedInterfaces() {
-		return implementedInterfaces;
+		return this.implementedInterfaces;
 	}
 
 	public List<String> getImports() {
-		return imports;
+		return this.imports;
 	}
 
 	@Override
 	public String getName() {
-		return nodeName;
+		return this.nodeName;
 	}
 
 	@Override
 	public NodeType getType() {
-		return nodeType;
+		return this.nodeType;
 	}
 }

@@ -1,7 +1,6 @@
 package controller;
 
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
-import com.google.gson.JsonParseException;
 import manager.DiagramManager;
 import manager.DiagramManagerFactory;
 import manager.DiagramType;
@@ -13,12 +12,10 @@ import java.util.List;
 
 public class DiagramController implements Controller {
 
-	private final DiagramManager diagramManager;
+	private static DiagramManager diagramManager;
 
 	public DiagramController(String diagramType) {
-		DiagramManagerFactory diagramManagerFactory = new DiagramManagerFactory();
-		DiagramType diagramEnumType = DiagramType.valueOf(diagramType.toUpperCase());
-		diagramManager = diagramManagerFactory.createDiagramManager(diagramEnumType);
+		diagramManager = DiagramManagerFactory.createDiagramManager(diagramType);
 	}
 
 	public SourceProject createTree(Path sourcePackagePath) {
@@ -65,7 +62,7 @@ public class DiagramController implements Controller {
 		return diagramManager.saveDiagram(graphSavePath);
 	}
 
-	public void loadDiagram(Path graphSavePath) throws JsonParseException {
+	public void loadDiagram(Path graphSavePath) {
 		diagramManager.loadDiagram(graphSavePath);
 	}
 

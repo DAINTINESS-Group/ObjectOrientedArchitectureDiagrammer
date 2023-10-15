@@ -1,6 +1,18 @@
 package parser.jdt;
 
-import org.eclipse.jdt.core.dom.*;
+import org.eclipse.jdt.core.dom.AST;
+import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.core.dom.ASTParser;
+import org.eclipse.jdt.core.dom.AbstractTypeDeclaration;
+import org.eclipse.jdt.core.dom.BodyDeclaration;
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.FieldDeclaration;
+import org.eclipse.jdt.core.dom.MethodDeclaration;
+import org.eclipse.jdt.core.dom.Modifier;
+import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
+import org.eclipse.jdt.core.dom.Type;
+import org.eclipse.jdt.core.dom.VariableDeclaration;
+import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.text.edits.MalformedTreeException;
 import parser.tree.LeafNode;
 import parser.tree.ModifierType;
@@ -9,26 +21,34 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.eclipse.jdt.core.dom.ASTNode.METHOD_DECLARATION;
 
-/**This class is responsible for the creation of the AST of a Java source file using JDT.
- * The ASTNode API parses the files methods parameters, return types and field declarations
+/**
+ * This class is responsible for the creation of the AST of a Java source file using JDT.
+ * The ASTNode API parses the files methods parameters, return types and field declarations.
+ *
  */
 public class JDTFileVisitor {
 
 	private CompilationUnit unit;
-	private String sourceFile[];
+	private String[]        sourceFile;
 
-	/** This method is responsible for the creation of the AST
-	 * @param file the Java source file
-	 * @param leafNode the leaf node representing the Java source file
+	/**
+	 * This method is responsible for the creation of the AST.
+	 *
+	 * @param file 		the Java source file
+	 * @param leafNode  the leaf node representing the Java source file
 	 */
 	public void createAST(File file, LeafNode leafNode) {
 		try {
 			ASTParser parser = ASTParser.newParser(AST.JLS17);
-			this.sourceFile = ReadFileToCharArray(file.getAbsolutePath()).split("\\n");
+			this.sourceFile = ReadFileToCharArray(file.getAbsolutePath()).split("/n");
 			parser.setSource(ReadFileToCharArray(file.getAbsolutePath()).toCharArray());
 			this.unit = (CompilationUnit)parser.createAST(null);
 			JDTLeafNode jdtLeafNode = (JDTLeafNode) leafNode;
@@ -101,7 +121,7 @@ public class JDTFileVisitor {
 	}//end processJavaFile
 
 	private String[] convertInheritanceLine(AbstractTypeDeclaration type) {
-		String inheritanceLine[] = Arrays.copyOfRange(getInheritanceLine(type), 1, getInheritanceLine(type).length);
+		String[] inheritanceLine = Arrays.copyOfRange(getInheritanceLine(type), 1, getInheritanceLine(type).length);
 		for (int i = 0; i < inheritanceLine.length; i++) {
 			inheritanceLine[i] = inheritanceLine[i].trim();
 			inheritanceLine[i] = inheritanceLine[i].replace(",", "");
