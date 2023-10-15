@@ -103,9 +103,14 @@ To run the tests simply run
 Any contributions you make are **greatly appreciated**.
 
 If you want to contribute to the development of our tool, please fork the repo and create a pull request.<br>
-[!IMPORTANT]<br>
-Please adhere to the current code style.<br>
-Don't forget to give the project a star! :star:
+
+
+|  :heavy_exclamation_mark: Remark         |
+| ---------------------------------------- |
+| Please adhere to the current code style. |
+
+
+> Don't forget to give the project a star! :star:
 
 1. Fork the Project.
 2. Create your Feature Branch.
