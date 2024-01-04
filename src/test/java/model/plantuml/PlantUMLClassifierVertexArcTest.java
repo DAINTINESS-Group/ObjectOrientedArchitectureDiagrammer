@@ -35,10 +35,10 @@ public class PlantUMLClassifierVertexArcTest {
 				"VersionsManager", "Document", "DocumentManager"));
 
 		PlantUMLClassifierVertexArc plantUMLEdge = new PlantUMLClassifierVertexArc(classDiagramManager.getClassDiagram());
-		String actualBuffer = plantUMLEdge.convertSinkVertexArc().toString();
+		String 						actualBuffer = plantUMLEdge.convertSinkVertexArc().toString();
 
 		List<String> expectedRelationships = Arrays.asList(expectedBuffer.split("\n"));
-		List<String> actualRelationships = Arrays.asList(actualBuffer.split("\n"));
+		List<String> actualRelationships   = Arrays.asList(actualBuffer.split("\n"));
 		Collections.sort(expectedRelationships);
 		Collections.sort(actualRelationships);
 		assertEquals(expectedRelationships, actualRelationships);

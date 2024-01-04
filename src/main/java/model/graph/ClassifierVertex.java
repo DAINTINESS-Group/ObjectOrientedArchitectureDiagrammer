@@ -1,6 +1,5 @@
 package model.graph;
 
-import org.javatuples.Pair;
 import org.javatuples.Triplet;
 
 import java.nio.file.Path;
@@ -16,9 +15,8 @@ public class ClassifierVertex {
 	private final VertexType 							vertexType;
 	private final Path 									path;
 	private final String 								name;
+	private final VertexCoordinate						coordinate;
 	private 	  List<Triplet<String, String, String>> deserializedArcs;
-	private 	  double 								x;
-	private 	  double 								y;
 
 	public ClassifierVertex(Path 	   path,
 							String 	   name,
@@ -26,21 +24,28 @@ public class ClassifierVertex {
 		this.vertexType = vertexType;
 		this.path 		= path;
 		this.name	    = name;
-		this.arcs 		= new ArrayList<>();
-		this.methods 	= new ArrayList<>();
-		this.fields 	= new ArrayList<>();
+		arcs 			= new ArrayList<>();
+		methods 		= new ArrayList<>();
+		fields 			= new ArrayList<>();
+		coordinate  	= new VertexCoordinate();
+	}
+
+
+	public void updateCoordinate(double x, double y) {
+		coordinate.x = x;
+		coordinate.y = y;
 	}
 
 	public void addArc(ClassifierVertex sourceVertex, ClassifierVertex targetVertex, ArcType arcType) {
-		this.arcs.add(new Arc<>(sourceVertex, targetVertex, arcType));
+		arcs.add(new Arc<>(sourceVertex, targetVertex, arcType));
 	}
 
 	public void addMethod(String name, String returnType, ModifierType modifier, Map<String, String> parameters) {
-		this.methods.add(new Method(name, returnType, modifier, parameters));
+		methods.add(new Method(name, returnType, modifier, parameters));
 	}
 
 	public void addField(String name, String type, ModifierType modifier) {
-		this.fields.add(new Field(name, type, modifier));
+		fields.add(new Field(name, type, modifier));
 	}
 
 	public void setDeserializedArcs(List<Triplet<String, String, String>> deserializedArcs) {
@@ -48,48 +53,45 @@ public class ClassifierVertex {
 	}
 
 	public List<Triplet<String, String, String>> getDeserializedArcs() {
-		return this.deserializedArcs;
+		return deserializedArcs;
 	}
 
 	public VertexType getVertexType() {
-		return this.vertexType;
+		return vertexType;
 	}
 
 	public List<Arc<ClassifierVertex>> getArcs() {
-		return this.arcs;
+		return arcs;
 	}
 
 	public Path getPath() {
-		return this.path;
+		return path;
 	}
 
 	public String getName() {
-		return this.name;
+		return name;
 	}
 
 	public List<Method> getMethods() {
-		return this.methods;
+		return methods;
 	}
 
 	public List<Field> getFields() {
-		return this.fields;
+		return fields;
 	}
 
-	public void setCoordinates(double x, double y) {
-		this.x = x;
-		this.y = y;
+	public VertexCoordinate getCoordinate() {
+        return coordinate;
 	}
 
-	public Pair<Double, Double> getCoordinates() {
-        return new Pair<>(x, y);
-	}
 
-	public record Method (String 			  name,
-						  String 			  returnType,
-						  ModifierType 		  modifier,
-						  Map<String, String> parameters) {}
+	public record Method(String 			 name,
+						 String 			 returnType,
+						 ModifierType 		 modifier,
+						 Map<String, String> parameters) {}
 
-	public record Field(String 		 name,
-						String 		 type,
+	public record Field(String 	  	 name,
+						String 	  	 type,
 						ModifierType modifier) {}
+
 }

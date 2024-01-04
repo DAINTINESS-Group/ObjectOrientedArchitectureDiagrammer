@@ -19,20 +19,21 @@ public class PlantUMLClassDiagramImageExporter implements DiagramExporter {
 	private final StringBuilder bufferBody;
 
 	public PlantUMLClassDiagramImageExporter(ClassDiagram diagram) {
-		PlantUMLClassifierVertex plantUMLClassifierVertex = new PlantUMLClassifierVertex(diagram);
-		StringBuilder plantUMLNodeBuffer 				  = plantUMLClassifierVertex.convertSinkVertex();
-		PlantUMLClassifierVertexArc plantUMLEdge 		  = new PlantUMLClassifierVertexArc(diagram);
-		StringBuilder plantUMLEdgeBuffer 				  = plantUMLEdge.convertSinkVertexArc();
-		this.bufferBody 								  = plantUMLNodeBuffer.append("\n\n")
-																			  .append(plantUMLEdgeBuffer)
-																			  .append("\n @enduml");
+		PlantUMLClassifierVertex 	plantUMLClassifierVertex = new PlantUMLClassifierVertex(diagram);
+		StringBuilder 			 	plantUMLNodeBuffer		 = plantUMLClassifierVertex.convertSinkVertex();
+		PlantUMLClassifierVertexArc plantUMLEdge 		  	 = new PlantUMLClassifierVertexArc(diagram);
+		StringBuilder 				plantUMLEdgeBuffer		 = plantUMLEdge.convertSinkVertexArc();
+		bufferBody				 							 = plantUMLNodeBuffer
+															       .append("\n\n")
+															       .append(plantUMLEdgeBuffer)
+															       .append("\n @enduml");
 	}
 
 	@Override
 	public File exportDiagram(Path exportPath) {
-		File plantUMLFile 	= exportPath.toFile();
+		File   plantUMLFile = exportPath.toFile();
 		String plantUMLCode = getClassText();
-		plantUMLCode 		+= this.bufferBody;
+		plantUMLCode 		+= bufferBody;
 		exportImage(plantUMLFile, plantUMLCode);
 		return plantUMLFile;
 	}
@@ -41,11 +42,12 @@ public class PlantUMLClassDiagramImageExporter implements DiagramExporter {
 		try (ByteArrayOutputStream png = new ByteArrayOutputStream()) {
 			SourceStringReader reader  = new SourceStringReader(plantCode);
 			reader.outputImage(png).getDescription();
-			byte [] data 			   = png.toByteArray();
-			InputStream in 			   = new ByteArrayInputStream(data);
-			BufferedImage convImg 	   = ImageIO.read(in);
-			int width = convImg.getWidth();
-			int wrapWidth = 150;
+
+			byte[] 		  data 	    = png.toByteArray();
+			InputStream   in 	    = new ByteArrayInputStream(data);
+			BufferedImage convImg   = ImageIO.read(in);
+			int 		  width     = convImg.getWidth();
+			int 		  wrapWidth = 150;
 			if (width == 4096) {
 				try (ByteArrayOutputStream newPng = new ByteArrayOutputStream())
 				{
@@ -60,16 +62,17 @@ public class PlantUMLClassDiagramImageExporter implements DiagramExporter {
 			ImageIO.write(convImg, "png", plantUMLFile);
 		} catch (IOException e) {
 			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 	}
 
 	private String wrapWidthChanger(String plantCode, int wrapWidth){
 		String updatedString;
 		//if (counter == 0) {
-		int indexOfNewLine = plantCode.indexOf("\n");
-		String firstPart   = plantCode.substring(0, indexOfNewLine + 1);
-		String secondPart  = plantCode.substring(indexOfNewLine + 1);
-		updatedString 	   = firstPart + "skinparam wrapWidth " + wrapWidth + "\n" + secondPart;
+		int    indexOfNewLine = plantCode.indexOf("\n");
+		String firstPart   	  = plantCode.substring(0, indexOfNewLine + 1);
+		String secondPart  	  = plantCode.substring(indexOfNewLine + 1);
+		updatedString 	   	  = firstPart + "skinparam wrapWidth " + wrapWidth + "\n" + secondPart;
 		// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
 		// KEEP REDUCING THE WRAPWIDTH PARAMETER IN ORDER TO FIT PROPERLY THE IMAGE //
 		// DOESNT WORK PROPERLY, COMMENTED JUST TO KEEP THE IDEA.					//
@@ -86,8 +89,7 @@ public class PlantUMLClassDiagramImageExporter implements DiagramExporter {
 	}
 
 	private String getClassText() {
-		return
-			"""
+		return """
 				@startuml
 				skinparam class {
 				    BackgroundColor lightyellow

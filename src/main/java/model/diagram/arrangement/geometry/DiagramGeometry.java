@@ -20,18 +20,17 @@ public class DiagramGeometry {
 		geometryMap.put(key.nodeName(), new Pair<>(x, y));
 	}
 
-
 	public Pair<Double, Double> getVertexGeometry(String stringKey){
 		return geometryMap.get(stringKey);
 	}
-
 
 	public boolean containsKey(String stringKey) {
 		return geometryMap.containsKey(stringKey);
 	}
 
 	public void correctPositions(double x, double y) {
-		// We store minX and minY coordinates of the system, in order to bring the graph to match the left side and upper side of the window.
+		// We store minX and minY coordinates of the system, in order to bring the graph to match the left side
+		// and upper side of the window.
 		double minX = Double.POSITIVE_INFINITY;
 		double minY = Double.POSITIVE_INFINITY;
 		double xDifference;
@@ -40,10 +39,10 @@ public class DiagramGeometry {
 			double newX = entry.getValue().getValue0() + x;
 			double newY = entry.getValue().getValue1() + y;
 			geometryMap.put(entry.getKey(), new Pair<>(entry.getValue().getValue0() + x, entry.getValue().getValue1() + y));
-			if( newX < minX) {
+			if (newX < minX) {
 				minX = newX;
 			}
-			if( newY < minY) {
+			if (newY < minY) {
 				minY = newY;
 			}
 		}

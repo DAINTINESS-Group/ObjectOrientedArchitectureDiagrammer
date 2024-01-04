@@ -30,17 +30,32 @@ public class GraphMLClassDiagramExporterTest {
 	void exportDiagramTest() {
 		try {
 			ClassDiagramManager classDiagramManager = new ClassDiagramManager();
-			List<String> chosenFiles = Arrays.asList("MainWindow", "LatexEditorView", "OpeningWindow");
-			classDiagramManager.createSourceProject(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "LatexEditor", "src")));
+			List<String> 		chosenFiles 		= Arrays.asList("MainWindow",
+																   "LatexEditorView",
+																   "OpeningWindow");
+			classDiagramManager.createSourceProject(Paths.get(String.format("%s%s%s",
+																			PathConstructor.getCurrentPath(),
+																			File.separator,
+																			PathConstructor.constructPath("src",
+																										  "test",
+																										  "resources",
+																										  "LatexEditor",
+																										  "src"))));
 			classDiagramManager.convertTreeToDiagram(chosenFiles);
 			classDiagramManager.arrangeDiagram();
 			DiagramArrangementManagerInterface classDiagramArrangement = new ClassDiagramArrangementManager(classDiagramManager.getClassDiagram());
-			Map<Integer, Pair<Double, Double>> nodesGeometry = classDiagramArrangement.arrangeGraphMLDiagram();
+			Map<Integer, Pair<Double, Double>> nodesGeometry 		   = classDiagramArrangement.arrangeGraphMLDiagram();
 			classDiagramManager.getClassDiagram().setGraphMLDiagramGeometry(nodesGeometry);
 			DiagramExporter graphMLExporter = new GraphMLClassDiagramExporter(classDiagramManager.getClassDiagram());
-			File exportedFile = graphMLExporter.exportDiagram(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "testingExportedFile.txt")));
-			Stream<String> lines = Files.lines(exportedFile.toPath());
-			String actualFileContents = lines.collect(Collectors.joining("\n")) + "\n";
+			File 			exportedFile 	= graphMLExporter.exportDiagram(Paths.get(String.format("%s%s%s",
+																									PathConstructor.getCurrentPath(),
+																									File.separator,
+																									PathConstructor.constructPath("src",
+																																  "test",
+																																  "resources",
+																																  "testingExportedFile.txt"))));
+			Stream<String> lines 			  = Files.lines(exportedFile.toPath());
+			String	 	   actualFileContents = lines.collect(Collectors.joining("\n")) + "\n";
 			lines.close();
 
 			String expectedFileContents = getExpectedFileContents(classDiagramManager);
@@ -57,11 +72,10 @@ public class GraphMLClassDiagramExporterTest {
 		StringBuilder graphMLNodeBuffer = graphMLClassifierVertex.convertSinkVertex();
 		GraphMLClassifierVertexArc graphMLClassifierVertexArc = new GraphMLClassifierVertexArc(classDiagramManager.getClassDiagram());
 		StringBuilder graphMLEdgeBuffer = graphMLClassifierVertexArc.convertSinkVertexArc();
-		String expectedFileContents = "";
-		expectedFileContents += (GraphMLSyntax.getInstance().getGraphMLPrefix());
-		expectedFileContents += (graphMLNodeBuffer.toString());
-		expectedFileContents += (graphMLEdgeBuffer.toString());
-		expectedFileContents += (GraphMLSyntax.getInstance().getGraphMLSuffix());
-		return expectedFileContents;
+        return String.format("%s%s%s%s",
+                             GraphMLSyntax.getInstance().getGraphMLPrefix(),
+                             graphMLNodeBuffer.toString(),
+                             graphMLEdgeBuffer.toString(),
+                             GraphMLSyntax.getInstance().getGraphMLSuffix());
 	}
 }

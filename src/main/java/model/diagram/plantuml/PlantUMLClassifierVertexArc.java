@@ -19,7 +19,7 @@ public class PlantUMLClassifierVertexArc {
 	}
 
 	public StringBuilder convertSinkVertexArc() {
-		return new StringBuilder(this.classDiagram.getDiagram().values()
+		return new StringBuilder(classDiagram.getDiagram().values()
 								 .stream().flatMap(sinkVertexStream -> sinkVertexStream
 								 .stream()
 								 .map(sinkVertexArc -> String.join(" ",

@@ -22,17 +22,23 @@ public class GraphMLSinkPackageVertexArcTest {
 	void convertSinkVertexArcsToGraphMLTest() {
 		ClassDiagramManager classDiagramManager = new ClassDiagramManager();
 		classDiagramManager.createSourceProject(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "LatexEditor", "src")));
-		classDiagramManager.convertTreeToDiagram(
-			List.of("AddLatexCommand", "ChangeVersionsStrategyCommand", "Command", "CommandFactory",
-				"CreateCommand", "DisableVersionsManagementCommand", "EditCommand", "EnableVersionsManagementCommand",
-				"LoadCommand", "RollbackToPreviousVersionCommand", "SaveCommand")
-		);
+		classDiagramManager.convertTreeToDiagram(List.of("AddLatexCommand",
+														 "ChangeVersionsStrategyCommand",
+														 "Command",
+														 "CommandFactory",
+														 "CreateCommand",
+														 "DisableVersionsManagementCommand",
+														 "EditCommand",
+														 "EnableVersionsManagementCommand",
+														 "LoadCommand",
+														 "RollbackToPreviousVersionCommand",
+														 "SaveCommand"));
 
 		GraphMLClassifierVertexArc graphMLClassifierVertexArc = new GraphMLClassifierVertexArc(classDiagramManager.getClassDiagram());
-		StringBuilder actual = graphMLClassifierVertexArc.convertSinkVertexArc();
+		StringBuilder 			   actual					  = graphMLClassifierVertexArc.convertSinkVertexArc();
 
-		StringBuilder expected = new StringBuilder();
-		List<Arc<ClassifierVertex>> arcs = new ArrayList<>();
+		StringBuilder 				expected = new StringBuilder();
+		List<Arc<ClassifierVertex>> arcs	 = new ArrayList<>();
 		for (Set<Arc<ClassifierVertex>> arcSet: classDiagramManager.getClassDiagram().getDiagram().values()) {
 			arcs.addAll(arcSet);
 		}
@@ -40,17 +46,21 @@ public class GraphMLSinkPackageVertexArcTest {
 		for (Arc<ClassifierVertex> e: arcs) {
 			expected.append(
 					String.format("<edge id=\"e%s\" source=\"n%s\" target=\"n%s\">\n" +
-							"      <data key=\"d10\">\n" +
-							"        <y:PolyLineEdge>\n" +
-							"          <y:Path sx=\"0.0\" sy=\"0.0\" tx=\"0.0\" ty=\"0.0\"/>\n" +
-							"          <y:LineStyle color=\"#000000\" type=\"%s\" width=\"1.0\"/>\n" +
-							"          <y:Arrows source=\"%s\" target=\"%s\"/>\n" +
-							"          <y:BendStyle smoothed=\"false\"/>\n" +
-							"        </y:PolyLineEdge>\n" +
-							"      </data>\n" +
-							"    </edge>\n", edgeId, classDiagramManager.getClassDiagram().getGraphNodes().get(e.sourceVertex()),
-							classDiagramManager.getClassDiagram().getGraphNodes().get(e.targetVertex()), getEdgesDescription(e).get(0),
-							getEdgesDescription(e).get(1),getEdgesDescription(e).get(2)));
+								  "      <data key=\"d10\">\n" +
+								  "        <y:PolyLineEdge>\n" +
+								  "          <y:Path sx=\"0.0\" sy=\"0.0\" tx=\"0.0\" ty=\"0.0\"/>\n" +
+								  "          <y:LineStyle color=\"#000000\" type=\"%s\" width=\"1.0\"/>\n" +
+								  "          <y:Arrows source=\"%s\" target=\"%s\"/>\n" +
+								  "          <y:BendStyle smoothed=\"false\"/>\n" +
+								  "        </y:PolyLineEdge>\n" +
+								  "      </data>\n" +
+								  "    </edge>\n",
+								  edgeId,
+								  classDiagramManager.getClassDiagram().getGraphNodes().get(e.sourceVertex()),
+								  classDiagramManager.getClassDiagram().getGraphNodes().get(e.targetVertex()),
+								  getEdgesDescription(e).get(0),
+								  getEdgesDescription(e).get(1),
+								  getEdgesDescription(e).get(2)));
 			edgeId++;
 		}
 		assertEquals(expected.toString(), actual.toString());
@@ -62,11 +72,11 @@ public class GraphMLSinkPackageVertexArcTest {
 	}
 	private List<String> identifyEdgeType(Arc<ClassifierVertex> relationship){
 		return switch (relationship.arcType()) {
-		case DEPENDENCY -> Arrays.asList("dashed", "none", "plain");
+		case DEPENDENCY  -> Arrays.asList("dashed", "none", "plain");
 		case AGGREGATION -> Arrays.asList("line", "white_diamond", "none");
 		case ASSOCIATION -> Arrays.asList("line", "none", "standard");
-		case EXTENSION -> Arrays.asList("line", "none", "white_delta");
-		default -> Arrays.asList("dashed", "none", "white_delta");
+		case EXTENSION   -> Arrays.asList("line", "none", "white_delta");
+		default  		 -> Arrays.asList("dashed", "none", "white_delta");
 		};
 	}
 }

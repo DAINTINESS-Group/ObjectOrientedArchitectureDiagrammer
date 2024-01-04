@@ -1,9 +1,9 @@
 import java.util.HashMap;
 
-public class ObjectCreationTest {
+public class ObjectCreationSample {
     private ExtensionClass extensionClass;
 
-    public ObjectCreationTest() {
+    public ObjectCreationSample() {
         TestingInterface implementingClass = new ImplementingClass();
         extensionClass = new ExtensionClass();
     }
@@ -11,14 +11,11 @@ public class ObjectCreationTest {
     private void createObject() {
         new ImplementingClass();
     }
-
     private void createMapWithObject() {
         new HashMap<String, TestingInterface>();
         new ExtensionClass();
         new ImplementingClass();
     }
+    private enum EnumSample { }
 
-    private enum EnumTest {
-
-    }
 }

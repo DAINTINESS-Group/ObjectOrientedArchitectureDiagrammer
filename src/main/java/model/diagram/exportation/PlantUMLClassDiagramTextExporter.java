@@ -15,20 +15,21 @@ public class PlantUMLClassDiagramTextExporter implements DiagramExporter {
 	private final StringBuilder bufferBody;
 
 	public PlantUMLClassDiagramTextExporter(ClassDiagram diagram) {
-		PlantUMLClassifierVertex plantUMLClassifierVertex = new PlantUMLClassifierVertex(diagram);
-		StringBuilder plantUMLNodeBuffer 				  = plantUMLClassifierVertex.convertSinkVertex();
-		PlantUMLClassifierVertexArc plantUMLEdge 		  = new PlantUMLClassifierVertexArc(diagram);
-		StringBuilder plantUMLEdgeBuffer 				  = plantUMLEdge.convertSinkVertexArc();
-		this.bufferBody 								  = plantUMLNodeBuffer.append("\n\n")
-																			  .append(plantUMLEdgeBuffer)
-																			  .append("\n @enduml");
+		PlantUMLClassifierVertex    plantUMLClassifierVertex = new PlantUMLClassifierVertex(diagram);
+		StringBuilder 			    plantUMLNodeBuffer 		 = plantUMLClassifierVertex.convertSinkVertex();
+		PlantUMLClassifierVertexArc plantUMLEdge 		  	 = new PlantUMLClassifierVertexArc(diagram);
+		StringBuilder 				plantUMLEdgeBuffer 		 = plantUMLEdge.convertSinkVertexArc();
+		bufferBody 									      	 = plantUMLNodeBuffer
+															       .append("\n\n")
+															       .append(plantUMLEdgeBuffer)
+															       .append("\n @enduml");
 	}
 
 	@Override
 	public File exportDiagram(Path exportPath) {
-		File plantUMLFile   = exportPath.toFile();
-		String plantUMLCode = getClassText();
-		plantUMLCode 		+= this.bufferBody;
+		File   plantUMLFile =  exportPath.toFile();
+		String plantUMLCode =  getClassText();
+		plantUMLCode 		+= bufferBody;
 		writeFile(plantUMLFile, plantUMLCode);
 		return plantUMLFile;
 	}
@@ -38,12 +39,12 @@ public class PlantUMLClassDiagramTextExporter implements DiagramExporter {
 			writer.write(plantCode);
 		} catch (IOException e) {
 			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 	}
 
 	private String getClassText() {
-		return
-			"""
+		return """
 				@startuml
 				skinparam class {
 				    BackgroundColor lightyellow

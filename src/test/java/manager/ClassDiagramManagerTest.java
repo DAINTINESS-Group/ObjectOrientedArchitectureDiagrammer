@@ -32,10 +32,24 @@ public class ClassDiagramManagerTest {
 	@Test
 	void createSourceProjectTest() {
 		ClassDiagramManager classDiagramManager = new ClassDiagramManager();
-		SourceProject sourceProject = classDiagramManager.createSourceProject(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "LatexEditor", "src")));
-		Map<Path, PackageVertex> vertices = sourceProject.getInterpreter().getVertices();
-		Interpreter interpreter = new Interpreter();
-		interpreter.parseProject(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "LatexEditor", "src")));
+		SourceProject 		sourceProject 		= classDiagramManager.createSourceProject(Paths.get(String.format("%s%s%s",
+																													PathConstructor.getCurrentPath(),
+																													File.separator,
+																													PathConstructor.constructPath("src",
+																																				  "test",
+																																				  "resources",
+																																				  "LatexEditor",
+																																				  "src"))));
+		Map<Path, PackageVertex> vertices 	 = sourceProject.getInterpreter().getVertices();
+		Interpreter 			 interpreter = new Interpreter();
+		interpreter.parseProject(Paths.get(String.format("%s%s%s",
+														 PathConstructor.getCurrentPath(),
+														 File.separator,
+														 PathConstructor.constructPath("src",
+																					   "test",
+																					   "resources",
+																					   "LatexEditor",
+																					   "src"))));
 		interpreter.convertTreeToGraph();
 		ArrayList<PackageVertex> interpreterVertices = new ArrayList<>(interpreter.getVertices().values());
 
@@ -68,21 +82,49 @@ public class ClassDiagramManagerTest {
 	@Test
 	void populateGraphNodesTest() {
 		ClassDiagramManager classDiagramManager = new ClassDiagramManager();
-		SourceProject sourceProject = classDiagramManager.createSourceProject(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "LatexEditor", "src")));
-		classDiagramManager.convertTreeToDiagram(List.of("AddLatexCommand", "ChangeVersionsStrategyCommand", "Command", "CommandFactory",
-				"CreateCommand", "DisableVersionsManagementCommand", "EditCommand", "EnableVersionsManagementCommand",
-				"LoadCommand", "RollbackToPreviousVersionCommand", "SaveCommand"));
+		SourceProject 		sourceProject 		= classDiagramManager.createSourceProject(Paths.get(String.format("%s%s%s",
+																													PathConstructor.getCurrentPath(),
+																													File.separator,
+																													PathConstructor.constructPath("src",
+																																				  "test",
+																																				  "resources",
+																																				  "LatexEditor",
+																																				  "src"))));
+		classDiagramManager.convertTreeToDiagram(List.of("AddLatexCommand",
+														 "ChangeVersionsStrategyCommand",
+														 "Command",
+														 "CommandFactory",
+														 "CreateCommand",
+														 "DisableVersionsManagementCommand",
+														 "EditCommand",
+														 "EnableVersionsManagementCommand",
+														 "LoadCommand",
+														 "RollbackToPreviousVersionCommand",
+														 "SaveCommand"));
 
 		Map<ClassifierVertex, Integer> graphNodes = classDiagramManager.getClassDiagram().getGraphNodes();
 
 		List<String> l1 = new ArrayList<>();
 		List<String> l2 = new ArrayList<>();
 		assertEquals(sourceProject.getInterpreter().getVertices().get(
-			Paths.get(PathConstructor.getCurrentPath().normalize().toString(), PathConstructor.constructPath("src", "test", "resources", "LatexEditor", "src", "controller", "commands")))
+			Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
+					  PathConstructor.constructPath("src",
+													"test",
+													"resources",
+													"LatexEditor",
+													"src",
+													"controller",
+													"commands")))
 		 	.getSinkVertices().size(), graphNodes.size());
 
 		Iterator<ClassifierVertex> iter1 = sourceProject.getInterpreter().getVertices()
-			.get(Paths.get(PathConstructor.getCurrentPath().normalize().toString(), PathConstructor.constructPath("src", "test", "resources", "LatexEditor", "src", "controller", "commands")))
+			.get(Paths.get(PathConstructor.getCurrentPath().normalize().toString(), PathConstructor.constructPath("src",
+																												  "test",
+																												  "resources",
+																												  "LatexEditor",
+																												  "src",
+																												  "controller",
+																												  "commands")))
 			.getSinkVertices().iterator();
 		Iterator<Map.Entry<ClassifierVertex, Integer>> iter2 = graphNodes.entrySet().iterator();
 		while(iter1.hasNext() || iter2.hasNext()) {
@@ -99,8 +141,17 @@ public class ClassDiagramManagerTest {
 	@Test
 	void createDiagramTest() {
 		ClassDiagramManager classDiagramManager = new ClassDiagramManager();
-		List<String> chosenFiles = Arrays.asList("MainWindow", "LatexEditorView", "OpeningWindow");
-		classDiagramManager.createSourceProject(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "LatexEditor", "src")));
+		List<String> 		chosenFiles 		= Arrays.asList("MainWindow",
+															   "LatexEditorView",
+															   "OpeningWindow");
+		classDiagramManager.createSourceProject(Paths.get(String.format("%s%s%s",
+																		PathConstructor.getCurrentPath(),
+																		File.separator,
+																		PathConstructor.constructPath("src",
+																									  "test",
+																									  "resources",
+																									  "LatexEditor",
+																									  "src"))));
 		classDiagramManager.convertTreeToDiagram(chosenFiles);
 		Map<ClassifierVertex, Set<Arc<ClassifierVertex>>> testingCreatedDiagram = classDiagramManager.getClassDiagram().getDiagram();
 
@@ -117,11 +168,26 @@ public class ClassDiagramManagerTest {
 	void exportDiagramToGraphMLTest() {
 		try {
 			ClassDiagramManager classDiagramManager = new ClassDiagramManager();
-			List<String> chosenFiles = Arrays.asList("MainWindow", "LatexEditorView", "OpeningWindow");
-			classDiagramManager.createSourceProject(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "LatexEditor", "src")));
+			List<String> 		chosenFiles			= Arrays.asList("MainWindow",
+																	   "LatexEditorView",
+																	   "OpeningWindow");
+			classDiagramManager.createSourceProject(Paths.get(String.format("%s%s%s",
+																			PathConstructor.getCurrentPath(),
+																			File.separator,
+																			PathConstructor.constructPath("src",
+																										  "test",
+																										  "resources",
+																										  "LatexEditor",
+																										  "src"))));
 			classDiagramManager.convertTreeToDiagram(chosenFiles);
 			classDiagramManager.arrangeDiagram();
-			File actualFile = classDiagramManager.exportDiagramToGraphML(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "testingExportedFile.graphML")));
+			File actualFile = classDiagramManager.exportDiagramToGraphML(Paths.get(String.format("%s%s%s",
+																								 PathConstructor.getCurrentPath(),
+																								 File.separator,
+																								 PathConstructor.constructPath("src",
+																															   "test",
+																															   "resources",
+																															   "testingExportedFile.graphML"))));
 
 			DiagramArrangementManagerInterface classDiagramArrangement = new ClassDiagramArrangementManager(classDiagramManager.getClassDiagram());
 			classDiagramManager.getClassDiagram().setGraphMLDiagramGeometry(classDiagramArrangement.arrangeGraphMLDiagram());
@@ -131,7 +197,13 @@ public class ClassDiagramManagerTest {
 			graphMLClassifierVertexArc.convertSinkVertexArc();
 
 			DiagramExporter graphMLExporter = new GraphMLClassDiagramExporter(classDiagramManager.getClassDiagram());
-			File expectedFile = graphMLExporter.exportDiagram(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "testingExportedFile.graphML")));
+			File expectedFile = graphMLExporter.exportDiagram(Paths.get(String.format("%s%s%s",
+																					  PathConstructor.getCurrentPath(),
+																					  File.separator,
+																					  PathConstructor.constructPath("src",
+																													"test",
+																													"resources",
+																													"testingExportedFile.graphML"))));
 			assertTrue(FileUtils.contentEquals(expectedFile, actualFile));
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -142,8 +214,17 @@ public class ClassDiagramManagerTest {
 	void saveDiagramTest() {
 		try {
 			ClassDiagramManager classDiagramManager = new ClassDiagramManager();
-			List<String> chosenFiles = Arrays.asList("MainWindow", "LatexEditorView", "OpeningWindow");
-			classDiagramManager.createSourceProject(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "LatexEditor", "src")));
+			List<String> 		chosenFiles 		= Arrays.asList("MainWindow",
+																   "LatexEditorView",
+																   "OpeningWindow");
+			classDiagramManager.createSourceProject(Paths.get(String.format("%s%s%s",
+																			PathConstructor.getCurrentPath(),
+																			File.separator,
+																			PathConstructor.constructPath("src",
+																										  "test",
+																										  "resources",
+																										  "LatexEditor",
+																										  "src"))));
 			classDiagramManager.convertTreeToDiagram(chosenFiles);
 
 			File testingSavedFile = classDiagramManager.saveDiagram(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "testingSavedFile.txt")));
@@ -157,29 +238,49 @@ public class ClassDiagramManagerTest {
 	@Test
 	void loadDiagramTest() {
 		ClassDiagramManager classDiagramManager = new ClassDiagramManager();
-		List<String> chosenFiles = Arrays.asList("MainWindow", "LatexEditorView", "OpeningWindow");
-		classDiagramManager.createSourceProject(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "LatexEditor", "src")));
+		List<String> 		chosenFiles 		= Arrays.asList("MainWindow",
+															   "LatexEditorView",
+															   "OpeningWindow");
+		classDiagramManager.createSourceProject(Paths.get(String.format("%s%s%s",
+																		PathConstructor.getCurrentPath(),
+																		File.separator,
+																		PathConstructor.constructPath("src",
+																									  "test",
+																									  "resources",
+																									  "LatexEditor",
+																									  "src"))));
 		classDiagramManager.convertTreeToDiagram(chosenFiles);
 		Map<ClassifierVertex, Set<Arc<ClassifierVertex>>> createdDiagram = classDiagramManager.getClassDiagram().getDiagram();
-		classDiagramManager.saveDiagram(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "testingExportedFile.txt")));
-		classDiagramManager.loadDiagram(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "testingExportedFile.txt")));
+		classDiagramManager.saveDiagram(Paths.get(String.format("%s%s%s",
+																PathConstructor.getCurrentPath(),
+																File.separator,
+																PathConstructor.constructPath("src",
+																							  "test",
+																							  "resources",
+																							  "testingExportedFile.txt"))));
+		classDiagramManager.loadDiagram(Paths.get(String.format("%s%s%s",
+																PathConstructor.getCurrentPath(),
+																File.separator,
+																PathConstructor.constructPath("src",
+																							  "test",
+																							  "resources",
+																							  "testingExportedFile.txt"))));
 		Map<ClassifierVertex, Set<Arc<ClassifierVertex>>> loadedDiagram = classDiagramManager.getClassDiagram().getDiagram();
 
 		for (ClassifierVertex classifierVertex : createdDiagram.keySet()) {
-			Optional<ClassifierVertex> optionalSinkVertex = loadedDiagram.keySet().stream().filter(sinkVertex1 ->
-			sinkVertex1.getName().equals(classifierVertex.getName())
-					).findFirst();
+			Optional<ClassifierVertex> optionalSinkVertex = loadedDiagram.keySet()
+				.stream()
+				.filter(sinkVertex1 -> sinkVertex1.getName().equals(classifierVertex.getName())).findFirst();
 			assertTrue(optionalSinkVertex.isPresent());
 
 			assertEquals(createdDiagram.get(classifierVertex).size(), loadedDiagram.get(optionalSinkVertex.get()).size());
 			for (Arc<ClassifierVertex> arc: createdDiagram.get(classifierVertex)) {
-				assertTrue(
-					loadedDiagram.get(optionalSinkVertex.get()).stream()
-					.anyMatch(a ->
-						  a.sourceVertex().getName().equals(arc.sourceVertex().getName()) &&
-						  a.targetVertex().getName().equals(arc.targetVertex().getName()) &&
-						  a.arcType().equals(arc.arcType())
-					));
+				assertTrue(loadedDiagram.get(optionalSinkVertex.get())
+							   .stream()
+							   .anyMatch(a ->
+											 a.sourceVertex().getName().equals(arc.sourceVertex().getName()) &&
+											 a.targetVertex().getName().equals(arc.targetVertex().getName()) &&
+											 a.arcType().equals(arc.arcType())));
 			}
 		}
 	}

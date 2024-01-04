@@ -25,4 +25,5 @@ public enum LayoutAlgorithmType {
 	public static LayoutAlgorithmType get(String algorithmType) {
 		return ALGORITHM_TYPE_MAP.get(algorithmType.toLowerCase());
 	}
+
 }

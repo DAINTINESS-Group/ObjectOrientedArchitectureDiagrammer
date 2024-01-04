@@ -40,9 +40,8 @@ public class PackageDiagramManager implements DiagramManager {
 
 	@Override
 	public SourceProject createSourceProject(Path sourcePackagePath) {
-		SourceProject sourceProject = new SourceProject(packageDiagram);
-		sourceProject.createGraph(sourcePackagePath);
-		sourceProject.setPackageDiagramVertices();
+		SourceProject sourceProject = new SourceProject();
+		sourceProject.createPackageGraph(sourcePackagePath, packageDiagram);
 		return sourceProject;
 	}
 
@@ -52,7 +51,7 @@ public class PackageDiagramManager implements DiagramManager {
 	}
 
 	@Override
-	public void arrangeDiagram(){
+	public void arrangeDiagram() {
 		packageDiagramArrangement  		= new PackageDiagramArrangementManager(packageDiagram);
 		DiagramGeometry diagramGeometry = packageDiagramArrangement.arrangeDiagram();
 		packageDiagram.setDiagramGeometry(diagramGeometry);
@@ -120,21 +119,25 @@ public class PackageDiagramManager implements DiagramManager {
                 logger.log(Level.INFO, vertex.element());
 				continue;
             }
+
 			Pair<Double, Double> coordinates = nodesGeometry.getVertexGeometry(vertex.element());
 			graphView.setVertexPosition(vertex,  coordinates.getValue0(), coordinates.getValue1());
         }
+
 		return graphView;
 	}
 
 	public SmartGraphPanel<String, String> applySpecificLayout(String choice){
 		DiagramGeometry nodesGeometry = packageDiagramArrangement.applyNewLayout(choice);
 		for(Vertex<String> vertex : vertexCollection) {
-			if(!nodesGeometry.containsKey(vertex.element())) {
+			if (!nodesGeometry.containsKey(vertex.element())) {
 				continue;
 			}
+
 			Pair<Double, Double> coordinates = nodesGeometry.getVertexGeometry(vertex.element());
 			graphView.setVertexPosition(vertex,  coordinates.getValue0(), coordinates.getValue1());
 		}
+
 		return graphView;
 	}
 

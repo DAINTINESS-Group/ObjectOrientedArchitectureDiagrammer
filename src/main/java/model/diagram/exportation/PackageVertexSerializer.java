@@ -22,15 +22,15 @@ public class PackageVertexSerializer implements JsonSerializer<PackageVertex> {
 								 Type 		   			  type,
 								 JsonSerializationContext jsonSerializationContext) {
 		JsonObject jsonObject = new JsonObject();
-		String name 	  	  = packageVertex.getName();
-		Path path 		  	  = packageVertex.getPath();
-		String vertexType 	  = packageVertex.getVertexType().toString();
+		String 	   name		  = packageVertex.getName();
+		Path 	   path		  = packageVertex.getPath();
+		String 	   vertexType = packageVertex.getVertexType().toString();
 
 		jsonObject.addProperty("name", name);
 		jsonObject.addProperty("path", path.toString());
 		jsonObject.addProperty("vertexType", vertexType);
-		jsonObject.addProperty("coordinate_x", packageVertex.getCoordinates().getValue0());
-		jsonObject.addProperty("coordinate_y", packageVertex.getCoordinates().getValue1());
+		jsonObject.addProperty("coordinate_x", packageVertex.getCoordinate().getX());
+		jsonObject.addProperty("coordinate_y", packageVertex.getCoordinate().getY());
 		jsonObject.add("sinkVertices", serializeSinkVertices(packageVertex));
 		jsonObject.add("parent", serializeParentVertex(packageVertex));
 		jsonObject.add("neighbours", serializeNeighbourVertices(packageVertex));
@@ -40,24 +40,24 @@ public class PackageVertexSerializer implements JsonSerializer<PackageVertex> {
 	}
 
 	private JsonArray serializeSinkVertices(PackageVertex packageVertex) {
-		List<ClassifierVertex> sinkVertices = packageVertex.getSinkVertices();
-		JsonArray sinkVerticesArray 		= new JsonArray(sinkVertices.size());
+		List<ClassifierVertex> sinkVertices 	 = packageVertex.getSinkVertices();
+		JsonArray 			   sinkVerticesArray = new JsonArray(sinkVertices.size());
 		for (ClassifierVertex classifierVertex : sinkVertices) {
-			Gson gson 						= new GsonBuilder().registerTypeAdapter(ClassifierVertex.class,
-																					new ClassifierVertexSerializer())
-																					.create();
-			String json 					= gson.toJson(classifierVertex);
-			sinkVerticesArray.add(json);
+			 Gson   gson = new GsonBuilder().registerTypeAdapter(ClassifierVertex.class,
+																 new ClassifierVertexSerializer())
+				 												.create();
+			 String json = gson.toJson(classifierVertex);
+			 sinkVerticesArray.add(json);
 		}
 		return sinkVerticesArray;
 	}
 
 	private JsonObject serializeParentVertex(PackageVertex packageVertex) {
 		PackageVertex parentPackageVertex = packageVertex.getParentVertex();
-		JsonObject parentObject 		  = new JsonObject();
-		String name 					  = parentPackageVertex.getName();
-		String path 					  = parentPackageVertex.getPath().toString();
-		String type 					  = parentPackageVertex.getModifierType().toString();
+		JsonObject parentObject = new JsonObject();
+		String 	   name 		= parentPackageVertex.getName();
+		String 	   path 		= parentPackageVertex.getPath().toString();
+		String 	   type 		= parentPackageVertex.getModifierType().toString();
 
 		parentObject.addProperty("name", name);
 		parentObject.addProperty("path", path);
@@ -71,11 +71,11 @@ public class PackageVertexSerializer implements JsonSerializer<PackageVertex> {
 		JsonArray neighbourVerticesArray 	  = new JsonArray(neighbourVertices.size());
 
 		for (PackageVertex v: neighbourVertices) {
-			JsonObject neighbourVertexObject  = new JsonObject();
-			String name 	  				  = v.getName();
-			String path 	  				  = v.getPath().toString();
-			String vertexType 				  = v.getVertexType().toString();
-			String parentName 				  = v.getParentVertex().getName();
+			JsonObject neighbourVertexObject = new JsonObject();
+			String 	   name 	  			 = v.getName();
+			String 	   path 	  			 = v.getPath().toString();
+			String 	   vertexType 			 = v.getVertexType().toString();
+			String 	   parentName 			 = v.getParentVertex().getName();
 
 			neighbourVertexObject.addProperty("name", name);
 			neighbourVertexObject.addProperty("path", path);
@@ -87,14 +87,14 @@ public class PackageVertexSerializer implements JsonSerializer<PackageVertex> {
 	}
 
 	private JsonArray serializeArcs(PackageVertex packageVertex) {
-		List<Arc<PackageVertex>> arcs = packageVertex.getArcs();
-		JsonArray arcsArray 		  = new JsonArray(arcs.size());
+		List<Arc<PackageVertex>> arcs 	   = packageVertex.getArcs();
+		JsonArray 				 arcsArray = new JsonArray(arcs.size());
 
 		for (Arc<PackageVertex> vertexArc : arcs) {
-			JsonObject arcObject 	  = new JsonObject();
-			String source  			  = vertexArc.sourceVertex().getName();
-			String target  			  = vertexArc.targetVertex().getName();
-			String arcType 			  = vertexArc.arcType().toString();
+			JsonObject arcObject = new JsonObject();
+			String 	   source  	 = vertexArc.sourceVertex().getName();
+			String 	   target  	 = vertexArc.targetVertex().getName();
+			String 	   arcType 	 = vertexArc.arcType().toString();
 
 			arcObject.addProperty("source", source);
 			arcObject.addProperty("target", target);

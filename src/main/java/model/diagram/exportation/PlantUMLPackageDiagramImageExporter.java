@@ -19,34 +19,36 @@ public class PlantUMLPackageDiagramImageExporter implements DiagramExporter {
 	private final StringBuilder bufferBody;
 
 	public PlantUMLPackageDiagramImageExporter(PackageDiagram diagram) {
-		PlantUMLPackageVertex plantUMLPackageVertex = new PlantUMLPackageVertex(diagram);
-		StringBuilder plantUMLNodeBuffer 			= plantUMLPackageVertex.convertVertex();
-		PlantUMLPackageVertexArc plantUMLEdge 		= new PlantUMLPackageVertexArc(diagram);
-		StringBuilder plantUMLEdgeBuffer 			= plantUMLEdge.convertVertexArc();
-		this.bufferBody 							= plantUMLNodeBuffer.append("\n\n")
-																		.append(plantUMLEdgeBuffer)
-																		.append("\n @enduml");
+		PlantUMLPackageVertex 	 plantUMLPackageVertex = new PlantUMLPackageVertex(diagram);
+		StringBuilder 		  	 plantUMLNodeBuffer    = plantUMLPackageVertex.convertVertex();
+		PlantUMLPackageVertexArc plantUMLEdge 		   = new PlantUMLPackageVertexArc(diagram);
+		StringBuilder 			 plantUMLEdgeBuffer    = plantUMLEdge.convertVertexArc();
+		bufferBody 									   = plantUMLNodeBuffer
+														     .append("\n\n")
+														     .append(plantUMLEdgeBuffer)
+														     .append("\n @enduml");
 	}
 
 	@Override
 	public File exportDiagram(Path exportPath) {
-		File plantUMLFile 	= exportPath.toFile();
-		String plantUMLCode = getPackageText();
-		plantUMLCode 		+= this.bufferBody;
-		plantUMLCode 		= dotChanger(plantUMLCode);
+		File   plantUMLFile =  exportPath.toFile();
+		String plantUMLCode =  getPackageText();
+		plantUMLCode 		+= bufferBody;
+		plantUMLCode 		=  dotChanger(plantUMLCode);
 		exportImage(plantUMLFile, plantUMLCode);
 		return plantUMLFile;
 	}
 
 	private void exportImage(File plantUMLFile, String plantCode) {
-		try (ByteArrayOutputStream png = new ByteArrayOutputStream()) {
-			SourceStringReader reader  = new SourceStringReader(plantCode);
+		try (ByteArrayOutputStream png   = new ByteArrayOutputStream()) {
+			SourceStringReader    reader = new SourceStringReader(plantCode);
 			reader.outputImage(png).getDescription();
-			byte [] data 			   = png.toByteArray();
-			InputStream in 			   = new ByteArrayInputStream(data);
-			BufferedImage convImg = ImageIO.read(in);
-			int width 				   = convImg.getWidth();
-			int wrapWidth 			   = 150;
+
+			byte[]        data 	    = png.toByteArray();
+			InputStream   in 	    = new ByteArrayInputStream(data);
+			BufferedImage convImg   = ImageIO.read(in);
+			int 		  width 	= convImg.getWidth();
+			int 		  wrapWidth = 150;
 			//int stringChangerCounter = 0;
 			if (width == 4096) {
 				try (ByteArrayOutputStream newPng = new ByteArrayOutputStream())
@@ -63,15 +65,16 @@ public class PlantUMLPackageDiagramImageExporter implements DiagramExporter {
 			ImageIO.write(convImg, "png", plantUMLFile);
 		} catch (IOException e) {
 			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 	}
 
 	private String wrapWidthChanger(String plantCode, int wrapWidth){
 		String updatedString;
-		int indexOfNewLine = plantCode.indexOf("\n");
-		String firstPart   = plantCode.substring(0, indexOfNewLine + 1);
-		String secondPart  = plantCode.substring(indexOfNewLine + 1);
-		updatedString 	   = firstPart + "skinparam wrapWidth " + wrapWidth + "\n" + secondPart;
+		int    indexOfNewLine = plantCode.indexOf("\n");
+		String firstPart      = plantCode.substring(0, indexOfNewLine + 1);
+		String secondPart     = plantCode.substring(indexOfNewLine + 1);
+		updatedString 	      = firstPart + "skinparam wrapWidth " + wrapWidth + "\n" + secondPart;
 		// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
 		// KEEP REDUCING THE WRAPWIDTH PARAMETER IN ORDER TO FIT PROPERLY THE IMAGE //
 		// DOESNT WORK PROPERLY, COMMENTED JUST TO KEEP THE IDEA.					//
@@ -89,12 +92,12 @@ public class PlantUMLPackageDiagramImageExporter implements DiagramExporter {
 
 	private String dotChanger(String plantUMLCode) {
 		StringBuilder newString = new StringBuilder();
-		String[] lines 			= plantUMLCode.split("\n");
+		String[] 	  lines 	= plantUMLCode.split("\n");
 		for (String line: lines) {
 			String[] splittedLine = line.split(" ");
 			for (String word: splittedLine) {
 				String newWord 	= word;
-				if(word.contains(".") && !word.contains("..")) {
+				if (word.contains(".") && !word.contains("..")) {
 					newWord = word.replace(".", "_");
 					newWord = newWord.replace("-", "_");
 				}
@@ -106,8 +109,7 @@ public class PlantUMLPackageDiagramImageExporter implements DiagramExporter {
 	}
 
 	private String getPackageText() {
-		return
-			"""
+		return """
 				@startuml
 				skinparam package {
 				    BackgroundColor lightyellow

@@ -19,8 +19,7 @@ public class PlantUMLPackageVertexArc {
 	}
 
 	public StringBuilder convertVertexArc() {
-
-		return new StringBuilder(this.packageDiagram.getDiagram().values()
+		return new StringBuilder(packageDiagram.getDiagram().values()
 								 .stream()
 								 .flatMap(vertexArcStream -> vertexArcStream
 										  .stream()

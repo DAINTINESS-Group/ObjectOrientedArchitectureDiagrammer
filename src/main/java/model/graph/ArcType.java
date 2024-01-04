@@ -7,11 +7,11 @@ import java.util.Map;
 
 public enum ArcType implements Comparator<ArcType>
 {
-	DEPENDENCY(0),
-	EXTENSION(1),
+	DEPENDENCY	  (0),
+	EXTENSION	  (1),
 	IMPLEMENTATION(2),
-	AGGREGATION(3),
-	ASSOCIATION(4);
+	AGGREGATION   (3),
+	ASSOCIATION	  (4);
 
 	private static final Map<String, ArcType> DEGREE_MAP;
 
@@ -33,10 +33,12 @@ public enum ArcType implements Comparator<ArcType>
 		return DEGREE_MAP.get(arcTypeName.toLowerCase().trim());
 	}
 
+	@Override
 	public String toString() {
 		return super.toString().toLowerCase();
 	}
 
+	@Override
 	public int compare(ArcType o1, ArcType o2)
 	{
 		return Integer.compare(o1.degree, o2.degree);

@@ -18,7 +18,7 @@ public class PlantUMLClassifierVertex {
 
 	public StringBuilder convertSinkVertex() {
 		return new StringBuilder(
-				this.classDiagram.getDiagram().keySet()
+				classDiagram.getDiagram().keySet()
 					.stream()
 					.map(sinkVertex ->
 						 sinkVertex.getVertexType() + " " + sinkVertex.getName() + " {\n" +

@@ -27,7 +27,7 @@ public class ClassDiagram {
 
 	public void createNewDiagram(List<String> chosenFilesNames) {
 		createGraphNodes(chosenFilesNames);
-		createDiagram(this.graphNodes.keySet());
+		createDiagram(graphNodes.keySet());
 	}
 
 	public void createDiagram(Set<ClassifierVertex> sinkVertices) {
@@ -38,7 +38,7 @@ public class ClassDiagram {
 	private void createGraphNodes(List<String> chosenFileNames) {
 		int nodeId = 0;
 		for (ClassifierVertex classifierVertex : getChosenNodes(chosenFileNames)) {
-			this.graphNodes.put(classifierVertex, nodeId);
+			graphNodes.put(classifierVertex, nodeId);
 			nodeId++;
 		}
 	}

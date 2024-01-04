@@ -82,7 +82,7 @@ public class ProjectTreeView {
 			}
 			if (fileType.equals("java")) {
 				selectedFiles.add(subtractFileExtension((String) c.getValue()));
-			}else {
+			} else {
 				selectedFiles.add(((String) c.getValue()));
 			}
 		}

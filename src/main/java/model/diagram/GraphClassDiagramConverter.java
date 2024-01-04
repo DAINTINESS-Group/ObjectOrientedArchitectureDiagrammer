@@ -15,20 +15,20 @@ public class GraphClassDiagramConverter {
 
 	public GraphClassDiagramConverter(Set<ClassifierVertex> sinkVertices) {
 		this.sinkVertices  = sinkVertices;
-		this.adjacencyList = new HashMap<>();
+		adjacencyList = new HashMap<>();
 	}
 
 	public Map<ClassifierVertex, Set<Arc<ClassifierVertex>>> convertGraphToClassDiagram() {
-		for (ClassifierVertex classifierVertex : this.sinkVertices) {
-			this.adjacencyList.put(classifierVertex, new HashSet<>());
+		for (ClassifierVertex classifierVertex : sinkVertices) {
+			adjacencyList.put(classifierVertex, new HashSet<>());
 			for (Arc<ClassifierVertex> arc: classifierVertex.getArcs()) {
-				if (!this.sinkVertices.contains(arc.targetVertex())) {
+				if (!sinkVertices.contains(arc.targetVertex())) {
 					continue;
 				}
-				this.adjacencyList.get(arc.sourceVertex()).add(arc);
+				adjacencyList.get(arc.sourceVertex()).add(arc);
 			}
 		}
-		return this.adjacencyList;
+		return adjacencyList;
 	}
 
 }

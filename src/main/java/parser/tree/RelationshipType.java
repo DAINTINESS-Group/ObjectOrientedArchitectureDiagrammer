@@ -7,6 +7,7 @@ public enum RelationshipType {
 	EXTENSION,
 	IMPLEMENTATION;
 
+	@Override
 	public String toString() {
 		return super.toString().toLowerCase();
 	}

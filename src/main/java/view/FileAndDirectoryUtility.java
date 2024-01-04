@@ -41,7 +41,7 @@ public class FileAndDirectoryUtility {
 		String directoryName = directoryPath[directoryPath.length - 1];
 		if (fileType.equals("PlantUML Files") || fileType.equals("PlantUML Text Files")) {
 			fileChooser.setInitialFileName(String.format(directoryName + "_plantUML%s", availableExtensionTypes.get(fileType).substring(1)));
-		}else {
+		} else {
 			fileChooser.setInitialFileName(String.format(directoryName + "_createdDiagram%s", availableExtensionTypes.get(fileType).substring(1)));
 		}
 		Stage window = (Stage) menuBar.getScene().getWindow();
