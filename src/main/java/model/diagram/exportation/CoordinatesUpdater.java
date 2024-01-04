@@ -12,10 +12,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class CoordinatesUpdater {
-	private static final Logger         logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-	private              PackageDiagram packageDiagram;
-	private              ClassDiagram   classDiagram;
+	private PackageDiagram packageDiagram;
+	private ClassDiagram   classDiagram;
 
 	public CoordinatesUpdater(PackageDiagram packageDiagram) {
 		this.packageDiagram = packageDiagram;
@@ -28,18 +28,19 @@ public class CoordinatesUpdater {
 	public void updatePackageCoordinates(Collection<Vertex<String>> 	 vertexCollection,
 										 SmartGraphPanel<String, String> graphView) {
 		if (vertexCollection == null) {
-			logger.log(Level.INFO, "Vertex Collection is null");
+			logger.log(Level.WARNING, "Vertex Collection is null");
 			return;
 		}
 
 		for(Vertex<String> vertex : vertexCollection) {
 			double x = graphView.getVertexPositionX(vertex);
 			double y = graphView.getVertexPositionY(vertex);
-			for(PackageVertex packageVertex : this.packageDiagram.getGraphNodes().keySet()) {
-				if(!packageVertex.getName().equals(vertex.element())) {
+			for (PackageVertex packageVertex : packageDiagram.getGraphNodes().keySet()) {
+				if (!packageVertex.getName().equals(vertex.element())) {
 					continue;
 				}
-				packageVertex.setCoordinates(x, y);
+
+				packageVertex.createCoordinate(x, y);
 			}
 		}
 	}
@@ -47,18 +48,19 @@ public class CoordinatesUpdater {
 	public void updateClassCoordinates(Collection<Vertex<String>> 	   vertexCollection,
 									   SmartGraphPanel<String, String> graphView) {
 		if (vertexCollection == null) {
-			logger.log(Level.INFO, "Vertex Collection is null");
+			logger.log(Level.WARNING, "Vertex Collection is null");
 			return;
 		}
 
 		for(Vertex<String> vertex : vertexCollection) {
 			double x = graphView.getVertexPositionX(vertex);
 			double y = graphView.getVertexPositionY(vertex);
-			for(ClassifierVertex classifierVertex : this.classDiagram.getGraphNodes().keySet()) {
+			for (ClassifierVertex classifierVertex : classDiagram.getGraphNodes().keySet()) {
 				if (!classifierVertex.getName().equals(vertex.element())) {
 					continue;
 				}
-				classifierVertex.setCoordinates(x, y);
+
+				classifierVertex.updateCoordinate(x, y);
 			}
 		}
 	}

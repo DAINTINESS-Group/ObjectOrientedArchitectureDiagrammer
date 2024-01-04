@@ -15,19 +15,20 @@ public class GraphMLClassDiagramExporter implements DiagramExporter {
 
 	public GraphMLClassDiagramExporter(ClassDiagram classDiagram) {
 		GraphMLClassifierVertex graphMLClassifierVertex 	  = new GraphMLClassifierVertex(classDiagram);
-		this.graphMLNodeBuffer 								  = graphMLClassifierVertex.convertSinkVertex();
 		GraphMLClassifierVertexArc graphMLClassifierVertexArc = new GraphMLClassifierVertexArc(classDiagram);
-		this.graphMLEdgeBuffer 								  = graphMLClassifierVertexArc.convertSinkVertexArc();
-		this.graphMLFile 									  = new GraphMLFile();
+
+		graphMLNodeBuffer = graphMLClassifierVertex.convertSinkVertex();
+		graphMLEdgeBuffer = graphMLClassifierVertexArc.convertSinkVertexArc();
+		graphMLFile 	  = new GraphMLFile();
 	}
 
 	@Override
 	public File exportDiagram(Path exportPath) {
-		this.graphMLFile.createGraphMLFile(exportPath);
-		this.graphMLFile.writeToBuffer(this.graphMLNodeBuffer);
-		this.graphMLFile.writeToBuffer(this.graphMLEdgeBuffer);
-		this.graphMLFile.closeGraphMLFile();
-		return this.graphMLFile.getGraphMLFile();
+		graphMLFile.createGraphMLFile(exportPath);
+		graphMLFile.writeToBuffer(graphMLNodeBuffer);
+		graphMLFile.writeToBuffer(graphMLEdgeBuffer);
+		graphMLFile.closeGraphMLFile();
+		return graphMLFile.getGraphMLFile();
 	}
 
 }

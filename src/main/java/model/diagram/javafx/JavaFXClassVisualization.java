@@ -42,7 +42,7 @@ public class JavaFXClassVisualization implements JavaFXVisualization {
 
 	private Graph<String, String> createGraph() {
 		Digraph<String, String> directedGraph = new DigraphEdgeList<>();
-		for (ClassifierVertex classifierVertex : this.classDiagram.getDiagram().keySet()) {
+		for (ClassifierVertex classifierVertex : classDiagram.getDiagram().keySet()) {
 			directedGraph.insertVertex(classifierVertex.getName());
 		}
 		insertSinkVertexArcs(directedGraph);
@@ -50,13 +50,13 @@ public class JavaFXClassVisualization implements JavaFXVisualization {
 	}
 
 	private void insertSinkVertexArcs(Digraph<String, String> directedGraph){
-		for (Set<Arc<ClassifierVertex>> arcs : this.classDiagram.getDiagram().values()) {
+		for (Set<Arc<ClassifierVertex>> arcs : classDiagram.getDiagram().values()) {
 			for (Arc<ClassifierVertex> arc: arcs) {
 				if (arc.arcType().equals(ArcType.AGGREGATION)) {
 					directedGraph.insertEdge(arc.targetVertex().getName(),
 											 arc.sourceVertex().getName(),
 											 arc.targetVertex().getName() + "_" + arc.sourceVertex().getName() + "_" + arc.arcType());
-				}else {
+				} else {
 					directedGraph.insertEdge(arc.sourceVertex().getName(),
 											 arc.targetVertex().getName(),
 											 arc.sourceVertex().getName() + "_" + arc.targetVertex().getName() + "_" + arc.arcType());
@@ -66,10 +66,10 @@ public class JavaFXClassVisualization implements JavaFXVisualization {
 	}
 
 	private void setSinkVertexCustomStyle() {
-		for (ClassifierVertex classifierVertex : this.classDiagram.getDiagram().keySet()){
+		for (ClassifierVertex classifierVertex : classDiagram.getDiagram().keySet()){
 			if (classifierVertex.getVertexType().equals(VertexType.INTERFACE)) {
 				graphView.getStylableVertex(classifierVertex.getName()).setStyleClass("vertexInterface");
-			}else {
+			} else {
 				graphView.getStylableVertex(classifierVertex.getName()).setStyleClass("vertexPackage");
 			}
 		}
@@ -78,16 +78,17 @@ public class JavaFXClassVisualization implements JavaFXVisualization {
 	@Override
 	public SmartGraphPanel<String, String> getLoadedGraph() {
 		for (Vertex<String> vertex : vertexCollection) {
-			for (ClassifierVertex classifierVertex: this.classDiagram.getDiagram().keySet()){
+			for (ClassifierVertex classifierVertex: classDiagram.getDiagram().keySet()){
                 if (!classifierVertex.getName().equals(vertex.element())) {
 					continue;
 				}
 				graphView.setVertexPosition(vertex,
-											classifierVertex.getCoordinates().getValue0(),
-											classifierVertex.getCoordinates().getValue1());
+											classifierVertex.getCoordinate().getX(),
+											classifierVertex.getCoordinate().getY());
 				break;
             }
 		}
+
 		return graphView;
 	}
 

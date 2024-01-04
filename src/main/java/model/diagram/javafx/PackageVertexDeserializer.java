@@ -26,39 +26,39 @@ public class PackageVertexDeserializer implements JsonDeserializer<PackageVertex
 	public PackageVertex deserialize(JsonElement 				jsonElement,
 									 Type 		 				type,
 									 JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
-		JsonObject jsonObject  = jsonElement.getAsJsonObject();
-		String path 		   = jsonObject.get("path").getAsString();
-		String vertexType 	   = jsonObject.get("vertexType").getAsString();
+		JsonObject jsonObject = jsonElement.getAsJsonObject();
+		String 	   path 	  = jsonObject.get("path").getAsString();
+		String 	   vertexType = jsonObject.get("vertexType").getAsString();
 
 		if (!VertexType.get(vertexType).equals(VertexType.PACKAGE)) {
 			throw new JsonParseException("Wrong diagram type");
 		}
 
-		JsonObject parent 	   = jsonObject.get("parent").getAsJsonObject();
-		String parentName 	   = parent.get("name").getAsString();
-		this.packageVertex 	   = new PackageVertex(Path.of(path), VertexType.get(vertexType), parentName);
+		JsonObject parent = jsonObject.get("parent").getAsJsonObject();
+		String parentName = parent.get("name").getAsString();
+		packageVertex 	  = new PackageVertex(Path.of(path), VertexType.get(vertexType), parentName);
 		if (jsonObject.has("coordinate_x") && jsonObject.has("coordinate_x")) {
 			double coordinateX = jsonObject.get("coordinate_x").getAsDouble();
 			double coordinateY = jsonObject.get("coordinate_y").getAsDouble();
-			this.packageVertex.setCoordinates(coordinateX, coordinateY);
+			packageVertex.createCoordinate(coordinateX, coordinateY);
 		}
 		deserializeSinkVertices(jsonObject);
 		deserializeNeighbourVertices(jsonObject);
 		deserializeArcs(jsonObject);
 
-		return this.packageVertex;
+		return packageVertex;
 	}
 
 	private void deserializeSinkVertices(JsonObject jsonObject) {
-		JsonArray sinkVertices 				  = jsonObject.get("sinkVertices").getAsJsonArray();
+		JsonArray sinkVertices = jsonObject.get("sinkVertices").getAsJsonArray();
 		for (int i = 0; i < sinkVertices.size(); i++) {
-			String json 					  = sinkVertices.get(i).getAsString();
-			Gson gson 						  = new GsonBuilder().registerTypeAdapter(
-																					  ClassifierVertex.class,
-																					  new ClassifierVertexDeserializer())
-																					  .create();
-			ClassifierVertex classifierVertex = gson.fromJson(json, ClassifierVertex.class);
-			this.packageVertex.addSinkVertex(classifierVertex);
+			String json = sinkVertices.get(i).getAsString();
+			Gson  gson 	= new GsonBuilder().registerTypeAdapter(ClassifierVertex.class,
+																  new ClassifierVertexDeserializer())
+																.create();
+			ClassifierVertex classifierVertex = gson.fromJson(json,
+															  ClassifierVertex.class);
+			packageVertex.addSinkVertex(classifierVertex);
 		}
 	}
 
@@ -66,18 +66,18 @@ public class PackageVertexDeserializer implements JsonDeserializer<PackageVertex
 		JsonArray neighbourVertices = jsonObject.get("neighbours").getAsJsonArray();
 		for (int i = 0; i < neighbourVertices.size(); i++) {
 			JsonObject vertexObject = neighbourVertices.get(i).getAsJsonObject();
-			String path 	  		= vertexObject.get("path").getAsString();
-			String vertexType 		= vertexObject.get("vertexType").getAsString();
-			String parentName 		= vertexObject.get("parentName").getAsString();
-			this.packageVertex.addNeighbourVertex(new PackageVertex(Path.of(path),
+			String 	   path 	  	= vertexObject.get("path").getAsString();
+			String     vertexType 	= vertexObject.get("vertexType").getAsString();
+			String 	   parentName 	= vertexObject.get("parentName").getAsString();
+			packageVertex.addNeighbourVertex(new PackageVertex(Path.of(path),
 																	VertexType.get(vertexType),
 																	parentName));
 		}
 	}
 
 	private void deserializeArcs(JsonObject jsonObject) {
-		JsonArray arcsArray 	 = jsonObject.get("arcs").getAsJsonArray();
-		List<Triplet<String, String, String>> arcs = new ArrayList<>();
+		JsonArray 							  arcsArray = jsonObject.get("arcs").getAsJsonArray();
+		List<Triplet<String, String, String>> arcs 		= new ArrayList<>();
 		for (int i = 0; i < arcsArray.size(); i++) {
 			JsonObject arcObject = arcsArray.get(i).getAsJsonObject();
 			String sourceVertex  = arcObject.get("source").getAsString();
@@ -85,7 +85,7 @@ public class PackageVertexDeserializer implements JsonDeserializer<PackageVertex
 			String arcType 		 = arcObject.get("arcType").getAsString();
 			arcs.add(new Triplet<>(sourceVertex, targetVertex, arcType));
 		}
-		this.packageVertex.setDeserializedArcs(arcs);
+		packageVertex.setDeserializedArcs(arcs);
 	}
 
 }

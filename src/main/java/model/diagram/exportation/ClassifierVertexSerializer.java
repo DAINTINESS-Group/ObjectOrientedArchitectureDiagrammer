@@ -17,18 +17,18 @@ import java.util.Map;
 public class ClassifierVertexSerializer implements JsonSerializer<ClassifierVertex> {
 
 	@Override
-	public JsonElement serialize(ClassifierVertex 					classifierVertex,
-								 Type 								type,
-								 JsonSerializationContext 			jsonSerializationContext) {
+	public JsonElement serialize(ClassifierVertex 		  classifierVertex,
+								 Type 					  type,
+								 JsonSerializationContext jsonSerializationContext) {
 		JsonObject jsonObject = new JsonObject();
-		String name 	  	  = classifierVertex.getName();
-		Path path 		  	  = classifierVertex.getPath();
-		String vertexType 	  = classifierVertex.getVertexType().toString();
+		String 	   name 	  = classifierVertex.getName();
+		Path 	   path 	  = classifierVertex.getPath();
+		String 	   vertexType = classifierVertex.getVertexType().toString();
 		jsonObject.addProperty("name", name);
 		jsonObject.addProperty("path", path.toString());
 		jsonObject.addProperty("vertexType", vertexType);
-		jsonObject.addProperty("coordinate_x", classifierVertex.getCoordinates().getValue0());
-		jsonObject.addProperty("coordinate_y", classifierVertex.getCoordinates().getValue1()); 
+		jsonObject.addProperty("coordinate_x", classifierVertex.getCoordinate().getX());
+		jsonObject.addProperty("coordinate_y", classifierVertex.getCoordinate().getY());
 		jsonObject.add("methods", serializeMethods(classifierVertex));
 		jsonObject.add("fields", serializeFields(classifierVertex));
 		jsonObject.add("arcs", serializeArcs(classifierVertex));

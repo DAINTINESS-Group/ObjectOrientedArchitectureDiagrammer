@@ -85,7 +85,7 @@ public class DiagramCreation {
 	private List<String> getSelectedFiles(String diagramType) {
 		if (diagramType.equals("Package")) {
 			return projectTreeView.getSelectedFiles(projectTreeView.getFolderFiles(), "package");
-		}else{
+		} else {
 			return projectTreeView.getSelectedFiles(projectTreeView.getJavaSourceFiles(), "java");
 		}
 	}

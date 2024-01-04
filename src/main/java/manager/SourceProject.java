@@ -8,31 +8,17 @@ import java.nio.file.Path;
 
 public class SourceProject {
 
-	private static Interpreter    interpreter;
-	private static ClassDiagram   classDiagram;
-	private static PackageDiagram packageDiagram;
+	private final Interpreter interpreter = new Interpreter();
 
-	public SourceProject(ClassDiagram classDiagram) {
-		interpreter 			   = new Interpreter();
-		SourceProject.classDiagram = classDiagram;
-	}
-
-	public SourceProject(PackageDiagram packageDiagram) {
-		interpreter 				 = new Interpreter();
-		SourceProject.packageDiagram = packageDiagram;
-	}
-
-
-	public void createGraph(Path sourcePackagePath) {
+	public void createClassGraph(Path sourcePackagePath, ClassDiagram classDiagram) {
 		interpreter.parseProject(sourcePackagePath);
 		interpreter.convertTreeToGraph();
-	}
-
-	public void setClassDiagramSinkVertices() {
 		classDiagram.setSinkVertices(interpreter.getSinkVertices());
 	}
 
-	public void setPackageDiagramVertices() {
+	public void createPackageGraph(Path sourcePackagePath, PackageDiagram packageDiagram) {
+		interpreter.parseProject(sourcePackagePath);
+		interpreter.convertTreeToGraph();
 		packageDiagram.setVertices(interpreter.getVertices());
 	}
 

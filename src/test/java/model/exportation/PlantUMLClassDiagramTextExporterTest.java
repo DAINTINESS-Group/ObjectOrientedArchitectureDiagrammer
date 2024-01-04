@@ -24,32 +24,49 @@ public class PlantUMLClassDiagramTextExporterTest {
 	void exportDiagramTest() {
 		try {
 			ClassDiagramManager classDiagramManager = new ClassDiagramManager();
-			classDiagramManager.createSourceProject(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "LatexEditor", "src")));
-			classDiagramManager.convertTreeToDiagram(
-				List.of(
-					"StableVersionsStrategy", "VersionsStrategy", "VersionsStrategyFactory", "VolatileVersionsStrategy",
-					"VersionsManager", "Document", "DocumentManager"
-				));
+			classDiagramManager.createSourceProject(Paths.get(String.format("%s%s%s",
+																			PathConstructor.getCurrentPath(),
+																			File.separator,
+																			PathConstructor.constructPath("src",
+																										  "test",
+																										  "resources",
+																										  "LatexEditor",
+																										  "src"))));
+			classDiagramManager.convertTreeToDiagram(List.of("StableVersionsStrategy",
+															 "VersionsStrategy",
+															 "VersionsStrategyFactory",
+															 "VolatileVersionsStrategy",
+															 "VersionsManager",
+															 "Document",
+															 "DocumentManager"));
 
-			PlantUMLClassifierVertex plantUMLClassifierVertex = new PlantUMLClassifierVertex(classDiagramManager.getClassDiagram());
-			String sinkVertexBuffer = plantUMLClassifierVertex.convertSinkVertex().toString();
-			PlantUMLClassifierVertexArc plantUMLEdge = new PlantUMLClassifierVertexArc(classDiagramManager.getClassDiagram());
-			String sinkVertexArcBuffer = plantUMLEdge.convertSinkVertexArc().toString();
-
-			DiagramExporter graphMLExporter = new PlantUMLClassDiagramTextExporter(classDiagramManager.getClassDiagram());
-			File exportedFile = graphMLExporter.exportDiagram(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "testingExportedFile.txt")));
-			Stream<String> lines = Files.lines(exportedFile.toPath());
-			String actualFileContents = lines.collect(Collectors.joining("\n"));
+			PlantUMLClassifierVertex    plantUMLClassifierVertex = new PlantUMLClassifierVertex(classDiagramManager.getClassDiagram());
+			String 					    sinkVertexBuffer 		 = plantUMLClassifierVertex.convertSinkVertex().toString();
+			PlantUMLClassifierVertexArc plantUMLEdge 			 = new PlantUMLClassifierVertexArc(classDiagramManager.getClassDiagram());
+			String 						sinkVertexArcBuffer 	 = plantUMLEdge.convertSinkVertexArc().toString();
+			DiagramExporter			 	graphMLExporter 		 = new PlantUMLClassDiagramTextExporter(classDiagramManager.getClassDiagram());
+			File exportedFile = graphMLExporter.exportDiagram(Paths.get(String.format("%s%s%s",
+																					  PathConstructor.getCurrentPath(),
+																					  File.separator,
+																					  PathConstructor.constructPath("src",
+																													"test",
+																													"resources",
+																													"testingExportedFile.txt"))));
+			Stream<String> lines 			  = Files.lines(exportedFile.toPath());
+			String 		   actualFileContents = lines.collect(Collectors.joining("\n"));
 			lines.close();
 
 			String expectedFileContents = "@startuml\n" +
-					"skinparam class {\n" +
-					"    BackgroundColor lightyellow\n" +
-					"    BorderColor black\n" +
-					"    ArrowColor black\n" +
-					"}\n\n";
+										  "skinparam class {\n" +
+										  "    BackgroundColor lightyellow\n" +
+										  "    BorderColor black\n" +
+										  "    ArrowColor black\n" +
+										  "}\n\n";
 
-			expectedFileContents += sinkVertexBuffer + "\n\n" + sinkVertexArcBuffer + "\n @enduml";
+			expectedFileContents += sinkVertexBuffer +
+									"\n\n" +
+									sinkVertexArcBuffer +
+									"\n @enduml";
 			assertEquals(expectedFileContents, actualFileContents);
 		} catch (IOException e) {
 			e.printStackTrace();

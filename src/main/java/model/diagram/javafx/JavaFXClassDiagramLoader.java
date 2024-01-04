@@ -26,18 +26,20 @@ public class JavaFXClassDiagramLoader {
 	}
 
 	public Set<ClassifierVertex> loadDiagram() throws JsonParseException {
-		Set<ClassifierVertex> sinkVertices 		 = new HashSet<>();
+		Set<ClassifierVertex> sinkVertices = new HashSet<>();
 		try {
-			byte[] 			  encodedBytes 		 = Files.readAllBytes(this.graphSavePath);
-			String 			  json 		   		 = new String(encodedBytes, StandardCharsets.ISO_8859_1);
-			Gson 			  gson 		   		 = new GsonBuilder().registerTypeAdapter(ClassifierVertex.class,
-																				   new ClassifierVertexDeserializer())
-																				   .create();
+			byte[] encodedBytes = Files.readAllBytes(graphSavePath);
+			String json 		= new String(encodedBytes, StandardCharsets.ISO_8859_1);
+			Gson   gson 		= new GsonBuilder().registerTypeAdapter(ClassifierVertex.class,
+																	   new ClassifierVertexDeserializer())
+																	   .create();
+
 			ClassifierVertex[] sinkVerticesArray = gson.fromJson(json, ClassifierVertex[].class);
 			Collections.addAll(sinkVertices, sinkVerticesArray);
 			deserializeArcs(sinkVertices);
 		} catch (IOException e) {
 			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 		return sinkVertices;
 	}

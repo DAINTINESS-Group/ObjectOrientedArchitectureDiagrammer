@@ -10,7 +10,7 @@ import java.util.*;
 
 public class PackageDiagram {
 
-	private final Map<PackageVertex, Integer> 				   graphNodes;
+	private final  Map<PackageVertex, Integer> 				   graphNodes;
 	private static Map<PackageVertex, Set<Arc<PackageVertex>>> diagram;
 	private static Map<Path, PackageVertex> 				   vertices;
 	private static Map<Integer, Pair<Double, Double>> 		   diagramGeometryGraphML;
@@ -22,7 +22,7 @@ public class PackageDiagram {
 
 	public void createNewDiagram(List<String> chosenFileNames) {
 		createGraphNodes(chosenFileNames);
-		createDiagram(this.graphNodes.keySet());
+		createDiagram(graphNodes.keySet());
 	}
 
 	public void createDiagram(Set<PackageVertex> vertices) {
@@ -33,7 +33,7 @@ public class PackageDiagram {
 	private void createGraphNodes(List<String> chosenFileNames) {
 		int nodeId = 0;
 		for (PackageVertex vertex: getChosenNodes(chosenFileNames)) {
-			this.graphNodes.put(vertex, nodeId);
+			graphNodes.put(vertex, nodeId);
 			nodeId++;
 		}
 	}

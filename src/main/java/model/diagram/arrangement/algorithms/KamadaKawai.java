@@ -10,8 +10,10 @@ import java.awt.*;
 
 public class KamadaKawai implements LayoutAlgorithm{
 
-	private final static int GRAPH_X_SIZE = 1200;
-	private final static int GRAPH_Y_SIZE = 725;
+	private final static int GRAPH_X_SIZE 		= 1200;
+	private final static int GRAPH_Y_SIZE 		= 725;
+	private final static int MIN_X_WINDOW_VALUE = 25;
+	private final static int MIN_Y_WINDOW_VALUE = 25;
 
 	private Graph<String, String> graph;
 
@@ -37,13 +39,13 @@ public class KamadaKawai implements LayoutAlgorithm{
 			double y = layout.getY(vertex);            
 			if (x < MIN_X_WINDOW_VALUE) {
 				double difference = MIN_X_WINDOW_VALUE - x;
-				if(difference > maxXdistance) {
+				if (difference > maxXdistance) {
 					maxXdistance = difference;
 				}
 			}
 			if (y < MIN_Y_WINDOW_VALUE) {
 				double difference = MIN_Y_WINDOW_VALUE - y;
-				if(difference > maxYdistance) {
+				if (difference > maxYdistance) {
 					maxYdistance = difference;
 				}
 			}

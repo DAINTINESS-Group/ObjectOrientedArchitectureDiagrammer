@@ -7,6 +7,7 @@
     A tool for the reverse engineering of Java object-oriented source code into Unified Modeling Language (UML) diagrams
   </p>
 
+![workflow][workflow-url]
 [![Contributors][contributors-shield]][contributors-url]
 [![Commits][commits-shield]][commits-url]
 [![Forks][forks-shield]][forks-url]
@@ -152,6 +153,7 @@ See [License][license-url] for more information regarding the license
 
 ## Acknowledgments
 
+[workflow-url]: https://github.com/DAINTINESS-Group/ObjectOrientedArchitectureDiagrammer/actions/workflows/maven.yml/badge.svg
 [contributors-shield]: https://img.shields.io/github/contributors/DAINTINESS-Group/ObjectOrientedArchitectureDiagrammer
 [contributors-url]: https://github.com/DAINTINESS-Group/ObjectOrientedArchitectureDiagrammer/graphs/contributors
 [commits-shield]: https://img.shields.io/github/last-commit/DAINTINESS-Group/ObjectOrientedArchitectureDiagrammer

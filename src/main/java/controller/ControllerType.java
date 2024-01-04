@@ -21,7 +21,9 @@ public enum ControllerType {
 		return CONTROLLER_TYPE.get(controllerType.toLowerCase());
 	}
 
+	@Override
 	public String toString() {
 		return super.toString().toLowerCase();
 	}
+
 }

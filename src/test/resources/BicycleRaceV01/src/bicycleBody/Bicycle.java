@@ -67,7 +67,7 @@ public class Bicycle {
  	 */
 	public double setBraking(double force){
 		velocity -= breaks.getSpeedReduction(force);
-		if(velocity < 0)
+		if (velocity < 0)
 			velocity = 0;
 		return velocity;
 	}

@@ -22,14 +22,18 @@ public class JavaFXClassDiagramExporter implements DiagramExporter {
 	public File exportDiagram(Path exportPath) {
 		File graphSaveFile = exportPath.toFile();
 		try (FileWriter fileWriter = new FileWriter(graphSaveFile)) {
-			Gson gson 			   = new GsonBuilder().registerTypeAdapter(ClassifierVertex.class,
-																		   new ClassifierVertexSerializer())
-																		   .create();
-			String json = gson.toJson(this.classDiagram.getDiagram().keySet());
+			Gson gson = new GsonBuilder()
+								.registerTypeAdapter(ClassifierVertex.class,
+													 new ClassifierVertexSerializer())
+								.create();
+
+			String json = gson.toJson(classDiagram.getDiagram().keySet());
 			fileWriter.write(json);
 		} catch (IOException e) {
 			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
+
 		return graphSaveFile;
 	}
 

@@ -15,6 +15,7 @@ public enum DiagramType {
 		for (DiagramType diagramType: DiagramType.values()) {
 			map.put(diagramType.toString().toLowerCase(), diagramType);
 		}
+
 		DIAGRAM_TYPE = Collections.unmodifiableMap(map);
 	}
 
@@ -22,7 +23,9 @@ public enum DiagramType {
 		return DIAGRAM_TYPE.get(diagramType.toLowerCase().trim());
 	}
 
+	@Override
 	public String toString() {
 		return super.toString().toLowerCase();
 	}
+
 }

@@ -19,29 +19,28 @@ public class GraphMLClassifierVertexArc {
 	private final ClassDiagram  classDiagram;
 
 	public GraphMLClassifierVertexArc(ClassDiagram classDiagram) {
-		this.classDiagram 	  = classDiagram;
-		this.graphMLBuffer 	  = new StringBuilder();
+		this.classDiagram = classDiagram;
+		graphMLBuffer 	  = new StringBuilder();
 	}
 
 	public StringBuilder convertSinkVertexArc() {
 		List<Arc<ClassifierVertex>> arcs = new ArrayList<>();
-		for (Set<Arc<ClassifierVertex>> arcSet: this.classDiagram.getDiagram().values()) {
+		for (Set<Arc<ClassifierVertex>> arcSet: classDiagram.getDiagram().values()) {
 			arcs.addAll(arcSet);
 		}
 
 		int edgeId = 0;
 		for (Arc<ClassifierVertex> arc: arcs) {
-			this.graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLSinkVertexArcSyntax(getEdgesProperties(arc, edgeId)));
+			graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLSinkVertexArcSyntax(getEdgesProperties(arc, edgeId)));
 			edgeId++;
 		}
-		return this.graphMLBuffer;
+		return graphMLBuffer;
 	}
 
 	private List<String> getEdgesProperties(Arc<ClassifierVertex> relationship, Integer edgeId) {
-		return
-			Arrays.asList(String.valueOf(edgeId), String.valueOf(this.classDiagram.getGraphNodes().get(relationship.sourceVertex())),
-						  String.valueOf(this.classDiagram.getGraphNodes().get(relationship.targetVertex())), identifyEdgeType(relationship).get(EDGE_TYPE),
-						  identifyEdgeType(relationship).get(EDGES_SOURCE_TYPE), identifyEdgeType(relationship).get(EDGES_TARGET_TYPE));
+		return Arrays.asList(String.valueOf(edgeId), String.valueOf(classDiagram.getGraphNodes().get(relationship.sourceVertex())),
+						     String.valueOf(classDiagram.getGraphNodes().get(relationship.targetVertex())), identifyEdgeType(relationship).get(EDGE_TYPE),
+						     identifyEdgeType(relationship).get(EDGES_SOURCE_TYPE), identifyEdgeType(relationship).get(EDGES_TARGET_TYPE));
 	}
 
 	private List<String> identifyEdgeType(Arc<ClassifierVertex> relationship){

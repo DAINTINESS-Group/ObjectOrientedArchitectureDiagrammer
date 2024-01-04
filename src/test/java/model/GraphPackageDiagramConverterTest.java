@@ -23,15 +23,19 @@ public class GraphPackageDiagramConverterTest {
 	@Test
 	void convertGraphToPackageDiagramTest() {
 		PackageDiagramManager packageDiagramManager = new PackageDiagramManager();
-		packageDiagramManager.createSourceProject(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "LatexEditor", "src")));
-		packageDiagramManager.convertTreeToDiagram(
-			List.of(
-				"src.view",
-				"src.model",
-				"src.model.strategies",
-				"src.controller.commands",
-				"src.controller"
-			));
+		packageDiagramManager.createSourceProject(Paths.get(String.format("%s%s%s",
+																		  PathConstructor.getCurrentPath(),
+																		  File.separator,
+																		  PathConstructor.constructPath("src",
+																										"test",
+																										"resources",
+																										"LatexEditor",
+																										"src"))));
+		packageDiagramManager.convertTreeToDiagram(List.of("src.view",
+														   "src.model",
+														   "src.model.strategies",
+														   "src.controller.commands",
+														   "src.controller"));
 		Map<PackageVertex, Set<Arc<PackageVertex>>> diagram = packageDiagramManager.getPackageDiagram().getDiagram();
 
 		List<Arc<PackageVertex>> arcs = new ArrayList<>();
@@ -39,8 +43,8 @@ public class GraphPackageDiagramConverterTest {
 			arcs.addAll(arcSet);
 		}
 
-		GraphPackageDiagramConverter graphPackageDiagramConverter = new GraphPackageDiagramConverter(diagram.keySet());
-		Map<PackageVertex, Set<Arc<PackageVertex>>> adjacencyList = graphPackageDiagramConverter.convertGraphToPackageDiagram();
+		GraphPackageDiagramConverter 				graphPackageDiagramConverter = new GraphPackageDiagramConverter(diagram.keySet());
+		Map<PackageVertex, Set<Arc<PackageVertex>>> adjacencyList 				 = graphPackageDiagramConverter.convertGraphToPackageDiagram();
 
 		Set<Arc<PackageVertex>> actualArcs = new HashSet<>();
 		for (Set<Arc<PackageVertex>> value : adjacencyList.values()) {

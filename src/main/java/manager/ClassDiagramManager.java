@@ -36,9 +36,8 @@ public class ClassDiagramManager implements DiagramManager {
 
 	@Override
 	public SourceProject createSourceProject(Path sourcePackagePath) {
-		SourceProject sourceProject = new SourceProject(classDiagram);
-		sourceProject.createGraph(sourcePackagePath);
-		sourceProject.setClassDiagramSinkVertices();
+		SourceProject sourceProject = new SourceProject();
+		sourceProject.createClassGraph(sourcePackagePath, classDiagram);
 		return sourceProject;
 	}
 
@@ -119,9 +118,11 @@ public class ClassDiagramManager implements DiagramManager {
 			if (!nodesGeometry.containsKey(vertex.element())) {
 				continue;
 			}
+
 			Pair<Double, Double> coordinates = nodesGeometry.getVertexGeometry(vertex.element());
 			graphView.setVertexPosition(vertex, coordinates.getValue0(), coordinates.getValue1());
 		}
+
 		return graphView;
 	}
 
@@ -131,9 +132,11 @@ public class ClassDiagramManager implements DiagramManager {
 			if (!nodesGeometry.containsKey(vertex.element())) {
 				continue;
 			}
+
 			Pair<Double, Double> coordinates = nodesGeometry.getVertexGeometry(vertex.element());
 			graphView.setVertexPosition(vertex,  coordinates.getValue0(), coordinates.getValue1());
 		}
+
 		return graphView;
 	}
 
