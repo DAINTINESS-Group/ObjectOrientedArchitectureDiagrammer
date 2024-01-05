@@ -68,7 +68,7 @@ public interface Controller {
 	SmartGraphPanel<String, String> visualizeJavaFXGraph();
 
 	/**
-	 * This method creates the Loaded Diagram's JavaFX graphView by calling the DiagramManager's visualizeLoadedJavaFXGraph method.
+	 * This method creates the loaded Diagram's JavaFX graphView by calling the DiagramManager's visualizeLoadedJavaFXGraph method.
 	 *
 	 * @return the created graphView
 	 */

@@ -15,21 +15,22 @@ public class PlantUMLPackageDiagramTextExporter implements DiagramExporter {
 	private final StringBuilder bufferBody;
 
 	public PlantUMLPackageDiagramTextExporter(PackageDiagram diagram) {
-		PlantUMLPackageVertex plantUMLPackageVertex = new PlantUMLPackageVertex(diagram);
-		StringBuilder plantUMLNodeBuffer 			= plantUMLPackageVertex.convertVertex();
-		PlantUMLPackageVertexArc plantUMLEdge 		= new PlantUMLPackageVertexArc(diagram);
-		StringBuilder plantUMLEdgeBuffer 			= plantUMLEdge.convertVertexArc();
-		this.bufferBody 							= plantUMLNodeBuffer.append("\n\n")
-																		.append(plantUMLEdgeBuffer)
-																		.append("\n @enduml");
+		PlantUMLPackageVertex    plantUMLPackageVertex = new PlantUMLPackageVertex(diagram);
+		StringBuilder		     plantUMLNodeBuffer    = plantUMLPackageVertex.convertVertex();
+		PlantUMLPackageVertexArc plantUMLEdge 		   = new PlantUMLPackageVertexArc(diagram);
+		StringBuilder 			 plantUMLEdgeBuffer    = plantUMLEdge.convertVertexArc();
+		bufferBody 									   = plantUMLNodeBuffer
+														     .append("\n\n")
+														     .append(plantUMLEdgeBuffer)
+														     .append("\n @enduml");
 	}
 
 	@Override
 	public File exportDiagram(Path exportPath) {
-		File plantUMLFile   = exportPath.toFile();
-		String plantUMLCode = getPackageText();
-		plantUMLCode 		+= this.bufferBody;
-		plantUMLCode 		= dotChanger(plantUMLCode);
+		File   plantUMLFile =  exportPath.toFile();
+		String plantUMLCode =  getPackageText();
+		plantUMLCode 		+= bufferBody;
+		plantUMLCode 		=  dotChanger(plantUMLCode);
 		writeFile(plantUMLFile, plantUMLCode);
 		return plantUMLFile;
 	}
@@ -39,17 +40,18 @@ public class PlantUMLPackageDiagramTextExporter implements DiagramExporter {
 			writer.write(plantCode);
 		} catch (IOException e) {
 			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 	}
 
 	private String dotChanger(String plantUMLCode) {
 		StringBuilder newString = new StringBuilder();
-		String[] lines 			= plantUMLCode.split("\n");
+		String[]      lines 	= plantUMLCode.split("\n");
 		for (String line: lines) {
 			String[] splittedLine = line.split(" ");
 			for (String word: splittedLine) {
 				String newWord = word;
-				if(word.contains(".") && !word.contains("..")) {
+				if (word.contains(".") && !word.contains("..")) {
 					newWord = word.replace(".", "_");
 					newWord = newWord.replace("-", "_");
 				}
@@ -61,8 +63,7 @@ public class PlantUMLPackageDiagramTextExporter implements DiagramExporter {
 	}
 
 	private String getPackageText() {
-		return
-			"""
+		return """
 				@startuml
 				skinparam package {
 				    BackgroundColor lightyellow

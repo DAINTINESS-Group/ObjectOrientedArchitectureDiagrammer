@@ -25,22 +25,31 @@ public class GraphClassDiagramConverterTest {
 	@Test
 	void convertGraphToClassDiagramTest() {
 		ClassDiagramManager classDiagramManager = new ClassDiagramManager();
-		List<String> chosenFiles = Arrays.asList("MainWindow", "LatexEditorView", "OpeningWindow");
-		classDiagramManager.createSourceProject(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "LatexEditor", "src")));
+		List<String> 		chosenFiles 		= Arrays.asList("MainWindow",
+															   "LatexEditorView",
+															   "OpeningWindow");
+		classDiagramManager.createSourceProject(Paths.get(String.format("%s%s%s",
+																		PathConstructor.getCurrentPath(),
+																		File.separator,
+																		PathConstructor.constructPath("src",
+																									  "test",
+																									  "resources",
+																									  "LatexEditor",
+																									  "src"))));
 		classDiagramManager.convertTreeToDiagram(chosenFiles);
-		Set<ClassifierVertex> graphNodes = classDiagramManager.getClassDiagram().getGraphNodes().keySet();
-		Map<ClassifierVertex, Set<Arc<ClassifierVertex>>> diagram = classDiagramManager.getClassDiagram().getDiagram();
+		Set<ClassifierVertex> 							  graphNodes = classDiagramManager.getClassDiagram().getGraphNodes().keySet();
+		Map<ClassifierVertex, Set<Arc<ClassifierVertex>>> diagram 	 = classDiagramManager.getClassDiagram().getDiagram();
 
 		List<Arc<ClassifierVertex>> arcs = new ArrayList<>();
 		for (Set<Arc<ClassifierVertex>> arcSet: diagram.values()) {
 			arcs.addAll(arcSet);
 		}
 
-		GraphClassDiagramConverter graphClassDiagramConverter = new GraphClassDiagramConverter(diagram.keySet());
-		Map<ClassifierVertex, Set<Arc<ClassifierVertex>>> adjacencyList = graphClassDiagramConverter.convertGraphToClassDiagram();
+		GraphClassDiagramConverter 						  graphClassDiagramConverter = new GraphClassDiagramConverter(diagram.keySet());
+		Map<ClassifierVertex, Set<Arc<ClassifierVertex>>> adjacencyList 			 = graphClassDiagramConverter.convertGraphToClassDiagram();
 		classDiagramManager.getClassDiagram().setDiagram(adjacencyList);
 		ShadowCleaner shadowCleaner = new ShadowCleaner(classDiagramManager.getClassDiagram());
-		adjacencyList = shadowCleaner.shadowWeakRelationships();
+		adjacencyList 				= shadowCleaner.shadowWeakRelationships();
 
 		Set<Arc<ClassifierVertex>> actualArcs = new HashSet<>();
 		for (Set<Arc<ClassifierVertex>> value : adjacencyList.values()) {
@@ -57,4 +66,5 @@ public class GraphClassDiagramConverterTest {
 			assertTrue(graphNodes.contains(classifierVertex));
 		}
 	}
+
 }

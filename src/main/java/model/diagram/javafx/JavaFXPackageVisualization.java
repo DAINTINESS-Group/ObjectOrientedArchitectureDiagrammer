@@ -18,8 +18,8 @@ import java.util.Set;
 public class JavaFXPackageVisualization implements JavaFXVisualization {
 
 	private final  PackageDiagram 				   packageDiagram;
-	private static SmartGraphPanel<String, String> graphView;
-	private static Collection<Vertex<String>> 	   vertexCollection;
+	private		   SmartGraphPanel<String, String> graphView;
+	private		   Collection<Vertex<String>> 	   vertexCollection;
 
 	public JavaFXPackageVisualization(PackageDiagram diagram) {
 		this.packageDiagram = diagram;
@@ -42,7 +42,7 @@ public class JavaFXPackageVisualization implements JavaFXVisualization {
 
 	private Graph<String, String> createGraph() {
 		Digraph<String, String> directedGraph = new DigraphEdgeList<>();
-		for (PackageVertex vertex: this.packageDiagram.getDiagram().keySet()) {
+		for (PackageVertex vertex: packageDiagram.getDiagram().keySet()) {
             if (vertex.getSinkVertices().isEmpty()) {
 				continue;
 			}
@@ -53,13 +53,13 @@ public class JavaFXPackageVisualization implements JavaFXVisualization {
 	}
 
 	private void insertVertexArcs(Digraph<String, String> directedGraph){
-		for (Set<Arc<PackageVertex>> arcs : this.packageDiagram.getDiagram().values()) {
+		for (Set<Arc<PackageVertex>> arcs : packageDiagram.getDiagram().values()) {
 			for (Arc<PackageVertex> arc: arcs) {
 				if (arc.arcType().equals(ArcType.AGGREGATION)) {
 					directedGraph.insertEdge(arc.targetVertex().getName(),
 											 arc.sourceVertex().getName(),
 											 arc.targetVertex().getName() + "_" + arc.sourceVertex().getName() + "_" + arc.arcType());
-				}else {
+				} else {
 					directedGraph.insertEdge(arc.sourceVertex().getName(),
 											 arc.targetVertex().getName(),
 											 arc.sourceVertex().getName() + "_" +arc.targetVertex().getName() + "_" + arc.arcType());
@@ -69,11 +69,11 @@ public class JavaFXPackageVisualization implements JavaFXVisualization {
 	}
 
 	private void setVertexCustomStyle() {
-		for (PackageVertex vertex: this.packageDiagram.getDiagram().keySet()){
+		for (PackageVertex vertex: packageDiagram.getDiagram().keySet()){
 			if (vertex.getVertexType().equals(VertexType.INTERFACE)) {
 				graphView.getStylableVertex(vertex.getName()).setStyleClass("vertexInterface");
-			}else {
-				if(vertex.getSinkVertices().isEmpty()) {
+			} else {
+				if (vertex.getSinkVertices().isEmpty()) {
 					continue;
 				}
 				graphView.getStylableVertex(vertex.getName()).setStyleClass("vertexPackage");
@@ -84,13 +84,13 @@ public class JavaFXPackageVisualization implements JavaFXVisualization {
 	@Override
 	public SmartGraphPanel<String, String> getLoadedGraph() {
 		for (Vertex<String> vertex : vertexCollection) {
-			for (PackageVertex packageVertex: this.packageDiagram.getDiagram().keySet()){
-				if(!packageVertex.getName().equals(vertex.element())) {
+			for (PackageVertex packageVertex: packageDiagram.getDiagram().keySet()){
+				if (!packageVertex.getName().equals(vertex.element())) {
 					continue;
 				}
 				graphView.setVertexPosition(vertex,
-											packageVertex.getCoordinates().getValue0(),
-											packageVertex.getCoordinates().getValue1());
+											packageVertex.getCoordinate().getX(),
+											packageVertex.getCoordinate().getY());
 				break;
 			}
 		}

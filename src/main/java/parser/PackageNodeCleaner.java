@@ -7,30 +7,25 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PackageNodeCleaner {
-	private final Map<Path, PackageNode> packageNodes;
 
-	public PackageNodeCleaner(Map<Path, PackageNode> packageNodes) {
-		this.packageNodes = packageNodes;
-	}
-
-	public Map<Path, PackageNode> removeNonPackageNodes() {
+	public static Map<Path, PackageNode> removeNonPackageNodes(Map<Path, PackageNode> packageNodes) {
 		Map<Path, PackageNode> validPackageNodes = new HashMap<>();
-		for (PackageNode packageNode: this.packageNodes.values()) {
+		for (PackageNode packageNode: packageNodes.values()) {
 			if (isPackageNodeValid(packageNode)) {
-				validPackageNodes.put(packageNode.getPackageNodesPath(), packageNode);
+				validPackageNodes.put(packageNode.getPath(), packageNode);
 				continue;
 			}
 			PackageNode parentNode = packageNode.getParentNode();
-			if (parentNode.getPackageNodesPath().toString().isEmpty()) {
+			if (parentNode.getPath().toString().isEmpty()) {
 				continue;
 			}
-			parentNode.getSubNodes().remove(packageNode.getPackageNodesPath());
+			parentNode.getSubNodes().remove(packageNode.getPath());
 		}
 
 		return validPackageNodes;
 	}
 
-	private boolean isPackageNodeValid(PackageNode packageNode) {
+	private static boolean isPackageNodeValid(PackageNode packageNode) {
 		if (packageNode.getSubNodes().isEmpty()) {
 			return packageNode.isValid();
 		}

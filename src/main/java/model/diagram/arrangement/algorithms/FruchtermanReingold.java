@@ -8,6 +8,8 @@ import model.diagram.arrangement.geometry.DiagramGeometry;
 import model.diagram.arrangement.geometry.GeometryNode;
 
 public class FruchtermanReingold implements LayoutAlgorithm{
+	private final static int MIN_X_WINDOW_VALUE = 25;
+	private final static int MIN_Y_WINDOW_VALUE = 25;
 
 	private Graph<String, String> graph;
 
@@ -31,13 +33,13 @@ public class FruchtermanReingold implements LayoutAlgorithm{
 			double y = layout.getY(vertex);            
 			if (x < MIN_X_WINDOW_VALUE) {
 				double difference = MIN_X_WINDOW_VALUE - x;
-				if(difference > maxXdistance) {
+				if (difference > maxXdistance) {
 					maxXdistance = difference;
 				}
 			}
 			if (y < MIN_Y_WINDOW_VALUE) {
 				double difference = MIN_Y_WINDOW_VALUE - y;
-				if(difference > maxYdistance) {
+				if (difference > maxYdistance) {
 					maxYdistance = difference;
 				}
 			}

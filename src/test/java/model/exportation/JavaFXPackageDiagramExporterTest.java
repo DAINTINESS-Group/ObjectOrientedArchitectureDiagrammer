@@ -42,14 +42,21 @@ public class JavaFXPackageDiagramExporterTest {
 	void exportDiagramTest() {
 		try {
 			PackageDiagramManager packageDiagramManager = new PackageDiagramManager();
-			packageDiagramManager.createSourceProject(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "LatexEditor", "src")));
+			packageDiagramManager.createSourceProject(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src",
+																																				  	   "test",
+																																				  	   "resources",
+																																				  	   "LatexEditor",
+																																				  	   "src")));
 			packageDiagramManager.convertTreeToDiagram(getPackages());
 
 			DiagramExporter javaFXExporter = new JavaFXPackageDiagramExporter(packageDiagramManager.getPackageDiagram());
-			File actualFile = javaFXExporter.exportDiagram(Path.of(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "testingExportedFile.txt")));
+			File 			actualFile	   = javaFXExporter.exportDiagram(Path.of(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src",
+																																					 	  "test",
+																																					 	  "resources",
+																																					 	  "testingExportedFile.txt")));
 
 			JsonArray expectedJsonArray = getJsonArray();
-			JsonArray actualJsonArray = JsonParser.parseString(Files.readAllLines(actualFile.toPath()).get(0)).getAsJsonArray();
+			JsonArray actualJsonArray 	= JsonParser.parseString(Files.readAllLines(actualFile.toPath()).get(0)).getAsJsonArray();
 			assertEquals(expectedJsonArray.size(), actualJsonArray.size());
 			for (JsonElement element: expectedJsonArray) {
 				for (JsonElement actualElement: actualJsonArray) {
@@ -78,11 +85,11 @@ public class JavaFXPackageDiagramExporterTest {
 					}
 					for (ClassifierVertex classifierVertex : expSinkVertices) {
 						Optional<ClassifierVertex> optionalSinkVertex = actSinkVertices.stream().filter(sinkVertex1 ->
-							sinkVertex1.getName().equals(classifierVertex.getName()) &&
-							sinkVertex1.getVertexType().equals(classifierVertex.getVertexType()) &&
-							sinkVertex1.getArcs().size() == classifierVertex.getArcs().size() &&
+							sinkVertex1.getName().equals(classifierVertex.getName()) 				&&
+							sinkVertex1.getVertexType().equals(classifierVertex.getVertexType()) 	&&
+							sinkVertex1.getArcs().size()    == classifierVertex.getArcs().size() 	&&
 							sinkVertex1.getMethods().size() == classifierVertex.getMethods().size() &&
-							sinkVertex1.getFields().size() == classifierVertex.getFields().size())
+							sinkVertex1.getFields().size()  == classifierVertex.getFields().size())
 						.findFirst();
 						assertTrue(optionalSinkVertex.isPresent());
 
@@ -101,7 +108,7 @@ public class JavaFXPackageDiagramExporterTest {
 						for (ClassifierVertex.Method method: classifierVertex.getMethods()) {
 							assertTrue(methods.stream()
 							    .anyMatch(method1 ->
-								     method1.name().equals(method.name()) &&
+								     method1.name().equals(method.name()) 			  &&
 								     method1.returnType().equals(method.returnType()) &&
 								     method1.parameters().equals(method.parameters())
 								)
@@ -332,16 +339,15 @@ public class JavaFXPackageDiagramExporterTest {
 	private JsonArray getJsonArray() {
 		if (os.equals("Linux")) {
 			return JsonParser.parseString(expectedString2).getAsJsonArray();
-		}else {
+		} else {
 			return JsonParser.parseString(expectedJsonString).getAsJsonArray();
 		}
 	}
 
-
 	private List<String> getPackages() {
 		if (os.equals("Linux")){
 			return List.of("src.view", "src.model");
-		}else {
+		} else {
 			return
 				List.of(
 					"src.view",
@@ -352,7 +358,6 @@ public class JavaFXPackageDiagramExporterTest {
 				);
 		}
 	}
-
 
 	public static class CompareArray {
 		public static Set<JsonElement> setOfElements(JsonArray arr) {
@@ -374,7 +379,5 @@ public class JavaFXPackageDiagramExporterTest {
 			}
 			return set;
 		}
-
-
 	}
 }

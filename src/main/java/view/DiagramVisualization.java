@@ -11,8 +11,11 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DiagramVisualization {
+	private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	private static final int EDGE_STARTING_NODE = 0;
 	private static final int EDGE_ENDING_NODE = 1;
@@ -72,8 +75,9 @@ public class DiagramVisualization {
 				graphView.init();
 				graphView.update();
 			} catch (IllegalStateException e) {
-				// Just continue. Handling here the expection in order not showing the error to the user.
+				// Just continue. Handling here the exception to not show the error to the user.
 				// We do this, because this error doesn't affect the system.
+				logger.log(Level.WARNING, e.toString());
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

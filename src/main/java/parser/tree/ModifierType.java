@@ -24,7 +24,9 @@ public enum ModifierType {
 		return MODIFIER_TYPE.get(modifierType.toLowerCase().trim());
 	}
 
+	@Override
 	public String toString() {
 		return super.toString().toLowerCase();
 	}
+
 }

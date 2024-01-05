@@ -78,7 +78,7 @@ public class DiagramVisualizationController {
 			ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", selectedDirectory);
 			graphView.setScaleX(changeScaleX);
 			graphView.setScaleY(changeScaleY);
-		}catch (IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -105,7 +105,7 @@ public class DiagramVisualizationController {
 			Stage window = (Stage) menuBar.getScene().getWindow();
 			window.setScene(diagramCreationScene);
 			window.show();
-		} catch (Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -125,7 +125,8 @@ public class DiagramVisualizationController {
 	public void aboutPage() { MenuUtility.aboutPage(menuBar); }
 
 	public void showInfoWindow() {
-		PopupWindow.createPopupInfoWindow("Close the current diagram first!", "Error");
+		PopupWindow.createPopupInfoWindow("Close the current diagram first!",
+										  "Error");
 	}
 
 	public void openProject() {

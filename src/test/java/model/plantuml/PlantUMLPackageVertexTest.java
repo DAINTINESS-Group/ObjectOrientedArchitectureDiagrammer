@@ -19,43 +19,45 @@ public class PlantUMLPackageVertexTest {
 
 	@Test
 	void convertVertexTest() {
-		String expectedBuffer = "package src.controller {\n" +
-				"}\n" +
-				"\n" +
-				"package src.controller.commands {\n" +
-				"}\n" +
-				"\n" +
-				"package src.model {\n" +
-				"}\n" +
-				"\n" +
-				"package src {\n" +
-				"}\n" +
-				"\n" +
-				"package src.view {\n" +
-				"}\n" +
-				"\n" +
-				"package src.model.strategies {\n" +
-				"}\n\n";
 
 		PackageDiagramManager packageDiagramManager = new PackageDiagramManager();
 		packageDiagramManager.createSourceProject(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "LatexEditor", "src")));
-		packageDiagramManager.convertTreeToDiagram(List.of(
-				"src",
-				"src.view",
-				"src.model",
-				"src.model.strategies",
-				"src.controller.commands",
-				"src.controller"
-				));
+		packageDiagramManager.convertTreeToDiagram(List.of("src",
+														   "src.view",
+														   "src.model",
+														   "src.model.strategies",
+														   "src.controller.commands",
+														   "src.controller"));
 
 		PlantUMLPackageVertex plantUMLPackageVertex = new PlantUMLPackageVertex(packageDiagramManager.getPackageDiagram());
-		String actualBuffer = plantUMLPackageVertex.convertVertex().toString();
+		String 				  actualBuffer 			= plantUMLPackageVertex.convertVertex().toString();
 
-		List<String> expected = Arrays.asList(expectedBuffer.split("\n"));
-		List<String> actual = Arrays.asList(actualBuffer.split("\n"));
+		List<String> expected = Arrays.asList(EXPECTED_BUFFER.split("\n"));
+		List<String> actual   = Arrays.asList(actualBuffer.split("\n"));
 
 		Collections.sort(expected);
 		Collections.sort(actual);
 		assertEquals(expected, actual);
 	}
+
+	public static final String EXPECTED_BUFFER = """
+                                                 package src.controller {
+                                                 }
+												 					
+                                                 package src.controller.commands {
+                                                 }
+												 					
+                                                 package src.model {
+                                                 }
+												 					
+                                                 package src {
+                                                 }
+												 					
+                                                 package src.view {
+                                                 }
+												 					
+                                                 package src.model.strategies {
+                                                 }
+												 					
+                                                 """;
 }

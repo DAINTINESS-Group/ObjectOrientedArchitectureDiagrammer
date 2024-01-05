@@ -6,6 +6,7 @@ public enum NodeType {
 	ENUM,
 	PACKAGE;
 
+	@Override
 	public String toString() {
 		return super.toString().toLowerCase();
 	}

@@ -14,21 +14,22 @@ public class ShadowCleaner {
 																		  ArcType.AGGREGATION,
 																		  ArcType.ASSOCIATION);
 
-	private final ClassDiagram 		   classDiagram;
+	private final 		 ClassDiagram  classDiagram;
 
 	public ShadowCleaner(ClassDiagram diagram) {
 		this.classDiagram = diagram;
 	}
 
 	public Map<ClassifierVertex, Set<Arc<ClassifierVertex>>> shadowWeakRelationships() {
-		for (Set<Arc<ClassifierVertex>> arcs: this.classDiagram.getDiagram().values()) {
+		for (Set<Arc<ClassifierVertex>> arcs: classDiagram.getDiagram().values()) {
 			Map<ClassifierVertex, List<Arc<ClassifierVertex>>> shadowedArcs = new HashMap<>();
 			for (Arc<ClassifierVertex> arc: arcs) {
-				shadowedArcs.computeIfAbsent(arc.targetVertex(), sinkVertex -> new ArrayList<>()).add(arc);
+				shadowedArcs.computeIfAbsent(arc.targetVertex(),
+											 sinkVertex -> new ArrayList<>()).add(arc);
 			}
 
 			for (Map.Entry<ClassifierVertex, List<Arc<ClassifierVertex>>> arc: shadowedArcs.entrySet()) {
-				if (!doWeakRelationshipsExist(arc)) {
+				if (!(arc.getValue().size() > 1)) {
 					continue;
 				}
 				for (ArcType arcType: strongerToWeakerArcTypes) {
@@ -40,14 +41,12 @@ public class ShadowCleaner {
                 }
 			}
 		}
-		return this.classDiagram.getDiagram();
+
+		return classDiagram.getDiagram();
 	}
 
-	private boolean doWeakRelationshipsExist(Map.Entry<ClassifierVertex, List<Arc<ClassifierVertex>>> arc) {
-		return arc.getValue().size() > 1;
-	}
-
-	private boolean doesStrongerRelationshipExist(List<Arc<ClassifierVertex>> arc, ArcType arcType) {
+	private boolean doesStrongerRelationshipExist(List<Arc<ClassifierVertex>> arc,
+												  ArcType 					  arcType) {
 		Optional<Arc<ClassifierVertex>> inheritanceArc = arc
 			.stream()
 			.filter(sinkVertexArc -> sinkVertexArc.arcType().equals(arcType))
@@ -55,7 +54,11 @@ public class ShadowCleaner {
 		return inheritanceArc.isPresent();
 	}
 
-	private void removeWeakerRelationships(Set<Arc<ClassifierVertex>> arcs, ClassifierVertex classifierVertex, ArcType arcType) {
-		arcs.removeIf(arc -> arc.targetVertex().equals(classifierVertex) && !arc.arcType().equals(arcType));
+	private void removeWeakerRelationships(Set<Arc<ClassifierVertex>> arcs,
+										   ClassifierVertex 		  classifierVertex,
+										   ArcType 					  arcType) {
+		arcs.removeIf(arc ->
+						  arc.targetVertex().equals(classifierVertex) &&
+						  !arc.arcType().equals(arcType));
 	}
 }

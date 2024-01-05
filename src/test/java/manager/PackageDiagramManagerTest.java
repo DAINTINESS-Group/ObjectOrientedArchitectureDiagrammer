@@ -21,18 +21,29 @@ public class PackageDiagramManagerTest {
 	@Test
 	void populateGraphMLPackageNodeTest() {
 		PackageDiagramManager packageDiagramManager = new PackageDiagramManager();
-		SourceProject sourceProject = packageDiagramManager.createSourceProject(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "LatexEditor", "src")));
-		packageDiagramManager.convertTreeToDiagram(List.of(
-				"src.view",
-				"src.model",
-				"src.model.strategies",
-				"src.controller.commands",
-				"src.controller"
-				));
+		SourceProject 		  sourceProject 		= packageDiagramManager.createSourceProject(Paths.get(String.format("%s%s%s",
+																														PathConstructor.getCurrentPath(),
+																														File.separator,
+																														PathConstructor.constructPath("src",
+																																					  "test",
+																																					  "resources",
+																																					  "LatexEditor",
+																																					  "src"))));
+		packageDiagramManager.convertTreeToDiagram(List.of("src.view",
+														   "src.model",
+														   "src.model.strategies",
+														   "src.controller.commands",
+														   "src.controller"));
 		Map<PackageVertex, Integer> graphNodes = packageDiagramManager.getPackageDiagram().getGraphNodes();
-
 		Map<Path, PackageVertex> packageNodes = sourceProject.getInterpreter().getVertices();
-		packageNodes.remove(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "LatexEditor", "src")));
+		packageNodes.remove(Paths.get(String.format("%s%s%s",
+													PathConstructor.getCurrentPath(),
+													File.separator,
+													PathConstructor.constructPath("src",
+																				  "test",
+																				  "resources",
+																				  "LatexEditor",
+																				  "src"))));
 		assertEquals(packageNodes.size(), graphNodes.size());
 		Iterator<Map.Entry<Path, PackageVertex>> iter1 = packageNodes.entrySet().iterator();
 		Iterator<Map.Entry<PackageVertex, Integer>> iter2 = graphNodes.entrySet().iterator();

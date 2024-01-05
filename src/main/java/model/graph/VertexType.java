@@ -24,7 +24,9 @@ public enum VertexType {
 		return VERTEX_TYPE.get(vertexType.toLowerCase().trim());
 	}
 
+	@Override
 	public String toString() {
 		return super.toString().toLowerCase();
 	}
+
 }

@@ -15,34 +15,34 @@ public class GraphMLFile {
 
 	public void createGraphMLFile(Path graphMLSavePath) {
 		try {
-			this.graphMLFile   = graphMLSavePath.toFile();
-			this.graphMLWriter = new FileWriter(this.graphMLFile);
-			this.graphMLBuffer = new StringBuilder();
-			this.graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLPrefix());
-		}
-		catch (IOException e) {
+			graphMLFile   = graphMLSavePath.toFile();
+			graphMLWriter = new FileWriter(graphMLFile);
+			graphMLBuffer = new StringBuilder();
+			graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLPrefix());
+		} catch (IOException e) {
 			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 	}
 
 
 	public void closeGraphMLFile() {
 		try {
-			this.graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLSuffix());
-			this.graphMLWriter.write(this.graphMLBuffer.toString());
-			this.graphMLWriter.close();
-		}
-		catch (IOException e) {
+			graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLSuffix());
+			graphMLWriter.write(graphMLBuffer.toString());
+			graphMLWriter.close();
+		} catch (IOException e) {
 			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 	}
 
 	public void writeToBuffer(StringBuilder buffer) {
-		this.graphMLBuffer.append(buffer);
+		graphMLBuffer.append(buffer);
 	}
 
 	public File getGraphMLFile() {
-		return this.graphMLFile;
+		return graphMLFile;
 	}
 
 }

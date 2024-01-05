@@ -22,14 +22,17 @@ public class JavaFXPackageDiagramExporter implements DiagramExporter {
 	public File exportDiagram(Path exportPath) {
 		File graphSaveFile = exportPath.toFile();
 		try (FileWriter fileWriter = new FileWriter(graphSaveFile)) {
-			Gson gson 			   = new GsonBuilder().registerTypeAdapter(PackageVertex.class,
-																		   new PackageVertexSerializer())
-																		   .create();
-			String json = gson.toJson(this.packageDiagram.getDiagram().keySet());
+			 Gson gson = new GsonBuilder()
+				 				 .registerTypeAdapter(PackageVertex.class,
+													  new PackageVertexSerializer())
+				 				 .create();
+			String json = gson.toJson(packageDiagram.getDiagram().keySet());
 			fileWriter.write(json);
 		} catch (IOException e) {
 			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
+
 		return graphSaveFile;
 	}
 

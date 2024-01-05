@@ -1,6 +1,5 @@
 package model.graph;
 
-import org.javatuples.Pair;
 import org.javatuples.Triplet;
 
 import java.nio.file.Path;
@@ -17,10 +16,9 @@ public class PackageVertex {
 	private 	   final VertexType 						   vertexType;
 	private 	   final Path 								   path;
 	private 	   final String 							   name;
+	private 	   final VertexCoordinate					   coordinate;
 	private 	  		 List<Triplet<String, String, String>> deserializedArcs;
 	private 	  		 PackageVertex 						   parentPackageVertex;
-	private 	  		 double 							   x;
-	private 	  		 double 							   y;
 
 	public PackageVertex(Path 		path,
 						 VertexType vertexType,
@@ -30,19 +28,28 @@ public class PackageVertex {
 		this.arcs 			   = new ArrayList<>();
 		this.sinkVertices 	   = new ArrayList<>();
 		this.neighbourVertices = new ArrayList<>();
-		this.name 			   = (parentName.isEmpty()) ? path.getFileName().toString() : parentName + "." + path.getFileName().toString();
+		this.coordinate 	   = new VertexCoordinate();
+		this.name 			   = parentName.isEmpty() ? path.getFileName().toString() : String.join(".",
+																									parentName,
+																									path.getFileName().toString());
+	}
+
+
+	public void createCoordinate(double x, double y) {
+		coordinate.x = x;
+		coordinate.y = y;
 	}
 
 	public void addArc(PackageVertex sourceVertex, PackageVertex targetVertex, ArcType arcType) {
-		this.arcs.add(new Arc<>(sourceVertex, targetVertex, arcType));
+		arcs.add(new Arc<>(sourceVertex, targetVertex, arcType));
 	}
 
 	public void addSinkVertex(ClassifierVertex classifierVertex) {
-		this.sinkVertices.add(classifierVertex);
+		sinkVertices.add(classifierVertex);
 	}
 
 	public void addNeighbourVertex(PackageVertex vertex) {
-		this.neighbourVertices.add(vertex);
+		neighbourVertices.add(vertex);
 	}
 
 	public void setParentNode(PackageVertex parentPackageVertex) {
@@ -54,45 +61,41 @@ public class PackageVertex {
 	}
 
 	public List<Triplet<String, String, String>> getDeserializedArcs() {
-		return this.deserializedArcs;
+		return deserializedArcs;
 	}
 
 	public List<Arc<PackageVertex>> getArcs() {
-		return this.arcs;
+		return arcs;
 	}
 
 	public List<ClassifierVertex> getSinkVertices() {
-		return this.sinkVertices;
+		return sinkVertices;
 	}
 
 	public List<PackageVertex> getNeighbourVertices() {
-		return this.neighbourVertices;
+		return neighbourVertices;
 	}
 
 	public Path getPath() {
-		return this.path;
+		return path;
 	}
 
 	public String getName() {
-		return this.name;
+		return name;
 	}
 
 	public VertexType getVertexType() {
-		return this.vertexType;
+		return vertexType;
 	}
 
 	public PackageVertex getParentVertex() {
-		return this.parentPackageVertex;
+		return parentPackageVertex;
 	}
 
 	public ModifierType getModifierType() { return VERTEX_MODIFIER_TYPE; }
 
-	public void setCoordinates(double x, double y) {
-		this.x = x;
-		this.y = y;
+	public VertexCoordinate getCoordinate() {
+		return coordinate;
 	}
 
-	public Pair<Double, Double> getCoordinates() {
-        return new Pair<>(x, y);
-	}
 }
