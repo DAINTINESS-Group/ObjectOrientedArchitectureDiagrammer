@@ -1,6 +1,7 @@
 package parser.factory;
 
-public enum ParserType {
-	JDT,
-	JAVAPARSER
+public enum ParserType
+{
+    JDT,
+    JAVAPARSER
 }

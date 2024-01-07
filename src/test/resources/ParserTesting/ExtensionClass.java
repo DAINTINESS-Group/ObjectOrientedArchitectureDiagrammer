@@ -1,4 +1,5 @@
 
-public class ExtensionClass {
+public class ExtensionClass
+{
 
 }

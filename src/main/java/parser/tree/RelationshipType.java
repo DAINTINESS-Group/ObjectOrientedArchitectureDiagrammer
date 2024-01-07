@@ -1,14 +1,17 @@
 package parser.tree;
 
-public enum RelationshipType {
-	DEPENDENCY,
-	AGGREGATION,
-	ASSOCIATION,
-	EXTENSION,
-	IMPLEMENTATION;
+public enum RelationshipType
+{
+    DEPENDENCY,
+    AGGREGATION,
+    ASSOCIATION,
+    EXTENSION,
+    IMPLEMENTATION;
 
-	@Override
-	public String toString() {
-		return super.toString().toLowerCase();
-	}
+
+    @Override
+    public String toString()
+    {
+        return super.toString().toLowerCase();
+    }
 }

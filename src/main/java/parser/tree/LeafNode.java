@@ -22,22 +22,34 @@ public record LeafNode(Path 		  path,
 					   List<String>   createdObjects) {
 
 
-	public List<String> getMethodReturnTypes() {
-		return methods.stream().map(method -> method.returnType).collect(Collectors.toCollection(ArrayList::new));
-	}
+    public List<String> getMethodReturnTypes()
+    {
+        return methods
+			.stream()
+            .map(method -> method.returnType)
+            .collect(Collectors.toCollection(ArrayList::new));
+    }
 
-	public List<String> getMethodParameterTypes() {
-		return methods.stream().flatMap(method -> method.parameters().values().stream()).collect(Collectors.toCollection(ArrayList::new));
-	}
+
+    public List<String> getMethodParameterTypes()
+    {
+        return methods
+			.stream()
+            .flatMap(method -> method
+				.parameters()
+                .values()
+                .stream())
+            .collect(Collectors.toCollection(ArrayList::new));
+    }
 
 
-	public record Method(String methodName,
-						 String returnType,
-						 ModifierType modifierType,
-						 Map<String, String> parameters) {}
+    public record Method(String 	  		 methodName,
+                         String 	  		 returnType,
+                         ModifierType 		 modifierType,
+                         Map<String, String> parameters) {}
 
-	public record Field(String fieldNames,
-						String fieldType,
-						ModifierType modifierType) {}
+    public record Field(String 		 fieldNames,
+                        String 		 fieldType,
+                        ModifierType modifierType) {}
 
 }

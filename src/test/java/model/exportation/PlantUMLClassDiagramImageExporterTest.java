@@ -25,66 +25,74 @@ import java.nio.file.Paths;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class PlantUMLClassDiagramImageExporterTest {
+public class PlantUMLClassDiagramImageExporterTest
+{
 
-	@Test
-	void exportDiagramTest() {
-		try {
-			ClassDiagramManager classDiagramManager = new ClassDiagramManager();
-			classDiagramManager.createSourceProject(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "LatexEditor", "src")));
-			classDiagramManager.convertTreeToDiagram(List.of(
-					"StableVersionsStrategy", "VersionsStrategy", "VersionsStrategyFactory", "VolatileVersionsStrategy",
-					"VersionsManager", "Document", "DocumentManager")
-			);
+    @Test
+    void exportDiagramTest()
+    {
+        try
+        {
+            ClassDiagramManager classDiagramManager = new ClassDiagramManager();
+            classDiagramManager.createSourceProject(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "LatexEditor", "src")));
+            classDiagramManager.convertTreeToDiagram(List.of(
+                "StableVersionsStrategy", "VersionsStrategy", "VersionsStrategyFactory", "VolatileVersionsStrategy",
+                "VersionsManager", "Document", "DocumentManager")
+            );
 
-			PlantUMLClassifierVertex plantUMLClassifierVertex = new PlantUMLClassifierVertex(classDiagramManager.getClassDiagram());
-			String sinkVertexBuffer = plantUMLClassifierVertex.convertSinkVertex().toString();
-			PlantUMLClassifierVertexArc plantUMLEdge = new PlantUMLClassifierVertexArc(classDiagramManager.getClassDiagram());
-			String sinkVertexArcBuffer = plantUMLEdge.convertSinkVertexArc().toString();
+            PlantUMLClassifierVertex    plantUMLClassifierVertex = new PlantUMLClassifierVertex(classDiagramManager.getClassDiagram());
+            String                      sinkVertexBuffer         = plantUMLClassifierVertex.convertSinkVertex().toString();
+            PlantUMLClassifierVertexArc plantUMLEdge             = new PlantUMLClassifierVertexArc(classDiagramManager.getClassDiagram());
+            String                      sinkVertexArcBuffer      = plantUMLEdge.convertSinkVertexArc().toString();
 
-			DiagramExporter plantUMLExporter = new PlantUMLClassDiagramImageExporter(classDiagramManager.getClassDiagram());
-			plantUMLExporter.exportDiagram(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "testingExportedFile.png")));
+            DiagramExporter plantUMLExporter = new PlantUMLClassDiagramImageExporter(classDiagramManager.getClassDiagram());
+            plantUMLExporter.exportDiagram(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "testingExportedFile.png")));
 
-			InputStream   in      = getExpectedInputStream(sinkVertexBuffer, sinkVertexArcBuffer);
+            InputStream in = getExpectedInputStream(sinkVertexBuffer, sinkVertexArcBuffer);
 
-			BufferedImage convImg = ImageIO.read(in);
-			ImageIO.write(convImg, "png", Path.of(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "actualExportedFile.png")).toFile());
+            BufferedImage convImg = ImageIO.read(in);
+            ImageIO.write(convImg, "png", Path.of(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "actualExportedFile.png")).toFile());
 
-			BufferedImage expectedImage = ImageComparisonUtil.readImageFromResources(Path.of(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "testingExportedFile.png")).toString());
-			BufferedImage actualImage = ImageComparisonUtil.readImageFromResources(Path.of(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "actualExportedFile.png")).toString());
-			ImageComparisonResult imageComparisonResult = new ImageComparison(expectedImage, actualImage).compareImages();
-			assertEquals(ImageComparisonState.MATCH, imageComparisonResult.getImageComparisonState());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+            BufferedImage         expectedImage         = ImageComparisonUtil.readImageFromResources(Path.of(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "testingExportedFile.png")).toString());
+            BufferedImage         actualImage           = ImageComparisonUtil.readImageFromResources(Path.of(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "actualExportedFile.png")).toString());
+            ImageComparisonResult imageComparisonResult = new ImageComparison(expectedImage, actualImage).compareImages();
+            assertEquals(ImageComparisonState.MATCH, imageComparisonResult.getImageComparisonState());
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
 
-	private static InputStream getExpectedInputStream(String sinkVertexBuffer, String sinkVertexArcBuffer) {
-		byte[] data;
-		String expected =
-			"@startuml\n" +
-			"skinparam class {\n" +
-			"    BackgroundColor lightyellow\n" +
-			"    BorderColor black\n" +
-			"    ArrowColor black\n" +
-			"}\n" +
-			sinkVertexBuffer +
-			"\n\n" +
-			sinkVertexArcBuffer +
-			"\n" +
-			"@enduml";
-		try (ByteArrayOutputStream png = new ByteArrayOutputStream()){
-			SourceStringReader reader = new SourceStringReader(expected);
-			reader.outputImage(png).getDescription();
-			data = png.toByteArray();
-		}
-		catch (IOException e) {
-			throw new RuntimeException(e);
-		}
+
+    private static InputStream getExpectedInputStream(String sinkVertexBuffer, String sinkVertexArcBuffer)
+    {
+        byte[] data;
+        String expected =
+            "@startuml\n" +
+            "skinparam class {\n" +
+            "    BackgroundColor lightyellow\n" +
+            "    BorderColor black\n" +
+            "    ArrowColor black\n" +
+            "}\n" +
+            sinkVertexBuffer +
+            "\n\n" +
+            sinkVertexArcBuffer +
+            "\n" +
+            "@enduml";
+        try (ByteArrayOutputStream png = new ByteArrayOutputStream())
+        {
+            SourceStringReader reader = new SourceStringReader(expected);
+            reader.outputImage(png).getDescription();
+            data = png.toByteArray();
+        }
+        catch (IOException e)
+        {
+            throw new RuntimeException(e);
+        }
         assertNotNull(data);
         return new ByteArrayInputStream(data);
-	}
+    }
 }

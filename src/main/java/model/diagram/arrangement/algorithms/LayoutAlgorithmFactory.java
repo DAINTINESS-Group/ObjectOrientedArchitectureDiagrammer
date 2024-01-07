@@ -1,9 +1,12 @@
 package model.diagram.arrangement.algorithms;
 
-public class LayoutAlgorithmFactory {
+public class LayoutAlgorithmFactory
+{
 
-	public static LayoutAlgorithm createLayoutAlgorithm(LayoutAlgorithmType algorithmType) {
-        return switch (algorithmType) {
+    public static LayoutAlgorithm createLayoutAlgorithm(LayoutAlgorithmType algorithmType)
+    {
+        return switch (algorithmType)
+        {
             case SUGIYAMA                      -> new Sugiyama();
             case FRUCHTERMAN_REINGOLD          -> new FruchtermanReingold();
             case ADVANCED_FRUCHTERMAN_REINGOLD -> new AdvancedFruchtermanReingold();
@@ -11,6 +14,6 @@ public class LayoutAlgorithmFactory {
             case ADVANCED_SPRING               -> new AdvancedSpring();
             case KAMADA_KAWAI                  -> new KamadaKawai();
         };
-	}
+    }
 
 }

@@ -13,124 +13,126 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class PackageNodeCleanerTest {
+public class PackageNodeCleanerTest
+{
 
-	@Test
-	void removeNonPackageNodesTest() {
-		Interpreter interpreter = new Interpreter();
-		interpreter.parseProject(Paths.get(String.format("%s%s%s",
-														 PathConstructor.getCurrentPath(),
-														 File.separator,
-														 PathConstructor.constructPath("src",
-																					   "test",
-																					   "resources",
-																					   "BookstoreAdvancedV01"))));
+    @Test
+    void removeNonPackageNodesTest()
+    {
+        Interpreter interpreter = new Interpreter();
+        interpreter.parseProject(Paths.get(String.format("%s%s%s",
+                                                         PathConstructor.getCurrentPath(),
+                                                         File.separator,
+                                                         PathConstructor.constructPath("src",
+                                                                                       "test",
+                                                                                       "resources",
+                                                                                       "BookstoreAdvancedV01"))));
 
-		Map<Path, PackageNode> packageNodes 	 = interpreter.getPackageNodes();
-		Map<Path, PackageNode> validPackageNodes = PackageNodeCleaner.removeNonPackageNodes(packageNodes);
+        Map<Path, PackageNode> packageNodes      = interpreter.getPackageNodes();
+        Map<Path, PackageNode> validPackageNodes = PackageNodeCleaner.removeNonPackageNodes(packageNodes);
 
-		assertEquals(packageNodes.size(), validPackageNodes.size() + 5);
+        assertEquals(packageNodes.size(), validPackageNodes.size() + 5);
 
-		// Valid Package Nodes
-		assertTrue(validPackageNodes.containsKey(Paths.get(String.format("%s%s%s",
-																		 PathConstructor.getCurrentPath(),
-																		 File.separator,
-																		 PathConstructor.constructPath("src",
-																									   "test",
-																									   "resources",
-																									   "BookstoreAdvancedV01",
-																									   "src")))));
-		assertTrue(validPackageNodes.containsKey(Paths.get(String.format("%s%s%s",
-																		 PathConstructor.getCurrentPath(),
-																		 File.separator,
-																		 PathConstructor.constructPath("src",
-																									   "test",
-																									   "resources",
-																									   "BookstoreAdvancedV01",
-																									   "src",
-																									   "bookstore")))));
-		assertTrue(validPackageNodes.containsKey(Paths.get(String.format("%s%s%s",
-																		 PathConstructor.getCurrentPath(),
-																		 File.separator,
-																		 PathConstructor.constructPath("src",
-																									   "test",
-																									   "resources",
-																									   "BookstoreAdvancedV01",
-																									   "src",
-																									   "gui")))));
-		assertTrue(validPackageNodes.containsKey(Paths.get(String.format("%s%s%s",
-																		 PathConstructor.getCurrentPath(),
-																		 File.separator,
-																		 PathConstructor.constructPath("src",
-																									   "test",
-																									   "resources",
-																									   "BookstoreAdvancedV01")))));
+        // Valid Package Nodes
+        assertTrue(validPackageNodes.containsKey(Paths.get(String.format("%s%s%s",
+                                                                         PathConstructor.getCurrentPath(),
+                                                                         File.separator,
+                                                                         PathConstructor.constructPath("src",
+                                                                                                       "test",
+                                                                                                       "resources",
+                                                                                                       "BookstoreAdvancedV01",
+                                                                                                       "src")))));
+        assertTrue(validPackageNodes.containsKey(Paths.get(String.format("%s%s%s",
+                                                                         PathConstructor.getCurrentPath(),
+                                                                         File.separator,
+                                                                         PathConstructor.constructPath("src",
+                                                                                                       "test",
+                                                                                                       "resources",
+                                                                                                       "BookstoreAdvancedV01",
+                                                                                                       "src",
+                                                                                                       "bookstore")))));
+        assertTrue(validPackageNodes.containsKey(Paths.get(String.format("%s%s%s",
+                                                                         PathConstructor.getCurrentPath(),
+                                                                         File.separator,
+                                                                         PathConstructor.constructPath("src",
+                                                                                                       "test",
+                                                                                                       "resources",
+                                                                                                       "BookstoreAdvancedV01",
+                                                                                                       "src",
+                                                                                                       "gui")))));
+        assertTrue(validPackageNodes.containsKey(Paths.get(String.format("%s%s%s",
+                                                                         PathConstructor.getCurrentPath(),
+                                                                         File.separator,
+                                                                         PathConstructor.constructPath("src",
+                                                                                                       "test",
+                                                                                                       "resources",
+                                                                                                       "BookstoreAdvancedV01")))));
 
-		// Non Valid Package Nodes
-		assertFalse(validPackageNodes.containsKey(Paths.get(String.format("%s%s%s",
-																		  PathConstructor.getCurrentPath(),
-																		  File.separator,
-																		  PathConstructor.constructPath("src",
-																										"test",
-																										"resources",
-																										"BookstoreAdvancedV01",
-																										"src",
-																										".settings")))));
-		assertFalse(validPackageNodes.containsKey(Paths.get(String.format("%s%s%s",
-																		  PathConstructor.getCurrentPath(),
-																		  File.separator,
-																		  PathConstructor.constructPath("src",
-																										"test",
-																										"resources",
-																										"BookstoreAdvancedV01",
-																										"src",
-																										"bin")))));
-		assertFalse(validPackageNodes.containsKey(Paths.get(String.format("%s%s%s",
-																		  PathConstructor.getCurrentPath(),
-																		  File.separator,
-																		  PathConstructor.constructPath("src",
-																										"test",
-																										"resources",
-																										"BookstoreAdvancedV01",
-																										"src",
-																										"bin",
-																										"bookstore")))));
-		assertFalse(validPackageNodes.containsKey(Paths.get(String.format("%s%s%s",
-																		  PathConstructor.getCurrentPath(),
-																		  File.separator,
-																		  PathConstructor.constructPath("src",
-																										"test",
-																										"resources",
-																										"BookstoreAdvancedV01",
-																										"src",
-																										"bin",
-																										"gui")))));
-		assertFalse(validPackageNodes.containsKey(Paths.get(String.format("%s%s%s",
-																		  PathConstructor.getCurrentPath(),
-																		  File.separator,
-																		  PathConstructor.constructPath("src",
-																										"test",
-																										"resources",
-																										"BookstoreAdvancedV01",
-																										"src",
-																										"lib")))));
+        // Non Valid Package Nodes
+        assertFalse(validPackageNodes.containsKey(Paths.get(String.format("%s%s%s",
+                                                                          PathConstructor.getCurrentPath(),
+                                                                          File.separator,
+                                                                          PathConstructor.constructPath("src",
+                                                                                                        "test",
+                                                                                                        "resources",
+                                                                                                        "BookstoreAdvancedV01",
+                                                                                                        "src",
+                                                                                                        ".settings")))));
+        assertFalse(validPackageNodes.containsKey(Paths.get(String.format("%s%s%s",
+                                                                          PathConstructor.getCurrentPath(),
+                                                                          File.separator,
+                                                                          PathConstructor.constructPath("src",
+                                                                                                        "test",
+                                                                                                        "resources",
+                                                                                                        "BookstoreAdvancedV01",
+                                                                                                        "src",
+                                                                                                        "bin")))));
+        assertFalse(validPackageNodes.containsKey(Paths.get(String.format("%s%s%s",
+                                                                          PathConstructor.getCurrentPath(),
+                                                                          File.separator,
+                                                                          PathConstructor.constructPath("src",
+                                                                                                        "test",
+                                                                                                        "resources",
+                                                                                                        "BookstoreAdvancedV01",
+                                                                                                        "src",
+                                                                                                        "bin",
+                                                                                                        "bookstore")))));
+        assertFalse(validPackageNodes.containsKey(Paths.get(String.format("%s%s%s",
+                                                                          PathConstructor.getCurrentPath(),
+                                                                          File.separator,
+                                                                          PathConstructor.constructPath("src",
+                                                                                                        "test",
+                                                                                                        "resources",
+                                                                                                        "BookstoreAdvancedV01",
+                                                                                                        "src",
+                                                                                                        "bin",
+                                                                                                        "gui")))));
+        assertFalse(validPackageNodes.containsKey(Paths.get(String.format("%s%s%s",
+                                                                          PathConstructor.getCurrentPath(),
+                                                                          File.separator,
+                                                                          PathConstructor.constructPath("src",
+                                                                                                        "test",
+                                                                                                        "resources",
+                                                                                                        "BookstoreAdvancedV01",
+                                                                                                        "src",
+                                                                                                        "lib")))));
 
-		PackageNode sourcePackage = validPackageNodes.get(Paths.get(String.format("%s%s%s",
-																				  PathConstructor.getCurrentPath(),
-																				  File.separator,
-																				  PathConstructor.constructPath("src",
-																												"test",
-																												"resources",
-																												"BookstoreAdvancedV01"))));
-		Map<Path, PackageNode> sourcePackageSubNodes = sourcePackage.getSubNodes();
-		assertEquals(sourcePackageSubNodes.size(), 1);
-		assertTrue(sourcePackageSubNodes.containsKey(Paths.get(String.format("%s%s%s",
-																			 PathConstructor.getCurrentPath(),
-																			 File.separator,
-																			 PathConstructor.constructPath("src",
-																										   "test",
-																										   "resources",
-																										   "BookstoreAdvancedV01",
-																										   "src")))));
-	}
+        PackageNode sourcePackage = validPackageNodes.get(Paths.get(String.format("%s%s%s",
+                                                                                  PathConstructor.getCurrentPath(),
+                                                                                  File.separator,
+                                                                                  PathConstructor.constructPath("src",
+                                                                                                                "test",
+                                                                                                                "resources",
+                                                                                                                "BookstoreAdvancedV01"))));
+        Map<Path, PackageNode> sourcePackageSubNodes = sourcePackage.getSubNodes();
+        assertEquals(sourcePackageSubNodes.size(), 1);
+        assertTrue(sourcePackageSubNodes.containsKey(Paths.get(String.format("%s%s%s",
+                                                                             PathConstructor.getCurrentPath(),
+                                                                             File.separator,
+                                                                             PathConstructor.constructPath("src",
+                                                                                                           "test",
+                                                                                                           "resources",
+                                                                                                           "BookstoreAdvancedV01",
+                                                                                                           "src")))));
+    }
 }

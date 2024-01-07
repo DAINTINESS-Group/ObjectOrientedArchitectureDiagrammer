@@ -21,87 +21,107 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class PackageDiagramArrangementManager implements DiagramArrangementManagerInterface {
+public class PackageDiagramArrangementManager implements DiagramArrangementManagerInterface
+{
 
-	public static final LayoutAlgorithmType   LAYOUT_ALGORITHM_TYPE = LayoutAlgorithmType.SUGIYAMA;
-	public static final int 				  WIDTH  				= 1500;
-	public static final int 				  HEIGHT 				= 1000;
-	private 	  final Graph<String, String> graph;
-	private 	  final PackageDiagram 		  packageDiagram;
+    public static final LayoutAlgorithmType   LAYOUT_ALGORITHM_TYPE = LayoutAlgorithmType.SUGIYAMA;
+    public static final int                   WIDTH                 = 1500;
+    public static final int                   HEIGHT                = 1000;
+    private final       Graph<String, String> graph;
+    private final       PackageDiagram        packageDiagram;
 
-	public PackageDiagramArrangementManager(PackageDiagram packageDiagram) {
-		this.packageDiagram = packageDiagram;
-		this.graph = populatePackageGraphWithStrings();
-	}
 
-	@Override
-	public Map<Integer, Pair<Double, Double>> arrangeGraphMLDiagram() {
-		Map<Integer, Pair<Double, Double>> nodesGeometryGraphML = new HashMap<>();
-		Graph<Integer, String> graph = populatePackageGraph();
-		AbstractLayout<Integer, String> layout = new SpringLayout<>(graph);
-		layout.setSize(new Dimension(WIDTH, HEIGHT));
-		for (Integer i : packageDiagram.getGraphNodes().values()) {
-			nodesGeometryGraphML.put(i, new Pair<>(layout.getX(i), layout.getY(i)));
-		}
+    public PackageDiagramArrangementManager(PackageDiagram packageDiagram)
+    {
+        this.packageDiagram = packageDiagram;
+        graph               = populatePackageGraphWithStrings();
+    }
 
-		return nodesGeometryGraphML;
-	}
 
-	@Override
-	public DiagramGeometry arrangeDiagram() {
-		LayoutAlgorithm layoutAlgorithm = LayoutAlgorithmFactory.createLayoutAlgorithm(LAYOUT_ALGORITHM_TYPE);
-		layoutAlgorithm.setGraph(graph);
-		return layoutAlgorithm.arrangeDiagram();
-	}
+    @Override
+    public Map<Integer, Pair<Double, Double>> arrangeGraphMLDiagram()
+    {
+        Map<Integer, Pair<Double, Double>> nodesGeometryGraphML = new HashMap<>();
+        Graph<Integer, String>             graph                = populatePackageGraph();
+        AbstractLayout<Integer, String>    layout               = new SpringLayout<>(graph);
+        layout.setSize(new Dimension(WIDTH, HEIGHT));
+        for (Integer i : packageDiagram.getGraphNodes().values())
+        {
+            nodesGeometryGraphML.put(i, new Pair<>(layout.getX(i), layout.getY(i)));
+        }
 
-	@Override
-	public DiagramGeometry applyNewLayout(String algorithmType){
-		LayoutAlgorithmType algorithmEnumType = LayoutAlgorithmType.valueOf(algorithmType.toUpperCase());
-		LayoutAlgorithm layout = LayoutAlgorithmFactory.createLayoutAlgorithm(algorithmEnumType);
-		layout.setGraph(graph);
-		return layout.arrangeDiagram();
-	}
+        return nodesGeometryGraphML;
+    }
 
-	private Graph<Integer, String> populatePackageGraph() {
-		Graph<Integer, String> graph = new SparseGraph<>();
-		for (Integer i : packageDiagram.getGraphNodes().values()) {
-			graph.addVertex(i);
-		}
 
-		List<Arc<PackageVertex>> arcs = new ArrayList<>();
-		for (Set<Arc<PackageVertex>> arcSet: packageDiagram.getDiagram().values()) {
-			arcs.addAll(arcSet);
-		}
+    @Override
+    public DiagramGeometry arrangeDiagram()
+    {
+        LayoutAlgorithm layoutAlgorithm = LayoutAlgorithmFactory.createLayoutAlgorithm(LAYOUT_ALGORITHM_TYPE);
+        layoutAlgorithm.setGraph(graph);
+        return layoutAlgorithm.arrangeDiagram();
+    }
 
-		for (Arc<PackageVertex> arc: arcs) {
-			graph.addEdge(packageDiagram.getGraphNodes().get(arc.sourceVertex()) + " " + packageDiagram.getGraphNodes().get(arc.targetVertex()),
-						  packageDiagram.getGraphNodes().get(arc.sourceVertex()),
-						  packageDiagram.getGraphNodes().get(arc.targetVertex()), EdgeType.DIRECTED);
-		}
 
-		return graph;
-	}
+    @Override
+    public DiagramGeometry applyNewLayout(String algorithmType)
+    {
+        LayoutAlgorithmType algorithmEnumType = LayoutAlgorithmType.get(algorithmType);
+        LayoutAlgorithm     layout            = LayoutAlgorithmFactory.createLayoutAlgorithm(algorithmEnumType);
+        layout.setGraph(graph);
+        return layout.arrangeDiagram();
+    }
 
-	private Graph<String, String> populatePackageGraphWithStrings(){
-		Graph<String, String> graph = new SparseGraph<>();
-		for (PackageVertex vertex: packageDiagram.getGraphNodes().keySet()) {
-			graph.addVertex(vertex.getName());
-		}
 
-		List<Arc<PackageVertex>> arcs = new ArrayList<>();
-		for (Set<Arc<PackageVertex>> arcSet: packageDiagram.getDiagram().values()) {
-			arcs.addAll(arcSet);
-		}
+    private Graph<Integer, String> populatePackageGraph()
+    {
+        Graph<Integer, String> graph = new SparseGraph<>();
+        for (Integer i : packageDiagram.getGraphNodes().values())
+        {
+            graph.addVertex(i);
+        }
 
-		for (Arc<PackageVertex> arc: arcs) {
-			graph.addEdge(String.join(" ",
-									  arc.sourceVertex().getName(),
-									  arc.targetVertex().getName()),
-						  arc.sourceVertex().getName(),
-						  arc.targetVertex().getName(), EdgeType.DIRECTED);
-		}
+        List<Arc<PackageVertex>> arcs = new ArrayList<>();
+        for (Set<Arc<PackageVertex>> arcSet : packageDiagram.getDiagram().values())
+        {
+            arcs.addAll(arcSet);
+        }
 
-		return graph;
-	}
+        for (Arc<PackageVertex> arc : arcs)
+        {
+            graph.addEdge(packageDiagram.getGraphNodes().get(arc.sourceVertex()) + " " + packageDiagram.getGraphNodes().get(arc.targetVertex()),
+                          packageDiagram.getGraphNodes().get(arc.sourceVertex()),
+                          packageDiagram.getGraphNodes().get(arc.targetVertex()), EdgeType.DIRECTED);
+        }
+
+        return graph;
+    }
+
+
+    private Graph<String, String> populatePackageGraphWithStrings()
+    {
+        Graph<String, String> graph = new SparseGraph<>();
+        for (PackageVertex vertex : packageDiagram.getGraphNodes().keySet())
+        {
+            graph.addVertex(vertex.getName());
+        }
+
+        List<Arc<PackageVertex>> arcs = new ArrayList<>();
+        for (Set<Arc<PackageVertex>> arcSet : packageDiagram.getDiagram().values())
+        {
+            arcs.addAll(arcSet);
+        }
+
+        for (Arc<PackageVertex> arc : arcs)
+        {
+            graph.addEdge(String.join(" ",
+                                      arc.sourceVertex().getName(),
+                                      arc.targetVertex().getName()),
+                          arc.sourceVertex().getName(),
+                          arc.targetVertex().getName(), EdgeType.DIRECTED);
+        }
+
+        return graph;
+    }
 
 }

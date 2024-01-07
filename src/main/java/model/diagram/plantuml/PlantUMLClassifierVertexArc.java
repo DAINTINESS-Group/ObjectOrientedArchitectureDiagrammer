@@ -10,34 +10,45 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class PlantUMLClassifierVertexArc {
+public class PlantUMLClassifierVertexArc
+{
 
-	private final ClassDiagram classDiagram;
+    private final ClassDiagram classDiagram;
 
-	public PlantUMLClassifierVertexArc(ClassDiagram diagram) {
-		this.classDiagram = diagram;
-	}
 
-	public StringBuilder convertSinkVertexArc() {
-		return new StringBuilder(classDiagram.getDiagram().values()
-								 .stream().flatMap(sinkVertexStream -> sinkVertexStream
-								 .stream()
-								 .map(sinkVertexArc -> String.join(" ",
-																   sinkVertexArc.sourceVertex().getName(),
-																   getRelationship(sinkVertexArc.arcType()),
-																   sinkVertexArc.targetVertex().getName())))
-								 .collect(Collectors.joining("\n")));
-	}
+    public PlantUMLClassifierVertexArc(ClassDiagram diagram)
+    {
+        this.classDiagram = diagram;
+    }
 
-	private String getRelationship(ArcType relationshipType) {
-		return switch (relationshipType) {
-			case 	EXTENSION 	   -> "--|>";
-			case 	AGGREGATION    -> "o--";
-			case 	DEPENDENCY 	   -> "..>";
-			case 	IMPLEMENTATION -> "..|>";
-			// ASSOCIATION
-			default 			   -> "-->";
-		};
-	}
+
+    public StringBuilder convertSinkVertexArc()
+    {
+        return new StringBuilder(classDiagram
+                                     .getDiagram()
+                                     .values()
+                                     .stream()
+                                     .flatMap(sinkVertexStream -> sinkVertexStream
+                                         .stream()
+                                             .map(sinkVertexArc -> String.join(" ",
+                                                                               sinkVertexArc.sourceVertex().getName(),
+                                                                               getRelationship(sinkVertexArc.arcType()),
+                                                                               sinkVertexArc.targetVertex().getName())))
+                                             .collect(Collectors.joining("\n")));
+    }
+
+
+    private String getRelationship(ArcType relationshipType)
+    {
+        return switch (relationshipType)
+        {
+            case EXTENSION      -> "--|>";
+            case AGGREGATION    -> "o--";
+            case DEPENDENCY     -> "..>";
+            case IMPLEMENTATION -> "..|>";
+            // ASSOCIATION
+            default             -> "-->";
+        };
+    }
 
 }

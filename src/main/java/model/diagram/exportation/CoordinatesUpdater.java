@@ -11,58 +11,75 @@ import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class CoordinatesUpdater {
-	private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+public class CoordinatesUpdater
+{
+    private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-	private PackageDiagram packageDiagram;
-	private ClassDiagram   classDiagram;
+    private PackageDiagram packageDiagram;
+    private ClassDiagram   classDiagram;
 
-	public CoordinatesUpdater(PackageDiagram packageDiagram) {
-		this.packageDiagram = packageDiagram;
-	}
 
-	public CoordinatesUpdater(ClassDiagram classDiagram) {
-		this.classDiagram = classDiagram;
-	}
+    public CoordinatesUpdater(PackageDiagram packageDiagram)
+    {
+        this.packageDiagram = packageDiagram;
+    }
 
-	public void updatePackageCoordinates(Collection<Vertex<String>> 	 vertexCollection,
-										 SmartGraphPanel<String, String> graphView) {
-		if (vertexCollection == null) {
-			logger.log(Level.WARNING, "Vertex Collection is null");
-			return;
-		}
 
-		for(Vertex<String> vertex : vertexCollection) {
-			double x = graphView.getVertexPositionX(vertex);
-			double y = graphView.getVertexPositionY(vertex);
-			for (PackageVertex packageVertex : packageDiagram.getGraphNodes().keySet()) {
-				if (!packageVertex.getName().equals(vertex.element())) {
-					continue;
-				}
+    public CoordinatesUpdater(ClassDiagram classDiagram)
+    {
+        this.classDiagram = classDiagram;
+    }
 
-				packageVertex.createCoordinate(x, y);
-			}
-		}
-	}
 
-	public void updateClassCoordinates(Collection<Vertex<String>> 	   vertexCollection,
-									   SmartGraphPanel<String, String> graphView) {
-		if (vertexCollection == null) {
-			logger.log(Level.WARNING, "Vertex Collection is null");
-			return;
-		}
+    public void updatePackageCoordinates(Collection<Vertex<String>>      vertexCollection,
+                                         SmartGraphPanel<String, String> graphView)
+    {
+        if (vertexCollection == null)
+        {
+            logger.log(Level.WARNING, "Trying to update tha package's coordinates with a null vertex Collection");
+            return;
+        }
 
-		for(Vertex<String> vertex : vertexCollection) {
-			double x = graphView.getVertexPositionX(vertex);
-			double y = graphView.getVertexPositionY(vertex);
-			for (ClassifierVertex classifierVertex : classDiagram.getGraphNodes().keySet()) {
-				if (!classifierVertex.getName().equals(vertex.element())) {
-					continue;
-				}
+        for (Vertex<String> vertex : vertexCollection)
+        {
+            double x = graphView.getVertexPositionX(vertex);
+            double y = graphView.getVertexPositionY(vertex);
+            for (PackageVertex packageVertex : packageDiagram.getGraphNodes().keySet())
+            {
+                if (!packageVertex.getName().equals(vertex.element()))
+                {
+                    continue;
+                }
 
-				classifierVertex.updateCoordinate(x, y);
-			}
-		}
-	}
+                packageVertex.setCoordinate(x, y);
+            }
+        }
+    }
+
+
+    public void updateClassCoordinates(Collection<Vertex<String>>      vertexCollection,
+                                       SmartGraphPanel<String, String> graphView)
+    {
+        if (vertexCollection == null)
+        {
+            logger.log(Level.WARNING, "Trying to update tha class's coordinates with a null vertex Collection");
+            return;
+        }
+
+        for (Vertex<String> vertex : vertexCollection)
+        {
+            double x = graphView.getVertexPositionX(vertex);
+            double y = graphView.getVertexPositionY(vertex);
+            for (ClassifierVertex classifierVertex : classDiagram.getGraphNodes().keySet())
+            {
+                if (!classifierVertex.getName().equals(vertex.element()))
+                {
+                    continue;
+                }
+
+                classifierVertex.setCoordinate(x, y);
+            }
+        }
+    }
 
 }

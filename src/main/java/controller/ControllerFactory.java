@@ -1,11 +1,14 @@
 package controller;
 
-public class ControllerFactory {
+public class ControllerFactory
+{
 
-	public static Controller createController(String controllerType, String diagramType) {
-		return switch (ControllerType.get(controllerType)) {
-			case UML -> new DiagramController(diagramType);
-		};
-	}
+    public static Controller createController(String controllerType, String diagramType)
+    {
+        return switch (ControllerType.get(controllerType))
+        {
+            case UML -> new DiagramController(diagramType);
+        };
+    }
 
 }

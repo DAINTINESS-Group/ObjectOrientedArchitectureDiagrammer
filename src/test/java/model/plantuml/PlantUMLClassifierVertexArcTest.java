@@ -13,34 +13,49 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class PlantUMLClassifierVertexArcTest {
+public class PlantUMLClassifierVertexArcTest
+{
 
-	@Test
-	void convertSinkVertexArcTest() {
-		String expectedBuffer = "VersionsStrategy ..> Document\n" +
-				"DocumentManager o-- Document\n" +
-				"VersionsStrategyFactory ..> VolatileVersionsStrategy\n" +
-				"StableVersionsStrategy ..|> VersionsStrategy\n" +
-				"VersionsStrategyFactory o-- VersionsStrategy\n" +
-				"StableVersionsStrategy ..> Document\n" +
-				"VersionsManager --> VersionsStrategy\n" +
-				"VolatileVersionsStrategy o-- Document\n" +
-				"VersionsManager ..> Document\n" +
-				"VersionsStrategyFactory ..> StableVersionsStrategy\n" +
-				"VolatileVersionsStrategy ..|> VersionsStrategy\n";
+    @Test
+    void convertSinkVertexArcTest()
+    {
+        String expectedBuffer = """
+            VersionsStrategy ..> Document
+            DocumentManager o-- Document
+            VersionsStrategyFactory ..> VolatileVersionsStrategy
+            StableVersionsStrategy ..|> VersionsStrategy
+            VersionsStrategyFactory o-- VersionsStrategy
+            StableVersionsStrategy ..> Document
+            VersionsManager --> VersionsStrategy
+            VolatileVersionsStrategy o-- Document
+            VersionsManager ..> Document
+            VersionsStrategyFactory ..> StableVersionsStrategy
+            VolatileVersionsStrategy ..|> VersionsStrategy
+            """;
 
-		ClassDiagramManager classDiagramManager = new ClassDiagramManager();
-		classDiagramManager.createSourceProject(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "LatexEditor", "src")));
-		classDiagramManager.convertTreeToDiagram(List.of("StableVersionsStrategy", "VersionsStrategy", "VersionsStrategyFactory", "VolatileVersionsStrategy",
-				"VersionsManager", "Document", "DocumentManager"));
+        ClassDiagramManager classDiagramManager = new ClassDiagramManager();
+        classDiagramManager.createSourceProject(Paths.get(String.format("%s%s%s".formatted(PathConstructor.getCurrentPath(),
+                                                                                           File.separator,
+                                                                                           PathConstructor.constructPath("src",
+                                                                                                                         "test",
+                                                                                                                         "resources",
+                                                                                                                         "LatexEditor",
+                                                                                                                         "src")))));
+        classDiagramManager.convertTreeToDiagram(List.of("StableVersionsStrategy",
+                                                         "VersionsStrategy",
+                                                         "VersionsStrategyFactory",
+                                                         "VolatileVersionsStrategy",
+                                                         "VersionsManager",
+                                                         "Document",
+                                                         "DocumentManager"));
 
-		PlantUMLClassifierVertexArc plantUMLEdge = new PlantUMLClassifierVertexArc(classDiagramManager.getClassDiagram());
-		String 						actualBuffer = plantUMLEdge.convertSinkVertexArc().toString();
+        PlantUMLClassifierVertexArc plantUMLEdge = new PlantUMLClassifierVertexArc(classDiagramManager.getClassDiagram());
+        String                      actualBuffer = plantUMLEdge.convertSinkVertexArc().toString();
 
-		List<String> expectedRelationships = Arrays.asList(expectedBuffer.split("\n"));
-		List<String> actualRelationships   = Arrays.asList(actualBuffer.split("\n"));
-		Collections.sort(expectedRelationships);
-		Collections.sort(actualRelationships);
-		assertEquals(expectedRelationships, actualRelationships);
-	}
+        List<String> expectedRelationships = Arrays.asList(expectedBuffer.split("\n"));
+        List<String> actualRelationships   = Arrays.asList(actualBuffer.split("\n"));
+        Collections.sort(expectedRelationships);
+        Collections.sort(actualRelationships);
+        assertEquals(expectedRelationships, actualRelationships);
+    }
 }

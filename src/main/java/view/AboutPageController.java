@@ -1,5 +1,6 @@
 package view;
 
+import javafx.application.HostServices;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.MenuBar;
@@ -11,29 +12,39 @@ import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-public class AboutPageController implements Initializable {
+public class AboutPageController implements Initializable
+{
 
-	@FXML
-	MenuBar menuBar;
-	@FXML
-	BorderPane borderPane;
+    public static final String DOCUMENTATION = "https://drive.google.com/file/d/17h9-hPtQ7GXwKxacQCjEKP51aE3G2JdZ/view";
 
-	public void newProject() {
-		MenuUtility.openProject(menuBar);
-	}
 
-	public void quitApp() {
-		MenuUtility.quitApp(menuBar);
-	}
+    @FXML
+    MenuBar    menuBar;
+    @FXML
+    BorderPane borderPane;
 
-	public void aboutPage() { MenuUtility.aboutPage(menuBar); }
 
-	public void initialize(URL url, ResourceBundle resourceBundle) {
-		WebView webView = new WebView();
-		webView.setZoom(1.2);
-		WebEngine webEngine = webView.getEngine();
-		URL documentationUrl = Objects.requireNonNull(AboutPageController.class.getResource("/assets/UserDocumentation.html"));
-		webEngine.load(documentationUrl.toString());
-		borderPane.setCenter(webView);
-	}
+    public void newProject()
+    {
+        MenuUtility.openProject(menuBar);
+    }
+
+
+    public void quitApp()
+    {
+        MenuUtility.quitApp(menuBar);
+    }
+
+
+    public void aboutPage() {MenuUtility.aboutPage(menuBar);}
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle)
+    {
+        WebView webView = new WebView();
+        webView.setZoom(1.2);
+        WebEngine webEngine        = webView.getEngine();
+        webEngine.load(DOCUMENTATION);
+        borderPane.setCenter(webView);
+    }
 }

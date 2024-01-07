@@ -7,7 +7,6 @@ import parser.factory.ProjectParserFactory;
 import parser.tree.LeafNode;
 import parser.tree.NodeType;
 import parser.tree.PackageNode;
-import parser.tree.Relationship;
 import utils.PathConstructor;
 
 import java.io.File;
@@ -18,260 +17,277 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class FileVisitorTest {
+public class FileVisitorTest
+{
 
-	ParserType parserType = ParserType.JAVAPARSER;
+    ParserType parserType = ParserType.JAVAPARSER;
 
-	@Test
-	void methodReturnTypesTest() {
-		Parser parser = ProjectParserFactory.createProjectParser(parserType);
 
-		Map<Path, PackageNode> packages = parser.parseSourcePackage(Paths.get(String.format("%s%s%s",
-																							PathConstructor.getCurrentPath().toString(),
-																							File.separator,
-																							PathConstructor.constructPath("src",
-																														  "test",
-																														  "resources",
-																														  "LatexEditor",
-																														  "src"))));
-		PackageNode commandPackage = packages.get(Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-															PathConstructor.constructPath("src",
-																						  "test",
-																						  "resources",
-																						  "LatexEditor",
-																						  "src",
-																						  "controller",
-																						  "commands")));
+    @Test
+    void methodReturnTypesTest()
+    {
+        Parser parser = ProjectParserFactory.createProjectParser(parserType);
 
-		LeafNode 	 addLatexCommand 		   = commandPackage.getLeafNodes().get("AddLatexCommand");
-		List<String> methodReturnTypesExpected = new ArrayList<>(Arrays.asList("Constructor",
-																			   "void"));
-		List<String> methodReturnTypesActual   = addLatexCommand.getMethodReturnTypes();
+        Map<Path, PackageNode> packages = parser.parseSourcePackage(Paths.get(String.format("%s%s%s",
+                                                                                            PathConstructor.getCurrentPath().toString(),
+                                                                                            File.separator,
+                                                                                            PathConstructor.constructPath("src",
+                                                                                                                          "test",
+                                                                                                                          "resources",
+                                                                                                                          "LatexEditor",
+                                                                                                                          "src"))));
+        PackageNode commandPackage = packages.get(Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
+                                                            PathConstructor.constructPath("src",
+                                                                                          "test",
+                                                                                          "resources",
+                                                                                          "LatexEditor",
+                                                                                          "src",
+                                                                                          "controller",
+                                                                                          "commands")));
 
-		Collections.sort(methodReturnTypesActual);
-		Collections.sort(methodReturnTypesExpected);
-		assertTrue(methodReturnTypesActual.size() == methodReturnTypesExpected.size() &&
-				   methodReturnTypesExpected.containsAll(methodReturnTypesActual) 			   &&
-				   methodReturnTypesActual.containsAll(methodReturnTypesExpected));
-	}
+        LeafNode addLatexCommand = commandPackage.getLeafNodes().get("AddLatexCommand");
+        List<String> methodReturnTypesExpected = new ArrayList<>(Arrays.asList("Constructor",
+                                                                               "void"));
+        List<String> methodReturnTypesActual = addLatexCommand.getMethodReturnTypes();
 
-	@Test
-	void methodParameterTypesTest() {
-		Parser parser = ProjectParserFactory.createProjectParser(parserType);
+        Collections.sort(methodReturnTypesActual);
+        Collections.sort(methodReturnTypesExpected);
+        assertTrue(methodReturnTypesActual.size() == methodReturnTypesExpected.size() &&
+                   methodReturnTypesExpected.containsAll(methodReturnTypesActual) &&
+                   methodReturnTypesActual.containsAll(methodReturnTypesExpected));
+    }
 
-		Map<Path, PackageNode> packages = parser.parseSourcePackage(Paths.get(String.format("%s%s%s",
-																							PathConstructor.getCurrentPath(),
-																							File.separator,
-																							PathConstructor.constructPath("src",
-																														  "test",
-																														  "resources",
-																														  "LatexEditor",
-																														  "src"))));
-		PackageNode commandPackage  = packages.get(Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-															 PathConstructor.constructPath("src",
-																						   "test",
-																						   "resources",
-																						   "LatexEditor",
-																						   "src",
-																						   "controller",
-																						   "commands")));
 
-		LeafNode 	 addLatexCommand 		  = commandPackage.getLeafNodes().get("AddLatexCommand");
-		List<String> methodParameterTypes 	  = new ArrayList<>(List.of("VersionsManager"));
-		List<String> methodParameterTypesTest = addLatexCommand.getMethodParameterTypes();
+    @Test
+    void methodParameterTypesTest()
+    {
+        Parser parser = ProjectParserFactory.createProjectParser(parserType);
 
-		Collections.sort(methodParameterTypesTest);
-		Collections.sort(methodParameterTypes);
-		assertTrue(methodParameterTypesTest.size() == methodParameterTypes.size() &&
-				   methodParameterTypes.containsAll(methodParameterTypesTest) &&
-				   methodParameterTypesTest.containsAll(methodParameterTypes));
-	}
+        Map<Path, PackageNode> packages = parser.parseSourcePackage(Paths.get(String.format("%s%s%s",
+                                                                                            PathConstructor.getCurrentPath(),
+                                                                                            File.separator,
+                                                                                            PathConstructor.constructPath("src",
+                                                                                                                          "test",
+                                                                                                                          "resources",
+                                                                                                                          "LatexEditor",
+                                                                                                                          "src"))));
+        PackageNode commandPackage = packages.get(Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
+                                                            PathConstructor.constructPath("src",
+                                                                                          "test",
+                                                                                          "resources",
+                                                                                          "LatexEditor",
+                                                                                          "src",
+                                                                                          "controller",
+                                                                                          "commands")));
 
-	@Test
-	void fieldTypesTest() {
-		Parser parser = ProjectParserFactory.createProjectParser(parserType);
+        LeafNode     addLatexCommand          = commandPackage.getLeafNodes().get("AddLatexCommand");
+        List<String> methodParameterTypes     = new ArrayList<>(List.of("VersionsManager"));
+        List<String> methodParameterTypesTest = addLatexCommand.getMethodParameterTypes();
 
-		Map<Path, PackageNode> packages= parser.parseSourcePackage(Paths.get(String.format("%s%s%s",
-																						   PathConstructor.getCurrentPath(),
-																						   File.separator,
-																						   PathConstructor.constructPath("src",
-																														 "test",
-																														 "resources",
-																														 "LatexEditor",
-																														 "src"))));
-		PackageNode commandPackage = packages.get(Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-															PathConstructor.constructPath("src",
-																						  "test",
-																						  "resources",
-																						  "LatexEditor",
-																						  "src",
-																						  "controller",
-																						  "commands")));
-		LeafNode 	 addLatexCommand = commandPackage.getLeafNodes().get("AddLatexCommand");
-		List<String> fieldTypes 	 = new ArrayList<>(List.of("VersionsManager"));
-		List<String> fieldTypesTest  = addLatexCommand
-			.fields()
-			.stream()
-			.map(LeafNode.Field::fieldType)
-			.sorted()
-			.collect(Collectors.toCollection(ArrayList::new));
+        Collections.sort(methodParameterTypesTest);
+        Collections.sort(methodParameterTypes);
+        assertTrue(methodParameterTypesTest.size() == methodParameterTypes.size() &&
+                   methodParameterTypes.containsAll(methodParameterTypesTest) &&
+                   methodParameterTypesTest.containsAll(methodParameterTypes));
+    }
+
+
+    @Test
+    void fieldTypesTest()
+    {
+        Parser parser = ProjectParserFactory.createProjectParser(parserType);
+
+        Map<Path, PackageNode> packages = parser.parseSourcePackage(Paths.get(String.format("%s%s%s",
+                                                                                            PathConstructor.getCurrentPath(),
+                                                                                            File.separator,
+                                                                                            PathConstructor.constructPath("src",
+                                                                                                                          "test",
+                                                                                                                          "resources",
+                                                                                                                          "LatexEditor",
+                                                                                                                          "src"))));
+        PackageNode commandPackage = packages.get(Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
+                                                            PathConstructor.constructPath("src",
+                                                                                          "test",
+                                                                                          "resources",
+                                                                                          "LatexEditor",
+                                                                                          "src",
+                                                                                          "controller",
+                                                                                          "commands")));
+        LeafNode     addLatexCommand = commandPackage.getLeafNodes().get("AddLatexCommand");
+        List<String> fieldTypes      = new ArrayList<>(List.of("VersionsManager"));
+        List<String> fieldTypesTest = addLatexCommand
+            .fields()
+            .stream()
+            .map(LeafNode.Field::fieldType)
+            .sorted()
+            .collect(Collectors.toCollection(ArrayList::new));
 
         Collections.sort(fieldTypes);
-		assertTrue(fieldTypesTest.size() == fieldTypes.size() &&
-				   fieldTypes.containsAll(fieldTypesTest) 			   &&
-				   fieldTypesTest.containsAll(fieldTypes));
-	}
+        assertTrue(fieldTypesTest.size() == fieldTypes.size() &&
+                   fieldTypes.containsAll(fieldTypesTest) &&
+                   fieldTypesTest.containsAll(fieldTypes));
+    }
 
-	@Test
-	void variableTypesTest() {
-		Parser parser = ProjectParserFactory.createProjectParser(parserType);
 
-		Map<Path, PackageNode> packages = parser.parseSourcePackage(Paths.get(String.format("%s%s%s",
-																							PathConstructor.getCurrentPath(),
-																							File.separator,
-																							PathConstructor.constructPath("src",
-																														  "test",
-																														  "resources",
-																														  "LatexEditor",
-																														  "src"))));
-		PackageNode commandPackage = packages.get(Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-															"/src/test/resources/LatexEditor/src/controller"));
+    @Test
+    void variableTypesTest()
+    {
+        Parser parser = ProjectParserFactory.createProjectParser(parserType);
 
-		LeafNode 	 latexEditorController = commandPackage.getLeafNodes().get("LatexEditorController");
-		List<String> variablesTypes 	   = new ArrayList<>(List.of("CommandFactory"));
-		List<String> variablesTypesTest    = new ArrayList<>(latexEditorController.variables().values());
+        Map<Path, PackageNode> packages = parser.parseSourcePackage(Paths.get(String.format("%s%s%s",
+                                                                                            PathConstructor.getCurrentPath(),
+                                                                                            File.separator,
+                                                                                            PathConstructor.constructPath("src",
+                                                                                                                          "test",
+                                                                                                                          "resources",
+                                                                                                                          "LatexEditor",
+                                                                                                                          "src"))));
+        PackageNode commandPackage = packages.get(Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
+                                                            "/src/test/resources/LatexEditor/src/controller"));
 
-		Collections.sort(variablesTypesTest);
-		Collections.sort(variablesTypes);
-		assertTrue(variablesTypesTest.size() == variablesTypes.size() &&
-				   variablesTypes.containsAll(variablesTypesTest) 			   &&
-				   variablesTypesTest.containsAll(variablesTypes));
-	}
+        LeafNode     latexEditorController = commandPackage.getLeafNodes().get("LatexEditorController");
+        List<String> variablesTypes        = new ArrayList<>(List.of("CommandFactory"));
+        List<String> variablesTypesTest    = new ArrayList<>(latexEditorController.variables().values());
 
-	@Test
-	void objectCreationTest() {
-		Parser parser = ProjectParserFactory.createProjectParser(parserType);
+        Collections.sort(variablesTypesTest);
+        Collections.sort(variablesTypes);
+        assertTrue(variablesTypesTest.size() == variablesTypes.size() &&
+                   variablesTypes.containsAll(variablesTypesTest) &&
+                   variablesTypesTest.containsAll(variablesTypes));
+    }
 
-		Map<Path, PackageNode> packages = parser.parseSourcePackage(Paths.get(String.format("%s%s%s",
-																							PathConstructor.getCurrentPath(),
-																							File.separator,
-																							PathConstructor.constructPath("src",
-																														  "test",
-																														  "resources",
-																														  "ParserTesting"))));
-		PackageNode sourcePackage = packages.get(Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-														   PathConstructor.constructPath("src",
-																						 "test",
-																						 "resources",
-																						 "ParserTesting")));
 
-		LeafNode 	 objectCreationSample 	= sourcePackage.getLeafNodes().get("ObjectCreationSample");
-		List<String> objectsCreatedExpected = new ArrayList<>(List.of("ImplementingClass",
-																	  "ImplementingClass",
-																	  "ExtensionClass",
-																	  "HashMap[String,TestingInterface]"));
-		List<String> objectsCreatedActual = objectCreationSample.createdObjects();
+    @Test
+    void objectCreationTest()
+    {
+        Parser parser = ProjectParserFactory.createProjectParser(parserType);
 
-		Collections.sort(objectsCreatedActual);
-		Collections.sort(objectsCreatedExpected);
-		assertTrue(objectsCreatedActual.size() == objectsCreatedExpected.size() &&
-				   objectsCreatedExpected.containsAll(objectsCreatedActual)				 &&
-				   objectsCreatedActual.containsAll(objectsCreatedExpected));
-	}
+        Map<Path, PackageNode> packages = parser.parseSourcePackage(Paths.get(String.format("%s%s%s",
+                                                                                            PathConstructor.getCurrentPath(),
+                                                                                            File.separator,
+                                                                                            PathConstructor.constructPath("src",
+                                                                                                                          "test",
+                                                                                                                          "resources",
+                                                                                                                          "ParserTesting"))));
+        PackageNode sourcePackage = packages.get(Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
+                                                           PathConstructor.constructPath("src",
+                                                                                         "test",
+                                                                                         "resources",
+                                                                                         "ParserTesting")));
 
-	@Test
-	void leafNodeTypesTest() {
-		Parser parser = ProjectParserFactory.createProjectParser(parserType);
+        LeafNode objectCreationSample = sourcePackage.getLeafNodes().get("ObjectCreationSample");
+        List<String> objectsCreatedExpected = new ArrayList<>(List.of("ImplementingClass",
+                                                                      "ImplementingClass",
+                                                                      "ExtensionClass",
+                                                                      "HashMap[String,TestingInterface]"));
+        List<String> objectsCreatedActual = objectCreationSample.createdObjects();
 
-		Map<Path, PackageNode> packages = parser.parseSourcePackage(Paths.get(String.format("%s%s%s",
-																							PathConstructor.getCurrentPath(),
-																							File.separator,
-																							PathConstructor.constructPath("src",
-																														  "test",
-																														  "resources",
-																														  "ParserTesting"))));
-		PackageNode inheritancePackage = packages.get(Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-																PathConstructor.constructPath("src",
-																							  "test",
-																							  "resources",
-																							  "ParserTesting")));
-		List<LeafNode> classLeafs 	  = new ArrayList<>();
-		List<LeafNode> interfaceLeafs = new ArrayList<>();
-		classLeafs.add(inheritancePackage.getLeafNodes().get("ImplementingClass"));
-		classLeafs.add(inheritancePackage.getLeafNodes().get("ExtensionClass"));
-		interfaceLeafs.add(inheritancePackage.getLeafNodes().get("TestingInterface"));
-		interfaceLeafs.add(inheritancePackage.getLeafNodes().get("TestingInterface2"));
+        Collections.sort(objectsCreatedActual);
+        Collections.sort(objectsCreatedExpected);
+        assertTrue(objectsCreatedActual.size() == objectsCreatedExpected.size() &&
+                   objectsCreatedExpected.containsAll(objectsCreatedActual) &&
+                   objectsCreatedActual.containsAll(objectsCreatedExpected));
+    }
 
-		for (LeafNode l : classLeafs) {
-			assertEquals(NodeType.CLASS, l.nodeType());
-		}
-		for (LeafNode l : interfaceLeafs) {
-			assertEquals(NodeType.INTERFACE, l.nodeType());
-		}
 
-		PackageNode sourcePackage = packages.get(Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-														   PathConstructor.constructPath("src",
-																						 "test",
-																						 "resources",
-																						 "ParserTesting")));
+    @Test
+    void leafNodeTypesTest()
+    {
+        Parser parser = ProjectParserFactory.createProjectParser(parserType);
 
-		LeafNode enumTest = sourcePackage.getLeafNodes().get("EnumSample");
-		assertEquals(NodeType.ENUM, enumTest.nodeType());
+        Map<Path, PackageNode> packages = parser.parseSourcePackage(Paths.get(String.format("%s%s%s",
+                                                                                            PathConstructor.getCurrentPath(),
+                                                                                            File.separator,
+                                                                                            PathConstructor.constructPath("src",
+                                                                                                                          "test",
+                                                                                                                          "resources",
+                                                                                                                          "ParserTesting"))));
+        PackageNode inheritancePackage = packages.get(Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
+                                                                PathConstructor.constructPath("src",
+                                                                                              "test",
+                                                                                              "resources",
+                                                                                              "ParserTesting")));
+        List<LeafNode> classLeafs     = new ArrayList<>();
+        List<LeafNode> interfaceLeafs = new ArrayList<>();
+        classLeafs.add(inheritancePackage.getLeafNodes().get("ImplementingClass"));
+        classLeafs.add(inheritancePackage.getLeafNodes().get("ExtensionClass"));
+        interfaceLeafs.add(inheritancePackage.getLeafNodes().get("TestingInterface"));
+        interfaceLeafs.add(inheritancePackage.getLeafNodes().get("TestingInterface2"));
 
-		LeafNode objectCreationTest = sourcePackage.getLeafNodes().get("ObjectCreationSample");
-		assertEquals(NodeType.CLASS, objectCreationTest.nodeType());
-	}
+        for (LeafNode l : classLeafs)
+        {
+            assertEquals(NodeType.CLASS, l.nodeType());
+        }
+        for (LeafNode l : interfaceLeafs)
+        {
+            assertEquals(NodeType.INTERFACE, l.nodeType());
+        }
 
-	@Test
-	void innerMembersTest() {
-		Parser parser = ProjectParserFactory.createProjectParser(parserType);
+        PackageNode sourcePackage = packages.get(Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
+                                                           PathConstructor.constructPath("src",
+                                                                                         "test",
+                                                                                         "resources",
+                                                                                         "ParserTesting")));
 
-		Map<Path, PackageNode> packages = parser.parseSourcePackage(Paths.get(String.format("%s%s%s",
-																							PathConstructor.getCurrentPath(),
-																							File.separator,
-																							PathConstructor.constructPath("src",
-																														  "test",
-																														  "resources",
-																														  "ParserTesting"))));
-		PackageNode sourcePackage = packages.get(Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-														   PathConstructor.constructPath("src",
-																						 "test",
-																						 "resources",
-																						 "ParserTesting")));
-		LeafNode innerClassSample = sourcePackage.getLeafNodes().get("InnerClassSample");
-		assertEquals(innerClassSample.innerClasses().get(0).nodeName(), "InnerClass");
-		assertEquals(innerClassSample.records().get(0), "RecordSample");
-	}
+        LeafNode enumTest = sourcePackage.getLeafNodes().get("EnumSample");
+        assertEquals(NodeType.ENUM, enumTest.nodeType());
 
-	@Test
-	void importsTest() {
-		List<String> expectedImports = List.of("javax.swing.JOptionPane",
-											   "model.strategies.StableVersionsStrategy",
-											   "model.strategies.VersionsStrategy",
-											   "model.strategies.VolatileVersionsStrategy",
-											   "view.LatexEditorView");
+        LeafNode objectCreationTest = sourcePackage.getLeafNodes().get("ObjectCreationSample");
+        assertEquals(NodeType.CLASS, objectCreationTest.nodeType());
+    }
 
-		Parser parser = ProjectParserFactory.createProjectParser(parserType);
 
-		Map<Path, PackageNode> packages = parser.parseSourcePackage(Paths.get(String.format("%s%s%s",
-																							PathConstructor.getCurrentPath(),
-																							File.separator,
-																							PathConstructor.constructPath("src",
-																														  "test",
-																														  "resources",
-																														  "LatexEditor",
-																														  "src"))));
-		PackageNode commandPackage   = packages.get(Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-															  "/src/test/resources/LatexEditor/src/model"));
-		LeafNode     versionsManager = commandPackage.getLeafNodes().get("VersionsManager");
-		List<String> imports         = versionsManager.imports();
-		assertEquals(expectedImports, imports);
-	}
+    @Test
+    void innerMembersTest()
+    {
+        Parser parser = ProjectParserFactory.createProjectParser(parserType);
+
+        Map<Path, PackageNode> packages = parser.parseSourcePackage(Paths.get(String.format("%s%s%s",
+                                                                                            PathConstructor.getCurrentPath(),
+                                                                                            File.separator,
+                                                                                            PathConstructor.constructPath("src",
+                                                                                                                          "test",
+                                                                                                                          "resources",
+                                                                                                                          "ParserTesting"))));
+        PackageNode sourcePackage = packages.get(Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
+                                                           PathConstructor.constructPath("src",
+                                                                                         "test",
+                                                                                         "resources",
+                                                                                         "ParserTesting")));
+        LeafNode innerClassSample = sourcePackage.getLeafNodes().get("InnerClassSample");
+        assertEquals(innerClassSample.innerClasses().get(0).nodeName(), "InnerClass");
+        assertEquals(innerClassSample.records().get(0), "RecordSample");
+    }
+
+
+    @Test
+    void importsTest()
+    {
+        List<String> expectedImports = List.of("javax.swing.JOptionPane",
+                                               "model.strategies.StableVersionsStrategy",
+                                               "model.strategies.VersionsStrategy",
+                                               "model.strategies.VolatileVersionsStrategy",
+                                               "view.LatexEditorView");
+
+        Parser parser = ProjectParserFactory.createProjectParser(parserType);
+
+        Map<Path, PackageNode> packages = parser.parseSourcePackage(Paths.get(String.format("%s%s%s",
+                                                                                            PathConstructor.getCurrentPath(),
+                                                                                            File.separator,
+                                                                                            PathConstructor.constructPath("src",
+                                                                                                                          "test",
+                                                                                                                          "resources",
+                                                                                                                          "LatexEditor",
+                                                                                                                          "src"))));
+        PackageNode commandPackage = packages.get(Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
+                                                            "/src/test/resources/LatexEditor/src/model"));
+        LeafNode     versionsManager = commandPackage.getLeafNodes().get("VersionsManager");
+        List<String> imports         = versionsManager.imports();
+        assertEquals(expectedImports, imports);
+    }
 }

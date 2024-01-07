@@ -1,9 +1,13 @@
 
-public class InnerClassSample extends ExtensionClass {
+public class InnerClassSample extends ExtensionClass
+{
 
-    private class InnerClass extends ObjectCreationSample implements TestingInterface {
+    private class InnerClass extends ObjectCreationSample implements TestingInterface
+    {
         private ObjectCreationSample e = new ObjectCreationSample();
     }
 
-    public record RecordSample(ObjectCreationSample objectCreationSample) {}
+    public record RecordSample(ObjectCreationSample objectCreationSample)
+    {
+    }
 }
