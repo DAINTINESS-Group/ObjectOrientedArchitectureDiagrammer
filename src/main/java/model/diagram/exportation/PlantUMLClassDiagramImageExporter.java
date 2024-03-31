@@ -4,6 +4,8 @@ import model.diagram.ClassDiagram;
 import model.diagram.plantuml.PlantUMLClassifierVertex;
 import model.diagram.plantuml.PlantUMLClassifierVertexArc;
 import net.sourceforge.plantuml.SourceStringReader;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -16,6 +18,7 @@ import java.nio.file.Path;
 
 public class PlantUMLClassDiagramImageExporter implements DiagramExporter
 {
+    private static final Logger logger = LogManager.getLogger(PlantUMLPackageDiagramImageExporter.class);
 
     private final StringBuilder bufferBody;
 
@@ -67,12 +70,17 @@ public class PlantUMLClassDiagramImageExporter implements DiagramExporter
                     in = new ByteArrayInputStream(data);
                     convImg = ImageIO.read(in);
                 }
+                catch (IOException e)
+                {
+                    logger.error("Failed to read from input stream");
+                    throw new RuntimeException(e);
+                }
             }
             ImageIO.write(convImg, "png", plantUMLFile);
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            logger.error("Failed to write image to file: {}", plantUMLFile.getAbsolutePath());
             throw new RuntimeException(e);
         }
     }
@@ -81,11 +89,10 @@ public class PlantUMLClassDiagramImageExporter implements DiagramExporter
     private String wrapWidthChanger(String plantCode, int wrapWidth)
     {
         String updatedString;
-        //if (counter == 0) {
         int    indexOfNewLine = plantCode.indexOf("\n");
         String firstPart      = plantCode.substring(0, indexOfNewLine + 1);
         String secondPart     = plantCode.substring(indexOfNewLine + 1);
-        updatedString = firstPart + "skinparam wrapWidth " + wrapWidth + "\n" + secondPart;
+        updatedString         = String.format("%sskinparam wrapWidth %d\n%s", firstPart, wrapWidth, secondPart);
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
         // KEEP REDUCING THE WRAPWIDTH PARAMETER IN ORDER TO FIT PROPERLY THE IMAGE //
         // DOESNT WORK PROPERLY, COMMENTED JUST TO KEEP THE IDEA.					//

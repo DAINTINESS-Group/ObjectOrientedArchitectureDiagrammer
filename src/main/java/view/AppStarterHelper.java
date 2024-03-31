@@ -7,12 +7,21 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Objects;
 
 public class AppStarterHelper extends Application
 {
+
+    private static final Logger logger = LogManager.getLogger(AppStarterHelper.class);
+
+    private static final String PROJECT_LOAD_VIEW = "/fxml/ProjectLoadView.fxml";
+    private static final String LOGO_PNG          = "/assets/logo.png";
+
 
     public static void main(String[] args)
     {
@@ -25,10 +34,10 @@ public class AppStarterHelper extends Application
     {
         try
         {
-            URL    url       = getClass().getResource("/fxml/ProjectLoadView.fxml");
-            Parent root      = FXMLLoader.load(url);
+            URL    url       = getClass().getResource(PROJECT_LOAD_VIEW);
+            Parent root      = FXMLLoader.load(Objects.requireNonNull(url));
             Scene  scene     = new Scene(root);
-            Image  iconImage = new Image(getClass().getResourceAsStream("/assets/logo.png"));
+            Image  iconImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream(LOGO_PNG)));
             primaryStage.getIcons().add(iconImage);
             primaryStage.setTitle("Object Oriented Architecture Diagrammer");
             primaryStage.setScene(scene);
@@ -40,7 +49,8 @@ public class AppStarterHelper extends Application
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            logger.error("Failed to load {}", PROJECT_LOAD_VIEW);
+            throw new RuntimeException(e);
         }
 
     }

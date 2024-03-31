@@ -1,13 +1,8 @@
 package model.diagram.plantuml;
 
 import model.diagram.PackageDiagram;
-import model.graph.Arc;
 import model.graph.ArcType;
-import model.graph.PackageVertex;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class PlantUMLPackageVertexArc

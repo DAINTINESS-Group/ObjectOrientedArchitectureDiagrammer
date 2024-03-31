@@ -17,6 +17,8 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.imageio.ImageIO;
 import java.io.File;
@@ -25,6 +27,11 @@ import java.net.URL;
 
 public class DiagramVisualizationController
 {
+
+    private static final Logger logger = LogManager.getLogger(DiagramVisualizationController.class);
+
+    private static final String BACKGROUND_COLOR = "#F4FFFB";
+    public static final String DIAGRAM_CREATION_VIEW = "/fxml/DiagramCreationView.fxml";
 
     @FXML
     BorderPane borderPane;
@@ -47,8 +54,8 @@ public class DiagramVisualizationController
 
         graphViewNormalScaleX = graphView.getScaleX();
         graphViewNormalScaleY = graphView.getScaleY();
-        String graphViewBackgroundColor = "#F4FFFB";
-        Color  zoomPaneBackgroundColor  = Color.web(graphViewBackgroundColor);
+
+        Color zoomPaneBackgroundColor = Color.web(BACKGROUND_COLOR);
         zoomPane.setBackground(new Background(new BackgroundFill(zoomPaneBackgroundColor, null, null)));
         graphView.minWidthProperty().bind(borderPane.widthProperty());
         graphView.minHeightProperty().bind(borderPane.heightProperty());
@@ -77,10 +84,8 @@ public class DiagramVisualizationController
         try
         {
             File selectedDirectory = FileAndDirectoryUtility.saveFile("Export Diagram as PNG", menuBar, "PNG files");
-            if (selectedDirectory == null)
-            {
-                return;
-            }
+            if (selectedDirectory == null) return;
+
             double changeScaleX = graphView.getScaleX();
             double changeScaleY = graphView.getScaleY();
             graphView.setScaleX(graphViewNormalScaleX);
@@ -92,7 +97,8 @@ public class DiagramVisualizationController
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            logger.error("Failed to write image to directory.");
+            throw new RuntimeException(e);
         }
     }
 
@@ -112,7 +118,7 @@ public class DiagramVisualizationController
     {
         try
         {
-            URL        url    = MenuUtility.class.getResource("/fxml/DiagramCreationView.fxml");
+            URL        url    = MenuUtility.class.getResource(DIAGRAM_CREATION_VIEW);
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(url);
             Parent diagramCreationParent = loader.load();
@@ -121,13 +127,14 @@ public class DiagramVisualizationController
             diagramCreationController.setProject();
 
             Scene diagramCreationScene = new Scene(diagramCreationParent);
-            Stage window               = (Stage)menuBar.getScene().getWindow();
+            Stage window               = (Stage) menuBar.getScene().getWindow();
             window.setScene(diagramCreationScene);
             window.show();
         }
-        catch (Exception e)
+        catch (IOException e)
         {
-            e.printStackTrace();
+            logger.error("Failed to load FXML {}", DIAGRAM_CREATION_VIEW);
+            throw new RuntimeException(e);
         }
     }
 

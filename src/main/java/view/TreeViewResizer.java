@@ -30,9 +30,7 @@ public class TreeViewResizer
     }
 
 
-    EventHandler<MouseEvent> onMousePressedEventHandler = event -> {
-        mouseX = event.getSceneX();
-    };
+    EventHandler<MouseEvent> onMousePressedEventHandler = it -> mouseX = it.getSceneX();
 
     EventHandler<MouseEvent> onMouseDraggedEventHandler = event -> {
         double deltaX = event.getSceneX() - mouseX;
@@ -81,7 +79,5 @@ public class TreeViewResizer
         }
     };
 
-    EventHandler<MouseEvent> onMouseReleasedEventHandler = event -> {
-        region.setCursor(Cursor.DEFAULT);
-    };
+    EventHandler<MouseEvent> onMouseReleasedEventHandler = it -> region.setCursor(Cursor.DEFAULT);
 }

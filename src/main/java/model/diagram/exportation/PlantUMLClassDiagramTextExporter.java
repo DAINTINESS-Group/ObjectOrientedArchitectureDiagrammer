@@ -3,6 +3,8 @@ package model.diagram.exportation;
 import model.diagram.ClassDiagram;
 import model.diagram.plantuml.PlantUMLClassifierVertex;
 import model.diagram.plantuml.PlantUMLClassifierVertexArc;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -12,6 +14,7 @@ import java.nio.file.Path;
 
 public class PlantUMLClassDiagramTextExporter implements DiagramExporter
 {
+    private static final Logger logger = LogManager.getLogger(PlantUMLClassDiagramTextExporter.class);
 
     private final StringBuilder bufferBody;
 
@@ -48,7 +51,7 @@ public class PlantUMLClassDiagramTextExporter implements DiagramExporter
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            logger.error("Failed to write to file: {}", plantUMLFile.getAbsolutePath());
             throw new RuntimeException(e);
         }
     }

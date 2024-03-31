@@ -48,17 +48,19 @@ public class GraphMLPackageVertexArcTest
 
         for (Arc<PackageVertex> e : arcs)
         {
-            expected.append(String.format("    <edge id=\"e%s\" source=\"n%s\" target=\"n%s\">\n" +
-                                          "      <data key=\"d9\"/>\n" +
-                                          "      <data key=\"d10\">\n" +
-                                          "        <y:PolyLineEdge>\n" +
-                                          "          <y:Path sx=\"0.0\" sy=\"0.0\" tx=\"0.0\" ty=\"0.0\"/>\n" +
-                                          "          <y:LineStyle color=\"#000000\" type=\"dashed\" width=\"1.0\"/>\n" +
-                                          "          <y:Arrows source=\"none\" target=\"plain\"/>\n" +
-                                          "          <y:BendStyle smoothed=\"false\"/>\n" +
-                                          "        </y:PolyLineEdge>\n" +
-                                          "      </data>\n" +
-                                          "    </edge>",
+            expected.append(String.format("""
+                                                  <edge id="e%s" source="n%s" target="n%s">
+                                                    <data key="d9"/>
+                                                    <data key="d10">
+                                                      <y:PolyLineEdge>
+                                                        <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+                                                        <y:LineStyle color="#000000" type="dashed" width="1.0"/>
+                                                        <y:Arrows source="none" target="plain"/>
+                                                        <y:BendStyle smoothed="false"/>
+                                                      </y:PolyLineEdge>
+                                                    </data>
+                                                  </edge>\
+                                              """,
                                           edgeId,
                                           packageDiagramManager.getPackageDiagram().getGraphNodes().get(e.sourceVertex()),
                                           packageDiagramManager.getPackageDiagram().getGraphNodes().get(e.targetVertex())));

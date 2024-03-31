@@ -8,8 +8,6 @@ import org.junit.jupiter.api.Test;
 import utils.PathConstructor;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;

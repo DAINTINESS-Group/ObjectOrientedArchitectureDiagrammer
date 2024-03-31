@@ -19,14 +19,14 @@ public record LeafNode(Path 		  path,
 					   List<String>   records,
 					   List<LeafNode> innerClasses,
 					   List<String>   innerEnums,
-					   List<String>   createdObjects) {
-
+					   List<String>   createdObjects)
+{
 
     public List<String> getMethodReturnTypes()
     {
         return methods
 			.stream()
-            .map(method -> method.returnType)
+            .map(it -> it.returnType)
             .collect(Collectors.toCollection(ArrayList::new));
     }
 
@@ -35,7 +35,7 @@ public record LeafNode(Path 		  path,
     {
         return methods
 			.stream()
-            .flatMap(method -> method
+            .flatMap(it -> it
 				.parameters()
                 .values()
                 .stream())

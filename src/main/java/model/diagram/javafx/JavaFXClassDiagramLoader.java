@@ -5,6 +5,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
 import model.graph.ArcType;
 import model.graph.ClassifierVertex;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.javatuples.Triplet;
 
 import java.io.IOException;
@@ -19,6 +21,7 @@ import java.util.Set;
 
 public class JavaFXClassDiagramLoader
 {
+    private static final Logger logger = LogManager.getLogger(JavaFXClassDiagramLoader.class);
 
     private final Path graphSavePath;
 
@@ -46,7 +49,7 @@ public class JavaFXClassDiagramLoader
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            logger.error("Failed to read bytes from file: {}", graphSavePath.toAbsolutePath());
             throw new RuntimeException(e);
         }
         return sinkVertices;
@@ -62,17 +65,14 @@ public class JavaFXClassDiagramLoader
             {
                 Optional<ClassifierVertex> sourceVertex = sinkVertices
                     .stream()
-                    .filter(sinkVertex1 -> sinkVertex1.getName().equals(arc.getValue0()))
+                    .filter(it -> it.getName().equals(arc.getValue0()))
                     .findFirst();
                 Optional<ClassifierVertex> targetVertex = sinkVertices
                     .stream()
-                    .filter(sinkVertex1 -> sinkVertex1.getName().equals(arc.getValue1()))
+                    .filter(it -> it.getName().equals(arc.getValue1()))
                     .findFirst();
-                if (sourceVertex.isEmpty() ||
-                    targetVertex.isEmpty())
-                {
-                    continue;
-                }
+                if (sourceVertex.isEmpty() || targetVertex.isEmpty()) continue;
+
                 classifierVertex.addArc(sourceVertex.get(), targetVertex.get(), ArcType.get(arc.getValue2()));
             }
         }

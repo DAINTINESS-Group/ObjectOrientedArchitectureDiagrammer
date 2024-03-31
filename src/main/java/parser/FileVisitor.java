@@ -1,5 +1,6 @@
 package parser;
 
+import com.github.javaparser.JavaParser;
 import com.github.javaparser.ParserConfiguration;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
@@ -10,10 +11,14 @@ import com.github.javaparser.ast.body.EnumDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.RecordDeclaration;
+import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.expr.ObjectCreationExpr;
 import com.github.javaparser.ast.expr.VariableDeclarationExpr;
+import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import parser.tree.LeafNode;
 import parser.tree.LeafNodeBuilder;
 import parser.tree.ModifierType;
@@ -33,13 +38,15 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
- * This class is responsible for the creation of the AST of a Java source file using Javaparser.
+ * This class is responsible for the creation of the AST of a Java source file using {@link JavaParser}.
  * Using the different visitors, it parses the file's inheritance declarations,
  * constructor, methods parameters, return types, field & local variable declarations
  * as well as the instantiated objects that aren't assigned to a variable.
  */
 public class FileVisitor
 {
+    private static final Logger logger = LogManager.getLogger(FileVisitor.class);
+
     private final InheritanceVisitor    inheritanceVisitor    = new InheritanceVisitor();
     private final ConstructorVisitor    constructorVisitor    = new ConstructorVisitor();
     private final FieldVisitor          fieldNameVisitor      = new FieldVisitor();
@@ -69,9 +76,9 @@ public class FileVisitor
 
 
 	/**
-	 * The FileVisitor's default constructor
+	 * The FileVisitor's default constructor.
 	 *
-	 * @param parentNode  the LeafNode representing the Java source file that we are visiting
+	 * @param parentNode  the LeafNode representing the Java source file that we are visiting.
 	 */
 	public FileVisitor(PackageNode parentNode, Path path)
     {
@@ -125,7 +132,7 @@ public class FileVisitor
         }
         catch (FileNotFoundException e)
         {
-            e.printStackTrace();
+            logger.debug("File with path: {} not found", path);
             throw new RuntimeException(e);
         }
 
@@ -162,6 +169,7 @@ public class FileVisitor
                 {
                     innerBaseClass = classOrInterfaceDeclaration.getExtendedTypes().get(0).getNameAsString();
                 }
+
                 List<String> innerImplementedInterfaces = new ArrayList<>();
                 for (ClassOrInterfaceType c : classOrInterfaceDeclaration.getImplementedTypes())
                 {
@@ -179,22 +187,22 @@ public class FileVisitor
             }
 
             nodeName = classOrInterfaceDeclaration.getNameAsString();
-            NodeType localNodeType;
-            if (classOrInterfaceDeclaration.isInterface())
+            NodeType localNodeType = classOrInterfaceDeclaration.isInterface() ?
+                NodeType.INTERFACE :
+                NodeType.CLASS;
+
+            if (!classOrInterfaceDeclaration.getExtendedTypes().isEmpty())
             {
-                localNodeType = NodeType.INTERFACE;
-            }
-            else
-            {
-                localNodeType = NodeType.CLASS;
-                classOrInterfaceDeclaration.getExtendedTypes()
-                    .forEach(classOrInterfaceType -> baseClass = classOrInterfaceType.getNameAsString());
+                baseClass = classOrInterfaceDeclaration.getExtendedTypes().get(0).getNameAsString();
             }
 
             nodeType = localNodeType;
-            classOrInterfaceDeclaration.getImplementedTypes()
-                .forEach(classOrInterfaceType -> implementedInterfaces.add(classOrInterfaceType.getNameAsString()));
-
+            ArrayList<String> implementedTypes =
+                classOrInterfaceDeclaration.getImplementedTypes()
+                    .stream()
+                    .map(NodeWithSimpleName::getNameAsString)
+                    .collect(Collectors.toCollection(ArrayList::new));
+            implementedInterfaces.addAll(implementedTypes);
         }
     }
 
@@ -206,20 +214,13 @@ public class FileVisitor
         {
             super.visit(constructorDeclaration, arg);
 
-            ModifierType modifierType;
-            if (constructorDeclaration.getModifiers().isEmpty())
-            {
-                modifierType = ModifierType.PACKAGE_PRIVATE;
-            }
-            else
-            {
-                modifierType = ModifierType.get(constructorDeclaration.getModifiers().get(0).toString());
-            }
+            ModifierType modifierType = constructorDeclaration.getModifiers().isEmpty() ?
+                ModifierType.PACKAGE_PRIVATE :
+                ModifierType.get(constructorDeclaration.getModifiers().get(0).toString());
 
-            Map<String, String> parameters = new HashMap<>();
-            constructorDeclaration.getParameters()
-                .forEach(parameter -> parameters.put(parameter.getNameAsString(),
-                                                     getType(parameter.getTypeAsString())));
+            Map<String, String> parameters = constructorDeclaration.getParameters().stream()
+                    .collect(Collectors.toMap(NodeWithSimpleName::getNameAsString,
+                                              parameter -> getType(parameter.getTypeAsString())));
             methods.add(new LeafNode.Method(constructorDeclaration.getNameAsString(),
                                             "Constructor",
                                             modifierType,
@@ -229,27 +230,22 @@ public class FileVisitor
 
     private class FieldVisitor extends VoidVisitorAdapter<Void>
     {
-        private ModifierType modifierType;
-
 
         @Override
         public void visit(FieldDeclaration fieldDeclaration, Void arg)
         {
             super.visit(fieldDeclaration, arg);
 
-            fieldDeclaration.getVariables().forEach(variable -> {
-                if (fieldDeclaration.getModifiers().isEmpty())
-                {
-                    this.modifierType = ModifierType.PACKAGE_PRIVATE;
-                }
-                else
-                {
-                    this.modifierType = ModifierType.get(fieldDeclaration.getModifiers().get(0).toString());
-                }
+            for (VariableDeclarator variable : fieldDeclaration.getVariables())
+            {
+                ModifierType modifierType = fieldDeclaration.getModifiers().isEmpty() ?
+                    ModifierType.PACKAGE_PRIVATE :
+                    ModifierType.get(fieldDeclaration.getModifiers().get(0).toString());
+
                 fields.add(new LeafNode.Field(variable.getNameAsString(),
                                               getType(variable.getTypeAsString()),
                                               modifierType));
-            });
+            }
         }
     }
 
@@ -263,14 +259,12 @@ public class FileVisitor
 
             Pattern pattern = Pattern.compile("[A-Za-z0-9]+ [A-Za-z0-9]+ = new ([A-Za-z0-9]+)\\([A-Za-z0-9]*[, A-Za-z0-9*]*\\)");
             Matcher matcher = pattern.matcher(variableDeclarationExpr.toString());
-            if (!matcher.find())
-            {
-                return;
-            }
+            if (!matcher.find()) return;
+
             objectTypes.add(matcher.group(1));
             variableDeclarationExpr.getVariables()
-                .forEach(variableDeclaration -> variablesMap.put(variableDeclaration.getNameAsString(),
-                                                                 getType(variableDeclaration.getTypeAsString())));
+                .forEach(it -> variablesMap.put(it.getNameAsString(),
+                                                getType(it.getTypeAsString())));
         }
     }
 
@@ -282,19 +276,13 @@ public class FileVisitor
         {
             super.visit(methodDeclaration, arg);
 
-            ModifierType modifierType;
-            if (methodDeclaration.getModifiers().isEmpty())
-            {
-                modifierType = ModifierType.PACKAGE_PRIVATE;
-            }
-            else
-            {
-                modifierType = ModifierType.get(methodDeclaration.getModifiers().get(0).toString());
-            }
-            Map<String, String> parameters = new HashMap<>();
-            methodDeclaration.getParameters()
-                .forEach(parameter -> parameters.put(parameter.getNameAsString(),
-                                                     getType(parameter.getTypeAsString())));
+            ModifierType modifierType = methodDeclaration.getModifiers().isEmpty() ?
+                ModifierType.PACKAGE_PRIVATE :
+                ModifierType.get(methodDeclaration.getModifiers().get(0).toString());
+
+            Map<String, String> parameters = methodDeclaration.getParameters().stream()
+                    .collect(Collectors.toMap(NodeWithSimpleName::getNameAsString,
+                                              parameter -> getType(parameter.getTypeAsString())));
             methods.add(new LeafNode.Method(methodDeclaration.getNameAsString(),
                                             getType(methodDeclaration.getTypeAsString()),
                                             modifierType,
@@ -332,6 +320,7 @@ public class FileVisitor
     private class MemberVisitor extends VoidVisitorAdapter<Void>
     {
 
+        @Override
         public void visit(EnumDeclaration enumDeclaration, Void arg)
         {
             super.visit(enumDeclaration, arg);
@@ -339,7 +328,7 @@ public class FileVisitor
             enums.add(enumDeclaration.getNameAsString());
         }
 
-
+        @Override
         public void visit(RecordDeclaration n, Void arg)
         {
             super.visit(n, arg);
@@ -352,6 +341,7 @@ public class FileVisitor
     private class ImportVisitor extends VoidVisitorAdapter<Void>
     {
 
+        @Override
         public void visit(ImportDeclaration importDeclaration, Void arg)
         {
             super.visit(importDeclaration, arg);
@@ -371,8 +361,10 @@ public class FileVisitor
                                                                                   .map(LeafNode.Field::fieldType)
                                                                                   .collect(Collectors.toCollection(ArrayList::new)),
                                                                               createdObjects);
+
         notAssignedCreatedObjects = filterAssignedCreatedObjects(new ArrayList<>(variablesMap.values()),
                                                                  notAssignedCreatedObjects);
+
         notAssignedCreatedObjects = filterAssignedCreatedObjects(objectTypes,
                                                                  notAssignedCreatedObjects);
         return notAssignedCreatedObjects;

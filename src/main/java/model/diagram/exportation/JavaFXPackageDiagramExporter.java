@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import model.diagram.PackageDiagram;
 import model.graph.PackageVertex;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -12,6 +14,7 @@ import java.nio.file.Path;
 
 public class JavaFXPackageDiagramExporter implements DiagramExporter
 {
+    private static final Logger logger = LogManager.getLogger(JavaFXPackageDiagramExporter.class);
 
     private final PackageDiagram packageDiagram;
 
@@ -37,7 +40,7 @@ public class JavaFXPackageDiagramExporter implements DiagramExporter
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            logger.error("Failed to write json to file with path: {}", exportPath.toAbsolutePath());
             throw new RuntimeException(e);
         }
 

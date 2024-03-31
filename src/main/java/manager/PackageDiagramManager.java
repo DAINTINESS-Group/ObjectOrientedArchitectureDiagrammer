@@ -6,6 +6,7 @@ import com.google.gson.JsonParseException;
 import model.diagram.PackageDiagram;
 import model.diagram.arrangement.DiagramArrangementManagerInterface;
 import model.diagram.arrangement.PackageDiagramArrangementManager;
+import model.diagram.arrangement.algorithms.LayoutAlgorithmType;
 import model.diagram.arrangement.geometry.DiagramGeometry;
 import model.diagram.exportation.CoordinatesUpdater;
 import model.diagram.exportation.DiagramExporter;
@@ -16,19 +17,19 @@ import model.diagram.exportation.PlantUMLPackageDiagramTextExporter;
 import model.diagram.javafx.JavaFXPackageDiagramLoader;
 import model.diagram.javafx.JavaFXPackageVisualization;
 import model.diagram.javafx.JavaFXVisualization;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.javatuples.Pair;
 
 import java.io.File;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class PackageDiagramManager implements DiagramManager
 {
 
-    private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    private static final Logger logger =  LogManager.getLogger(PackageDiagramManager.class);
 
     private PackageDiagram                     packageDiagram;
     private DiagramArrangementManagerInterface packageDiagramArrangement;
@@ -149,7 +150,7 @@ public class PackageDiagramManager implements DiagramManager
         {
             if (!nodesGeometry.containsKey(vertex.element()))
             {
-                logger.log(Level.INFO, vertex.element());
+                logger.debug("Vertex: {} not in vertices collection.", vertex.element());
                 continue;
             }
 
@@ -161,15 +162,12 @@ public class PackageDiagramManager implements DiagramManager
     }
 
     @Override
-    public SmartGraphPanel<String, String> applySpecificLayout(String choice)
+    public SmartGraphPanel<String, String> applySpecificLayout(LayoutAlgorithmType algorithmType)
     {
-        DiagramGeometry nodesGeometry = packageDiagramArrangement.applyNewLayout(choice);
+        DiagramGeometry nodesGeometry = packageDiagramArrangement.applyLayout(algorithmType);
         for (Vertex<String> vertex : vertexCollection)
         {
-            if (!nodesGeometry.containsKey(vertex.element()))
-            {
-                continue;
-            }
+            if (!nodesGeometry.containsKey(vertex.element())) continue;
 
             Pair<Double, Double> coordinates = nodesGeometry.getVertexGeometry(vertex.element());
             graphView.setVertexPosition(vertex, coordinates.getValue0(), coordinates.getValue1());

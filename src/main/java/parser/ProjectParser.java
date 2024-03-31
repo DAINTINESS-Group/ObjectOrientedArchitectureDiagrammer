@@ -1,5 +1,7 @@
 package parser;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import parser.factory.Parser;
 import parser.tree.LeafNode;
 import parser.tree.PackageNode;
@@ -14,6 +16,7 @@ import java.util.Set;
 
 public class ProjectParser implements Parser
 {
+    private static final Logger logger = LogManager.getLogger(ProjectParser.class);
 
     private final Map<Path, PackageNode> packageNodes;
 
@@ -73,7 +76,7 @@ public class ProjectParser implements Parser
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            logger.error("Failed to open a directory stream for path: {}", currentNode.getPath().toAbsolutePath());
             throw new RuntimeException(e);
         }
     }
