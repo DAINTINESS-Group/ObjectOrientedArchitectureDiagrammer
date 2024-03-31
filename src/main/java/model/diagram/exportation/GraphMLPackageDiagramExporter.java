@@ -5,37 +5,41 @@ import model.diagram.graphml.GraphMLPackageVertex;
 import model.diagram.graphml.GraphMLPackageVertexArc;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Path;
 
-public class GraphMLPackageDiagramExporter implements DiagramExporter {
+public class GraphMLPackageDiagramExporter implements DiagramExporter
+{
 
-	private final GraphMLFile graphMLFile;
-	private final StringBuilder graphMLNodeBuffer;
-	private final StringBuilder graphMLEdgeBuffer;
+    private final GraphMLFile   graphMLFile;
+    private final StringBuilder graphMLNodeBuffer;
+    private final StringBuilder graphMLEdgeBuffer;
 
-	public GraphMLPackageDiagramExporter(PackageDiagram packageDiagram) {
-		GraphMLPackageVertex graphMLPackageVertex = new GraphMLPackageVertex(packageDiagram);
-		graphMLNodeBuffer = graphMLPackageVertex.convertVertex();
-		GraphMLPackageVertexArc graphMLPackageVertexArc = new GraphMLPackageVertexArc(packageDiagram);
-		graphMLEdgeBuffer = graphMLPackageVertexArc.convertVertexArc();
-		graphMLFile = new GraphMLFile();
-	}
 
-	@Override
-	public File exportDiagram(Path exportPath) {
-		try {
-			graphMLFile.createGraphMLFile(exportPath);
-			generateGraphMLGraph(graphMLNodeBuffer, graphMLEdgeBuffer);
-			graphMLFile.closeGraphMLFile();
-		}catch (IOException e){
-			e.printStackTrace();
-		}
-		return graphMLFile.getGraphMLFile();
-	}
+    public GraphMLPackageDiagramExporter(PackageDiagram packageDiagram)
+    {
+        GraphMLPackageVertex    graphMLPackageVertex    = new GraphMLPackageVertex(packageDiagram);
+        GraphMLPackageVertexArc graphMLPackageVertexArc = new GraphMLPackageVertexArc(packageDiagram);
 
-	private void generateGraphMLGraph(StringBuilder nodeBuffer, StringBuilder edgeBuffer){
-		graphMLFile.writeToBuffer(nodeBuffer);
-		graphMLFile.writeToBuffer(edgeBuffer);
-	}
+        graphMLNodeBuffer = graphMLPackageVertex.convertVertex();
+        graphMLEdgeBuffer = graphMLPackageVertexArc.convertVertexArc();
+        graphMLFile = new GraphMLFile();
+    }
+
+
+    @Override
+    public File exportDiagram(Path exportPath)
+    {
+        graphMLFile.createGraphMLFile(exportPath);
+        generateGraphMLGraph(graphMLNodeBuffer, graphMLEdgeBuffer);
+        graphMLFile.closeGraphMLFile();
+        return graphMLFile.getGraphMLFile();
+    }
+
+
+    private void generateGraphMLGraph(StringBuilder nodeBuffer,
+                                      StringBuilder edgeBuffer)
+    {
+        graphMLFile.writeToBuffer(nodeBuffer);
+        graphMLFile.writeToBuffer(edgeBuffer);
+    }
 }

@@ -1,4 +1,5 @@
 
-public class ImplementingClass extends ExtensionClass implements TestingInterface, TestingInterface2{
+public class ImplementingClass extends ExtensionClass implements TestingInterface, TestingInterface2
+{
 
 }

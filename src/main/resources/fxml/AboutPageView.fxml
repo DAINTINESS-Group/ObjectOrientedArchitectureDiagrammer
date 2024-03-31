@@ -8,23 +8,23 @@
 <?import javafx.scene.layout.VBox?>
 
 <VBox prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/modena_dark.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.AboutPageController">
-   <children>
-      <MenuBar fx:id="menuBar" VBox.vgrow="NEVER">
-         <menus>
-            <Menu mnemonicParsing="false" text="Project">
-               <items>
-                  <MenuItem mnemonicParsing="false" onAction="#newProject" text="Load…" />
-                  <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem mnemonicParsing="false" onAction="#quitApp" text="Quit" />
-               </items>
-            </Menu>
-            <Menu mnemonicParsing="false" text="Help">
-               <items>
-                  <MenuItem mnemonicParsing="false" onAction="#aboutPage" text="About" />
-               </items>
-            </Menu>
-         </menus>
-      </MenuBar>
-      <BorderPane fx:id="borderPane" prefHeight="583.0" prefWidth="900.0" VBox.vgrow="ALWAYS" />
-   </children>
+    <children>
+        <MenuBar fx:id="menuBar" VBox.vgrow="NEVER">
+            <menus>
+                <Menu mnemonicParsing="false" text="Project">
+                    <items>
+                        <MenuItem mnemonicParsing="false" onAction="#newProject" text="Load…"/>
+                        <SeparatorMenuItem mnemonicParsing="false"/>
+                        <MenuItem mnemonicParsing="false" onAction="#quitApp" text="Quit"/>
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Help">
+                    <items>
+                        <MenuItem mnemonicParsing="false" onAction="#aboutPage" text="About"/>
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+        <BorderPane fx:id="borderPane" prefHeight="583.0" prefWidth="900.0" VBox.vgrow="ALWAYS"/>
+    </children>
 </VBox>

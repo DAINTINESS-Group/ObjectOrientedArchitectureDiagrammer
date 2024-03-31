@@ -1,21 +1,16 @@
 package parser.factory;
 
-import parser.javaparser.JavaparserProjectParser;
-import parser.jdt.JDTProjectParser;
+import parser.ProjectParser;
 
-public class ProjectParserFactory {
+public class ProjectParserFactory
+{
 
-	private final ParserType parserType;
-
-	public ProjectParserFactory(ParserType parserType) {
-		this.parserType = parserType;
-	}
-
-	public Parser createProjectParser() {
-		if (parserType.equals(ParserType.JDT)) {
-			return new JDTProjectParser();
-		}
-
-		return new JavaparserProjectParser();
-	}
+    public static Parser createProjectParser(ParserType parserType)
+    {
+        if (parserType.equals(ParserType.JDT))
+        {
+            throw new RuntimeException();
+        }
+        return new ProjectParser();
+    }
 }

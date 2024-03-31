@@ -1,12 +1,14 @@
 package controller;
 
-public class ControllerFactory {
+public class ControllerFactory
+{
 
-	public Controller createController(ControllerType controllerType, String diagramType) {
-		if (controllerType == ControllerType.UML_DIAGRAM) {
-			return new DiagramController(diagramType);
-		}else {
-			throw new RuntimeException();
-		}
-	}
+    public static Controller createController(String controllerType, String diagramType)
+    {
+        return switch (ControllerType.get(controllerType))
+        {
+            case UML -> new DiagramController(diagramType);
+        };
+    }
+
 }

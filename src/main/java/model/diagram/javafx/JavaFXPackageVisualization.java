@@ -15,77 +15,114 @@ import model.graph.VertexType;
 import java.util.Collection;
 import java.util.Set;
 
-public class JavaFXPackageVisualization implements JavaFXVisualization {
+public class JavaFXPackageVisualization implements JavaFXVisualization
+{
 
-	private SmartGraphPanel<String, String> graphView;
-	private final PackageDiagram packageDiagram;
-	private Collection<Vertex<String>> vertexCollection;
+    private final PackageDiagram                  packageDiagram;
+    private       SmartGraphPanel<String, String> graphView;
+    private       Collection<Vertex<String>>      vertexCollection;
 
-	public JavaFXPackageVisualization(PackageDiagram diagram) {
-		packageDiagram = diagram;
-	}
 
-	@Override
-	public SmartGraphPanel<String, String> createGraphView() {
-		Graph<String, String> graph = createGraph();
-		vertexCollection = graph.vertices();
-		graphView = new SmartGraphPanel<>(graph, new SmartCircularSortedPlacementStrategy());
-		setVertexCustomStyle();
-		return graphView;
-	}
+    public JavaFXPackageVisualization(PackageDiagram diagram)
+    {
+        this.packageDiagram = diagram;
+    }
 
-	@Override
-	public Collection<Vertex<String>> getVertexCollection(){
-		return vertexCollection;
-	}
 
-	private Graph<String, String> createGraph() {
-		Digraph<String, String> directedGraph = new DigraphEdgeList<>();
-		for (PackageVertex vertex: packageDiagram.getDiagram().keySet()) {
-			if(vertex.getSinkVertices().size() > 0) {
-				directedGraph.insertVertex(vertex.getName());
-			}
-		}
-		insertVertexArcs(directedGraph);
-		return directedGraph;
-	}
+    @Override
+    public SmartGraphPanel<String, String> createGraphView()
+    {
+        Graph<String, String> graph = createGraph();
+        vertexCollection = graph.vertices();
+        graphView        = new SmartGraphPanel<>(graph, new SmartCircularSortedPlacementStrategy());
+        setVertexCustomStyle();
+        return graphView;
+    }
 
-	private void insertVertexArcs(Digraph<String, String> directedGraph){
-		for (Set<Arc<PackageVertex>> arcs : packageDiagram.getDiagram().values()) {
-			for (Arc<PackageVertex> arc: arcs) {
-				if (arc.getArcType().equals(ArcType.AGGREGATION)) {
-					directedGraph.insertEdge(arc.getTargetVertex().getName(), arc.getSourceVertex().getName(),
-							arc.getTargetVertex().getName() + "_" + arc.getSourceVertex().getName() + "_" + arc.getArcType().toString().toLowerCase());
-				}else {
-					directedGraph.insertEdge(arc.getSourceVertex().getName(), arc.getTargetVertex().getName(),
-							arc.getSourceVertex().getName() + "_" +arc.getTargetVertex().getName() + "_" + arc.getArcType().toString().toLowerCase());
-				}
-			}
-		}
-	}
 
-	private void setVertexCustomStyle() {
-		for (PackageVertex vertex: packageDiagram.getDiagram().keySet()){
-			if (vertex.getVertexType().equals(VertexType.INTERFACE)) {
-				graphView.getStylableVertex(vertex.getName()).setStyleClass("vertexInterface");
-			}else {
-				if(vertex.getSinkVertices().size() > 0) {
-					graphView.getStylableVertex(vertex.getName()).setStyleClass("vertexPackage");
-				}
-			}
-		}
-	}
+    @Override
+    public Collection<Vertex<String>> getVertexCollection()
+    {
+        return vertexCollection;
+    }
 
-	@Override
-	public SmartGraphPanel<String, String> getLoadedGraph() {
-		for (Vertex<String> vertex : vertexCollection) {
-			for (PackageVertex packageVertex: packageDiagram.getDiagram().keySet()){
-				if(packageVertex.getName().equals(vertex.element())) {
-					graphView.setVertexPosition(vertex, packageVertex.getCoordinates().getValue0(), packageVertex.getCoordinates().getValue1());
-					break;
-				}
-			}
-		}
-		return graphView;
-	}
+
+    private Graph<String, String> createGraph()
+    {
+        Digraph<String, String> directedGraph = new DigraphEdgeList<>();
+        for (PackageVertex vertex : packageDiagram.getDiagram().keySet())
+        {
+            if (vertex.getSinkVertices().isEmpty())
+            {
+                continue;
+            }
+            directedGraph.insertVertex(vertex.getName());
+        }
+        insertVertexArcs(directedGraph);
+        return directedGraph;
+    }
+
+
+    private void insertVertexArcs(Digraph<String, String> directedGraph)
+    {
+        for (Set<Arc<PackageVertex>> arcs : packageDiagram.getDiagram().values())
+        {
+            for (Arc<PackageVertex> arc : arcs)
+            {
+                if (arc.arcType().equals(ArcType.AGGREGATION))
+                {
+                    directedGraph.insertEdge(arc.targetVertex().getName(),
+                                             arc.sourceVertex().getName(),
+                                             arc.targetVertex().getName() + "_" + arc.sourceVertex().getName() + "_" + arc.arcType());
+                }
+                else
+                {
+                    directedGraph.insertEdge(arc.sourceVertex().getName(),
+                                             arc.targetVertex().getName(),
+                                             arc.sourceVertex().getName() + "_" + arc.targetVertex().getName() + "_" + arc.arcType());
+                }
+            }
+        }
+    }
+
+
+    private void setVertexCustomStyle()
+    {
+        for (PackageVertex vertex : packageDiagram.getDiagram().keySet())
+        {
+            if (vertex.getVertexType().equals(VertexType.INTERFACE))
+            {
+                graphView.getStylableVertex(vertex.getName()).setStyleClass("vertexInterface");
+            }
+            else
+            {
+                if (vertex.getSinkVertices().isEmpty())
+                {
+                    continue;
+                }
+                graphView.getStylableVertex(vertex.getName()).setStyleClass("vertexPackage");
+            }
+        }
+    }
+
+
+    @Override
+    public SmartGraphPanel<String, String> getLoadedGraph()
+    {
+        for (Vertex<String> vertex : vertexCollection)
+        {
+            for (PackageVertex packageVertex : packageDiagram.getDiagram().keySet())
+            {
+                if (!packageVertex.getName().equals(vertex.element()))
+                {
+                    continue;
+                }
+                graphView.setVertexPosition(vertex,
+                                            packageVertex.getCoordinate().x(),
+                                            packageVertex.getCoordinate().y());
+                break;
+            }
+        }
+        return graphView;
+    }
 }

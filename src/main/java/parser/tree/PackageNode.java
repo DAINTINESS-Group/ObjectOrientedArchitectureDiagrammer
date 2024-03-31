@@ -1,98 +1,129 @@
 package parser.tree;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
-/**This class is responsible for the implementation of a package node in the tree.
+/**
+ * This class is responsible for the representation of a package node in the tree.
  * Each has node has a parent node(the parent package), the path of the package folder,
- * the nodes children(the sub packages), the nodes leafs(the Java source files inside the
- * current package), a flag to identify if a package is empty or not
+ * the nodes children(the sub packages), the nodes leaves(the Java source files inside the current package),
+ * a flag to identify if a package is empty or not.
  */
-public class PackageNode {
-	private final Map<Path, PackageNode> subNodes;
-	private final Map<String, LeafNode> leafNodes;
-	private final Path path;
-	private PackageNode parentNode;
-	private final List<Relationship<PackageNode>> packageNodeRelationships;
-	private boolean isValid;
+public final class PackageNode
+{
+    private final Map<Path, PackageNode> subNodes;
+    private final Map<String, LeafNode>  leafNodes;
+    private final Path                   path;
+    private final PackageNode            parentNode;
+    private final boolean                isValid;
 
-	public PackageNode(Path path) {
-		this.path = path;
-		packageNodeRelationships = new ArrayList<>();
-		this.isValid = false;
-		subNodes = new HashMap<>();
-		leafNodes = new HashMap<>();
-	}
 
-	public void addLeafNode(LeafNode leafNode) {
-		leafNodes.put(leafNode.getName(), leafNode);
-	}
+    public PackageNode(Path path)
+    {
+        this.path  = path;
+        parentNode = new PackageNode(null, Paths.get(""));
+        subNodes   = new HashMap<>();
+        leafNodes  = new HashMap<>();
+        isValid    = isValid(path);
+    }
 
-	public void addSubNode(PackageNode packageNode) {
-		subNodes.put(packageNode.getPackageNodesPath(), packageNode);
-	}
 
-	public void setValid() {
-		this.isValid = true;
-	}
+    public PackageNode(PackageNode parentNode, Path path)
+    {
+        this.parentNode = parentNode;
+        this.path       = path;
+        subNodes        = new HashMap<>();
+        leafNodes       = new HashMap<>();
+        isValid         = isValid(path);
+    }
 
-	public void setParentNode(PackageNode p) {
-		this.parentNode = p;
-	}
 
-	public void addPackageNodeRelationship(Relationship<PackageNode> relationship) {
-		packageNodeRelationships.add(relationship);
-	}
+    private static boolean isValid(Path path)
+    {
+        boolean isValid;
 
-	public boolean isValid() {
-		return isValid;
-	}
+        try (Stream<Path> filesStream = Files.list(path))
+        {
+            isValid = filesStream.anyMatch(filePath -> filePath
+                .normalize()
+                .toString()
+                .toLowerCase()
+                .endsWith(".java"));
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+        return isValid;
+    }
 
-	public List<Relationship<PackageNode>> getPackageNodeRelationships() {
-		return packageNodeRelationships;
-	}
 
-	public Path getPackageNodesPath() {
-		return path;
-	}
+    private static Path getPath(PackageNode parentNode, Path path)
+    {
+        return Paths.get(String.format("%s/%s",
+                                       parentNode.getPath().normalize(),
+                                       path.toFile().getName()));
+    }
 
-	public PackageNode getParentNode() {
-		if (parentNode != null) {
-			return parentNode;
-		}else {
-			return new PackageNode(Paths.get(""));
-		}
-	}
 
-	public Map<Path, PackageNode> getSubNodes() {
-		return subNodes;
-	}
+    public boolean isValid()
+    {
+        return isValid;
+    }
 
-	public Map<String, LeafNode> getLeafNodes() {
-		return leafNodes;
-	}
 
-	public String getName() {
-		if (doesParentNodeExist()) {
-			return getParentNodesName() + "." + path.getFileName().toString();
-		}
-		return path.getFileName().toString();
-	}
+    public Path getPath()
+    {
+        return path;
+    }
 
-	private boolean doesParentNodeExist() {
-		return !getParentNode().getPackageNodesPath().normalize().toString().isEmpty();
-	}
 
-	private String getParentNodesName() {
-		return getParentNode().getName();
-	}
+    public PackageNode getParentNode()
+    {
+        return parentNode;
+    }
 
-	public NodeType getType() {
-		return NodeType.PACKAGE;
-	}
+
+    public Map<Path, PackageNode> getSubNodes()
+    {
+        return subNodes;
+    }
+
+
+    public Map<String, LeafNode> getLeafNodes()
+    {
+        return leafNodes;
+    }
+
+
+    public String getNodeName()
+    {
+        if (!doesParentNodeExist())
+        {
+            return path.getFileName().toString();
+        }
+        return String.join(".",
+                           getParentNode().getNodeName(),
+                           path.getFileName().toString());
+    }
+
+
+    private boolean doesParentNodeExist()
+    {
+        return getParentNode() != null &&
+               !getParentNode().getPath().normalize().toString().isEmpty();
+    }
+
+
+    public NodeType getNodeType()
+    {
+        return NodeType.PACKAGE;
+    }
 
 }

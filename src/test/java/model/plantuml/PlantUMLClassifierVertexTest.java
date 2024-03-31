@@ -3,7 +3,9 @@ package model.plantuml;
 import manager.ClassDiagramManager;
 import model.diagram.plantuml.PlantUMLClassifierVertex;
 import org.junit.jupiter.api.Test;
+import utils.PathConstructor;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -13,102 +15,121 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class PlantUMLClassifierVertexTest {
+public class PlantUMLClassifierVertexTest
+{
 
-	Path currentDirectory = Path.of(".");
+    @Test
+    void convertSinkVertexTest()
+    {
 
-	@Test
-	void convertSinkVertexTest() {
-		try {
-			String expectedBuffer = "class VersionsManager {\n" +
-					"-enabled: boolean\n" +
-					"-strategy: VersionsStrategy\n" +
-					"-latexEditorView: LatexEditorView\n" +
-					"+changeStrategy(): void\n" +
-					"+setPreviousVersion(): Document\n" +
-					"+VersionsManager(LatexEditorView latexEditorView, VersionsStrategy versionsStrategy): Constructor\n" +
-					"+setStrategy(VersionsStrategy strategy): void\n" +
-					"+saveContents(): void\n" +
-					"+enable(): void\n" +
-					"+getType(): String\n" +
-					"+rollback(): void\n" +
-					"+getStrategy(): VersionsStrategy\n" +
-					"+isEnabled(): boolean\n" +
-					"+disable(): void\n" +
-					"+putVersion(Document document): void\n" +
-					"+rollbackToPreviousVersion(): void\n" +
-					"+enableStrategy(): void\n" +
-					"+saveToFile(): void\n" +
-					"+setCurrentVersion(Document document): void\n" +
-					"+loadFromFile(): void\n" +
-					"}\n\n" +
-					"class VolatileVersionsStrategy {\n" +
-					"-history: ArrayList[Document]\n" +
-					"+removeVersion(): void\n" +
-					"+getVersion(): Document\n" +
-					"+VolatileVersionsStrategy(): Constructor\n" +
-					"+setEntireHistory(List[Document] documents): void\n" +
-					"+putVersion(Document document): void\n" +
-					"+getEntireHistory(): List[Document]\n" +
-					"}\n\n" +
-					"interface VersionsStrategy {\n" +
-					"+removeVersion(): void\n" +
-					"+getVersion(): Document\n" +
-					"+setEntireHistory(List[Document] documents): void\n" +
-					"+getEntireHistory(): List[Document]\n" +
-					"+putVersion(Document document): void\n" +
-					"}\n\n" +
-					"class StableVersionsStrategy {\n" +
-					"-versionID: String\n" +
-					"+removeVersion(): void\n" +
-					"+getVersion(): Document\n" +
-					"+setEntireHistory(List[Document] documents): void\n" +
-					"+getEntireHistory(): List[Document]\n" +
-					"+putVersion(Document document): void\n" +
-					"}\n\n" +
-					"class VersionsStrategyFactory {\n" +
-					"-strategies: HashMap[String,VersionsStrategy]\n" +
-					"+createStrategy(String type): VersionsStrategy\n" +
-					"+VersionsStrategyFactory(): Constructor\n" +
-					"}\n\n" +
-					"class Document {\n" +
-					"-author: String\n" +
-					"-date: String\n" +
-					"-copyright: String\n" +
-					"-versionID: String\n" +
-					"-contents: String\n" +
-					"+Document(String date, String copyright, String versionID, String contents, String author): Constructor\n" +
-					"+clone(): Document\n" +
-					"+getContents(): String\n" +
-					"+Document(): Constructor\n" +
-					"+save(String filename): void\n" +
-					"+getVersionID(): String\n" +
-					"+setContents(String contents): void\n" +
-					"+changeVersion(): void\n" +
-					"}\n\n" +
-					"class DocumentManager {\n" +
-					"-templates: HashMap[String,Document]\n" +
-					"+createDocument(String type): Document\n" +
-					"+getContents(String type): String\n" +
-					"+DocumentManager(): Constructor\n" +
-					"}\n\n";
+        ClassDiagramManager classDiagramManager = new ClassDiagramManager();
+        classDiagramManager.createSourceProject(Paths.get(String.format("%s%s%s",
+                                                                        PathConstructor.getCurrentPath(),
+                                                                        File.separator,
+                                                                        PathConstructor.constructPath("src",
+                                                                                                      "test",
+                                                                                                      "resources",
+                                                                                                      "LatexEditor",
+                                                                                                      "src"))));
+        classDiagramManager.convertTreeToDiagram(List.of("StableVersionsStrategy",
+                                                         "VersionsStrategy",
+                                                         "VersionsStrategyFactory",
+                                                         "VolatileVersionsStrategy",
+                                                         "VersionsManager",
+                                                         "Document",
+                                                         "DocumentManager"));
 
-			ClassDiagramManager classDiagramManager = new ClassDiagramManager();
-			classDiagramManager.createSourceProject(Paths.get(currentDirectory.toRealPath() + "\\src\\test\\resources\\LatexEditor\\src"));
-			classDiagramManager.convertTreeToDiagram(List.of("StableVersionsStrategy", "VersionsStrategy", "VersionsStrategyFactory", "VolatileVersionsStrategy",
-					"VersionsManager", "Document", "DocumentManager"));
+        PlantUMLClassifierVertex plantUMLClassifierVertex = new PlantUMLClassifierVertex(classDiagramManager.getClassDiagram());
+        String                   actualBuffer             = plantUMLClassifierVertex.convertSinkVertex().toString();
 
-			PlantUMLClassifierVertex plantUMLClassifierVertex = new PlantUMLClassifierVertex(classDiagramManager.getClassDiagram());
-			String actualBuffer = plantUMLClassifierVertex.convertSinkVertex().toString();
+        List<String> expected = Arrays.asList(EXPECTED_BUFFER.split("\n"));
+        List<String> actual   = Arrays.asList(actualBuffer.split("\n"));
 
-			List<String> expected = Arrays.asList(expectedBuffer.split("\n"));
-			List<String> actual = Arrays.asList(actualBuffer.split("\n"));
+        Collections.sort(expected);
+        Collections.sort(actual);
+        assertEquals(expected, actual);
+    }
 
-			Collections.sort(expected);
-			Collections.sort(actual);
-			assertEquals(expected, actual);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+
+    public static final String EXPECTED_BUFFER = """
+        class VersionsManager {
+        -enabled: boolean
+        -strategy: VersionsStrategy
+        -latexEditorView: LatexEditorView
+        +changeStrategy(): void
+        +setPreviousVersion(): Document
+        +VersionsManager(LatexEditorView latexEditorView, VersionsStrategy versionsStrategy): Constructor
+        +setStrategy(VersionsStrategy strategy): void
+        +saveContents(): void
+        +enable(): void
+        +getType(): String
+        +rollback(): void
+        +getStrategy(): VersionsStrategy
+        +isEnabled(): boolean
+        +disable(): void
+        +putVersion(Document document): void
+        +rollbackToPreviousVersion(): void
+        +enableStrategy(): void
+        +saveToFile(): void
+        +setCurrentVersion(Document document): void
+        +loadFromFile(): void
+        }
+        										 
+        class VolatileVersionsStrategy {
+        -history: ArrayList[Document]
+        +removeVersion(): void
+        +getVersion(): Document
+        +VolatileVersionsStrategy(): Constructor
+        +setEntireHistory(List[Document] documents): void
+        +putVersion(Document document): void
+        +getEntireHistory(): List[Document]
+        }
+        										 
+        interface VersionsStrategy {
+        +removeVersion(): void
+        +getVersion(): Document
+        +setEntireHistory(List[Document] documents): void
+        +getEntireHistory(): List[Document]
+        +putVersion(Document document): void
+        }
+        										 
+        class StableVersionsStrategy {
+        -versionID: String
+        +removeVersion(): void
+        +getVersion(): Document
+        +setEntireHistory(List[Document] documents): void
+        +getEntireHistory(): List[Document]
+        +putVersion(Document document): void
+        }
+        										 
+        class VersionsStrategyFactory {
+        -strategies: HashMap[String,VersionsStrategy]
+        +createStrategy(String type): VersionsStrategy
+        +VersionsStrategyFactory(): Constructor
+        }
+        										 
+        class Document {
+        -author: String
+        -date: String
+        -copyright: String
+        -versionID: String
+        -contents: String
+        +Document(String date, String copyright, String versionID, String contents, String author): Constructor
+        +clone(): Document
+        +getContents(): String
+        +Document(): Constructor
+        +save(String filename): void
+        +getVersionID(): String
+        +setContents(String contents): void
+        +changeVersion(): void
+        }
+        										 
+        class DocumentManager {
+        -templates: HashMap[String,Document]
+        +createDocument(String type): Document
+        +getContents(String type): String
+        +DocumentManager(): Constructor
+        }
+        										 
+        """;
 }

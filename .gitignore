@@ -1,3 +1,9 @@
 /.idea/
 /target/
 /ObjectOrientedArchitectureDiagrammer.iml
+/.mvn/
+/mvnw
+/mvnw.cmd
+/src/test/resources/**.png
+/src/test/resources/**.txt
+/src/test/resources/**.graphML

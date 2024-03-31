@@ -42,62 +42,62 @@
 <?import javafx.scene.layout.VBox?>
 
 <VBox fx:id="vBox" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/modena_dark.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.DiagramCreationController">
-  <children>
-    <MenuBar fx:id="menuBar" VBox.vgrow="NEVER">
-      <menus>
-        <Menu mnemonicParsing="false" text="Project">
-          <items>
-            <MenuItem mnemonicParsing="false" onAction="#openProject" text="Load..." />
-                  <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" onAction="#closeProject" text="Close" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" onAction="#quitApp" text="Quit" />
-          </items>
-        </Menu>
-            <Menu mnemonicParsing="false" text="Diagram">
-               <items>
-                  <Menu mnemonicParsing="false" text="New Diagram...">
-                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#createDiagram" text="Class" />
-                        <MenuItem mnemonicParsing="false" onAction="#createDiagram" text="Package" />
-                     </items>
-                  </Menu>
-                  <SeparatorMenuItem mnemonicParsing="false" />
-                  <Menu mnemonicParsing="false" text="Load Diagram...">
-                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#loadDiagram" text="Class" />
-                        <MenuItem mnemonicParsing="false" onAction="#loadDiagram" text="Package" />
-                     </items>
-                  </Menu>
-               </items>
-            </Menu>
-            <Menu mnemonicParsing="false" text="Stepwise">
-               <items>
-                  <Menu mnemonicParsing="false" text="New Diagram...">
-                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#createProject" text="Class" />
-                        <MenuItem mnemonicParsing="false" onAction="#createProject" text="Package" />
-                     </items>
-                  </Menu>
-                  <MenuItem mnemonicParsing="false" onAction="#loadProjectFiles" text="Load Diagram" />
-                  <MenuItem mnemonicParsing="false" onAction="#viewProject" text="View" />
-               </items>
-            </Menu>
-        <Menu mnemonicParsing="false" text="Help">
-          <items>
-            <MenuItem mnemonicParsing="false" onAction="#aboutPage" text="About" />
-          </items>
-        </Menu>
-      </menus>
-    </MenuBar>
-      <HBox fx:id="hBox" prefHeight="401.0" prefWidth="640.0" VBox.vgrow="ALWAYS">
-         <children>
-            <BorderPane fx:id="borderPane" prefHeight="552.0" prefWidth="964.0">
-               <left>
-                  <TreeView fx:id="treeView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
-               </left>
-            </BorderPane>
-         </children>
-      </HBox>
-  </children>
+    <children>
+        <MenuBar fx:id="menuBar" VBox.vgrow="NEVER">
+            <menus>
+                <Menu mnemonicParsing="false" text="Project">
+                    <items>
+                        <MenuItem mnemonicParsing="false" onAction="#openProject" text="Load..."/>
+                        <SeparatorMenuItem mnemonicParsing="false"/>
+                        <MenuItem mnemonicParsing="false" onAction="#closeProject" text="Close"/>
+                        <SeparatorMenuItem mnemonicParsing="false"/>
+                        <MenuItem mnemonicParsing="false" onAction="#quitApp" text="Quit"/>
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Diagram">
+                    <items>
+                        <Menu mnemonicParsing="false" text="New Diagram...">
+                            <items>
+                                <MenuItem mnemonicParsing="false" onAction="#createDiagram" text="Class"/>
+                                <MenuItem mnemonicParsing="false" onAction="#createDiagram" text="Package"/>
+                            </items>
+                        </Menu>
+                        <SeparatorMenuItem mnemonicParsing="false"/>
+                        <Menu mnemonicParsing="false" text="Load Diagram...">
+                            <items>
+                                <MenuItem mnemonicParsing="false" onAction="#loadDiagram" text="Class"/>
+                                <MenuItem mnemonicParsing="false" onAction="#loadDiagram" text="Package"/>
+                            </items>
+                        </Menu>
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Stepwise">
+                    <items>
+                        <Menu mnemonicParsing="false" text="New Diagram...">
+                            <items>
+                                <MenuItem mnemonicParsing="false" onAction="#createProject" text="Class"/>
+                                <MenuItem mnemonicParsing="false" onAction="#createProject" text="Package"/>
+                            </items>
+                        </Menu>
+                        <MenuItem mnemonicParsing="false" onAction="#loadProjectFiles" text="Load Diagram"/>
+                        <MenuItem mnemonicParsing="false" onAction="#viewProject" text="View"/>
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Help">
+                    <items>
+                        <MenuItem mnemonicParsing="false" onAction="#aboutPage" text="About"/>
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+        <HBox fx:id="hBox" prefHeight="401.0" prefWidth="640.0" VBox.vgrow="ALWAYS">
+            <children>
+                <BorderPane fx:id="borderPane" prefHeight="552.0" prefWidth="964.0">
+                    <left>
+                        <TreeView fx:id="treeView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER"/>
+                    </left>
+                </BorderPane>
+            </children>
+        </HBox>
+    </children>
 </VBox>
