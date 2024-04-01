@@ -30,7 +30,7 @@ public class SourceProject
     }
 
     // Only used for testing.
-    // TODO remove it completely.
+    // TODO: remove it completely.
     protected Interpreter getInterpreter()
     {
         return interpreter;

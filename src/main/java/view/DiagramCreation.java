@@ -2,7 +2,6 @@ package view;
 
 import controller.Controller;
 import controller.ControllerFactory;
-import controller.ControllerType;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuBar;
 
@@ -11,6 +10,8 @@ import java.util.List;
 
 public class DiagramCreation
 {
+
+    public static final String UML = "uml";
 
     @FXML
     MenuBar menuBar;
@@ -23,7 +24,7 @@ public class DiagramCreation
 
     private DiagramCreation()
     {
-        this.diagramType = "";
+        diagramType = "";
     }
 
 
@@ -34,8 +35,9 @@ public class DiagramCreation
             PopupWindow.createPopupInfoWindow("You should load a project first!", "Error");
             return;
         }
-        this.diagramType = diagramType;
-        diagramController = ControllerFactory.createController("uml", diagramType);
+
+        this.diagramType  = diagramType;
+        diagramController = ControllerFactory.createController(UML, diagramType);
         diagramController.createTree(projectTreeView.getSourceFolderPath());
     }
 
@@ -48,7 +50,7 @@ public class DiagramCreation
     }
 
 
-    public void viewProject()
+    public void viewProject(String type)
     {
         if (diagramType.isEmpty())
         {
@@ -60,7 +62,18 @@ public class DiagramCreation
             PopupWindow.createPopupInfoWindow("You haven't selected any files!", "Error");
             return;
         }
-        viewDiagram();
+
+        switch (type) {
+            case "smartgraph" :
+                viewDiagram();
+                break;
+            case "plantuml"   :
+                viewSvgDiagram();
+                break;
+            default:
+                // Should not happen.
+                throw new IllegalArgumentException("Unsupported");
+        }
     }
 
 
@@ -73,13 +86,19 @@ public class DiagramCreation
     }
 
 
+    private void viewSvgDiagram()
+    {
+        DiagramVisualization diagramVisualization = new DiagramVisualization(menuBar);
+        diagramVisualization.setDiagramController(diagramController);
+        diagramVisualization.setProjectTreeView(projectTreeView);
+        diagramVisualization.loadSvgDiagram();
+    }
+
     public void exportDiagram()
     {
         File selectedDirectory = FileAndDirectoryUtility.saveFile("Export Diagram", menuBar, "GraphML Files");
-        if (selectedDirectory == null)
-        {
-            return;
-        }
+        if (selectedDirectory == null) return;
+
         diagramController.exportDiagramToGraphML(selectedDirectory.toPath());
     }
 
@@ -87,10 +106,8 @@ public class DiagramCreation
     public void exportPlantUMLImage()
     {
         File selectedDirectory = FileAndDirectoryUtility.saveFile("Export Diagram As PlantUML", menuBar, "PlantUML Files");
-        if (selectedDirectory == null)
-        {
-            return;
-        }
+        if (selectedDirectory == null) return;
+
         diagramController.exportPlantUMLDiagram(selectedDirectory.toPath());
     }
 
@@ -98,10 +115,8 @@ public class DiagramCreation
     public void exportPlantUMLText()
     {
         File selectedDirectory = FileAndDirectoryUtility.saveFile("Export PlantUML Text", menuBar, "PlantUML Text Files");
-        if (selectedDirectory == null)
-        {
-            return;
-        }
+        if (selectedDirectory == null) return;
+
         diagramController.exportPlantUMLText(selectedDirectory.toPath());
     }
 

@@ -2,7 +2,7 @@ package model.exportation;
 
 import manager.ClassDiagramManager;
 import model.diagram.arrangement.ClassDiagramArrangementManager;
-import model.diagram.arrangement.DiagramArrangementManagerInterface;
+import model.diagram.arrangement.DiagramArrangementManager;
 import model.diagram.exportation.DiagramExporter;
 import model.diagram.exportation.GraphMLClassDiagramExporter;
 import model.diagram.graphml.GraphMLClassifierVertex;
@@ -46,7 +46,7 @@ public class GraphMLClassDiagramExporterTest
                                                                                                           "src"))));
             classDiagramManager.convertTreeToDiagram(chosenFiles);
             classDiagramManager.arrangeDiagram();
-            DiagramArrangementManagerInterface classDiagramArrangement = new ClassDiagramArrangementManager(classDiagramManager.getClassDiagram());
+            DiagramArrangementManager          classDiagramArrangement = new ClassDiagramArrangementManager(classDiagramManager.getClassDiagram());
             Map<Integer, Pair<Double, Double>> nodesGeometry           = classDiagramArrangement.arrangeGraphMLDiagram();
             classDiagramManager.getClassDiagram().setGraphMLDiagramGeometry(nodesGeometry);
             DiagramExporter graphMLExporter = new GraphMLClassDiagramExporter(classDiagramManager.getClassDiagram());

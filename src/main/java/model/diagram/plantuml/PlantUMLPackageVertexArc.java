@@ -6,6 +6,7 @@ import model.graph.ArcType;
 import model.graph.PackageVertex;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -24,17 +25,15 @@ public class PlantUMLPackageVertexArc
 
     public StringBuilder convertVertexArc()
     {
-        return new StringBuilder(packageDiagram
-                                     .getDiagram()
+        return new StringBuilder(packageDiagram.getDiagram()
                                      .values()
                                      .stream()
-                                     .flatMap(vertexArcStream -> vertexArcStream
-                                         .stream()
-                                         .map(vertexArc ->
-                                                  String.join(" ",
-                                                              vertexArc.sourceVertex().getName(),
-                                                              getRelationship(vertexArc.arcType()),
-                                                              vertexArc.targetVertex().getName())))
+                                     .flatMap(Collection::stream)
+                                     .map(it ->
+                                              String.join(" ",
+                                                          it.sourceVertex().getName(),
+                                                          getRelationship(it.arcType()),
+                                                          it.targetVertex().getName()))
                                      .collect(Collectors.joining("\n")));
     }
 

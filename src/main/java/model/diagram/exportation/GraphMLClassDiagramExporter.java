@@ -22,7 +22,7 @@ public class GraphMLClassDiagramExporter implements DiagramExporter
 
         graphMLNodeBuffer = graphMLClassifierVertex.convertSinkVertex();
         graphMLEdgeBuffer = graphMLClassifierVertexArc.convertSinkVertexArc();
-        graphMLFile = new GraphMLFile();
+        graphMLFile       = new GraphMLFile();
     }
 
 

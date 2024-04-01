@@ -56,30 +56,24 @@ public class InterpreterTest
             {
                 assertTrue(neighbours
                                .stream()
-                               .anyMatch(neighbour1 ->
-                                             neighbour1.getPath().toString().equals(subNode.getKey().toString()) &&
-                                             neighbour1.getName().equals(subNode.getValue().getNodeName()) &&
-                                             neighbour1.getVertexType().toString().equals(subNode.getValue().getNodeType().toString())));
+                               .anyMatch(it -> it.getPath().toString().equals(subNode.getKey().toString()) &&
+                                               it.getName().equals(subNode.getValue().getNodeName())       &&
+                                               it.getVertexType().toString().equals(subNode.getValue().getNodeType().toString())));
             }
 
             Map<PackageNode, Set<Relationship<PackageNode>>> packageNodeRelationships = interpreter.getPackageNodeRelationships();
 
-            if (!packageNodeRelationships.containsKey(packageNode))
-            {
-                continue;
-            }
+            if (!packageNodeRelationships.containsKey(packageNode)) continue;
 
             Set<Relationship<PackageNode>> relationships = packageNodeRelationships.get(packageNode);
             List<Arc<PackageVertex>>       arcs          = vertex.getArcs();
             assertEquals(relationships.size(), arcs.size());
             for (Relationship<PackageNode> relationship : relationships)
             {
-                assertTrue(arcs
-                               .stream()
-                               .anyMatch(a ->
-                                             a.arcType().toString().equals(relationship.relationshipType().toString()) &&
-                                             a.sourceVertex().getPath().equals(relationship.startingNode().getPath()) &&
-                                             a.targetVertex().getPath().equals(relationship.endingNode().getPath())));
+                assertTrue(arcs.stream()
+                               .anyMatch(it -> it.arcType().toString().equals(relationship.relationshipType().toString()) &&
+                                               it.sourceVertex().getPath().equals(relationship.startingNode().getPath())  &&
+                                               it.targetVertex().getPath().equals(relationship.endingNode().getPath())));
             }
 
             Map<String, LeafNode>  leafNodes    = packageNode.getLeafNodes();
@@ -87,23 +81,21 @@ public class InterpreterTest
             assertEquals(leafNodes.size(), sinkVertices.size());
             for (Map.Entry<String, LeafNode> leafNodeEntry : leafNodes.entrySet())
             {
-                ClassifierVertex classifierVertex = sinkVertices
-                    .stream()
-                    .filter(sinkVertex1 ->
-                                sinkVertex1.getName().equals(leafNodeEntry.getKey())).findAny().orElseGet(Assertions::fail);
+                ClassifierVertex classifierVertex = sinkVertices.stream()
+                    .filter(it -> it.getName().equals(leafNodeEntry.getKey()))
+                    .findAny()
+                    .orElseGet(Assertions::fail);
 
                 List<LeafNode.Method>         leafMethods   = leafNodeEntry.getValue().methods();
                 List<ClassifierVertex.Method> vertexMethods = classifierVertex.getMethods();
                 for (LeafNode.Method leafMethod : leafMethods)
                 {
-                    assertTrue(vertexMethods
-                                   .stream()
-                                   .anyMatch(m ->
-                                                 m.name().equals(leafMethod.methodName()) &&
-                                                 m.parameters().size() == leafMethod.parameters().size() &&
-                                                 m.parameters().equals(leafMethod.parameters()) &&
-                                                 m.returnType().equals(leafMethod.returnType()) &&
-                                                 m.modifier().toString().equals(leafMethod.modifierType().toString())));
+                    assertTrue(vertexMethods.stream()
+                                   .anyMatch(it -> it.name().equals(leafMethod.name())                      &&
+                                                   it.parameters().size() == leafMethod.parameters().size() &&
+                                                   it.parameters().equals(leafMethod.parameters())          &&
+                                                   it.returnType().equals(leafMethod.returnType())          &&
+                                                   it.modifier().toString().equals(leafMethod.modifierType().toString())));
                 }
 
                 List<LeafNode.Field>         leafFields   = leafNodeEntry.getValue().fields();
@@ -112,30 +104,26 @@ public class InterpreterTest
                 {
                     assertTrue(vertexFields
                                    .stream()
-                                   .anyMatch(f ->
-                                                 f.name().equals(leafField.fieldNames()) &&
-                                                 f.type().equals(leafField.fieldType()) &&
-                                                 f.modifier().toString().equals(leafField.modifierType().toString())));
+                                   .anyMatch(it -> it.name().equals(leafField.name())      &&
+                                                   it.type().equals(leafField.fieldType()) &&
+                                                   it.modifier().toString().equals(leafField.modifierType().toString())));
                 }
 
                 Map<LeafNode, Set<Relationship<LeafNode>>> leafNodeRelationships = interpreter.getLeafNodeRelationships();
 
-                if (!leafNodeRelationships.containsKey(leafNodeEntry.getValue()))
-                {
-                    continue;
-                }
+                if (!leafNodeRelationships.containsKey(leafNodeEntry.getValue())) continue;
 
                 Set<Relationship<LeafNode>> subNodeRelationships = leafNodeRelationships.get(leafNodeEntry.getValue());
                 List<Arc<ClassifierVertex>> sinkVertexArcs       = classifierVertex.getArcs();
                 assertEquals(subNodeRelationships.size(), sinkVertexArcs.size());
+
                 for (Relationship<LeafNode> relationship : subNodeRelationships)
                 {
                     assertTrue(sinkVertexArcs
                                    .stream()
-                                   .anyMatch(a ->
-                                                 a.arcType().toString().equals(relationship.relationshipType().toString()) &&
-                                                 a.sourceVertex().getPath().equals(relationship.startingNode().path()) &&
-                                                 a.targetVertex().getPath().equals(relationship.endingNode().path())));
+                                   .anyMatch(it -> it.arcType().toString().equals(relationship.relationshipType().toString()) &&
+                                                   it.sourceVertex().getPath().equals(relationship.startingNode().path())     &&
+                                                   it.targetVertex().getPath().equals(relationship.endingNode().path())));
                 }
             }
         }

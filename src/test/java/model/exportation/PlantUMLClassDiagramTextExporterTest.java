@@ -47,30 +47,31 @@ public class PlantUMLClassDiagramTextExporterTest
             String                      sinkVertexBuffer         = plantUMLClassifierVertex.convertSinkVertex().toString();
             PlantUMLClassifierVertexArc plantUMLEdge             = new PlantUMLClassifierVertexArc(classDiagramManager.getClassDiagram());
             String                      sinkVertexArcBuffer      = plantUMLEdge.convertSinkVertexArc().toString();
-            DiagramExporter             graphMLExporter          = new PlantUMLClassDiagramTextExporter(classDiagramManager.getClassDiagram());
-            File exportedFile = graphMLExporter.exportDiagram(Paths.get(String.format("%s%s%s",
+            DiagramExporter             plantUMLExporter         = new PlantUMLClassDiagramTextExporter(classDiagramManager.getClassDiagram());
+            File exportedFile = plantUMLExporter.exportDiagram(Paths.get(String.format("%s%s%s",
                                                                                       PathConstructor.getCurrentPath(),
                                                                                       File.separator,
                                                                                       PathConstructor.constructPath("src",
                                                                                                                     "test",
                                                                                                                     "resources",
                                                                                                                     "testingExportedFile.txt"))));
-            Stream<String> lines              = Files.lines(exportedFile.toPath());
-            String         actualFileContents = lines.collect(Collectors.joining("\n"));
-            lines.close();
 
-            String expectedFileContents = "@startuml\n" +
-                                          "skinparam class {\n" +
-                                          "    BackgroundColor lightyellow\n" +
-                                          "    BorderColor black\n" +
-                                          "    ArrowColor black\n" +
-                                          "}\n\n";
+            try (Stream<String> lines = Files.lines(exportedFile.toPath()))
+            {
+                String actualFileContents   = lines.collect(Collectors.joining("\n"));
+                String expectedFileContents = "@startuml\n" +
+                                              "skinparam class {\n" +
+                                              "    BackgroundColor lightyellow\n" +
+                                              "    BorderColor black\n" +
+                                              "    ArrowColor black\n" +
+                                              "}\n\n" +
+                                              sinkVertexBuffer +
+                                              "\n\n" +
+                                              sinkVertexArcBuffer +
+                                              "\n @enduml";
 
-            expectedFileContents += sinkVertexBuffer +
-                                    "\n\n" +
-                                    sinkVertexArcBuffer +
-                                    "\n @enduml";
-            assertEquals(expectedFileContents, actualFileContents);
+                assertEquals(expectedFileContents, actualFileContents);
+            }
         }
         catch (IOException e)
         {

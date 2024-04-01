@@ -14,36 +14,36 @@ public class PlantUMLClassifierVertex
     private final ClassDiagram classDiagram;
 
 
-    public PlantUMLClassifierVertex(ClassDiagram diagram)
+    public PlantUMLClassifierVertex(ClassDiagram classDiagram)
     {
-        classDiagram = diagram;
+        this.classDiagram = classDiagram;
     }
 
 
     public StringBuilder convertSinkVertex()
     {
-        return new StringBuilder(
-            classDiagram
-                .getDiagram()
-                .keySet()
-                .stream()
-                .map(sinkVertex ->
-                         sinkVertex.getVertexType() + " " + sinkVertex.getName() + " {\n" +
-                         convertFields(sinkVertex) + convertMethods(sinkVertex) + "}")
-                .collect(Collectors.joining("\n\n")));
+        String sinkVertices = classDiagram.getDiagram()
+            .keySet()
+            .stream()
+            .map(it -> String.format("%s %s {\n%s%s}",
+                                     it.getVertexType(),
+                                     it.getName(),
+                                     convertFields(it),
+                                     convertMethods(it)))
+            .collect(Collectors.joining("\n\n"));
+
+        return new StringBuilder(sinkVertices);
     }
 
 
     private String convertFields(ClassifierVertex classifierVertex)
     {
-        if (classifierVertex.getFields().isEmpty())
-        {
-            return "";
-        }
+        if (classifierVertex.getFields().isEmpty()) return "";
+
         return classifierVertex
                    .getFields()
                    .stream()
-                   .map(field -> getVisibility(field.modifier()) + field.name() + ": " + field.type())
+                   .map(it -> String.format("%s%s: %s", getVisibility(it.modifier()), it.name(), it.type()))
                    .collect(Collectors.joining("\n")) + "\n";
     }
 
@@ -51,19 +51,22 @@ public class PlantUMLClassifierVertex
     private String convertMethods(ClassifierVertex classifierVertex)
     {
         StringBuilder plantUMLMethods = new StringBuilder();
+
         List<ClassifierVertex.Method> constructors = classifierVertex
             .getMethods()
             .stream()
-            .filter(method -> method.returnType().equals("Constructor"))
-            .sorted(Comparator.comparingInt(method -> method.parameters().size()))
+            .filter(it -> it.returnType().equals("Constructor"))
+            .sorted(Comparator.comparingInt(it -> it.parameters().size()))
             .collect(Collectors.toList());
+
         convertMethod(plantUMLMethods, constructors);
 
         List<ClassifierVertex.Method> methods = classifierVertex
             .getMethods()
             .stream()
-            .filter(method -> !method.returnType().equals("Constructor"))
+            .filter(it -> !it.returnType().equals("Constructor"))
             .collect(Collectors.toList());
+
         convertMethod(plantUMLMethods, methods);
 
         return plantUMLMethods.toString();
@@ -79,12 +82,11 @@ public class PlantUMLClassifierVertex
                 .append(getVisibility(method.modifier()))
                 .append(method.name())
                 .append("(")
-                .append(method
-                            .parameters()
-                            .entrySet()
-                            .stream()
-                            .map(parameter -> parameter.getValue() + " " + parameter.getKey())
-                            .collect(Collectors.joining(", ")))
+                .append(method.parameters()
+                              .entrySet()
+                              .stream()
+                              .map(it -> it.getValue() + " " + it.getKey())
+                              .collect(Collectors.joining(", ")))
                 .append("): ")
                 .append(method.returnType())
                 .append("\n");

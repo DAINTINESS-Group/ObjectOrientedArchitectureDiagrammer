@@ -43,12 +43,12 @@ public record LeafNode(Path 		  path,
     }
 
 
-    public record Method(String 	  		 methodName,
+    public record Method(String 			 name,
                          String 	  		 returnType,
                          ModifierType 		 modifierType,
                          Map<String, String> parameters) {}
 
-    public record Field(String 		 fieldNames,
+    public record Field(String 		 name,
                         String 		 fieldType,
                         ModifierType modifierType) {}
 

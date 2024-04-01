@@ -81,18 +81,18 @@ public class PlantUMLClassDiagramImageExporter implements DiagramExporter
     private String wrapWidthChanger(String plantCode, int wrapWidth)
     {
         String updatedString;
-        //if (counter == 0) {
+        // if (counter == 0) {
         int    indexOfNewLine = plantCode.indexOf("\n");
         String firstPart      = plantCode.substring(0, indexOfNewLine + 1);
         String secondPart     = plantCode.substring(indexOfNewLine + 1);
-        updatedString = firstPart + "skinparam wrapWidth " + wrapWidth + "\n" + secondPart;
+        updatedString         = String.format("%sskinparam wrapWidth %d\n%s", firstPart, wrapWidth, secondPart);
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
         // KEEP REDUCING THE WRAPWIDTH PARAMETER IN ORDER TO FIT PROPERLY THE IMAGE //
         // DOESNT WORK PROPERLY, COMMENTED JUST TO KEEP THE IDEA.					//
         // POP UP MESSAGE CAN BE ADDED TO INFORM THE USER THAT THE IMAGE HE			//
         // REQUESTED IS OVER 4096x4096 SO WE REDUCE THE WRAPWIDTH TO REDUCE			//
         // EXTRACTED IMAGE'S WIDTH. NOW THE USER CAN SEE MORE CLASSES.				//
-        //    	}else {																//
+        //    	} else {															//
         //    		String[] lines = plantCode.split("\n");							//
         //    		lines[1] = "skinparam wrapWidth " + wrapWidth;					//
         //    		updatedString = String.join("\n", lines);						//
@@ -102,7 +102,7 @@ public class PlantUMLClassDiagramImageExporter implements DiagramExporter
     }
 
 
-    private String getClassText()
+    private static String getClassText()
     {
         return """
             @startuml

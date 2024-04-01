@@ -3,7 +3,7 @@ package manager;
 import model.diagram.GraphClassDiagramConverter;
 import model.diagram.ShadowCleaner;
 import model.diagram.arrangement.ClassDiagramArrangementManager;
-import model.diagram.arrangement.DiagramArrangementManagerInterface;
+import model.diagram.arrangement.DiagramArrangementManager;
 import model.diagram.exportation.DiagramExporter;
 import model.diagram.exportation.GraphMLClassDiagramExporter;
 import model.diagram.exportation.JavaFXClassDiagramExporter;
@@ -203,7 +203,7 @@ public class ClassDiagramManagerTest
                                                                                                                                "resources",
                                                                                                                                "testingExportedFile.graphML"))));
 
-            DiagramArrangementManagerInterface classDiagramArrangement = new ClassDiagramArrangementManager(classDiagramManager.getClassDiagram());
+            DiagramArrangementManager classDiagramArrangement = new ClassDiagramArrangementManager(classDiagramManager.getClassDiagram());
             classDiagramManager.getClassDiagram().setGraphMLDiagramGeometry(classDiagramArrangement.arrangeGraphMLDiagram());
             GraphMLClassifierVertex graphMLClassifierVertex = new GraphMLClassifierVertex(classDiagramManager.getClassDiagram());
             graphMLClassifierVertex.convertSinkVertex();

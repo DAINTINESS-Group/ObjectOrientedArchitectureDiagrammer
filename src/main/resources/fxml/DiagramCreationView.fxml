@@ -60,6 +60,11 @@
                             <items>
                                 <MenuItem mnemonicParsing="false" onAction="#createDiagram" text="Class"/>
                                 <MenuItem mnemonicParsing="false" onAction="#createDiagram" text="Package"/>
+                                <SeparatorMenuItem mnemonicParsing="false"/>
+                                <Menu mnemonicParsing="false" text="Svg">
+                                    <MenuItem mnemonicParsing="false" onAction="#createDiagramSvg" text="Class"/>
+                                    <MenuItem mnemonicParsing="false" onAction="#createDiagramSvg" text="Package"/>
+                                </Menu>
                             </items>
                         </Menu>
                         <SeparatorMenuItem mnemonicParsing="false"/>

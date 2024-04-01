@@ -29,10 +29,8 @@ public class GraphPackageDiagramConverter
             adjacencyList.put(vertex, new HashSet<>());
             for (Arc<PackageVertex> arc : vertex.getArcs())
             {
-                if (!vertices.contains(arc.targetVertex()))
-                {
-                    continue;
-                }
+                if (!vertices.contains(arc.targetVertex())) continue;
+
                 adjacencyList.get(arc.sourceVertex()).add(arc);
             }
         }

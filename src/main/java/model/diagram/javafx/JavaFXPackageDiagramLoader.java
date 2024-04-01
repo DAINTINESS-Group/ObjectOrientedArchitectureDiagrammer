@@ -60,16 +60,14 @@ public class JavaFXPackageDiagramLoader
             {
                 Optional<PackageVertex> sourceVertex = vertices
                     .stream()
-                    .filter(vertex1 -> vertex1.getName().equals(arc.getValue0()))
+                    .filter(it -> it.getName().equals(arc.getValue0()))
                     .findFirst();
                 Optional<PackageVertex> targetVertex = vertices
                     .stream()
-                    .filter(vertex1 -> vertex1.getName().equals(arc.getValue1()))
+                    .filter(it -> it.getName().equals(arc.getValue1()))
                     .findFirst();
-                if (sourceVertex.isEmpty() || targetVertex.isEmpty())
-                {
-                    continue;
-                }
+                if (sourceVertex.isEmpty() || targetVertex.isEmpty()) continue;
+
                 vertex.addArc(sourceVertex.get(), targetVertex.get(), ArcType.get(arc.getValue2()));
             }
         }

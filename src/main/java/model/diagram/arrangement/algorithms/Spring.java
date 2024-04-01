@@ -9,28 +9,21 @@ import model.diagram.arrangement.geometry.GeometryNode;
 
 public class Spring implements LayoutAlgorithm
 {
-    private final static int MIN_X_WINDOW_VALUE = 25;
-    private final static int MIN_Y_WINDOW_VALUE = 25;
-
-    private Graph<String, String> graph;
-
-
-    @Override
-    public void setGraph(Graph<String, String> graph)
-    {
-        this.graph = graph;
-    }
+    private static final int    MIN_X_WINDOW_VALUE = 25;
+    private static final int    MIN_Y_WINDOW_VALUE = 25;
+    private static final double FORCE_MULTIPLIER   = 0.1;
+    private static final int    REPULSION_RANGE    = 500;
 
 
     @Override
-    public DiagramGeometry arrangeDiagram()
+    public DiagramGeometry arrangeDiagram(Graph<String, String> graph)
     {
         double                       maxXdistance    = 0.0;
         double                       maxYdistance    = 0.0;
         DiagramGeometry              diagramGeometry = new DiagramGeometry();
         SpringLayout<String, String> layout          = new SpringLayout<>(graph);
-        layout.setForceMultiplier(0.1);
-        layout.setRepulsionRange(500);
+        layout.setForceMultiplier(FORCE_MULTIPLIER);
+        layout.setRepulsionRange(REPULSION_RANGE);
         // layout.setSize(new Dimension(GRAPH_X_SIZE, GRAPH_Y_SIZE));
         @SuppressWarnings("unused")
         VisualizationViewer<String, String> vv = new VisualizationViewer<>(layout);
@@ -42,18 +35,12 @@ public class Spring implements LayoutAlgorithm
             if (x < MIN_X_WINDOW_VALUE)
             {
                 double difference = MIN_X_WINDOW_VALUE - x;
-                if (difference > maxXdistance)
-                {
-                    maxXdistance = difference;
-                }
+                maxXdistance      = Math.max(maxXdistance, difference);
             }
             if (y < MIN_Y_WINDOW_VALUE)
             {
                 double difference = MIN_Y_WINDOW_VALUE - y;
-                if (difference > maxYdistance)
-                {
-                    maxYdistance = difference;
-                }
+                maxYdistance      = Math.max(maxYdistance, difference);
             }
             diagramGeometry.addGeometry(geometryNode, x, y);
         }

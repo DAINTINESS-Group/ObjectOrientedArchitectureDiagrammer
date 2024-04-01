@@ -20,10 +20,8 @@ public class PackageNodeCleaner
                 continue;
             }
             PackageNode parentNode = packageNode.getParentNode();
-            if (parentNode.getPath().toString().isEmpty())
-            {
-                continue;
-            }
+            if (parentNode.getPath().toString().isEmpty()) continue;
+
             parentNode.getSubNodes().remove(packageNode.getPath());
         }
 
@@ -42,10 +40,8 @@ public class PackageNodeCleaner
         for (PackageNode childNode : packageNode.getSubNodes().values())
         {
             flag = isPackageNodeValid(childNode);
-            if (flag)
-            {
-                break;
-            }
+
+            if (flag) break;
         }
 
         return flag || packageNode.isValid();

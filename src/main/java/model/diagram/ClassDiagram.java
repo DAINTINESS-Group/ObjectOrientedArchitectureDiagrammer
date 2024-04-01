@@ -62,13 +62,10 @@ public class ClassDiagram
             Optional<ClassifierVertex> optionalSinkVertex = sinkVertices
                 .values()
                 .stream()
-                .filter(sinkVertex -> sinkVertex.getName().equals(chosenClass))
+                .filter(it -> it.getName().equals(chosenClass))
                 .findFirst();
-            if (optionalSinkVertex.isEmpty())
-            {
-                continue;
-            }
-            chosenClasses.add(optionalSinkVertex.get());
+
+            optionalSinkVertex.ifPresent(chosenClasses::add);
         }
         return chosenClasses;
     }

@@ -57,12 +57,16 @@ public class Interpreter
         packageNodes = PackageNodeCleaner.removeNonPackageNodes(packageNodes);
         populateVertexMaps();
         addVertexArcs();
-        leafNodeSinkVertexMap
-            .values()
-            .forEach(sinkVertex -> sinkVertices.put(sinkVertex.getPath(), sinkVertex));
-        packageNodeVertexMap
-            .values()
-            .forEach(vertex -> vertices.put(vertex.getPath(), vertex));
+
+        for (ClassifierVertex classifierVertex : leafNodeSinkVertexMap.values())
+        {
+            sinkVertices.put(classifierVertex.getPath(), classifierVertex);
+        }
+
+        for (PackageVertex packageVertex : packageNodeVertexMap.values())
+        {
+            vertices.put(packageVertex.getPath(), packageVertex);
+        }
     }
 
 
@@ -71,16 +75,16 @@ public class Interpreter
         for (PackageNode packageNode : packageNodes.values())
         {
             PackageVertex vertex = packageNodeVertexMap
-                .computeIfAbsent(packageNode, k ->
-                    new PackageVertex(packageNode.getPath(),
-                                      TypeConverter.convertVertexType(packageNode.getNodeType()),
-                                      packageNode.getParentNode().getNodeName()));
+                .computeIfAbsent(packageNode, k -> new PackageVertex(k.getPath(),
+                                                                     TypeConverter.convertVertexType(k.getNodeType()),
+                                                                     k.getParentNode().getNodeName()));
 
             for (LeafNode leafNode : packageNode.getLeafNodes().values())
             {
-                vertex.addSinkVertex(leafNodeSinkVertexMap.computeIfAbsent(leafNode, k -> createSinkVertex(leafNode)));
+                vertex.addSinkVertex(leafNodeSinkVertexMap.computeIfAbsent(leafNode, this::createSinkVertex));
             }
         }
+
         for (PackageNode packageNode : packageNodes.values())
         {
             packageNodeVertexMap.get(packageNode)
@@ -101,17 +105,16 @@ public class Interpreter
     {
         for (PackageNode packageNode : packageNodes.values())
         {
+            if (!packageNodeRelationships.containsKey(packageNode)) continue;
+
             PackageVertex vertex = packageNodeVertexMap.get(packageNode);
-            if (packageNodeRelationships.containsKey(packageNode))
+            for (Relationship<PackageNode> relationship : packageNodeRelationships.get(packageNode))
             {
-                for (Relationship<PackageNode> relationship : packageNodeRelationships.get(packageNode))
-                {
-                    vertex.addArc(vertex,
-                                  packageNodeVertexMap.get(relationship.endingNode()),
-                                  TypeConverter.convertRelationshipType(relationship.relationshipType()));
-                }
-                addSinkVertexArcs(packageNode);
+                vertex.addArc(vertex,
+                              packageNodeVertexMap.get(relationship.endingNode()),
+                              TypeConverter.convertRelationshipType(relationship.relationshipType()));
             }
+            addSinkVertexArcs(packageNode);
         }
     }
 
@@ -120,15 +123,14 @@ public class Interpreter
     {
         for (LeafNode leafNode : packageNode.getLeafNodes().values())
         {
+            if (!leafNodeRelationships.containsKey(leafNode)) continue;
+
             ClassifierVertex classifierVertex = leafNodeSinkVertexMap.get(leafNode);
-            if (leafNodeRelationships.containsKey(leafNode))
+            for (Relationship<LeafNode> relationship : leafNodeRelationships.get(leafNode))
             {
-                for (Relationship<LeafNode> relationship : leafNodeRelationships.get(leafNode))
-                {
-                    classifierVertex.addArc(classifierVertex,
-                                            leafNodeSinkVertexMap.get(relationship.endingNode()),
-                                            TypeConverter.convertRelationshipType(relationship.relationshipType()));
-                }
+                classifierVertex.addArc(classifierVertex,
+                                        leafNodeSinkVertexMap.get(relationship.endingNode()),
+                                        TypeConverter.convertRelationshipType(relationship.relationshipType()));
             }
         }
     }
@@ -139,19 +141,22 @@ public class Interpreter
         ClassifierVertex classifierVertex = new ClassifierVertex(leafNode.path(),
                                                                  leafNode.nodeName(),
                                                                  TypeConverter.convertVertexType(leafNode.nodeType()));
-        leafNode
-            .fields()
-            .forEach(field ->
-                         classifierVertex.addField(field.fieldNames(),
-                                                   field.fieldType(),
-                                                   TypeConverter.convertModifierType(field.modifierType())));
-        leafNode
-            .methods()
-            .forEach((method) ->
-                         classifierVertex.addMethod(method.methodName(),
-                                                    method.returnType(),
-                                                    TypeConverter.convertModifierType(method.modifierType()),
-                                                    method.parameters()));
+
+        for (LeafNode.Field field: leafNode.fields())
+        {
+            classifierVertex.addField(field.name(),
+                                      field.fieldType(),
+                                      TypeConverter.convertModifierType(field.modifierType()));
+        }
+
+        for (LeafNode.Method method : leafNode.methods())
+        {
+            classifierVertex.addMethod(method.name(),
+                                       method.returnType(),
+                                       TypeConverter.convertModifierType(method.modifierType()),
+                                       method.parameters());
+        }
+
         return classifierVertex;
     }
 
@@ -193,10 +198,10 @@ public class Interpreter
         {
             return switch (nodeType)
             {
-                case CLASS -> VertexType.CLASS;
+                case CLASS     -> VertexType.CLASS;
                 case INTERFACE -> VertexType.INTERFACE;
-                case ENUM -> VertexType.ENUM;
-                case PACKAGE -> VertexType.PACKAGE;
+                case ENUM      -> VertexType.ENUM;
+                case PACKAGE   -> VertexType.PACKAGE;
             };
         }
 
@@ -205,11 +210,11 @@ public class Interpreter
         {
             return switch (relationshipType)
             {
-                case DEPENDENCY -> ArcType.DEPENDENCY;
-                case ASSOCIATION -> ArcType.ASSOCIATION;
-                case AGGREGATION -> ArcType.AGGREGATION;
+                case DEPENDENCY     -> ArcType.DEPENDENCY;
+                case ASSOCIATION    -> ArcType.ASSOCIATION;
+                case AGGREGATION    -> ArcType.AGGREGATION;
                 case IMPLEMENTATION -> ArcType.IMPLEMENTATION;
-                case EXTENSION -> ArcType.EXTENSION;
+                case EXTENSION      -> ArcType.EXTENSION;
             };
         }
 
@@ -218,12 +223,11 @@ public class Interpreter
         {
             return switch (modifierType)
             {
-                case PRIVATE -> model.graph.ModifierType.PRIVATE;
-                case PUBLIC -> model.graph.ModifierType.PUBLIC;
-                case PROTECTED -> model.graph.ModifierType.PROTECTED;
+                case PRIVATE         -> model.graph.ModifierType.PRIVATE;
+                case PUBLIC          -> model.graph.ModifierType.PUBLIC;
+                case PROTECTED       -> model.graph.ModifierType.PROTECTED;
                 case PACKAGE_PRIVATE -> model.graph.ModifierType.PACKAGE_PRIVATE;
             };
         }
     }
-
 }

@@ -1,8 +1,8 @@
 package controller;
 
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public enum ControllerType
 {
@@ -12,12 +12,8 @@ public enum ControllerType
 
     static
     {
-        Map<String, ControllerType> map = new HashMap<>();
-        for (ControllerType controllerType : ControllerType.values())
-        {
-            map.put(controllerType.toString().toLowerCase(), controllerType);
-        }
-        CONTROLLER_TYPE = Collections.unmodifiableMap(map);
+        CONTROLLER_TYPE =  Arrays.stream(ControllerType.values())
+            .collect(Collectors.toMap(ControllerType::toString, controllerType -> controllerType));
     }
 
     public static ControllerType get(String controllerType)

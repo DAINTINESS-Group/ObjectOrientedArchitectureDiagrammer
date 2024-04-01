@@ -12,10 +12,12 @@ import java.io.File;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -42,11 +44,10 @@ public class GraphClassDiagramConverterTest
         Set<ClassifierVertex>                             graphNodes = classDiagramManager.getClassDiagram().getGraphNodes().keySet();
         Map<ClassifierVertex, Set<Arc<ClassifierVertex>>> diagram    = classDiagramManager.getClassDiagram().getDiagram();
 
-        List<Arc<ClassifierVertex>> arcs = new ArrayList<>();
-        for (Set<Arc<ClassifierVertex>> arcSet : diagram.values())
-        {
-            arcs.addAll(arcSet);
-        }
+        List<Arc<ClassifierVertex>> arcs = diagram.values()
+            .stream()
+            .flatMap(Collection::stream)
+            .collect(Collectors.toCollection(ArrayList::new));
 
         GraphClassDiagramConverter                        graphClassDiagramConverter = new GraphClassDiagramConverter(diagram.keySet());
         Map<ClassifierVertex, Set<Arc<ClassifierVertex>>> adjacencyList              = graphClassDiagramConverter.convertGraphToClassDiagram();

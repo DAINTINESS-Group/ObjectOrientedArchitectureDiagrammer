@@ -14,14 +14,14 @@ import model.graph.Arc;
 import model.graph.PackageVertex;
 import org.javatuples.Pair;
 
-import java.awt.*;
+import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class PackageDiagramArrangementManager implements DiagramArrangementManagerInterface
+public class PackageDiagramArrangementManager implements DiagramArrangementManager
 {
 
     public static final LayoutAlgorithmType   LAYOUT_ALGORITHM_TYPE = LayoutAlgorithmType.SUGIYAMA;
@@ -58,18 +58,16 @@ public class PackageDiagramArrangementManager implements DiagramArrangementManag
     public DiagramGeometry arrangeDiagram()
     {
         LayoutAlgorithm layoutAlgorithm = LayoutAlgorithmFactory.createLayoutAlgorithm(LAYOUT_ALGORITHM_TYPE);
-        layoutAlgorithm.setGraph(graph);
-        return layoutAlgorithm.arrangeDiagram();
+        return layoutAlgorithm.arrangeDiagram(graph);
     }
 
 
     @Override
-    public DiagramGeometry applyNewLayout(String algorithmType)
+    public DiagramGeometry applyLayout(String algorithmType)
     {
         LayoutAlgorithmType algorithmEnumType = LayoutAlgorithmType.get(algorithmType);
         LayoutAlgorithm     layout            = LayoutAlgorithmFactory.createLayoutAlgorithm(algorithmEnumType);
-        layout.setGraph(graph);
-        return layout.arrangeDiagram();
+        return layout.arrangeDiagram(graph);
     }
 
 

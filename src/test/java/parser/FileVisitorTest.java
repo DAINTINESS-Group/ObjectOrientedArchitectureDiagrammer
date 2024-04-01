@@ -58,7 +58,7 @@ public class FileVisitorTest
         Collections.sort(methodReturnTypesActual);
         Collections.sort(methodReturnTypesExpected);
         assertTrue(methodReturnTypesActual.size() == methodReturnTypesExpected.size() &&
-                   methodReturnTypesExpected.containsAll(methodReturnTypesActual) &&
+                   methodReturnTypesExpected.containsAll(methodReturnTypesActual)              &&
                    methodReturnTypesActual.containsAll(methodReturnTypesExpected));
     }
 
@@ -129,7 +129,7 @@ public class FileVisitorTest
 
         Collections.sort(fieldTypes);
         assertTrue(fieldTypesTest.size() == fieldTypes.size() &&
-                   fieldTypes.containsAll(fieldTypesTest) &&
+                   fieldTypes.containsAll(fieldTypesTest)              &&
                    fieldTypesTest.containsAll(fieldTypes));
     }
 
@@ -157,7 +157,7 @@ public class FileVisitorTest
         Collections.sort(variablesTypesTest);
         Collections.sort(variablesTypes);
         assertTrue(variablesTypesTest.size() == variablesTypes.size() &&
-                   variablesTypes.containsAll(variablesTypesTest) &&
+                   variablesTypes.containsAll(variablesTypesTest)              &&
                    variablesTypesTest.containsAll(variablesTypes));
     }
 
@@ -190,7 +190,7 @@ public class FileVisitorTest
         Collections.sort(objectsCreatedActual);
         Collections.sort(objectsCreatedExpected);
         assertTrue(objectsCreatedActual.size() == objectsCreatedExpected.size() &&
-                   objectsCreatedExpected.containsAll(objectsCreatedActual) &&
+                   objectsCreatedExpected.containsAll(objectsCreatedActual)              &&
                    objectsCreatedActual.containsAll(objectsCreatedExpected));
     }
 

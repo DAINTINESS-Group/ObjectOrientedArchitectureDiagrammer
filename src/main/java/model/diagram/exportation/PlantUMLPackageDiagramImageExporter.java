@@ -37,10 +37,8 @@ public class PlantUMLPackageDiagramImageExporter implements DiagramExporter
     public File exportDiagram(Path exportPath)
     {
         File   plantUMLFile = exportPath.toFile();
-        String plantUMLCode = getPackageText();
-        plantUMLCode += bufferBody;
-        plantUMLCode = dotChanger(plantUMLCode);
-        exportImage(plantUMLFile, plantUMLCode);
+        String plantUMLCode = getPackageText() + bufferBody;
+        exportImage(plantUMLFile, replaceDots(plantUMLCode));
         return plantUMLFile;
     }
 
@@ -104,14 +102,14 @@ public class PlantUMLPackageDiagramImageExporter implements DiagramExporter
     }
 
 
-    private String dotChanger(String plantUMLCode)
+    private static String replaceDots(String plantUMLCode)
     {
         StringBuilder newString = new StringBuilder();
         String[]      lines     = plantUMLCode.split("\n");
         for (String line : lines)
         {
-            String[] splittedLine = line.split(" ");
-            for (String word : splittedLine)
+            String[] split = line.split(" ");
+            for (String word : split)
             {
                 String newWord = word;
                 if (word.contains(".") && !word.contains(".."))
@@ -127,7 +125,7 @@ public class PlantUMLPackageDiagramImageExporter implements DiagramExporter
     }
 
 
-    private String getPackageText()
+    private static String getPackageText()
     {
         return """
             @startuml

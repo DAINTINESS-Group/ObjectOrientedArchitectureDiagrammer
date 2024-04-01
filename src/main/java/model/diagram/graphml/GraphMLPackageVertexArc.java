@@ -29,11 +29,11 @@ public class GraphMLPackageVertexArc
         {
             arcs.addAll(arcSet);
         }
+
         int edgeId = 0;
         for (Arc<PackageVertex> arc : arcs)
         {
-            graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLVertexArcSyntax(getVertexArcProperties(arc, edgeId)));
-            edgeId++;
+            graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLVertexArcSyntax(getVertexArcProperties(arc, edgeId++)));
         }
         return graphMLBuffer;
     }

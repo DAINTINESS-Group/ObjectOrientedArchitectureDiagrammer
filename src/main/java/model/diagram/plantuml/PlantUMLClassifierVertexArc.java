@@ -6,6 +6,7 @@ import model.graph.ArcType;
 import model.graph.ClassifierVertex;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -24,17 +25,15 @@ public class PlantUMLClassifierVertexArc
 
     public StringBuilder convertSinkVertexArc()
     {
-        return new StringBuilder(classDiagram
-                                     .getDiagram()
+        return new StringBuilder(classDiagram.getDiagram()
                                      .values()
                                      .stream()
-                                     .flatMap(sinkVertexStream -> sinkVertexStream
-                                         .stream()
-                                             .map(sinkVertexArc -> String.join(" ",
-                                                                               sinkVertexArc.sourceVertex().getName(),
-                                                                               getRelationship(sinkVertexArc.arcType()),
-                                                                               sinkVertexArc.targetVertex().getName())))
-                                             .collect(Collectors.joining("\n")));
+                                     .flatMap(Collection::stream)
+                                     .map(it -> String.join(" ",
+                                                                       it.sourceVertex().getName(),
+                                                                       getRelationship(it.arcType()),
+                                                                       it.targetVertex().getName()))
+                                     .collect(Collectors.joining("\n")));
     }
 
 
@@ -46,7 +45,7 @@ public class PlantUMLClassifierVertexArc
             case AGGREGATION    -> "o--";
             case DEPENDENCY     -> "..>";
             case IMPLEMENTATION -> "..|>";
-            // ASSOCIATION
+            // ASSOCIATION.
             default             -> "-->";
         };
     }
