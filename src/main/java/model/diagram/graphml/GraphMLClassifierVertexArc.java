@@ -38,8 +38,7 @@ public class GraphMLClassifierVertexArc
         int edgeId = 0;
         for (Arc<ClassifierVertex> arc : arcs)
         {
-            graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLSinkVertexArcSyntax(getEdgesProperties(arc, edgeId)));
-            edgeId++;
+            graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLSinkVertexArcSyntax(getEdgesProperties(arc, edgeId++)));
         }
         return graphMLBuffer;
     }

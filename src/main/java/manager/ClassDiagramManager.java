@@ -5,8 +5,7 @@ import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import model.diagram.ClassDiagram;
 import model.diagram.ShadowCleaner;
 import model.diagram.arrangement.ClassDiagramArrangementManager;
-import model.diagram.arrangement.DiagramArrangementManagerInterface;
-import model.diagram.arrangement.algorithms.LayoutAlgorithmType;
+import model.diagram.arrangement.DiagramArrangementManager;
 import model.diagram.arrangement.geometry.DiagramGeometry;
 import model.diagram.exportation.CoordinatesUpdater;
 import model.diagram.exportation.DiagramExporter;
@@ -17,6 +16,7 @@ import model.diagram.exportation.PlantUMLClassDiagramTextExporter;
 import model.diagram.javafx.JavaFXClassDiagramLoader;
 import model.diagram.javafx.JavaFXClassVisualization;
 import model.diagram.javafx.JavaFXVisualization;
+import model.diagram.svg.PlantUMLClassDiagram;
 import org.javatuples.Pair;
 
 import java.io.File;
@@ -28,7 +28,7 @@ public class ClassDiagramManager implements DiagramManager
 {
 
     private ClassDiagram                       classDiagram;
-    private DiagramArrangementManagerInterface classDiagramArrangement;
+    private DiagramArrangementManager          classDiagramArrangement;
     private Collection<Vertex<String>>         vertexCollection;
     private SmartGraphPanel<String, String>    graphView;
 
@@ -74,6 +74,14 @@ public class ClassDiagramManager implements DiagramManager
         graphView                               = javaFXVisualization.createGraphView();
         vertexCollection                        = javaFXVisualization.getVertexCollection();
         return graphView;
+    }
+
+
+    @Override
+    public String visualizeSvgGraph(int dpi)
+    {
+        PlantUMLClassDiagram plantUMLClassDiagram = new PlantUMLClassDiagram(classDiagram);
+        return plantUMLClassDiagram.toSvg(dpi);
     }
 
 
@@ -138,11 +146,6 @@ public class ClassDiagramManager implements DiagramManager
     }
 
 
-    public ClassDiagram getClassDiagram()
-    {
-        return classDiagram;
-    }
-
     @Override
     public SmartGraphPanel<String, String> applyLayout()
     {
@@ -159,9 +162,9 @@ public class ClassDiagramManager implements DiagramManager
     }
 
     @Override
-    public SmartGraphPanel<String, String> applySpecificLayout(LayoutAlgorithmType algorithmType)
+    public SmartGraphPanel<String, String> applySpecificLayout(String choice)
     {
-        DiagramGeometry nodesGeometry = classDiagramArrangement.applyLayout(algorithmType);
+        DiagramGeometry nodesGeometry = classDiagramArrangement.applyLayout(choice);
         for (Vertex<String> vertex : vertexCollection)
         {
             if (!nodesGeometry.containsKey(vertex.element())) continue;
@@ -173,6 +176,11 @@ public class ClassDiagramManager implements DiagramManager
         }
 
         return graphView;
+    }
+
+    public ClassDiagram getClassDiagram()
+    {
+        return classDiagram;
     }
 
 }

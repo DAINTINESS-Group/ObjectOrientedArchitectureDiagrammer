@@ -6,15 +6,13 @@ import model.diagram.arrangement.geometry.DiagramGeometry;
 public interface LayoutAlgorithm
 {
     // TODO Update JavaDoc
-
     /**
      * This method is responsible for the arrangement of the graph by creating a graph
      * of the Jung library and using this graph's coordinates in our front end.
      *
-     * @return a {@link DiagramGeometry} object which represents the diagram's geometry
+     * @param graph a {@link Graph} that represents the diagram to be arranged.
+     * @return a {@link DiagramGeometry} object which represents the diagram's geometry.
      */
-    DiagramGeometry arrangeDiagram();
+    DiagramGeometry arrangeDiagram(Graph<String, String> graph);
 
-    // TODO JavaDoc
-    void setGraph(Graph<String, String> graph);
 }

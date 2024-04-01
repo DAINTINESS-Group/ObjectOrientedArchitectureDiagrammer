@@ -12,18 +12,9 @@ public class AdvancedFruchtermanReingold implements LayoutAlgorithm
     private final static int MIN_X_WINDOW_VALUE = 25;
     private final static int MIN_Y_WINDOW_VALUE = 25;
 
-    private Graph<String, String> graph;
-
 
     @Override
-    public void setGraph(Graph<String, String> graph)
-    {
-        this.graph = graph;
-    }
-
-
-    @Override
-    public DiagramGeometry arrangeDiagram()
+    public DiagramGeometry arrangeDiagram(Graph<String, String> graph)
     {
         double                         maxXdistance    = 0.0;
         double                         maxYdistance    = 0.0;

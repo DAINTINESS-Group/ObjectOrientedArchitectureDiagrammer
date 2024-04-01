@@ -149,6 +149,6 @@ public class GraphMLSyntax
     }
 
 
-    /** Singleton. Do not instantiate. */
+    /** Singleton class. Do not instantiate. */
     private GraphMLSyntax() {}
 }

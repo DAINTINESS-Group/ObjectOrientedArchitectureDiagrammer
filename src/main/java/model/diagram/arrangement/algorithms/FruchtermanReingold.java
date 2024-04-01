@@ -12,18 +12,9 @@ public class FruchtermanReingold implements LayoutAlgorithm
     private final static int MIN_X_WINDOW_VALUE = 25;
     private final static int MIN_Y_WINDOW_VALUE = 25;
 
-    private Graph<String, String> graph;
-
 
     @Override
-    public void setGraph(Graph<String, String> graph)
-    {
-        this.graph = graph;
-    }
-
-
-    @Override
-    public DiagramGeometry arrangeDiagram()
+    public DiagramGeometry arrangeDiagram(Graph<String, String> graph)
     {
         double                         maxXdistance    = 0.0;
         double                         maxYdistance    = 0.0;
@@ -40,18 +31,12 @@ public class FruchtermanReingold implements LayoutAlgorithm
             if (x < MIN_X_WINDOW_VALUE)
             {
                 double difference = MIN_X_WINDOW_VALUE - x;
-                if (difference > maxXdistance)
-                {
-                    maxXdistance = difference;
-                }
+                maxXdistance      = Math.max(difference, maxXdistance);
             }
             if (y < MIN_Y_WINDOW_VALUE)
             {
                 double difference = MIN_Y_WINDOW_VALUE - y;
-                if (difference > maxYdistance)
-                {
-                    maxYdistance = difference;
-                }
+                maxYdistance      = Math.max(difference, maxYdistance);
             }
             diagramGeometry.addGeometry(geometryNode, x, y);
         }

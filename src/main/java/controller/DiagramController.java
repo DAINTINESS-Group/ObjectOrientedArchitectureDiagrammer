@@ -76,6 +76,12 @@ public class DiagramController implements Controller
     }
 
     @Override
+    public String visualizeSvgGraph(int dpi)
+    {
+        return diagramManager.visualizeSvgGraph(dpi);
+    }
+
+    @Override
     public SmartGraphPanel<String, String> visualizeLoadedJavaFXGraph()
     {
         return diagramManager.visualizeLoadedJavaFXGraph();

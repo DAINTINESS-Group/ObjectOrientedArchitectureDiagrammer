@@ -43,8 +43,7 @@ public class PackageDiagram
         int nodeId = 0;
         for (PackageVertex vertex : getChosenNodes(chosenFileNames))
         {
-            graphNodes.put(vertex, nodeId);
-            nodeId++;
+            graphNodes.put(vertex, nodeId++);
         }
     }
 
@@ -56,12 +55,10 @@ public class PackageDiagram
         {
             Optional<PackageVertex> vertex = vertices.values()
                 .stream()
-                .filter(vertex1 -> vertex1.getName().equals(chosenPackage))
+                .filter(it -> it.getName().equals(chosenPackage))
                 .findFirst();
-            if (vertex.isEmpty())
-            {
-                continue;
-            }
+            if (vertex.isEmpty()) continue;
+
             chosenPackages.add(vertex.get());
         }
         return chosenPackages;

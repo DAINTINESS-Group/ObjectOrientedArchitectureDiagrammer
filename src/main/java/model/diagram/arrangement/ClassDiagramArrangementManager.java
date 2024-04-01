@@ -14,19 +14,19 @@ import model.graph.Arc;
 import model.graph.ClassifierVertex;
 import org.javatuples.Pair;
 
-import java.awt.*;
+import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class ClassDiagramArrangementManager implements DiagramArrangementManagerInterface
+public class ClassDiagramArrangementManager implements DiagramArrangementManager
 {
 
-    public static final LayoutAlgorithmType   LAYOUT_ALGORITHM_TYPE = LayoutAlgorithmType.SUGIYAMA;
-    public static final int                   WIDTH                 = 1500;
-    public static final int                   HEIGHT                = 1000;
+    public static final LayoutAlgorithmType   DEFAULT_LAYOUT_ALGORITHM = LayoutAlgorithmType.SUGIYAMA;
+    public static final int                   HEIGHT                   = 1500;
+    public static final int                   WIDTH                    = 1000;
     private final       ClassDiagram          classDiagram;
     private final       Graph<String, String> graph;
 
@@ -57,18 +57,17 @@ public class ClassDiagramArrangementManager implements DiagramArrangementManager
     @Override
     public DiagramGeometry arrangeDiagram()
     {
-        LayoutAlgorithm layoutAlgorithm = LayoutAlgorithmFactory.createLayoutAlgorithm(LAYOUT_ALGORITHM_TYPE);
-        layoutAlgorithm.setGraph(graph);
-        return layoutAlgorithm.arrangeDiagram();
+        LayoutAlgorithm layoutAlgorithm = LayoutAlgorithmFactory.createLayoutAlgorithm(DEFAULT_LAYOUT_ALGORITHM);
+        return layoutAlgorithm.arrangeDiagram(graph);
     }
 
 
     @Override
-    public DiagramGeometry applyLayout(LayoutAlgorithmType algorithmType)
+    public DiagramGeometry applyLayout(String algorithmType)
     {
-        LayoutAlgorithm layout = LayoutAlgorithmFactory.createLayoutAlgorithm(algorithmType);
-        layout.setGraph(graph);
-        return layout.arrangeDiagram();
+        LayoutAlgorithmType algorithmEnumType = LayoutAlgorithmType.get(algorithmType);
+        LayoutAlgorithm     layout            = LayoutAlgorithmFactory.createLayoutAlgorithm(algorithmEnumType);
+        return layout.arrangeDiagram(graph);
     }
 
 
@@ -116,7 +115,8 @@ public class ClassDiagramArrangementManager implements DiagramArrangementManager
         {
             graph.addEdge(arc.sourceVertex().getName() + " " + arc.targetVertex().getName(),
                           arc.sourceVertex().getName(),
-                          arc.targetVertex().getName(), EdgeType.DIRECTED);
+                          arc.targetVertex().getName(),
+                          EdgeType.DIRECTED);
         }
 
         return graph;

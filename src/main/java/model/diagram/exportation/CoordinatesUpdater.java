@@ -36,7 +36,7 @@ public class CoordinatesUpdater
     {
         if (vertexCollection == null)
         {
-            logger.log(Level.WARNING, "Trying to update tha package's coordinates with a null vertex Collection");
+            logger.log(Level.WARNING, "Trying to update the package's coordinates with vertex Collection that is null");
             return;
         }
 
@@ -46,10 +46,7 @@ public class CoordinatesUpdater
             double y = graphView.getVertexPositionY(vertex);
             for (PackageVertex packageVertex : packageDiagram.getGraphNodes().keySet())
             {
-                if (!packageVertex.getName().equals(vertex.element()))
-                {
-                    continue;
-                }
+                if (!packageVertex.getName().equals(vertex.element())) continue;
 
                 packageVertex.setCoordinate(x, y);
             }
@@ -62,7 +59,7 @@ public class CoordinatesUpdater
     {
         if (vertexCollection == null)
         {
-            logger.log(Level.WARNING, "Trying to update tha class's coordinates with a null vertex Collection");
+            logger.log(Level.WARNING, "Trying to update the class' coordinates with a vertex Collection that is null");
             return;
         }
 
@@ -72,10 +69,7 @@ public class CoordinatesUpdater
             double y = graphView.getVertexPositionY(vertex);
             for (ClassifierVertex classifierVertex : classDiagram.getGraphNodes().keySet())
             {
-                if (!classifierVertex.getName().equals(vertex.element()))
-                {
-                    continue;
-                }
+                if (!classifierVertex.getName().equals(vertex.element())) continue;
 
                 classifierVertex.setCoordinate(x, y);
             }

@@ -33,10 +33,8 @@ public class PlantUMLPackageDiagramTextExporter implements DiagramExporter
     public File exportDiagram(Path exportPath)
     {
         File   plantUMLFile = exportPath.toFile();
-        String plantUMLCode = getPackageText();
-        plantUMLCode += bufferBody;
-        plantUMLCode = dotChanger(plantUMLCode);
-        writeFile(plantUMLFile, plantUMLCode);
+        String plantUMLCode = getPackageText() + bufferBody;
+        writeFile(plantUMLFile, dotChanger(plantUMLCode));
         return plantUMLFile;
     }
 
@@ -55,7 +53,7 @@ public class PlantUMLPackageDiagramTextExporter implements DiagramExporter
     }
 
 
-    private String dotChanger(String plantUMLCode)
+    private static String dotChanger(String plantUMLCode)
     {
         StringBuilder newString = new StringBuilder();
         String[]      lines     = plantUMLCode.split("\n");

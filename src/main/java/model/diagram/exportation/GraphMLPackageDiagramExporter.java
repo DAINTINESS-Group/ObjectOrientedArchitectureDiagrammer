@@ -22,7 +22,7 @@ public class GraphMLPackageDiagramExporter implements DiagramExporter
 
         graphMLNodeBuffer = graphMLPackageVertex.convertVertex();
         graphMLEdgeBuffer = graphMLPackageVertexArc.convertVertexArc();
-        graphMLFile = new GraphMLFile();
+        graphMLFile       = new GraphMLFile();
     }
 
 

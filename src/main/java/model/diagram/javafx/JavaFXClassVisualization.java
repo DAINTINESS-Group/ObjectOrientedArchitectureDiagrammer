@@ -105,10 +105,8 @@ public class JavaFXClassVisualization implements JavaFXVisualization
         {
             for (ClassifierVertex classifierVertex : classDiagram.getDiagram().keySet())
             {
-                if (!classifierVertex.getName().equals(vertex.element()))
-                {
-                    continue;
-                }
+                if (!classifierVertex.getName().equals(vertex.element())) continue;
+
                 graphView.setVertexPosition(vertex,
                                             classifierVertex.getCoordinate().x(),
                                             classifierVertex.getCoordinate().y());

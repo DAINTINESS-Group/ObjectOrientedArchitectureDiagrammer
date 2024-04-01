@@ -4,7 +4,7 @@ import com.brunomnsilva.smartgraph.graph.Vertex;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import com.google.gson.JsonParseException;
 import model.diagram.PackageDiagram;
-import model.diagram.arrangement.DiagramArrangementManagerInterface;
+import model.diagram.arrangement.DiagramArrangementManager;
 import model.diagram.arrangement.PackageDiagramArrangementManager;
 import model.diagram.arrangement.algorithms.LayoutAlgorithmType;
 import model.diagram.arrangement.geometry.DiagramGeometry;
@@ -31,9 +31,9 @@ public class PackageDiagramManager implements DiagramManager
 
     private static final Logger logger =  LogManager.getLogger(PackageDiagramManager.class);
 
-    private PackageDiagram                     packageDiagram;
-    private DiagramArrangementManagerInterface packageDiagramArrangement;
-    private Collection<Vertex<String>>         vertexCollection;
+    private PackageDiagram             packageDiagram;
+    private DiagramArrangementManager  packageDiagramArrangement;
+    private Collection<Vertex<String>> vertexCollection;
     private SmartGraphPanel<String, String>    graphView;
 
 
@@ -76,6 +76,14 @@ public class PackageDiagramManager implements DiagramManager
         graphView                                      = javaFXPackageVisualization.createGraphView();
         vertexCollection                               = javaFXPackageVisualization.getVertexCollection();
         return graphView;
+    }
+
+
+    @Override
+    public String visualizeSvgGraph(int dpi)
+    {
+        PlantUMLPackageDiagram plantUMLPackageDiagram = new PlantUMLPackageDiagram(packageDiagram);
+        return plantUMLPackageDiagram.toSvg(dpi);
     }
 
 
@@ -162,9 +170,9 @@ public class PackageDiagramManager implements DiagramManager
     }
 
     @Override
-    public SmartGraphPanel<String, String> applySpecificLayout(LayoutAlgorithmType algorithmType)
+    public SmartGraphPanel<String, String> applySpecificLayout(String choice)
     {
-        DiagramGeometry nodesGeometry = packageDiagramArrangement.applyLayout(algorithmType);
+        DiagramGeometry nodesGeometry = packageDiagramArrangement.applyLayout(choice);
         for (Vertex<String> vertex : vertexCollection)
         {
             if (!nodesGeometry.containsKey(vertex.element())) continue;

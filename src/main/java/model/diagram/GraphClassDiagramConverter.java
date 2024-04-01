@@ -29,10 +29,8 @@ public class GraphClassDiagramConverter
             adjacencyList.put(classifierVertex, new HashSet<>());
             for (Arc<ClassifierVertex> arc : classifierVertex.getArcs())
             {
-                if (!sinkVertices.contains(arc.targetVertex()))
-                {
-                    continue;
-                }
+                if (!sinkVertices.contains(arc.targetVertex())) continue;
+
                 adjacencyList.get(arc.sourceVertex()).add(arc);
             }
         }

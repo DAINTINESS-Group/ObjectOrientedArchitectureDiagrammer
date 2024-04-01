@@ -25,7 +25,6 @@ public class Sugiyama implements LayoutAlgorithm
     private final static int VERTICAL_SPACING   = 50;
 
     private final Map<String, Integer>   verticesMap;
-    private       Graph<String, String>  graph;
     private       SimpleDigraph<Integer> digraph;
 
 
@@ -36,23 +35,16 @@ public class Sugiyama implements LayoutAlgorithm
 
 
     @Override
-    public void setGraph(Graph<String, String> graph)
-    {
-        this.graph = graph;
-    }
-
-
-    @Override
-    public DiagramGeometry arrangeDiagram()
+    public DiagramGeometry arrangeDiagram(Graph<String, String> graph)
     {
         double          maxXdistance    = 0.0;
         double          maxYdistance    = 0.0;
         DiagramGeometry diagramGeometry = new DiagramGeometry();
         digraph = new SimpleDigraphAdapter<>();
-        fillVertexMap();
-        fillNeighboursMap();
+        fillVertexMap(graph);
+        fillNeighboursMap(graph);
         DigraphLayoutDimensionProvider<Integer> dimensionProvider = node -> {
-            // We use OOAD vertices' size, in order to evaluate vertices coordinates based on our vertices sizes.
+            // We use OOAD vertices' size, in order to evaluate vertices coordinates.
             return new DigraphLayoutDimension(VERTEX_X_SIZE, VERTEX_Y_SIZE);
         };
         DigrpahLayoutBuilder<Integer, Boolean> builder = new SugiyamaBuilder<>(HORIZONTAL_SPACING, VERTICAL_SPACING);
@@ -61,30 +53,23 @@ public class Sugiyama implements LayoutAlgorithm
         {
             for (Map.Entry<String, Integer> entryVertex : verticesMap.entrySet())
             {
-                if (entryVertex.getValue().equals(vertex.getVertex()))
+                if (!entryVertex.getValue().equals(vertex.getVertex())) continue;
+
+                double       x            = vertex.getPoint().x;
+                double       y            = vertex.getPoint().y;
+                GeometryNode geometryNode = new GeometryNode(entryVertex.getKey());
+                if (vertex.getPoint().x < MIN_X_WINDOW_VALUE)
                 {
-                    double       x            = vertex.getPoint().x;
-                    double       y            = vertex.getPoint().y;
-                    GeometryNode geometryNode = new GeometryNode(entryVertex.getKey());
-                    if (vertex.getPoint().x < MIN_X_WINDOW_VALUE)
-                    {
-                        double difference = MIN_X_WINDOW_VALUE - x;
-                        if (difference > maxXdistance)
-                        {
-                            maxXdistance = difference;
-                        }
-                    }
-                    if (vertex.getPoint().y < MIN_Y_WINDOW_VALUE)
-                    {
-                        double difference = MIN_Y_WINDOW_VALUE - y;
-                        if (difference > maxYdistance)
-                        {
-                            maxYdistance = difference;
-                        }
-                    }
-                    diagramGeometry.addGeometry(geometryNode, x, y);
-                    break;
+                    double difference = MIN_X_WINDOW_VALUE - x;
+                    maxXdistance      = Math.max(difference, maxXdistance);
                 }
+                if (vertex.getPoint().y < MIN_Y_WINDOW_VALUE)
+                {
+                    double difference = MIN_Y_WINDOW_VALUE - y;
+                    maxYdistance      = Math.max(difference, maxYdistance);
+                }
+                diagramGeometry.addGeometry(geometryNode, x, y);
+                break;
             }
         }
         diagramGeometry.correctPositions(maxXdistance, maxYdistance);
@@ -92,7 +77,7 @@ public class Sugiyama implements LayoutAlgorithm
     }
 
 
-    private void fillNeighboursMap()
+    private void fillNeighboursMap(Graph<String, String> graph)
     {
         for (String edge : graph.getEdges())
         {
@@ -102,13 +87,12 @@ public class Sugiyama implements LayoutAlgorithm
     }
 
 
-    private void fillVertexMap()
+    private void fillVertexMap(Graph<String, String> graph)
     {
         int counter = 1;
         for (String vertex : graph.getVertices())
         {
-            verticesMap.put(vertex, counter);
-            counter += 1;
+            verticesMap.put(vertex, counter++);
         }
     }
 

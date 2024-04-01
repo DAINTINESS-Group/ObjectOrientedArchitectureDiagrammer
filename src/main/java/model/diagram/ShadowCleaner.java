@@ -37,16 +37,12 @@ public class ShadowCleaner
 
             for (Map.Entry<ClassifierVertex, List<Arc<ClassifierVertex>>> arc : shadowedArcs.entrySet())
             {
-                if (!(arc.getValue().size() > 1))
-                {
-                    continue;
-                }
+                if (!(arc.getValue().size() > 1)) continue;
+
                 for (ArcType arcType : strongerToWeakerArcTypes)
                 {
-                    if (!doesStrongerRelationshipExist(arc.getValue(), arcType))
-                    {
-                        continue;
-                    }
+                    if (!doesStrongerRelationshipExist(arc.getValue(), arcType)) continue;
+
                     removeWeakerRelationships(arcs, arc.getKey(), arcType);
                     break;
                 }
@@ -60,11 +56,8 @@ public class ShadowCleaner
     private boolean doesStrongerRelationshipExist(List<Arc<ClassifierVertex>> arc,
                                                   ArcType arcType)
     {
-        Optional<Arc<ClassifierVertex>> inheritanceArc = arc
-            .stream()
-            .filter(sinkVertexArc -> sinkVertexArc.arcType().equals(arcType))
-            .findFirst();
-        return inheritanceArc.isPresent();
+        return arc.stream()
+            .anyMatch(it -> it.arcType().equals(arcType));
     }
 
 
@@ -72,8 +65,7 @@ public class ShadowCleaner
                                            ClassifierVertex classifierVertex,
                                            ArcType arcType)
     {
-        arcs.removeIf(arc ->
-                          arc.targetVertex().equals(classifierVertex) &&
-                          !arc.arcType().equals(arcType));
+        arcs.removeIf(it -> it.targetVertex().equals(classifierVertex) &&
+                            !it.arcType().equals(arcType));
     }
 }

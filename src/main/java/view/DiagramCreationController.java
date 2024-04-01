@@ -37,6 +37,13 @@ public class DiagramCreationController
         viewProject();
     }
 
+    public void createDiagramSvg(ActionEvent event)
+    {
+        createProject(event);
+        loadProjectFiles();
+        DiagramCreation.getInstance().viewProject("plantuml");
+    }
+
 
     public void createProject(ActionEvent event)
     {
@@ -55,7 +62,7 @@ public class DiagramCreationController
 
     public void viewProject()
     {
-        DiagramCreation.getInstance().viewProject();
+        DiagramCreation.getInstance().viewProject("smartgraph");
     }
 
 
