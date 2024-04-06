@@ -7,6 +7,7 @@ import model.diagram.plantuml.PlantUMLClassifierVertex;
 import model.diagram.plantuml.PlantUMLClassifierVertexArc;
 import org.junit.jupiter.api.Test;
 import utils.PathConstructor;
+import utils.PathTemplate.LatexEditor;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,14 +28,7 @@ public class PlantUMLClassDiagramTextExporterTest
         try
         {
             ClassDiagramManager classDiagramManager = new ClassDiagramManager();
-            classDiagramManager.createSourceProject(Paths.get(String.format("%s%s%s",
-                                                                            PathConstructor.getCurrentPath(),
-                                                                            File.separator,
-                                                                            PathConstructor.constructPath("src",
-                                                                                                          "test",
-                                                                                                          "resources",
-                                                                                                          "LatexEditor",
-                                                                                                          "src"))));
+            classDiagramManager.createSourceProject(LatexEditor.SRC.path);
             classDiagramManager.convertTreeToDiagram(List.of("StableVersionsStrategy",
                                                              "VersionsStrategy",
                                                              "VersionsStrategyFactory",

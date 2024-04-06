@@ -3,10 +3,8 @@ package model.plantuml;
 import manager.PackageDiagramManager;
 import model.diagram.plantuml.PlantUMLPackageVertexArc;
 import org.junit.jupiter.api.Test;
-import utils.PathConstructor;
+import utils.PathTemplate;
 
-import java.io.File;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -32,22 +30,9 @@ class PlantUMLPackageVertexArcTest
     @Test
     void convertVertexArcTest()
     {
-        //
-        // Given
-        //
         PackageDiagramManager packageDiagramManager = new PackageDiagramManager();
-        packageDiagramManager.createSourceProject(Paths.get(String.format("%s%s%s",
-                                                                          PathConstructor.getCurrentPath(),
-                                                                          File.separator,
-                                                                          PathConstructor.constructPath("src",
-                                                                                                        "test",
-                                                                                                        "resources",
-                                                                                                        "LatexEditor",
-                                                                                                        "src"))));
+        packageDiagramManager.createSourceProject(PathTemplate.LatexEditor.SRC.path);
 
-        //
-        // When
-        //
         packageDiagramManager.convertTreeToDiagram(List.of("src.view",
                                                            "src.model",
                                                            "src.model.strategies",
@@ -56,9 +41,6 @@ class PlantUMLPackageVertexArcTest
         PlantUMLPackageVertexArc plantUMLEdge = new PlantUMLPackageVertexArc(packageDiagramManager.getPackageDiagram());
         String                   actualBuffer = plantUMLEdge.convertVertexArc().toString();
 
-        //
-        // Then
-        //
         List<String> expectedRelationship = Arrays.asList(EXPECTED_BUFFER.split("\n"));
         List<String> actualRelationship   = Arrays.asList(actualBuffer.split("\n"));
         Collections.sort(expectedRelationship);

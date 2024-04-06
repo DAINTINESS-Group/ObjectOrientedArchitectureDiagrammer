@@ -37,6 +37,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import static parser.tree.ModifierType.PACKAGE_PRIVATE;
+import static parser.tree.NodeType.ENUM;
+
 /**
  * This class is responsible for the creation of the AST of a Java source file using {@link JavaParser}.
  * Using the different visitors, it parses the file's inheritance declarations,
@@ -183,11 +186,12 @@ public class FileVisitor
                     .setImplementedInterface(innerImplementedInterfaces)
                     .build();
                 innerClasses.add(innerClass);
+
                 return;
             }
 
             nodeName = classOrInterfaceDeclaration.getNameAsString();
-            NodeType localNodeType = classOrInterfaceDeclaration.isInterface() ?
+            nodeType = classOrInterfaceDeclaration.isInterface() ?
                 NodeType.INTERFACE :
                 NodeType.CLASS;
 
@@ -196,8 +200,7 @@ public class FileVisitor
                 baseClass = classOrInterfaceDeclaration.getExtendedTypes().get(0).getNameAsString();
             }
 
-            nodeType = localNodeType;
-            ArrayList<String> implementedTypes =
+            List<String> implementedTypes =
                 classOrInterfaceDeclaration.getImplementedTypes()
                     .stream()
                     .map(NodeWithSimpleName::getNameAsString)
@@ -215,12 +218,13 @@ public class FileVisitor
             super.visit(constructorDeclaration, arg);
 
             ModifierType modifierType = constructorDeclaration.getModifiers().isEmpty() ?
-                ModifierType.PACKAGE_PRIVATE :
+                PACKAGE_PRIVATE :
                 ModifierType.get(constructorDeclaration.getModifiers().get(0).toString());
 
             Map<String, String> parameters = constructorDeclaration.getParameters().stream()
                     .collect(Collectors.toMap(NodeWithSimpleName::getNameAsString,
                                               parameter -> getType(parameter.getTypeAsString())));
+
             methods.add(new LeafNode.Method(constructorDeclaration.getNameAsString(),
                                             "Constructor",
                                             modifierType,
@@ -239,7 +243,7 @@ public class FileVisitor
             for (VariableDeclarator variable : fieldDeclaration.getVariables())
             {
                 ModifierType modifierType = fieldDeclaration.getModifiers().isEmpty() ?
-                    ModifierType.PACKAGE_PRIVATE :
+                    PACKAGE_PRIVATE :
                     ModifierType.get(fieldDeclaration.getModifiers().get(0).toString());
 
                 fields.add(new LeafNode.Field(variable.getNameAsString(),
@@ -277,7 +281,7 @@ public class FileVisitor
             super.visit(methodDeclaration, arg);
 
             ModifierType modifierType = methodDeclaration.getModifiers().isEmpty() ?
-                ModifierType.PACKAGE_PRIVATE :
+                PACKAGE_PRIVATE :
                 ModifierType.get(methodDeclaration.getModifiers().get(0).toString());
 
             Map<String, String> parameters = methodDeclaration.getParameters().stream()
@@ -312,7 +316,7 @@ public class FileVisitor
             super.visit(enumDeclaration, arg);
 
             nodeName = enumDeclaration.getNameAsString();
-            nodeType = NodeType.ENUM;
+            nodeType = ENUM;
         }
 
     }

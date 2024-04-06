@@ -8,6 +8,8 @@ import model.diagram.exportation.DiagramExporter;
 import model.diagram.exportation.JavaFXClassDiagramExporter;
 import org.junit.jupiter.api.Test;
 import utils.PathConstructor;
+import utils.PathTemplate;
+import utils.PathTemplate.LatexEditor;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,14 +35,7 @@ public class JavaFXClassDiagramExporterTest
             List<String> chosenFiles = Arrays.asList("MainWindow",
                                                      "LatexEditorView",
                                                      "OpeningWindow");
-            classDiagramManager.createSourceProject(Paths.get(String.format("%s%s%s",
-                                                                            PathConstructor.getCurrentPath(),
-                                                                            File.separator,
-                                                                            PathConstructor.constructPath("src",
-                                                                                                          "test",
-                                                                                                          "resources",
-                                                                                                          "LatexEditor",
-                                                                                                          "src"))));
+            classDiagramManager.createSourceProject(LatexEditor.SRC.path);
             classDiagramManager.convertTreeToDiagram(chosenFiles);
             DiagramExporter javaFXExporter = new JavaFXClassDiagramExporter(classDiagramManager.getClassDiagram());
             File actualFile = javaFXExporter.exportDiagram(Path.of(String.format("%s%s%s",
@@ -59,10 +54,8 @@ public class JavaFXClassDiagramExporterTest
             {
                 for (JsonElement actualElement : actualJsonArray)
                 {
-                    if (!actualElement.getAsJsonObject().get("name").equals(element.getAsJsonObject().get("name")))
-                    {
-                        continue;
-                    }
+                    if (!actualElement.getAsJsonObject().get("name").equals(element.getAsJsonObject().get("name"))) continue;
+
                     assertEquals(element.getAsJsonObject().size(), actualElement.getAsJsonObject().size());
 
                     JsonArray        expectedMethods        = JsonParser.parseString(element.getAsJsonObject().get("methods").toString()).getAsJsonArray();

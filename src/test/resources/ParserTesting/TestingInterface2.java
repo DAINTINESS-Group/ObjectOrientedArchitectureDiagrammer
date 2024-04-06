@@ -1,5 +1,2 @@
 
-public interface TestingInterface2
-{
-
-}
+public interface TestingInterface2 {}

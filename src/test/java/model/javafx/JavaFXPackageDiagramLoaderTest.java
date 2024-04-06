@@ -10,10 +10,10 @@ import model.graph.PackageVertex;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import utils.PathConstructor;
+import utils.PathTemplate.LatexEditor;
 
 import java.io.File;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -29,14 +29,7 @@ public class JavaFXPackageDiagramLoaderTest
     void loadDiagramTest()
     {
         PackageDiagramManager packageDiagramManager = new PackageDiagramManager();
-        packageDiagramManager.createSourceProject(Paths.get(String.format("%s%s%s",
-                                                                          PathConstructor.getCurrentPath(),
-                                                                          File.separator,
-                                                                          PathConstructor.constructPath("src",
-                                                                                                        "test",
-                                                                                                        "resources",
-                                                                                                        "LatexEditor",
-                                                                                                        "src"))));
+        packageDiagramManager.createSourceProject(LatexEditor.SRC.path);
         packageDiagramManager.convertTreeToDiagram(List.of("src.view",
                                                            "src.model",
                                                            "src.model.strategies",
@@ -58,11 +51,9 @@ public class JavaFXPackageDiagramLoaderTest
         assertEquals(createdDiagram.size(), loadedDiagram.size());
         for (PackageVertex vertex : createdDiagram.keySet())
         {
-            Optional<PackageVertex> optionalVertex = loadedDiagram
-                .stream()
-                .filter(vertex1 ->
-                            vertex1.getName().equals(vertex.getName()) &&
-                            vertex1.getVertexType().equals(vertex.getVertexType()))
+            Optional<PackageVertex> optionalVertex = loadedDiagram.stream()
+                .filter(it -> it.getName().equals(vertex.getName()) &&
+                              it.getVertexType().equals(vertex.getVertexType()))
                 .findFirst();
             assertTrue(optionalVertex.isPresent());
 
@@ -70,12 +61,10 @@ public class JavaFXPackageDiagramLoaderTest
             assertEquals(createdDiagram.get(vertex).size(), arcs.size());
             for (Arc<PackageVertex> arc : createdDiagram.get(vertex))
             {
-                arcs
-                    .stream()
-                    .filter(vertexArc ->
-                                vertexArc.sourceVertex().getName().equals(arc.sourceVertex().getName()) &&
-                                vertexArc.targetVertex().getName().equals(arc.targetVertex().getName()) &&
-                                vertexArc.arcType().equals(arc.arcType()))
+                arcs.stream()
+                    .filter(it -> it.sourceVertex().getName().equals(arc.sourceVertex().getName()) &&
+                                  it.targetVertex().getName().equals(arc.targetVertex().getName()) &&
+                                  it.arcType().equals(arc.arcType()))
                     .findFirst()
                     .orElseGet(Assertions::fail);
             }
@@ -84,11 +73,9 @@ public class JavaFXPackageDiagramLoaderTest
             assertEquals(vertex.getSinkVertices().size(), sinkVertices.size());
             for (ClassifierVertex classifierVertex : vertex.getSinkVertices())
             {
-                sinkVertices
-                    .stream()
-                    .filter(sinkVertex1 ->
-                                sinkVertex1.getName().equals(classifierVertex.getName()) &&
-                                sinkVertex1.getVertexType().equals(classifierVertex.getVertexType()))
+                sinkVertices.stream()
+                    .filter(it -> it.getName().equals(classifierVertex.getName()) &&
+                                  it.getVertexType().equals(classifierVertex.getVertexType()))
                     .findFirst()
                     .orElseGet(Assertions::fail);
             }
@@ -97,11 +84,9 @@ public class JavaFXPackageDiagramLoaderTest
             assertEquals(vertex.getNeighbourVertices().size(), neighbours.size());
             for (PackageVertex neighbour : vertex.getNeighbourVertices())
             {
-                neighbours
-                    .stream()
-                    .filter(vertex1 ->
-                                vertex1.getName().equals(neighbour.getName()) &&
-                                vertex1.getVertexType().equals(neighbour.getVertexType()))
+                neighbours.stream()
+                    .filter(it -> it.getName().equals(neighbour.getName()) &&
+                                  it.getVertexType().equals(neighbour.getVertexType()))
                     .findFirst()
                     .orElseGet(Assertions::fail);
             }

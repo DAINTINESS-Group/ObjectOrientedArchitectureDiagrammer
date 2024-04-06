@@ -1,3 +1,2 @@
 
-public enum EnumSample
-{}
+public enum EnumSample {}

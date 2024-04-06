@@ -3,10 +3,8 @@ package model.plantuml;
 import manager.PackageDiagramManager;
 import model.diagram.plantuml.PlantUMLPackageVertex;
 import org.junit.jupiter.api.Test;
-import utils.PathConstructor;
+import utils.PathTemplate.LatexEditor;
 
-import java.io.File;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -21,7 +19,7 @@ public class PlantUMLPackageVertexTest
     {
 
         PackageDiagramManager packageDiagramManager = new PackageDiagramManager();
-        packageDiagramManager.createSourceProject(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "LatexEditor", "src")));
+        packageDiagramManager.createSourceProject(LatexEditor.SRC.path);
         packageDiagramManager.convertTreeToDiagram(List.of("src",
                                                            "src.view",
                                                            "src.model",

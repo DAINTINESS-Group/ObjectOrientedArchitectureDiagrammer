@@ -6,9 +6,8 @@ import parser.factory.ParserType;
 import parser.factory.ProjectParserFactory;
 import parser.tree.LeafNode;
 import parser.tree.PackageNode;
-import utils.PathConstructor;
+import utils.PathTemplate.LatexEditor;
 
-import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -16,6 +15,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -26,113 +26,71 @@ public class ProjectParserTest
 
     ParserType parserType = ParserType.JAVAPARSER;
 
+    public static final List<Path> SOURCES_SUB_PACKAGES   = new ArrayList<>(Arrays.asList(LatexEditor.CONTROLLER.path,
+                                                                                          LatexEditor.MODEL.path,
+                                                                                          LatexEditor.VIEW.path));
+
+    public static final List<Path> VIEWS_LEAF_NODES       = new ArrayList<>(Arrays.asList(LatexEditor.CHOOSE_TEMPLATE.path,
+                                                                                          LatexEditor.LATEX_EDITOR.path,
+                                                                                          LatexEditor.MAIN_WINDOW.path,
+                                                                                          LatexEditor.OPENING_WINDOW.path));
+
+    public static final List<Path> CONTROLLERS_LEAF_NODES = new ArrayList<>(List.of(LatexEditor.LATEX_EDITOR_CONTROLLER.path));
+
+    public static final List<Path> STRATEGIES_LEAF_NODES  = new ArrayList<>(Arrays.asList(LatexEditor.STABLE_VERSIONS_STRATEGY.path,
+                                                                                          LatexEditor.VERSIONS_STRATEGY.path,
+                                                                                          LatexEditor.VOLATILE_VERSIONS_STRATEGY.path,
+                                                                                          LatexEditor.VERSIONS_STRATEGY_FACTORY.path));
+    public static final List<Path> MODELS_LEAF_NODES      = new ArrayList<>(Arrays.asList(LatexEditor.DOCUMENT.path,
+                                                                                          LatexEditor.DOCUMENT_MANAGER.path,
+                                                                                          LatexEditor.VERSIONS_MANAGER.path));
+
+    public static final List<Path> COMMANDS_LEAF_NODES    = new ArrayList<>(Arrays.asList(LatexEditor.ADD_LATEX_COMMAND.path,
+                                                                                          LatexEditor.COMMAND.path,
+                                                                                          LatexEditor.COMMAND_FACTORY.path,
+                                                                                          LatexEditor.CREATE_COMMAND.path,
+                                                                                          LatexEditor.EDIT_COMMAND.path,
+                                                                                          LatexEditor.LOAD_COMMAND.path,
+                                                                                          LatexEditor.SAVE_COMMAND.path,
+                                                                                          LatexEditor.CHANGE_VERSIONS_STRATEGY_COMMAND.path,
+                                                                                          LatexEditor.DISABLE_VERSIONS_MANAGER_COMMAND.path,
+                                                                                          LatexEditor.ENABLE_VERSIONS_MANAGE_COMMAND.path,
+                                                                                          LatexEditor.ROLLBACK_TO_PREVIOUS_VERSION_COMMAND.path));
 
     @Test
     void parsingTest()
     {
 
         Parser parser = ProjectParserFactory.createProjectParser(parserType);
-        Map<Path, PackageNode> packageNodes = parser.parseSourcePackage(Paths.get(String.format("%s%s%s",
-                                                                                                PathConstructor.getCurrentPath(),
-                                                                                                File.separator,
-                                                                                                PathConstructor.constructPath("src",
-                                                                                                                              "test",
-                                                                                                                              "resources",
-                                                                                                                              "LatexEditor",
-                                                                                                                              "src"))));
+        Map<Path, PackageNode> packageNodes = parser.parseSourcePackage(LatexEditor.SRC.path);
 
-        PackageNode controllerPackage = packageNodes.get(Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-                                                                   PathConstructor.constructPath("src",
-                                                                                                 "test",
-                                                                                                 "resources",
-                                                                                                 "LatexEditor",
-                                                                                                 "src",
-                                                                                                 "controller")));
+        PackageNode controllerPackage = packageNodes.get(LatexEditor.CONTROLLER.path);
         List<Path> testingLeafNodes = new ArrayList<>();
-        assertEquals(Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-                               PathConstructor.constructPath("src",
-                                                             "test",
-                                                             "resources",
-                                                             "LatexEditor",
-                                                             "src",
-                                                             "controller")),
-                     controllerPackage.getPath());
+        assertEquals(LatexEditor.CONTROLLER.path, controllerPackage.getPath());
 
-        assertEquals(Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-                               String.format("%s%s",
-                                             File.separator,
-                                             PathConstructor.constructPath("src",
-                                                                           "test",
-                                                                           "resources",
-                                                                           "LatexEditor",
-                                                                           "src"))),
-                     controllerPackage.getParentNode().getPath());
+        assertEquals(LatexEditor.SRC.path, controllerPackage.getParentNode().getPath());
 
         assertTrue(controllerPackage.isValid(), "message");
         Map<Path, PackageNode> subNodes = controllerPackage.getSubNodes();
-        assertEquals(Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-                               PathConstructor.constructPath("src",
-                                                             "test",
-                                                             "resources",
-                                                             "LatexEditor",
-                                                             "src",
-                                                             "controller",
-                                                             "commands")),
-                     subNodes.get(Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-                                            PathConstructor.constructPath("src",
-                                                                          "test",
-                                                                          "resources",
-                                                                          "LatexEditor",
-                                                                          "src",
-                                                                          "controller",
-                                                                          "commands"))).getPath());
+        assertEquals(LatexEditor.COMMANDS.path, subNodes.get(LatexEditor.COMMANDS.path).getPath());
 
         for (LeafNode l : controllerPackage.getLeafNodes().values())
         {
             testingLeafNodes.add(l.path());
-            assertEquals(l.parentNode().getPath(),
-                         Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-                                   PathConstructor.constructPath("src",
-                                                                 "test",
-                                                                 "resources",
-                                                                 "LatexEditor",
-                                                                 "src",
-                                                                 "controller")));
+            assertEquals(l.parentNode().getPath(), LatexEditor.CONTROLLER.path);
         }
         Collections.sort(testingLeafNodes);
         Collections.sort(CONTROLLERS_LEAF_NODES);
-        assertTrue(testingLeafNodes.size() == CONTROLLERS_LEAF_NODES.size() &&
-                   CONTROLLERS_LEAF_NODES.containsAll(testingLeafNodes) &&
-                   testingLeafNodes.containsAll(CONTROLLERS_LEAF_NODES));
+
+        assertEquals(CONTROLLERS_LEAF_NODES.size(), testingLeafNodes.size());
+        assertTrue(CONTROLLERS_LEAF_NODES.containsAll(testingLeafNodes));
+        assertTrue(testingLeafNodes.containsAll(CONTROLLERS_LEAF_NODES));
 
         testingLeafNodes.clear();
 
-        PackageNode commandsPackage = packageNodes.get(Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-                                                                 PathConstructor.constructPath("src",
-                                                                                               "test",
-                                                                                               "resources",
-                                                                                               "LatexEditor",
-                                                                                               "src",
-                                                                                               "controller",
-                                                                                               "commands")));
-        assertEquals(Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-                               PathConstructor.constructPath("src",
-                                                             "test",
-                                                             "resources",
-                                                             "LatexEditor",
-                                                             "src",
-                                                             "controller",
-                                                             "commands")),
-                     commandsPackage.getPath());
-
-        assertEquals(Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-                               PathConstructor.constructPath("src",
-                                                             "test",
-                                                             "resources",
-                                                             "LatexEditor",
-                                                             "src",
-                                                             "controller")),
-                     commandsPackage.getParentNode().getPath());
+        PackageNode commandsPackage = packageNodes.get(LatexEditor.COMMANDS.path);
+        assertEquals(LatexEditor.COMMANDS.path, commandsPackage.getPath());
+        assertEquals(LatexEditor.CONTROLLER.path, commandsPackage.getParentNode().getPath());
 
         assertTrue(commandsPackage.isValid());
         subNodes = commandsPackage.getSubNodes();
@@ -140,443 +98,97 @@ public class ProjectParserTest
         for (LeafNode l : commandsPackage.getLeafNodes().values())
         {
             testingLeafNodes.add(l.path());
-            assertEquals(l.parentNode().getPath(),
-                         Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-                                   PathConstructor.constructPath("src",
-                                                                 "test",
-                                                                 "resources",
-                                                                 "LatexEditor",
-                                                                 "src",
-                                                                 "controller",
-                                                                 "commands")));
+            assertEquals(l.parentNode().getPath(), LatexEditor.COMMANDS.path);
         }
         Collections.sort(testingLeafNodes);
         Collections.sort(COMMANDS_LEAF_NODES);
-        assertTrue(testingLeafNodes.size() == COMMANDS_LEAF_NODES.size() &&
-                   COMMANDS_LEAF_NODES.containsAll(testingLeafNodes)              &&
-                   testingLeafNodes.containsAll(COMMANDS_LEAF_NODES));
+
+        assertEquals(COMMANDS_LEAF_NODES.size(), testingLeafNodes.size());
+        assertTrue(COMMANDS_LEAF_NODES.containsAll(testingLeafNodes));
+        assertTrue(testingLeafNodes.containsAll(COMMANDS_LEAF_NODES));
 
         testingLeafNodes.clear();
 
-        PackageNode modelPackage = packageNodes.get(Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-                                                              PathConstructor.constructPath("src",
-                                                                                            "test",
-                                                                                            "resources",
-                                                                                            "LatexEditor",
-                                                                                            "src",
-                                                                                            "model")));
-        assertEquals(Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-                               PathConstructor.constructPath("src",
-                                                             "test",
-                                                             "resources",
-                                                             "LatexEditor",
-                                                             "src",
-                                                             "model")),
-                     modelPackage.getPath());
+        PackageNode modelPackage = packageNodes.get(LatexEditor.MODEL.path);
+        assertEquals(LatexEditor.MODEL.path, modelPackage.getPath());
 
-        assertEquals(Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-                               String.format("%s%s",
-                                             File.separator,
-                                             PathConstructor.constructPath("src",
-                                                                           "test",
-                                                                           "resources",
-                                                                           "LatexEditor",
-                                                                           "src"))),
-                     modelPackage.getParentNode().getPath());
+        assertEquals(LatexEditor.SRC.path, modelPackage.getParentNode().getPath());
 
         assertTrue(modelPackage.isValid());
         subNodes = modelPackage.getSubNodes();
-        assertEquals(Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-                               PathConstructor.constructPath("src",
-                                                             "test",
-                                                             "resources",
-                                                             "LatexEditor",
-                                                             "src",
-                                                             "model",
-                                                             "strategies")),
-                     subNodes.get(Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-                                            PathConstructor.constructPath("src",
-                                                                          "test",
-                                                                          "resources",
-                                                                          "LatexEditor",
-                                                                          "src",
-                                                                          "model",
-                                                                          "strategies"))).getPath());
+        assertEquals(LatexEditor.STRATEGIES.path, subNodes.get(LatexEditor.STRATEGIES.path).getPath());
+
         for (LeafNode l : modelPackage.getLeafNodes().values())
         {
-            assertEquals(l.parentNode().getPath(), Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-                                                             PathConstructor.constructPath("src",
-                                                                                           "test",
-                                                                                           "resources",
-                                                                                           "LatexEditor",
-                                                                                           "src",
-                                                                                           "model")));
+            assertEquals(l.parentNode().getPath(), LatexEditor.MODEL.path);
             testingLeafNodes.add(l.path());
         }
         Collections.sort(testingLeafNodes);
         Collections.sort(MODELS_LEAF_NODES);
-        assertTrue(testingLeafNodes.size() == MODELS_LEAF_NODES.size() &&
-                   MODELS_LEAF_NODES.containsAll(testingLeafNodes)              &&
-                   testingLeafNodes.containsAll(MODELS_LEAF_NODES));
+
+        assertEquals(MODELS_LEAF_NODES.size(), testingLeafNodes.size());
+        assertTrue(MODELS_LEAF_NODES.containsAll(testingLeafNodes));
+        assertTrue(testingLeafNodes.containsAll(MODELS_LEAF_NODES));
 
         testingLeafNodes.clear();
 
-        PackageNode strategiesPackage = packageNodes.get(Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-                                                                   PathConstructor.constructPath("src",
-                                                                                                 "test",
-                                                                                                 "resources",
-                                                                                                 "LatexEditor",
-                                                                                                 "src",
-                                                                                                 "model",
-                                                                                                 "strategies")));
-        assertEquals(Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-                               PathConstructor.constructPath("src",
-                                                             "test",
-                                                             "resources",
-                                                             "LatexEditor",
-                                                             "src",
-                                                             "model",
-                                                             "strategies")),
-                     strategiesPackage.getPath());
-        assertEquals(Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-                               PathConstructor.constructPath("src",
-                                                             "test",
-                                                             "resources",
-                                                             "LatexEditor",
-                                                             "src",
-                                                             "model")),
-                     strategiesPackage.getParentNode().getPath());
+        PackageNode strategiesPackage = packageNodes.get(LatexEditor.STRATEGIES.path);
+        assertEquals(LatexEditor.STRATEGIES.path, strategiesPackage.getPath());
+        assertEquals(LatexEditor.MODEL.path, strategiesPackage.getParentNode().getPath());
         assertTrue(strategiesPackage.isValid());
         subNodes = strategiesPackage.getSubNodes();
         assertEquals(0, subNodes.size());
         for (LeafNode l : strategiesPackage.getLeafNodes().values())
         {
-            assertEquals(l.parentNode().getPath(), Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-                                                             PathConstructor.constructPath("src",
-                                                                                           "test",
-                                                                                           "resources",
-                                                                                           "LatexEditor",
-                                                                                           "src",
-                                                                                           "model",
-                                                                                           "strategies")));
+            assertEquals(l.parentNode().getPath(), LatexEditor.STRATEGIES.path);
             testingLeafNodes.add(l.path());
         }
         Collections.sort(testingLeafNodes);
         Collections.sort(STRATEGIES_LEAF_NODES);
-        assertTrue(testingLeafNodes.size() == STRATEGIES_LEAF_NODES.size() &&
-                   STRATEGIES_LEAF_NODES.containsAll(testingLeafNodes)              &&
-                   testingLeafNodes.containsAll(STRATEGIES_LEAF_NODES));
+
+        assertEquals(STRATEGIES_LEAF_NODES.size(), testingLeafNodes.size());
+        assertTrue(STRATEGIES_LEAF_NODES.containsAll(testingLeafNodes));
+        assertTrue(testingLeafNodes.containsAll(STRATEGIES_LEAF_NODES));
 
         testingLeafNodes.clear();
 
-        PackageNode viewPackage = packageNodes.get(Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-                                                             PathConstructor.constructPath("src",
-                                                                                           "test",
-                                                                                           "resources",
-                                                                                           "LatexEditor",
-                                                                                           "src",
-                                                                                           "view")));
-        assertEquals(Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-                               PathConstructor.constructPath("src",
-                                                             "test",
-                                                             "resources",
-                                                             "LatexEditor",
-                                                             "src",
-                                                             "view")),
-                     viewPackage.getPath());
-        assertEquals(Paths.get(PathConstructor.getCurrentPath().normalize().toString(), String.format("%s%s",
-                                                                                                      File.separator,
-                                                                                                      PathConstructor.constructPath("src",
-                                                                                                                                    "test",
-                                                                                                                                    "resources",
-                                                                                                                                    "LatexEditor",
-                                                                                                                                    "src"))),
-                     viewPackage.getParentNode().getPath());
+        PackageNode viewPackage = packageNodes.get(LatexEditor.VIEW.path);
+        assertEquals(LatexEditor.VIEW.path, viewPackage.getPath());
+        assertEquals(LatexEditor.SRC.path, viewPackage.getParentNode().getPath());
         assertTrue(viewPackage.isValid());
         subNodes = viewPackage.getSubNodes();
         assertEquals(0, subNodes.size());
         for (LeafNode l : viewPackage.getLeafNodes().values())
         {
-            assertEquals(l.parentNode().getPath(), Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-                                                             PathConstructor.constructPath("src",
-                                                                                           "test",
-                                                                                           "resources",
-                                                                                           "LatexEditor",
-                                                                                           "src",
-                                                                                           "view")));
+            assertEquals(l.parentNode().getPath(), LatexEditor.VIEW.path);
             testingLeafNodes.add(l.path());
         }
+
         Collections.sort(testingLeafNodes);
         Collections.sort(VIEWS_LEAF_NODES);
-        assertTrue(testingLeafNodes.size() == VIEWS_LEAF_NODES.size() &&
-                   VIEWS_LEAF_NODES.containsAll(testingLeafNodes)              &&
-                   testingLeafNodes.containsAll(VIEWS_LEAF_NODES));
+
+        assertEquals(VIEWS_LEAF_NODES.size(), testingLeafNodes.size());
+        assertTrue(VIEWS_LEAF_NODES.containsAll(testingLeafNodes));
+        assertTrue(testingLeafNodes.containsAll(VIEWS_LEAF_NODES));
+
         testingLeafNodes.clear();
 
-        PackageNode sourcePackage = packageNodes.get(Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-                                                               String.format("%s%s",
-                                                                             File.separator,
-                                                                             PathConstructor.constructPath("src",
-                                                                                                           "test",
-                                                                                                           "resources",
-                                                                                                           "LatexEditor",
-                                                                                                           "src"))));
-        assertEquals(Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-                               String.format("%s%s",
-                                             File.separator,
-                                             PathConstructor.constructPath("src",
-                                                                           "test",
-                                                                           "resources",
-                                                                           "LatexEditor",
-                                                                           "src"))),
-                     sourcePackage.getPath());
+        PackageNode sourcePackage = packageNodes.get(LatexEditor.SRC.path);
+        assertEquals(LatexEditor.SRC.path, sourcePackage.getPath());
 
         assertEquals(Paths.get(""), sourcePackage.getParentNode().getPath());
         assertFalse(sourcePackage.isValid());
         subNodes = sourcePackage.getSubNodes();
-        List<Path> testingSubPackages = new ArrayList<>();
-        for (PackageNode subP : subNodes.values())
-        {
-            testingSubPackages.add(subP.getPath());
-        }
-        Collections.sort(testingSubPackages);
+        List<Path> testingSubPackages = subNodes.values().stream()
+                .map(PackageNode::getPath)
+                .sorted()
+                .collect(Collectors.toCollection(ArrayList::new));
+
         Collections.sort(SOURCES_SUB_PACKAGES);
-        assertTrue(testingSubPackages.size() == SOURCES_SUB_PACKAGES.size() &&
-                   SOURCES_SUB_PACKAGES.containsAll(testingSubPackages)              &&
-                   testingSubPackages.containsAll(SOURCES_SUB_PACKAGES));
+
+        assertEquals(SOURCES_SUB_PACKAGES.size(), testingSubPackages.size());
+        assertTrue(SOURCES_SUB_PACKAGES.containsAll(testingSubPackages));
+        assertTrue(testingSubPackages.containsAll(SOURCES_SUB_PACKAGES));
         assertEquals(0, sourcePackage.getLeafNodes().size());
     }
-
-
-    public static final List<Path> SOURCES_SUB_PACKAGES =
-        new ArrayList<>(Arrays.asList(Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-                                                PathConstructor.constructPath("src",
-                                                                              "test",
-                                                                              "resources",
-                                                                              "LatexEditor",
-                                                                              "src",
-                                                                              "controller")),
-                                      Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-                                                PathConstructor.constructPath("src",
-                                                                              "test",
-                                                                              "resources",
-                                                                              "LatexEditor",
-                                                                              "src",
-                                                                              "model")),
-                                                                                        Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-                                                                                                  PathConstructor.constructPath("src",
-                                                                                                                                "test",
-                                                                                                                                "resources",
-                                                                                                                                "LatexEditor",
-                                                                                                                                "src",
-                                                                                                                                "view"))));
-
-    public static final List<Path> VIEWS_LEAF_NODES =
-        new ArrayList<>(Arrays.asList(Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-                                                PathConstructor.constructPath("src",
-                                                                              "test",
-                                                                              "resources",
-                                                                              "LatexEditor",
-                                                                              "src",
-                                                                              "view",
-                                                                              "ChooseTemplate.java")),
-                                      Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-                                                PathConstructor.constructPath("src",
-                                                                              "test",
-                                                                              "resources",
-                                                                              "LatexEditor",
-                                                                              "src",
-                                                                              "view",
-                                                                              "LatexEditorView.java")),
-                                      Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-                                                PathConstructor.constructPath("src",
-                                                                              "test",
-                                                                              "resources",
-                                                                              "LatexEditor",
-                                                                              "src",
-                                                                              "view",
-                                                                              "MainWindow.java")),
-                                      Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-                                                PathConstructor.constructPath("src",
-                                                                              "test",
-                                                                              "resources",
-                                                                              "LatexEditor",
-                                                                              "src",
-                                                                              "view",
-                                                                              "OpeningWindow.java"))));
-
-    public static final List<Path> CONTROLLERS_LEAF_NODES =
-        new ArrayList<>(List.of(Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-                                          PathConstructor.constructPath("src",
-                                                                        "test",
-                                                                        "resources",
-                                                                        "LatexEditor",
-                                                                        "src",
-                                                                        "controller",
-                                                                        "LatexEditorController.java"))));
-
-    public static final List<Path> STRATEGIES_LEAF_NODES =
-        new ArrayList<>(Arrays.asList(Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-                                                PathConstructor.constructPath("src",
-                                                                              "test",
-                                                                              "resources",
-                                                                              "LatexEditor",
-                                                                              "src",
-                                                                              "model",
-                                                                              "strategies",
-                                                                              "StableVersionsStrategy.java")),
-                                      Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-                                                PathConstructor.constructPath("src",
-                                                                              "test",
-                                                                              "resources",
-                                                                              "LatexEditor",
-                                                                              "src",
-                                                                              "model",
-                                                                              "strategies",
-                                                                              "VersionsStrategy.java")),
-                                      Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-                                                PathConstructor.constructPath("src",
-                                                                              "test",
-                                                                              "resources",
-                                                                              "LatexEditor",
-                                                                              "src",
-                                                                              "model",
-                                                                              "strategies",
-                                                                              "VolatileVersionsStrategy.java")),
-                                      Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-                                                PathConstructor.constructPath("src",
-                                                                              "test",
-                                                                              "resources",
-                                                                              "LatexEditor",
-                                                                              "src",
-                                                                              "model",
-                                                                              "strategies",
-                                                                              "VersionsStrategyFactory.java"))));
-
-    public static final List<Path> MODELS_LEAF_NODES =
-        new ArrayList<>(Arrays.asList(Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-                                                PathConstructor.constructPath("src",
-                                                                              "test",
-                                                                              "resources",
-                                                                              "LatexEditor",
-                                                                              "src",
-                                                                              "model",
-                                                                              "Document.java")),
-                                      Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-                                                PathConstructor.constructPath("src",
-                                                                              "test",
-                                                                              "resources",
-                                                                              "LatexEditor",
-                                                                              "src",
-                                                                              "model",
-                                                                              "DocumentManager.java")),
-                                      Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-                                                PathConstructor.constructPath("src",
-                                                                              "test",
-                                                                              "resources",
-                                                                              "LatexEditor",
-                                                                              "src",
-                                                                              "model",
-                                                                              "VersionsManager.java"))));
-
-    public static final List<Path> COMMANDS_LEAF_NODES =
-        new ArrayList<>(Arrays.asList(Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-                                                PathConstructor.constructPath("src",
-                                                                              "test",
-                                                                              "resources",
-                                                                              "LatexEditor",
-                                                                              "src",
-                                                                              "controller",
-                                                                              "commands",
-                                                                              "AddLatexCommand.java")),
-                                      Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-                                                PathConstructor.constructPath("src",
-                                                                              "test",
-                                                                              "resources",
-                                                                              "LatexEditor",
-                                                                              "src",
-                                                                              "controller",
-                                                                              "commands",
-                                                                              "Command.java")),
-                                      Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-                                                PathConstructor.constructPath("src",
-                                                                              "test",
-                                                                              "resources",
-                                                                              "LatexEditor",
-                                                                              "src",
-                                                                              "controller",
-                                                                              "commands",
-                                                                              "CommandFactory.java")),
-                                      Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-                                                PathConstructor.constructPath("src",
-                                                                              "test",
-                                                                              "resources",
-                                                                              "LatexEditor",
-                                                                              "src",
-                                                                              "controller",
-                                                                              "commands",
-                                                                              "CreateCommand.java")),
-                                      Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-                                                PathConstructor.constructPath("src",
-                                                                              "test",
-                                                                              "resources",
-                                                                              "LatexEditor",
-                                                                              "src",
-                                                                              "controller",
-                                                                              "commands",
-                                                                              "EditCommand.java")),
-                                      Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-                                                PathConstructor.constructPath("src",
-                                                                              "test",
-                                                                              "resources",
-                                                                              "LatexEditor",
-                                                                              "src",
-                                                                              "controller",
-                                                                              "commands",
-                                                                              "LoadCommand.java")),
-                                      Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-                                                PathConstructor.constructPath("src",
-                                                                              "test",
-                                                                              "resources",
-                                                                              "LatexEditor",
-                                                                              "src",
-                                                                              "controller",
-                                                                              "commands",
-                                                                              "SaveCommand.java")),
-                                      Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-                                                PathConstructor.constructPath("src",
-                                                                              "test",
-                                                                              "resources",
-                                                                              "LatexEditor",
-                                                                              "src",
-                                                                              "controller",
-                                                                              "commands",
-                                                                              "ChangeVersionsStrategyCommand.java")),
-                                      Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-                                                PathConstructor.constructPath("src",
-                                                                              "test",
-                                                                              "resources",
-                                                                              "LatexEditor",
-                                                                              "src",
-                                                                              "controller",
-                                                                              "commands",
-                                                                              "DisableVersionsManagementCommand.java")),
-                                      Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-                                                PathConstructor.constructPath("src",
-                                                                              "test",
-                                                                              "resources",
-                                                                              "LatexEditor",
-                                                                              "src",
-                                                                              "controller",
-                                                                              "commands",
-                                                                              "EnableVersionsManagementCommand.java")),
-                                      Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-                                                PathConstructor.constructPath("src",
-                                                                              "test",
-                                                                              "resources",
-                                                                              "LatexEditor",
-                                                                              "src",
-                                                                              "controller",
-                                                                              "commands",
-                                                                              "RollbackToPreviousVersionCommand.java"))));
 }

@@ -7,7 +7,5 @@ public class InnerClassSample extends ExtensionClass
         private ObjectCreationSample e = new ObjectCreationSample();
     }
 
-    public record RecordSample(ObjectCreationSample objectCreationSample)
-    {
-    }
+    public record RecordSample(ObjectCreationSample objectCreationSample) {}
 }

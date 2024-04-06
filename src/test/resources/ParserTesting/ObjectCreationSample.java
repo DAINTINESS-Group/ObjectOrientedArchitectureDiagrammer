@@ -26,7 +26,6 @@ public class ObjectCreationSample
     }
 
 
-    private enum EnumSample
-    {}
+    private enum EnumSample {}
 
 }

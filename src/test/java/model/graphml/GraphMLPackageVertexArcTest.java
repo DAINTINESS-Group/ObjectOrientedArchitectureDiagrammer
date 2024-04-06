@@ -5,13 +5,12 @@ import model.diagram.graphml.GraphMLPackageVertexArc;
 import model.graph.Arc;
 import model.graph.PackageVertex;
 import org.junit.jupiter.api.Test;
-import utils.PathConstructor;
+import utils.PathTemplate.LatexEditor;
 
-import java.io.File;
-import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -22,14 +21,7 @@ public class GraphMLPackageVertexArcTest
     void convertVertexArcsToGraphMLTest()
     {
         PackageDiagramManager packageDiagramManager = new PackageDiagramManager();
-        packageDiagramManager.createSourceProject(Paths.get(String.format("%s%s%s",
-                                                                          PathConstructor.getCurrentPath(),
-                                                                          File.separator,
-                                                                          PathConstructor.constructPath("src",
-                                                                                                        "test",
-                                                                                                        "resources",
-                                                                                                        "LatexEditor",
-                                                                                                        "src"))));
+        packageDiagramManager.createSourceProject(LatexEditor.SRC.path);
         packageDiagramManager.convertTreeToDiagram(List.of("src.view",
                                                            "src.model",
                                                            "src.model.strategies",
@@ -39,13 +31,11 @@ public class GraphMLPackageVertexArcTest
         StringBuilder           actual                  = graphMLPackageVertexArc.convertVertexArc();
 
         StringBuilder            expected = new StringBuilder();
-        List<Arc<PackageVertex>> arcs     = new ArrayList<>();
-        for (Set<Arc<PackageVertex>> arcSet : packageDiagramManager.getPackageDiagram().getDiagram().values())
-        {
-            arcs.addAll(arcSet);
-        }
-        int edgeId = 0;
+        List<Arc<PackageVertex>> arcs     = packageDiagramManager.getPackageDiagram().getDiagram().values().stream()
+            .flatMap(Collection::stream)
+            .collect(Collectors.toCollection(ArrayList::new));
 
+        int edgeId = 0;
         for (Arc<PackageVertex> e : arcs)
         {
             expected.append(String.format("""
@@ -61,11 +51,11 @@ public class GraphMLPackageVertexArcTest
                                                     </data>
                                                   </edge>\
                                               """,
-                                          edgeId,
+                                          edgeId++,
                                           packageDiagramManager.getPackageDiagram().getGraphNodes().get(e.sourceVertex()),
                                           packageDiagramManager.getPackageDiagram().getGraphNodes().get(e.targetVertex())));
-            edgeId++;
         }
+
         assertEquals(expected.toString(), actual.toString());
     }
 }
