@@ -3,7 +3,6 @@ package view;
 import com.google.gson.JsonParseException;
 import controller.Controller;
 import controller.ControllerFactory;
-import controller.ControllerType;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

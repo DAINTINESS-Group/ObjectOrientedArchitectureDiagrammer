@@ -64,10 +64,9 @@ public class PackageDiagramArrangementManager implements DiagramArrangementManag
 
 
     @Override
-    public DiagramGeometry applyNewLayout(String algorithmType)
+    public DiagramGeometry applyLayout(LayoutAlgorithmType algorithmType)
     {
-        LayoutAlgorithmType algorithmEnumType = LayoutAlgorithmType.get(algorithmType);
-        LayoutAlgorithm     layout            = LayoutAlgorithmFactory.createLayoutAlgorithm(algorithmEnumType);
+        LayoutAlgorithm layout = LayoutAlgorithmFactory.createLayoutAlgorithm(algorithmType);
         layout.setGraph(graph);
         return layout.arrangeDiagram();
     }

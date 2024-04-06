@@ -1,8 +1,9 @@
 package model.diagram.arrangement.algorithms;
 
+import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public enum LayoutAlgorithmType
 {
@@ -17,17 +18,20 @@ public enum LayoutAlgorithmType
 
     static
     {
-        Map<String, LayoutAlgorithmType> map = new HashMap<>();
-        for (LayoutAlgorithmType layoutAlgorithmType : LayoutAlgorithmType.values())
-        {
-            map.put(layoutAlgorithmType.toString().toLowerCase(), layoutAlgorithmType);
-        }
+        Map<String, LayoutAlgorithmType> map = Arrays.stream(LayoutAlgorithmType.values())
+            .collect(Collectors.toMap(LayoutAlgorithmType::toString, it -> it));
+
         ALGORITHM_TYPE_MAP = Collections.unmodifiableMap(map);
     }
 
     public static LayoutAlgorithmType get(String algorithmType)
     {
-        return ALGORITHM_TYPE_MAP.get(algorithmType.toLowerCase());
+        return ALGORITHM_TYPE_MAP.get(algorithmType);
     }
 
+    @Override
+    public String toString()
+    {
+        return super.toString().toLowerCase();
+    }
 }

@@ -8,15 +8,18 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuBar;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class DiagramVisualization
 {
-    private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    private static final Logger logger = LogManager.getLogger(DiagramVisualization.class);
+
+    private static final String DIAGRAM_VISUALIZATION_VIEW = "/fxml/DiagramVisualizationView.fxml";
+    private static final String PROJECT_LOAD_VIEW          = "/fxml/ProjectLoadView.fxml";
 
     private static final int EDGE_STARTING_NODE = 0;
     private static final int EDGE_ENDING_NODE   = 1;
@@ -41,7 +44,7 @@ public class DiagramVisualization
         this.graphView = graphView;
         try
         {
-            URL        url    = getClass().getResource("/fxml/DiagramVisualizationView.fxml");
+            URL        url    = getClass().getResource(DIAGRAM_VISUALIZATION_VIEW);
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(url);
             Parent                         diagramVisualizationParent     = loader.load();
@@ -60,7 +63,8 @@ public class DiagramVisualization
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            logger.error("Failed to load {}", DIAGRAM_VISUALIZATION_VIEW);
+            throw new RuntimeException(e);
         }
     }
 
@@ -70,7 +74,7 @@ public class DiagramVisualization
         this.graphView = graphView;
         try
         {
-            URL        url    = getClass().getResource("/fxml/ProjectLoadView.fxml");
+            URL        url    = getClass().getResource(PROJECT_LOAD_VIEW);
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(url);
 
@@ -92,12 +96,13 @@ public class DiagramVisualization
             {
                 // Just continue. Handling here the exception to not show the error to the user.
                 // We do this, because this error doesn't affect the system.
-                logger.log(Level.WARNING, e.toString());
+                logger.error("Failed to initialize Graph View.\n{}", e.toString());
             }
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            logger.error("Failed to load {}", PROJECT_LOAD_VIEW);
+            throw new RuntimeException(e);
         }
     }
 
@@ -111,24 +116,24 @@ public class DiagramVisualization
 
     private void addVertexActions()
     {
-        graphView.setVertexDoubleClickAction(graphVertex ->
-                                                 PopupWindow.createPopupInfoWindow(String.format("Vertex contains element: %s",
-                                                                                                 graphVertex.getUnderlyingVertex().element()),
-                                                                                   "Node Information"));
+        graphView.setVertexDoubleClickAction(it ->
+             PopupWindow.createPopupInfoWindow(String.format("Vertex contains element: %s",
+                                                             it.getUnderlyingVertex().element()),
+                                               "Node Information"));
     }
 
 
     private void addEdgeActions()
     {
-        graphView.setEdgeDoubleClickAction(graphEdge ->
-                                               PopupWindow.createPopupInfoWindow(String.format("Edge starting node: %s",
-                                                                                               graphEdge.getUnderlyingEdge().element().split("_")[EDGE_STARTING_NODE]) +
-                                                                                 "\n" + String.format("Edge ending node: %s",
-                                                                                                      graphEdge.getUnderlyingEdge().element().split("_")[EDGE_ENDING_NODE]) +
+        graphView.setEdgeDoubleClickAction(it ->
+            PopupWindow.createPopupInfoWindow(String.format("Edge starting node: %s",
+                                                            it.getUnderlyingEdge().element().split("_")[EDGE_STARTING_NODE]) +
+                                                            "\n" + String.format("Edge ending node: %s",
+                                                                                 it.getUnderlyingEdge().element().split("_")[EDGE_ENDING_NODE]) +
                                                                                  "\n" + String.format("Type of relationship: %s",
-                                                                                                      Character.toUpperCase(graphEdge.getUnderlyingEdge().element().split("_")[EDGE_TYPE].charAt(0)) +
-                                                                                                      graphEdge.getUnderlyingEdge().element().split("_")[EDGE_TYPE].substring(1)),
-                                                                                 "Edge Information"));
+                                                                                                      Character.toUpperCase(it.getUnderlyingEdge().element().split("_")[EDGE_TYPE].charAt(0)) +
+                                                                                                      it.getUnderlyingEdge().element().split("_")[EDGE_TYPE].substring(1)),
+                                              "Edge Information"));
     }
 
 
@@ -138,5 +143,8 @@ public class DiagramVisualization
     }
 
 
-    public void setProjectTreeView(ProjectTreeView projectTreeView) {this.projectTreeView = projectTreeView;}
+    public void setProjectTreeView(ProjectTreeView projectTreeView)
+    {
+        this.projectTreeView = projectTreeView;
+    }
 }

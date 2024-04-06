@@ -1,6 +1,7 @@
 package manager;
 
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
+import model.diagram.arrangement.algorithms.LayoutAlgorithmType;
 import model.diagram.arrangement.geometry.DiagramGeometry;
 
 import java.io.File;
@@ -90,7 +91,7 @@ public interface DiagramManager
     SmartGraphPanel<String, String> applyLayout();
 
     // TODO JavaDoc
-    SmartGraphPanel<String, String> applySpecificLayout(String choice);
+    SmartGraphPanel<String, String> applySpecificLayout(LayoutAlgorithmType algorithmType);
 
     // TODO JavaDoc
     SmartGraphPanel<String, String> visualizeLoadedJavaFXGraph();

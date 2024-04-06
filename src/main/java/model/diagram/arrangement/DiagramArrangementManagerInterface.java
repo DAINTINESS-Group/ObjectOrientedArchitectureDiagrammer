@@ -1,5 +1,6 @@
 package model.diagram.arrangement;
 
+import model.diagram.arrangement.algorithms.LayoutAlgorithmType;
 import org.javatuples.Pair;
 
 import model.diagram.arrangement.geometry.DiagramGeometry;
@@ -24,6 +25,6 @@ public interface DiagramArrangementManagerInterface
     DiagramGeometry arrangeDiagram();
 
     // TODO JavaDoc
-    DiagramGeometry applyNewLayout(String choice);
+    DiagramGeometry applyLayout(LayoutAlgorithmType algorithmType);
 
 }

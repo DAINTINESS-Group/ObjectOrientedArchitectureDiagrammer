@@ -2,7 +2,6 @@ package view;
 
 import controller.Controller;
 import controller.ControllerFactory;
-import controller.ControllerType;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuBar;
 

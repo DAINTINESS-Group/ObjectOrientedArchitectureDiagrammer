@@ -6,6 +6,7 @@ import model.diagram.ClassDiagram;
 import model.diagram.ShadowCleaner;
 import model.diagram.arrangement.ClassDiagramArrangementManager;
 import model.diagram.arrangement.DiagramArrangementManagerInterface;
+import model.diagram.arrangement.algorithms.LayoutAlgorithmType;
 import model.diagram.arrangement.geometry.DiagramGeometry;
 import model.diagram.exportation.CoordinatesUpdater;
 import model.diagram.exportation.DiagramExporter;
@@ -148,10 +149,7 @@ public class ClassDiagramManager implements DiagramManager
         DiagramGeometry nodesGeometry = classDiagram.getDiagramGeometry();
         for (Vertex<String> vertex : vertexCollection)
         {
-            if (!nodesGeometry.containsKey(vertex.element()))
-            {
-                continue;
-            }
+            if (!nodesGeometry.containsKey(vertex.element())) continue;
 
             Pair<Double, Double> coordinates = nodesGeometry.getVertexGeometry(vertex.element());
             graphView.setVertexPosition(vertex, coordinates.getValue0(), coordinates.getValue1());
@@ -161,15 +159,12 @@ public class ClassDiagramManager implements DiagramManager
     }
 
     @Override
-    public SmartGraphPanel<String, String> applySpecificLayout(String choice)
+    public SmartGraphPanel<String, String> applySpecificLayout(LayoutAlgorithmType algorithmType)
     {
-        DiagramGeometry nodesGeometry = classDiagramArrangement.applyNewLayout(choice);
+        DiagramGeometry nodesGeometry = classDiagramArrangement.applyLayout(algorithmType);
         for (Vertex<String> vertex : vertexCollection)
         {
-            if (!nodesGeometry.containsKey(vertex.element()))
-            {
-                continue;
-            }
+            if (!nodesGeometry.containsKey(vertex.element())) continue;
 
             Pair<Double, Double> coordinates = nodesGeometry.getVertexGeometry(vertex.element());
             graphView.setVertexPosition(vertex,

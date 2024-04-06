@@ -1,6 +1,8 @@
 package model.diagram.exportation;
 
 import model.diagram.graphml.GraphMLSyntax;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -9,8 +11,9 @@ import java.nio.file.Path;
 
 public class GraphMLFile
 {
+    private static final Logger logger = LogManager.getLogger(GraphMLFile.class);
 
-    private FileWriter    graphMLWriter;
+    private          FileWriter graphMLWriter;
     private StringBuilder graphMLBuffer;
     private File          graphMLFile;
 
@@ -19,14 +22,14 @@ public class GraphMLFile
     {
         try
         {
-            graphMLFile = graphMLSavePath.toFile();
+            graphMLFile   = graphMLSavePath.toFile();
             graphMLWriter = new FileWriter(graphMLFile);
             graphMLBuffer = new StringBuilder();
             graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLPrefix());
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            logger.error("Can't write to file: {}", graphMLFile.getAbsoluteFile());
             throw new RuntimeException(e);
         }
     }
@@ -42,7 +45,7 @@ public class GraphMLFile
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            logger.error("Can't write buffer to file: {}", graphMLFile.getAbsoluteFile());
             throw new RuntimeException(e);
         }
     }

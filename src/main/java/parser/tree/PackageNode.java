@@ -1,5 +1,8 @@
 package parser.tree;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -16,6 +19,8 @@ import java.util.stream.Stream;
  */
 public final class PackageNode
 {
+    private static final Logger logger = LogManager.getLogger(PackageNode.class);
+
     private final Map<Path, PackageNode> subNodes;
     private final Map<String, LeafNode>  leafNodes;
     private final Path                   path;
@@ -57,7 +62,7 @@ public final class PackageNode
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            logger.error("Failed to stream file in path: {}", path);
             throw new RuntimeException(e);
         }
         return isValid;

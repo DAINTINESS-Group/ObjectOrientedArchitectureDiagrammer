@@ -4,6 +4,8 @@ import model.diagram.PackageDiagram;
 import model.diagram.plantuml.PlantUMLPackageVertex;
 import model.diagram.plantuml.PlantUMLPackageVertexArc;
 import net.sourceforge.plantuml.SourceStringReader;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -16,6 +18,7 @@ import java.nio.file.Path;
 
 public class PlantUMLPackageDiagramImageExporter implements DiagramExporter
 {
+    private static final Logger logger = LogManager.getLogger(PlantUMLPackageDiagramImageExporter.class);
 
     private final StringBuilder bufferBody;
 
@@ -70,12 +73,17 @@ public class PlantUMLPackageDiagramImageExporter implements DiagramExporter
                     convImg = ImageIO.read(in);
                     width = convImg.getWidth();
                 }
+                catch (IOException e)
+                {
+                    logger.error("Failed to read from input stream");
+                    throw new RuntimeException(e);
+                }
             }
             ImageIO.write(convImg, "png", plantUMLFile);
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            logger.error("Failed to write image to file: {}", plantUMLFile.getAbsolutePath());
             throw new RuntimeException(e);
         }
     }

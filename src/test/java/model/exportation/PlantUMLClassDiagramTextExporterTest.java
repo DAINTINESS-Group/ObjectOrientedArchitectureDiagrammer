@@ -59,12 +59,15 @@ public class PlantUMLClassDiagramTextExporterTest
             String         actualFileContents = lines.collect(Collectors.joining("\n"));
             lines.close();
 
-            String expectedFileContents = "@startuml\n" +
-                                          "skinparam class {\n" +
-                                          "    BackgroundColor lightyellow\n" +
-                                          "    BorderColor black\n" +
-                                          "    ArrowColor black\n" +
-                                          "}\n\n";
+            String expectedFileContents = """
+                @startuml
+                skinparam class {
+                    BackgroundColor lightyellow
+                    BorderColor black
+                    ArrowColor black
+                }
+
+                """;
 
             expectedFileContents += sinkVertexBuffer +
                                     "\n\n" +

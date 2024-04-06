@@ -7,7 +7,6 @@ import model.diagram.exportation.JavaFXClassDiagramExporter;
 import model.diagram.javafx.JavaFXClassDiagramLoader;
 import model.graph.Arc;
 import model.graph.ClassifierVertex;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import utils.PathConstructor;
 

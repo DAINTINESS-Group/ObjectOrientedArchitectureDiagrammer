@@ -51,14 +51,8 @@ public class DiagramGeometry
             double newX = entry.getValue().getValue0() + x;
             double newY = entry.getValue().getValue1() + y;
             geometryMap.put(entry.getKey(), new Pair<>(entry.getValue().getValue0() + x, entry.getValue().getValue1() + y));
-            if (newX < minX)
-            {
-                minX = newX;
-            }
-            if (newY < minY)
-            {
-                minY = newY;
-            }
+            minX = Math.min(newX, minX);
+            minY = Math.min(newY, minY);
         }
         xDifference = minX - MIN_X_WINDOW_VALUE;
         yDifference = minY - MIN_Y_WINDOW_VALUE;
