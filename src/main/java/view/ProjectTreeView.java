@@ -1,8 +1,9 @@
 package view;
 
+import static proguard.classfile.ClassConstants.CLASS_FILE_EXTENSION;
+import static proguard.classfile.JavaConstants.JAVA_FILE_EXTENSION;
 import static view.FileType.PACKAGE;
 
-import java.io.File;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -15,35 +16,27 @@ import javafx.scene.control.CheckBoxTreeItem;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.control.cell.CheckBoxTreeCell;
+import proguard.io.ClassPathEntry;
 
 public class ProjectTreeView {
-
     @FXML TreeView<String> treeView;
 
-    private CheckBoxTreeItem<String> rootItem;
-    private ObservableSet<CheckBoxTreeItem<?>> checkedItems;
-    private final List<String> folderFiles;
-    private final List<String> javaSourceFiles;
     private final Path sourceFolderPath;
-    private final TreeViewResizer resizer;
+
+    private final List<String> folderFiles = new ArrayList<>();
+    private final List<String> files = new ArrayList<>();
+    private final TreeViewResizer resizer = new TreeViewResizer();
+    private CheckBoxTreeItem<String> rootItem;
+
+    private ObservableSet<CheckBoxTreeItem<?>> checkedItems;
 
     public ProjectTreeView(TreeView<String> treeView, Path sourceFolderPath) {
-        this.sourceFolderPath = sourceFolderPath;
         this.treeView = treeView;
-        folderFiles = new ArrayList<>();
-        javaSourceFiles = new ArrayList<>();
-        resizer = new TreeViewResizer();
+        this.sourceFolderPath = sourceFolderPath;
     }
 
     public void createTreeView() {
-        rootItem =
-                new CheckBoxTreeItem<>(
-                        sourceFolderPath
-                                .normalize()
-                                .toString()
-                                .substring(
-                                        sourceFolderPath.normalize().toString().lastIndexOf("/")
-                                                + 1));
+        rootItem = new CheckBoxTreeItem<>(sourceFolderPath.getFileName().toString());
         treeView.setShowRoot(true);
         treeView.setCellFactory(CheckBoxTreeCell.forTreeView());
         resizer.makeResizable(treeView);
@@ -59,8 +52,10 @@ public class ProjectTreeView {
 
     private void createTree(Path path, CheckBoxTreeItem<String> parent) {
         if (Files.isDirectory(path)) {
-            folderFiles.add(getRelativePath(path));
-            CheckBoxTreeItem<String> treeItem = new CheckBoxTreeItem<>(getRelativePath(path));
+            String relativePath = sourceFolderPath.relativize(path).toString();
+            folderFiles.add(relativePath);
+            CheckBoxTreeItem<String> treeItem = new CheckBoxTreeItem<>(relativePath);
+
             parent.getChildren().add(treeItem);
 
             try (DirectoryStream<Path> filesStream = Files.newDirectoryStream(path)) {
@@ -70,43 +65,50 @@ public class ProjectTreeView {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        } else if (isFileExtensionJava(path.normalize().toString())) {
-            parent.getChildren().add(new CheckBoxTreeItem<>(path.getFileName().toString()));
-            javaSourceFiles.add(path.getFileName().toString());
+        } else if (isSupported(path)) {
+            String string = path.toAbsolutePath().toString();
+            String name =
+                    string.endsWith(JAVA_FILE_EXTENSION)
+                            ? path.getFileName().toString()
+                            : subtractFileExtension(sourceFolderPath.relativize(path).toString());
+            parent.getChildren().add(new CheckBoxTreeItem<>(name));
+            files.add(name);
         }
     }
 
-    private String getRelativePath(Path path) {
-        return path.normalize()
-                .toString()
-                .replace(
-                        sourceFolderPath
-                                .normalize()
-                                .toString()
-                                .substring(
-                                        0,
-                                        sourceFolderPath
-                                                        .normalize()
-                                                        .toString()
-                                                        .lastIndexOf(File.separator)
-                                                + 1),
-                        "")
-                .replace(File.separator, ".");
+    private static boolean isSupported(Path path) {
+        String string = path.toAbsolutePath().toString();
+        return string.endsWith(JAVA_FILE_EXTENSION)
+                || string.endsWith(CLASS_FILE_EXTENSION)
+                || isEntrySupported(path);
+    }
+
+    private static boolean isEntrySupported(Path path) {
+        ClassPathEntry entry = new ClassPathEntry(path.toFile(), false);
+        return entry.isJar()
+                || entry.isAar()
+                || entry.isApk()
+                || entry.isDex()
+                || entry.isZip()
+                || entry.isAab()
+                || entry.isEar()
+                || entry.isJmod()
+                || entry.isWar();
     }
 
     public List<String> getSelectedFiles(FileType fileType) {
-        List<String> files = fileType.equals(PACKAGE) ? folderFiles : javaSourceFiles;
+        List<String> files = fileType.equals(PACKAGE) ? folderFiles : this.files;
 
         List<String> selectedFiles = new ArrayList<>();
-        for (CheckBoxTreeItem<?> c : checkedItems) {
-            String name = (String) c.getValue();
+        for (CheckBoxTreeItem<?> item : checkedItems) {
+            String name = (String) item.getValue();
             if (!files.contains(name)) continue;
 
-            switch (fileType) {
-                case SOURCE -> selectedFiles.add(subtractFileExtension(name));
-                case PACKAGE -> selectedFiles.add(name);
-                default -> throw new UnsupportedOperationException();
+            if (name.endsWith(JAVA_FILE_EXTENSION)) {
+                name = subtractFileExtension(name);
             }
+
+            selectedFiles.add(name);
         }
 
         return selectedFiles;
@@ -126,11 +128,7 @@ public class ProjectTreeView {
         }
     }
 
-    private boolean isFileExtensionJava(String c) {
-        return c.toLowerCase().endsWith(".java");
-    }
-
-    private String subtractFileExtension(String s) {
+    private static String subtractFileExtension(String s) {
         return s.substring(0, s.lastIndexOf("."));
     }
 

@@ -49,21 +49,19 @@ public class GraphMLClassifierVertex {
     }
 
     private String getSinkVertexMethods(ClassifierVertex classifierVertex) {
-        if (classifierVertex.getMethods().isEmpty()) {
-            return "";
-        }
-        return classifierVertex.getMethods().stream()
-                .map(it -> it.returnType() + " " + it.name())
-                .collect(Collectors.joining("\n"));
+        return classifierVertex.getMethods().isEmpty()
+                ? ""
+                : classifierVertex.getMethods().stream()
+                        .map(it -> it.returnType() + " " + it.name())
+                        .collect(Collectors.joining(System.lineSeparator()));
     }
 
     private String getSinkVertexFields(ClassifierVertex classifierVertex) {
-        if (classifierVertex.getFields().isEmpty()) {
-            return "";
-        }
-        return classifierVertex.getFields().stream()
-                .map(it -> String.join(" ", it.type(), it.name()))
-                .collect(Collectors.joining("\n"));
+        return classifierVertex.getFields().isEmpty()
+                ? ""
+                : classifierVertex.getFields().stream()
+                        .map(it -> String.join(" ", it.type(), it.name()))
+                        .collect(Collectors.joining(System.lineSeparator()));
     }
 
     private String getSinkVertexColor(ClassifierVertex leafNode) {

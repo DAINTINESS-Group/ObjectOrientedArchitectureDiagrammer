@@ -11,7 +11,7 @@ import javafx.stage.Stage;
 public class PopupWindow {
 
     private PopupWindow() {
-        throw new java.lang.UnsupportedOperationException("Not to be instantiated");
+        throw new UnsupportedOperationException("Not to be instantiated");
     }
 
     public static void createPopupInfoWindow(String infoMessage, String popupWindowTitle) {
@@ -21,7 +21,8 @@ public class PopupWindow {
         Label label1 = new Label(infoMessage);
 
         Button closeButton = new Button("Close");
-        closeButton.setOnAction(e -> popupWindow.close());
+        closeButton.setOnAction(__ -> popupWindow.close());
+
         VBox layout = new VBox(10);
         layout.getChildren().addAll(label1, closeButton);
         layout.setAlignment(Pos.CENTER);

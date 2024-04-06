@@ -1,9 +1,9 @@
-package parser;
+package parser.ast;
 
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
-import parser.tree.PackageNode;
+import parser.ast.tree.PackageNode;
 
 public class PackageNodeCleaner {
 

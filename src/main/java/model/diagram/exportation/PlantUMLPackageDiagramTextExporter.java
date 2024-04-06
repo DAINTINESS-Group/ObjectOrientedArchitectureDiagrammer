@@ -30,6 +30,7 @@ public class PlantUMLPackageDiagramTextExporter implements DiagramExporter {
         File plantUMLFile = exportPath.toFile();
         String plantUMLCode = getPackageText() + bufferBody;
         writeFile(plantUMLFile, dotChanger(plantUMLCode));
+
         return plantUMLFile;
     }
 

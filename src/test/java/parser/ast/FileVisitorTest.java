@@ -1,9 +1,9 @@
-package parser;
+package parser.ast;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static parser.tree.NodeType.CLASS;
-import static parser.tree.NodeType.INTERFACE;
+import static parser.ast.tree.NodeType.CLASS;
+import static parser.ast.tree.NodeType.INTERFACE;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -12,23 +12,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
-import parser.factory.Parser;
-import parser.factory.ParserType;
-import parser.factory.ProjectParserFactory;
-import parser.tree.LeafNode;
-import parser.tree.NodeType;
-import parser.tree.PackageNode;
+import parser.ast.tree.LeafNode;
+import parser.ast.tree.NodeType;
+import parser.ast.tree.PackageNode;
 import utils.PathTemplate.LatexEditor;
 import utils.PathTemplate.ParserTesting;
 
 public class FileVisitorTest {
 
-    ParserType parserType = ParserType.JAVAPARSER;
-
     @Test
     void methodReturnTypesTest() {
-        Parser parser = ProjectParserFactory.createProjectParser(parserType);
-        Map<Path, PackageNode> packages = parser.parseSourcePackage(LatexEditor.SRC.path);
+        ASTParser parser = new ASTParser();
+        Map<Path, PackageNode> packages = parser.parsePackage(LatexEditor.SRC.path);
 
         PackageNode commandPackage = packages.get(LatexEditor.COMMANDS.path);
 
@@ -46,9 +41,9 @@ public class FileVisitorTest {
 
     @Test
     void methodParameterTypesTest() {
-        Parser parser = ProjectParserFactory.createProjectParser(parserType);
+        ASTParser parser = new ASTParser();
 
-        Map<Path, PackageNode> packages = parser.parseSourcePackage(LatexEditor.SRC.path);
+        Map<Path, PackageNode> packages = parser.parsePackage(LatexEditor.SRC.path);
         PackageNode commandPackage = packages.get(LatexEditor.COMMANDS.path);
 
         LeafNode addLatexCommand = commandPackage.getLeafNodes().get("AddLatexCommand");
@@ -65,9 +60,9 @@ public class FileVisitorTest {
 
     @Test
     void fieldTypesTest() {
-        Parser parser = ProjectParserFactory.createProjectParser(parserType);
+        ASTParser parser = new ASTParser();
 
-        Map<Path, PackageNode> packages = parser.parseSourcePackage(LatexEditor.SRC.path);
+        Map<Path, PackageNode> packages = parser.parsePackage(LatexEditor.SRC.path);
         PackageNode commandPackage = packages.get(LatexEditor.COMMANDS.path);
         LeafNode addLatexCommand = commandPackage.getLeafNodes().get("AddLatexCommand");
         List<String> fieldTypes = new ArrayList<>(List.of("VersionsManager"));
@@ -86,9 +81,9 @@ public class FileVisitorTest {
 
     @Test
     void variableTypesTest() {
-        Parser parser = ProjectParserFactory.createProjectParser(parserType);
+        ASTParser parser = new ASTParser();
 
-        Map<Path, PackageNode> packages = parser.parseSourcePackage(LatexEditor.SRC.path);
+        Map<Path, PackageNode> packages = parser.parsePackage(LatexEditor.SRC.path);
         PackageNode commandPackage = packages.get(LatexEditor.CONTROLLER.path);
 
         LeafNode latexEditorController = commandPackage.getLeafNodes().get("LatexEditorController");
@@ -106,9 +101,9 @@ public class FileVisitorTest {
 
     @Test
     void objectCreationTest() {
-        Parser parser = ProjectParserFactory.createProjectParser(parserType);
+        ASTParser parser = new ASTParser();
 
-        Map<Path, PackageNode> packages = parser.parseSourcePackage(ParserTesting.SRC.path);
+        Map<Path, PackageNode> packages = parser.parsePackage(ParserTesting.SRC.path);
         PackageNode sourcePackage = packages.get(ParserTesting.SRC.path);
 
         LeafNode objectCreationSample = sourcePackage.getLeafNodes().get("ObjectCreationSample");
@@ -131,9 +126,9 @@ public class FileVisitorTest {
 
     @Test
     void leafNodeTypesTest() {
-        Parser parser = ProjectParserFactory.createProjectParser(parserType);
+        ASTParser parser = new ASTParser();
 
-        Map<Path, PackageNode> packages = parser.parseSourcePackage(ParserTesting.SRC.path);
+        Map<Path, PackageNode> packages = parser.parsePackage(ParserTesting.SRC.path);
         PackageNode inheritancePackage = packages.get(ParserTesting.SRC.path);
 
         List<LeafNode> classLeafs = new ArrayList<>();
@@ -161,9 +156,9 @@ public class FileVisitorTest {
 
     @Test
     void inheritanceTest() {
-        Parser parser = ProjectParserFactory.createProjectParser(parserType);
+        ASTParser parser = new ASTParser();
 
-        Map<Path, PackageNode> packages = parser.parseSourcePackage(ParserTesting.SRC.path);
+        Map<Path, PackageNode> packages = parser.parsePackage(ParserTesting.SRC.path);
         PackageNode inheritancePackage = packages.get(ParserTesting.SRC.path);
 
         LeafNode implementingClass = inheritancePackage.getLeafNodes().get("ImplementingClass");
@@ -176,9 +171,9 @@ public class FileVisitorTest {
 
     @Test
     void innerMembersTest() {
-        Parser parser = ProjectParserFactory.createProjectParser(parserType);
+        ASTParser parser = new ASTParser();
 
-        Map<Path, PackageNode> packages = parser.parseSourcePackage(ParserTesting.SRC.path);
+        Map<Path, PackageNode> packages = parser.parsePackage(ParserTesting.SRC.path);
         PackageNode sourcePackage = packages.get(ParserTesting.SRC.path);
 
         LeafNode innerClassSample = sourcePackage.getLeafNodes().get("InnerClassSample");
@@ -200,9 +195,9 @@ public class FileVisitorTest {
                         "model.strategies.VolatileVersionsStrategy",
                         "view.LatexEditorView");
 
-        Parser parser = ProjectParserFactory.createProjectParser(parserType);
+        ASTParser parser = new ASTParser();
 
-        Map<Path, PackageNode> packages = parser.parseSourcePackage(LatexEditor.SRC.path);
+        Map<Path, PackageNode> packages = parser.parsePackage(LatexEditor.SRC.path);
         PackageNode commandPackage = packages.get(LatexEditor.MODEL.path);
         LeafNode versionsManager = commandPackage.getLeafNodes().get("VersionsManager");
         List<String> imports = versionsManager.imports();

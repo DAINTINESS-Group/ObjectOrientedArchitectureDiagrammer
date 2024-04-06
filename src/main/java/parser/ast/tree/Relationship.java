@@ -1,3 +1,3 @@
-package parser.tree;
+package parser.ast.tree;
 
 public record Relationship<T>(T startingNode, T endingNode, RelationshipType relationshipType) {}

@@ -20,22 +20,25 @@ public class PlantUMLClassifierVertex {
                                                 it.getName(),
                                                 convertFields(it),
                                                 convertMethods(it)))
-                        .collect(Collectors.joining("\n\n"));
+                        .collect(
+                                Collectors.joining(
+                                        System.lineSeparator() + System.lineSeparator()));
 
         return new StringBuilder(sinkVertices);
     }
 
     private static String convertFields(ClassifierVertex classifierVertex) {
-        if (classifierVertex.getFields().isEmpty()) return "";
-
-        return classifierVertex.getFields().stream()
-                        .map(
-                                it ->
-                                        String.format(
-                                                "%s%s: %s",
-                                                getVisibility(it.modifier()), it.name(), it.type()))
-                        .collect(Collectors.joining("\n"))
-                + "\n";
+        return classifierVertex.getFields().isEmpty()
+                ? ""
+                : classifierVertex.getFields().stream()
+                                .map(
+                                        it ->
+                                                getVisibility(it.modifier())
+                                                        + it.name()
+                                                        + ": "
+                                                        + it.type())
+                                .collect(Collectors.joining(System.lineSeparator()))
+                        + System.lineSeparator();
     }
 
     private static String convertMethods(ClassifierVertex classifierVertex) {
@@ -66,13 +69,10 @@ public class PlantUMLClassifierVertex {
                     .append(getVisibility(method.modifier()))
                     .append(method.name())
                     .append("(")
-                    .append(
-                            method.parameters().entrySet().stream()
-                                    .map(it -> it.getValue() + " " + it.getKey())
-                                    .collect(Collectors.joining(", ")))
+                    .append(String.join(", ", method.parameters()))
                     .append("): ")
                     .append(method.returnType())
-                    .append("\n");
+                    .append(System.lineSeparator());
         }
     }
 

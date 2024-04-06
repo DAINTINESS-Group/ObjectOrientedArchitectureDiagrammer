@@ -1,6 +1,5 @@
 package model.diagram;
 
-import java.nio.file.Path;
 import java.util.*;
 import model.diagram.arrangement.geometry.DiagramGeometry;
 import model.graph.Arc;
@@ -11,7 +10,7 @@ public class PackageDiagram {
 
     private final Map<PackageVertex, Integer> graphNodes;
     private Map<PackageVertex, Set<Arc<PackageVertex>>> diagram;
-    private Map<Path, PackageVertex> vertices;
+    private Collection<PackageVertex> vertices;
     private Map<Integer, Pair<Double, Double>> diagramGeometryGraphML;
     private DiagramGeometry diagramGeometry;
 
@@ -41,7 +40,7 @@ public class PackageDiagram {
     public List<PackageVertex> getChosenNodes(List<String> chosenPackagesNames) {
         List<PackageVertex> chosenPackages = new ArrayList<>();
         for (String chosenPackage : chosenPackagesNames) {
-            vertices.values().stream()
+            vertices.stream()
                     .filter(it -> it.getName().equals(chosenPackage))
                     .findFirst()
                     .ifPresent(chosenPackages::add);
@@ -50,7 +49,7 @@ public class PackageDiagram {
         return chosenPackages;
     }
 
-    public void setVertices(Map<Path, PackageVertex> vertices) {
+    public void setVertices(Collection<PackageVertex> vertices) {
         this.vertices = vertices;
     }
 

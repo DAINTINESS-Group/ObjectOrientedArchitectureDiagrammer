@@ -21,6 +21,8 @@ import javax.imageio.ImageIO;
 
 public class ProjectLoadController {
 
+    private static final String BACKGROUND_COLOR = "#F4FFFB";
+
     @FXML MenuBar menuBar;
     @FXML BorderPane borderPane;
     @FXML Menu exportMenu;
@@ -57,8 +59,7 @@ public class ProjectLoadController {
         scrollPane.setPannable(false);
         graphViewNormalScaleX = graphView.getScaleX();
         graphViewNormalScaleY = graphView.getScaleY();
-        String graphViewBackgroundColor = "#F4FFFB";
-        Color zoomPaneBackgroundColor = Color.web(graphViewBackgroundColor);
+        Color zoomPaneBackgroundColor = Color.web(BACKGROUND_COLOR);
         zoomPane.setBackground(
                 new Background(new BackgroundFill(zoomPaneBackgroundColor, null, null)));
         graphView.minWidthProperty().bind(borderPane.widthProperty());

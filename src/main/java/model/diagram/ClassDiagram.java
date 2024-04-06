@@ -1,7 +1,7 @@
 package model.diagram;
 
-import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,15 +14,11 @@ import org.javatuples.Pair;
 
 public class ClassDiagram {
 
-    private final Map<ClassifierVertex, Integer> graphNodes;
+    private final Map<ClassifierVertex, Integer> graphNodes = new HashMap<>();
     private Map<ClassifierVertex, Set<Arc<ClassifierVertex>>> diagram;
-    private Map<Path, ClassifierVertex> sinkVertices;
+    private Collection<ClassifierVertex> sinkVertices;
     private Map<Integer, Pair<Double, Double>> diagramGeometryGraphML;
     private DiagramGeometry diagramGeometry;
-
-    public ClassDiagram() {
-        this.graphNodes = new HashMap<>();
-    }
 
     public void createNewDiagram(List<String> chosenFilesNames) {
         createGraphNodes(chosenFilesNames);
@@ -47,7 +43,7 @@ public class ClassDiagram {
         List<ClassifierVertex> chosenClasses = new ArrayList<>();
         for (String chosenClass : chosenClassesNames) {
             Optional<ClassifierVertex> optionalSinkVertex =
-                    sinkVertices.values().stream()
+                    sinkVertices.stream()
                             .filter(it -> it.getName().equals(chosenClass))
                             .findFirst();
 
@@ -57,7 +53,7 @@ public class ClassDiagram {
         return chosenClasses;
     }
 
-    public void setSinkVertices(Map<Path, ClassifierVertex> sinkVertices) {
+    public void setSinkVertices(Collection<ClassifierVertex> sinkVertices) {
         this.sinkVertices = sinkVertices;
     }
 

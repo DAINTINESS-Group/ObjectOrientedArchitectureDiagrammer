@@ -17,7 +17,7 @@ import org.apache.logging.log4j.Logger;
 
 public class PlantUMLClassDiagramImageExporter implements DiagramExporter {
     private static final Logger logger =
-            LogManager.getLogger(PlantUMLPackageDiagramImageExporter.class);
+            LogManager.getLogger(PlantUMLClassDiagramImageExporter.class);
 
     private final StringBuilder bufferBody;
 

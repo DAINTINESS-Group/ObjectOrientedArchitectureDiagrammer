@@ -37,7 +37,17 @@ public class PackageVertexDeserializer implements JsonDeserializer<PackageVertex
 
         JsonObject parent = jsonObject.get("parent").getAsJsonObject();
         String parentName = parent.get("name").getAsString();
-        packageVertex = new PackageVertex(Path.of(path), VertexType.get(vertexType), parentName);
+        Path path1 = Path.of(path);
+        packageVertex =
+                new PackageVertex.PackageVertexBuilder()
+                        .withPath(path1)
+                        .withVertexType(VertexType.get(vertexType))
+                        .withName(
+                                parentName.isEmpty()
+                                        ? path1.getFileName().toString()
+                                        : String.join(
+                                                ".", parentName, path1.getFileName().toString()))
+                        .build();
 
         if (jsonObject.has("coordinate_x") && jsonObject.has("coordinate_x")) {
             double coordinateX = jsonObject.get("coordinate_x").getAsDouble();
@@ -72,8 +82,19 @@ public class PackageVertexDeserializer implements JsonDeserializer<PackageVertex
             String path = vertexObject.get("path").getAsString();
             String vertexType = vertexObject.get("vertexType").getAsString();
             String parentName = vertexObject.get("parentName").getAsString();
+            Path path1 = Path.of(path);
             packageVertex.addNeighbourVertex(
-                    new PackageVertex(Path.of(path), VertexType.get(vertexType), parentName));
+                    new PackageVertex.PackageVertexBuilder()
+                            .withPath(path1)
+                            .withVertexType(VertexType.get(vertexType))
+                            .withName(
+                                    parentName.isEmpty()
+                                            ? path1.getFileName().toString()
+                                            : String.join(
+                                                    ".",
+                                                    parentName,
+                                                    path1.getFileName().toString()))
+                            .build());
         }
     }
 

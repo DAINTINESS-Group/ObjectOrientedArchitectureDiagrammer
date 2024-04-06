@@ -35,51 +35,35 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <VBox prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/modena_dark.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ProjectLoadController">
-    <children>
-        <MenuBar fx:id="menuBar" VBox.vgrow="NEVER">
-            <menus>
-                <Menu mnemonicParsing="false" text="Project">
-                    <items>
-                        <MenuItem mnemonicParsing="false" onAction="#openProject" text="Load…"/>
-                        <SeparatorMenuItem mnemonicParsing="false"/>
-                        <MenuItem mnemonicParsing="false" onAction="#closeProject" text="Close"/>
-                        <SeparatorMenuItem mnemonicParsing="false"/>
-                        <MenuItem mnemonicParsing="false" onAction="#quitApp" text="Quit"/>
-                    </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Diagram">
-                    <items>
-                        <Menu mnemonicParsing="false" text="Load Diagram...">
-                            <items>
-                                <MenuItem mnemonicParsing="false" onAction="#loadDiagram" text="Class"/>
-                                <MenuItem mnemonicParsing="false" onAction="#loadDiagram" text="Package"/>
-                            </items>
-                        </Menu>
-                        <MenuItem mnemonicParsing="false" onAction="#closeDiagram" text="Close Diagram"/>
-                        <SeparatorMenuItem mnemonicParsing="false"/>
-                        <Menu mnemonicParsing="false" text="Export..." fx:id="exportMenu" visible="false">
-                            <items>
-                                <MenuItem mnemonicParsing="false" onAction="#exportDiagramAsImage" text="Image"/>
-                                <MenuItem mnemonicParsing="false" onAction="#exportDiagramAsText" text="Text"/>
-                            </items>
-                        </Menu>
-                    </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Help">
-                    <items>
-                        <MenuItem mnemonicParsing="false" onAction="#aboutPage" text="About"/>
-                    </items>
-                </Menu>
-            </menus>
-        </MenuBar>
-        <HBox prefHeight="734.0" prefWidth="900.0" VBox.vgrow="ALWAYS">
-            <children>
-                <BorderPane fx:id="borderPane" prefHeight="625.0" prefWidth="917.0" HBox.hgrow="ALWAYS">
-                    <right>
-                        <Pane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="625.0" prefWidth="21.0" BorderPane.alignment="CENTER"/>
-                    </right>
-                </BorderPane>
-            </children>
-        </HBox>
-    </children>
+    <MenuBar fx:id="menuBar" VBox.vgrow="NEVER">
+        <Menu mnemonicParsing="false" text="Project">
+            <MenuItem mnemonicParsing="false" onAction="#openProject" text="Load…"/>
+            <SeparatorMenuItem mnemonicParsing="false"/>
+            <MenuItem mnemonicParsing="false" onAction="#closeProject" text="Close"/>
+            <SeparatorMenuItem mnemonicParsing="false"/>
+            <MenuItem mnemonicParsing="false" onAction="#quitApp" text="Quit"/>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Diagram">
+            <Menu mnemonicParsing="false" text="Load Diagram...">
+                <MenuItem mnemonicParsing="false" onAction="#loadDiagram" text="Class"/>
+                <MenuItem mnemonicParsing="false" onAction="#loadDiagram" text="Package"/>
+            </Menu>
+            <MenuItem mnemonicParsing="false" onAction="#closeDiagram" text="Close Diagram"/>
+            <SeparatorMenuItem mnemonicParsing="false"/>
+            <Menu mnemonicParsing="false" text="Export..." fx:id="exportMenu" visible="false">
+                <MenuItem mnemonicParsing="false" onAction="#exportDiagramAsImage" text="Image"/>
+                <MenuItem mnemonicParsing="false" onAction="#exportDiagramAsText" text="Text"/>
+            </Menu>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Help">
+            <MenuItem mnemonicParsing="false" onAction="#aboutPage" text="About"/>
+        </Menu>
+    </MenuBar>
+    <HBox prefHeight="734.0" prefWidth="900.0" VBox.vgrow="ALWAYS">
+        <BorderPane fx:id="borderPane" prefHeight="625.0" prefWidth="917.0" HBox.hgrow="ALWAYS">
+            <right>
+                <Pane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="625.0" prefWidth="21.0" BorderPane.alignment="CENTER"/>
+            </right>
+        </BorderPane>
+    </HBox>
 </VBox>

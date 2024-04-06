@@ -1,4 +1,4 @@
-package parser.tree;
+package parser.ast.tree;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -11,34 +11,34 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * This class is responsible for the representation of a package node in the tree. Each has node has
- * a parent node(the parent package), the path of the package folder, the nodes children(the sub
- * packages), the nodes leaves(the Java source files inside the current package), a flag to identify
- * if a package is empty or not.
+ * This class is responsible for the representation of a package node in the tree. Each node has a
+ * parent node (the parent package), the path of the package folder, the node's children(the
+ * sub-packages), the node's leaves(the Java source files inside the current package) and a flag to
+ * identify if a package is empty or not.
  */
 public final class PackageNode {
     private static final Logger logger = LogManager.getLogger(PackageNode.class);
 
-    private final Map<Path, PackageNode> subNodes;
-    private final Map<String, LeafNode> leafNodes;
+    private final Map<Path, PackageNode> subNodes = new HashMap<>();
+    private final Map<String, LeafNode> leafNodes = new HashMap<>();
     private final Path path;
     private final PackageNode parentNode;
     private final boolean isValid;
 
-    public PackageNode(Path path) {
-        this.path = path;
-        parentNode = new PackageNode(null, Paths.get(""));
-        subNodes = new HashMap<>();
-        leafNodes = new HashMap<>();
-        isValid = isValid(path);
+    /** Creates a new {@link PackageNode} that is in the root of the package structure. */
+    public static PackageNode from(Path path) {
+        return new PackageNode(new PackageNode(null, Paths.get(""), false), path, isValid(path));
     }
 
-    public PackageNode(PackageNode parentNode, Path path) {
+    /** Creates a new {@link PackageNode} with the given parent node. */
+    public static PackageNode from(PackageNode parentNode, Path path) {
+        return new PackageNode(parentNode, path, isValid(path));
+    }
+
+    private PackageNode(PackageNode parentNode, Path path, boolean isValid) {
         this.parentNode = parentNode;
         this.path = path;
-        subNodes = new HashMap<>();
-        leafNodes = new HashMap<>();
-        isValid = isValid(path);
+        this.isValid = isValid;
     }
 
     private static boolean isValid(Path path) {
@@ -57,11 +57,6 @@ public final class PackageNode {
             throw new RuntimeException(e);
         }
         return isValid;
-    }
-
-    private static Path getPath(PackageNode parentNode, Path path) {
-        return Paths.get(
-                String.format("%s/%s", parentNode.getPath().normalize(), path.toFile().getName()));
     }
 
     public boolean isValid() {

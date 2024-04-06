@@ -1,4 +1,4 @@
-package parser;
+package parser.ast;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -12,27 +12,29 @@ import model.graph.ClassifierVertex;
 import model.graph.PackageVertex;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import parser.tree.LeafNode;
-import parser.tree.PackageNode;
-import parser.tree.Relationship;
+import parser.ast.tree.LeafNode;
+import parser.ast.tree.PackageNode;
+import parser.ast.tree.Relationship;
 import utils.PathTemplate.LatexEditor;
 
-public class InterpreterTest {
+public class ASTInterpreterTest {
 
     @Test
     public void convertTreeToGraphTest() {
-        Interpreter interpreter = new Interpreter();
+        ASTInterpreter interpreter = new ASTInterpreter();
         interpreter.parseProject(LatexEditor.SRC.path);
-        interpreter.convertTreeToGraph();
+        interpreter.convertToGraph();
         Map<Path, PackageNode> packageNodes = interpreter.getPackageNodes();
-        Map<Path, PackageVertex> vertices = interpreter.getVertices();
+        List<PackageVertex> vertices = interpreter.getVertices();
         assertEquals(packageNodes.size(), vertices.size());
 
         for (Map.Entry<Path, PackageNode> packageNodeEntry : packageNodes.entrySet()) {
-            assertTrue(vertices.containsKey(packageNodeEntry.getKey()));
-
             PackageNode packageNode = packageNodeEntry.getValue();
-            PackageVertex vertex = vertices.get(packageNodeEntry.getKey());
+            PackageVertex vertex =
+                    vertices.stream()
+                            .filter(it -> it.getPath().equals(packageNodeEntry.getKey()))
+                            .findFirst()
+                            .orElse(Assertions.fail());
             assertEquals(packageNode.getNodeType().toString(), vertex.getVertexType().toString());
             assertEquals(packageNode.getNodeName(), vertex.getName());
 

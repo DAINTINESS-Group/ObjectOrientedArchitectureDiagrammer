@@ -62,7 +62,7 @@ public class DiagramCreation {
                 break;
             default:
                 // Should not happen.
-                throw new IllegalArgumentException("Unsupported");
+                throw new IllegalArgumentException("Unsupported type: " + type);
         }
     }
 

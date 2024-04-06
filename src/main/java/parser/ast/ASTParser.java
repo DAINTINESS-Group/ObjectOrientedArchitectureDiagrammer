@@ -1,4 +1,6 @@
-package parser;
+package parser.ast;
+
+import static proguard.classfile.JavaConstants.JAVA_FILE_EXTENSION;
 
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
@@ -8,39 +10,38 @@ import java.util.Map;
 import java.util.Set;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import parser.factory.Parser;
-import parser.tree.LeafNode;
-import parser.tree.PackageNode;
-import parser.tree.Relationship;
+import parser.ast.tree.LeafNode;
+import parser.ast.tree.PackageNode;
+import parser.ast.tree.Relationship;
 
-public class ProjectParser implements Parser {
-    private static final Logger logger = LogManager.getLogger(ProjectParser.class);
+/**
+ * This parser is responsible for creating the AST of the given source files and identifying the
+ * relationships between the {@link LeafNode}s of the tree.
+ */
+public class ASTParser {
+    private static final Logger logger = LogManager.getLogger(ASTParser.class);
 
-    private final Map<Path, PackageNode> packageNodes;
+    private final Map<Path, PackageNode> packageNodes = new HashMap<>();
 
-    public ProjectParser() {
-        this.packageNodes = new HashMap<>();
-    }
-
-    @Override
-    public Map<Path, PackageNode> parseSourcePackage(Path sourcePackagePath) {
-        PackageNode sourcePackage = new PackageNode(sourcePackagePath);
+    public Map<Path, PackageNode> parsePackage(Path sourcePackagePath) {
+        PackageNode sourcePackage = PackageNode.from(sourcePackagePath);
         packageNodes.put(sourcePackage.getPath(), sourcePackage);
         parseFolder(sourcePackage);
+
         return packageNodes;
     }
 
-    @Override
     public Map<LeafNode, Set<Relationship<LeafNode>>> createRelationships(
             Map<Path, PackageNode> packageNodes) {
-        IRelationshipIdentifier relationshipIdentifier = new RelationshipIdentifier();
+        ASTRelationshipIdentifier relationshipIdentifier = new ASTRelationshipIdentifier();
+
         return relationshipIdentifier.createLeafNodesRelationships(packageNodes);
     }
 
-    @Override
     public Map<PackageNode, Set<Relationship<PackageNode>>> identifyPackageNodeRelationships(
             Map<LeafNode, Set<Relationship<LeafNode>>> leafNodeRelationships) {
-        IRelationshipIdentifier relationshipIdentifier = new RelationshipIdentifier();
+        ASTRelationshipIdentifier relationshipIdentifier = new ASTRelationshipIdentifier();
+
         return relationshipIdentifier.identifyPackageNodeRelationships(leafNodeRelationships);
     }
 
@@ -48,7 +49,7 @@ public class ProjectParser implements Parser {
         try (DirectoryStream<Path> filesStream = Files.newDirectoryStream(currentNode.getPath())) {
             for (Path path : filesStream) {
                 if (Files.isDirectory(path)) {
-                    PackageNode subNode = new PackageNode(currentNode, path);
+                    PackageNode subNode = PackageNode.from(currentNode, path);
                     packageNodes.put(subNode.getPath(), subNode);
                     currentNode.getSubNodes().put(subNode.getPath(), subNode);
                     parseFolder(subNode);
@@ -66,7 +67,7 @@ public class ProjectParser implements Parser {
         }
     }
 
-    private boolean isJavaSourceFile(Path filePath) {
-        return filePath.normalize().toString().toLowerCase().endsWith(".java");
+    private static boolean isJavaSourceFile(Path filePath) {
+        return filePath.normalize().toString().toLowerCase().endsWith(JAVA_FILE_EXTENSION);
     }
 }

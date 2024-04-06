@@ -1,7 +1,7 @@
-package parser;
+package parser.ast;
 
-import static parser.tree.ModifierType.PACKAGE_PRIVATE;
-import static parser.tree.NodeType.ENUM;
+import static parser.ast.tree.ModifierType.PACKAGE_PRIVATE;
+import static parser.ast.tree.NodeType.ENUM;
 
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ParserConfiguration;
@@ -33,11 +33,11 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import parser.tree.LeafNode;
-import parser.tree.LeafNodeBuilder;
-import parser.tree.ModifierType;
-import parser.tree.NodeType;
-import parser.tree.PackageNode;
+import parser.ast.tree.LeafNode;
+import parser.ast.tree.LeafNodeBuilder;
+import parser.ast.tree.ModifierType;
+import parser.ast.tree.NodeType;
+import parser.ast.tree.PackageNode;
 
 /**
  * This class is responsible for the creation of the AST of a Java source file using {@link

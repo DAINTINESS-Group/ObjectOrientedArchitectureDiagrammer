@@ -18,7 +18,7 @@ public class PlantUMLClassifierVertexArc {
                                                 it.sourceVertex().getName(),
                                                 getRelationship(it.arcType()),
                                                 it.targetVertex().getName()))
-                        .collect(Collectors.joining("\n")));
+                        .collect(Collectors.joining(System.lineSeparator())));
     }
 
     private static String getRelationship(ArcType relationshipType) {
@@ -27,8 +27,7 @@ public class PlantUMLClassifierVertexArc {
             case AGGREGATION -> "o--";
             case DEPENDENCY -> "..>";
             case IMPLEMENTATION -> "..|>";
-                // ASSOCIATION.
-            default -> "-->";
+            case ASSOCIATION -> "-->";
         };
     }
 }

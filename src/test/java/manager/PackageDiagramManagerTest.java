@@ -3,8 +3,8 @@ package manager;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +14,7 @@ import model.graph.ClassifierVertex;
 import model.graph.PackageVertex;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import parser.Interpreter;
+import parser.ast.ASTInterpreter;
 import utils.PathTemplate.LatexEditor;
 
 public class PackageDiagramManagerTest {
@@ -24,40 +24,36 @@ public class PackageDiagramManagerTest {
         PackageDiagramManager packageDiagramManager = new PackageDiagramManager();
         PackageDiagram packageDiagram = packageDiagramManager.getPackageDiagram();
 
-        SourceProject sourceProject = new SourceProject();
-        Map<Path, PackageVertex> packageNodes =
-                sourceProject.createPackageGraph(LatexEditor.SRC.path, packageDiagram);
+        Project project = new Project(LatexEditor.SRC.path);
+        Collection<PackageVertex> packageNodes = project.createPackageGraph(packageDiagram);
 
-        Interpreter interpreter = new Interpreter();
+        ASTInterpreter interpreter = new ASTInterpreter();
         interpreter.parseProject(LatexEditor.SRC.path);
-        interpreter.convertTreeToGraph();
+        interpreter.convertToGraph();
 
-        ArrayList<PackageVertex> interpreterVertices =
-                new ArrayList<>(interpreter.getVertices().values());
+        ArrayList<PackageVertex> interpreterVertices = new ArrayList<>(interpreter.getVertices());
         assertEquals(packageNodes.size(), interpreterVertices.size());
 
-        for (Map.Entry<Path, PackageVertex> vertexEntry : packageNodes.entrySet()) {
+        for (PackageVertex vertexEntry : packageNodes) {
             PackageVertex optionalPackageVertex =
                     interpreterVertices.stream()
                             .filter(
                                     it ->
-                                            it.getName().equals(vertexEntry.getValue().getName())
+                                            it.getName().equals(vertexEntry.getName())
                                                     && it.getParentVertex()
                                                             .getName()
                                                             .equals(
                                                                     vertexEntry
-                                                                            .getValue()
                                                                             .getParentVertex()
                                                                             .getName()))
                             .findFirst()
                             .orElseGet(Assertions::fail);
 
             assertEquals(
-                    vertexEntry.getValue().getNeighbourVertices().size(),
+                    vertexEntry.getNeighbourVertices().size(),
                     optionalPackageVertex.getNeighbourVertices().size());
 
-            for (PackageVertex neighbourPackageVertex :
-                    vertexEntry.getValue().getNeighbourVertices()) {
+            for (PackageVertex neighbourPackageVertex : vertexEntry.getNeighbourVertices()) {
                 assertTrue(
                         optionalPackageVertex.getNeighbourVertices().stream()
                                 .anyMatch(
@@ -67,10 +63,10 @@ public class PackageDiagramManagerTest {
             }
 
             assertEquals(
-                    vertexEntry.getValue().getSinkVertices().size(),
+                    vertexEntry.getSinkVertices().size(),
                     optionalPackageVertex.getSinkVertices().size());
 
-            for (ClassifierVertex classifierVertex : vertexEntry.getValue().getSinkVertices()) {
+            for (ClassifierVertex classifierVertex : vertexEntry.getSinkVertices()) {
                 assertTrue(
                         optionalPackageVertex.getSinkVertices().stream()
                                 .anyMatch(it -> it.getName().equals(classifierVertex.getName())));
@@ -83,9 +79,8 @@ public class PackageDiagramManagerTest {
         PackageDiagramManager packageDiagramManager = new PackageDiagramManager();
         PackageDiagram packageDiagram = packageDiagramManager.getPackageDiagram();
 
-        SourceProject sourceProject = new SourceProject();
-        Map<Path, PackageVertex> packageNodes =
-                sourceProject.createPackageGraph(LatexEditor.SRC.path, packageDiagram);
+        Project project = new Project(LatexEditor.SRC.path);
+        Collection<PackageVertex> packageNodes = project.createPackageGraph(packageDiagram);
 
         packageDiagramManager.convertTreeToDiagram(
                 List.of(
@@ -102,7 +97,7 @@ public class PackageDiagramManagerTest {
         assertEquals(packageNodes.size(), graphNodes.size());
 
         List<String> l1 =
-                packageNodes.values().stream()
+                packageNodes.stream()
                         .map(PackageVertex::getName)
                         .collect(Collectors.toCollection(ArrayList::new));
 

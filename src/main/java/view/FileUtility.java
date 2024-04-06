@@ -14,9 +14,7 @@ public class FileUtility {
     private static File selectedDirectory;
     private static String loadedFileName;
 
-    private FileUtility() {
-        throw new java.lang.UnsupportedOperationException("Not to be instantiated");
-    }
+    private FileUtility() {}
 
     public static File chooseDirectory(String windowTitle, MenuBar menuBar) {
         DirectoryChooser directoryChooser = new DirectoryChooser();
