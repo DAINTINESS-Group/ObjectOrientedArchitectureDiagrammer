@@ -11,6 +11,8 @@ import model.diagram.graphml.GraphMLSyntax;
 import org.javatuples.Pair;
 import org.junit.jupiter.api.Test;
 import utils.PathConstructor;
+import utils.PathTemplate;
+import utils.PathTemplate.LatexEditor;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,14 +38,7 @@ public class GraphMLClassDiagramExporterTest
             List<String> chosenFiles = Arrays.asList("MainWindow",
                                                      "LatexEditorView",
                                                      "OpeningWindow");
-            classDiagramManager.createSourceProject(Paths.get(String.format("%s%s%s",
-                                                                            PathConstructor.getCurrentPath(),
-                                                                            File.separator,
-                                                                            PathConstructor.constructPath("src",
-                                                                                                          "test",
-                                                                                                          "resources",
-                                                                                                          "LatexEditor",
-                                                                                                          "src"))));
+            classDiagramManager.createSourceProject(LatexEditor.SRC.path);
             classDiagramManager.convertTreeToDiagram(chosenFiles);
             classDiagramManager.arrangeDiagram();
             DiagramArrangementManagerInterface classDiagramArrangement = new ClassDiagramArrangementManager(classDiagramManager.getClassDiagram());

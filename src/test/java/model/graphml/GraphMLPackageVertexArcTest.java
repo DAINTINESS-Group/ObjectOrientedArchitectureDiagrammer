@@ -5,10 +5,8 @@ import model.diagram.graphml.GraphMLPackageVertexArc;
 import model.graph.Arc;
 import model.graph.PackageVertex;
 import org.junit.jupiter.api.Test;
-import utils.PathConstructor;
+import utils.PathTemplate.LatexEditor;
 
-import java.io.File;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -22,14 +20,7 @@ public class GraphMLPackageVertexArcTest
     void convertVertexArcsToGraphMLTest()
     {
         PackageDiagramManager packageDiagramManager = new PackageDiagramManager();
-        packageDiagramManager.createSourceProject(Paths.get(String.format("%s%s%s",
-                                                                          PathConstructor.getCurrentPath(),
-                                                                          File.separator,
-                                                                          PathConstructor.constructPath("src",
-                                                                                                        "test",
-                                                                                                        "resources",
-                                                                                                        "LatexEditor",
-                                                                                                        "src"))));
+        packageDiagramManager.createSourceProject(LatexEditor.SRC.path);
         packageDiagramManager.convertTreeToDiagram(List.of("src.view",
                                                            "src.model",
                                                            "src.model.strategies",

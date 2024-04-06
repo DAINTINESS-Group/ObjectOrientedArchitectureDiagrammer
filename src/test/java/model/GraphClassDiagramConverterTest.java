@@ -7,6 +7,8 @@ import model.graph.Arc;
 import model.graph.ClassifierVertex;
 import org.junit.jupiter.api.Test;
 import utils.PathConstructor;
+import utils.PathTemplate;
+import utils.PathTemplate.LatexEditor;
 
 import java.io.File;
 import java.nio.file.Paths;
@@ -30,14 +32,7 @@ public class GraphClassDiagramConverterTest
         List<String> chosenFiles = Arrays.asList("MainWindow",
                                                  "LatexEditorView",
                                                  "OpeningWindow");
-        classDiagramManager.createSourceProject(Paths.get(String.format("%s%s%s",
-                                                                        PathConstructor.getCurrentPath(),
-                                                                        File.separator,
-                                                                        PathConstructor.constructPath("src",
-                                                                                                      "test",
-                                                                                                      "resources",
-                                                                                                      "LatexEditor",
-                                                                                                      "src"))));
+        classDiagramManager.createSourceProject(LatexEditor.SRC.path);
         classDiagramManager.convertTreeToDiagram(chosenFiles);
         Set<ClassifierVertex>                             graphNodes = classDiagramManager.getClassDiagram().getGraphNodes().keySet();
         Map<ClassifierVertex, Set<Arc<ClassifierVertex>>> diagram    = classDiagramManager.getClassDiagram().getDiagram();

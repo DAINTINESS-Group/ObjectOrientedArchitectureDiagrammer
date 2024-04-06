@@ -15,6 +15,8 @@ import model.graph.ClassifierVertex;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import utils.PathConstructor;
+import utils.PathTemplate;
+import utils.PathTemplate.LatexEditor;
 
 import java.io.File;
 import java.io.IOException;
@@ -46,18 +48,17 @@ public class JavaFXPackageDiagramExporterTest
         try
         {
             PackageDiagramManager packageDiagramManager = new PackageDiagramManager();
-            packageDiagramManager.createSourceProject(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src",
-                                                                                                                                                  "test",
-                                                                                                                                                  "resources",
-                                                                                                                                                  "LatexEditor",
-                                                                                                                                                  "src")));
+            packageDiagramManager.createSourceProject(LatexEditor.SRC.path);
             packageDiagramManager.convertTreeToDiagram(getPackages());
 
             DiagramExporter javaFXExporter = new JavaFXPackageDiagramExporter(packageDiagramManager.getPackageDiagram());
-            File actualFile = javaFXExporter.exportDiagram(Path.of(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src",
-                                                                                                                                                     "test",
-                                                                                                                                                     "resources",
-                                                                                                                                                     "testingExportedFile.txt")));
+            File actualFile = javaFXExporter.exportDiagram(Path.of(String.format("%s%s%s",
+                                                                                 PathConstructor.getCurrentPath(),
+                                                                                 File.separator,
+                                                                                 PathConstructor.constructPath("src",
+                                                                                                               "test",
+                                                                                                               "resources",
+                                                                                                               "testingExportedFile.txt"))));
 
             JsonArray expectedJsonArray = getJsonArray();
             JsonArray actualJsonArray   = JsonParser.parseString(Files.readAllLines(actualFile.toPath()).get(0)).getAsJsonArray();
@@ -94,12 +95,12 @@ public class JavaFXPackageDiagramExporterTest
                     }
                     for (ClassifierVertex classifierVertex : expSinkVertices)
                     {
-                        Optional<ClassifierVertex> optionalSinkVertex = actSinkVertices.stream().filter(sinkVertex1 ->
-                                                                                                            sinkVertex1.getName().equals(classifierVertex.getName()) &&
-                                                                                                            sinkVertex1.getVertexType().equals(classifierVertex.getVertexType()) &&
-                                                                                                            sinkVertex1.getArcs().size() == classifierVertex.getArcs().size() &&
-                                                                                                            sinkVertex1.getMethods().size() == classifierVertex.getMethods().size() &&
-                                                                                                            sinkVertex1.getFields().size() == classifierVertex.getFields().size())
+                        Optional<ClassifierVertex> optionalSinkVertex = actSinkVertices.stream()
+                            .filter(it -> it.getName().equals(classifierVertex.getName())                &&
+                                          it.getVertexType().equals(classifierVertex.getVertexType())    &&
+                                          it.getArcs().size() == classifierVertex.getArcs().size()       &&
+                                          it.getMethods().size() == classifierVertex.getMethods().size() &&
+                                          it.getFields().size() == classifierVertex.getFields().size())
                             .findFirst();
                         assertTrue(optionalSinkVertex.isPresent());
 
@@ -107,24 +108,18 @@ public class JavaFXPackageDiagramExporterTest
                         for (ClassifierVertex.Field field : classifierVertex.getFields())
                         {
                             assertTrue(fields.stream()
-                                           .anyMatch(field1 ->
-                                                         field1.name().equals(field.name()) &&
-                                                         field1.type().equals(field.type()) &&
-                                                         field1.modifier().equals(field.modifier())
-                                           )
-                            );
+                                           .anyMatch(it -> it.name().equals(field.name()) &&
+                                                           it.type().equals(field.type()) &&
+                                                           it.modifier().equals(field.modifier())));
                         }
 
                         List<ClassifierVertex.Method> methods = optionalSinkVertex.get().getMethods();
                         for (ClassifierVertex.Method method : classifierVertex.getMethods())
                         {
                             assertTrue(methods.stream()
-                                           .anyMatch(method1 ->
-                                                         method1.name().equals(method.name()) &&
-                                                         method1.returnType().equals(method.returnType()) &&
-                                                         method1.parameters().equals(method.parameters())
-                                           )
-                            );
+                                           .anyMatch(it -> it.name().equals(method.name())             &&
+                                                           it.returnType().equals(method.returnType()) &&
+                                                           it.parameters().equals(method.parameters())));
                         }
 
                         List<Arc<ClassifierVertex>> arcs = optionalSinkVertex.get().getArcs();

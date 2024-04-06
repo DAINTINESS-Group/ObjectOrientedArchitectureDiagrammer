@@ -3,10 +3,8 @@ package model.plantuml;
 import manager.ClassDiagramManager;
 import model.diagram.plantuml.PlantUMLClassifierVertex;
 import org.junit.jupiter.api.Test;
-import utils.PathConstructor;
+import utils.PathTemplate.LatexEditor;
 
-import java.io.File;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -21,14 +19,7 @@ public class PlantUMLClassifierVertexTest
     {
 
         ClassDiagramManager classDiagramManager = new ClassDiagramManager();
-        classDiagramManager.createSourceProject(Paths.get(String.format("%s%s%s",
-                                                                        PathConstructor.getCurrentPath(),
-                                                                        File.separator,
-                                                                        PathConstructor.constructPath("src",
-                                                                                                      "test",
-                                                                                                      "resources",
-                                                                                                      "LatexEditor",
-                                                                                                      "src"))));
+        classDiagramManager.createSourceProject(LatexEditor.SRC.path);
         classDiagramManager.convertTreeToDiagram(List.of("StableVersionsStrategy",
                                                          "VersionsStrategy",
                                                          "VersionsStrategyFactory",
