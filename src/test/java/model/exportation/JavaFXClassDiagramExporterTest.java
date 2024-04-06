@@ -54,10 +54,8 @@ public class JavaFXClassDiagramExporterTest
             {
                 for (JsonElement actualElement : actualJsonArray)
                 {
-                    if (!actualElement.getAsJsonObject().get("name").equals(element.getAsJsonObject().get("name")))
-                    {
-                        continue;
-                    }
+                    if (!actualElement.getAsJsonObject().get("name").equals(element.getAsJsonObject().get("name"))) continue;
+
                     assertEquals(element.getAsJsonObject().size(), actualElement.getAsJsonObject().size());
 
                     JsonArray        expectedMethods        = JsonParser.parseString(element.getAsJsonObject().get("methods").toString()).getAsJsonArray();

@@ -9,10 +9,8 @@ import parser.tree.NodeType;
 import parser.tree.PackageNode;
 import utils.PathTemplate.LatexEditor;
 import utils.PathTemplate.ParserTesting;
-import utils.PathConstructor;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -22,6 +20,8 @@ import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static parser.tree.NodeType.CLASS;
+import static parser.tree.NodeType.INTERFACE;
 
 public class FileVisitorTest
 {
@@ -43,9 +43,10 @@ public class FileVisitorTest
 
         Collections.sort(methodReturnTypesActual);
         Collections.sort(methodReturnTypesExpected);
-        assertTrue(methodReturnTypesActual.size() == methodReturnTypesExpected.size() &&
-                   methodReturnTypesExpected.containsAll(methodReturnTypesActual)              &&
-                   methodReturnTypesActual.containsAll(methodReturnTypesExpected));
+
+        assertEquals(methodReturnTypesExpected.size(), methodReturnTypesActual.size());
+        assertTrue(methodReturnTypesExpected.containsAll(methodReturnTypesActual));
+        assertTrue(methodReturnTypesActual.containsAll(methodReturnTypesExpected));
     }
 
 
@@ -63,9 +64,10 @@ public class FileVisitorTest
 
         Collections.sort(methodParameterTypesTest);
         Collections.sort(methodParameterTypes);
-        assertTrue(methodParameterTypesTest.size() == methodParameterTypes.size() &&
-                   methodParameterTypes.containsAll(methodParameterTypesTest)              &&
-                   methodParameterTypesTest.containsAll(methodParameterTypes));
+
+        assertEquals(methodParameterTypes.size(), methodParameterTypesTest.size());
+        assertTrue(methodParameterTypes.containsAll(methodParameterTypesTest));
+        assertTrue(methodParameterTypesTest.containsAll(methodParameterTypes));
     }
 
 
@@ -86,9 +88,10 @@ public class FileVisitorTest
             .collect(Collectors.toCollection(ArrayList::new));
 
         Collections.sort(fieldTypes);
-        assertTrue(fieldTypesTest.size() == fieldTypes.size() &&
-                   fieldTypes.containsAll(fieldTypesTest)              &&
-                   fieldTypesTest.containsAll(fieldTypes));
+
+        assertEquals(fieldTypes.size(), fieldTypesTest.size());
+        assertTrue(fieldTypes.containsAll(fieldTypesTest));
+        assertTrue(fieldTypesTest.containsAll(fieldTypes));
     }
 
 
@@ -98,8 +101,7 @@ public class FileVisitorTest
         Parser parser = ProjectParserFactory.createProjectParser(parserType);
 
         Map<Path, PackageNode> packages = parser.parseSourcePackage(LatexEditor.SRC.path);
-        PackageNode commandPackage = packages.get(Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-                                                            "/src/test/resources/LatexEditor/src/controller"));
+        PackageNode commandPackage = packages.get(LatexEditor.CONTROLLER.path);
 
         LeafNode     latexEditorController = commandPackage.getLeafNodes().get("LatexEditorController");
         List<String> variablesTypes        = new ArrayList<>(List.of("CommandFactory"));
@@ -107,9 +109,10 @@ public class FileVisitorTest
 
         Collections.sort(variablesTypesTest);
         Collections.sort(variablesTypes);
-        assertTrue(variablesTypesTest.size() == variablesTypes.size() &&
-                   variablesTypes.containsAll(variablesTypesTest)              &&
-                   variablesTypesTest.containsAll(variablesTypes));
+
+        assertEquals(variablesTypes.size(), variablesTypesTest.size());
+        assertTrue(variablesTypes.containsAll(variablesTypesTest));
+        assertTrue(variablesTypesTest.containsAll(variablesTypes));
     }
 
 
@@ -130,9 +133,10 @@ public class FileVisitorTest
 
         Collections.sort(objectsCreatedActual);
         Collections.sort(objectsCreatedExpected);
-        assertTrue(objectsCreatedActual.size() == objectsCreatedExpected.size() &&
-                   objectsCreatedExpected.containsAll(objectsCreatedActual)              &&
-                   objectsCreatedActual.containsAll(objectsCreatedExpected));
+
+        assertEquals(objectsCreatedExpected.size(), objectsCreatedActual.size());
+        assertTrue(objectsCreatedExpected.containsAll(objectsCreatedActual));
+        assertTrue(objectsCreatedActual.containsAll(objectsCreatedExpected));
     }
 
 
@@ -145,28 +149,45 @@ public class FileVisitorTest
         PackageNode inheritancePackage = packages.get(ParserTesting.SRC.path);
 
         List<LeafNode> classLeafs     = new ArrayList<>();
-        List<LeafNode> interfaceLeafs = new ArrayList<>();
         classLeafs.add(inheritancePackage.getLeafNodes().get("ImplementingClass"));
         classLeafs.add(inheritancePackage.getLeafNodes().get("ExtensionClass"));
+
+        List<LeafNode> interfaceLeafs = new ArrayList<>();
         interfaceLeafs.add(inheritancePackage.getLeafNodes().get("TestingInterface"));
         interfaceLeafs.add(inheritancePackage.getLeafNodes().get("TestingInterface2"));
 
-        for (LeafNode l : classLeafs)
-        {
-            assertEquals(NodeType.CLASS, l.nodeType());
-        }
-        for (LeafNode l : interfaceLeafs)
-        {
-            assertEquals(NodeType.INTERFACE, l.nodeType());
-        }
+        long classCount = classLeafs.stream()
+            .filter(it -> it.nodeType().equals(CLASS))
+            .count();
+        assertEquals(classCount, classLeafs.size());
+
+        long interfaceCount = interfaceLeafs.stream()
+            .filter(it -> it.nodeType().equals(INTERFACE))
+            .count();
+        assertEquals(interfaceCount, interfaceLeafs.size());
 
         PackageNode sourcePackage = packages.get(ParserTesting.SRC.path);
-
         LeafNode enumTest = sourcePackage.getLeafNodes().get("EnumSample");
         assertEquals(NodeType.ENUM, enumTest.nodeType());
 
         LeafNode objectCreationTest = sourcePackage.getLeafNodes().get("ObjectCreationSample");
-        assertEquals(NodeType.CLASS, objectCreationTest.nodeType());
+        assertEquals(CLASS, objectCreationTest.nodeType());
+    }
+
+    @Test
+    void inheritanceTest()
+    {
+        Parser parser = ProjectParserFactory.createProjectParser(parserType);
+
+        Map<Path, PackageNode> packages = parser.parseSourcePackage(ParserTesting.SRC.path);
+        PackageNode inheritancePackage  = packages.get(ParserTesting.SRC.path);
+
+        LeafNode implementingClass = inheritancePackage.getLeafNodes().get("ImplementingClass");
+        assertEquals(2, implementingClass.implementedInterfaces().size());
+        assertTrue(implementingClass.implementedInterfaces().contains("TestingInterface"));
+        assertTrue(implementingClass.implementedInterfaces().contains("TestingInterface2"));
+
+        assertEquals("ExtensionClass", implementingClass.baseClass());
     }
 
 
@@ -179,8 +200,12 @@ public class FileVisitorTest
         PackageNode sourcePackage = packages.get(ParserTesting.SRC.path);
 
         LeafNode innerClassSample = sourcePackage.getLeafNodes().get("InnerClassSample");
-        assertEquals(innerClassSample.innerClasses().get(0).nodeName(), "InnerClass");
-        assertEquals(innerClassSample.records().get(0), "RecordSample");
+
+        assertEquals(innerClassSample.innerClasses().size(), 1);
+        assertEquals("InnerClass", innerClassSample.innerClasses().get(0).nodeName());
+
+        assertEquals(innerClassSample.records().size(), 1);
+        assertEquals("RecordSample", innerClassSample.records().get(0));
     }
 
 

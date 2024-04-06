@@ -29,13 +29,13 @@ public class PackageNodeCleanerTest
 
         assertEquals(packageNodes.size(), validPackageNodes.size() + NON_VALID_NODES);
 
-        // Valid Package Nodes
+        // Valid Package Nodes.
         assertTrue(validPackageNodes.containsKey(BookstoreAdvanced.SRC.path));
         assertTrue(validPackageNodes.containsKey(BookstoreAdvanced.BOOKSTORE.path));
         assertTrue(validPackageNodes.containsKey(BookstoreAdvanced.GUI.path));
         assertTrue(validPackageNodes.containsKey(BookstoreAdvanced.SRC_ROOT.path));
 
-        // Non Valid Package Nodes
+        // Non Valid Package Nodes.
         assertFalse(validPackageNodes.containsKey(BookstoreAdvanced.DOT_SETTINGS.path));
         assertFalse(validPackageNodes.containsKey(BookstoreAdvanced.BIN.path));
         assertFalse(validPackageNodes.containsKey(BookstoreAdvanced.BIN_BOOKSTORE.path));

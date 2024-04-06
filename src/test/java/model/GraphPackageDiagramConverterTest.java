@@ -5,17 +5,15 @@ import model.diagram.GraphPackageDiagramConverter;
 import model.graph.Arc;
 import model.graph.PackageVertex;
 import org.junit.jupiter.api.Test;
-import utils.PathConstructor;
-import utils.PathTemplate;
 import utils.PathTemplate.LatexEditor;
 
-import java.io.File;
-import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -35,25 +33,18 @@ public class GraphPackageDiagramConverterTest
                                                            "src.controller"));
         Map<PackageVertex, Set<Arc<PackageVertex>>> diagram = packageDiagramManager.getPackageDiagram().getDiagram();
 
-        List<Arc<PackageVertex>> arcs = new ArrayList<>();
-        for (Set<Arc<PackageVertex>> arcSet : diagram.values())
-        {
-            arcs.addAll(arcSet);
-        }
+        List<Arc<PackageVertex>> arcs = diagram.values().stream()
+            .flatMap(Collection::stream)
+            .collect(Collectors.toCollection(ArrayList::new));
 
         GraphPackageDiagramConverter                graphPackageDiagramConverter = new GraphPackageDiagramConverter(diagram.keySet());
         Map<PackageVertex, Set<Arc<PackageVertex>>> adjacencyList                = graphPackageDiagramConverter.convertGraphToPackageDiagram();
 
-        Set<Arc<PackageVertex>> actualArcs = new HashSet<>();
-        for (Set<Arc<PackageVertex>> value : adjacencyList.values())
-        {
-            actualArcs.addAll(value);
-        }
+        Set<Arc<PackageVertex>> actualArcs = adjacencyList.values().stream()
+            .flatMap(Collection::stream)
+            .collect(Collectors.toCollection(HashSet::new));
 
         assertEquals(arcs.size(), actualArcs.size());
-        for (Arc<PackageVertex> vertexArc : actualArcs)
-        {
-            assertTrue(arcs.contains(vertexArc));
-        }
+        assertTrue(arcs.containsAll(actualArcs));
     }
 }

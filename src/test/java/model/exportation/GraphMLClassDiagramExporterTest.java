@@ -11,7 +11,6 @@ import model.diagram.graphml.GraphMLSyntax;
 import org.javatuples.Pair;
 import org.junit.jupiter.api.Test;
 import utils.PathConstructor;
-import utils.PathTemplate;
 import utils.PathTemplate.LatexEditor;
 
 import java.io.File;
@@ -38,12 +37,15 @@ public class GraphMLClassDiagramExporterTest
             List<String> chosenFiles = Arrays.asList("MainWindow",
                                                      "LatexEditorView",
                                                      "OpeningWindow");
+
             classDiagramManager.createSourceProject(LatexEditor.SRC.path);
             classDiagramManager.convertTreeToDiagram(chosenFiles);
             classDiagramManager.arrangeDiagram();
+
             DiagramArrangementManagerInterface classDiagramArrangement = new ClassDiagramArrangementManager(classDiagramManager.getClassDiagram());
             Map<Integer, Pair<Double, Double>> nodesGeometry           = classDiagramArrangement.arrangeGraphMLDiagram();
             classDiagramManager.getClassDiagram().setGraphMLDiagramGeometry(nodesGeometry);
+
             DiagramExporter graphMLExporter = new GraphMLClassDiagramExporter(classDiagramManager.getClassDiagram());
             File exportedFile = graphMLExporter.exportDiagram(Paths.get(String.format("%s%s%s",
                                                                                       PathConstructor.getCurrentPath(),

@@ -45,8 +45,7 @@ public class InterpreterTest
             assertEquals(subNodes.size(), neighbours.size());
             for (Map.Entry<Path, PackageNode> subNode : subNodes.entrySet())
             {
-                assertTrue(neighbours
-                               .stream()
+                assertTrue(neighbours.stream()
                                .anyMatch(it -> it.getPath().toString().equals(subNode.getKey().toString()) &&
                                                it.getName().equals(subNode.getValue().getNodeName())       &&
                                                it.getVertexType().toString().equals(subNode.getValue().getNodeType().toString())));
@@ -64,8 +63,7 @@ public class InterpreterTest
             assertEquals(relationships.size(), arcs.size());
             for (Relationship<PackageNode> relationship : relationships)
             {
-                assertTrue(arcs
-                               .stream()
+                assertTrue(arcs.stream()
                                .anyMatch(it -> it.arcType().toString().equals(relationship.relationshipType().toString()) &&
                                                it.sourceVertex().getPath().equals(relationship.startingNode().getPath())  &&
                                                it.targetVertex().getPath().equals(relationship.endingNode().getPath())));
@@ -87,8 +85,7 @@ public class InterpreterTest
                 List<ClassifierVertex.Method> vertexMethods = classifierVertex.getMethods();
                 for (LeafNode.Method leafMethod : leafMethods)
                 {
-                    assertTrue(vertexMethods
-                                   .stream()
+                    assertTrue(vertexMethods.stream()
                                    .anyMatch(it -> it.name().equals(leafMethod.methodName())                &&
                                                    it.parameters().size() == leafMethod.parameters().size() &&
                                                    it.parameters().equals(leafMethod.parameters())          &&
@@ -100,8 +97,7 @@ public class InterpreterTest
                 List<ClassifierVertex.Field> vertexFields = classifierVertex.getFields();
                 for (LeafNode.Field leafField : leafFields)
                 {
-                    assertTrue(vertexFields
-                                   .stream()
+                    assertTrue(vertexFields.stream()
                                    .anyMatch(it -> it.name().equals(leafField.fieldNames()) &&
                                                    it.type().equals(leafField.fieldType())  &&
                                                    it.modifier().toString().equals(leafField.modifierType().toString())));
@@ -119,8 +115,7 @@ public class InterpreterTest
                 assertEquals(subNodeRelationships.size(), sinkVertexArcs.size());
                 for (Relationship<LeafNode> relationship : subNodeRelationships)
                 {
-                    assertTrue(sinkVertexArcs
-                                   .stream()
+                    assertTrue(sinkVertexArcs.stream()
                                    .anyMatch(it -> it.arcType().toString().equals(relationship.relationshipType().toString()) &&
                                                    it.sourceVertex().getPath().equals(relationship.startingNode().path())     &&
                                                    it.targetVertex().getPath().equals(relationship.endingNode().path())));

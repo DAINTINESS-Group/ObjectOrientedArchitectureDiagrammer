@@ -81,9 +81,10 @@ public class ProjectParserTest
         }
         Collections.sort(testingLeafNodes);
         Collections.sort(CONTROLLERS_LEAF_NODES);
-        assertTrue(testingLeafNodes.size() == CONTROLLERS_LEAF_NODES.size() &&
-                   CONTROLLERS_LEAF_NODES.containsAll(testingLeafNodes)              &&
-                   testingLeafNodes.containsAll(CONTROLLERS_LEAF_NODES));
+
+        assertEquals(CONTROLLERS_LEAF_NODES.size(), testingLeafNodes.size());
+        assertTrue(CONTROLLERS_LEAF_NODES.containsAll(testingLeafNodes));
+        assertTrue(testingLeafNodes.containsAll(CONTROLLERS_LEAF_NODES));
 
         testingLeafNodes.clear();
 
@@ -101,9 +102,10 @@ public class ProjectParserTest
         }
         Collections.sort(testingLeafNodes);
         Collections.sort(COMMANDS_LEAF_NODES);
-        assertTrue(testingLeafNodes.size() == COMMANDS_LEAF_NODES.size() &&
-                   COMMANDS_LEAF_NODES.containsAll(testingLeafNodes)              &&
-                   testingLeafNodes.containsAll(COMMANDS_LEAF_NODES));
+
+        assertEquals(COMMANDS_LEAF_NODES.size(), testingLeafNodes.size());
+        assertTrue(COMMANDS_LEAF_NODES.containsAll(testingLeafNodes));
+        assertTrue(testingLeafNodes.containsAll(COMMANDS_LEAF_NODES));
 
         testingLeafNodes.clear();
 
@@ -123,9 +125,10 @@ public class ProjectParserTest
         }
         Collections.sort(testingLeafNodes);
         Collections.sort(MODELS_LEAF_NODES);
-        assertTrue(testingLeafNodes.size() == MODELS_LEAF_NODES.size() &&
-                   MODELS_LEAF_NODES.containsAll(testingLeafNodes)              &&
-                   testingLeafNodes.containsAll(MODELS_LEAF_NODES));
+
+        assertEquals(MODELS_LEAF_NODES.size(), testingLeafNodes.size());
+        assertTrue(MODELS_LEAF_NODES.containsAll(testingLeafNodes));
+        assertTrue(testingLeafNodes.containsAll(MODELS_LEAF_NODES));
 
         testingLeafNodes.clear();
 
@@ -142,9 +145,10 @@ public class ProjectParserTest
         }
         Collections.sort(testingLeafNodes);
         Collections.sort(STRATEGIES_LEAF_NODES);
-        assertTrue(testingLeafNodes.size() == STRATEGIES_LEAF_NODES.size() &&
-                   STRATEGIES_LEAF_NODES.containsAll(testingLeafNodes)              &&
-                   testingLeafNodes.containsAll(STRATEGIES_LEAF_NODES));
+
+        assertEquals(STRATEGIES_LEAF_NODES.size(), testingLeafNodes.size());
+        assertTrue(STRATEGIES_LEAF_NODES.containsAll(testingLeafNodes));
+        assertTrue(testingLeafNodes.containsAll(STRATEGIES_LEAF_NODES));
 
         testingLeafNodes.clear();
 
@@ -162,9 +166,11 @@ public class ProjectParserTest
 
         Collections.sort(testingLeafNodes);
         Collections.sort(VIEWS_LEAF_NODES);
-        assertTrue(testingLeafNodes.size() == VIEWS_LEAF_NODES.size() &&
-                   VIEWS_LEAF_NODES.containsAll(testingLeafNodes)              &&
-                   testingLeafNodes.containsAll(VIEWS_LEAF_NODES));
+
+        assertEquals(VIEWS_LEAF_NODES.size(), testingLeafNodes.size());
+        assertTrue(VIEWS_LEAF_NODES.containsAll(testingLeafNodes));
+        assertTrue(testingLeafNodes.containsAll(VIEWS_LEAF_NODES));
+
         testingLeafNodes.clear();
 
         PackageNode sourcePackage = packageNodes.get(LatexEditor.SRC.path);
@@ -179,9 +185,10 @@ public class ProjectParserTest
                 .collect(Collectors.toCollection(ArrayList::new));
 
         Collections.sort(SOURCES_SUB_PACKAGES);
-        assertTrue(testingSubPackages.size() == SOURCES_SUB_PACKAGES.size() &&
-                   SOURCES_SUB_PACKAGES.containsAll(testingSubPackages)              &&
-                   testingSubPackages.containsAll(SOURCES_SUB_PACKAGES));
+
+        assertEquals(SOURCES_SUB_PACKAGES.size(), testingSubPackages.size());
+        assertTrue(SOURCES_SUB_PACKAGES.containsAll(testingSubPackages));
+        assertTrue(testingSubPackages.containsAll(SOURCES_SUB_PACKAGES));
         assertEquals(0, sourcePackage.getLeafNodes().size());
     }
 }

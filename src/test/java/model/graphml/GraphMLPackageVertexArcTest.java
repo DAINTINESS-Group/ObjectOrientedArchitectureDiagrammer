@@ -8,8 +8,9 @@ import org.junit.jupiter.api.Test;
 import utils.PathTemplate.LatexEditor;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -30,13 +31,11 @@ public class GraphMLPackageVertexArcTest
         StringBuilder           actual                  = graphMLPackageVertexArc.convertVertexArc();
 
         StringBuilder            expected = new StringBuilder();
-        List<Arc<PackageVertex>> arcs     = new ArrayList<>();
-        for (Set<Arc<PackageVertex>> arcSet : packageDiagramManager.getPackageDiagram().getDiagram().values())
-        {
-            arcs.addAll(arcSet);
-        }
-        int edgeId = 0;
+        List<Arc<PackageVertex>> arcs     = packageDiagramManager.getPackageDiagram().getDiagram().values().stream()
+            .flatMap(Collection::stream)
+            .collect(Collectors.toCollection(ArrayList::new));
 
+        int edgeId = 0;
         for (Arc<PackageVertex> e : arcs)
         {
             expected.append(String.format("""
@@ -52,11 +51,11 @@ public class GraphMLPackageVertexArcTest
                                                     </data>
                                                   </edge>\
                                               """,
-                                          edgeId,
+                                          edgeId++,
                                           packageDiagramManager.getPackageDiagram().getGraphNodes().get(e.sourceVertex()),
                                           packageDiagramManager.getPackageDiagram().getGraphNodes().get(e.targetVertex())));
-            edgeId++;
         }
+
         assertEquals(expected.toString(), actual.toString());
     }
 }

@@ -15,7 +15,6 @@ import model.graph.ClassifierVertex;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import utils.PathConstructor;
-import utils.PathTemplate;
 import utils.PathTemplate.LatexEditor;
 
 import java.io.File;
@@ -129,9 +128,7 @@ public class JavaFXPackageDiagramExporterTest
                                            .anyMatch(sinkVertexArc ->
                                                          sinkVertexArc.sourceVertex().getName().equals(arc.sourceVertex().getName()) &&
                                                          sinkVertexArc.targetVertex().getName().equals(arc.targetVertex().getName()) &&
-                                                         sinkVertexArc.arcType().equals(arc.arcType())
-                                           )
-                            );
+                                                         sinkVertexArc.arcType().equals(arc.arcType())));
                         }
                     }
 

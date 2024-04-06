@@ -71,20 +71,20 @@ public class PlantUMLClassDiagramImageExporterTest
                                                                                               "resources",
                                                                                               "actualExportedFile.png"))).toFile());
 
-            BufferedImage         expectedImage         = ImageComparisonUtil.readImageFromResources(Path.of(String.format("%s%s%s",
-                                                                                                                           PathConstructor.getCurrentPath(),
-                                                                                                                           File.separator,
-                                                                                                                           PathConstructor.constructPath("src",
-                                                                                                                                                         "test",
-                                                                                                                                                         "resources",
-                                                                                                                                                         "testingExportedFile.png"))).toString());
-            BufferedImage         actualImage           = ImageComparisonUtil.readImageFromResources(Path.of(String.format("%s%s%s",
-                                                                                                                           PathConstructor.getCurrentPath(),
-                                                                                                                           File.separator,
-                                                                                                                           PathConstructor.constructPath("src",
-                                                                                                                                                         "test",
-                                                                                                                                                         "resources",
-                                                                                                                                                         "actualExportedFile.png"))).toString());
+            BufferedImage expectedImage = ImageComparisonUtil.readImageFromResources(Path.of(String.format("%s%s%s",
+                                                                                                           PathConstructor.getCurrentPath(),
+                                                                                                           File.separator,
+                                                                                                           PathConstructor.constructPath("src",
+                                                                                                                                         "test",
+                                                                                                                                         "resources",
+                                                                                                                                         "testingExportedFile.png"))).toString());
+            BufferedImage actualImage = ImageComparisonUtil.readImageFromResources(Path.of(String.format("%s%s%s",
+                                                                                                         PathConstructor.getCurrentPath(),
+                                                                                                         File.separator,
+                                                                                                         PathConstructor.constructPath("src",
+                                                                                                                                       "test",
+                                                                                                                                       "resources",
+                                                                                                                                       "actualExportedFile.png"))).toString());
             ImageComparisonResult imageComparisonResult = new ImageComparison(expectedImage, actualImage).compareImages();
             assertEquals(ImageComparisonState.MATCH, imageComparisonResult.getImageComparisonState());
         }
