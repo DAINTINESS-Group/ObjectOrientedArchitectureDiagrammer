@@ -36,6 +36,7 @@ public class JavaFXPackageVisualization implements JavaFXVisualization
         vertexCollection = graph.vertices();
         graphView        = new SmartGraphPanel<>(graph, new SmartCircularSortedPlacementStrategy());
         setVertexCustomStyle();
+
         return graphView;
     }
 
@@ -57,6 +58,7 @@ public class JavaFXPackageVisualization implements JavaFXVisualization
             directedGraph.insertVertex(vertex.getName());
         }
         insertVertexArcs(directedGraph);
+
         return directedGraph;
     }
 
@@ -117,6 +119,7 @@ public class JavaFXPackageVisualization implements JavaFXVisualization
                 break;
             }
         }
+
         return graphView;
     }
 }

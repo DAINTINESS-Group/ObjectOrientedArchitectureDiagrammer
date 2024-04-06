@@ -3,6 +3,8 @@ package model.diagram.exportation;
 import model.diagram.PackageDiagram;
 import model.diagram.plantuml.PlantUMLPackageVertex;
 import model.diagram.plantuml.PlantUMLPackageVertexArc;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -12,6 +14,8 @@ import java.nio.file.Path;
 
 public class PlantUMLPackageDiagramTextExporter implements DiagramExporter
 {
+
+    private static final Logger logger = LogManager.getLogger(PlantUMLPackageDiagramTextExporter.class);
 
     private final StringBuilder bufferBody;
 
@@ -47,7 +51,7 @@ public class PlantUMLPackageDiagramTextExporter implements DiagramExporter
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            logger.error("Failed to write file {}", plantUMLFile.getName());
             throw new RuntimeException(e);
         }
     }
@@ -59,8 +63,8 @@ public class PlantUMLPackageDiagramTextExporter implements DiagramExporter
         String[]      lines     = plantUMLCode.split("\n");
         for (String line : lines)
         {
-            String[] splittedLine = line.split(" ");
-            for (String word : splittedLine)
+            String[] words = line.split(" ");
+            for (String word : words)
             {
                 String newWord = word;
                 if (word.contains(".") && !word.contains(".."))

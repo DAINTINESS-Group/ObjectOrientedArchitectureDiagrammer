@@ -31,8 +31,7 @@ public class ShadowCleaner
             Map<ClassifierVertex, List<Arc<ClassifierVertex>>> shadowedArcs = new HashMap<>();
             for (Arc<ClassifierVertex> arc : arcs)
             {
-                shadowedArcs.computeIfAbsent(arc.targetVertex(),
-                                             sinkVertex -> new ArrayList<>()).add(arc);
+                shadowedArcs.computeIfAbsent(arc.targetVertex(), k -> new ArrayList<>()).add(arc);
             }
 
             for (Map.Entry<ClassifierVertex, List<Arc<ClassifierVertex>>> arc : shadowedArcs.entrySet())

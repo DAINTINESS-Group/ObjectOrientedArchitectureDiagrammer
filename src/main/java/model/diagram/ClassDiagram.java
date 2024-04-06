@@ -48,8 +48,7 @@ public class ClassDiagram
         int nodeId = 0;
         for (ClassifierVertex classifierVertex : getChosenNodes(chosenFileNames))
         {
-            graphNodes.put(classifierVertex, nodeId);
-            nodeId++;
+            graphNodes.put(classifierVertex, nodeId++);
         }
     }
 
@@ -67,6 +66,7 @@ public class ClassDiagram
 
             optionalSinkVertex.ifPresent(chosenClasses::add);
         }
+
         return chosenClasses;
     }
 

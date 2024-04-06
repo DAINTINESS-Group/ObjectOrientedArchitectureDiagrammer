@@ -57,10 +57,10 @@ public class PackageDiagram
                 .stream()
                 .filter(it -> it.getName().equals(chosenPackage))
                 .findFirst();
-            if (vertex.isEmpty()) continue;
 
-            chosenPackages.add(vertex.get());
+            vertex.ifPresent(chosenPackages::add);
         }
+
         return chosenPackages;
     }
 

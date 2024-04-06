@@ -34,6 +34,7 @@ public class GraphClassDiagramConverter
                 adjacencyList.get(arc.sourceVertex()).add(arc);
             }
         }
+
         return adjacencyList;
     }
 

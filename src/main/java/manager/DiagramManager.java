@@ -98,7 +98,7 @@ public interface DiagramManager
     SmartGraphPanel<String, String> applyLayout();
 
     // TODO JavaDoc
-    SmartGraphPanel<String, String> applySpecificLayout(LayoutAlgorithmType algorithmType);
+    SmartGraphPanel<String, String> applySpecificLayout(String algorithmType);
 
     // TODO JavaDoc
     SmartGraphPanel<String, String> visualizeLoadedJavaFXGraph();

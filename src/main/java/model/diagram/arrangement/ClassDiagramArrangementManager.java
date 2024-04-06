@@ -14,43 +14,37 @@ import model.graph.Arc;
 import model.graph.ClassifierVertex;
 import org.javatuples.Pair;
 
-import java.awt.Dimension;
+import java.awt.*;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 public class ClassDiagramArrangementManager implements DiagramArrangementManager
 {
 
-    public static final LayoutAlgorithmType   DEFAULT_LAYOUT_ALGORITHM = LayoutAlgorithmType.SUGIYAMA;
-    public static final int                   HEIGHT                   = 1500;
-    public static final int                   WIDTH                    = 1000;
-    private final       ClassDiagram          classDiagram;
-    private final       Graph<String, String> graph;
+    public static final LayoutAlgorithmType DEFAULT_LAYOUT_ALGORITHM = LayoutAlgorithmType.SUGIYAMA;
+    public static final int                 HEIGHT                   = 1500;
+    public static final int                 WIDTH                    = 1000;
+    private final       ClassDiagram        classDiagram;
 
 
     public ClassDiagramArrangementManager(ClassDiagram classDiagram)
     {
         this.classDiagram = classDiagram;
-        graph             = createGraphWithStrings();
     }
 
 
     @Override
     public Map<Integer, Pair<Double, Double>> arrangeGraphMLDiagram()
     {
-        Map<Integer, Pair<Double, Double>> nodesGeometryGraphML = new HashMap<>();
-        Graph<Integer, String>             graph                = createGraph();
-        AbstractLayout<Integer, String>    layout               = new SpringLayout<>(graph);
+        Graph<Integer, String>             graph  = createGraph(classDiagram);
+        AbstractLayout<Integer, String>    layout = new SpringLayout<>(graph);
         layout.setSize(new Dimension(WIDTH, HEIGHT));
-        for (Integer i : classDiagram.getGraphNodes().values())
-        {
-            nodesGeometryGraphML.put(i, new Pair<>(layout.getX(i), layout.getY(i)));
-        }
 
-        return nodesGeometryGraphML;
+        return classDiagram.getGraphNodes().values().stream()
+            .collect(Collectors.toMap(it -> it, it -> new Pair<>(layout.getX(it), layout.getY(it))));
     }
 
 
@@ -58,7 +52,7 @@ public class ClassDiagramArrangementManager implements DiagramArrangementManager
     public DiagramGeometry arrangeDiagram()
     {
         LayoutAlgorithm layoutAlgorithm = LayoutAlgorithmFactory.createLayoutAlgorithm(DEFAULT_LAYOUT_ALGORITHM);
-        return layoutAlgorithm.arrangeDiagram(graph);
+        return layoutAlgorithm.arrangeDiagram(createGraphWithStrings(classDiagram));
     }
 
 
@@ -67,11 +61,11 @@ public class ClassDiagramArrangementManager implements DiagramArrangementManager
     {
         LayoutAlgorithmType algorithmEnumType = LayoutAlgorithmType.get(algorithmType);
         LayoutAlgorithm     layout            = LayoutAlgorithmFactory.createLayoutAlgorithm(algorithmEnumType);
-        return layout.arrangeDiagram(graph);
+        return layout.arrangeDiagram(createGraphWithStrings(classDiagram));
     }
 
 
-    private Graph<Integer, String> createGraph()
+    private static Graph<Integer, String> createGraph(ClassDiagram classDiagram)
     {
         Graph<Integer, String> graph = new SparseGraph<>();
         for (Integer nodeId : classDiagram.getGraphNodes().values())
@@ -79,11 +73,9 @@ public class ClassDiagramArrangementManager implements DiagramArrangementManager
             graph.addVertex(nodeId);
         }
 
-        List<Arc<ClassifierVertex>> arcs = new ArrayList<>();
-        for (Set<Arc<ClassifierVertex>> arcSet : classDiagram.getDiagram().values())
-        {
-            arcs.addAll(arcSet);
-        }
+        List<Arc<ClassifierVertex>> arcs = classDiagram.getDiagram().values().stream()
+            .flatMap(Collection::stream)
+            .collect(Collectors.toCollection(ArrayList::new));
 
         for (Arc<ClassifierVertex> arc : arcs)
         {
@@ -97,7 +89,7 @@ public class ClassDiagramArrangementManager implements DiagramArrangementManager
     }
 
 
-    private Graph<String, String> createGraphWithStrings()
+    private static Graph<String, String> createGraphWithStrings(ClassDiagram classDiagram)
     {
         Graph<String, String> graph = new SparseGraph<>();
         for (ClassifierVertex vertex : classDiagram.getGraphNodes().keySet())
@@ -105,11 +97,9 @@ public class ClassDiagramArrangementManager implements DiagramArrangementManager
             graph.addVertex(vertex.getName());
         }
 
-        List<Arc<ClassifierVertex>> arcs = new ArrayList<>();
-        for (Set<Arc<ClassifierVertex>> arcSet : classDiagram.getDiagram().values())
-        {
-            arcs.addAll(arcSet);
-        }
+        List<Arc<ClassifierVertex>> arcs = classDiagram.getDiagram().values().stream()
+            .flatMap(Collection::stream)
+            .collect(Collectors.toCollection(ArrayList::new));
 
         for (Arc<ClassifierVertex> arc : arcs)
         {

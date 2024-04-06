@@ -11,16 +11,8 @@ import java.util.stream.Collectors;
 public class PlantUMLClassifierVertex
 {
 
-    private final ClassDiagram classDiagram;
 
-
-    public PlantUMLClassifierVertex(ClassDiagram classDiagram)
-    {
-        this.classDiagram = classDiagram;
-    }
-
-
-    public StringBuilder convertSinkVertex()
+    public StringBuilder convertSinkVertex(ClassDiagram classDiagram)
     {
         String sinkVertices = classDiagram.getDiagram()
             .keySet()

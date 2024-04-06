@@ -25,10 +25,10 @@ public class PlantUMLClassDiagramImageExporter implements DiagramExporter
 
     public PlantUMLClassDiagramImageExporter(ClassDiagram diagram)
     {
-        PlantUMLClassifierVertex    plantUMLClassifierVertex = new PlantUMLClassifierVertex(diagram);
-        StringBuilder               plantUMLNodeBuffer       = plantUMLClassifierVertex.convertSinkVertex();
-        PlantUMLClassifierVertexArc plantUMLEdge             = new PlantUMLClassifierVertexArc(diagram);
-        StringBuilder               plantUMLEdgeBuffer       = plantUMLEdge.convertSinkVertexArc();
+        PlantUMLClassifierVertex    plantUMLClassifierVertex = new PlantUMLClassifierVertex();
+        StringBuilder               plantUMLNodeBuffer       = plantUMLClassifierVertex.convertSinkVertex(diagram);
+        PlantUMLClassifierVertexArc plantUMLEdge             = new PlantUMLClassifierVertexArc();
+        StringBuilder               plantUMLEdgeBuffer       = plantUMLEdge.convertSinkVertexArc(diagram);
         bufferBody = plantUMLNodeBuffer
             .append("\n\n")
             .append(plantUMLEdgeBuffer)

@@ -6,7 +6,6 @@ import com.google.gson.JsonParseException;
 import model.diagram.PackageDiagram;
 import model.diagram.arrangement.DiagramArrangementManager;
 import model.diagram.arrangement.PackageDiagramArrangementManager;
-import model.diagram.arrangement.algorithms.LayoutAlgorithmType;
 import model.diagram.arrangement.geometry.DiagramGeometry;
 import model.diagram.exportation.CoordinatesUpdater;
 import model.diagram.exportation.DiagramExporter;
@@ -17,8 +16,7 @@ import model.diagram.exportation.PlantUMLPackageDiagramTextExporter;
 import model.diagram.javafx.JavaFXPackageDiagramLoader;
 import model.diagram.javafx.JavaFXPackageVisualization;
 import model.diagram.javafx.JavaFXVisualization;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import model.diagram.svg.PlantUMLPackageDiagram;
 import org.javatuples.Pair;
 
 import java.io.File;
@@ -28,8 +26,6 @@ import java.util.List;
 
 public class PackageDiagramManager implements DiagramManager
 {
-
-    private static final Logger logger =  LogManager.getLogger(PackageDiagramManager.class);
 
     private PackageDiagram             packageDiagram;
     private DiagramArrangementManager  packageDiagramArrangement;
@@ -95,6 +91,7 @@ public class PackageDiagramManager implements DiagramManager
 
         graphView        = javaFXPackageVisualization.getLoadedGraph();
         vertexCollection = javaFXPackageVisualization.getVertexCollection();
+
         return graphView;
     }
 
@@ -104,6 +101,7 @@ public class PackageDiagramManager implements DiagramManager
     {
         packageDiagram.setGraphMLDiagramGeometry(packageDiagramArrangement.arrangeGraphMLDiagram());
         DiagramExporter diagramExporter = new GraphMLPackageDiagramExporter(packageDiagram);
+
         return diagramExporter.exportDiagram(graphMLSavePath);
     }
 
@@ -112,6 +110,7 @@ public class PackageDiagramManager implements DiagramManager
     public File exportPlantUMLImage(Path plantUMLSavePath)
     {
         DiagramExporter diagramExporter = new PlantUMLPackageDiagramImageExporter(packageDiagram);
+
         return diagramExporter.exportDiagram(plantUMLSavePath);
     }
 
@@ -120,6 +119,7 @@ public class PackageDiagramManager implements DiagramManager
     public File exportPlantUMLText(Path textSavePath)
     {
         DiagramExporter diagramExporter = new PlantUMLPackageDiagramTextExporter(packageDiagram);
+
         return diagramExporter.exportDiagram(textSavePath);
     }
 
@@ -131,6 +131,7 @@ public class PackageDiagramManager implements DiagramManager
         coordinatesUpdater.updatePackageCoordinates(vertexCollection, graphView);
 
         DiagramExporter diagramExporter = new JavaFXPackageDiagramExporter(packageDiagram);
+
         return diagramExporter.exportDiagram(graphSavePath);
     }
 
@@ -156,11 +157,7 @@ public class PackageDiagramManager implements DiagramManager
         DiagramGeometry nodesGeometry = packageDiagram.getDiagramGeometry();
         for (Vertex<String> vertex : vertexCollection)
         {
-            if (!nodesGeometry.containsKey(vertex.element()))
-            {
-                logger.debug("Vertex: {} not in vertices collection.", vertex.element());
-                continue;
-            }
+            if (!nodesGeometry.containsKey(vertex.element())) continue;
 
             Pair<Double, Double> coordinates = nodesGeometry.getVertexGeometry(vertex.element());
             graphView.setVertexPosition(vertex, coordinates.getValue0(), coordinates.getValue1());

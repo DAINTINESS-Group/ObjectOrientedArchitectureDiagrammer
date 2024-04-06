@@ -37,10 +37,10 @@ public class PlantUMLClassDiagramTextExporterTest
                                                              "Document",
                                                              "DocumentManager"));
 
-            PlantUMLClassifierVertex    plantUMLClassifierVertex = new PlantUMLClassifierVertex(classDiagramManager.getClassDiagram());
-            String                      sinkVertexBuffer         = plantUMLClassifierVertex.convertSinkVertex().toString();
-            PlantUMLClassifierVertexArc plantUMLEdge             = new PlantUMLClassifierVertexArc(classDiagramManager.getClassDiagram());
-            String                      sinkVertexArcBuffer      = plantUMLEdge.convertSinkVertexArc().toString();
+            PlantUMLClassifierVertex    plantUMLClassifierVertex = new PlantUMLClassifierVertex();
+            String                      sinkVertexBuffer         = plantUMLClassifierVertex.convertSinkVertex(classDiagramManager.getClassDiagram()).toString();
+            PlantUMLClassifierVertexArc plantUMLEdge             = new PlantUMLClassifierVertexArc();
+            String                      sinkVertexArcBuffer      = plantUMLEdge.convertSinkVertexArc(classDiagramManager.getClassDiagram()).toString();
             DiagramExporter             graphMLExporter          = new PlantUMLClassDiagramTextExporter(classDiagramManager.getClassDiagram());
             File exportedFile = graphMLExporter.exportDiagram(Paths.get(String.format("%s%s%s",
                                                                                       PathConstructor.getCurrentPath(),

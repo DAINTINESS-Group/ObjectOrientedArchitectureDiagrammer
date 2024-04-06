@@ -14,16 +14,8 @@ import java.util.stream.Collectors;
 public class PlantUMLClassifierVertexArc
 {
 
-    private final ClassDiagram classDiagram;
 
-
-    public PlantUMLClassifierVertexArc(ClassDiagram diagram)
-    {
-        this.classDiagram = diagram;
-    }
-
-
-    public StringBuilder convertSinkVertexArc()
+    public StringBuilder convertSinkVertexArc(ClassDiagram classDiagram)
     {
         return new StringBuilder(classDiagram.getDiagram().values().stream()
                                      .flatMap(Collection::stream)

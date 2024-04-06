@@ -19,12 +19,12 @@ public class PlantUMLClassDiagramTextExporter implements DiagramExporter
     private final StringBuilder bufferBody;
 
 
-    public PlantUMLClassDiagramTextExporter(ClassDiagram diagram)
+    public PlantUMLClassDiagramTextExporter(ClassDiagram classDiagram)
     {
-        PlantUMLClassifierVertex    plantUMLClassifierVertex = new PlantUMLClassifierVertex(diagram);
-        StringBuilder               plantUMLNodeBuffer       = plantUMLClassifierVertex.convertSinkVertex();
-        PlantUMLClassifierVertexArc plantUMLEdge             = new PlantUMLClassifierVertexArc(diagram);
-        StringBuilder               plantUMLEdgeBuffer       = plantUMLEdge.convertSinkVertexArc();
+        PlantUMLClassifierVertex    plantUMLClassifierVertex = new PlantUMLClassifierVertex();
+        StringBuilder               plantUMLNodeBuffer       = plantUMLClassifierVertex.convertSinkVertex(classDiagram);
+        PlantUMLClassifierVertexArc plantUMLEdge             = new PlantUMLClassifierVertexArc();
+        StringBuilder               plantUMLEdgeBuffer       = plantUMLEdge.convertSinkVertexArc(classDiagram);
         bufferBody = plantUMLNodeBuffer
             .append("\n\n")
             .append(plantUMLEdgeBuffer)

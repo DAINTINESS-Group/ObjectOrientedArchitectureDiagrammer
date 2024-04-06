@@ -17,17 +17,15 @@ public class GraphMLClassifierVertex
     private static final String INTERFACE_COLOR = "#3366FF";
 
     private final StringBuilder graphMLBuffer;
-    private final ClassDiagram  classDiagram;
 
 
-    public GraphMLClassifierVertex(ClassDiagram classDiagram)
+    public GraphMLClassifierVertex()
     {
-        this.classDiagram = classDiagram;
-        graphMLBuffer     = new StringBuilder();
+        graphMLBuffer = new StringBuilder();
     }
 
 
-    public StringBuilder convertSinkVertex()
+    public StringBuilder convertSinkVertex(ClassDiagram classDiagram)
     {
         for (Map.Entry<ClassifierVertex, Integer> sinkVertex : classDiagram.getGraphNodes().entrySet())
         {

@@ -1,26 +1,17 @@
 package manager;
 
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public enum DiagramType
 {
     CLASS,
     PACKAGE;
 
-    public static final Map<String, DiagramType> DIAGRAM_TYPE;
+    public static final Map<String, DiagramType> DIAGRAM_TYPE = Arrays.stream(DiagramType.values())
+        .collect(Collectors.toMap(DiagramType::toString, it -> it));
 
-    static
-    {
-        Map<String, DiagramType> map = new HashMap<>();
-        for (DiagramType diagramType : DiagramType.values())
-        {
-            map.put(diagramType.toString().toLowerCase(), diagramType);
-        }
-
-        DIAGRAM_TYPE = Collections.unmodifiableMap(map);
-    }
 
     public static DiagramType get(String diagramType)
     {

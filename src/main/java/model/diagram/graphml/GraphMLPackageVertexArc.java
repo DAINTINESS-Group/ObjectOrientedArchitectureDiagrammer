@@ -6,40 +6,39 @@ import model.graph.PackageVertex;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 public class GraphMLPackageVertexArc
 {
     private final StringBuilder  graphMLBuffer;
-    private final PackageDiagram packageDiagram;
 
 
-    public GraphMLPackageVertexArc(PackageDiagram packageDiagram)
+    public GraphMLPackageVertexArc()
     {
-        this.packageDiagram = packageDiagram;
         graphMLBuffer = new StringBuilder();
     }
 
 
-    public StringBuilder convertVertexArc()
+    public StringBuilder convertVertexArc(PackageDiagram packageDiagram)
     {
-        List<Arc<PackageVertex>> arcs = new ArrayList<>();
-        for (Set<Arc<PackageVertex>> arcSet : packageDiagram.getDiagram().values())
-        {
-            arcs.addAll(arcSet);
-        }
+        List<Arc<PackageVertex>> arcs = packageDiagram.getDiagram().values().stream()
+            .flatMap(Collection::stream)
+            .collect(Collectors.toCollection(ArrayList::new));
 
         int edgeId = 0;
         for (Arc<PackageVertex> arc : arcs)
         {
-            graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLVertexArcSyntax(getVertexArcProperties(arc, edgeId++)));
+            graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLVertexArcSyntax(getVertexArcProperties(packageDiagram, arc, edgeId++)));
         }
+
         return graphMLBuffer;
     }
 
 
-    private List<String> getVertexArcProperties(Arc<PackageVertex> relationship,
+    private List<String> getVertexArcProperties(PackageDiagram     packageDiagram,
+                                                Arc<PackageVertex> relationship,
                                                 int                edgeId)
     {
         return Arrays.asList(String.valueOf(edgeId),

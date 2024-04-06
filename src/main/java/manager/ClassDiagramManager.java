@@ -44,6 +44,7 @@ public class ClassDiagramManager implements DiagramManager
     {
         SourceProject sourceProject = new SourceProject();
         sourceProject.createClassGraph(sourcePackagePath, classDiagram);
+
         return sourceProject;
     }
 
@@ -63,6 +64,7 @@ public class ClassDiagramManager implements DiagramManager
         classDiagramArrangement         = new ClassDiagramArrangementManager(classDiagram);
         DiagramGeometry diagramGeometry = classDiagramArrangement.arrangeDiagram();
         classDiagram.setDiagramGeometry(diagramGeometry);
+
         return diagramGeometry;
     }
 
@@ -73,6 +75,7 @@ public class ClassDiagramManager implements DiagramManager
         JavaFXVisualization javaFXVisualization = new JavaFXClassVisualization(classDiagram);
         graphView                               = javaFXVisualization.createGraphView();
         vertexCollection                        = javaFXVisualization.getVertexCollection();
+
         return graphView;
     }
 
@@ -93,6 +96,7 @@ public class ClassDiagramManager implements DiagramManager
 
         graphView        = javaFXVisualization.getLoadedGraph();
         vertexCollection = javaFXVisualization.getVertexCollection();
+
         return graphView;
     }
 
@@ -102,6 +106,7 @@ public class ClassDiagramManager implements DiagramManager
     {
         classDiagram.setGraphMLDiagramGeometry(classDiagramArrangement.arrangeGraphMLDiagram());
         DiagramExporter diagramExporter = new GraphMLClassDiagramExporter(classDiagram);
+
         return diagramExporter.exportDiagram(graphMLSavePath);
     }
 
@@ -110,6 +115,7 @@ public class ClassDiagramManager implements DiagramManager
     public File exportPlantUMLImage(Path plantUMLSavePath)
     {
         DiagramExporter diagramExporter = new PlantUMLClassDiagramImageExporter(classDiagram);
+
         return diagramExporter.exportDiagram(plantUMLSavePath);
     }
 
@@ -118,6 +124,7 @@ public class ClassDiagramManager implements DiagramManager
     public File exportPlantUMLText(Path textSavePath)
     {
         DiagramExporter diagramExporter = new PlantUMLClassDiagramTextExporter(classDiagram);
+
         return diagramExporter.exportDiagram(textSavePath);
     }
 
@@ -129,6 +136,7 @@ public class ClassDiagramManager implements DiagramManager
         coordinatesUpdater.updateClassCoordinates(vertexCollection, graphView);
 
         DiagramExporter diagramExporter = new JavaFXClassDiagramExporter(classDiagram);
+
         return diagramExporter.exportDiagram(graphSavePath);
     }
 

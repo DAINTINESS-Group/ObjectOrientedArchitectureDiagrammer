@@ -28,8 +28,8 @@ public class PlantUMLClassifierVertexTest
                                                          "Document",
                                                          "DocumentManager"));
 
-        PlantUMLClassifierVertex plantUMLClassifierVertex = new PlantUMLClassifierVertex(classDiagramManager.getClassDiagram());
-        String                   actualBuffer             = plantUMLClassifierVertex.convertSinkVertex().toString();
+        PlantUMLClassifierVertex plantUMLClassifierVertex = new PlantUMLClassifierVertex();
+        String                   actualBuffer             = plantUMLClassifierVertex.convertSinkVertex(classDiagramManager.getClassDiagram()).toString();
 
         List<String> expected = Arrays.asList(EXPECTED_BUFFER.split("\n"));
         List<String> actual   = Arrays.asList(actualBuffer.split("\n"));

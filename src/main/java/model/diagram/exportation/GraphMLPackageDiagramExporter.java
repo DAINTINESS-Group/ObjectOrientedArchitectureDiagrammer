@@ -17,11 +17,11 @@ public class GraphMLPackageDiagramExporter implements DiagramExporter
 
     public GraphMLPackageDiagramExporter(PackageDiagram packageDiagram)
     {
-        GraphMLPackageVertex    graphMLPackageVertex    = new GraphMLPackageVertex(packageDiagram);
-        GraphMLPackageVertexArc graphMLPackageVertexArc = new GraphMLPackageVertexArc(packageDiagram);
+        GraphMLPackageVertex    graphMLPackageVertex    = new GraphMLPackageVertex();
+        GraphMLPackageVertexArc graphMLPackageVertexArc = new GraphMLPackageVertexArc();
 
-        graphMLNodeBuffer = graphMLPackageVertex.convertVertex();
-        graphMLEdgeBuffer = graphMLPackageVertexArc.convertVertexArc();
+        graphMLNodeBuffer = graphMLPackageVertex.convertVertex(packageDiagram);
+        graphMLEdgeBuffer = graphMLPackageVertexArc.convertVertexArc(packageDiagram);
         graphMLFile       = new GraphMLFile();
     }
 

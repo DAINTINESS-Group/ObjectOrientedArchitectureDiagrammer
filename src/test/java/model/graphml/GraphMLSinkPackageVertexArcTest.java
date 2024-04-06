@@ -38,8 +38,8 @@ public class GraphMLSinkPackageVertexArcTest
                                                          "RollbackToPreviousVersionCommand",
                                                          "SaveCommand"));
 
-        GraphMLClassifierVertexArc graphMLClassifierVertexArc = new GraphMLClassifierVertexArc(classDiagramManager.getClassDiagram());
-        StringBuilder              actual                     = graphMLClassifierVertexArc.convertSinkVertexArc();
+        GraphMLClassifierVertexArc graphMLClassifierVertexArc = new GraphMLClassifierVertexArc();
+        StringBuilder              actual                     = graphMLClassifierVertexArc.convertSinkVertexArc(classDiagramManager.getClassDiagram());
 
         StringBuilder               expected = new StringBuilder();
         List<Arc<ClassifierVertex>> arcs     = new ArrayList<>();

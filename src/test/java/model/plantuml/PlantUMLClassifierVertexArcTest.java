@@ -45,8 +45,8 @@ public class PlantUMLClassifierVertexArcTest
                                                          "Document",
                                                          "DocumentManager"));
 
-        PlantUMLClassifierVertexArc plantUMLEdge = new PlantUMLClassifierVertexArc(classDiagramManager.getClassDiagram());
-        String                      actualBuffer = plantUMLEdge.convertSinkVertexArc().toString();
+        PlantUMLClassifierVertexArc plantUMLEdge = new PlantUMLClassifierVertexArc();
+        String                      actualBuffer = plantUMLEdge.convertSinkVertexArc(classDiagramManager.getClassDiagram()).toString();
 
         List<String> expectedRelationships = Arrays.asList(expectedBuffer.split("\n"));
         List<String> actualRelationships   = Arrays.asList(actualBuffer.split("\n"));

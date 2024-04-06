@@ -157,10 +157,10 @@ public class ClassDiagramManagerTest
 
             DiagramArrangementManager classDiagramArrangement = new ClassDiagramArrangementManager(classDiagramManager.getClassDiagram());
             classDiagramManager.getClassDiagram().setGraphMLDiagramGeometry(classDiagramArrangement.arrangeGraphMLDiagram());
-            GraphMLClassifierVertex graphMLClassifierVertex = new GraphMLClassifierVertex(classDiagramManager.getClassDiagram());
-            graphMLClassifierVertex.convertSinkVertex();
-            GraphMLClassifierVertexArc graphMLClassifierVertexArc = new GraphMLClassifierVertexArc(classDiagramManager.getClassDiagram());
-            graphMLClassifierVertexArc.convertSinkVertexArc();
+            GraphMLClassifierVertex graphMLClassifierVertex = new GraphMLClassifierVertex();
+            graphMLClassifierVertex.convertSinkVertex(classDiagramManager.getClassDiagram());
+            GraphMLClassifierVertexArc graphMLClassifierVertexArc = new GraphMLClassifierVertexArc();
+            graphMLClassifierVertexArc.convertSinkVertexArc(classDiagramManager.getClassDiagram());
 
             DiagramExporter graphMLExporter = new GraphMLClassDiagramExporter(classDiagramManager.getClassDiagram());
             File expectedFile = graphMLExporter.exportDiagram(Paths.get(String.format("%s%s%s",

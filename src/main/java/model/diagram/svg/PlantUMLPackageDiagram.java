@@ -6,6 +6,8 @@ import model.diagram.plantuml.PlantUMLPackageVertexArc;
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.SourceStringReader;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -13,6 +15,8 @@ import java.nio.charset.StandardCharsets;
 
 public class PlantUMLPackageDiagram
 {
+
+    private static final Logger logger = LogManager.getLogger(PlantUMLPackageDiagram.class);
 
     private final StringBuilder bufferBody;
 
@@ -37,10 +41,12 @@ public class PlantUMLPackageDiagram
             String             plantUMLCode = getPackageText(dpi) + bufferBody;
             SourceStringReader reader       = new SourceStringReader(replaceDots(plantUMLCode));
             reader.outputImage(byteArrayOutputStream, new FileFormatOption(FileFormat.SVG)).getDescription();
+
             return byteArrayOutputStream.toString(StandardCharsets.UTF_8);
         }
         catch (IOException e)
         {
+            logger.error("Failed to create svg image.");
             throw new RuntimeException(e);
         }
     }
@@ -52,8 +58,8 @@ public class PlantUMLPackageDiagram
         String[]      lines     = plantUMLCode.split("\n");
         for (String line : lines)
         {
-            String[] split = line.split(" ");
-            for (String word : split)
+            String[] words = line.split(" ");
+            for (String word : words)
             {
                 String newWord = word;
                 if (word.contains(".") && !word.contains(".."))

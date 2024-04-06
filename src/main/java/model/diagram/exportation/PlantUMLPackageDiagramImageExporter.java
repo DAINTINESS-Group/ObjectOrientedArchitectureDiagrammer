@@ -116,8 +116,8 @@ public class PlantUMLPackageDiagramImageExporter implements DiagramExporter
         String[]      lines     = plantUMLCode.split("\n");
         for (String line : lines)
         {
-            String[] split = line.split(" ");
-            for (String word : split)
+            String[] words = line.split(" ");
+            for (String word : words)
             {
                 String newWord = word;
                 if (word.contains(".") && !word.contains(".."))

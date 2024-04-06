@@ -35,8 +35,8 @@ class GraphMLPackageVertexTest
                                                                                           Map.entry(3, new Pair<>(10.0, 10.0)),
                                                                                           Map.entry(4, new Pair<>(10.0, 10.0)),
                                                                                           Map.entry(5, new Pair<>(10.0, 10.0))));
-        GraphMLPackageVertex graphMLPackageVertex = new GraphMLPackageVertex(packageDiagramManager.getPackageDiagram());
-        StringBuilder        actual               = graphMLPackageVertex.convertVertex();
+        GraphMLPackageVertex graphMLPackageVertex = new GraphMLPackageVertex();
+        StringBuilder        actual               = graphMLPackageVertex.convertVertex(packageDiagramManager.getPackageDiagram());
 
         StringBuilder expected = new StringBuilder();
         for (PackageVertex packageNode : packageDiagramManager.getPackageDiagram().getGraphNodes().keySet())
