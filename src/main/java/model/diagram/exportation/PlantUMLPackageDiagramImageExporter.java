@@ -23,12 +23,10 @@ public class PlantUMLPackageDiagramImageExporter implements DiagramExporter
     private final StringBuilder bufferBody;
 
 
-    public PlantUMLPackageDiagramImageExporter(PackageDiagram diagram)
+    public PlantUMLPackageDiagramImageExporter(PackageDiagram packageDiagram)
     {
-        PlantUMLPackageVertex    plantUMLPackageVertex = new PlantUMLPackageVertex(diagram);
-        StringBuilder            plantUMLNodeBuffer    = plantUMLPackageVertex.convertVertex();
-        PlantUMLPackageVertexArc plantUMLEdge          = new PlantUMLPackageVertexArc(diagram);
-        StringBuilder            plantUMLEdgeBuffer    = plantUMLEdge.convertVertexArc();
+        StringBuilder plantUMLNodeBuffer = PlantUMLPackageVertex.convertVertices(packageDiagram);
+        StringBuilder plantUMLEdgeBuffer = PlantUMLPackageVertexArc.convertVertexArcs(packageDiagram);
         bufferBody = plantUMLNodeBuffer
             .append("\n\n")
             .append(plantUMLEdgeBuffer)
@@ -46,7 +44,7 @@ public class PlantUMLPackageDiagramImageExporter implements DiagramExporter
     }
 
 
-    private void exportImage(File plantUMLFile, String plantCode)
+    private static void exportImage(File plantUMLFile, String plantCode)
     {
         try (ByteArrayOutputStream png = new ByteArrayOutputStream())
         {
@@ -58,7 +56,7 @@ public class PlantUMLPackageDiagramImageExporter implements DiagramExporter
             BufferedImage convImg   = ImageIO.read(in);
             int           width     = convImg.getWidth();
             int           wrapWidth = 150;
-            //int stringChangerCounter = 0;
+
             if (width == 4096)
             {
                 try (ByteArrayOutputStream newPng = new ByteArrayOutputStream())
@@ -69,7 +67,6 @@ public class PlantUMLPackageDiagramImageExporter implements DiagramExporter
                     data = newPng.toByteArray();
                     in = new ByteArrayInputStream(data);
                     convImg = ImageIO.read(in);
-                    width = convImg.getWidth();
                 }
                 catch (IOException e)
                 {
@@ -87,7 +84,7 @@ public class PlantUMLPackageDiagramImageExporter implements DiagramExporter
     }
 
 
-    private String wrapWidthChanger(String plantCode, int wrapWidth)
+    private static String wrapWidthChanger(String plantCode, int wrapWidth)
     {
         String updatedString;
         int    indexOfNewLine = plantCode.indexOf("\n");
@@ -100,7 +97,7 @@ public class PlantUMLPackageDiagramImageExporter implements DiagramExporter
         // POP UP MESSAGE CAN BE ADDED TO INFORM THE USER THAT THE IMAGE HE			//
         // REQUESTED IS OVER 4096x4096 SO WE REDUCE THE WRAPWIDTH TO REDUCE			//
         // EXTRACTED IMAGE'S WIDTH. NOW THE USER CAN SEE MORE CLASSES.				//
-        //    	}else {																//
+        //    	} else {															//
         //    		String[] lines = plantCode.split("\n");							//
         //    		lines[1] = "skinparam wrapWidth " + wrapWidth;					//
         //    		updatedString = String.join("\n", lines);						//

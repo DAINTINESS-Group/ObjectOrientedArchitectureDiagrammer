@@ -11,19 +11,28 @@ import javafx.stage.Stage;
 import org.apache.batik.anim.dom.SAXSVGDocumentFactory;
 import org.apache.batik.swing.JSVGCanvas;
 import org.apache.batik.util.XMLResourceDescriptor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.svg.SVGDocument;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.WindowConstants;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.io.IOException;
 import java.io.StringReader;
 import java.net.URL;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class DiagramVisualization
 {
-    private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+
+    private static final Logger logger = LogManager.getLogger(DiagramVisualization.class);
+
+    private static final String DIAGRAM_VISUALIZATION_VIEW = "/fxml/DiagramVisualizationView.fxml";
+    private static final String PROJECT_LOAD_VIEW          = "/fxml/ProjectLoadView.fxml";
 
     private static final int EDGE_STARTING_NODE = 0;
     private static final int EDGE_ENDING_NODE   = 1;
@@ -35,7 +44,6 @@ public class DiagramVisualization
     private SmartGraphPanel<String, String> graphView;
     private ProjectTreeView                 projectTreeView;
     private Controller                      diagramController;
-    private SmartGraphPanel<String, String> graphView;
 
 
     public DiagramVisualization(MenuBar menuBar)
@@ -73,47 +81,40 @@ public class DiagramVisualization
         }
     }
 
+
     // TODO: See how feasible it is to remove this hack.
-    //  Create a GitHub issue for it.
     public void loadSvgDiagram()
     {
-        try
-        {
-            java.awt.EventQueue.invokeLater(() -> {
-                try
-                {
-                    final JFrame frame = new JFrame();
-                    final JPanel panel = new JPanel(new BorderLayout());
-                    final JSVGCanvas svgCanvas = new JSVGCanvas();
+        java.awt.EventQueue.invokeLater(() -> {
+            try
+            {
+                final JFrame frame = new JFrame();
+                final JPanel panel = new JPanel(new BorderLayout());
+                final JSVGCanvas svgCanvas = new JSVGCanvas();
 
-                    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-                    frame.getContentPane().add(panel, BorderLayout.CENTER);
+                frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+                frame.getContentPane().add(panel, BorderLayout.CENTER);
 
-                    Dimension screenSize   = Toolkit.getDefaultToolkit().getScreenSize();
-                    String svg = diagramController.visualizeSvgGraph(getDpi(screenSize));
+                Dimension screenSize   = Toolkit.getDefaultToolkit().getScreenSize();
+                String svg = diagramController.visualizeSvgGraph(getDpi(screenSize));
 
-                    SAXSVGDocumentFactory factory;
-                    String parser = XMLResourceDescriptor.getXMLParserClassName();
-                    factory = new SAXSVGDocumentFactory(parser);
-                    SVGDocument city = factory.createSVGDocument(null, new StringReader(svg));
-                    svgCanvas.setDocument(city);
+                String                parser      = XMLResourceDescriptor.getXMLParserClassName();
+                SAXSVGDocumentFactory factory     = new SAXSVGDocumentFactory(parser);
+                SVGDocument           svgDocument = factory.createSVGDocument(null, new StringReader(svg));
+                svgCanvas.setDocument(svgDocument);
 
-                    panel.add(svgCanvas, BorderLayout.CENTER);
-                    frame.setSize(screenSize.width, screenSize.height / 2);
-                    JScrollPane scrollPane = new JScrollPane(panel);
-                    frame.add(scrollPane, BorderLayout.CENTER);
-                    frame.setVisible(true);
-                }
-                catch (IOException e)
-                {
-                    throw new RuntimeException(e);
-                }
-            });
-        }
-        catch (Exception e)
-        {
-            throw new RuntimeException(e);
-        }
+                panel.add(svgCanvas, BorderLayout.CENTER);
+                frame.setSize(screenSize.width, screenSize.height / 2);
+                JScrollPane scrollPane = new JScrollPane(panel);
+                frame.add(scrollPane, BorderLayout.CENTER);
+                frame.setVisible(true);
+            }
+            catch (IOException e)
+            {
+                logger.error("Failed to create SVG document");
+                throw new RuntimeException(e);
+            }
+        });
     }
 
 
@@ -162,7 +163,7 @@ public class DiagramVisualization
         }
         catch (IOException e)
         {
-            logger.error("Failed to load {}", PROJECT_LOAD_VIEW);
+            logger.error("Failed to load {}, for loaded diagram", PROJECT_LOAD_VIEW);
             throw new RuntimeException(e);
         }
     }

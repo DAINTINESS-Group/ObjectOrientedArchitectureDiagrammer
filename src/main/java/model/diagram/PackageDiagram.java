@@ -53,8 +53,7 @@ public class PackageDiagram
         List<PackageVertex> chosenPackages = new ArrayList<>();
         for (String chosenPackage : chosenPackagesNames)
         {
-            Optional<PackageVertex> vertex = vertices.values()
-                .stream()
+            Optional<PackageVertex> vertex = vertices.values().stream()
                 .filter(it -> it.getName().equals(chosenPackage))
                 .findFirst();
 

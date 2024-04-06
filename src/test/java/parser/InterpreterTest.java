@@ -86,7 +86,7 @@ public class InterpreterTest
                 for (LeafNode.Method leafMethod : leafMethods)
                 {
                     assertTrue(vertexMethods.stream()
-                                   .anyMatch(it -> it.name().equals(leafMethod.methodName())                &&
+                                   .anyMatch(it -> it.name().equals(leafMethod.name())                      &&
                                                    it.parameters().size() == leafMethod.parameters().size() &&
                                                    it.parameters().equals(leafMethod.parameters())          &&
                                                    it.returnType().equals(leafMethod.returnType())          &&
@@ -98,7 +98,7 @@ public class InterpreterTest
                 for (LeafNode.Field leafField : leafFields)
                 {
                     assertTrue(vertexFields.stream()
-                                   .anyMatch(it -> it.name().equals(leafField.fieldNames()) &&
+                                   .anyMatch(it -> it.name().equals(leafField.name())       &&
                                                    it.type().equals(leafField.fieldType())  &&
                                                    it.modifier().toString().equals(leafField.modifierType().toString())));
                 }

@@ -139,17 +139,10 @@ public class PackageDiagramManager implements DiagramManager
     @Override
     public void loadDiagram(Path graphSavePath) throws JsonParseException
     {
-        JavaFXPackageDiagramLoader javaFXPackageDiagramLoader = new JavaFXPackageDiagramLoader(graphSavePath);
-
         packageDiagram = new PackageDiagram();
-        packageDiagram.createDiagram(javaFXPackageDiagramLoader.loadDiagram());
+        packageDiagram.createDiagram(JavaFXPackageDiagramLoader.loadDiagram(graphSavePath));
     }
 
-
-    public PackageDiagram getPackageDiagram()
-    {
-        return packageDiagram;
-    }
 
     @Override
     public SmartGraphPanel<String, String> applyLayout()
@@ -166,6 +159,7 @@ public class PackageDiagramManager implements DiagramManager
         return graphView;
     }
 
+
     @Override
     public SmartGraphPanel<String, String> applySpecificLayout(String choice)
     {
@@ -179,6 +173,11 @@ public class PackageDiagramManager implements DiagramManager
         }
 
         return graphView;
+    }
+
+    public PackageDiagram getPackageDiagram()
+    {
+        return packageDiagram;
     }
 
 }

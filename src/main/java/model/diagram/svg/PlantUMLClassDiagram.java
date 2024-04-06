@@ -19,10 +19,8 @@ public class PlantUMLClassDiagram
 
     public PlantUMLClassDiagram(ClassDiagram diagram)
     {
-        PlantUMLClassifierVertex    plantUMLClassifierVertex = new PlantUMLClassifierVertex();
-        StringBuilder               plantUMLNodeBuffer       = plantUMLClassifierVertex.convertSinkVertex(diagram);
-        PlantUMLClassifierVertexArc plantUMLEdge             = new PlantUMLClassifierVertexArc();
-        StringBuilder               plantUMLEdgeBuffer       = plantUMLEdge.convertSinkVertexArc(diagram);
+        StringBuilder plantUMLNodeBuffer = PlantUMLClassifierVertex.convertSinkVertices(diagram);
+        StringBuilder plantUMLEdgeBuffer = PlantUMLClassifierVertexArc.convertSinkVertexArcs(diagram);
         bufferBody = plantUMLNodeBuffer
             .append("\n\n")
             .append(plantUMLEdgeBuffer)

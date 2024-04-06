@@ -23,26 +23,17 @@ public class JavaFXPackageDiagramLoader
 {
     private static final Logger logger = LogManager.getLogger(JavaFXPackageDiagramLoader.class);
 
-    private final Path graphSavePath;
 
-
-    public JavaFXPackageDiagramLoader(Path graphSavePath)
-    {
-        this.graphSavePath = graphSavePath;
-    }
-
-
-    public Set<PackageVertex> loadDiagram() throws JsonParseException
+    public static Set<PackageVertex> loadDiagram(Path graphSavePath)
     {
         Set<PackageVertex> vertices = new HashSet<>();
         try
         {
             byte[] encodedBytes = Files.readAllBytes(graphSavePath);
             String json         = new String(encodedBytes, StandardCharsets.ISO_8859_1);
-            Gson gson           = new GsonBuilder()
-                                          .registerTypeAdapter(PackageVertex.class,
-                                                             new PackageVertexDeserializer())
-                                          .create();
+            Gson gson           = new GsonBuilder().registerTypeAdapter(PackageVertex.class,
+                                                                        new PackageVertexDeserializer())
+                                                   .create();
             PackageVertex[] verticesArray = gson.fromJson(json, PackageVertex[].class);
             Collections.addAll(vertices, verticesArray);
             deserializeArcs(vertices);
@@ -52,25 +43,29 @@ public class JavaFXPackageDiagramLoader
             logger.error("Failed to read bytes from file: {}", graphSavePath.toAbsolutePath());
             throw new RuntimeException(e);
         }
+        catch (JsonParseException e)
+        {
+            logger.error("Failed to parse Json from file: {}", graphSavePath.toAbsolutePath());
+            throw new RuntimeException(e);
+        }
         return vertices;
     }
 
 
-    private void deserializeArcs(Set<PackageVertex> vertices)
+    private static void deserializeArcs(Set<PackageVertex> vertices)
     {
         for (PackageVertex vertex : vertices)
         {
             List<Triplet<String, String, String>> deserializedArcs = vertex.getDeserializedArcs();
             for (Triplet<String, String, String> arc : deserializedArcs)
             {
-                Optional<PackageVertex> sourceVertex = vertices
-                    .stream()
+                Optional<PackageVertex> sourceVertex = vertices.stream()
                     .filter(it -> it.getName().equals(arc.getValue0()))
                     .findFirst();
-                Optional<PackageVertex> targetVertex = vertices
-                    .stream()
+                Optional<PackageVertex> targetVertex = vertices.stream()
                     .filter(it -> it.getName().equals(arc.getValue1()))
                     .findFirst();
+
                 if (sourceVertex.isEmpty() || targetVertex.isEmpty()) continue;
 
                 vertex.addArc(sourceVertex.get(), targetVertex.get(), ArcType.get(arc.getValue2()));

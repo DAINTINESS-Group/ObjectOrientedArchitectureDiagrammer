@@ -58,9 +58,7 @@ public class ClassDiagram
         List<ClassifierVertex> chosenClasses = new ArrayList<>();
         for (String chosenClass : chosenClassesNames)
         {
-            Optional<ClassifierVertex> optionalSinkVertex = sinkVertices
-                .values()
-                .stream()
+            Optional<ClassifierVertex> optionalSinkVertex = sinkVertices.values().stream()
                 .filter(it -> it.getName().equals(chosenClass))
                 .findFirst();
 

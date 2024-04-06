@@ -19,6 +19,7 @@ public class PackageNodeCleaner
                 validPackageNodes.put(packageNode.getPath(), packageNode);
                 continue;
             }
+
             PackageNode parentNode = packageNode.getParentNode();
             if (parentNode.getPath().toString().isEmpty()) continue;
 
@@ -31,10 +32,7 @@ public class PackageNodeCleaner
 
     private static boolean isPackageNodeValid(PackageNode packageNode)
     {
-        if (packageNode.getSubNodes().isEmpty())
-        {
-            return packageNode.isValid();
-        }
+        if (packageNode.getSubNodes().isEmpty()) return packageNode.isValid();
 
         boolean flag = false;
         for (PackageNode childNode : packageNode.getSubNodes().values())

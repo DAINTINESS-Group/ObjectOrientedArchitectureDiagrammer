@@ -22,10 +22,8 @@ public class PlantUMLPackageDiagram
 
     public PlantUMLPackageDiagram(PackageDiagram packageDiagram)
     {
-        PlantUMLPackageVertex plantUMLPackageVertex = new PlantUMLPackageVertex(packageDiagram);
-        StringBuilder         plantUMLNodeBuffer    = plantUMLPackageVertex.convertVertex();
-        PlantUMLPackageVertexArc plantUMLPackageVertexArc = new PlantUMLPackageVertexArc(packageDiagram);
-        StringBuilder plantUMLEdgeBuffer = plantUMLPackageVertexArc.convertVertexArc();
+        StringBuilder plantUMLNodeBuffer = PlantUMLPackageVertex.convertVertices(packageDiagram);
+        StringBuilder plantUMLEdgeBuffer = PlantUMLPackageVertexArc.convertVertexArcs(packageDiagram);
 
         bufferBody = plantUMLNodeBuffer
             .append("\n\n")

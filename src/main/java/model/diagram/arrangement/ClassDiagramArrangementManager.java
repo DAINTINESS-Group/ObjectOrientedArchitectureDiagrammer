@@ -14,7 +14,7 @@ import model.graph.Arc;
 import model.graph.ClassifierVertex;
 import org.javatuples.Pair;
 
-import java.awt.*;
+import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;

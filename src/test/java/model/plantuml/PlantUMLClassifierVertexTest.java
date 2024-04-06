@@ -15,7 +15,7 @@ public class PlantUMLClassifierVertexTest
 {
 
     @Test
-    void convertSinkVertexTest()
+    void convertSinkVerticesTest()
     {
 
         ClassDiagramManager classDiagramManager = new ClassDiagramManager();
@@ -29,7 +29,7 @@ public class PlantUMLClassifierVertexTest
                                                          "DocumentManager"));
 
         PlantUMLClassifierVertex plantUMLClassifierVertex = new PlantUMLClassifierVertex();
-        String                   actualBuffer             = plantUMLClassifierVertex.convertSinkVertex(classDiagramManager.getClassDiagram()).toString();
+        String                   actualBuffer             = plantUMLClassifierVertex.convertSinkVertices(classDiagramManager.getClassDiagram()).toString();
 
         List<String> expected = Arrays.asList(EXPECTED_BUFFER.split("\n"));
         List<String> actual   = Arrays.asList(actualBuffer.split("\n"));

@@ -22,10 +22,8 @@ public class PlantUMLPackageDiagramTextExporter implements DiagramExporter
 
     public PlantUMLPackageDiagramTextExporter(PackageDiagram diagram)
     {
-        PlantUMLPackageVertex    plantUMLPackageVertex = new PlantUMLPackageVertex(diagram);
-        StringBuilder            plantUMLNodeBuffer    = plantUMLPackageVertex.convertVertex();
-        PlantUMLPackageVertexArc plantUMLEdge          = new PlantUMLPackageVertexArc(diagram);
-        StringBuilder            plantUMLEdgeBuffer    = plantUMLEdge.convertVertexArc();
+        StringBuilder plantUMLNodeBuffer = PlantUMLPackageVertex.convertVertices(diagram);
+        StringBuilder plantUMLEdgeBuffer = PlantUMLPackageVertexArc.convertVertexArcs(diagram);
         bufferBody = plantUMLNodeBuffer
             .append("\n\n")
             .append(plantUMLEdgeBuffer)
@@ -43,7 +41,7 @@ public class PlantUMLPackageDiagramTextExporter implements DiagramExporter
     }
 
 
-    private void writeFile(File plantUMLFile, String plantCode)
+    private static void writeFile(File plantUMLFile, String plantCode)
     {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(plantUMLFile)))
         {

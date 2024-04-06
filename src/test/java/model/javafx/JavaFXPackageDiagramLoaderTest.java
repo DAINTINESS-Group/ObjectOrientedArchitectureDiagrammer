@@ -46,9 +46,9 @@ public class JavaFXPackageDiagramLoaderTest
                                                                                                            "resources",
                                                                                                            "testingExportedFile.txt"))));
 
-        JavaFXPackageDiagramLoader javaFXLoader  = new JavaFXPackageDiagramLoader(actualFile.toPath());
-        Set<PackageVertex>         loadedDiagram = javaFXLoader.loadDiagram();
+        Set<PackageVertex> loadedDiagram = JavaFXPackageDiagramLoader.loadDiagram(actualFile.toPath());
         assertEquals(createdDiagram.size(), loadedDiagram.size());
+
         for (PackageVertex vertex : createdDiagram.keySet())
         {
             Optional<PackageVertex> optionalVertex = loadedDiagram.stream()

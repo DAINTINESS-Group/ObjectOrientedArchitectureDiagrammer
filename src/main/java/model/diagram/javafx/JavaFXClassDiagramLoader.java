@@ -23,16 +23,8 @@ public class JavaFXClassDiagramLoader
 {
     private static final Logger logger = LogManager.getLogger(JavaFXClassDiagramLoader.class);
 
-    private final Path graphSavePath;
 
-
-    public JavaFXClassDiagramLoader(Path graphSavePath)
-    {
-        this.graphSavePath = graphSavePath;
-    }
-
-
-    public Set<ClassifierVertex> loadDiagram() throws JsonParseException
+    public static Set<ClassifierVertex> loadDiagram(Path graphSavePath) throws JsonParseException
     {
         Set<ClassifierVertex> sinkVertices = new HashSet<>();
         try
@@ -56,7 +48,7 @@ public class JavaFXClassDiagramLoader
     }
 
 
-    private void deserializeArcs(Set<ClassifierVertex> sinkVertices)
+    private static void deserializeArcs(Set<ClassifierVertex> sinkVertices)
     {
         for (ClassifierVertex classifierVertex : sinkVertices)
         {

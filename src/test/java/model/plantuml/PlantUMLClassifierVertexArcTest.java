@@ -1,14 +1,11 @@
 package model.plantuml;
 
 import manager.ClassDiagramManager;
+import model.diagram.ClassDiagram;
 import model.diagram.plantuml.PlantUMLClassifierVertexArc;
 import org.junit.jupiter.api.Test;
-import utils.PathConstructor;
-import utils.PathTemplate;
 import utils.PathTemplate.LatexEditor;
 
-import java.io.File;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -19,7 +16,7 @@ public class PlantUMLClassifierVertexArcTest
 {
 
     @Test
-    void convertSinkVertexArcTest()
+    void convertSinkVerticesArcTest()
     {
         String expectedBuffer = """
             VersionsStrategy ..> Document
@@ -45,9 +42,8 @@ public class PlantUMLClassifierVertexArcTest
                                                          "Document",
                                                          "DocumentManager"));
 
-        PlantUMLClassifierVertexArc plantUMLEdge = new PlantUMLClassifierVertexArc();
-        String                      actualBuffer = plantUMLEdge.convertSinkVertexArc(classDiagramManager.getClassDiagram()).toString();
-
+        ClassDiagram classDiagram          = classDiagramManager.getClassDiagram();
+        String       actualBuffer          = PlantUMLClassifierVertexArc.convertSinkVertexArcs(classDiagram).toString();
         List<String> expectedRelationships = Arrays.asList(expectedBuffer.split("\n"));
         List<String> actualRelationships   = Arrays.asList(actualBuffer.split("\n"));
         Collections.sort(expectedRelationships);

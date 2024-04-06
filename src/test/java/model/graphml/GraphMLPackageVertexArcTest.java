@@ -27,8 +27,8 @@ public class GraphMLPackageVertexArcTest
                                                            "src.model.strategies",
                                                            "src.controller.commands",
                                                            "src.controller"));
-        GraphMLPackageVertexArc graphMLPackageVertexArc = new GraphMLPackageVertexArc(packageDiagramManager.getPackageDiagram());
-        StringBuilder           actual                  = graphMLPackageVertexArc.convertVertexArc();
+        GraphMLPackageVertexArc graphMLPackageVertexArc = new GraphMLPackageVertexArc();
+        StringBuilder           actual                  = graphMLPackageVertexArc.convertVertexArc(packageDiagramManager.getPackageDiagram());
 
         StringBuilder            expected = new StringBuilder();
         List<Arc<PackageVertex>> arcs     = packageDiagramManager.getPackageDiagram().getDiagram().values().stream()

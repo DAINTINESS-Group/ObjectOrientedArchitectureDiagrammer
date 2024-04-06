@@ -27,10 +27,10 @@ import java.util.List;
 public class ClassDiagramManager implements DiagramManager
 {
 
-    private ClassDiagram                       classDiagram;
-    private DiagramArrangementManager          classDiagramArrangement;
-    private Collection<Vertex<String>>         vertexCollection;
-    private SmartGraphPanel<String, String>    graphView;
+    private ClassDiagram                    classDiagram;
+    private DiagramArrangementManager       classDiagramArrangement;
+    private Collection<Vertex<String>>      vertexCollection;
+    private SmartGraphPanel<String, String> graphView;
 
 
     public ClassDiagramManager()
@@ -84,6 +84,7 @@ public class ClassDiagramManager implements DiagramManager
     public String visualizeSvgGraph(int dpi)
     {
         PlantUMLClassDiagram plantUMLClassDiagram = new PlantUMLClassDiagram(classDiagram);
+
         return plantUMLClassDiagram.toSvg(dpi);
     }
 
@@ -134,7 +135,6 @@ public class ClassDiagramManager implements DiagramManager
     {
         CoordinatesUpdater coordinatesUpdater = new CoordinatesUpdater(classDiagram);
         coordinatesUpdater.updateClassCoordinates(vertexCollection, graphView);
-
         DiagramExporter diagramExporter = new JavaFXClassDiagramExporter(classDiagram);
 
         return diagramExporter.exportDiagram(graphSavePath);
@@ -144,11 +144,8 @@ public class ClassDiagramManager implements DiagramManager
     @Override
     public void loadDiagram(Path graphSavePath)
     {
-        JavaFXClassDiagramLoader javaFXClassDiagramLoader = new JavaFXClassDiagramLoader(graphSavePath);
-
         classDiagram = new ClassDiagram();
-        classDiagram.createDiagram(javaFXClassDiagramLoader.loadDiagram());
-
+        classDiagram.createDiagram(JavaFXClassDiagramLoader.loadDiagram(graphSavePath));
         ShadowCleaner shadowCleaner = new ShadowCleaner(classDiagram);
         classDiagram.setDiagram(shadowCleaner.shadowWeakRelationships());
     }

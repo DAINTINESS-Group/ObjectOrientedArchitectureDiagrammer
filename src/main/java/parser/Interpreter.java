@@ -19,6 +19,7 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Interpreter
 {
@@ -27,8 +28,6 @@ public class Interpreter
 
     private final Map<PackageNode, PackageVertex>                  packageNodeVertexMap;
     private final Map<LeafNode, ClassifierVertex>                  leafNodeSinkVertexMap;
-    private final Map<Path, PackageVertex>                         vertices;
-    private final Map<Path, ClassifierVertex>                      sinkVertices;
     private       Map<PackageNode, Set<Relationship<PackageNode>>> packageNodeRelationships;
     private       Map<LeafNode, Set<Relationship<LeafNode>>>       leafNodeRelationships;
     private       Map<Path, PackageNode>                           packageNodes;
@@ -36,8 +35,6 @@ public class Interpreter
 
 	public Interpreter()
     {
-		vertices 			  = new HashMap<>();
-		sinkVertices 		  = new HashMap<>();
 		packageNodeVertexMap  = new HashMap<>();
 		leafNodeSinkVertexMap = new HashMap<>();
 	}
@@ -55,22 +52,26 @@ public class Interpreter
     public void convertTreeToGraph()
     {
         packageNodes = PackageNodeCleaner.removeNonPackageNodes(packageNodes);
-        populateVertexMaps();
-        addVertexArcs();
-
-        for (ClassifierVertex classifierVertex : leafNodeSinkVertexMap.values())
-        {
-            sinkVertices.put(classifierVertex.getPath(), classifierVertex);
-        }
-
-        for (PackageVertex packageVertex : packageNodeVertexMap.values())
-        {
-            vertices.put(packageVertex.getPath(), packageVertex);
-        }
+        populateVertexMaps(packageNodes);
+        addVertexArcs(packageNodes);
     }
 
 
-    private void populateVertexMaps()
+    public Map<Path, ClassifierVertex> getSinkVertices()
+    {
+        return leafNodeSinkVertexMap.values().stream()
+            .collect(Collectors.toMap(ClassifierVertex::getPath, it -> it));
+    }
+
+
+    public Map<Path, PackageVertex> getVertices()
+    {
+        return packageNodeVertexMap.values().stream()
+            .collect(Collectors.toMap(PackageVertex::getPath, it -> it));
+    }
+
+
+    private void populateVertexMaps(Map<Path, PackageNode> packageNodes)
     {
         for (PackageNode packageNode : packageNodes.values())
         {
@@ -81,7 +82,8 @@ public class Interpreter
 
             for (LeafNode leafNode : packageNode.getLeafNodes().values())
             {
-                vertex.addSinkVertex(leafNodeSinkVertexMap.computeIfAbsent(leafNode, this::createSinkVertex));
+                ClassifierVertex classifierVertex = leafNodeSinkVertexMap.computeIfAbsent(leafNode, Interpreter::createSinkVertex);
+                vertex.addSinkVertex(classifierVertex);
             }
         }
 
@@ -101,7 +103,7 @@ public class Interpreter
     }
 
 
-    private void addVertexArcs()
+    private void addVertexArcs(Map<Path, PackageNode> packageNodes)
     {
         for (PackageNode packageNode : packageNodes.values())
         {
@@ -136,7 +138,7 @@ public class Interpreter
     }
 
 
-    private ClassifierVertex createSinkVertex(LeafNode leafNode)
+    private static ClassifierVertex createSinkVertex(LeafNode leafNode)
     {
         ClassifierVertex classifierVertex = new ClassifierVertex(leafNode.path(),
                                                                  leafNode.nodeName(),
@@ -149,7 +151,7 @@ public class Interpreter
                                       TypeConverter.convertModifierType(field.modifierType()));
         }
 
-        for (LeafNode.Method method : leafNode.methods())
+        for (LeafNode.Method method: leafNode.methods())
         {
             classifierVertex.addMethod(method.name(),
                                        method.returnType(),
@@ -167,18 +169,6 @@ public class Interpreter
     }
 
 
-    public Map<Path, PackageVertex> getVertices()
-    {
-        return vertices;
-    }
-
-
-    public Map<Path, ClassifierVertex> getSinkVertices()
-    {
-        return sinkVertices;
-    }
-
-
     public Map<PackageNode, Set<Relationship<PackageNode>>> getPackageNodeRelationships()
     {
         return packageNodeRelationships;
@@ -191,6 +181,10 @@ public class Interpreter
     }
 
 
+    /**
+     * Utility class to convert {@link NodeType}s, {@link RelationshipType}s and {@link ModifierType}s.
+     *
+     */
     private static class TypeConverter
     {
 

@@ -49,13 +49,11 @@ public class JavaFXClassDiagramLoaderTest
                                                                                                                           "resources",
                                                                                                                           "testingExportedFile.txt"))));
 
-        JavaFXClassDiagramLoader javaFXClassDiagramLoader = new JavaFXClassDiagramLoader(actualFile.toPath());
-        Set<ClassifierVertex>    loadedDiagram            = javaFXClassDiagramLoader.loadDiagram();
+        Set<ClassifierVertex> loadedDiagram = JavaFXClassDiagramLoader.loadDiagram(actualFile.toPath());
         assertEquals(createdDiagram.size(), loadedDiagram.size());
         for (ClassifierVertex classifierVertex : createdDiagram.keySet())
         {
-            Optional<ClassifierVertex> optionalSinkVertex = loadedDiagram
-                .stream()
+            Optional<ClassifierVertex> optionalSinkVertex = loadedDiagram.stream()
                 .filter(it -> it.getName().equals(classifierVertex.getName()) &&
                               it.getVertexType().equals(classifierVertex.getVertexType()))
                 .findFirst();

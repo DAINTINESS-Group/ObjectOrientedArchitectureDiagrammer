@@ -12,7 +12,7 @@ public class PlantUMLClassifierVertex
 {
 
 
-    public StringBuilder convertSinkVertex(ClassDiagram classDiagram)
+    public static StringBuilder convertSinkVertices(ClassDiagram classDiagram)
     {
         String sinkVertices = classDiagram.getDiagram()
             .keySet()
@@ -28,7 +28,7 @@ public class PlantUMLClassifierVertex
     }
 
 
-    private String convertFields(ClassifierVertex classifierVertex)
+    private static String convertFields(ClassifierVertex classifierVertex)
     {
         if (classifierVertex.getFields().isEmpty()) return "";
 
@@ -40,7 +40,7 @@ public class PlantUMLClassifierVertex
     }
 
 
-    private String convertMethods(ClassifierVertex classifierVertex)
+    private static String convertMethods(ClassifierVertex classifierVertex)
     {
         StringBuilder plantUMLMethods = new StringBuilder();
 
@@ -65,8 +65,8 @@ public class PlantUMLClassifierVertex
     }
 
 
-    private void convertMethod(StringBuilder                 plantUMLMethods,
-                               List<ClassifierVertex.Method> methods)
+    private static void convertMethod(StringBuilder                 plantUMLMethods,
+                                      List<ClassifierVertex.Method> methods)
     {
         for (ClassifierVertex.Method method : methods)
         {
@@ -86,7 +86,7 @@ public class PlantUMLClassifierVertex
     }
 
 
-    private String getVisibility(ModifierType visibilityEnum)
+    private static String getVisibility(ModifierType visibilityEnum)
     {
         return switch (visibilityEnum)
         {

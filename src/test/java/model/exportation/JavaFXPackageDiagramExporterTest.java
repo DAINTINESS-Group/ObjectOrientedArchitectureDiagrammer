@@ -15,6 +15,7 @@ import model.graph.ClassifierVertex;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import utils.PathConstructor;
+import utils.PathTemplate.LatexEditor;
 
 import java.io.File;
 import java.io.IOException;

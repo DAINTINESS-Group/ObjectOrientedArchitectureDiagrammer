@@ -25,10 +25,8 @@ public class PlantUMLClassDiagramImageExporter implements DiagramExporter
 
     public PlantUMLClassDiagramImageExporter(ClassDiagram diagram)
     {
-        PlantUMLClassifierVertex    plantUMLClassifierVertex = new PlantUMLClassifierVertex();
-        StringBuilder               plantUMLNodeBuffer       = plantUMLClassifierVertex.convertSinkVertex(diagram);
-        PlantUMLClassifierVertexArc plantUMLEdge             = new PlantUMLClassifierVertexArc();
-        StringBuilder               plantUMLEdgeBuffer       = plantUMLEdge.convertSinkVertexArc(diagram);
+        StringBuilder plantUMLNodeBuffer = PlantUMLClassifierVertex.convertSinkVertices(diagram);
+        StringBuilder plantUMLEdgeBuffer = PlantUMLClassifierVertexArc.convertSinkVertexArcs(diagram);
         bufferBody = plantUMLNodeBuffer
             .append("\n\n")
             .append(plantUMLEdgeBuffer)
@@ -47,7 +45,7 @@ public class PlantUMLClassDiagramImageExporter implements DiagramExporter
     }
 
 
-    private void exportImage(File plantUMLFile, String plantCode)
+    private static void exportImage(File plantUMLFile, String plantCode)
     {
         try (ByteArrayOutputStream png = new ByteArrayOutputStream())
         {
@@ -86,7 +84,7 @@ public class PlantUMLClassDiagramImageExporter implements DiagramExporter
     }
 
 
-    private String wrapWidthChanger(String plantCode, int wrapWidth)
+    private static String wrapWidthChanger(String plantCode, int wrapWidth)
     {
         String updatedString;
         // if (counter == 0) {

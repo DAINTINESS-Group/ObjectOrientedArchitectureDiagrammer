@@ -9,21 +9,11 @@ import java.util.stream.Collectors;
 public class PlantUMLPackageVertexArc
 {
 
-    private final PackageDiagram packageDiagram;
-
-
-    public PlantUMLPackageVertexArc(PackageDiagram diagram)
-    {
-        this.packageDiagram = diagram;
-    }
-
-
-    public StringBuilder convertVertexArc()
+    public static StringBuilder convertVertexArcs(PackageDiagram packageDiagram)
     {
         return new StringBuilder(packageDiagram.getDiagram().values().stream()
                                      .flatMap(Collection::stream)
-                                     .map(it ->
-                                              String.join(" ",
+                                     .map(it -> String.join(" ",
                                                           it.sourceVertex().getName(),
                                                           getRelationship(it.arcType()),
                                                           it.targetVertex().getName()))
@@ -31,7 +21,7 @@ public class PlantUMLPackageVertexArc
     }
 
 
-    private String getRelationship(ArcType relationshipType)
+    private static String getRelationship(ArcType relationshipType)
     {
         return switch (relationshipType)
         {
