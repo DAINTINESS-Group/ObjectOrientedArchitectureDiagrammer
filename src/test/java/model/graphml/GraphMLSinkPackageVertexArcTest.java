@@ -6,6 +6,8 @@ import model.graph.Arc;
 import model.graph.ClassifierVertex;
 import org.junit.jupiter.api.Test;
 import utils.PathConstructor;
+import utils.PathTemplate;
+import utils.PathTemplate.LatexEditor;
 
 import java.io.File;
 import java.nio.file.Paths;
@@ -23,13 +25,7 @@ public class GraphMLSinkPackageVertexArcTest
     void convertSinkVertexArcsToGraphMLTest()
     {
         ClassDiagramManager classDiagramManager = new ClassDiagramManager();
-        classDiagramManager.createSourceProject(Paths.get(String.format("%s%s%s".formatted(PathConstructor.getCurrentPath(),
-                                                                                           File.separator,
-                                                                                           PathConstructor.constructPath("src",
-                                                                                                                         "test",
-                                                                                                                         "resources",
-                                                                                                                         "LatexEditor",
-                                                                                                                         "src")))));
+        classDiagramManager.createSourceProject(LatexEditor.SRC.path);
         classDiagramManager.convertTreeToDiagram(List.of("AddLatexCommand",
                                                          "ChangeVersionsStrategyCommand",
                                                          "Command",

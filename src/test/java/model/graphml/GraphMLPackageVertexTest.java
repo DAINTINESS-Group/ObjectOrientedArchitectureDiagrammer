@@ -6,6 +6,8 @@ import model.graph.PackageVertex;
 import org.javatuples.Pair;
 import org.junit.jupiter.api.Test;
 import utils.PathConstructor;
+import utils.PathTemplate;
+import utils.PathTemplate.LatexEditor;
 
 import java.io.File;
 import java.nio.file.Paths;
@@ -21,7 +23,7 @@ class GraphMLPackageVertexTest
     void convertVerticesToGraphMLTest()
     {
         PackageDiagramManager packageDiagramManager = new PackageDiagramManager();
-        packageDiagramManager.createSourceProject(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "LatexEditor", "src")));
+        packageDiagramManager.createSourceProject(LatexEditor.SRC.path);
         packageDiagramManager.convertTreeToDiagram(List.of("src.view",
                                                            "src.model",
                                                            "src.model.strategies",

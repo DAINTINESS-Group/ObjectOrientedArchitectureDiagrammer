@@ -7,6 +7,8 @@ import model.graph.VertexType;
 import org.javatuples.Pair;
 import org.junit.jupiter.api.Test;
 import utils.PathConstructor;
+import utils.PathTemplate;
+import utils.PathTemplate.LatexEditor;
 
 import java.io.File;
 import java.nio.file.Paths;
@@ -22,14 +24,7 @@ public class GraphMLSinkPackageVertexTest
     void convertSinkVerticesToGraphMLTest()
     {
         ClassDiagramManager classDiagramManager = new ClassDiagramManager();
-        classDiagramManager.createSourceProject(Paths.get(String.format("%s%s%s",
-                                                                        PathConstructor.getCurrentPath(),
-                                                                        File.separator,
-                                                                        PathConstructor.constructPath("src",
-                                                                                                      "test",
-                                                                                                      "resources",
-                                                                                                      "LatexEditor",
-                                                                                                      "src"))));
+        classDiagramManager.createSourceProject(LatexEditor.SRC.path);
         classDiagramManager.convertTreeToDiagram(List.of("AddLatexCommand",
                                                          "ChangeVersionsStrategyCommand",
                                                          "Command",
@@ -91,10 +86,8 @@ public class GraphMLSinkPackageVertexTest
 
     private String getNodesFields(ClassifierVertex l)
     {
-        if (l.getFields().isEmpty())
-        {
-            return "";
-        }
+        if (l.getFields().isEmpty()) return "";
+
         StringBuilder fields = new StringBuilder();
         for (ClassifierVertex.Field field : l.getFields())
         {
@@ -106,10 +99,8 @@ public class GraphMLSinkPackageVertexTest
 
     private String getNodesMethods(ClassifierVertex l)
     {
-        if ((l).getMethods().isEmpty())
-        {
-            return "";
-        }
+        if ((l).getMethods().isEmpty()) return "";
+
         StringBuilder methods = new StringBuilder();
         for (ClassifierVertex.Method method : l.getMethods())
         {
@@ -121,11 +112,9 @@ public class GraphMLSinkPackageVertexTest
 
     private String getNodesColor(ClassifierVertex l)
     {
-        if (l.getVertexType().equals(VertexType.INTERFACE))
-        {
-            return "#3366FF";
-        }
-        return "#FF9900";
+        return l.getVertexType().equals(VertexType.INTERFACE) ?
+            "#3366FF" :
+            "#FF9900";
     }
 
 }

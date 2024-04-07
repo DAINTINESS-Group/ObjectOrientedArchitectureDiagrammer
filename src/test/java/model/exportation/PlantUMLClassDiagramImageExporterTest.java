@@ -12,6 +12,7 @@ import model.diagram.plantuml.PlantUMLClassifierVertexArc;
 import net.sourceforge.plantuml.SourceStringReader;
 import org.junit.jupiter.api.Test;
 import utils.PathConstructor;
+import utils.PathTemplate.LatexEditor;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -36,11 +37,14 @@ public class PlantUMLClassDiagramImageExporterTest
         try
         {
             ClassDiagramManager classDiagramManager = new ClassDiagramManager();
-            classDiagramManager.createSourceProject(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "LatexEditor", "src")));
-            classDiagramManager.convertTreeToDiagram(List.of(
-                "StableVersionsStrategy", "VersionsStrategy", "VersionsStrategyFactory", "VolatileVersionsStrategy",
-                "VersionsManager", "Document", "DocumentManager")
-            );
+            classDiagramManager.createSourceProject(LatexEditor.SRC.path);
+            classDiagramManager.convertTreeToDiagram(List.of("StableVersionsStrategy",
+                                                             "VersionsStrategy",
+                                                             "VersionsStrategyFactory",
+                                                             "VolatileVersionsStrategy",
+                                                             "VersionsManager",
+                                                             "Document",
+                                                             "DocumentManager"));
 
             PlantUMLClassifierVertex    plantUMLClassifierVertex = new PlantUMLClassifierVertex(classDiagramManager.getClassDiagram());
             String                      sinkVertexBuffer         = plantUMLClassifierVertex.convertSinkVertex().toString();
@@ -48,15 +52,39 @@ public class PlantUMLClassDiagramImageExporterTest
             String                      sinkVertexArcBuffer      = plantUMLEdge.convertSinkVertexArc().toString();
 
             DiagramExporter plantUMLExporter = new PlantUMLClassDiagramImageExporter(classDiagramManager.getClassDiagram());
-            plantUMLExporter.exportDiagram(Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "testingExportedFile.png")));
+            plantUMLExporter.exportDiagram(Paths.get(String.format("%s%s%s",
+                                                                   PathConstructor.getCurrentPath(),
+                                                                   File.separator,
+                                                                   PathConstructor.constructPath("src",
+                                                                                                 "test",
+                                                                                                 "resources",
+                                                                                                 "testingExportedFile.png"))));
 
             InputStream in = getExpectedInputStream(sinkVertexBuffer, sinkVertexArcBuffer);
 
             BufferedImage convImg = ImageIO.read(in);
-            ImageIO.write(convImg, "png", Path.of(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "actualExportedFile.png")).toFile());
+            ImageIO.write(convImg, "png", Path.of(String.format("%s%s%s",
+                                                                PathConstructor.getCurrentPath(),
+                                                                File.separator,
+                                                                PathConstructor.constructPath("src",
+                                                                                              "test",
+                                                                                              "resources",
+                                                                                              "actualExportedFile.png"))).toFile());
 
-            BufferedImage         expectedImage         = ImageComparisonUtil.readImageFromResources(Path.of(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "testingExportedFile.png")).toString());
-            BufferedImage         actualImage           = ImageComparisonUtil.readImageFromResources(Path.of(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "actualExportedFile.png")).toString());
+            BufferedImage expectedImage = ImageComparisonUtil.readImageFromResources(Path.of(String.format("%s%s%s",
+                                                                                                           PathConstructor.getCurrentPath(),
+                                                                                                           File.separator,
+                                                                                                           PathConstructor.constructPath("src",
+                                                                                                                                         "test",
+                                                                                                                                         "resources",
+                                                                                                                                         "testingExportedFile.png"))).toString());
+            BufferedImage actualImage = ImageComparisonUtil.readImageFromResources(Path.of(String.format("%s%s%s",
+                                                                                                         PathConstructor.getCurrentPath(),
+                                                                                                         File.separator,
+                                                                                                         PathConstructor.constructPath("src",
+                                                                                                                                       "test",
+                                                                                                                                       "resources",
+                                                                                                                                       "actualExportedFile.png"))).toString());
             ImageComparisonResult imageComparisonResult = new ImageComparison(expectedImage, actualImage).compareImages();
             assertEquals(ImageComparisonState.MATCH, imageComparisonResult.getImageComparisonState());
         }
