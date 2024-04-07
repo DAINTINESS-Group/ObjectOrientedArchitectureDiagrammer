@@ -1,6 +1,7 @@
 package model.plantuml;
 
 import manager.PackageDiagramManager;
+import model.diagram.PackageDiagram;
 import model.diagram.plantuml.PlantUMLPackageVertex;
 import org.junit.jupiter.api.Test;
 import utils.PathTemplate.LatexEditor;
@@ -15,7 +16,7 @@ public class PlantUMLPackageVertexTest
 {
 
     @Test
-    void convertVertexTest()
+    void convertVerticesTest()
     {
 
         PackageDiagramManager packageDiagramManager = new PackageDiagramManager();
@@ -27,8 +28,8 @@ public class PlantUMLPackageVertexTest
                                                            "src.controller.commands",
                                                            "src.controller"));
 
-        PlantUMLPackageVertex plantUMLPackageVertex = new PlantUMLPackageVertex(packageDiagramManager.getPackageDiagram());
-        String                actualBuffer          = plantUMLPackageVertex.convertVertex().toString();
+        PackageDiagram packageDiagram = packageDiagramManager.getPackageDiagram();
+        String         actualBuffer   = PlantUMLPackageVertex.convertVertices(packageDiagram).toString();
 
         List<String> expected = Arrays.asList(EXPECTED_BUFFER.split("\n"));
         List<String> actual   = Arrays.asList(actualBuffer.split("\n"));

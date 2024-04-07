@@ -19,6 +19,7 @@ public enum GraphMLSyntaxIds
     PACKAGE_Y_COORDINATE(3),
     PACKAGE_NAME        (1);
 
+
     private final int id;
 
 

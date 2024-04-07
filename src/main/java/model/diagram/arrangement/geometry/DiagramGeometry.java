@@ -16,7 +16,7 @@ public class DiagramGeometry
 
     public DiagramGeometry()
     {
-        this.geometryMap = new HashMap<>();
+        geometryMap = new HashMap<>();
     }
 
 
@@ -50,9 +50,11 @@ public class DiagramGeometry
         {
             double newX = entry.getValue().getValue0() + x;
             double newY = entry.getValue().getValue1() + y;
-            geometryMap.put(entry.getKey(), new Pair<>(entry.getValue().getValue0() + x, entry.getValue().getValue1() + y));
-            minX = Math.min(newX, minX);
-            minY = Math.min(newY, minY);
+            geometryMap.put(entry.getKey(),
+                            new Pair<>(entry.getValue().getValue0() + x,
+                                       entry.getValue().getValue1() + y));
+            minX = Math.min(minX, newX);
+            minY = Math.min(minY, newY);
         }
         xDifference = minX - MIN_X_WINDOW_VALUE;
         yDifference = minY - MIN_Y_WINDOW_VALUE;

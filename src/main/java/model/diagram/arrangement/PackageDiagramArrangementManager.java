@@ -16,41 +16,35 @@ import org.javatuples.Pair;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.stream.Collectors;
 
-public class PackageDiagramArrangementManager implements DiagramArrangementManagerInterface
+public class PackageDiagramArrangementManager implements DiagramArrangementManager
 {
 
-    public static final LayoutAlgorithmType   LAYOUT_ALGORITHM_TYPE = LayoutAlgorithmType.SUGIYAMA;
-    public static final int                   WIDTH                 = 1500;
-    public static final int                   HEIGHT                = 1000;
-    private final       Graph<String, String> graph;
-    private final       PackageDiagram        packageDiagram;
+    public static final LayoutAlgorithmType LAYOUT_ALGORITHM_TYPE = LayoutAlgorithmType.SUGIYAMA;
+    public static final int                 WIDTH                 = 1500;
+    public static final int                 HEIGHT                = 1000;
+    private final       PackageDiagram      packageDiagram;
 
 
     public PackageDiagramArrangementManager(PackageDiagram packageDiagram)
     {
         this.packageDiagram = packageDiagram;
-        graph               = populatePackageGraphWithStrings();
     }
 
 
     @Override
     public Map<Integer, Pair<Double, Double>> arrangeGraphMLDiagram()
     {
-        Map<Integer, Pair<Double, Double>> nodesGeometryGraphML = new HashMap<>();
-        Graph<Integer, String>             graph                = populatePackageGraph();
-        AbstractLayout<Integer, String>    layout               = new SpringLayout<>(graph);
+        Graph<Integer, String>          graph  = populatePackageGraph();
+        AbstractLayout<Integer, String> layout = new SpringLayout<>(graph);
         layout.setSize(new Dimension(WIDTH, HEIGHT));
-        for (Integer i : packageDiagram.getGraphNodes().values())
-        {
-            nodesGeometryGraphML.put(i, new Pair<>(layout.getX(i), layout.getY(i)));
-        }
 
-        return nodesGeometryGraphML;
+        return packageDiagram.getGraphNodes().values().stream()
+            .collect(Collectors.toMap(it -> it, it -> new Pair<>(layout.getX(it), layout.getY(it))));
     }
 
 
@@ -58,17 +52,16 @@ public class PackageDiagramArrangementManager implements DiagramArrangementManag
     public DiagramGeometry arrangeDiagram()
     {
         LayoutAlgorithm layoutAlgorithm = LayoutAlgorithmFactory.createLayoutAlgorithm(LAYOUT_ALGORITHM_TYPE);
-        layoutAlgorithm.setGraph(graph);
-        return layoutAlgorithm.arrangeDiagram();
+        return layoutAlgorithm.arrangeDiagram(populatePackageGraphWithStrings());
     }
 
 
     @Override
-    public DiagramGeometry applyLayout(LayoutAlgorithmType algorithmType)
+    public DiagramGeometry applyLayout(String algorithmType)
     {
-        LayoutAlgorithm layout = LayoutAlgorithmFactory.createLayoutAlgorithm(algorithmType);
-        layout.setGraph(graph);
-        return layout.arrangeDiagram();
+        LayoutAlgorithmType algorithmEnumType = LayoutAlgorithmType.get(algorithmType);
+        LayoutAlgorithm     layout            = LayoutAlgorithmFactory.createLayoutAlgorithm(algorithmEnumType);
+        return layout.arrangeDiagram(populatePackageGraphWithStrings());
     }
 
 
@@ -80,11 +73,9 @@ public class PackageDiagramArrangementManager implements DiagramArrangementManag
             graph.addVertex(i);
         }
 
-        List<Arc<PackageVertex>> arcs = new ArrayList<>();
-        for (Set<Arc<PackageVertex>> arcSet : packageDiagram.getDiagram().values())
-        {
-            arcs.addAll(arcSet);
-        }
+        List<Arc<PackageVertex>> arcs = packageDiagram.getDiagram().values().stream()
+            .flatMap(Collection::stream)
+            .collect(Collectors.toCollection(ArrayList::new));
 
         for (Arc<PackageVertex> arc : arcs)
         {
@@ -105,11 +96,9 @@ public class PackageDiagramArrangementManager implements DiagramArrangementManag
             graph.addVertex(vertex.getName());
         }
 
-        List<Arc<PackageVertex>> arcs = new ArrayList<>();
-        for (Set<Arc<PackageVertex>> arcSet : packageDiagram.getDiagram().values())
-        {
-            arcs.addAll(arcSet);
-        }
+        List<Arc<PackageVertex>> arcs = packageDiagram.getDiagram().values().stream()
+            .flatMap(Collection::stream)
+            .collect(Collectors.toCollection(ArrayList::new));
 
         for (Arc<PackageVertex> arc : arcs)
         {

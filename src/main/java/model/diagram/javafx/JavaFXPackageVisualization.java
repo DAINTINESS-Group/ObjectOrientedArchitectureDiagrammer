@@ -36,6 +36,7 @@ public class JavaFXPackageVisualization implements JavaFXVisualization
         vertexCollection = graph.vertices();
         graphView        = new SmartGraphPanel<>(graph, new SmartCircularSortedPlacementStrategy());
         setVertexCustomStyle();
+
         return graphView;
     }
 
@@ -52,13 +53,12 @@ public class JavaFXPackageVisualization implements JavaFXVisualization
         Digraph<String, String> directedGraph = new DigraphEdgeList<>();
         for (PackageVertex vertex : packageDiagram.getDiagram().keySet())
         {
-            if (vertex.getSinkVertices().isEmpty())
-            {
-                continue;
-            }
+            if (vertex.getSinkVertices().isEmpty()) continue;
+
             directedGraph.insertVertex(vertex.getName());
         }
         insertVertexArcs(directedGraph);
+
         return directedGraph;
     }
 
@@ -96,10 +96,8 @@ public class JavaFXPackageVisualization implements JavaFXVisualization
             }
             else
             {
-                if (vertex.getSinkVertices().isEmpty())
-                {
-                    continue;
-                }
+                if (vertex.getSinkVertices().isEmpty()) continue;
+
                 graphView.getStylableVertex(vertex.getName()).setStyleClass("vertexPackage");
             }
         }
@@ -113,16 +111,15 @@ public class JavaFXPackageVisualization implements JavaFXVisualization
         {
             for (PackageVertex packageVertex : packageDiagram.getDiagram().keySet())
             {
-                if (!packageVertex.getName().equals(vertex.element()))
-                {
-                    continue;
-                }
+                if (!packageVertex.getName().equals(vertex.element())) continue;
+
                 graphView.setVertexPosition(vertex,
                                             packageVertex.getCoordinate().x(),
                                             packageVertex.getCoordinate().y());
                 break;
             }
         }
+
         return graphView;
     }
 }

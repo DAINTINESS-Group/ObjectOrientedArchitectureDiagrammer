@@ -1,8 +1,10 @@
 package model.graph;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public enum VertexType
 {
@@ -15,12 +17,7 @@ public enum VertexType
 
     static
     {
-        Map<String, VertexType> map = new HashMap<>();
-        for (VertexType vertexType : VertexType.values())
-        {
-            map.put(vertexType.toString().toLowerCase(), vertexType);
-        }
-        VERTEX_TYPE = Collections.unmodifiableMap(map);
+        VERTEX_TYPE = Arrays.stream(VertexType.values()).collect(Collectors.toMap(VertexType::toString, it -> it));
     }
 
     public static VertexType get(String vertexType)

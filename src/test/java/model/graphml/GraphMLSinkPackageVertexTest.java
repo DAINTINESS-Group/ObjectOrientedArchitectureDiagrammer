@@ -48,8 +48,8 @@ public class GraphMLSinkPackageVertexTest
                                                                                       Map.entry(9, new Pair<>(10.0, 10.0)),
                                                                                       Map.entry(10, new Pair<>(10.0, 10.0))));
 
-        GraphMLClassifierVertex graphMLClassifierVertex = new GraphMLClassifierVertex(classDiagramManager.getClassDiagram());
-        StringBuilder           actual                  = graphMLClassifierVertex.convertSinkVertex();
+        GraphMLClassifierVertex graphMLClassifierVertex = new GraphMLClassifierVertex();
+        StringBuilder           actual                  = graphMLClassifierVertex.convertSinkVertex(classDiagramManager.getClassDiagram());
 
         StringBuilder expected = new StringBuilder();
         for (ClassifierVertex leafNode : classDiagramManager.getClassDiagram().getGraphNodes().keySet())

@@ -12,17 +12,15 @@ public class GraphMLPackageVertex
 {
 
     private final StringBuilder  graphMLBuffer;
-    private final PackageDiagram packageDiagram;
 
 
-    public GraphMLPackageVertex(PackageDiagram packageDiagram)
+    public GraphMLPackageVertex()
     {
-        this.packageDiagram = packageDiagram;
-        graphMLBuffer       = new StringBuilder();
+        graphMLBuffer = new StringBuilder();
     }
 
 
-    public StringBuilder convertVertex()
+    public StringBuilder convertVertex(PackageDiagram packageDiagram)
     {
         for (Map.Entry<PackageVertex, Integer> entry : packageDiagram.getGraphNodes().entrySet())
         {

@@ -34,10 +34,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class JavaFXPackageDiagramExporterTest
 {
 
-    private static String expectedJsonString;
-    private static String expectedString2;
-    private static String relativePath;
-    private static String os;
+    private static final String os = System.getProperty("os.name");
+    private static       String expectedJsonString;
+    private static       String expectedString2;
+    private static       String relativePath;
 
 
     // TODO Decouple this
@@ -125,10 +125,9 @@ public class JavaFXPackageDiagramExporterTest
                         for (Arc<ClassifierVertex> arc : classifierVertex.getArcs())
                         {
                             assertTrue(arcs.stream()
-                                           .anyMatch(sinkVertexArc ->
-                                                         sinkVertexArc.sourceVertex().getName().equals(arc.sourceVertex().getName()) &&
-                                                         sinkVertexArc.targetVertex().getName().equals(arc.targetVertex().getName()) &&
-                                                         sinkVertexArc.arcType().equals(arc.arcType())));
+                                           .anyMatch(it -> it.sourceVertex().getName().equals(arc.sourceVertex().getName()) &&
+                                                           it.targetVertex().getName().equals(arc.targetVertex().getName()) &&
+                                                           it.arcType().equals(arc.arcType())));
                         }
                     }
 
@@ -157,8 +156,6 @@ public class JavaFXPackageDiagramExporterTest
     public static void setUp()
     {
         relativePath = Paths.get(PathConstructor.getCurrentPath() + File.separator + PathConstructor.constructPath("src", "test", "resources", "LatexEditor", "src")).toString();
-
-        os = System.getProperty("os.name");
 
         expectedJsonString = "[{\"name\":\"src.view\",\"path\":\""
                              +

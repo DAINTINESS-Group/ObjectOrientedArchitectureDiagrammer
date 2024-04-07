@@ -52,10 +52,9 @@ public class DiagramVisualizationController
         ScrollPane      scrollPane = new ScrollPane(zoomPane);
         scrollPane.setPannable(false);
 
-        graphViewNormalScaleX = graphView.getScaleX();
-        graphViewNormalScaleY = graphView.getScaleY();
-
-        Color zoomPaneBackgroundColor = Color.web(BACKGROUND_COLOR);
+        graphViewNormalScaleX           = graphView.getScaleX();
+        graphViewNormalScaleY           = graphView.getScaleY();
+        Color  zoomPaneBackgroundColor  = Color.web(BACKGROUND_COLOR);
         zoomPane.setBackground(new Background(new BackgroundFill(zoomPaneBackgroundColor, null, null)));
         graphView.minWidthProperty().bind(borderPane.widthProperty());
         graphView.minHeightProperty().bind(borderPane.heightProperty());

@@ -5,8 +5,7 @@ import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import model.diagram.ClassDiagram;
 import model.diagram.ShadowCleaner;
 import model.diagram.arrangement.ClassDiagramArrangementManager;
-import model.diagram.arrangement.DiagramArrangementManagerInterface;
-import model.diagram.arrangement.algorithms.LayoutAlgorithmType;
+import model.diagram.arrangement.DiagramArrangementManager;
 import model.diagram.arrangement.geometry.DiagramGeometry;
 import model.diagram.exportation.CoordinatesUpdater;
 import model.diagram.exportation.DiagramExporter;
@@ -17,6 +16,7 @@ import model.diagram.exportation.PlantUMLClassDiagramTextExporter;
 import model.diagram.javafx.JavaFXClassDiagramLoader;
 import model.diagram.javafx.JavaFXClassVisualization;
 import model.diagram.javafx.JavaFXVisualization;
+import model.diagram.svg.PlantUMLClassDiagram;
 import org.javatuples.Pair;
 
 import java.io.File;
@@ -27,10 +27,10 @@ import java.util.List;
 public class ClassDiagramManager implements DiagramManager
 {
 
-    private ClassDiagram                       classDiagram;
-    private DiagramArrangementManagerInterface classDiagramArrangement;
-    private Collection<Vertex<String>>         vertexCollection;
-    private SmartGraphPanel<String, String>    graphView;
+    private ClassDiagram                    classDiagram;
+    private DiagramArrangementManager       classDiagramArrangement;
+    private Collection<Vertex<String>>      vertexCollection;
+    private SmartGraphPanel<String, String> graphView;
 
 
     public ClassDiagramManager()
@@ -44,6 +44,7 @@ public class ClassDiagramManager implements DiagramManager
     {
         SourceProject sourceProject = new SourceProject();
         sourceProject.createClassGraph(sourcePackagePath, classDiagram);
+
         return sourceProject;
     }
 
@@ -63,6 +64,7 @@ public class ClassDiagramManager implements DiagramManager
         classDiagramArrangement         = new ClassDiagramArrangementManager(classDiagram);
         DiagramGeometry diagramGeometry = classDiagramArrangement.arrangeDiagram();
         classDiagram.setDiagramGeometry(diagramGeometry);
+
         return diagramGeometry;
     }
 
@@ -73,7 +75,17 @@ public class ClassDiagramManager implements DiagramManager
         JavaFXVisualization javaFXVisualization = new JavaFXClassVisualization(classDiagram);
         graphView                               = javaFXVisualization.createGraphView();
         vertexCollection                        = javaFXVisualization.getVertexCollection();
+
         return graphView;
+    }
+
+
+    @Override
+    public String visualizeSvgGraph(int dpi)
+    {
+        PlantUMLClassDiagram plantUMLClassDiagram = new PlantUMLClassDiagram(classDiagram);
+
+        return plantUMLClassDiagram.toSvg(dpi);
     }
 
 
@@ -85,6 +97,7 @@ public class ClassDiagramManager implements DiagramManager
 
         graphView        = javaFXVisualization.getLoadedGraph();
         vertexCollection = javaFXVisualization.getVertexCollection();
+
         return graphView;
     }
 
@@ -94,6 +107,7 @@ public class ClassDiagramManager implements DiagramManager
     {
         classDiagram.setGraphMLDiagramGeometry(classDiagramArrangement.arrangeGraphMLDiagram());
         DiagramExporter diagramExporter = new GraphMLClassDiagramExporter(classDiagram);
+
         return diagramExporter.exportDiagram(graphMLSavePath);
     }
 
@@ -102,6 +116,7 @@ public class ClassDiagramManager implements DiagramManager
     public File exportPlantUMLImage(Path plantUMLSavePath)
     {
         DiagramExporter diagramExporter = new PlantUMLClassDiagramImageExporter(classDiagram);
+
         return diagramExporter.exportDiagram(plantUMLSavePath);
     }
 
@@ -110,6 +125,7 @@ public class ClassDiagramManager implements DiagramManager
     public File exportPlantUMLText(Path textSavePath)
     {
         DiagramExporter diagramExporter = new PlantUMLClassDiagramTextExporter(classDiagram);
+
         return diagramExporter.exportDiagram(textSavePath);
     }
 
@@ -119,8 +135,8 @@ public class ClassDiagramManager implements DiagramManager
     {
         CoordinatesUpdater coordinatesUpdater = new CoordinatesUpdater(classDiagram);
         coordinatesUpdater.updateClassCoordinates(vertexCollection, graphView);
-
         DiagramExporter diagramExporter = new JavaFXClassDiagramExporter(classDiagram);
+
         return diagramExporter.exportDiagram(graphSavePath);
     }
 
@@ -128,20 +144,12 @@ public class ClassDiagramManager implements DiagramManager
     @Override
     public void loadDiagram(Path graphSavePath)
     {
-        JavaFXClassDiagramLoader javaFXClassDiagramLoader = new JavaFXClassDiagramLoader(graphSavePath);
-
         classDiagram = new ClassDiagram();
-        classDiagram.createDiagram(javaFXClassDiagramLoader.loadDiagram());
-
+        classDiagram.createDiagram(JavaFXClassDiagramLoader.loadDiagram(graphSavePath));
         ShadowCleaner shadowCleaner = new ShadowCleaner(classDiagram);
         classDiagram.setDiagram(shadowCleaner.shadowWeakRelationships());
     }
 
-
-    public ClassDiagram getClassDiagram()
-    {
-        return classDiagram;
-    }
 
     @Override
     public SmartGraphPanel<String, String> applyLayout()
@@ -159,9 +167,9 @@ public class ClassDiagramManager implements DiagramManager
     }
 
     @Override
-    public SmartGraphPanel<String, String> applySpecificLayout(LayoutAlgorithmType algorithmType)
+    public SmartGraphPanel<String, String> applySpecificLayout(String choice)
     {
-        DiagramGeometry nodesGeometry = classDiagramArrangement.applyLayout(algorithmType);
+        DiagramGeometry nodesGeometry = classDiagramArrangement.applyLayout(choice);
         for (Vertex<String> vertex : vertexCollection)
         {
             if (!nodesGeometry.containsKey(vertex.element())) continue;
@@ -173,6 +181,11 @@ public class ClassDiagramManager implements DiagramManager
         }
 
         return graphView;
+    }
+
+    public ClassDiagram getClassDiagram()
+    {
+        return classDiagram;
     }
 
 }
