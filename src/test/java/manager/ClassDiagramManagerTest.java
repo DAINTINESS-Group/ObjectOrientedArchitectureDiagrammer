@@ -116,7 +116,7 @@ public class ClassDiagramManagerTest
     void createDiagramTest()
     {
         ClassDiagramManager classDiagramManager = new ClassDiagramManager();
-        List<String> chosenFiles = Arrays.asList("MainWindow",
+        List<String> chosenFiles = List.of("MainWindow",
                                                  "LatexEditorView",
                                                  "OpeningWindow");
 
@@ -141,7 +141,7 @@ public class ClassDiagramManagerTest
         try
         {
             ClassDiagramManager classDiagramManager = new ClassDiagramManager();
-            List<String> chosenFiles = Arrays.asList("MainWindow",
+            List<String> chosenFiles = List.of("MainWindow",
                                                      "LatexEditorView",
                                                      "OpeningWindow");
 
@@ -186,7 +186,7 @@ public class ClassDiagramManagerTest
         try
         {
             ClassDiagramManager classDiagramManager = new ClassDiagramManager();
-            List<String> chosenFiles = Arrays.asList("MainWindow",
+            List<String> chosenFiles = List.of("MainWindow",
                                                      "LatexEditorView",
                                                      "OpeningWindow");
             classDiagramManager.createSourceProject(LatexEditor.SRC.path);
@@ -219,7 +219,7 @@ public class ClassDiagramManagerTest
     void loadDiagramTest()
     {
         ClassDiagramManager classDiagramManager = new ClassDiagramManager();
-        List<String> chosenFiles = Arrays.asList("MainWindow",
+        List<String> chosenFiles = List.of("MainWindow",
                                                  "LatexEditorView",
                                                  "OpeningWindow");
         classDiagramManager.createSourceProject(LatexEditor.SRC.path);

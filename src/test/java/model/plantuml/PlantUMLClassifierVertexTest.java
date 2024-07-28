@@ -6,10 +6,9 @@ import org.junit.jupiter.api.Test;
 import utils.PathTemplate.LatexEditor;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static utils.ListUtils.assertListsEqual;
 
 public class PlantUMLClassifierVertexTest
 {
@@ -28,15 +27,12 @@ public class PlantUMLClassifierVertexTest
                                                          "Document",
                                                          "DocumentManager"));
 
-        PlantUMLClassifierVertex plantUMLClassifierVertex = new PlantUMLClassifierVertex();
-        String                   actualBuffer             = plantUMLClassifierVertex.convertSinkVertices(classDiagramManager.getClassDiagram()).toString();
+        String actualBuffer = PlantUMLClassifierVertex.convertSinkVertices(classDiagramManager.getClassDiagram()).toString();
 
         List<String> expected = Arrays.asList(EXPECTED_BUFFER.split("\n"));
         List<String> actual   = Arrays.asList(actualBuffer.split("\n"));
 
-        Collections.sort(expected);
-        Collections.sort(actual);
-        assertEquals(expected, actual);
+        assertListsEqual(expected, actual);
     }
 
 

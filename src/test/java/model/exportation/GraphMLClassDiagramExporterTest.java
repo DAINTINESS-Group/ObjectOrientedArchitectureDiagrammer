@@ -34,7 +34,7 @@ public class GraphMLClassDiagramExporterTest
         try
         {
             ClassDiagramManager classDiagramManager = new ClassDiagramManager();
-            List<String> chosenFiles = Arrays.asList("MainWindow",
+            List<String> chosenFiles = List.of("MainWindow",
                                                      "LatexEditorView",
                                                      "OpeningWindow");
 

@@ -30,12 +30,12 @@ public class PlantUMLClassDiagramTextExporterTest
             ClassDiagramManager classDiagramManager = new ClassDiagramManager();
             classDiagramManager.createSourceProject(LatexEditor.SRC.path);
             classDiagramManager.convertTreeToDiagram(List.of("StableVersionsStrategy",
-                                                             "VersionsStrategy",
-                                                             "VersionsStrategyFactory",
-                                                             "VolatileVersionsStrategy",
-                                                             "VersionsManager",
-                                                             "Document",
-                                                             "DocumentManager"));
+                                                                             "VersionsStrategy",
+                                                                             "VersionsStrategyFactory",
+                                                                             "VolatileVersionsStrategy",
+                                                                             "VersionsManager",
+                                                                             "Document",
+                                                                             "DocumentManager"));
 
             String sinkVertexBuffer    = PlantUMLClassifierVertex.convertSinkVertices(classDiagramManager.getClassDiagram()).toString();
             String sinkVertexArcBuffer = PlantUMLClassifierVertexArc.convertSinkVertexArcs(classDiagramManager.getClassDiagram()).toString();

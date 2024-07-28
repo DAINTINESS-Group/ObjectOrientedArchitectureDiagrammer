@@ -29,9 +29,9 @@ public class JavaFXClassDiagramLoaderTest
     void loadDiagramTest()
     {
         ClassDiagramManager classDiagramManager = new ClassDiagramManager();
-        List<String> chosenFiles                = Arrays.asList("MainWindow",
-                                                                "LatexEditorView",
-                                                                "OpeningWindow");
+        List<String> chosenFiles                = List.of("MainWindow",
+                                                          "LatexEditorView",
+                                                          "OpeningWindow");
 
         classDiagramManager.createSourceProject(LatexEditor.SRC.path);
         classDiagramManager.convertTreeToDiagram(chosenFiles);

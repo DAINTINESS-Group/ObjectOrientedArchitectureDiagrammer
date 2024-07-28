@@ -76,8 +76,7 @@ public class InterpreterTest
             {
                 ClassifierVertex classifierVertex = sinkVertices
                     .stream()
-                    .filter(it ->
-                                it.getName().equals(leafNodeEntry.getKey()))
+                    .filter(it -> it.getName().equals(leafNodeEntry.getKey()))
                     .findAny()
                     .orElseGet(Assertions::fail);
 
