@@ -6,22 +6,30 @@ import com.google.gson.JsonParser;
 import manager.ClassDiagramManager;
 import model.diagram.exportation.DiagramExporter;
 import model.diagram.exportation.JavaFXClassDiagramExporter;
+import model.diagram.javafx.ClassifierVertexDeserializer;
+import model.graph.ClassifierVertex;
+import model.graph.VertexType;
+import org.javatuples.Triplet;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import utils.PathConstructor;
-import utils.PathTemplate;
 import utils.PathTemplate.LatexEditor;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.Files;
+import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static utils.JsonUtils.getVertices;
+import static utils.ListUtils.assertListsEqual;
 
 public class JavaFXClassDiagramExporterTest
 {
@@ -33,8 +41,8 @@ public class JavaFXClassDiagramExporterTest
         {
             ClassDiagramManager classDiagramManager = new ClassDiagramManager();
             List<String> chosenFiles = Arrays.asList("MainWindow",
-                                                     "LatexEditorView",
-                                                     "OpeningWindow");
+                                               "LatexEditorView",
+                                               "OpeningWindow");
             classDiagramManager.createSourceProject(LatexEditor.SRC.path);
             classDiagramManager.convertTreeToDiagram(chosenFiles);
             DiagramExporter javaFXExporter = new JavaFXClassDiagramExporter(classDiagramManager.getClassDiagram());
@@ -46,35 +54,136 @@ public class JavaFXClassDiagramExporterTest
                                                                                                                "resources",
                                                                                                                "testingExportedFile.txt"))));
 
-            String    expectedJsonString = getExpectedJsonString();
-            JsonArray expectedJsonArray  = JsonParser.parseString(expectedJsonString).getAsJsonArray();
-            JsonArray actualJsonArray    = JsonParser.parseString(Files.readAllLines(actualFile.toPath()).get(0)).getAsJsonArray();
-            assertEquals(expectedJsonArray.size(), actualJsonArray.size());
-            for (JsonElement element : expectedJsonArray)
+            try (Reader reader = new FileReader(actualFile.getAbsolutePath(), StandardCharsets.UTF_8))
             {
-                for (JsonElement actualElement : actualJsonArray)
+                JsonElement jsonElement = JsonParser.parseReader(reader);
+                JsonArray   asJsonArray = jsonElement.getAsJsonArray();
+
+                List<JsonElement> jsonElements = new ArrayList<>();
+                asJsonArray.forEach(jsonElements::add);
+
+                List<ClassifierVertex> actualClassifierVertices = getVertices(jsonElements, ClassifierVertex.class, new ClassifierVertexDeserializer());
+
+                for (ClassifierVertex classifierVertex : actualClassifierVertices)
                 {
-                    if (!actualElement.getAsJsonObject().get("name").equals(element.getAsJsonObject().get("name"))) continue;
+                    Path       actualPath       = classifierVertex.getPath();
+                    VertexType actualVertexType = classifierVertex.getVertexType();
 
-                    assertEquals(element.getAsJsonObject().size(), actualElement.getAsJsonObject().size());
+                    List<ClassifierVertex.Method> classifierVertexMethods = classifierVertex.getMethods();
+                    List<String> sinkVertexMethodNames = classifierVertexMethods.stream()
+                        .map(ClassifierVertex.Method::name)
+                        .collect(Collectors.toCollection(LinkedList::new));
 
-                    JsonArray        expectedMethods        = JsonParser.parseString(element.getAsJsonObject().get("methods").toString()).getAsJsonArray();
-                    JsonArray        actualMethods          = JsonParser.parseString(actualElement.getAsJsonObject().get("methods").toString()).getAsJsonArray();
-                    Set<JsonElement> expectedJsonElementSet = CompareArray.setOfElements(expectedMethods);
-                    Set<JsonElement> actualJsonElementSet   = CompareArray.setOfElements(actualMethods);
-                    assertEquals(expectedJsonElementSet, actualJsonElementSet);
+                    List<ClassifierVertex.Field> classifierVertexFields = classifierVertex.getFields();
+                    List<String> sinkVertexFieldNames = classifierVertexFields.stream()
+                        .map(ClassifierVertex.Field::name)
+                        .collect(Collectors.toCollection(LinkedList::new));
 
-                    JsonArray expectedFields = JsonParser.parseString(element.getAsJsonObject().get("fields").toString()).getAsJsonArray();
-                    JsonArray actualFields   = JsonParser.parseString(actualElement.getAsJsonObject().get("fields").toString()).getAsJsonArray();
-                    expectedJsonElementSet = CompareArray.setOfElements(expectedFields);
-                    actualJsonElementSet = CompareArray.setOfElements(actualFields);
-                    assertEquals(expectedJsonElementSet, actualJsonElementSet);
+                    List<Triplet<String, String, String>> deserializedArcs = classifierVertex.getDeserializedArcs();
+                    List<String> targetArcVertex = deserializedArcs.stream()
+                        .map(Triplet::getValue1)
+                        .collect(Collectors.toCollection(LinkedList::new));
 
-                    JsonArray expectedArcs = JsonParser.parseString(element.getAsJsonObject().get("arcs").toString()).getAsJsonArray();
-                    JsonArray actualArcs   = JsonParser.parseString(actualElement.getAsJsonObject().get("arcs").toString()).getAsJsonArray();
-                    expectedJsonElementSet = CompareArray.setOfElements(expectedArcs);
-                    actualJsonElementSet = CompareArray.setOfElements(actualArcs);
-                    assertEquals(expectedJsonElementSet, actualJsonElementSet);
+                    switch (classifierVertex.getName())
+                    {
+                        case "MainWindow":
+                            assertEquals(LatexEditor.MAIN_WINDOW.path, actualPath);
+                            assertEquals(actualVertexType, VertexType.CLASS);
+
+                            assertListsEqual(sinkVertexMethodNames, Arrays.asList("MainWindow",
+                                                                                         "editContents",
+                                                                                         "actionPerformed",
+                                                                                         "actionPerformed",
+                                                                                         "actionPerformed",
+                                                                                         "actionPerformed",
+                                                                                         "actionPerformed",
+                                                                                         "actionPerformed",
+                                                                                         "actionPerformed",
+                                                                                         "actionPerformed",
+                                                                                         "actionPerformed",
+                                                                                         "actionPerformed",
+                                                                                         "actionPerformed",
+                                                                                         "actionPerformed",
+                                                                                         "actionPerformed",
+                                                                                         "actionPerformed",
+                                                                                         "actionPerformed",
+                                                                                         "actionPerformed",
+                                                                                         "initialize"));
+
+                            assertListsEqual(sinkVertexFieldNames, Arrays.asList("frame",
+                                                                                        "editorPane",
+                                                                                        "latexEditorView"));
+
+                            assertListsEqual(targetArcVertex, Arrays.asList("LatexEditorView",
+                                                                                  "LatexEditorView",
+                                                                                  "ChooseTemplate"));
+
+                            break;
+                        case "LatexEditorView":
+                            assertEquals(LatexEditor.LATEX_EDITOR_VIEW.path, actualPath);
+                            assertEquals(actualVertexType, VertexType.CLASS);
+
+                            assertListsEqual(sinkVertexFieldNames, Arrays.asList("controller",
+                                                                                        "currentDocument",
+                                                                                        "type",
+                                                                                        "text",
+                                                                                        "filename",
+                                                                                        "strategy",
+                                                                                        "versionsManager"));
+
+                            assertListsEqual(sinkVertexMethodNames, Arrays.asList("getVersionsManager",
+                                                                                         "setVersionsManager",
+                                                                                         "getStrategy",
+                                                                                         "setStrategy",
+                                                                                         "getText",
+                                                                                         "setText",
+                                                                                         "getController",
+                                                                                         "setController",
+                                                                                         "getCurrentDocument",
+                                                                                         "setCurrentDocument",
+                                                                                         "getType",
+                                                                                         "setType",
+                                                                                         "saveContents",
+                                                                                         "saveToFile",
+                                                                                         "getFilename",
+                                                                                         "setFilename",
+                                                                                         "loadFromFile"));
+
+                            assertListsEqual(targetArcVertex, Arrays.asList("VersionsManager",
+                                                                                   "Document",
+                                                                                   "VersionsManager",
+                                                                                   "LatexEditorController",
+                                                                                   "LatexEditorController",
+                                                                                   "Document"));
+
+                            break;
+
+                        case "OpeningWindow":
+                            assertEquals(LatexEditor.OPENING_WINDOW.path, actualPath);
+                            assertEquals(actualVertexType, VertexType.CLASS);
+
+                            assertEquals(sinkVertexFieldNames, Arrays.asList("frame",
+                                                                                            "latexEditorView"));
+
+                            assertListsEqual(sinkVertexMethodNames, Arrays.asList("OpeningWindow",
+                                                                                         "run",
+                                                                                         "main",
+                                                                                         "actionPerformed",
+                                                                                         "actionPerformed",
+                                                                                         "actionPerformed",
+                                                                                         "initialize"));
+
+                            assertListsEqual(targetArcVertex, Arrays.asList("VersionsStrategy",
+                                                                                   "ChooseTemplate",
+                                                                                   "VolatileVersionsStrategy",
+                                                                                   "VersionsManager",
+                                                                                   "LatexEditorController",
+                                                                                   "LatexEditorView"));
+
+                            break;
+                        default:
+                            Assertions.fail("The package vertex is not one of the expected ones");
+                    }
                 }
             }
         }
@@ -84,83 +193,4 @@ public class JavaFXClassDiagramExporterTest
         }
     }
 
-
-    private static String getExpectedJsonString()
-    {
-        return "[{" +
-               "\"name\":\"MainWindow\",\"path\":\"C:\\\\Users\\\\user\\\\IntelliJProjects\\\\ObjectOrientedArchitectureDiagrammerDaintiness\\\\src\\\\test\\\\resources\\\\LatexEditor\\\\src\\\\view\\\\MainWindow.java\"," +
-               "\"vertexType\":\"class\",\"coordinate_x\":0.0,\"coordinate_y\":0.0,\"methods\":[{\"name\":\"actionPerformed\",\"returnType\":\"void\",\"modifier\":\"public\",\"parameters\":\"{\\\"e\\\":\\\"ActionEvent\\\"}\"}," +
-               "{\"name\":\"actionPerformed\",\"returnType\":\"void\",\"modifier\":\"public\",\"parameters\":\"{\\\"e\\\":\\\"ActionEvent\\\"}\"}," +
-               "{\"name\":\"actionPerformed\",\"returnType\":\"void\",\"modifier\":\"public\",\"parameters\":\"{\\\"arg0\\\":\\\"ActionEvent\\\"}\"}," +
-               "{\"name\":\"actionPerformed\",\"returnType\":\"void\",\"modifier\":\"public\",\"parameters\":\"{\\\"e\\\":\\\"ActionEvent\\\"}\"}," +
-               "{\"name\":\"actionPerformed\",\"returnType\":\"void\",\"modifier\":\"public\",\"parameters\":\"{\\\"arg0\\\":\\\"ActionEvent\\\"}\"}," +
-               "{\"name\":\"actionPerformed\",\"returnType\":\"void\",\"modifier\":\"public\",\"parameters\":\"{\\\"e\\\":\\\"ActionEvent\\\"}\"}," +
-               "{\"name\":\"actionPerformed\",\"returnType\":\"void\",\"modifier\":\"public\",\"parameters\":\"{\\\"e\\\":\\\"ActionEvent\\\"}\"}," +
-               "{\"name\":\"actionPerformed\",\"returnType\":\"void\",\"modifier\":\"public\",\"parameters\":\"{\\\"e\\\":\\\"ActionEvent\\\"}\"}," +
-               "{\"name\":\"actionPerformed\",\"returnType\":\"void\",\"modifier\":\"public\",\"parameters\":\"{\\\"e\\\":\\\"ActionEvent\\\"}\"}," +
-               "{\"name\":\"actionPerformed\",\"returnType\":\"void\",\"modifier\":\"public\",\"parameters\":\"{\\\"arg0\\\":\\\"ActionEvent\\\"}\"}," +
-               "{\"name\":\"actionPerformed\",\"returnType\":\"void\",\"modifier\":\"public\",\"parameters\":\"{\\\"e\\\":\\\"ActionEvent\\\"}\"}," +
-               "{\"name\":\"actionPerformed\",\"returnType\":\"void\",\"modifier\":\"public\",\"parameters\":\"{\\\"arg0\\\":\\\"ActionEvent\\\"}\"}," +
-               "{\"name\":\"editContents\",\"returnType\":\"void\",\"modifier\":\"public\",\"parameters\":\"{\\\"type\\\":\\\"String\\\"}\"}," +
-               "{\"name\":\"actionPerformed\",\"returnType\":\"void\",\"modifier\":\"public\",\"parameters\":\"{\\\"e\\\":\\\"ActionEvent\\\"}\"}," +
-               "{\"name\":\"actionPerformed\",\"returnType\":\"void\",\"modifier\":\"public\",\"parameters\":\"{\\\"e\\\":\\\"ActionEvent\\\"}\"}," +
-               "{\"name\":\"actionPerformed\",\"returnType\":\"void\",\"modifier\":\"public\",\"parameters\":\"{\\\"e\\\":\\\"ActionEvent\\\"}\"}," +
-               "{\"name\":\"actionPerformed\",\"returnType\":\"void\",\"modifier\":\"public\",\"parameters\":\"{\\\"e\\\":\\\"ActionEvent\\\"}\"}," +
-               "{\"name\":\"initialize\",\"returnType\":\"void\",\"modifier\":\"private\",\"parameters\":\"{}\"}," +
-               "{\"name\":\"MainWindow\",\"returnType\":\"Constructor\",\"modifier\":\"public\",\"parameters\":\"{\\\"latexEditorView\\\":\\\"LatexEditorView\\\"}\"}]," +
-               "\"fields\":[{\"name\":\"frame\",\"returnType\":\"JFrame\",\"modifier\":\"private\"}," +
-               "{\"name\":\"editorPane\",\"returnType\":\"JEditorPane\",\"modifier\":\"private\"}," +
-               "{\"name\":\"latexEditorView\",\"returnType\":\"LatexEditorView\",\"modifier\":\"private\"}],\"arcs\":[{\"source\":\"MainWindow\",\"target\":\"LatexEditorView\",\"arcType\":\"dependency\"}," +
-               "{\"source\":\"MainWindow\",\"target\":\"LatexEditorView\",\"arcType\":\"association\"},{\"source\":\"MainWindow\",\"target\":\"ChooseTemplate\",\"arcType\":\"dependency\"}]}," +
-               "{\"name\":\"OpeningWindow\",\"path\":\"C:\\\\Users\\\\user\\\\IntelliJProjects\\\\ObjectOrientedArchitectureDiagrammerDaintiness\\\\src\\\\test\\\\resources\\\\LatexEditor\\\\src\\\\view\\\\OpeningWindow.java\"," +
-               "\"vertexType\":\"class\",\"coordinate_x\":0.0,\"coordinate_y\":0.0,\"methods\":[{\"name\":\"OpeningWindow\",\"returnType\":\"Constructor\",\"modifier\":\"public\",\"parameters\":\"{}\"}," +
-               "{\"name\":\"actionPerformed\",\"returnType\":\"void\",\"modifier\":\"public\",\"parameters\":\"{\\\"e\\\":\\\"ActionEvent\\\"}\"}," +
-               "{\"name\":\"main\",\"returnType\":\"void\",\"modifier\":\"public\",\"parameters\":\"{\\\"args\\\":\\\"String[]\\\"}\"}," +
-               "{\"name\":\"actionPerformed\",\"returnType\":\"void\",\"modifier\":\"public\",\"parameters\":\"{\\\"e\\\":\\\"ActionEvent\\\"}\"},{\"name\":\"run\",\"returnType\":\"void\",\"modifier\":\"public\",\"parameters\":\"{}\"}," +
-               "{\"name\":\"actionPerformed\",\"returnType\":\"void\",\"modifier\":\"public\",\"parameters\":\"{\\\"e\\\":\\\"ActionEvent\\\"}\"}," +
-               "{\"name\":\"initialize\",\"returnType\":\"void\",\"modifier\":\"private\",\"parameters\":\"{}\"}],\"fields\":[{\"name\":\"frame\",\"returnType\":\"JFrame\",\"modifier\":\"private\"}," +
-               "{\"name\":\"latexEditorView\",\"returnType\":\"LatexEditorView\",\"modifier\":\"private\"}],\"arcs\":[{\"source\":\"OpeningWindow\",\"target\":\"LatexEditorController\",\"arcType\":\"dependency\"}," +
-               "{\"source\":\"OpeningWindow\",\"target\":\"VersionsManager\",\"arcType\":\"dependency\"},{\"source\":\"OpeningWindow\",\"target\":\"LatexEditorView\",\"arcType\":\"association\"}," +
-               "{\"source\":\"OpeningWindow\",\"target\":\"ChooseTemplate\",\"arcType\":\"dependency\"},{\"source\":\"OpeningWindow\",\"target\":\"VersionsStrategy\",\"arcType\":\"dependency\"}," +
-               "{\"source\":\"OpeningWindow\",\"target\":\"VolatileVersionsStrategy\",\"arcType\":\"dependency\"}]}," +
-               "{\"name\":\"LatexEditorView\",\"path\":\"C:\\\\Users\\\\user\\\\IntelliJProjects\\\\ObjectOrientedArchitectureDiagrammerDaintiness\\\\src\\\\test\\\\resources\\\\LatexEditor\\\\src\\\\view\\\\LatexEditorView.java\"," +
-               "\"vertexType\":\"class\",\"coordinate_x\":0.0,\"coordinate_y\":0.0,\"methods\":[{\"name\":\"getStrategy\",\"returnType\":\"String\",\"modifier\":\"public\",\"parameters\":\"{}\"}," +
-               "{\"name\":\"getController\",\"returnType\":\"LatexEditorController\",\"modifier\":\"public\",\"parameters\":\"{}\"}," +
-               "{\"name\":\"setVersionsManager\",\"returnType\":\"void\",\"modifier\":\"public\",\"parameters\":\"{\\\"versionsManager\\\":\\\"VersionsManager\\\"}\"}," +
-               "{\"name\":\"getType\",\"returnType\":\"String\",\"modifier\":\"public\",\"parameters\":\"{}\"},{\"name\":\"setController\"," +
-               "\"returnType\":\"void\",\"modifier\":\"public\",\"parameters\":\"{\\\"controller\\\":\\\"LatexEditorController\\\"}\"},{\"name\":\"getFilename\",\"returnType\":\"String\"," +
-               "\"modifier\":\"public\",\"parameters\":\"{}\"},{\"name\":\"setType\",\"returnType\":\"void\",\"modifier\":\"public\",\"parameters\":\"{\\\"type\\\":\\\"String\\\"}\"}," +
-               "{\"name\":\"loadFromFile\",\"returnType\":\"void\",\"modifier\":\"public\",\"parameters\":\"{}\"}," +
-               "{\"name\":\"getCurrentDocument\",\"returnType\":\"Document\",\"modifier\":\"public\",\"parameters\":\"{}\"}," +
-               "{\"name\":\"getText\",\"returnType\":\"String\",\"modifier\":\"public\",\"parameters\":\"{}\"}," +
-               "{\"name\":\"setCurrentDocument\",\"returnType\":\"void\",\"modifier\":\"public\",\"parameters\":\"{\\\"currentDocument\\\":\\\"Document\\\"}\"}," +
-               "{\"name\":\"getVersionsManager\",\"returnType\":\"VersionsManager\",\"modifier\":\"public\",\"parameters\":\"{}\"}," +
-               "{\"name\":\"setText\",\"returnType\":\"void\",\"modifier\":\"public\",\"parameters\":\"{\\\"text\\\":\\\"String\\\"}\"}," +
-               "{\"name\":\"saveContents\",\"returnType\":\"void\",\"modifier\":\"public\",\"parameters\":\"{}\"}," +
-               "{\"name\":\"setFilename\",\"returnType\":\"void\",\"modifier\":\"public\",\"parameters\":\"{\\\"filename\\\":\\\"String\\\"}\"}," +
-               "{\"name\":\"saveToFile\",\"returnType\":\"void\",\"modifier\":\"public\",\"parameters\":\"{}\"}," +
-               "{\"name\":\"setStrategy\",\"returnType\":\"void\",\"modifier\":\"public\",\"parameters\":\"{\\\"strategy\\\":\\\"String\\\"}\"}]," +
-               "\"fields\":[{\"name\":\"controller\",\"returnType\":\"LatexEditorController\",\"modifier\":\"private\"}," +
-               "{\"name\":\"currentDocument\",\"returnType\":\"Document\",\"modifier\":\"private\"}," +
-               "{\"name\":\"type\",\"returnType\":\"String\",\"modifier\":\"private\"},{\"name\":\"text\",\"returnType\":\"String\",\"modifier\":\"private\"}," +
-               "{\"name\":\"filename\",\"returnType\":\"String\",\"modifier\":\"private\"},{\"name\":\"strategy\",\"returnType\":\"String\",\"modifier\":\"private\"},{\"name\":\"versionsManager\"," +
-               "\"returnType\":\"VersionsManager\",\"modifier\":\"private\"}],\"arcs\":[{\"source\":\"LatexEditorView\",\"target\":\"LatexEditorController\",\"arcType\":\"dependency\"}," +
-               "{\"source\":\"LatexEditorView\",\"target\":\"LatexEditorController\",\"arcType\":\"association\"},{\"source\":\"LatexEditorView\",\"target\":\"VersionsManager\",\"" +
-               "arcType\":\"dependency\"},{\"source\":\"LatexEditorView\",\"target\":\"VersionsManager\",\"arcType\":\"association\"},{\"source\":\"LatexEditorView\",\"target\":\"Document\"," +
-               "\"arcType\":\"dependency\"},{\"source\":\"LatexEditorView\",\"target\":\"Document\",\"arcType\":\"association\"}]}]";
-    }
-
-
-    public static class CompareArray
-    {
-        public static Set<JsonElement> setOfElements(JsonArray arr)
-        {
-            Set<JsonElement> set = new HashSet<>();
-            for (JsonElement j : arr)
-            {
-                set.add(j);
-            }
-            return set;
-        }
-    }
 }

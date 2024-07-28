@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static utils.ListUtils.assertListsEqual;
 
 class PlantUMLPackageVertexArcTest
 {
@@ -34,18 +35,17 @@ class PlantUMLPackageVertexArcTest
         PackageDiagramManager packageDiagramManager = new PackageDiagramManager();
         packageDiagramManager.createSourceProject(PathTemplate.LatexEditor.SRC.path);
         packageDiagramManager.convertTreeToDiagram(List.of("src.view",
-                                                           "src.model",
-                                                           "src.model.strategies",
-                                                           "src.controller.commands",
-                                                           "src.controller"));
+                                                                           "src.model",
+                                                                           "src.model.strategies",
+                                                                           "src.controller.commands",
+                                                                           "src.controller"));
 
         PackageDiagram packageDiagram       = packageDiagramManager.getPackageDiagram();
         String         actualBuffer         = PlantUMLPackageVertexArc.convertVertexArcs(packageDiagram).toString();
         List<String>   expectedRelationship = Arrays.asList(EXPECTED_BUFFER.split("\n"));
         List<String>   actualRelationship   = Arrays.asList(actualBuffer.split("\n"));
-        Collections.sort(expectedRelationship);
-        Collections.sort(actualRelationship);
-        assertEquals(expectedRelationship, actualRelationship);
+
+        assertListsEqual(expectedRelationship, actualRelationship);
     }
 
 }

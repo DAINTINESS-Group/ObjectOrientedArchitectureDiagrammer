@@ -31,10 +31,10 @@ public class JavaFXPackageDiagramLoaderTest
         PackageDiagramManager packageDiagramManager = new PackageDiagramManager();
         packageDiagramManager.createSourceProject(LatexEditor.SRC.path);
         packageDiagramManager.convertTreeToDiagram(List.of("src.view",
-                                                           "src.model",
-                                                           "src.model.strategies",
-                                                           "src.controller.commands",
-                                                           "src.controller"));
+                                                                           "src.model",
+                                                                           "src.model.strategies",
+                                                                           "src.controller.commands",
+                                                                           "src.controller"));
         Map<PackageVertex, Set<Arc<PackageVertex>>> createdDiagram = packageDiagramManager.getPackageDiagram().getDiagram();
 
         DiagramExporter javaFXExporter = new JavaFXPackageDiagramExporter(packageDiagramManager.getPackageDiagram());

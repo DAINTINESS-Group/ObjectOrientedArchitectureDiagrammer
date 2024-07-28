@@ -68,8 +68,8 @@ public class PathTemplate
                                                                 "view",
                                                                 "ChooseTemplate.java"))),
 
-        LATEX_EDITOR(Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
-                               PathConstructor.constructPath("src",
+        LATEX_EDITOR_VIEW(Paths.get(PathConstructor.getCurrentPath().normalize().toString(),
+                                    PathConstructor.constructPath("src",
                                                              "test",
                                                              "resources",
                                                              "LatexEditor",
