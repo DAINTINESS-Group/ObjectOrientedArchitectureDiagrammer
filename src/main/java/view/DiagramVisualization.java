@@ -57,7 +57,7 @@ public class DiagramVisualization
         this.graphView = graphView;
         try
         {
-            URL        url    = getClass().getResource("/fxml/DiagramVisualizationView.fxml");
+            URL        url    = getClass().getResource(DIAGRAM_VISUALIZATION_VIEW);
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(url);
             Parent                         diagramVisualizationParent     = loader.load();
@@ -85,7 +85,8 @@ public class DiagramVisualization
     // TODO: See how feasible it is to remove this hack.
     public void loadSvgDiagram()
     {
-        java.awt.EventQueue.invokeLater(() -> {
+        java.awt.EventQueue.invokeLater(() ->
+        {
             try
             {
                 final JFrame frame = new JFrame();

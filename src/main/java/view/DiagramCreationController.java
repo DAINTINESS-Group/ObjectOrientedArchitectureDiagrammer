@@ -80,7 +80,7 @@ public class DiagramCreationController
 
     public void loadDiagram(ActionEvent event)
     {
-        FileAndDirectoryUtility.setLoadedDiagramName(MenuUtility.loadDiagram(menuBar, event));
+        FileUtility.setLoadedDiagramName(MenuUtility.loadDiagram(menuBar, event));
     }
 
 

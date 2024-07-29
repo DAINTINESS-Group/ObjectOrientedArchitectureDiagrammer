@@ -61,7 +61,7 @@ public class ProjectLoadController
 
     public void loadDiagram(ActionEvent event)
     {
-        FileAndDirectoryUtility.setLoadedDiagramName(MenuUtility.loadDiagram(menuBar, event));
+        FileUtility.setLoadedDiagramName(MenuUtility.loadDiagram(menuBar, event));
     }
 
 
@@ -102,7 +102,7 @@ public class ProjectLoadController
     {
         try
         {
-            File selectedDirectory = FileAndDirectoryUtility.saveLoadedFile("Export Diagram as PNG", menuBar, "PNG files");
+            File selectedDirectory = FileUtility.saveLoadedFile("Export Diagram as PNG", menuBar, "PNG files");
             if (selectedDirectory == null)
             {
                 return;
@@ -125,7 +125,7 @@ public class ProjectLoadController
 
     public void exportDiagramAsText()
     {
-        File selectedFile = FileAndDirectoryUtility.saveLoadedFile("Save Diagram", menuBar, "Text Files");
+        File selectedFile = FileUtility.saveLoadedFile("Save Diagram", menuBar, "Text Files");
         if (selectedFile == null)
         {
             return;

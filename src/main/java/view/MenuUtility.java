@@ -28,7 +28,7 @@ public class MenuUtility
     {
         try
         {
-            File selectedDirectory = FileAndDirectoryUtility.chooseDirectory("Load the Project's Source Folder", menuBar);
+            File selectedDirectory = FileUtility.chooseDirectory("Load the Project's Source Folder", menuBar);
             if (selectedDirectory == null)
             {
                 PopupWindow.createPopupInfoWindow("You should select a directory!", "Error");
@@ -100,7 +100,7 @@ public class MenuUtility
     public static String loadDiagram(MenuBar menuBar, ActionEvent event)
     {
         Controller diagramController = ControllerFactory.createController("uml", ((MenuItem)event.getSource()).getText());
-        File       selectedFile      = FileAndDirectoryUtility.loadFile(String.format("Load %s Diagram", ((MenuItem)event.getSource()).getText()), menuBar);
+        File       selectedFile      = FileUtility.loadFile(String.format("Load %s Diagram", ((MenuItem)event.getSource()).getText()), menuBar);
         if (selectedFile == null)
         {
             return null;

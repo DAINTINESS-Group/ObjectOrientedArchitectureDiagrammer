@@ -46,7 +46,8 @@ public class ClassDiagram
     private void createGraphNodes(List<String> chosenFileNames)
     {
         int nodeId = 0;
-        for (ClassifierVertex classifierVertex : getChosenNodes(chosenFileNames))
+        List<ClassifierVertex> chosenNodes = getChosenNodes(chosenFileNames);
+        for (ClassifierVertex classifierVertex : chosenNodes)
         {
             graphNodes.put(classifierVertex, nodeId++);
         }

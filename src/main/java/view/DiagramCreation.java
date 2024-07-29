@@ -96,7 +96,7 @@ public class DiagramCreation
 
     public void exportDiagram()
     {
-        File selectedDirectory = FileAndDirectoryUtility.saveFile("Export Diagram", menuBar, "GraphML Files");
+        File selectedDirectory = FileUtility.saveFile("Export Diagram", menuBar, "GraphML Files");
         if (selectedDirectory == null) return;
 
         diagramController.exportDiagramToGraphML(selectedDirectory.toPath());
@@ -105,7 +105,7 @@ public class DiagramCreation
 
     public void exportPlantUMLImage()
     {
-        File selectedDirectory = FileAndDirectoryUtility.saveFile("Export Diagram As PlantUML", menuBar, "PlantUML Files");
+        File selectedDirectory = FileUtility.saveFile("Export Diagram As PlantUML", menuBar, "PlantUML Files");
         if (selectedDirectory == null) return;
 
         diagramController.exportPlantUMLDiagram(selectedDirectory.toPath());
@@ -114,7 +114,7 @@ public class DiagramCreation
 
     public void exportPlantUMLText()
     {
-        File selectedDirectory = FileAndDirectoryUtility.saveFile("Export PlantUML Text", menuBar, "PlantUML Text Files");
+        File selectedDirectory = FileUtility.saveFile("Export PlantUML Text", menuBar, "PlantUML Text Files");
         if (selectedDirectory == null) return;
 
         diagramController.exportPlantUMLText(selectedDirectory.toPath());

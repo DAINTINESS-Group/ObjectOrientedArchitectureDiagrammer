@@ -1,6 +1,5 @@
 package view;
 
-import com.brunomnsilva.smartgraph.containers.ContentZoomPane;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import controller.Controller;
 import javafx.embed.swing.SwingFXUtils;
@@ -10,12 +9,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.MenuBar;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.image.WritableImage;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,8 +25,8 @@ public class DiagramVisualizationController
 
     private static final Logger logger = LogManager.getLogger(DiagramVisualizationController.class);
 
-    private static final String BACKGROUND_COLOR = "#F4FFFB";
-    public static final String DIAGRAM_CREATION_VIEW = "/fxml/DiagramCreationView.fxml";
+    private static final String BACKGROUND_COLOR      = "#F4FFFB";
+    public static final  String DIAGRAM_CREATION_VIEW = "/fxml/DiagramCreationView.fxml";
 
     @FXML
     BorderPane borderPane;
@@ -48,33 +43,12 @@ public class DiagramVisualizationController
     public void visualizeGraph(SmartGraphPanel<String, String> graphView)
     {
         this.graphView = graphView;
-        ContentZoomPane zoomPane   = new ContentZoomPane(graphView);
-        ScrollPane      scrollPane = new ScrollPane(zoomPane);
-        scrollPane.setPannable(false);
 
-        graphViewNormalScaleX           = graphView.getScaleX();
-        graphViewNormalScaleY           = graphView.getScaleY();
-        Color  zoomPaneBackgroundColor  = Color.web(BACKGROUND_COLOR);
-        zoomPane.setBackground(new Background(new BackgroundFill(zoomPaneBackgroundColor, null, null)));
-        graphView.minWidthProperty().bind(borderPane.widthProperty());
-        graphView.minHeightProperty().bind(borderPane.heightProperty());
-        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-        borderPane.setCenter(scrollPane);
+        ZoomablePane zoomablePane = new ZoomablePane(graphView);
+        borderPane.setCenter(zoomablePane);
         setTreeView(projectTreeView);
-        zoomPane.setOnScroll(event -> {
-            double zoomFactor = 1.1;
-            if (event.getDeltaY() >= 0)
-            {
-                graphView.setScaleX(graphView.getScaleX() * zoomFactor);
-                graphView.setScaleY(graphView.getScaleY() * zoomFactor);
-            }
-            else
-            {
-                graphView.setScaleX(graphView.getScaleX() / zoomFactor);
-                graphView.setScaleY(graphView.getScaleY() / zoomFactor);
-            }
-        });
+        graphViewNormalScaleX = graphView.getScaleX();
+        graphViewNormalScaleY = graphView.getScaleY();
     }
 
 
@@ -82,7 +56,7 @@ public class DiagramVisualizationController
     {
         try
         {
-            File selectedDirectory = FileAndDirectoryUtility.saveFile("Export Diagram as PNG", menuBar, "PNG files");
+            File selectedDirectory = FileUtility.saveFile("Export Diagram as PNG", menuBar, "PNG files");
             if (selectedDirectory == null) return;
 
             double changeScaleX = graphView.getScaleX();
@@ -104,11 +78,9 @@ public class DiagramVisualizationController
 
     public void exportDiagramAsText()
     {
-        File selectedFile = FileAndDirectoryUtility.saveFile("Save Diagram", menuBar, "Text Files");
-        if (selectedFile == null)
-        {
-            return;
-        }
+        File selectedFile = FileUtility.saveFile("Save Diagram", menuBar, "Text Files");
+        if (selectedFile == null) return;
+
         diagramController.saveDiagram(selectedFile.toPath());
     }
 

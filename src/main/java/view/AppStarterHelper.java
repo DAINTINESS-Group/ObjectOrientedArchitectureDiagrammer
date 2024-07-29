@@ -52,7 +52,6 @@ public class AppStarterHelper extends Application
             logger.error("Failed to load {}", PROJECT_LOAD_VIEW);
             throw new RuntimeException(e);
         }
-
     }
 
 }

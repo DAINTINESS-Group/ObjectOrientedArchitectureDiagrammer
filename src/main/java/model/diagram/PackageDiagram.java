@@ -41,7 +41,8 @@ public class PackageDiagram
     private void createGraphNodes(List<String> chosenFileNames)
     {
         int nodeId = 0;
-        for (PackageVertex vertex : getChosenNodes(chosenFileNames))
+        List<PackageVertex> chosenNodes = getChosenNodes(chosenFileNames);
+        for (PackageVertex vertex : chosenNodes)
         {
             graphNodes.put(vertex, nodeId++);
         }
