@@ -7,21 +7,13 @@
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
+        <javafx.version>20</javafx.version>
+        <javafx.maven.plugin.version>0.0.8</javafx.maven.plugin.version>
     </properties>
     <name>ObjectOrientedArchitectureDiagrammer</name>
     <description>A tool for the reverse engineering of Java-oriented source code into UML diagrams</description>
 
     <repositories>
-        <repository>
-            <id>JavaFXSmartGraph</id>
-            <name>JavaFXSmartGraph</name>
-            <url>file://${pom.basedir}/libs/JavaFXSmartGraph</url>
-        </repository>
-        <repository>
-            <id>PlantUML</id>
-            <name>PlantUML</name>
-            <url>file://${pom.basedir}/libs/PlantUML</url>
-        </repository>
         <repository>
             <id>ithaka</id>
             <url>http://beckchr.github.io/ithaka-maven/mvnrepo/</url>
@@ -78,17 +70,22 @@
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
-            <version>18.0.1</version>
+            <version>${javafx.version}</version>
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
-            <version>18.0.1</version>
+            <version>${javafx.version}</version>
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-web</artifactId>
-            <version>18.0.1</version>
+            <version>${javafx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-swing</artifactId>
+            <version>${javafx.version}</version>
         </dependency>
         <dependency>
             <groupId>com.sirolf2009</groupId>
@@ -96,14 +93,14 @@
             <version>0.0.3</version>
         </dependency>
         <dependency>
-            <groupId>JavaFXSmartGraph</groupId>
-            <artifactId>JavaFXSmartGraph</artifactId>
-            <version>0.1</version>
+            <groupId>com.brunomnsilva</groupId>
+            <artifactId>smartgraph</artifactId>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
-            <groupId>PlantUML</groupId>
-            <artifactId>PlantUML</artifactId>
-            <version>1.2023.7</version>
+            <groupId>net.sourceforge.plantuml</groupId>
+            <artifactId>plantuml</artifactId>
+            <version>1.2023.9</version>
         </dependency>
         <dependency>
             <groupId>com.github.javaparser</groupId>

@@ -6,12 +6,15 @@ import com.brunomnsilva.smartgraph.graph.Graph;
 import com.brunomnsilva.smartgraph.graph.Vertex;
 import com.brunomnsilva.smartgraph.graphview.SmartCircularSortedPlacementStrategy;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
+import com.brunomnsilva.smartgraph.graphview.SmartGraphProperties;
 import model.diagram.ClassDiagram;
 import model.graph.Arc;
 import model.graph.ArcType;
 import model.graph.ClassifierVertex;
 import model.graph.VertexType;
+import util.Resources;
 
+import java.net.URI;
 import java.util.Collection;
 import java.util.Set;
 
@@ -34,7 +37,9 @@ public class JavaFXClassVisualization implements JavaFXVisualization
     {
         Graph<String, String> graph = createGraph();
         vertexCollection            = graph.vertices();
-        graphView                   = new SmartGraphPanel<>(graph, new SmartCircularSortedPlacementStrategy());
+        SmartGraphProperties properties = Resources.getSmartgraphProperties();
+        URI smartgraphStyleUrl = Resources.getSmartGraphStyleURI();
+        graphView = new SmartGraphPanel<>(graph, properties, new SmartCircularSortedPlacementStrategy(), smartgraphStyleUrl);
         setSinkVertexCustomStyle();
         return graphView;
     }
