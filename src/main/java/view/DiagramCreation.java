@@ -8,6 +8,9 @@ import javafx.scene.control.MenuBar;
 import java.io.File;
 import java.util.List;
 
+import static view.FileType.PACKAGE;
+import static view.FileType.SOURCE;
+
 public class DiagramCreation
 {
 
@@ -57,7 +60,7 @@ public class DiagramCreation
             PopupWindow.createPopupInfoWindow("You have neither created a diagram nor loaded it yet!", "Error");
             return;
         }
-        if (!wereFilesChosen())
+        if (!wereAnyFilesChosen())
         {
             PopupWindow.createPopupInfoWindow("You haven't selected any files!", "Error");
             return;
@@ -123,21 +126,16 @@ public class DiagramCreation
 
     private List<String> getSelectedFiles(String diagramType)
     {
-        if (diagramType.equals("Package"))
-        {
-            return projectTreeView.getSelectedFiles(projectTreeView.getFolderFiles(), "package");
-        }
-        else
-        {
-            return projectTreeView.getSelectedFiles(projectTreeView.getJavaSourceFiles(), "java");
-        }
+        return diagramType.equals("Package") ?
+            projectTreeView.getSelectedFiles(PACKAGE) :
+            projectTreeView.getSelectedFiles(SOURCE);
     }
 
 
-    private boolean wereFilesChosen()
+    private boolean wereAnyFilesChosen()
     {
-        return !(projectTreeView.getSelectedFiles(projectTreeView.getFolderFiles(), "package").isEmpty() &&
-                 projectTreeView.getSelectedFiles(projectTreeView.getJavaSourceFiles(), "java").isEmpty());
+        return !(projectTreeView.getSelectedFiles(PACKAGE).isEmpty() &&
+                 projectTreeView.getSelectedFiles(SOURCE).isEmpty());
     }
 
 

@@ -8,11 +8,14 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.control.cell.CheckBoxTreeCell;
 
+import java.io.File;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+
+import static view.FileType.PACKAGE;
 
 public class ProjectTreeView
 {
@@ -90,29 +93,36 @@ public class ProjectTreeView
 
     private String getRelativePath(Path path)
     {
-        return path.normalize().toString().replace(sourceFolderPath.normalize().toString().substring(0,
-                                                                                                     sourceFolderPath.normalize().toString().lastIndexOf("/") + 1), "").replace("/", ".");
+        return path.normalize()
+            .toString()
+            .replace(sourceFolderPath.normalize()
+                         .toString()
+                         .substring(0, sourceFolderPath.normalize()
+                                           .toString()
+                                           .lastIndexOf(File.separator) + 1), "")
+            .replace(File.separator, ".");
     }
 
 
-    public List<String> getSelectedFiles(List<String> files, String fileType)
+    public List<String> getSelectedFiles(FileType fileType)
     {
+        List<String> files = fileType.equals(PACKAGE) ?
+            folderFiles :
+            javaSourceFiles;
+
         List<String> selectedFiles = new ArrayList<>();
         for (CheckBoxTreeItem<?> c : checkedItems)
         {
-            if (!files.contains((String)c.getValue()))
-            {
-                continue;
-            }
-            if (fileType.equals("java"))
-            {
-                selectedFiles.add(subtractFileExtension((String)c.getValue()));
-            }
-            else
-            {
-                selectedFiles.add(((String)c.getValue()));
+            String name = (String) c.getValue();
+            if (!files.contains(name)) continue;
+
+            switch (fileType) {
+                case SOURCE -> selectedFiles.add(subtractFileExtension(name));
+                case PACKAGE -> selectedFiles.add(name);
+                default -> throw new UnsupportedOperationException();
             }
         }
+
         return selectedFiles;
     }
 
@@ -146,18 +156,6 @@ public class ProjectTreeView
     private String subtractFileExtension(String s)
     {
         return s.substring(0, s.lastIndexOf("."));
-    }
-
-
-    public List<String> getFolderFiles()
-    {
-        return folderFiles;
-    }
-
-
-    public List<String> getJavaSourceFiles()
-    {
-        return javaSourceFiles;
     }
 
 

@@ -11,11 +11,11 @@ import java.util.*;
 public class PackageDiagram
 {
 
-    private final  Map<PackageVertex, Integer>                 graphNodes;
-    private        Map<PackageVertex, Set<Arc<PackageVertex>>> diagram;
-    private        Map<Path, PackageVertex>                    vertices;
-    private        Map<Integer, Pair<Double, Double>>          diagramGeometryGraphML;
-    private        DiagramGeometry                             diagramGeometry;
+    private final Map<PackageVertex, Integer>                 graphNodes;
+    private       Map<PackageVertex, Set<Arc<PackageVertex>>> diagram;
+    private       Map<Path, PackageVertex>                    vertices;
+    private       Map<Integer, Pair<Double, Double>>          diagramGeometryGraphML;
+    private       DiagramGeometry                             diagramGeometry;
 
 
     public PackageDiagram()
@@ -54,12 +54,10 @@ public class PackageDiagram
         List<PackageVertex> chosenPackages = new ArrayList<>();
         for (String chosenPackage : chosenPackagesNames)
         {
-            Optional<PackageVertex> vertex = vertices.values().stream()
-                //.filter(it -> it.getName().equals(chosenPackage))
-            	.filter(it -> it.getPath().toString().equals(chosenPackage))
-                .findFirst();
-
-            vertex.ifPresent(chosenPackages::add);
+            vertices.values().stream()
+                .filter(it -> it.getName().equals(chosenPackage))
+                .findFirst()
+                .ifPresent(chosenPackages::add);
         }
 
         return chosenPackages;
