@@ -23,7 +23,7 @@ public class AppStarterHelper extends Application
     private static final String LOGO_PNG          = "/assets/logo.png";
 
 
-    public static void main(String[] args)
+    public static void main(String... args)
     {
         launch();
     }
@@ -42,7 +42,7 @@ public class AppStarterHelper extends Application
             primaryStage.setTitle("Object Oriented Architecture Diagrammer");
             primaryStage.setScene(scene);
             primaryStage.show();
-            primaryStage.setOnCloseRequest(e -> {
+            primaryStage.setOnCloseRequest(__ -> {
                 Platform.exit();
                 System.exit(1);
             });
@@ -52,7 +52,6 @@ public class AppStarterHelper extends Application
             logger.error("Failed to load {}", PROJECT_LOAD_VIEW);
             throw new RuntimeException(e);
         }
-
     }
 
 }

@@ -17,12 +17,12 @@ public class GraphMLClassDiagramExporter implements DiagramExporter
 
     public GraphMLClassDiagramExporter(ClassDiagram classDiagram)
     {
-        GraphMLClassifierVertex    graphMLClassifierVertex    = new GraphMLClassifierVertex(classDiagram);
-        GraphMLClassifierVertexArc graphMLClassifierVertexArc = new GraphMLClassifierVertexArc(classDiagram);
+        GraphMLClassifierVertex    graphMLClassifierVertex    = new GraphMLClassifierVertex();
+        GraphMLClassifierVertexArc graphMLClassifierVertexArc = new GraphMLClassifierVertexArc();
 
-        graphMLNodeBuffer = graphMLClassifierVertex.convertSinkVertex();
-        graphMLEdgeBuffer = graphMLClassifierVertexArc.convertSinkVertexArc();
-        graphMLFile = new GraphMLFile();
+        graphMLNodeBuffer = graphMLClassifierVertex.convertSinkVertex(classDiagram);
+        graphMLEdgeBuffer = graphMLClassifierVertexArc.convertSinkVertexArc(classDiagram);
+        graphMLFile       = new GraphMLFile();
     }
 
 

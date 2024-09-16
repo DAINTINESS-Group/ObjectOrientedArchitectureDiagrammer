@@ -31,10 +31,10 @@ public class JavaFXPackageDiagramLoaderTest
         PackageDiagramManager packageDiagramManager = new PackageDiagramManager();
         packageDiagramManager.createSourceProject(LatexEditor.SRC.path);
         packageDiagramManager.convertTreeToDiagram(List.of("src.view",
-                                                           "src.model",
-                                                           "src.model.strategies",
-                                                           "src.controller.commands",
-                                                           "src.controller"));
+                                                                           "src.model",
+                                                                           "src.model.strategies",
+                                                                           "src.controller.commands",
+                                                                           "src.controller"));
         Map<PackageVertex, Set<Arc<PackageVertex>>> createdDiagram = packageDiagramManager.getPackageDiagram().getDiagram();
 
         DiagramExporter javaFXExporter = new JavaFXPackageDiagramExporter(packageDiagramManager.getPackageDiagram());
@@ -46,9 +46,9 @@ public class JavaFXPackageDiagramLoaderTest
                                                                                                            "resources",
                                                                                                            "testingExportedFile.txt"))));
 
-        JavaFXPackageDiagramLoader javaFXLoader  = new JavaFXPackageDiagramLoader(actualFile.toPath());
-        Set<PackageVertex>         loadedDiagram = javaFXLoader.loadDiagram();
+        Set<PackageVertex> loadedDiagram = JavaFXPackageDiagramLoader.loadDiagram(actualFile.toPath());
         assertEquals(createdDiagram.size(), loadedDiagram.size());
+
         for (PackageVertex vertex : createdDiagram.keySet())
         {
             Optional<PackageVertex> optionalVertex = loadedDiagram.stream()

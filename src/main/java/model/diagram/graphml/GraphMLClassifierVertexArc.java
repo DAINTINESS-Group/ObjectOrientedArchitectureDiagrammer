@@ -7,7 +7,8 @@ import model.graph.ClassifierVertex;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.Collection;
 
 public class GraphMLClassifierVertexArc
 {
@@ -17,35 +18,31 @@ public class GraphMLClassifierVertexArc
     private static final int EDGES_TARGET_TYPE = 2;
 
     private final StringBuilder graphMLBuffer;
-    private final ClassDiagram  classDiagram;
 
 
-    public GraphMLClassifierVertexArc(ClassDiagram classDiagram)
+    public GraphMLClassifierVertexArc()
     {
-        this.classDiagram = classDiagram;
         graphMLBuffer = new StringBuilder();
     }
 
 
-    public StringBuilder convertSinkVertexArc()
+    public StringBuilder convertSinkVertexArc(ClassDiagram classDiagram)
     {
-        List<Arc<ClassifierVertex>> arcs = new ArrayList<>();
-        for (Set<Arc<ClassifierVertex>> arcSet : classDiagram.getDiagram().values())
-        {
-            arcs.addAll(arcSet);
-        }
+        List<Arc<ClassifierVertex>> arcs = classDiagram.getDiagram().values().stream()
+            .flatMap(Collection::stream)
+            .collect(Collectors.toCollection(ArrayList::new));
 
         int edgeId = 0;
         for (Arc<ClassifierVertex> arc : arcs)
         {
-            graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLSinkVertexArcSyntax(getEdgesProperties(arc, edgeId)));
-            edgeId++;
+            graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLSinkVertexArcSyntax(getEdgesProperties(classDiagram, arc, edgeId++)));
         }
         return graphMLBuffer;
     }
 
 
-    private List<String> getEdgesProperties(Arc<ClassifierVertex> relationship,
+    private List<String> getEdgesProperties(ClassDiagram          classDiagram,
+                                            Arc<ClassifierVertex> relationship,
                                             int                   edgeId)
     {
         return Arrays.asList(String.valueOf(edgeId), String.valueOf(classDiagram.getGraphNodes().get(relationship.sourceVertex())),

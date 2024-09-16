@@ -46,10 +46,10 @@ public class ClassDiagram
     private void createGraphNodes(List<String> chosenFileNames)
     {
         int nodeId = 0;
-        for (ClassifierVertex classifierVertex : getChosenNodes(chosenFileNames))
+        List<ClassifierVertex> chosenNodes = getChosenNodes(chosenFileNames);
+        for (ClassifierVertex classifierVertex : chosenNodes)
         {
-            graphNodes.put(classifierVertex, nodeId);
-            nodeId++;
+            graphNodes.put(classifierVertex, nodeId++);
         }
     }
 
@@ -59,17 +59,13 @@ public class ClassDiagram
         List<ClassifierVertex> chosenClasses = new ArrayList<>();
         for (String chosenClass : chosenClassesNames)
         {
-            Optional<ClassifierVertex> optionalSinkVertex = sinkVertices
-                .values()
-                .stream()
-                .filter(sinkVertex -> sinkVertex.getName().equals(chosenClass))
+            Optional<ClassifierVertex> optionalSinkVertex = sinkVertices.values().stream()
+                .filter(it -> it.getName().equals(chosenClass))
                 .findFirst();
-            if (optionalSinkVertex.isEmpty())
-            {
-                continue;
-            }
-            chosenClasses.add(optionalSinkVertex.get());
+
+            optionalSinkVertex.ifPresent(chosenClasses::add);
         }
+
         return chosenClasses;
     }
 

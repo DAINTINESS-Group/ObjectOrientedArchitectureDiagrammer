@@ -28,13 +28,13 @@ public class ShadowCleanerTest
     void shadowWeakRelationshipsTest()
     {
         ClassDiagramManager classDiagramManager = new ClassDiagramManager();
-        List<String> chosenFiles = Arrays.asList("MainWindow",
-                                                 "LatexEditorView",
-                                                 "ChooseTemplate",
-                                                 "LatexEditorController",
-                                                 "VersionsManager",
-                                                 "DocumentManager",
-                                                 "Document");
+        List<String> chosenFiles = List.of("MainWindow",
+                                           "LatexEditorView",
+                                           "ChooseTemplate",
+                                           "LatexEditorController",
+                                           "VersionsManager",
+                                           "DocumentManager",
+                                           "Document");
 
         classDiagramManager.createSourceProject(LatexEditor.SRC.path);
         classDiagramManager.convertTreeToDiagram(chosenFiles);

@@ -17,17 +17,15 @@ public class GraphMLClassifierVertex
     private static final String INTERFACE_COLOR = "#3366FF";
 
     private final StringBuilder graphMLBuffer;
-    private final ClassDiagram  classDiagram;
 
 
-    public GraphMLClassifierVertex(ClassDiagram classDiagram)
+    public GraphMLClassifierVertex()
     {
-        this.classDiagram = classDiagram;
-        graphMLBuffer     = new StringBuilder();
+        graphMLBuffer = new StringBuilder();
     }
 
 
-    public StringBuilder convertSinkVertex()
+    public StringBuilder convertSinkVertex(ClassDiagram classDiagram)
     {
         for (Map.Entry<ClassifierVertex, Integer> sinkVertex : classDiagram.getGraphNodes().entrySet())
         {
@@ -62,7 +60,7 @@ public class GraphMLClassifierVertex
         }
         return classifierVertex.getMethods()
             .stream()
-            .map(method -> method.returnType() + " " + method.name())
+            .map(it -> it.returnType() + " " + it.name())
             .collect(Collectors.joining("\n"));
     }
 
@@ -75,20 +73,16 @@ public class GraphMLClassifierVertex
         }
         return classifierVertex.getFields()
             .stream()
-            .map(field -> String.join(" ",
-                                      field.type(),
-                                      field.name()))
+            .map(it -> String.join(" ",
+                                      it.type(),
+                                      it.name()))
             .collect(Collectors.joining("\n"));
     }
 
 
     private String getSinkVertexColor(ClassifierVertex leafNode)
     {
-        if (leafNode.getVertexType().equals(VertexType.INTERFACE))
-        {
-            return INTERFACE_COLOR;
-        }
-        return CLASS_COLOR;
+        return leafNode.getVertexType().equals(VertexType.INTERFACE) ? INTERFACE_COLOR : CLASS_COLOR;
     }
 
 }

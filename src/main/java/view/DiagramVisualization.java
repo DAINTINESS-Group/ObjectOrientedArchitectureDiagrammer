@@ -8,14 +8,27 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuBar;
 import javafx.stage.Stage;
+import org.apache.batik.anim.dom.SAXSVGDocumentFactory;
+import org.apache.batik.swing.JSVGCanvas;
+import org.apache.batik.util.XMLResourceDescriptor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.w3c.dom.svg.SVGDocument;
 
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.WindowConstants;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.io.IOException;
+import java.io.StringReader;
 import java.net.URL;
 
 public class DiagramVisualization
 {
+
     private static final Logger logger = LogManager.getLogger(DiagramVisualization.class);
 
     private static final String DIAGRAM_VISUALIZATION_VIEW = "/fxml/DiagramVisualizationView.fxml";
@@ -28,9 +41,9 @@ public class DiagramVisualization
     @FXML
     MenuBar menuBar;
 
+    private SmartGraphPanel<String, String> graphView;
     private ProjectTreeView                 projectTreeView;
     private Controller                      diagramController;
-    private SmartGraphPanel<String, String> graphView;
 
 
     public DiagramVisualization(MenuBar menuBar)
@@ -54,7 +67,7 @@ public class DiagramVisualization
             addGraphActions();
             diagramVisualizationController.visualizeGraph(graphView);
             Scene diagramVisualizationScene = new Scene(diagramVisualizationParent);
-            Stage window                    = (Stage)menuBar.getScene().getWindow();
+            Stage window                    = (Stage) menuBar.getScene().getWindow();
             window.setScene(diagramVisualizationScene);
             window.show();
             graphView.init();
@@ -66,6 +79,56 @@ public class DiagramVisualization
             logger.error("Failed to load {}", DIAGRAM_VISUALIZATION_VIEW);
             throw new RuntimeException(e);
         }
+    }
+
+
+    // TODO: See how feasible it is to remove this hack.
+    public void loadSvgDiagram()
+    {
+        java.awt.EventQueue.invokeLater(() ->
+        {
+            try
+            {
+                final JFrame frame = new JFrame();
+                final JPanel panel = new JPanel(new BorderLayout());
+                final JSVGCanvas svgCanvas = new JSVGCanvas();
+
+                frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+                frame.getContentPane().add(panel, BorderLayout.CENTER);
+
+                Dimension screenSize   = Toolkit.getDefaultToolkit().getScreenSize();
+                String svg = diagramController.visualizeSvgGraph(getDpi(screenSize));
+
+                String                parser      = XMLResourceDescriptor.getXMLParserClassName();
+                SAXSVGDocumentFactory factory     = new SAXSVGDocumentFactory(parser);
+                SVGDocument           svgDocument = factory.createSVGDocument(null, new StringReader(svg));
+                svgCanvas.setDocument(svgDocument);
+
+                panel.add(svgCanvas, BorderLayout.CENTER);
+                frame.setSize(screenSize.width, screenSize.height / 2);
+                JScrollPane scrollPane = new JScrollPane(panel);
+                frame.add(scrollPane, BorderLayout.CENTER);
+                frame.setVisible(true);
+            }
+            catch (IOException e)
+            {
+                logger.error("Failed to create SVG document");
+                throw new RuntimeException(e);
+            }
+        });
+    }
+
+
+    private static int getDpi(Dimension screenSize)
+    {
+        // Get the screen size.
+        double    screenWidth  = screenSize.getWidth();
+        double    screenHeight = screenSize.getHeight();
+        // Calculate the DPI based on the screen size.
+        int    screenResolution = Toolkit.getDefaultToolkit().getScreenResolution();
+        double diagonalInches   = Math.sqrt(Math.pow(screenWidth, 2) + Math.pow(screenHeight, 2)) / screenResolution;
+        // Set a maximum DPI of 30.
+        return diagonalInches > 30 ? 30 : (int) diagonalInches;
     }
 
 
@@ -101,7 +164,7 @@ public class DiagramVisualization
         }
         catch (IOException e)
         {
-            logger.error("Failed to load {}", PROJECT_LOAD_VIEW);
+            logger.error("Failed to load {}, for loaded diagram", PROJECT_LOAD_VIEW);
             throw new RuntimeException(e);
         }
     }

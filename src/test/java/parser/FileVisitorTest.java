@@ -38,7 +38,7 @@ public class FileVisitorTest
         PackageNode commandPackage = packages.get(LatexEditor.COMMANDS.path);
 
         LeafNode addLatexCommand = commandPackage.getLeafNodes().get("AddLatexCommand");
-        List<String> methodReturnTypesExpected = new ArrayList<>(Arrays.asList("Constructor", "void"));
+        List<String> methodReturnTypesExpected = new ArrayList<>(List.of("Constructor", "void"));
         List<String> methodReturnTypesActual = addLatexCommand.getMethodReturnTypes();
 
         Collections.sort(methodReturnTypesActual);

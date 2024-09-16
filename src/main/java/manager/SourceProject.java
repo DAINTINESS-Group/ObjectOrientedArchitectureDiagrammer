@@ -2,38 +2,44 @@ package manager;
 
 import model.diagram.ClassDiagram;
 import model.diagram.PackageDiagram;
+import model.graph.ClassifierVertex;
+import model.graph.PackageVertex;
 import parser.Interpreter;
 
 import java.nio.file.Path;
+import java.util.Map;
 
 public class SourceProject
 {
 
-    private final Interpreter interpreter = new Interpreter();
+    private final Interpreter interpreter;
 
 
-    public void createClassGraph(Path         sourcePackagePath,
-                                 ClassDiagram classDiagram)
+    public SourceProject()
     {
-        interpreter.parseProject(sourcePackagePath);
-        interpreter.convertTreeToGraph();
-        classDiagram.setSinkVertices(interpreter.getSinkVertices());
+        interpreter = new Interpreter();
     }
 
 
-    public void createPackageGraph(Path           sourcePackagePath,
-                                   PackageDiagram packageDiagram)
+    public Map<Path, ClassifierVertex> createClassGraph(Path         sourcePackagePath,
+                                                        ClassDiagram classDiagram)
     {
         interpreter.parseProject(sourcePackagePath);
         interpreter.convertTreeToGraph();
-        packageDiagram.setVertices(interpreter.getVertices());
+        Map<Path, ClassifierVertex> sinkVertices = interpreter.getSinkVertices();
+        classDiagram.setSinkVertices(sinkVertices);
+        return sinkVertices;
     }
 
-    // Only used for testing.
-    // TODO remove it completely.
-    protected Interpreter getInterpreter()
+
+    public Map<Path, PackageVertex> createPackageGraph(Path           sourcePackagePath,
+                                                       PackageDiagram packageDiagram)
     {
-        return interpreter;
+        interpreter.parseProject(sourcePackagePath);
+        interpreter.convertTreeToGraph();
+        Map<Path, PackageVertex> vertices = interpreter.getVertices();
+        packageDiagram.setVertices(vertices);
+        return vertices;
     }
 
 }

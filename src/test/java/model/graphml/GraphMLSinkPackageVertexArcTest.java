@@ -38,8 +38,8 @@ public class GraphMLSinkPackageVertexArcTest
                                                          "RollbackToPreviousVersionCommand",
                                                          "SaveCommand"));
 
-        GraphMLClassifierVertexArc graphMLClassifierVertexArc = new GraphMLClassifierVertexArc(classDiagramManager.getClassDiagram());
-        StringBuilder              actual                     = graphMLClassifierVertexArc.convertSinkVertexArc();
+        GraphMLClassifierVertexArc graphMLClassifierVertexArc = new GraphMLClassifierVertexArc();
+        StringBuilder              actual                     = graphMLClassifierVertexArc.convertSinkVertexArc(classDiagramManager.getClassDiagram());
 
         StringBuilder               expected = new StringBuilder();
         List<Arc<ClassifierVertex>> arcs     = new ArrayList<>();
@@ -77,7 +77,7 @@ public class GraphMLSinkPackageVertexArcTest
 
     private List<String> getEdgesDescription(Arc<ClassifierVertex> relationship)
     {
-        return Arrays.asList(identifyEdgeType(relationship).get(0),
+        return List.of(identifyEdgeType(relationship).get(0),
                              identifyEdgeType(relationship).get(1), identifyEdgeType(relationship).get(2));
     }
 
@@ -86,11 +86,11 @@ public class GraphMLSinkPackageVertexArcTest
     {
         return switch (relationship.arcType())
         {
-            case DEPENDENCY  -> Arrays.asList("dashed", "none", "plain");
-            case AGGREGATION -> Arrays.asList("line", "white_diamond", "none");
-            case ASSOCIATION -> Arrays.asList("line", "none", "standard");
-            case EXTENSION   -> Arrays.asList("line", "none", "white_delta");
-            default          -> Arrays.asList("dashed", "none", "white_delta");
+            case DEPENDENCY  -> List.of("dashed", "none", "plain");
+            case AGGREGATION -> List.of("line", "white_diamond", "none");
+            case ASSOCIATION -> List.of("line", "none", "standard");
+            case EXTENSION   -> List.of("line", "none", "white_delta");
+            default          -> List.of("dashed", "none", "white_delta");
         };
     }
 }

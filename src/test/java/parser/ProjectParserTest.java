@@ -11,7 +11,6 @@ import utils.PathTemplate.LatexEditor;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -26,26 +25,26 @@ public class ProjectParserTest
 
     ParserType parserType = ParserType.JAVAPARSER;
 
-    public static final List<Path> SOURCES_SUB_PACKAGES   = new ArrayList<>(Arrays.asList(LatexEditor.CONTROLLER.path,
+    public static final List<Path> SOURCES_SUB_PACKAGES   = new ArrayList<>(List.of(LatexEditor.CONTROLLER.path,
                                                                                           LatexEditor.MODEL.path,
                                                                                           LatexEditor.VIEW.path));
 
-    public static final List<Path> VIEWS_LEAF_NODES       = new ArrayList<>(Arrays.asList(LatexEditor.CHOOSE_TEMPLATE.path,
-                                                                                          LatexEditor.LATEX_EDITOR.path,
+    public static final List<Path> VIEWS_LEAF_NODES       = new ArrayList<>(List.of(LatexEditor.CHOOSE_TEMPLATE.path,
+                                                                                          LatexEditor.LATEX_EDITOR_VIEW.path,
                                                                                           LatexEditor.MAIN_WINDOW.path,
                                                                                           LatexEditor.OPENING_WINDOW.path));
 
     public static final List<Path> CONTROLLERS_LEAF_NODES = new ArrayList<>(List.of(LatexEditor.LATEX_EDITOR_CONTROLLER.path));
 
-    public static final List<Path> STRATEGIES_LEAF_NODES  = new ArrayList<>(Arrays.asList(LatexEditor.STABLE_VERSIONS_STRATEGY.path,
+    public static final List<Path> STRATEGIES_LEAF_NODES  = new ArrayList<>(List.of(LatexEditor.STABLE_VERSIONS_STRATEGY.path,
                                                                                           LatexEditor.VERSIONS_STRATEGY.path,
                                                                                           LatexEditor.VOLATILE_VERSIONS_STRATEGY.path,
                                                                                           LatexEditor.VERSIONS_STRATEGY_FACTORY.path));
-    public static final List<Path> MODELS_LEAF_NODES      = new ArrayList<>(Arrays.asList(LatexEditor.DOCUMENT.path,
+    public static final List<Path> MODELS_LEAF_NODES      = new ArrayList<>(List.of(LatexEditor.DOCUMENT.path,
                                                                                           LatexEditor.DOCUMENT_MANAGER.path,
                                                                                           LatexEditor.VERSIONS_MANAGER.path));
 
-    public static final List<Path> COMMANDS_LEAF_NODES    = new ArrayList<>(Arrays.asList(LatexEditor.ADD_LATEX_COMMAND.path,
+    public static final List<Path> COMMANDS_LEAF_NODES    = new ArrayList<>(List.of(LatexEditor.ADD_LATEX_COMMAND.path,
                                                                                           LatexEditor.COMMAND.path,
                                                                                           LatexEditor.COMMAND_FACTORY.path,
                                                                                           LatexEditor.CREATE_COMMAND.path,

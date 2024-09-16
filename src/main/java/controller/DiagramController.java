@@ -4,7 +4,6 @@ import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import manager.DiagramManager;
 import manager.DiagramManagerFactory;
 import manager.SourceProject;
-import model.diagram.arrangement.algorithms.LayoutAlgorithmType;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -48,7 +47,7 @@ public class DiagramController implements Controller
     @Override
     public SmartGraphPanel<String, String> applySpecificLayout(String choice)
     {
-        return diagramManager.applySpecificLayout(LayoutAlgorithmType.get(choice));
+        return diagramManager.applySpecificLayout(choice);
     }
 
     @Override
@@ -73,6 +72,12 @@ public class DiagramController implements Controller
     public SmartGraphPanel<String, String> visualizeJavaFXGraph()
     {
         return diagramManager.visualizeJavaFXGraph();
+    }
+
+    @Override
+    public String visualizeSvgGraph(int dpi)
+    {
+        return diagramManager.visualizeSvgGraph(dpi);
     }
 
     @Override

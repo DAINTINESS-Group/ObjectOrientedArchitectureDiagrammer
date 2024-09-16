@@ -9,8 +9,9 @@ public class ProjectParserFactory
     {
         if (parserType.equals(ParserType.JDT))
         {
-            throw new RuntimeException();
+            throw new IllegalArgumentException(ParserType.JDT + " is not supported");
         }
+
         return new ProjectParser();
     }
 }

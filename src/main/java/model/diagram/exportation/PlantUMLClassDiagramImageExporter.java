@@ -25,10 +25,8 @@ public class PlantUMLClassDiagramImageExporter implements DiagramExporter
 
     public PlantUMLClassDiagramImageExporter(ClassDiagram diagram)
     {
-        PlantUMLClassifierVertex    plantUMLClassifierVertex = new PlantUMLClassifierVertex(diagram);
-        StringBuilder               plantUMLNodeBuffer       = plantUMLClassifierVertex.convertSinkVertex();
-        PlantUMLClassifierVertexArc plantUMLEdge             = new PlantUMLClassifierVertexArc(diagram);
-        StringBuilder               plantUMLEdgeBuffer       = plantUMLEdge.convertSinkVertexArc();
+        StringBuilder plantUMLNodeBuffer = PlantUMLClassifierVertex.convertSinkVertices(diagram);
+        StringBuilder plantUMLEdgeBuffer = PlantUMLClassifierVertexArc.convertSinkVertexArcs(diagram);
         bufferBody = plantUMLNodeBuffer
             .append("\n\n")
             .append(plantUMLEdgeBuffer)
@@ -47,7 +45,7 @@ public class PlantUMLClassDiagramImageExporter implements DiagramExporter
     }
 
 
-    private void exportImage(File plantUMLFile, String plantCode)
+    private static void exportImage(File plantUMLFile, String plantCode)
     {
         try (ByteArrayOutputStream png = new ByteArrayOutputStream())
         {
@@ -86,9 +84,10 @@ public class PlantUMLClassDiagramImageExporter implements DiagramExporter
     }
 
 
-    private String wrapWidthChanger(String plantCode, int wrapWidth)
+    private static String wrapWidthChanger(String plantCode, int wrapWidth)
     {
         String updatedString;
+        // if (counter == 0) {
         int    indexOfNewLine = plantCode.indexOf("\n");
         String firstPart      = plantCode.substring(0, indexOfNewLine + 1);
         String secondPart     = plantCode.substring(indexOfNewLine + 1);
@@ -99,7 +98,7 @@ public class PlantUMLClassDiagramImageExporter implements DiagramExporter
         // POP UP MESSAGE CAN BE ADDED TO INFORM THE USER THAT THE IMAGE HE			//
         // REQUESTED IS OVER 4096x4096 SO WE REDUCE THE WRAPWIDTH TO REDUCE			//
         // EXTRACTED IMAGE'S WIDTH. NOW THE USER CAN SEE MORE CLASSES.				//
-        //    	}else {																//
+        //    	} else {															//
         //    		String[] lines = plantCode.split("\n");							//
         //    		lines[1] = "skinparam wrapWidth " + wrapWidth;					//
         //    		updatedString = String.join("\n", lines);						//
@@ -109,7 +108,7 @@ public class PlantUMLClassDiagramImageExporter implements DiagramExporter
     }
 
 
-    private String getClassText()
+    private static String getClassText()
     {
         return """
             @startuml

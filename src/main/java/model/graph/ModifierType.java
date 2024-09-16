@@ -1,8 +1,8 @@
 package model.graph;
 
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public enum ModifierType
 {
@@ -15,12 +15,7 @@ public enum ModifierType
 
     static
     {
-        Map<String, ModifierType> temp = new HashMap<>();
-        for (ModifierType modifierType : ModifierType.values())
-        {
-            temp.put(modifierType.toString().toLowerCase(), modifierType);
-        }
-        MODIFIER_TYPE = Collections.unmodifiableMap(temp);
+        MODIFIER_TYPE = Arrays.stream(ModifierType.values()).collect(Collectors.toMap(ModifierType::toString, it -> it));
     }
 
     public static ModifierType get(String modifier)

@@ -1,9 +1,10 @@
 package manager;
 
+import model.diagram.ClassDiagram;
 import model.diagram.GraphClassDiagramConverter;
 import model.diagram.ShadowCleaner;
 import model.diagram.arrangement.ClassDiagramArrangementManager;
-import model.diagram.arrangement.DiagramArrangementManagerInterface;
+import model.diagram.arrangement.DiagramArrangementManager;
 import model.diagram.exportation.DiagramExporter;
 import model.diagram.exportation.GraphMLClassDiagramExporter;
 import model.diagram.exportation.JavaFXClassDiagramExporter;
@@ -11,7 +12,6 @@ import model.diagram.graphml.GraphMLClassifierVertex;
 import model.diagram.graphml.GraphMLClassifierVertexArc;
 import model.graph.Arc;
 import model.graph.ClassifierVertex;
-import model.graph.PackageVertex;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -41,36 +41,31 @@ public class ClassDiagramManagerTest
     @Test
     void createSourceProjectTest()
     {
-        ClassDiagramManager classDiagramManager = new ClassDiagramManager();
-        SourceProject       sourceProject       = classDiagramManager.createSourceProject(LatexEditor.SRC.path);
+        ClassDiagramManager         classDiagramManager = new ClassDiagramManager();
+        ClassDiagram                classDiagram        = classDiagramManager.getClassDiagram();
 
-        Map<Path, PackageVertex> vertices       = sourceProject.getInterpreter().getVertices();
-        Interpreter              interpreter    = new Interpreter();
+        SourceProject               sourceProject       = new SourceProject();
+        Map<Path, ClassifierVertex> vertices            = sourceProject.createClassGraph(LatexEditor.SRC.path, classDiagram);
+
+        Interpreter              interpreter   = new Interpreter();
         interpreter.parseProject(LatexEditor.SRC.path);
         interpreter.convertTreeToGraph();
-        ArrayList<PackageVertex> interpreterVertices = new ArrayList<>(interpreter.getVertices().values());
 
+        Map<Path, ClassifierVertex> sinkVertices        = interpreter.getSinkVertices();
+        ArrayList<ClassifierVertex> interpreterVertices = new ArrayList<>(sinkVertices.values());
         assertEquals(vertices.size(), interpreterVertices.size());
-        for (Map.Entry<Path, PackageVertex> vertexEntry : vertices.entrySet())
+
+        for (ClassifierVertex classifierVertex : sinkVertices.values())
         {
-            PackageVertex optionalPackageVertex = interpreterVertices.stream()
-                .filter(it -> it.getName().equals(vertexEntry.getValue().getName()) &&
-                              it.getParentVertex().getName().equals(vertexEntry.getValue().getParentVertex().getName()))
+            ClassifierVertex classifierVertexActual = vertices.values().stream()
+                .filter(it -> it.getName().equals(classifierVertex.getName()) &&
+                              it.getPath().equals(classifierVertex.getPath()))
                 .findFirst().orElseGet(Assertions::fail);
 
-            assertEquals(vertexEntry.getValue().getNeighbourVertices().size(), optionalPackageVertex.getNeighbourVertices().size());
-            for (PackageVertex neighbourPackageVertex : vertexEntry.getValue().getNeighbourVertices())
-            {
-                assertTrue(optionalPackageVertex.getNeighbourVertices().stream()
-                    .anyMatch(it -> it.getName().equals(neighbourPackageVertex.getName())));
-            }
-
-            assertEquals(vertexEntry.getValue().getSinkVertices().size(), optionalPackageVertex.getSinkVertices().size());
-            for (ClassifierVertex classifierVertex : vertexEntry.getValue().getSinkVertices())
-            {
-                assertTrue(optionalPackageVertex.getSinkVertices().stream()
-                    .anyMatch(it -> it.getName().equals(classifierVertex.getName())));
-            }
+            assertEquals(classifierVertexActual.getFields().size(), classifierVertex.getFields().size());
+            assertEquals(classifierVertexActual.getMethods().size(), classifierVertex.getMethods().size());
+            assertEquals(classifierVertexActual.getVertexType(), classifierVertex.getVertexType());
+            assertEquals(classifierVertexActual.getArcs().size(), classifierVertex.getArcs().size());
         }
     }
 
@@ -78,26 +73,30 @@ public class ClassDiagramManagerTest
     @Test
     void populateGraphNodesTest()
     {
-        ClassDiagramManager classDiagramManager = new ClassDiagramManager();
-        SourceProject       sourceProject       = classDiagramManager.createSourceProject(LatexEditor.SRC.path);
+        ClassDiagramManager         classDiagramManager = new ClassDiagramManager();
+        ClassDiagram                classDiagram        = classDiagramManager.getClassDiagram();
 
-        classDiagramManager.convertTreeToDiagram(List.of("AddLatexCommand",
-                                                         "ChangeVersionsStrategyCommand",
-                                                         "Command",
-                                                         "CommandFactory",
-                                                         "CreateCommand",
-                                                         "DisableVersionsManagementCommand",
-                                                         "EditCommand",
-                                                         "EnableVersionsManagementCommand",
-                                                         "LoadCommand",
-                                                         "RollbackToPreviousVersionCommand",
-                                                         "SaveCommand"));
+        SourceProject               sourceProject       = new SourceProject();
+        Map<Path, ClassifierVertex> sinkVertices        = sourceProject.createClassGraph(LatexEditor.SRC.path, classDiagram);
+
+        Set<String> chosenFilesNames = Set.of("AddLatexCommand",
+                                               "ChangeVersionsStrategyCommand",
+                                               "Command",
+                                               "CommandFactory",
+                                               "CreateCommand",
+                                               "DisableVersionsManagementCommand",
+                                               "EditCommand",
+                                               "EnableVersionsManagementCommand",
+                                               "LoadCommand",
+                                               "RollbackToPreviousVersionCommand",
+                                               "SaveCommand");
 
         Map<ClassifierVertex, Integer> graphNodes = classDiagramManager.getClassDiagram().getGraphNodes();
-        assertEquals(sourceProject.getInterpreter().getVertices().get(LatexEditor.COMMANDS.path).getSinkVertices().size(), graphNodes.size());
+        classDiagramManager.convertTreeToDiagram(new ArrayList<>(chosenFilesNames));
 
-        List<String> l1 = sourceProject.getInterpreter().getVertices().get(LatexEditor.COMMANDS.path).getSinkVertices().stream()
+        List<String> l1 = sinkVertices.values().stream()
             .map(ClassifierVertex::getName)
+            .filter(chosenFilesNames::contains)
             .collect(Collectors.toCollection(ArrayList::new));
 
         List<String> l2 = graphNodes.keySet().stream()
@@ -117,9 +116,10 @@ public class ClassDiagramManagerTest
     void createDiagramTest()
     {
         ClassDiagramManager classDiagramManager = new ClassDiagramManager();
-        List<String> chosenFiles = Arrays.asList("MainWindow",
+        List<String> chosenFiles = List.of("MainWindow",
                                                  "LatexEditorView",
                                                  "OpeningWindow");
+
         classDiagramManager.createSourceProject(LatexEditor.SRC.path);
         classDiagramManager.convertTreeToDiagram(chosenFiles);
         Map<ClassifierVertex, Set<Arc<ClassifierVertex>>> testingCreatedDiagram = classDiagramManager.getClassDiagram().getDiagram();
@@ -141,9 +141,10 @@ public class ClassDiagramManagerTest
         try
         {
             ClassDiagramManager classDiagramManager = new ClassDiagramManager();
-            List<String> chosenFiles = Arrays.asList("MainWindow",
+            List<String> chosenFiles = List.of("MainWindow",
                                                      "LatexEditorView",
                                                      "OpeningWindow");
+
             classDiagramManager.createSourceProject(LatexEditor.SRC.path);
             classDiagramManager.convertTreeToDiagram(chosenFiles);
             classDiagramManager.arrangeDiagram();
@@ -155,12 +156,12 @@ public class ClassDiagramManagerTest
                                                                                                                                "resources",
                                                                                                                                "testingExportedFile.graphML"))));
 
-            DiagramArrangementManagerInterface classDiagramArrangement = new ClassDiagramArrangementManager(classDiagramManager.getClassDiagram());
+            DiagramArrangementManager classDiagramArrangement = new ClassDiagramArrangementManager(classDiagramManager.getClassDiagram());
             classDiagramManager.getClassDiagram().setGraphMLDiagramGeometry(classDiagramArrangement.arrangeGraphMLDiagram());
-            GraphMLClassifierVertex graphMLClassifierVertex = new GraphMLClassifierVertex(classDiagramManager.getClassDiagram());
-            graphMLClassifierVertex.convertSinkVertex();
-            GraphMLClassifierVertexArc graphMLClassifierVertexArc = new GraphMLClassifierVertexArc(classDiagramManager.getClassDiagram());
-            graphMLClassifierVertexArc.convertSinkVertexArc();
+            GraphMLClassifierVertex graphMLClassifierVertex = new GraphMLClassifierVertex();
+            graphMLClassifierVertex.convertSinkVertex(classDiagramManager.getClassDiagram());
+            GraphMLClassifierVertexArc graphMLClassifierVertexArc = new GraphMLClassifierVertexArc();
+            graphMLClassifierVertexArc.convertSinkVertexArc(classDiagramManager.getClassDiagram());
 
             DiagramExporter graphMLExporter = new GraphMLClassDiagramExporter(classDiagramManager.getClassDiagram());
             File expectedFile = graphMLExporter.exportDiagram(Paths.get(String.format("%s%s%s",
@@ -185,7 +186,7 @@ public class ClassDiagramManagerTest
         try
         {
             ClassDiagramManager classDiagramManager = new ClassDiagramManager();
-            List<String> chosenFiles = Arrays.asList("MainWindow",
+            List<String> chosenFiles = List.of("MainWindow",
                                                      "LatexEditorView",
                                                      "OpeningWindow");
             classDiagramManager.createSourceProject(LatexEditor.SRC.path);
@@ -218,7 +219,7 @@ public class ClassDiagramManagerTest
     void loadDiagramTest()
     {
         ClassDiagramManager classDiagramManager = new ClassDiagramManager();
-        List<String> chosenFiles = Arrays.asList("MainWindow",
+        List<String> chosenFiles = List.of("MainWindow",
                                                  "LatexEditorView",
                                                  "OpeningWindow");
         classDiagramManager.createSourceProject(LatexEditor.SRC.path);
@@ -242,16 +243,15 @@ public class ClassDiagramManagerTest
 
         for (ClassifierVertex classifierVertex : createdDiagram.keySet())
         {
-            Optional<ClassifierVertex> optionalSinkVertex = loadedDiagram.keySet()
-                .stream()
-                .filter(it -> it.getName().equals(classifierVertex.getName())).findFirst();
+            Optional<ClassifierVertex> optionalSinkVertex = loadedDiagram.keySet().stream()
+                .filter(it -> it.getName().equals(classifierVertex.getName()))
+                .findFirst();
             assertTrue(optionalSinkVertex.isPresent());
 
             assertEquals(createdDiagram.get(classifierVertex).size(), loadedDiagram.get(optionalSinkVertex.get()).size());
             for (Arc<ClassifierVertex> arc : createdDiagram.get(classifierVertex))
             {
-                assertTrue(loadedDiagram.get(optionalSinkVertex.get())
-                               .stream()
+                assertTrue(loadedDiagram.get(optionalSinkVertex.get()).stream()
                                .anyMatch(it -> it.sourceVertex().getName().equals(arc.sourceVertex().getName()) &&
                                                it.targetVertex().getName().equals(arc.targetVertex().getName()) &&
                                                it.arcType().equals(arc.arcType())));

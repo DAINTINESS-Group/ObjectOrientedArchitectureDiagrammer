@@ -72,6 +72,13 @@ public interface DiagramManager
     SmartGraphPanel<String, String> visualizeJavaFXGraph();
 
     /**
+     * TODO: Add Javadoc when this is done.
+     * @param dpi the screen's dpi?
+     * @return
+     */
+    String visualizeSvgGraph(int dpi);
+
+    /**
      * This method is responsible for exporting the diagram to a PlantUML image diagram.
      *
      * @param plantUMLSavePath the selected path by the designer where the exported diagram will be saved
@@ -91,7 +98,7 @@ public interface DiagramManager
     SmartGraphPanel<String, String> applyLayout();
 
     // TODO JavaDoc
-    SmartGraphPanel<String, String> applySpecificLayout(LayoutAlgorithmType algorithmType);
+    SmartGraphPanel<String, String> applySpecificLayout(String algorithmType);
 
     // TODO JavaDoc
     SmartGraphPanel<String, String> visualizeLoadedJavaFXGraph();
