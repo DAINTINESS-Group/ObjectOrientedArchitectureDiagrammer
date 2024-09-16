@@ -165,7 +165,7 @@ Create a new [Issue][issues-url] to report any issues
 
 ## Authors
 
-v0.2: Dimitris Anyfantakis added a new java parser; Bill Dodis added the PlanUML extension as part of his Diploma Thesis in Univ. Ioannina.<br>
+v0.2: Dimitris Anyfantakis added a new java parser; Bill Dodis added the PlanUML extension as part of his Diploma Thesis in Univ. Ioannina. Vassilis Zafeiris solved bugs at the package diagrams<br>
 v0.1: Dimitris Anyfantakis has developed the first version of the tool as part of his Diploma Thesis in Univ. Ioannina; Panos Vassiliadis acted solely as code reviewer and co-designer.
 
 ## License
