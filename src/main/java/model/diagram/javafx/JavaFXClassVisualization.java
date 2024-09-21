@@ -6,17 +6,27 @@ import com.brunomnsilva.smartgraph.graph.Graph;
 import com.brunomnsilva.smartgraph.graph.Vertex;
 import com.brunomnsilva.smartgraph.graphview.SmartCircularSortedPlacementStrategy;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
+import com.brunomnsilva.smartgraph.graphview.SmartGraphProperties;
 import model.diagram.ClassDiagram;
 import model.graph.Arc;
 import model.graph.ArcType;
 import model.graph.ClassifierVertex;
 import model.graph.VertexType;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.Set;
 
 public class JavaFXClassVisualization implements JavaFXVisualization
 {
+
+    public static final String DEFAULT_PROPERTIES_PATH = "styles/smartgraph.properties";
+    public static final String DEFAULT_STYLE_PATH      = "styles/smartgraph.css";
 
     private final  ClassDiagram                    classDiagram;
     private        SmartGraphPanel<String, String> graphView;
@@ -34,16 +44,28 @@ public class JavaFXClassVisualization implements JavaFXVisualization
     {
         Graph<String, String> graph = createGraph();
         vertexCollection            = graph.vertices();
-        graphView                   = new SmartGraphPanel<>(graph, new SmartCircularSortedPlacementStrategy());
+        graphView                   = createGraphView(graph);
         setSinkVertexCustomStyle();
         return graphView;
     }
 
 
-    @Override
-    public Collection<Vertex<String>> getVertexCollection()
+    private static SmartGraphPanel<String, String> createGraphView(Graph<String, String> graph)
     {
-        return vertexCollection;
+        try (InputStream resource = JavaFXClassVisualization.class.getClassLoader().getResourceAsStream(DEFAULT_PROPERTIES_PATH))
+        {
+            SmartGraphProperties properties = new SmartGraphProperties(resource);
+
+            URL url = JavaFXClassVisualization.class.getClassLoader().getResource(DEFAULT_STYLE_PATH);
+            URI cssFile = Objects.requireNonNull(url).toURI();
+
+            return new SmartGraphPanel<>(graph, properties, new SmartCircularSortedPlacementStrategy(), cssFile);
+        }
+        catch (IOException | URISyntaxException ignored)
+        {
+            // Fallback to default paths.
+            return new SmartGraphPanel<>(graph, new SmartCircularSortedPlacementStrategy());
+        }
     }
 
 
@@ -55,9 +77,9 @@ public class JavaFXClassVisualization implements JavaFXVisualization
             directedGraph.insertVertex(classifierVertex.getName());
         }
         insertSinkVertexArcs(directedGraph);
+
         return directedGraph;
     }
-
 
     private void insertSinkVertexArcs(Digraph<String, String> directedGraph)
     {
@@ -86,15 +108,19 @@ public class JavaFXClassVisualization implements JavaFXVisualization
     {
         for (ClassifierVertex classifierVertex : classDiagram.getDiagram().keySet())
         {
-            if (classifierVertex.getVertexType().equals(VertexType.INTERFACE))
-            {
-                graphView.getStylableVertex(classifierVertex.getName()).setStyleClass("vertexInterface");
-            }
-            else
-            {
-                graphView.getStylableVertex(classifierVertex.getName()).setStyleClass("vertexPackage");
-            }
+            String styleClass = classifierVertex.getVertexType().equals(VertexType.INTERFACE) ?
+                "vertexInterface" :
+                "vertexPackage";
+
+            graphView.getStylableVertex(classifierVertex.getName()).setStyleClass(styleClass);
         }
+    }
+
+
+    @Override
+    public Collection<Vertex<String>> getVertexCollection()
+    {
+        return vertexCollection;
     }
 
 
