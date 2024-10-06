@@ -4,7 +4,6 @@ import com.brunomnsilva.smartgraph.graph.Digraph;
 import com.brunomnsilva.smartgraph.graph.DigraphEdgeList;
 import com.brunomnsilva.smartgraph.graph.Graph;
 import com.brunomnsilva.smartgraph.graph.Vertex;
-import com.brunomnsilva.smartgraph.graphview.SmartCircularSortedPlacementStrategy;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import model.diagram.ClassDiagram;
 import model.graph.Arc;
@@ -22,7 +21,6 @@ public class JavaFXClassVisualization implements JavaFXVisualization
     private        SmartGraphPanel<String, String> graphView;
     private        Collection<Vertex<String>>      vertexCollection;
 
-
     public JavaFXClassVisualization(ClassDiagram diagram)
     {
         this.classDiagram = diagram;
@@ -34,17 +32,12 @@ public class JavaFXClassVisualization implements JavaFXVisualization
     {
         Graph<String, String> graph = createGraph();
         vertexCollection            = graph.vertices();
-        graphView                   = new SmartGraphPanel<>(graph, new SmartCircularSortedPlacementStrategy());
+        graphView                   = SmartGraphFactory.createGraphView(graph);
         setSinkVertexCustomStyle();
         return graphView;
     }
 
 
-    @Override
-    public Collection<Vertex<String>> getVertexCollection()
-    {
-        return vertexCollection;
-    }
 
 
     private Graph<String, String> createGraph()
@@ -55,9 +48,9 @@ public class JavaFXClassVisualization implements JavaFXVisualization
             directedGraph.insertVertex(classifierVertex.getName());
         }
         insertSinkVertexArcs(directedGraph);
+
         return directedGraph;
     }
-
 
     private void insertSinkVertexArcs(Digraph<String, String> directedGraph)
     {
@@ -86,15 +79,19 @@ public class JavaFXClassVisualization implements JavaFXVisualization
     {
         for (ClassifierVertex classifierVertex : classDiagram.getDiagram().keySet())
         {
-            if (classifierVertex.getVertexType().equals(VertexType.INTERFACE))
-            {
-                graphView.getStylableVertex(classifierVertex.getName()).setStyleClass("vertexInterface");
-            }
-            else
-            {
-                graphView.getStylableVertex(classifierVertex.getName()).setStyleClass("vertexPackage");
-            }
+            String styleClass = classifierVertex.getVertexType().equals(VertexType.INTERFACE) ?
+                "vertexInterface" :
+                "vertexPackage";
+
+            graphView.getStylableVertex(classifierVertex.getName()).setStyleClass(styleClass);
         }
+    }
+
+
+    @Override
+    public Collection<Vertex<String>> getVertexCollection()
+    {
+        return vertexCollection;
     }
 
 

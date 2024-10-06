@@ -34,7 +34,7 @@ public class JavaFXPackageVisualization implements JavaFXVisualization
     {
         Graph<String, String> graph = createGraph();
         vertexCollection = graph.vertices();
-        graphView        = new SmartGraphPanel<>(graph, new SmartCircularSortedPlacementStrategy());
+        graphView        = SmartGraphFactory.createGraphView(graph);
         setVertexCustomStyle();
 
         return graphView;
