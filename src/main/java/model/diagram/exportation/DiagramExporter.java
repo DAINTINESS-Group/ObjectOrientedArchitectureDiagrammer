@@ -3,8 +3,7 @@ package model.diagram.exportation;
 import java.io.File;
 import java.nio.file.Path;
 
-public interface DiagramExporter
-{
+public interface DiagramExporter {
 
     /**
      * This method is responsible for exporting the corresponding diagram type.

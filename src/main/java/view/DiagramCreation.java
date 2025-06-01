@@ -1,76 +1,63 @@
 package view;
 
-import controller.Controller;
-import controller.ControllerFactory;
-import javafx.fxml.FXML;
-import javafx.scene.control.MenuBar;
-
-import java.io.File;
-import java.util.List;
-
 import static view.FileType.PACKAGE;
 import static view.FileType.SOURCE;
 
-public class DiagramCreation
-{
+import controller.Controller;
+import controller.ControllerFactory;
+import java.io.File;
+import java.util.List;
+import javafx.fxml.FXML;
+import javafx.scene.control.MenuBar;
+
+public class DiagramCreation {
 
     public static final String UML = "uml";
 
-    @FXML
-    MenuBar menuBar;
+    @FXML MenuBar menuBar;
 
     private static DiagramCreation instance;
-    private        Controller      diagramController;
-    private        ProjectTreeView projectTreeView;
-    private        String          diagramType;
+    private Controller diagramController;
+    private ProjectTreeView projectTreeView;
+    private String diagramType;
 
-
-    private DiagramCreation()
-    {
+    private DiagramCreation() {
         diagramType = "";
     }
 
-
-    public void createProject(String diagramType)
-    {
-        if (projectTreeView == null)
-        {
+    public void createProject(String diagramType) {
+        if (projectTreeView == null) {
             PopupWindow.createPopupInfoWindow("You should load a project first!", "Error");
             return;
         }
 
-        this.diagramType  = diagramType;
+        this.diagramType = diagramType;
         diagramController = ControllerFactory.createController(UML, diagramType);
         diagramController.createTree(projectTreeView.getSourceFolderPath());
     }
 
-
-    public void loadProject()
-    {
+    public void loadProject() {
         projectTreeView.setCheckedItems(projectTreeView.getRootItem());
         diagramController.convertTreeToDiagram(getSelectedFiles(diagramType));
         diagramController.arrangeDiagram();
     }
 
-
-    public void viewProject(String type)
-    {
-        if (diagramType.isEmpty())
-        {
-            PopupWindow.createPopupInfoWindow("You have neither created a diagram nor loaded it yet!", "Error");
+    public void viewProject(String type) {
+        if (diagramType.isEmpty()) {
+            PopupWindow.createPopupInfoWindow(
+                    "You have neither created a diagram nor loaded it yet!", "Error");
             return;
         }
-        if (!wereAnyFilesChosen())
-        {
+        if (!wereAnyFilesChosen()) {
             PopupWindow.createPopupInfoWindow("You haven't selected any files!", "Error");
             return;
         }
 
         switch (type) {
-            case "smartgraph" :
+            case "smartgraph":
                 viewDiagram();
                 break;
-            case "plantuml"   :
+            case "plantuml":
                 viewSvgDiagram();
                 break;
             default:
@@ -79,88 +66,68 @@ public class DiagramCreation
         }
     }
 
-
-    private void viewDiagram()
-    {
+    private void viewDiagram() {
         DiagramVisualization diagramVisualization = new DiagramVisualization(menuBar);
         diagramVisualization.setDiagramController(diagramController);
         diagramVisualization.setProjectTreeView(projectTreeView);
         diagramVisualization.loadDiagramVisualization(diagramController.visualizeJavaFXGraph());
     }
 
-
-    private void viewSvgDiagram()
-    {
+    private void viewSvgDiagram() {
         DiagramVisualization diagramVisualization = new DiagramVisualization(menuBar);
         diagramVisualization.setDiagramController(diagramController);
         diagramVisualization.setProjectTreeView(projectTreeView);
         diagramVisualization.loadSvgDiagram();
     }
 
-    public void exportDiagram()
-    {
+    public void exportDiagram() {
         File selectedDirectory = FileUtility.saveFile("Export Diagram", menuBar, "GraphML Files");
         if (selectedDirectory == null) return;
 
         diagramController.exportDiagramToGraphML(selectedDirectory.toPath());
     }
 
-
-    public void exportPlantUMLImage()
-    {
-        File selectedDirectory = FileUtility.saveFile("Export Diagram As PlantUML", menuBar, "PlantUML Files");
+    public void exportPlantUMLImage() {
+        File selectedDirectory =
+                FileUtility.saveFile("Export Diagram As PlantUML", menuBar, "PlantUML Files");
         if (selectedDirectory == null) return;
 
         diagramController.exportPlantUMLDiagram(selectedDirectory.toPath());
     }
 
-
-    public void exportPlantUMLText()
-    {
-        File selectedDirectory = FileUtility.saveFile("Export PlantUML Text", menuBar, "PlantUML Text Files");
+    public void exportPlantUMLText() {
+        File selectedDirectory =
+                FileUtility.saveFile("Export PlantUML Text", menuBar, "PlantUML Text Files");
         if (selectedDirectory == null) return;
 
         diagramController.exportPlantUMLText(selectedDirectory.toPath());
     }
 
-
-    private List<String> getSelectedFiles(String diagramType)
-    {
-        return diagramType.equals("Package") ?
-            projectTreeView.getSelectedFiles(PACKAGE) :
-            projectTreeView.getSelectedFiles(SOURCE);
+    private List<String> getSelectedFiles(String diagramType) {
+        return diagramType.equals("Package")
+                ? projectTreeView.getSelectedFiles(PACKAGE)
+                : projectTreeView.getSelectedFiles(SOURCE);
     }
 
-
-    private boolean wereAnyFilesChosen()
-    {
-        return !(projectTreeView.getSelectedFiles(PACKAGE).isEmpty() &&
-                 projectTreeView.getSelectedFiles(SOURCE).isEmpty());
+    private boolean wereAnyFilesChosen() {
+        return !(projectTreeView.getSelectedFiles(PACKAGE).isEmpty()
+                && projectTreeView.getSelectedFiles(SOURCE).isEmpty());
     }
 
-
-    public void setMenuBar(MenuBar menuBar)
-    {
+    public void setMenuBar(MenuBar menuBar) {
         this.menuBar = menuBar;
     }
 
-
-    public ProjectTreeView getProjectTreeView()
-    {
+    public ProjectTreeView getProjectTreeView() {
         return projectTreeView;
     }
 
-
-    public void setProjectTreeView(ProjectTreeView projectTreeView)
-    {
+    public void setProjectTreeView(ProjectTreeView projectTreeView) {
         this.projectTreeView = projectTreeView;
     }
 
-
-    public static DiagramCreation getInstance()
-    {
-        if (instance == null)
-        {
+    public static DiagramCreation getInstance() {
+        if (instance == null) {
             instance = new DiagramCreation();
         }
         return instance;

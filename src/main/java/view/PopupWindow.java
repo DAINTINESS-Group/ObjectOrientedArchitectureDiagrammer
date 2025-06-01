@@ -8,17 +8,13 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class PopupWindow
-{
+public class PopupWindow {
 
-    private PopupWindow()
-    {
+    private PopupWindow() {
         throw new java.lang.UnsupportedOperationException("Not to be instantiated");
     }
 
-
-    public static void createPopupInfoWindow(String infoMessage, String popupWindowTitle)
-    {
+    public static void createPopupInfoWindow(String infoMessage, String popupWindowTitle) {
         Stage popupWindow = new Stage();
         popupWindow.initModality(Modality.APPLICATION_MODAL);
         popupWindow.setTitle(popupWindowTitle);
@@ -34,5 +30,4 @@ public class PopupWindow
         popupWindow.setScene(scene1);
         popupWindow.showAndWait();
     }
-
 }

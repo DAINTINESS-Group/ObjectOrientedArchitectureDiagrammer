@@ -1,14 +1,10 @@
 package view;
 
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-
 import com.brunomnsilva.smartgraph.containers.ContentZoomPane;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
-
 import controller.Controller;
+import java.io.File;
+import java.io.IOException;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,90 +17,74 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
+import javax.imageio.ImageIO;
 
-public class ProjectLoadController
-{
+public class ProjectLoadController {
 
-    @FXML
-    MenuBar    menuBar;
-    @FXML
-    BorderPane borderPane;
-    @FXML
-    Menu       exportMenu;
+    @FXML MenuBar menuBar;
+    @FXML BorderPane borderPane;
+    @FXML Menu exportMenu;
 
     private SmartGraphPanel<String, String> graphView;
-    private double                          graphViewNormalScaleX;
-    private double                          graphViewNormalScaleY;
-    private Controller                      diagramController;
+    private double graphViewNormalScaleX;
+    private double graphViewNormalScaleY;
+    private Controller diagramController;
 
-
-    public void openProject()
-    {
+    public void openProject() {
         MenuUtility.openProject(menuBar);
     }
 
-
-    public void closeProject()
-    {
+    public void closeProject() {
         MenuUtility.closeProject(menuBar);
     }
 
-
-    public void quitApp()
-    {
+    public void quitApp() {
         MenuUtility.quitApp(menuBar);
     }
 
+    public void aboutPage() {
+        MenuUtility.aboutPage(menuBar);
+    }
 
-    public void aboutPage() {MenuUtility.aboutPage(menuBar);}
-
-
-    public void loadDiagram(ActionEvent event)
-    {
+    public void loadDiagram(ActionEvent event) {
         FileUtility.setLoadedDiagramName(MenuUtility.loadDiagram(menuBar, event));
     }
 
-
-    public void visualizeGraph(SmartGraphPanel<String, String> graphView)
-    {
+    public void visualizeGraph(SmartGraphPanel<String, String> graphView) {
         this.graphView = graphView;
-        ContentZoomPane zoomPane   = new ContentZoomPane(graphView);
-        ScrollPane      scrollPane = new ScrollPane(zoomPane);
+        ContentZoomPane zoomPane = new ContentZoomPane(graphView);
+        ScrollPane scrollPane = new ScrollPane(zoomPane);
         scrollPane.setPannable(false);
         graphViewNormalScaleX = graphView.getScaleX();
         graphViewNormalScaleY = graphView.getScaleY();
         String graphViewBackgroundColor = "#F4FFFB";
-        Color  zoomPaneBackgroundColor  = Color.web(graphViewBackgroundColor);
-        zoomPane.setBackground(new Background(new BackgroundFill(zoomPaneBackgroundColor, null, null)));
+        Color zoomPaneBackgroundColor = Color.web(graphViewBackgroundColor);
+        zoomPane.setBackground(
+                new Background(new BackgroundFill(zoomPaneBackgroundColor, null, null)));
         graphView.minWidthProperty().bind(borderPane.widthProperty());
         graphView.minHeightProperty().bind(borderPane.heightProperty());
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         borderPane.setCenter(scrollPane);
-        zoomPane.setOnScroll(event -> {
-            double zoomFactor = 1.1;
-            if (event.getDeltaY() >= 0)
-            {
-                graphView.setScaleX(graphView.getScaleX() * zoomFactor);
-                graphView.setScaleY(graphView.getScaleY() * zoomFactor);
-            }
-            else
-            {
-                graphView.setScaleX(graphView.getScaleX() / zoomFactor);
-                graphView.setScaleY(graphView.getScaleY() / zoomFactor);
-            }
-        });
+        zoomPane.setOnScroll(
+                event -> {
+                    double zoomFactor = 1.1;
+                    if (event.getDeltaY() >= 0) {
+                        graphView.setScaleX(graphView.getScaleX() * zoomFactor);
+                        graphView.setScaleY(graphView.getScaleY() * zoomFactor);
+                    } else {
+                        graphView.setScaleX(graphView.getScaleX() / zoomFactor);
+                        graphView.setScaleY(graphView.getScaleY() / zoomFactor);
+                    }
+                });
         exportMenu.setVisible(true);
     }
 
-
-    public void exportDiagramAsImage()
-    {
-        try
-        {
-            File selectedDirectory = FileUtility.saveLoadedFile("Export Diagram as PNG", menuBar, "PNG files");
-            if (selectedDirectory == null)
-            {
+    public void exportDiagramAsImage() {
+        try {
+            File selectedDirectory =
+                    FileUtility.saveLoadedFile("Export Diagram as PNG", menuBar, "PNG files");
+            if (selectedDirectory == null) {
                 return;
             }
             double changeScaleX = graphView.getScaleX();
@@ -115,34 +95,25 @@ public class ProjectLoadController
             ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", selectedDirectory);
             graphView.setScaleX(changeScaleX);
             graphView.setScaleY(changeScaleY);
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-
-    public void exportDiagramAsText()
-    {
+    public void exportDiagramAsText() {
         File selectedFile = FileUtility.saveLoadedFile("Save Diagram", menuBar, "Text Files");
-        if (selectedFile == null)
-        {
+        if (selectedFile == null) {
             return;
         }
         diagramController.saveDiagram(selectedFile.toPath());
     }
 
-
-    public void closeDiagram()
-    {
+    public void closeDiagram() {
         MenuUtility.closeProject(menuBar);
         exportMenu.setVisible(false);
     }
 
-
-    public void setDiagramController(Controller diagramController)
-    {
+    public void setDiagramController(Controller diagramController) {
         this.diagramController = diagramController;
     }
 }

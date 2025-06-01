@@ -1,42 +1,43 @@
 package model.plantuml;
 
+import static utils.ListUtils.assertListsEqual;
+
+import java.util.Arrays;
+import java.util.List;
 import manager.ClassDiagramManager;
 import model.diagram.plantuml.PlantUMLClassifierVertex;
 import org.junit.jupiter.api.Test;
 import utils.PathTemplate.LatexEditor;
 
-import java.util.Arrays;
-import java.util.List;
-
-import static utils.ListUtils.assertListsEqual;
-
-public class PlantUMLClassifierVertexTest
-{
+public class PlantUMLClassifierVertexTest {
 
     @Test
-    void convertSinkVerticesTest()
-    {
+    void convertSinkVerticesTest() {
 
         ClassDiagramManager classDiagramManager = new ClassDiagramManager();
         classDiagramManager.createSourceProject(LatexEditor.SRC.path);
-        classDiagramManager.convertTreeToDiagram(List.of("StableVersionsStrategy",
-                                                         "VersionsStrategy",
-                                                         "VersionsStrategyFactory",
-                                                         "VolatileVersionsStrategy",
-                                                         "VersionsManager",
-                                                         "Document",
-                                                         "DocumentManager"));
+        classDiagramManager.convertTreeToDiagram(
+                List.of(
+                        "StableVersionsStrategy",
+                        "VersionsStrategy",
+                        "VersionsStrategyFactory",
+                        "VolatileVersionsStrategy",
+                        "VersionsManager",
+                        "Document",
+                        "DocumentManager"));
 
-        String actualBuffer = PlantUMLClassifierVertex.convertSinkVertices(classDiagramManager.getClassDiagram()).toString();
+        String actualBuffer =
+                PlantUMLClassifierVertex.convertSinkVertices(classDiagramManager.getClassDiagram())
+                        .toString();
 
         List<String> expected = Arrays.asList(EXPECTED_BUFFER.split("\n"));
-        List<String> actual   = Arrays.asList(actualBuffer.split("\n"));
+        List<String> actual = Arrays.asList(actualBuffer.split("\n"));
 
         assertListsEqual(expected, actual);
     }
 
-
-    public static final String EXPECTED_BUFFER = """
+    public static final String EXPECTED_BUFFER =
+            """
         class VersionsManager {
         -enabled: boolean
         -strategy: VersionsStrategy
@@ -59,7 +60,7 @@ public class PlantUMLClassifierVertexTest
         +setCurrentVersion(Document document): void
         +loadFromFile(): void
         }
-        										 
+
         class VolatileVersionsStrategy {
         -history: ArrayList[Document]
         +removeVersion(): void
@@ -69,7 +70,7 @@ public class PlantUMLClassifierVertexTest
         +putVersion(Document document): void
         +getEntireHistory(): List[Document]
         }
-        										 
+
         interface VersionsStrategy {
         +removeVersion(): void
         +getVersion(): Document
@@ -77,7 +78,7 @@ public class PlantUMLClassifierVertexTest
         +getEntireHistory(): List[Document]
         +putVersion(Document document): void
         }
-        										 
+
         class StableVersionsStrategy {
         -versionID: String
         +removeVersion(): void
@@ -86,13 +87,13 @@ public class PlantUMLClassifierVertexTest
         +getEntireHistory(): List[Document]
         +putVersion(Document document): void
         }
-        										 
+
         class VersionsStrategyFactory {
         -strategies: HashMap[String,VersionsStrategy]
         +createStrategy(String type): VersionsStrategy
         +VersionsStrategyFactory(): Constructor
         }
-        										 
+
         class Document {
         -author: String
         -date: String
@@ -108,13 +109,13 @@ public class PlantUMLClassifierVertexTest
         +setContents(String contents): void
         +changeVersion(): void
         }
-        										 
+
         class DocumentManager {
         -templates: HashMap[String,Document]
         +createDocument(String type): Document
         +getContents(String type): String
         +DocumentManager(): Constructor
         }
-        										 
+
         """;
 }

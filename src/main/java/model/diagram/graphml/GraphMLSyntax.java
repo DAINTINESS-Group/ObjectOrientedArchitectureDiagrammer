@@ -2,14 +2,11 @@ package model.diagram.graphml;
 
 import java.util.List;
 
-public class GraphMLSyntax
-{
+public class GraphMLSyntax {
 
     private static GraphMLSyntax instance;
 
-
-    public String getGraphMLPrefix()
-    {
+    public String getGraphMLPrefix() {
         return """
             <?xml version="1.0" encoding="UTF-8" standalone="no"?>
             <graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:java="http://www.yworks.com/xml/yfiles-common/1.0/java" xmlns:sys="http://www.yworks.com/xml/yfiles-common/markup/primitives/2.0" xmlns:x="http://www.yworks.com/xml/yfiles-common/markup/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:y="http://www.yworks.com/xml/graphml" xmlns:yed="http://www.yworks.com/xml/yed/3" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://www.yworks.com/xml/schema/graphml/1.1/ygraphml.xsd">
@@ -30,9 +27,7 @@ public class GraphMLSyntax
             """;
     }
 
-
-    public String getGraphMLSuffix()
-    {
+    public String getGraphMLSuffix() {
         return """
             </graph>
               <data key="d7">
@@ -42,10 +37,9 @@ public class GraphMLSyntax
             """;
     }
 
-
-    public String getGraphMLSinkVertexSyntax(List<String> sinkVertexDescription)
-    {
-        return String.format("""
+    public String getGraphMLSinkVertexSyntax(List<String> sinkVertexDescription) {
+        return String.format(
+                """
                                      <node id="n%s">
                                        <data key="d4" xml:space="preserve"/>
                                        <data key="d5"/>
@@ -63,19 +57,18 @@ public class GraphMLSyntax
                                        </data>
                                      </node>
                                  """,
-                             sinkVertexDescription.get(GraphMLSyntaxIds.NODE_ID.getId()),
-                             sinkVertexDescription.get(GraphMLSyntaxIds.NODE_X_COORDINATE.getId()),
-                             sinkVertexDescription.get(GraphMLSyntaxIds.NODE_Y_COORDINATE.getId()),
-                             sinkVertexDescription.get(GraphMLSyntaxIds.NODE_COLOR.getId()),
-                             sinkVertexDescription.get(GraphMLSyntaxIds.NODE_NAME.getId()),
-                             sinkVertexDescription.get(GraphMLSyntaxIds.NODE_FIELDS.getId()),
-                             sinkVertexDescription.get(GraphMLSyntaxIds.NODE_METHODS.getId()));
+                sinkVertexDescription.get(GraphMLSyntaxIds.NODE_ID.getId()),
+                sinkVertexDescription.get(GraphMLSyntaxIds.NODE_X_COORDINATE.getId()),
+                sinkVertexDescription.get(GraphMLSyntaxIds.NODE_Y_COORDINATE.getId()),
+                sinkVertexDescription.get(GraphMLSyntaxIds.NODE_COLOR.getId()),
+                sinkVertexDescription.get(GraphMLSyntaxIds.NODE_NAME.getId()),
+                sinkVertexDescription.get(GraphMLSyntaxIds.NODE_FIELDS.getId()),
+                sinkVertexDescription.get(GraphMLSyntaxIds.NODE_METHODS.getId()));
     }
 
-
-    public String getGraphMLVertexSyntax(List<String> vertexDescription)
-    {
-        return String.format("""
+    public String getGraphMLVertexSyntax(List<String> vertexDescription) {
+        return String.format(
+                """
                                      <node id="n%s">
                                        <data key="d4" xml:space="preserve"/>
                                        <data key="d6">
@@ -88,16 +81,15 @@ public class GraphMLSyntax
                                        </data>
                                      </node>
                                  """,
-                             vertexDescription.get(GraphMLSyntaxIds.NODE_ID.getId()),
-                             vertexDescription.get(GraphMLSyntaxIds.PACKAGE_X_COORDINATE.getId()),
-                             vertexDescription.get(GraphMLSyntaxIds.PACKAGE_Y_COORDINATE.getId()),
-                             vertexDescription.get(GraphMLSyntaxIds.PACKAGE_NAME.getId()));
+                vertexDescription.get(GraphMLSyntaxIds.NODE_ID.getId()),
+                vertexDescription.get(GraphMLSyntaxIds.PACKAGE_X_COORDINATE.getId()),
+                vertexDescription.get(GraphMLSyntaxIds.PACKAGE_Y_COORDINATE.getId()),
+                vertexDescription.get(GraphMLSyntaxIds.PACKAGE_NAME.getId()));
     }
 
-
-    public String getGraphMLSinkVertexArcSyntax(List<String> sinkVertexArcDescription)
-    {
-        return String.format("""
+    public String getGraphMLSinkVertexArcSyntax(List<String> sinkVertexArcDescription) {
+        return String.format(
+                """
                                  <edge id="e%s" source="n%s" target="n%s">
                                        <data key="d10">
                                          <y:PolyLineEdge>
@@ -109,18 +101,17 @@ public class GraphMLSyntax
                                        </data>
                                      </edge>
                                  """,
-                             sinkVertexArcDescription.get(GraphMLSyntaxIds.EDGE_ID.getId()),
-                             sinkVertexArcDescription.get(GraphMLSyntaxIds.EDGE_SOURCE.getId()),
-                             sinkVertexArcDescription.get(GraphMLSyntaxIds.EDGE_TARGET.getId()),
-                             sinkVertexArcDescription.get(GraphMLSyntaxIds.EDGE_TYPE.getId()),
-                             sinkVertexArcDescription.get(GraphMLSyntaxIds.EDGES_SOURCE_TYPE.getId()),
-                             sinkVertexArcDescription.get(GraphMLSyntaxIds.EDGES_TARGET_TYPE.getId()));
+                sinkVertexArcDescription.get(GraphMLSyntaxIds.EDGE_ID.getId()),
+                sinkVertexArcDescription.get(GraphMLSyntaxIds.EDGE_SOURCE.getId()),
+                sinkVertexArcDescription.get(GraphMLSyntaxIds.EDGE_TARGET.getId()),
+                sinkVertexArcDescription.get(GraphMLSyntaxIds.EDGE_TYPE.getId()),
+                sinkVertexArcDescription.get(GraphMLSyntaxIds.EDGES_SOURCE_TYPE.getId()),
+                sinkVertexArcDescription.get(GraphMLSyntaxIds.EDGES_TARGET_TYPE.getId()));
     }
 
-
-    public String getGraphMLVertexArcSyntax(List<String> vertexArcDescription)
-    {
-        return String.format("""
+    public String getGraphMLVertexArcSyntax(List<String> vertexArcDescription) {
+        return String.format(
+                """
                                      <edge id="e%s" source="n%s" target="n%s">
                                        <data key="d9"/>
                                        <data key="d10">
@@ -133,21 +124,17 @@ public class GraphMLSyntax
                                        </data>
                                      </edge>\
                                  """,
-                             vertexArcDescription.get(GraphMLSyntaxIds.EDGE_ID.getId()),
-                             vertexArcDescription.get(GraphMLSyntaxIds.EDGE_SOURCE.getId()),
-                             vertexArcDescription.get(GraphMLSyntaxIds.EDGE_TARGET.getId()));
+                vertexArcDescription.get(GraphMLSyntaxIds.EDGE_ID.getId()),
+                vertexArcDescription.get(GraphMLSyntaxIds.EDGE_SOURCE.getId()),
+                vertexArcDescription.get(GraphMLSyntaxIds.EDGE_TARGET.getId()));
     }
 
-
-    public static GraphMLSyntax getInstance()
-    {
-        if (instance == null)
-        {
+    public static GraphMLSyntax getInstance() {
+        if (instance == null) {
             instance = new GraphMLSyntax();
         }
         return instance;
     }
-
 
     /** Singleton class. Do not instantiate. */
     private GraphMLSyntax() {}

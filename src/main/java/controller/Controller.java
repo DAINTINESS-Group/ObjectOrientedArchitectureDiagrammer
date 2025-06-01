@@ -1,18 +1,17 @@
 package controller;
 
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
-import manager.DiagramManager;
-import manager.SourceProject;
-
 import java.io.File;
 import java.nio.file.Path;
 import java.util.List;
+import manager.DiagramManager;
+import manager.SourceProject;
 
-public interface Controller
-{
+public interface Controller {
 
     /**
-     * This method creates the tree of the project by calling {@link  DiagramManager#createSourceProject(Path)}.
+     * This method creates the tree of the project by calling {@link
+     * DiagramManager#createSourceProject(Path)}.
      *
      * @param sourcePackagePath the project's source package path
      * @return the {@link SourceProject} created.
@@ -20,16 +19,15 @@ public interface Controller
     SourceProject createTree(Path sourcePackagePath);
 
     /**
-     * This method converts the created tree to a diagram,
-     * by calling {@link  DiagramManager#convertTreeToDiagram(List)} with the given arguments.
+     * This method converts the created tree to a diagram, by calling {@link
+     * DiagramManager#convertTreeToDiagram(List)} with the given arguments.
      *
-     * @param chosenFileNames the names of the files selected by the designer to be included in the diagram.
+     * @param chosenFileNames the names of the files selected by the designer to be included in the
+     *     diagram.
      */
     void convertTreeToDiagram(List<String> chosenFileNames);
 
-    /**
-     * This method arranges the diagram by calling the {@link DiagramManager#arrangeDiagram()}.
-     */
+    /** This method arranges the diagram by calling the {@link DiagramManager#arrangeDiagram()}. */
     void arrangeDiagram();
 
     // TODO JavaDoc
@@ -39,8 +37,8 @@ public interface Controller
     SmartGraphPanel<String, String> applySpecificLayout(String choice);
 
     /**
-     * This method exports the diagram to a GraphML file
-     * by calling {@link DiagramManager#exportDiagramToGraphML(Path)}.
+     * This method exports the diagram to a GraphML file by calling {@link
+     * DiagramManager#exportDiagramToGraphML(Path)}.
      *
      * @param graphMLSavePath the selected path by the designer where the diagram will be saved.
      * @return the created File in which the diagram was saved.
@@ -48,8 +46,8 @@ public interface Controller
     File exportDiagramToGraphML(Path graphMLSavePath);
 
     /**
-     * This method saves the diagram to a text file
-     * by calling {@link DiagramManager#saveDiagram(Path)}.
+     * This method saves the diagram to a text file by calling {@link
+     * DiagramManager#saveDiagram(Path)}.
      *
      * @param graphSavePath the selected path by the designer where the diagram will be saved.
      * @return the created File in which the diagram was saved.
@@ -57,16 +55,16 @@ public interface Controller
     File saveDiagram(Path graphSavePath);
 
     /**
-     * This method loads a diagram from a text file
-     * by calling {@link DiagramManager#loadDiagram(Path)}.
+     * This method loads a diagram from a text file by calling {@link
+     * DiagramManager#loadDiagram(Path)}.
      *
      * @param graphSavePath the file's path where the diagram is saved.
      */
     void loadDiagram(Path graphSavePath);
 
     /**
-     * This method creates the JavaFX graphView
-     * by calling {@link DiagramManager#visualizeJavaFXGraph()}.
+     * This method creates the JavaFX graphView by calling {@link
+     * DiagramManager#visualizeJavaFXGraph()}.
      *
      * @return the created graphView {@link SmartGraphPanel}.
      */
@@ -74,35 +72,36 @@ public interface Controller
 
     /**
      * // TODO: Write a Javadoc when this is done.
+     *
      * @param dpi the dpi of the screen?
      * @return
      */
     String visualizeSvgGraph(int dpi);
 
     /**
-     * This method creates the loaded Diagram's JavaFX graphView
-     * by calling {@link DiagramManager#visualizeJavaFXGraph()}.
+     * This method creates the loaded Diagram's JavaFX graphView by calling {@link
+     * DiagramManager#visualizeJavaFXGraph()}.
      *
      * @return the created {@link SmartGraphPanel}.
      */
     SmartGraphPanel<String, String> visualizeLoadedJavaFXGraph();
 
     /**
-     * This method exports the diagram as an image with the help of PlantUML
-     * by calling {@link DiagramManager#exportPlantUMLImage(Path)}.
+     * This method exports the diagram as an image with the help of PlantUML by calling {@link
+     * DiagramManager#exportPlantUMLImage(Path)}.
      *
-     * @param graphSavePath the selected path by the designer where the diagram's image will be saved
+     * @param graphSavePath the selected path by the designer where the diagram's image will be
+     *     saved
      * @return the exported PlantUML diagram.
      */
     File exportPlantUMLDiagram(Path graphSavePath);
 
     /**
-     * This method saves the PlantUML code to a text file
-     * by calling {@link DiagramManager#exportPlantUMLText(Path)}}.
+     * This method saves the PlantUML code to a text file by calling {@link
+     * DiagramManager#exportPlantUMLText(Path)}}.
      *
      * @param textSavePath the selected path by the designer where the text file will be saved
      * @return the exported PlantUML text file.
      */
     File exportPlantUMLText(Path textSavePath);
-
 }
