@@ -1,60 +1,62 @@
 package model.graphml;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.List;
+import java.util.Map;
 import manager.ClassDiagramManager;
 import model.diagram.graphml.GraphMLClassifierVertex;
 import model.graph.ClassifierVertex;
 import model.graph.VertexType;
 import org.javatuples.Pair;
 import org.junit.jupiter.api.Test;
-import utils.PathConstructor;
-import utils.PathTemplate;
 import utils.PathTemplate.LatexEditor;
 
-import java.io.File;
-import java.nio.file.Paths;
-import java.util.List;
-import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-public class GraphMLSinkPackageVertexTest
-{
+public class GraphMLSinkPackageVertexTest {
 
     @Test
-    void convertSinkVerticesToGraphMLTest()
-    {
+    void convertSinkVerticesToGraphMLTest() {
         ClassDiagramManager classDiagramManager = new ClassDiagramManager();
         classDiagramManager.createSourceProject(LatexEditor.SRC.path);
-        classDiagramManager.convertTreeToDiagram(List.of("AddLatexCommand",
-                                                         "ChangeVersionsStrategyCommand",
-                                                         "Command",
-                                                         "CommandFactory",
-                                                         "CreateCommand",
-                                                         "DisableVersionsManagementCommand",
-                                                         "EditCommand",
-                                                         "EnableVersionsManagementCommand",
-                                                         "LoadCommand",
-                                                         "RollbackToPreviousVersionCommand",
-                                                         "SaveCommand"));
-        classDiagramManager.getClassDiagram().setGraphMLDiagramGeometry(Map.ofEntries(Map.entry(0, new Pair<>(10.0, 10.0)),
-                                                                                      Map.entry(1, new Pair<>(10.0, 10.0)),
-                                                                                      Map.entry(2, new Pair<>(10.0, 10.0)),
-                                                                                      Map.entry(3, new Pair<>(10.0, 10.0)),
-                                                                                      Map.entry(4, new Pair<>(10.0, 10.0)),
-                                                                                      Map.entry(5, new Pair<>(10.0, 10.0)),
-                                                                                      Map.entry(6, new Pair<>(10.0, 10.0)),
-                                                                                      Map.entry(7, new Pair<>(10.0, 10.0)),
-                                                                                      Map.entry(8, new Pair<>(10.0, 10.0)),
-                                                                                      Map.entry(9, new Pair<>(10.0, 10.0)),
-                                                                                      Map.entry(10, new Pair<>(10.0, 10.0))));
+        classDiagramManager.convertTreeToDiagram(
+                List.of(
+                        "AddLatexCommand",
+                        "ChangeVersionsStrategyCommand",
+                        "Command",
+                        "CommandFactory",
+                        "CreateCommand",
+                        "DisableVersionsManagementCommand",
+                        "EditCommand",
+                        "EnableVersionsManagementCommand",
+                        "LoadCommand",
+                        "RollbackToPreviousVersionCommand",
+                        "SaveCommand"));
+        classDiagramManager
+                .getClassDiagram()
+                .setGraphMLDiagramGeometry(
+                        Map.ofEntries(
+                                Map.entry(0, new Pair<>(10.0, 10.0)),
+                                Map.entry(1, new Pair<>(10.0, 10.0)),
+                                Map.entry(2, new Pair<>(10.0, 10.0)),
+                                Map.entry(3, new Pair<>(10.0, 10.0)),
+                                Map.entry(4, new Pair<>(10.0, 10.0)),
+                                Map.entry(5, new Pair<>(10.0, 10.0)),
+                                Map.entry(6, new Pair<>(10.0, 10.0)),
+                                Map.entry(7, new Pair<>(10.0, 10.0)),
+                                Map.entry(8, new Pair<>(10.0, 10.0)),
+                                Map.entry(9, new Pair<>(10.0, 10.0)),
+                                Map.entry(10, new Pair<>(10.0, 10.0))));
 
         GraphMLClassifierVertex graphMLClassifierVertex = new GraphMLClassifierVertex();
-        StringBuilder           actual                  = graphMLClassifierVertex.convertSinkVertex(classDiagramManager.getClassDiagram());
+        StringBuilder actual =
+                graphMLClassifierVertex.convertSinkVertex(classDiagramManager.getClassDiagram());
 
         StringBuilder expected = new StringBuilder();
-        for (ClassifierVertex leafNode : classDiagramManager.getClassDiagram().getGraphNodes().keySet())
-        {
-            expected.append(String.format("""
+        for (ClassifierVertex leafNode :
+                classDiagramManager.getClassDiagram().getGraphNodes().keySet()) {
+            expected.append(
+                    String.format(
+                            """
                                               <node id="n%s">
                                                 <data key="d4" xml:space="preserve"/>
                                                 <data key="d5"/>
@@ -72,49 +74,38 @@ public class GraphMLSinkPackageVertexTest
                                                 </data>
                                               </node>
                                           """,
-                                          classDiagramManager.getClassDiagram().getGraphNodes().get(leafNode),
-                                          10.0,
-                                          10.0,
-                                          getNodesColor(leafNode),
-                                          leafNode.getName(),
-                                          getNodesFields(leafNode),
-                                          getNodesMethods(leafNode)));
+                            classDiagramManager.getClassDiagram().getGraphNodes().get(leafNode),
+                            10.0,
+                            10.0,
+                            getNodesColor(leafNode),
+                            leafNode.getName(),
+                            getNodesFields(leafNode),
+                            getNodesMethods(leafNode)));
         }
         assertEquals(expected.toString(), actual.toString());
     }
 
-
-    private String getNodesFields(ClassifierVertex l)
-    {
+    private String getNodesFields(ClassifierVertex l) {
         if (l.getFields().isEmpty()) return "";
 
         StringBuilder fields = new StringBuilder();
-        for (ClassifierVertex.Field field : l.getFields())
-        {
+        for (ClassifierVertex.Field field : l.getFields()) {
             fields.append(field.type()).append(" ").append(field.name()).append("\n");
         }
         return fields.deleteCharAt(fields.length() - 1).toString();
     }
 
-
-    private String getNodesMethods(ClassifierVertex l)
-    {
+    private String getNodesMethods(ClassifierVertex l) {
         if ((l).getMethods().isEmpty()) return "";
 
         StringBuilder methods = new StringBuilder();
-        for (ClassifierVertex.Method method : l.getMethods())
-        {
+        for (ClassifierVertex.Method method : l.getMethods()) {
             methods.append(method.returnType()).append(" ").append(method.name()).append("\n");
         }
         return methods.deleteCharAt(methods.length() - 1).toString();
     }
 
-
-    private String getNodesColor(ClassifierVertex l)
-    {
-        return l.getVertexType().equals(VertexType.INTERFACE) ?
-            "#3366FF" :
-            "#FF9900";
+    private String getNodesColor(ClassifierVertex l) {
+        return l.getVertexType().equals(VertexType.INTERFACE) ? "#3366FF" : "#FF9900";
     }
-
 }

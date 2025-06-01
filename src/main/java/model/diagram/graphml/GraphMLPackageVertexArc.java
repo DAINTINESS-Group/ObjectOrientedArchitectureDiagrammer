@@ -1,49 +1,43 @@
 package model.diagram.graphml;
 
-import model.diagram.PackageDiagram;
-import model.graph.Arc;
-import model.graph.PackageVertex;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
+import model.diagram.PackageDiagram;
+import model.graph.Arc;
+import model.graph.PackageVertex;
 
-public class GraphMLPackageVertexArc
-{
-    private final StringBuilder  graphMLBuffer;
+public class GraphMLPackageVertexArc {
+    private final StringBuilder graphMLBuffer;
 
-
-    public GraphMLPackageVertexArc()
-    {
+    public GraphMLPackageVertexArc() {
         graphMLBuffer = new StringBuilder();
     }
 
-
-    public StringBuilder convertVertexArc(PackageDiagram packageDiagram)
-    {
-        List<Arc<PackageVertex>> arcs = packageDiagram.getDiagram().values().stream()
-            .flatMap(Collection::stream)
-            .collect(Collectors.toCollection(ArrayList::new));
+    public StringBuilder convertVertexArc(PackageDiagram packageDiagram) {
+        List<Arc<PackageVertex>> arcs =
+                packageDiagram.getDiagram().values().stream()
+                        .flatMap(Collection::stream)
+                        .collect(Collectors.toCollection(ArrayList::new));
 
         int edgeId = 0;
-        for (Arc<PackageVertex> arc : arcs)
-        {
-            graphMLBuffer.append(GraphMLSyntax.getInstance().getGraphMLVertexArcSyntax(getVertexArcProperties(packageDiagram, arc, edgeId++)));
+        for (Arc<PackageVertex> arc : arcs) {
+            graphMLBuffer.append(
+                    GraphMLSyntax.getInstance()
+                            .getGraphMLVertexArcSyntax(
+                                    getVertexArcProperties(packageDiagram, arc, edgeId++)));
         }
 
         return graphMLBuffer;
     }
 
-
-    private List<String> getVertexArcProperties(PackageDiagram     packageDiagram,
-                                                Arc<PackageVertex> relationship,
-                                                int                edgeId)
-    {
-        return Arrays.asList(String.valueOf(edgeId),
-                             String.valueOf(packageDiagram.getGraphNodes().get(relationship.sourceVertex())),
-                             String.valueOf(packageDiagram.getGraphNodes().get(relationship.targetVertex())));
+    private List<String> getVertexArcProperties(
+            PackageDiagram packageDiagram, Arc<PackageVertex> relationship, int edgeId) {
+        return Arrays.asList(
+                String.valueOf(edgeId),
+                String.valueOf(packageDiagram.getGraphNodes().get(relationship.sourceVertex())),
+                String.valueOf(packageDiagram.getGraphNodes().get(relationship.targetVertex())));
     }
-
 }

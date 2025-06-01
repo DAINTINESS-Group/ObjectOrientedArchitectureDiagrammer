@@ -1,12 +1,8 @@
 package parser;
 
-import org.junit.jupiter.api.Test;
-import parser.factory.Parser;
-import parser.factory.ParserType;
-import parser.factory.ProjectParserFactory;
-import parser.tree.LeafNode;
-import parser.tree.PackageNode;
-import utils.PathTemplate.LatexEditor;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -15,50 +11,67 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import org.junit.jupiter.api.Test;
+import parser.factory.Parser;
+import parser.factory.ParserType;
+import parser.factory.ProjectParserFactory;
+import parser.tree.LeafNode;
+import parser.tree.PackageNode;
+import utils.PathTemplate.LatexEditor;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-public class ProjectParserTest
-{
+public class ProjectParserTest {
 
     ParserType parserType = ParserType.JAVAPARSER;
 
-    public static final List<Path> SOURCES_SUB_PACKAGES   = new ArrayList<>(List.of(LatexEditor.CONTROLLER.path,
-                                                                                          LatexEditor.MODEL.path,
-                                                                                          LatexEditor.VIEW.path));
+    public static final List<Path> SOURCES_SUB_PACKAGES =
+            new ArrayList<>(
+                    List.of(
+                            LatexEditor.CONTROLLER.path,
+                            LatexEditor.MODEL.path,
+                            LatexEditor.VIEW.path));
 
-    public static final List<Path> VIEWS_LEAF_NODES       = new ArrayList<>(List.of(LatexEditor.CHOOSE_TEMPLATE.path,
-                                                                                          LatexEditor.LATEX_EDITOR_VIEW.path,
-                                                                                          LatexEditor.MAIN_WINDOW.path,
-                                                                                          LatexEditor.OPENING_WINDOW.path));
+    public static final List<Path> VIEWS_LEAF_NODES =
+            new ArrayList<>(
+                    List.of(
+                            LatexEditor.CHOOSE_TEMPLATE.path,
+                            LatexEditor.LATEX_EDITOR_VIEW.path,
+                            LatexEditor.MAIN_WINDOW.path,
+                            LatexEditor.OPENING_WINDOW.path));
 
-    public static final List<Path> CONTROLLERS_LEAF_NODES = new ArrayList<>(List.of(LatexEditor.LATEX_EDITOR_CONTROLLER.path));
+    public static final List<Path> CONTROLLERS_LEAF_NODES =
+            new ArrayList<>(List.of(LatexEditor.LATEX_EDITOR_CONTROLLER.path));
 
-    public static final List<Path> STRATEGIES_LEAF_NODES  = new ArrayList<>(List.of(LatexEditor.STABLE_VERSIONS_STRATEGY.path,
-                                                                                          LatexEditor.VERSIONS_STRATEGY.path,
-                                                                                          LatexEditor.VOLATILE_VERSIONS_STRATEGY.path,
-                                                                                          LatexEditor.VERSIONS_STRATEGY_FACTORY.path));
-    public static final List<Path> MODELS_LEAF_NODES      = new ArrayList<>(List.of(LatexEditor.DOCUMENT.path,
-                                                                                          LatexEditor.DOCUMENT_MANAGER.path,
-                                                                                          LatexEditor.VERSIONS_MANAGER.path));
+    public static final List<Path> STRATEGIES_LEAF_NODES =
+            new ArrayList<>(
+                    List.of(
+                            LatexEditor.STABLE_VERSIONS_STRATEGY.path,
+                            LatexEditor.VERSIONS_STRATEGY.path,
+                            LatexEditor.VOLATILE_VERSIONS_STRATEGY.path,
+                            LatexEditor.VERSIONS_STRATEGY_FACTORY.path));
+    public static final List<Path> MODELS_LEAF_NODES =
+            new ArrayList<>(
+                    List.of(
+                            LatexEditor.DOCUMENT.path,
+                            LatexEditor.DOCUMENT_MANAGER.path,
+                            LatexEditor.VERSIONS_MANAGER.path));
 
-    public static final List<Path> COMMANDS_LEAF_NODES    = new ArrayList<>(List.of(LatexEditor.ADD_LATEX_COMMAND.path,
-                                                                                          LatexEditor.COMMAND.path,
-                                                                                          LatexEditor.COMMAND_FACTORY.path,
-                                                                                          LatexEditor.CREATE_COMMAND.path,
-                                                                                          LatexEditor.EDIT_COMMAND.path,
-                                                                                          LatexEditor.LOAD_COMMAND.path,
-                                                                                          LatexEditor.SAVE_COMMAND.path,
-                                                                                          LatexEditor.CHANGE_VERSIONS_STRATEGY_COMMAND.path,
-                                                                                          LatexEditor.DISABLE_VERSIONS_MANAGER_COMMAND.path,
-                                                                                          LatexEditor.ENABLE_VERSIONS_MANAGE_COMMAND.path,
-                                                                                          LatexEditor.ROLLBACK_TO_PREVIOUS_VERSION_COMMAND.path));
+    public static final List<Path> COMMANDS_LEAF_NODES =
+            new ArrayList<>(
+                    List.of(
+                            LatexEditor.ADD_LATEX_COMMAND.path,
+                            LatexEditor.COMMAND.path,
+                            LatexEditor.COMMAND_FACTORY.path,
+                            LatexEditor.CREATE_COMMAND.path,
+                            LatexEditor.EDIT_COMMAND.path,
+                            LatexEditor.LOAD_COMMAND.path,
+                            LatexEditor.SAVE_COMMAND.path,
+                            LatexEditor.CHANGE_VERSIONS_STRATEGY_COMMAND.path,
+                            LatexEditor.DISABLE_VERSIONS_MANAGER_COMMAND.path,
+                            LatexEditor.ENABLE_VERSIONS_MANAGE_COMMAND.path,
+                            LatexEditor.ROLLBACK_TO_PREVIOUS_VERSION_COMMAND.path));
 
     @Test
-    void parsingTest()
-    {
+    void parsingTest() {
 
         Parser parser = ProjectParserFactory.createProjectParser(parserType);
         Map<Path, PackageNode> packageNodes = parser.parseSourcePackage(LatexEditor.SRC.path);
@@ -73,8 +86,7 @@ public class ProjectParserTest
         Map<Path, PackageNode> subNodes = controllerPackage.getSubNodes();
         assertEquals(LatexEditor.COMMANDS.path, subNodes.get(LatexEditor.COMMANDS.path).getPath());
 
-        for (LeafNode l : controllerPackage.getLeafNodes().values())
-        {
+        for (LeafNode l : controllerPackage.getLeafNodes().values()) {
             testingLeafNodes.add(l.path());
             assertEquals(l.parentNode().getPath(), LatexEditor.CONTROLLER.path);
         }
@@ -94,8 +106,7 @@ public class ProjectParserTest
         assertTrue(commandsPackage.isValid());
         subNodes = commandsPackage.getSubNodes();
         assertEquals(0, subNodes.size());
-        for (LeafNode l : commandsPackage.getLeafNodes().values())
-        {
+        for (LeafNode l : commandsPackage.getLeafNodes().values()) {
             testingLeafNodes.add(l.path());
             assertEquals(l.parentNode().getPath(), LatexEditor.COMMANDS.path);
         }
@@ -115,10 +126,10 @@ public class ProjectParserTest
 
         assertTrue(modelPackage.isValid());
         subNodes = modelPackage.getSubNodes();
-        assertEquals(LatexEditor.STRATEGIES.path, subNodes.get(LatexEditor.STRATEGIES.path).getPath());
+        assertEquals(
+                LatexEditor.STRATEGIES.path, subNodes.get(LatexEditor.STRATEGIES.path).getPath());
 
-        for (LeafNode l : modelPackage.getLeafNodes().values())
-        {
+        for (LeafNode l : modelPackage.getLeafNodes().values()) {
             assertEquals(l.parentNode().getPath(), LatexEditor.MODEL.path);
             testingLeafNodes.add(l.path());
         }
@@ -137,8 +148,7 @@ public class ProjectParserTest
         assertTrue(strategiesPackage.isValid());
         subNodes = strategiesPackage.getSubNodes();
         assertEquals(0, subNodes.size());
-        for (LeafNode l : strategiesPackage.getLeafNodes().values())
-        {
+        for (LeafNode l : strategiesPackage.getLeafNodes().values()) {
             assertEquals(l.parentNode().getPath(), LatexEditor.STRATEGIES.path);
             testingLeafNodes.add(l.path());
         }
@@ -157,8 +167,7 @@ public class ProjectParserTest
         assertTrue(viewPackage.isValid());
         subNodes = viewPackage.getSubNodes();
         assertEquals(0, subNodes.size());
-        for (LeafNode l : viewPackage.getLeafNodes().values())
-        {
+        for (LeafNode l : viewPackage.getLeafNodes().values()) {
             assertEquals(l.parentNode().getPath(), LatexEditor.VIEW.path);
             testingLeafNodes.add(l.path());
         }
@@ -178,10 +187,11 @@ public class ProjectParserTest
         assertEquals(Paths.get(""), sourcePackage.getParentNode().getPath());
         assertFalse(sourcePackage.isValid());
         subNodes = sourcePackage.getSubNodes();
-        List<Path> testingSubPackages = subNodes.values().stream()
-                .map(PackageNode::getPath)
-                .sorted()
-                .collect(Collectors.toCollection(ArrayList::new));
+        List<Path> testingSubPackages =
+                subNodes.values().stream()
+                        .map(PackageNode::getPath)
+                        .sorted()
+                        .collect(Collectors.toCollection(ArrayList::new));
 
         Collections.sort(SOURCES_SUB_PACKAGES);
 

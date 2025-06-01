@@ -1,8 +1,5 @@
 package util;
 
-import com.brunomnsilva.smartgraph.graphview.SmartGraphProperties;
-import model.diagram.javafx.JavaFXClassVisualization;
-
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -16,5 +13,4 @@ public class Resources {
     public static URI getResourceURI(String relativePath) throws URISyntaxException {
         return Resources.class.getClassLoader().getResource(relativePath).toURI();
     }
-
 }

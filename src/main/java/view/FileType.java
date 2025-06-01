@@ -1,7 +1,6 @@
 package view;
 
-public enum FileType
-{
+public enum FileType {
     SOURCE,
     PACKAGE
 }

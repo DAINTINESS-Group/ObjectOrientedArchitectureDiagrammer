@@ -3,6 +3,10 @@ package manager;
 import com.brunomnsilva.smartgraph.graph.Vertex;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import com.google.gson.JsonParseException;
+import java.io.File;
+import java.nio.file.Path;
+import java.util.Collection;
+import java.util.List;
 import model.diagram.PackageDiagram;
 import model.diagram.arrangement.DiagramArrangementManager;
 import model.diagram.arrangement.PackageDiagramArrangementManager;
@@ -19,114 +23,88 @@ import model.diagram.javafx.JavaFXVisualization;
 import model.diagram.svg.PlantUMLPackageDiagram;
 import org.javatuples.Pair;
 
-import java.io.File;
-import java.nio.file.Path;
-import java.util.Collection;
-import java.util.List;
+public class PackageDiagramManager implements DiagramManager {
 
-public class PackageDiagramManager implements DiagramManager
-{
-
-    private PackageDiagram             packageDiagram;
-    private DiagramArrangementManager  packageDiagramArrangement;
+    private PackageDiagram packageDiagram;
+    private DiagramArrangementManager packageDiagramArrangement;
     private Collection<Vertex<String>> vertexCollection;
-    private SmartGraphPanel<String, String>    graphView;
+    private SmartGraphPanel<String, String> graphView;
 
-
-    public PackageDiagramManager()
-    {
+    public PackageDiagramManager() {
         packageDiagram = new PackageDiagram();
     }
 
-
     @Override
-    public SourceProject createSourceProject(Path sourcePackagePath)
-    {
+    public SourceProject createSourceProject(Path sourcePackagePath) {
         SourceProject sourceProject = new SourceProject();
         sourceProject.createPackageGraph(sourcePackagePath, packageDiagram);
         return sourceProject;
     }
 
-
     @Override
-    public void convertTreeToDiagram(List<String> chosenFilesNames)
-    {
+    public void convertTreeToDiagram(List<String> chosenFilesNames) {
         packageDiagram.createNewDiagram(chosenFilesNames);
     }
 
-
     @Override
-    public DiagramGeometry arrangeDiagram()
-    {
-        packageDiagramArrangement       = new PackageDiagramArrangementManager(packageDiagram);
+    public DiagramGeometry arrangeDiagram() {
+        packageDiagramArrangement = new PackageDiagramArrangementManager(packageDiagram);
         DiagramGeometry diagramGeometry = packageDiagramArrangement.arrangeDiagram();
         packageDiagram.setDiagramGeometry(diagramGeometry);
         return diagramGeometry;
     }
 
-
     @Override
-    public SmartGraphPanel<String, String> visualizeJavaFXGraph()
-    {
-        JavaFXVisualization javaFXPackageVisualization = new JavaFXPackageVisualization(packageDiagram);
-        graphView                                      = javaFXPackageVisualization.createGraphView();
-        vertexCollection                               = javaFXPackageVisualization.getVertexCollection();
+    public SmartGraphPanel<String, String> visualizeJavaFXGraph() {
+        JavaFXVisualization javaFXPackageVisualization =
+                new JavaFXPackageVisualization(packageDiagram);
+        graphView = javaFXPackageVisualization.createGraphView();
+        vertexCollection = javaFXPackageVisualization.getVertexCollection();
         return graphView;
     }
 
-
     @Override
-    public String visualizeSvgGraph(int dpi)
-    {
+    public String visualizeSvgGraph(int dpi) {
         PlantUMLPackageDiagram plantUMLPackageDiagram = new PlantUMLPackageDiagram(packageDiagram);
         return plantUMLPackageDiagram.toSvg(dpi);
     }
 
-
     @Override
-    public SmartGraphPanel<String, String> visualizeLoadedJavaFXGraph()
-    {
-        JavaFXVisualization javaFXPackageVisualization = new JavaFXPackageVisualization(packageDiagram);
+    public SmartGraphPanel<String, String> visualizeLoadedJavaFXGraph() {
+        JavaFXVisualization javaFXPackageVisualization =
+                new JavaFXPackageVisualization(packageDiagram);
         javaFXPackageVisualization.createGraphView();
 
-        graphView        = javaFXPackageVisualization.getLoadedGraph();
+        graphView = javaFXPackageVisualization.getLoadedGraph();
         vertexCollection = javaFXPackageVisualization.getVertexCollection();
 
         return graphView;
     }
 
-
     @Override
-    public File exportDiagramToGraphML(Path graphMLSavePath)
-    {
+    public File exportDiagramToGraphML(Path graphMLSavePath) {
         packageDiagram.setGraphMLDiagramGeometry(packageDiagramArrangement.arrangeGraphMLDiagram());
         DiagramExporter diagramExporter = new GraphMLPackageDiagramExporter(packageDiagram);
 
         return diagramExporter.exportDiagram(graphMLSavePath);
     }
 
-
     @Override
-    public File exportPlantUMLImage(Path plantUMLSavePath)
-    {
+    public File exportPlantUMLImage(Path plantUMLSavePath) {
         DiagramExporter diagramExporter = new PlantUMLPackageDiagramImageExporter(packageDiagram);
 
         return diagramExporter.exportDiagram(plantUMLSavePath);
     }
 
-
     @Override
-    public File exportPlantUMLText(Path textSavePath)
-    {
+    public File exportPlantUMLText(Path textSavePath) {
         DiagramExporter diagramExporter = new PlantUMLPackageDiagramTextExporter(packageDiagram);
 
         return diagramExporter.exportDiagram(textSavePath);
     }
 
-
     @Override
-    public File saveDiagram(Path graphSavePath)
-    {
+    public File saveDiagram(Path graphSavePath) {
         CoordinatesUpdater coordinatesUpdater = new CoordinatesUpdater(packageDiagram);
         coordinatesUpdater.updatePackageCoordinates(vertexCollection, graphView);
 
@@ -135,21 +113,16 @@ public class PackageDiagramManager implements DiagramManager
         return diagramExporter.exportDiagram(graphSavePath);
     }
 
-
     @Override
-    public void loadDiagram(Path graphSavePath) throws JsonParseException
-    {
+    public void loadDiagram(Path graphSavePath) throws JsonParseException {
         packageDiagram = new PackageDiagram();
         packageDiagram.createDiagram(JavaFXPackageDiagramLoader.loadDiagram(graphSavePath));
     }
 
-
     @Override
-    public SmartGraphPanel<String, String> applyLayout()
-    {
+    public SmartGraphPanel<String, String> applyLayout() {
         DiagramGeometry nodesGeometry = packageDiagram.getDiagramGeometry();
-        for (Vertex<String> vertex : vertexCollection)
-        {
+        for (Vertex<String> vertex : vertexCollection) {
             if (!nodesGeometry.containsKey(vertex.element())) continue;
 
             Pair<Double, Double> coordinates = nodesGeometry.getVertexGeometry(vertex.element());
@@ -158,14 +131,11 @@ public class PackageDiagramManager implements DiagramManager
 
         return graphView;
     }
-
 
     @Override
-    public SmartGraphPanel<String, String> applySpecificLayout(String choice)
-    {
+    public SmartGraphPanel<String, String> applySpecificLayout(String choice) {
         DiagramGeometry nodesGeometry = packageDiagramArrangement.applyLayout(choice);
-        for (Vertex<String> vertex : vertexCollection)
-        {
+        for (Vertex<String> vertex : vertexCollection) {
             if (!nodesGeometry.containsKey(vertex.element())) continue;
 
             Pair<Double, Double> coordinates = nodesGeometry.getVertexGeometry(vertex.element());
@@ -175,9 +145,7 @@ public class PackageDiagramManager implements DiagramManager
         return graphView;
     }
 
-    public PackageDiagram getPackageDiagram()
-    {
+    public PackageDiagram getPackageDiagram() {
         return packageDiagram;
     }
-
 }
