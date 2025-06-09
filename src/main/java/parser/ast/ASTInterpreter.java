@@ -61,11 +61,7 @@ public class ASTInterpreter implements Interpreter {
                                             .withVertexType(
                                                     TypeConverter.convertVertexType(
                                                             k.getNodeType()))
-                                            .withName(
-                                                    String.join(
-                                                            ".",
-                                                            k.getParentNode().getNodeName(),
-                                                            k.getPath().getFileName().toString()))
+                                            .withName(getName(k))
                                             .build());
 
             for (LeafNode leafNode : packageNode.getLeafNodes().values()) {
@@ -197,5 +193,12 @@ public class ASTInterpreter implements Interpreter {
                 case PACKAGE_PRIVATE -> model.graph.ModifierType.PACKAGE_PRIVATE;
             };
         }
+    }
+
+    private static String getName(PackageNode k) {
+        return k.getParentNode().getNodeName().isEmpty()
+                ? k.getPath().getFileName().toString()
+                : String.join(
+                        ".", k.getParentNode().getNodeName(), k.getPath().getFileName().toString());
     }
 }

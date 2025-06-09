@@ -11,7 +11,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import javafx.util.Pair;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import proguard.classfile.ClassPool;
 import proguard.classfile.Clazz;
@@ -56,11 +58,7 @@ public class ClassFileParserTest {
         Pair<ClassPool, ClassPool> classPool =
                 ClassPoolBuilder.from(programClass, programClass1, programClass2, programClass3);
 
-        classPool
-                .getKey()
-                .accept(
-                        new ClassFileRelationshipIdentifier(
-                                classPool.getKey(), classPool.getValue()));
+        classPool.getKey().accept(new ClassFileRelationshipIdentifier(new HashMap<>()));
 
         Clazz clazz = classPool.getKey().getClass("Dependent");
         ClassFileRelationshipIdentifier.MyProcessingInfo processingInfo =
@@ -89,11 +87,7 @@ public class ClassFileParserTest {
         Pair<ClassPool, ClassPool> classPool =
                 ClassPoolBuilder.from(programClass, programClass1, programClass2);
 
-        classPool
-                .getKey()
-                .accept(
-                        new ClassFileRelationshipIdentifier(
-                                classPool.getKey(), classPool.getValue()));
+        classPool.getKey().accept(new ClassFileRelationshipIdentifier(new HashMap<>()));
 
         Clazz clazz = classPool.getKey().getClass("Dependent");
         ClassFileRelationshipIdentifier.MyProcessingInfo processingInfo =
@@ -125,18 +119,15 @@ public class ClassFileParserTest {
         Pair<ClassPool, ClassPool> classPool =
                 ClassPoolBuilder.from(programClass, programClass1, programClass2);
 
-        classPool
-                .getKey()
-                .accept(
-                        new ClassFileRelationshipIdentifier(
-                                classPool.getKey(), classPool.getValue()));
+        classPool.getKey().accept(new ClassFileRelationshipIdentifier(new HashMap<>()));
 
         Clazz clazz = classPool.getKey().getClass("Dependent");
         ClassFileRelationshipIdentifier.MyProcessingInfo processingInfo =
                 (ClassFileRelationshipIdentifier.MyProcessingInfo) clazz.getProcessingInfo();
+
+        Assertions.assertEquals(programClass1, processingInfo.superClass);
         ListUtils.assertListsEqual(
-                new ArrayList<>(processingInfo.associations),
-                Collections.singletonList(programClass1));
+                Collections.singletonList(programClass2), processingInfo.implementations);
     }
 
     static class ClassPoolBuilder {

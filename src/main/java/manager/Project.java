@@ -62,8 +62,7 @@ public class Project {
 
         } else {
             // If this is not a directory, then the entry must be one of the supported types.
-            if (!isEntrySupported(new ClassPathEntry(file, false)))
-                throw new IllegalStateException();
+            if (!isEntrySupported(file)) throw new IllegalStateException();
 
             interpreterType = InterpreterType.CLASS_FILE;
         }
@@ -71,7 +70,7 @@ public class Project {
 
     public Collection<ClassifierVertex> createClassGraph(ClassDiagram classDiagram) {
         // Can happen if the given directory does not have any source
-        // or class files.
+        // or class files or the project has not been initialized.
         if (interpreterType == null) throw new IllegalStateException();
 
         return switch (interpreterType) {
@@ -128,7 +127,8 @@ public class Project {
         SOURCE_FILE
     }
 
-    private static boolean isEntrySupported(ClassPathEntry entry) {
+    private static boolean isEntrySupported(File file) {
+        ClassPathEntry entry = new ClassPathEntry(file, false);
         return entry.isJar()
                 || entry.isAar()
                 || entry.isApk()

@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import java.lang.reflect.Type;
+import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
 import model.graph.Arc;
@@ -21,8 +22,10 @@ public class ClassifierVertexSerializer implements JsonSerializer<ClassifierVert
             JsonSerializationContext jsonSerializationContext) {
         JsonObject jsonObject = new JsonObject();
         String name = classifierVertex.getName();
+        Path path = classifierVertex.getPath();
         String vertexType = classifierVertex.getVertexType().toString();
         jsonObject.addProperty("name", name);
+        jsonObject.addProperty("path", (path != null ? path.toString() : null));
         jsonObject.addProperty("vertexType", vertexType);
         jsonObject.addProperty("coordinate_x", classifierVertex.getCoordinate().x());
         jsonObject.addProperty("coordinate_y", classifierVertex.getCoordinate().y());

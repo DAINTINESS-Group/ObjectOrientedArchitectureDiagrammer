@@ -27,7 +27,7 @@ public class PackageVertexSerializer implements JsonSerializer<PackageVertex> {
         String vertexType = packageVertex.getVertexType().toString();
 
         jsonObject.addProperty("name", name);
-        jsonObject.addProperty("path", path.toString());
+        jsonObject.addProperty("path", (path != null ? path.toString() : null));
         jsonObject.addProperty("vertexType", vertexType);
         jsonObject.addProperty("coordinate_x", packageVertex.getCoordinate().x());
         jsonObject.addProperty("coordinate_y", packageVertex.getCoordinate().y());

@@ -3,6 +3,8 @@ package parser.classfile;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
@@ -22,9 +24,10 @@ import proguard.io.util.IOUtil;
 
 public class ClassFileParser {
 
+    private final Map<String, List<Clazz>> packages = new HashMap<>();
+
     public ClassPool programClassPool;
     public ClassPool libraryClassPool;
-    private Map<String, List<Clazz>> packages;
 
     /**
      * Parses the given input and initializes the program class pool. Program classes will be marked
@@ -61,15 +64,14 @@ public class ClassFileParser {
             }
 
             // Now mark the classes of the class pool with the necessary info that
-            // are need in order to create our diagram.
+            // is needed in order to create our graph.
             ClassFileRelationshipIdentifier classPoolVisitor =
-                    new ClassFileRelationshipIdentifier(programClassPool, libraryClassPool);
+                    new ClassFileRelationshipIdentifier(packages);
             programClassPool.accept(
                     new MultiClassPoolVisitor(
                             new AllClassVisitor(
                                     new ClassInitializer(programClassPool, libraryClassPool)),
                             classPoolVisitor));
-            packages = classPoolVisitor.packages;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -145,7 +147,7 @@ public class ClassFileParser {
             classPool.accept(
                     new MultiClassPoolVisitor(
                             new AllClassVisitor(new ClassInitializer(classPool, new ClassPool())),
-                            new ClassFileRelationshipIdentifier(classPool, libraryClassPool)));
+                            new ClassFileRelationshipIdentifier(Collections.emptyMap())));
 
         } catch (IOException e) {
             throw new RuntimeException(e);

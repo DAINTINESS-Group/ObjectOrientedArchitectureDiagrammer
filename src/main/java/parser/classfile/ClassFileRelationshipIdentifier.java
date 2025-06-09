@@ -1,7 +1,6 @@
 package parser.classfile;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -43,16 +42,13 @@ public class ClassFileRelationshipIdentifier
                 MemberVisitor,
                 AttributeVisitor,
                 InstructionVisitor {
-    public final Map<String, List<Clazz>> packages = new HashMap<>();
-    private final ClassPool programClassPool;
-    private final ClassPool libraryClassPool;
+    public final Map<String, List<Clazz>> packages;
 
     private MyProcessingInfo processingInfo;
     private ClassCollector dependenciesCollector;
 
-    public ClassFileRelationshipIdentifier(ClassPool programClassPool, ClassPool libraryClassPool) {
-        this.programClassPool = programClassPool;
-        this.libraryClassPool = libraryClassPool;
+    public ClassFileRelationshipIdentifier(Map<String, List<Clazz>> packages) {
+        this.packages = packages;
     }
 
     // Implementations for ClassPoolVisitor.
@@ -80,14 +76,9 @@ public class ClassFileRelationshipIdentifier
         processingInfo = (MyProcessingInfo) programClass.getProcessingInfo();
         dependenciesCollector = new ClassCollector(processingInfo.dependencies);
 
-        // There might only be one super class.
-        List<Clazz> superClass = new ArrayList<>();
-        programClass.superClassConstantAccept(
-                new ReferencedClassVisitor(new ClassCollector(superClass)));
-        if (!superClass.isEmpty()) {
-            processingInfo.superClass = superClass.get(0);
-        }
-        // But there can be multiple interfaces.
+        // The super class might not be initialized if the referenced class
+        // is neither the program class pool nor the library class pool.
+        processingInfo.superClass = programClass.getSuperClass();
         programClass.interfaceConstantsAccept(
                 new ReferencedClassVisitor(new ClassCollector(processingInfo.implementations)));
 
@@ -244,18 +235,8 @@ public class ClassFileRelationshipIdentifier
             return !dependencies.isEmpty()
                     || !associations.isEmpty()
                     || !aggregations.isEmpty()
+                    || !implementations.isEmpty()
                     || superClass != null;
         }
-    }
-
-    // Utility methods.
-
-    /** @return The class with the given name, otherwise null. */
-    private Clazz findClass(String name) {
-        // First look for the class in the program class pool.
-        Clazz clazz = programClassPool.getClass(name);
-
-        // Otherwise, look for the class in the library class pool.
-        return clazz == null ? libraryClassPool.getClass(name) : clazz;
     }
 }

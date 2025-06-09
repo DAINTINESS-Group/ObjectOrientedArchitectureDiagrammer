@@ -23,6 +23,7 @@ import proguard.classfile.visitor.AllMemberVisitor;
 import proguard.classfile.visitor.ClassVisitor;
 import proguard.classfile.visitor.MemberVisitor;
 
+/** This {@link ClassVisitor} creates relationships */
 public class ClassFileRelationshipCreator implements ClassVisitor {
     private final Map<String, ClassifierVertex> seenClassifierVertices = new HashMap<>();
     private final Map<String, PackageVertex> seenPackageVertices = new HashMap<>();
@@ -53,7 +54,6 @@ public class ClassFileRelationshipCreator implements ClassVisitor {
             seenClassifierVertices.put(sourceVertex.getName(), sourceVertex);
             classifierVertices.add(sourceVertex);
         }
-
         createClassifierVertexRelationships(programClass, sourceVertex);
 
         String packageName = ClassUtil.internalPackageName(programClass.getName());
@@ -68,8 +68,7 @@ public class ClassFileRelationshipCreator implements ClassVisitor {
             seenPackageVertices.put(packageName, packageVertex);
             packageVertices.add(packageVertex);
         }
-
-        createPackageVertexRelationships(programClass, children, packageVertex);
+        createPackageVertexRelationships(programClass, packageVertex, children);
     }
 
     // Helper classes.
@@ -100,26 +99,25 @@ public class ClassFileRelationshipCreator implements ClassVisitor {
 
     // Utility methods.
 
-    private void createClassifierVertexRelationships(ProgramClass programClass, ClassifierVertex sourceVertex)
-    {
+    private void createClassifierVertexRelationships(
+            ProgramClass programClass, ClassifierVertex sourceVertex) {
         ClassFileRelationshipIdentifier.MyProcessingInfo processingInfo =
-            (ClassFileRelationshipIdentifier.MyProcessingInfo) programClass.getProcessingInfo();
+                (ClassFileRelationshipIdentifier.MyProcessingInfo) programClass.getProcessingInfo();
 
         createRelationship(
-            programClass,
-            sourceVertex,
-            Collections.singleton(processingInfo.superClass),
-            ArcType.EXTENSION);
+                programClass,
+                sourceVertex,
+                Collections.singleton(processingInfo.superClass),
+                ArcType.EXTENSION);
         createRelationship(
-            programClass, sourceVertex, processingInfo.dependencies, ArcType.DEPENDENCY);
+                programClass, sourceVertex, processingInfo.dependencies, ArcType.DEPENDENCY);
         createRelationship(
-            programClass, sourceVertex, processingInfo.associations, ArcType.ASSOCIATION);
+                programClass, sourceVertex, processingInfo.associations, ArcType.ASSOCIATION);
         createRelationship(
-            programClass, sourceVertex, processingInfo.aggregations, ArcType.AGGREGATION);
+                programClass, sourceVertex, processingInfo.aggregations, ArcType.AGGREGATION);
         createRelationship(
-            programClass, sourceVertex, processingInfo.implementations, ArcType.IMPLEMENTATION);
+                programClass, sourceVertex, processingInfo.implementations, ArcType.IMPLEMENTATION);
     }
-
 
     /**
      * Creates a relationship of the given type from the given source vertex to all given targets,
@@ -145,29 +143,28 @@ public class ClassFileRelationshipCreator implements ClassVisitor {
         }
     }
 
-
-    private void createPackageVertexRelationships(ProgramClass programClass, List<Clazz> children, PackageVertex packageVertex)
-    {
+    private void createPackageVertexRelationships(
+            ProgramClass programClass, PackageVertex packageVertex, List<Clazz> children) {
         for (Clazz clazz : children) {
             ClassFileRelationshipIdentifier.MyProcessingInfo processingInfo =
-                (ClassFileRelationshipIdentifier.MyProcessingInfo) clazz.getProcessingInfo();
+                    (ClassFileRelationshipIdentifier.MyProcessingInfo) clazz.getProcessingInfo();
 
             createRelationship(
-                programClass,
-                packageVertex,
-                Collections.singleton(processingInfo.superClass),
-                ArcType.EXTENSION);
+                    programClass,
+                    packageVertex,
+                    Collections.singleton(processingInfo.superClass),
+                    ArcType.EXTENSION);
             createRelationship(
-                programClass, packageVertex, processingInfo.dependencies, ArcType.DEPENDENCY);
+                    programClass, packageVertex, processingInfo.dependencies, ArcType.DEPENDENCY);
             createRelationship(
-                programClass, packageVertex, processingInfo.associations, ArcType.ASSOCIATION);
+                    programClass, packageVertex, processingInfo.associations, ArcType.ASSOCIATION);
             createRelationship(
-                programClass, packageVertex, processingInfo.aggregations, ArcType.AGGREGATION);
+                    programClass, packageVertex, processingInfo.aggregations, ArcType.AGGREGATION);
             createRelationship(
-                programClass,
-                packageVertex,
-                processingInfo.implementations,
-                ArcType.IMPLEMENTATION);
+                    programClass,
+                    packageVertex,
+                    processingInfo.implementations,
+                    ArcType.IMPLEMENTATION);
         }
     }
 
@@ -216,6 +213,7 @@ public class ClassFileRelationshipCreator implements ClassVisitor {
         return ret;
     }
 
+    /** Creates a classifier vertex from the given program class. */
     private static ClassifierVertex createClassifierVertex(ProgramClass programClass) {
         // Create the members of the classifier vertex.
         List<ClassifierVertex.Method> methods = new ArrayList<>();

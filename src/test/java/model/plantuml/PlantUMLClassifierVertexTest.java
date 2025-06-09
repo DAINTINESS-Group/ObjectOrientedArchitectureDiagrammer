@@ -30,8 +30,8 @@ public class PlantUMLClassifierVertexTest {
                 PlantUMLClassifierVertex.convertSinkVertices(classDiagramManager.getClassDiagram())
                         .toString();
 
-        List<String> expected = Arrays.asList(EXPECTED_BUFFER.split("\n"));
-        List<String> actual = Arrays.asList(actualBuffer.split("\n"));
+        List<String> expected = Arrays.asList(EXPECTED_BUFFER.split(System.lineSeparator()));
+        List<String> actual = Arrays.asList(actualBuffer.split(System.lineSeparator()));
 
         assertListsEqual(expected, actual);
     }
@@ -44,8 +44,8 @@ public class PlantUMLClassifierVertexTest {
         -latexEditorView: LatexEditorView
         +changeStrategy(): void
         +setPreviousVersion(): Document
-        +VersionsManager(LatexEditorView latexEditorView, VersionsStrategy versionsStrategy): Constructor
-        +setStrategy(VersionsStrategy strategy): void
+        +VersionsManager(LatexEditorView, VersionsStrategy): Constructor
+        +setStrategy(VersionsStrategy): void
         +saveContents(): void
         +enable(): void
         +getType(): String
@@ -53,11 +53,11 @@ public class PlantUMLClassifierVertexTest {
         +getStrategy(): VersionsStrategy
         +isEnabled(): boolean
         +disable(): void
-        +putVersion(Document document): void
+        +putVersion(Document): void
         +rollbackToPreviousVersion(): void
         +enableStrategy(): void
         +saveToFile(): void
-        +setCurrentVersion(Document document): void
+        +setCurrentVersion(Document): void
         +loadFromFile(): void
         }
 
@@ -66,31 +66,31 @@ public class PlantUMLClassifierVertexTest {
         +removeVersion(): void
         +getVersion(): Document
         +VolatileVersionsStrategy(): Constructor
-        +setEntireHistory(List[Document] documents): void
-        +putVersion(Document document): void
+        +setEntireHistory(List[Document]): void
+        +putVersion(Document): void
         +getEntireHistory(): List[Document]
         }
 
         interface VersionsStrategy {
         +removeVersion(): void
         +getVersion(): Document
-        +setEntireHistory(List[Document] documents): void
+        +setEntireHistory(List[Document]): void
         +getEntireHistory(): List[Document]
-        +putVersion(Document document): void
+        +putVersion(Document): void
         }
 
         class StableVersionsStrategy {
         -versionID: String
         +removeVersion(): void
         +getVersion(): Document
-        +setEntireHistory(List[Document] documents): void
+        +setEntireHistory(List[Document]): void
         +getEntireHistory(): List[Document]
-        +putVersion(Document document): void
+        +putVersion(Document): void
         }
 
         class VersionsStrategyFactory {
         -strategies: HashMap[String,VersionsStrategy]
-        +createStrategy(String type): VersionsStrategy
+        +createStrategy(String): VersionsStrategy
         +VersionsStrategyFactory(): Constructor
         }
 
@@ -100,20 +100,20 @@ public class PlantUMLClassifierVertexTest {
         -copyright: String
         -versionID: String
         -contents: String
-        +Document(String date, String copyright, String versionID, String contents, String author): Constructor
+        +Document(String, String, String, String, String): Constructor
         +clone(): Document
         +getContents(): String
         +Document(): Constructor
-        +save(String filename): void
+        +save(String): void
         +getVersionID(): String
-        +setContents(String contents): void
+        +setContents(String): void
         +changeVersion(): void
         }
 
         class DocumentManager {
         -templates: HashMap[String,Document]
-        +createDocument(String type): Document
-        +getContents(String type): String
+        +createDocument(String): Document
+        +getContents(String): String
         +DocumentManager(): Constructor
         }
 

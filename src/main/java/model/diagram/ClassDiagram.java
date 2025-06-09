@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import model.diagram.arrangement.geometry.DiagramGeometry;
 import model.graph.Arc;
@@ -42,12 +41,12 @@ public class ClassDiagram {
     private List<ClassifierVertex> getChosenNodes(List<String> chosenClassesNames) {
         List<ClassifierVertex> chosenClasses = new ArrayList<>();
         for (String chosenClass : chosenClassesNames) {
-            Optional<ClassifierVertex> optionalSinkVertex =
-                    sinkVertices.stream()
-                            .filter(it -> it.getName().equals(chosenClass))
-                            .findFirst();
-
-            optionalSinkVertex.ifPresent(chosenClasses::add);
+            for (ClassifierVertex it : sinkVertices) {
+                if (it.getName().equals(chosenClass)) {
+                    chosenClasses.add(it);
+                    break;
+                }
+            }
         }
 
         return chosenClasses;

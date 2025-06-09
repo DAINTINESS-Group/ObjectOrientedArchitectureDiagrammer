@@ -41,6 +41,7 @@ public class ClassDiagramManagerTest {
         ClassDiagram classDiagram = classDiagramManager.getClassDiagram();
 
         Project project = new Project(LatexEditor.SRC.path);
+        project.initialize();
         Collection<ClassifierVertex> vertices = project.createClassGraph(classDiagram);
 
         ASTInterpreter interpreter = new ASTInterpreter();
@@ -79,6 +80,7 @@ public class ClassDiagramManagerTest {
         ClassDiagram classDiagram = classDiagramManager.getClassDiagram();
 
         Project project = new Project(LatexEditor.SRC.path);
+        project.initialize();
         Collection<ClassifierVertex> sinkVertices = project.createClassGraph(classDiagram);
 
         Set<String> chosenFilesNames =

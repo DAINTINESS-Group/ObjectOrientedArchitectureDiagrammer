@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -15,6 +14,7 @@ import model.graph.PackageVertex;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import parser.ast.ASTInterpreter;
+import utils.ListUtils;
 import utils.PathTemplate.LatexEditor;
 
 public class PackageDiagramManagerTest {
@@ -25,6 +25,7 @@ public class PackageDiagramManagerTest {
         PackageDiagram packageDiagram = packageDiagramManager.getPackageDiagram();
 
         Project project = new Project(LatexEditor.SRC.path);
+        project.initialize();
         Collection<PackageVertex> packageNodes = project.createPackageGraph(packageDiagram);
 
         ASTInterpreter interpreter = new ASTInterpreter();
@@ -80,6 +81,7 @@ public class PackageDiagramManagerTest {
         PackageDiagram packageDiagram = packageDiagramManager.getPackageDiagram();
 
         Project project = new Project(LatexEditor.SRC.path);
+        project.initialize();
         Collection<PackageVertex> packageNodes = project.createPackageGraph(packageDiagram);
 
         packageDiagramManager.convertTreeToDiagram(
@@ -92,7 +94,10 @@ public class PackageDiagramManagerTest {
 
         Map<PackageVertex, Integer> graphNodes =
                 packageDiagramManager.getPackageDiagram().getGraphNodes();
-        packageNodes.remove(LatexEditor.SRC.path);
+        packageNodes =
+                packageNodes.stream()
+                        .filter(it -> it.getPath() != LatexEditor.SRC.path)
+                        .collect(Collectors.toSet());
 
         assertEquals(packageNodes.size(), graphNodes.size());
 
@@ -106,11 +111,6 @@ public class PackageDiagramManagerTest {
                         .map(PackageVertex::getName)
                         .collect(Collectors.toCollection(ArrayList::new));
 
-        Collections.sort(l1);
-        Collections.sort(l2);
-
-        assertEquals(l1.size(), l2.size());
-        assertTrue(l1.containsAll(l2));
-        assertTrue(l2.containsAll(l1));
+        ListUtils.assertListsEqual(l1, l2);
     }
 }

@@ -108,16 +108,20 @@ public class ClassifierVertex {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ClassifierVertex that = (ClassifierVertex) o;
-        return Objects.equals(name, that.name)
-                && vertexType == that.vertexType
-                && Objects.equals(arcs, that.arcs)
+        return vertexType == that.vertexType
+                && Objects.equals(name, that.name)
                 && Objects.equals(methods, that.methods)
                 && Objects.equals(fields, that.fields);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, vertexType, arcs, methods, fields);
+        return Objects.hash(name, vertexType, methods, fields);
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 
     public record Method(

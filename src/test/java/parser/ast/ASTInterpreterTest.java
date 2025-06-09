@@ -7,9 +7,11 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Predicate;
 import model.graph.Arc;
 import model.graph.ClassifierVertex;
 import model.graph.PackageVertex;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import parser.ast.tree.LeafNode;
@@ -34,7 +36,7 @@ public class ASTInterpreterTest {
                     vertices.stream()
                             .filter(it -> it.getPath().equals(packageNodeEntry.getKey()))
                             .findFirst()
-                            .orElse(Assertions.fail());
+                            .orElseGet(Assertions::fail);
             assertEquals(packageNode.getNodeType().toString(), vertex.getVertexType().toString());
             assertEquals(packageNode.getNodeName(), vertex.getName());
 
@@ -73,28 +75,7 @@ public class ASTInterpreterTest {
             List<Arc<PackageVertex>> arcs = vertex.getArcs();
             assertEquals(relationships.size(), arcs.size());
             for (Relationship<PackageNode> relationship : relationships) {
-                assertTrue(
-                        arcs.stream()
-                                .anyMatch(
-                                        it ->
-                                                it.arcType()
-                                                                .toString()
-                                                                .equals(
-                                                                        relationship
-                                                                                .relationshipType()
-                                                                                .toString())
-                                                        && it.sourceVertex()
-                                                                .getPath()
-                                                                .equals(
-                                                                        relationship
-                                                                                .startingNode()
-                                                                                .getPath())
-                                                        && it.targetVertex()
-                                                                .getPath()
-                                                                .equals(
-                                                                        relationship
-                                                                                .endingNode()
-                                                                                .getPath())));
+                assertTrue(arcs.stream().anyMatch(getArcPredicate(relationship)));
             }
 
             Map<String, LeafNode> leafNodes = packageNode.getLeafNodes();
@@ -110,43 +91,13 @@ public class ASTInterpreterTest {
                 List<LeafNode.Method> leafMethods = leafNodeEntry.getValue().methods();
                 List<ClassifierVertex.Method> vertexMethods = classifierVertex.getMethods();
                 for (LeafNode.Method leafMethod : leafMethods) {
-                    assertTrue(
-                            vertexMethods.stream()
-                                    .anyMatch(
-                                            it ->
-                                                    it.name().equals(leafMethod.name())
-                                                            && it.parameters().size()
-                                                                    == leafMethod
-                                                                            .parameters()
-                                                                            .size()
-                                                            && it.parameters()
-                                                                    .equals(leafMethod.parameters())
-                                                            && it.returnType()
-                                                                    .equals(leafMethod.returnType())
-                                                            && it.modifier()
-                                                                    .toString()
-                                                                    .equals(
-                                                                            leafMethod
-                                                                                    .modifierType()
-                                                                                    .toString())));
+                    assertTrue(vertexMethods.stream().anyMatch(getMethodPredicate(leafMethod)));
                 }
 
                 List<LeafNode.Field> leafFields = leafNodeEntry.getValue().fields();
                 List<ClassifierVertex.Field> vertexFields = classifierVertex.getFields();
                 for (LeafNode.Field leafField : leafFields) {
-                    assertTrue(
-                            vertexFields.stream()
-                                    .anyMatch(
-                                            it ->
-                                                    it.name().equals(leafField.name())
-                                                            && it.type()
-                                                                    .equals(leafField.fieldType())
-                                                            && it.modifier()
-                                                                    .toString()
-                                                                    .equals(
-                                                                            leafField
-                                                                                    .modifierType()
-                                                                                    .toString())));
+                    assertTrue(vertexFields.stream().anyMatch(getFieldPredicate(leafField)));
                 }
 
                 Map<LeafNode, Set<Relationship<LeafNode>>> leafNodeRelationships =
@@ -161,30 +112,47 @@ public class ASTInterpreterTest {
                 List<Arc<ClassifierVertex>> sinkVertexArcs = classifierVertex.getArcs();
                 assertEquals(subNodeRelationships.size(), sinkVertexArcs.size());
                 for (Relationship<LeafNode> relationship : subNodeRelationships) {
-                    assertTrue(
-                            sinkVertexArcs.stream()
-                                    .anyMatch(
-                                            it ->
-                                                    it.arcType()
-                                                                    .toString()
-                                                                    .equals(
-                                                                            relationship
-                                                                                    .relationshipType()
-                                                                                    .toString())
-                                                            && it.sourceVertex()
-                                                                    .getPath()
-                                                                    .equals(
-                                                                            relationship
-                                                                                    .startingNode()
-                                                                                    .path())
-                                                            && it.targetVertex()
-                                                                    .getPath()
-                                                                    .equals(
-                                                                            relationship
-                                                                                    .endingNode()
-                                                                                    .path())));
+                    assertTrue(sinkVertexArcs.stream().anyMatch(getPredicate(relationship)));
                 }
             }
         }
+    }
+
+    @NotNull
+    private static Predicate<Arc<ClassifierVertex>> getPredicate(
+            Relationship<LeafNode> relationship) {
+        return it ->
+                it.arcType().toString().equals(relationship.relationshipType().toString())
+                        && it.sourceVertex().getPath().equals(relationship.startingNode().path())
+                        && it.targetVertex().getPath().equals(relationship.endingNode().path());
+    }
+
+    @NotNull
+    private static Predicate<ClassifierVertex.Field> getFieldPredicate(LeafNode.Field leafField) {
+        return it ->
+                it.name().equals(leafField.name())
+                        && it.type().equals(leafField.fieldType())
+                        && it.modifier().toString().equals(leafField.modifierType().toString());
+    }
+
+    @NotNull
+    private static Predicate<Arc<PackageVertex>> getArcPredicate(
+            Relationship<PackageNode> relationship) {
+        return it ->
+                it.arcType().toString().equals(relationship.relationshipType().toString())
+                        && it.sourceVertex().getPath().equals(relationship.startingNode().getPath())
+                        && it.targetVertex().getPath().equals(relationship.endingNode().getPath());
+    }
+
+    @NotNull
+    private static Predicate<ClassifierVertex.Method> getMethodPredicate(
+            LeafNode.Method leafMethod) {
+        return it ->
+                it.name().equals(leafMethod.name())
+                        && it.parameters().size() == leafMethod.parameters().size()
+                        && it.parameters().containsAll(leafMethod.parameters().values())
+                        && leafMethod.parameters().values().containsAll(it.parameters())
+                        && it.returnType().equals(leafMethod.returnType())
+                        && it.modifier().toString().equals(leafMethod.modifierType().toString());
     }
 }

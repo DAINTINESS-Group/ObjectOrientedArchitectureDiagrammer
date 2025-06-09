@@ -18,4 +18,14 @@ public record Arc<T>(T sourceVertex, T targetVertex, ArcType arcType) {
     public int hashCode() {
         return Objects.hash(sourceVertex, targetVertex, arcType);
     }
+
+    @Override
+    public String toString() {
+        return sourceVertex.toString()
+                + " -> "
+                + targetVertex.toString()
+                + "["
+                + arcType.toString()
+                + "]";
+    }
 }

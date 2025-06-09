@@ -103,15 +103,19 @@ public class PackageVertex {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PackageVertex that = (PackageVertex) o;
-        return Objects.equals(arcs, that.arcs)
-                && Objects.equals(name, that.name)
+        return Objects.equals(name, that.name)
                 && Objects.equals(sinkVertices, that.sinkVertices)
                 && Objects.equals(parentPackageVertex, that.parentPackageVertex);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(arcs, name, sinkVertices, parentPackageVertex);
+        return Objects.hash(name, sinkVertices, parentPackageVertex);
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 
     public static class PackageVertexBuilder {
