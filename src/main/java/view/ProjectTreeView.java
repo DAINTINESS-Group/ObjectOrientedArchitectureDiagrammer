@@ -4,6 +4,7 @@ import static proguard.classfile.ClassConstants.CLASS_FILE_EXTENSION;
 import static proguard.classfile.JavaConstants.JAVA_FILE_EXTENSION;
 import static view.FileType.PACKAGE;
 
+import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -45,7 +46,7 @@ public class ProjectTreeView {
                 createTree(path, rootItem);
             }
             treeView.setRoot(rootItem);
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -62,7 +63,7 @@ public class ProjectTreeView {
                 for (Path subPath : filesStream) {
                     createTree(subPath, treeItem);
                 }
-            } catch (Exception e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         } else if (isSupported(path)) {

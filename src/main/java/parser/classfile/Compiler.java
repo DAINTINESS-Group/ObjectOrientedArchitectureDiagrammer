@@ -1,5 +1,7 @@
 package parser.classfile;
 
+import static proguard.classfile.JavaConstants.JAVA_FILE_EXTENSION;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -23,9 +25,9 @@ public class Compiler {
             JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
             StandardJavaFileManager fileManager = compiler.getStandardFileManager(null, null, null);
 
-            ArrayList<File> javaFiles =
+            List<File> javaFiles =
                     pathStream
-                            .filter(it -> it.endsWith(".java"))
+                            .filter(it -> it.endsWith(JAVA_FILE_EXTENSION))
                             .map(Path::toFile)
                             .collect(Collectors.toCollection(ArrayList::new));
 

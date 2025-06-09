@@ -65,13 +65,13 @@ public class ClassFileParser {
 
             // Now mark the classes of the class pool with the necessary info that
             // is needed in order to create our graph.
-            ClassFileRelationshipIdentifier classPoolVisitor =
+            ClassFileRelationshipIdentifier relationshipIdentifier =
                     new ClassFileRelationshipIdentifier(packages);
             programClassPool.accept(
                     new MultiClassPoolVisitor(
                             new AllClassVisitor(
                                     new ClassInitializer(programClassPool, libraryClassPool)),
-                            classPoolVisitor));
+                            relationshipIdentifier));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -92,6 +92,11 @@ public class ClassFileParser {
 
     // Helper classes.
 
+    /**
+     * This {@link ClassVisitor} delegates all visits to the given class visitor, but only if the
+     * class that it visits has been marked with {@link
+     * ClassFileRelationshipIdentifier.MyProcessingInfo}.
+     */
     static class MyProcessingInfoFilter implements ClassVisitor {
         private final ClassVisitor acceptedVisitor;
 

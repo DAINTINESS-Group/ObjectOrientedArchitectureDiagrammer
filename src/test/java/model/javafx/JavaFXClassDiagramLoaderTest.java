@@ -68,7 +68,7 @@ public class JavaFXClassDiagramLoaderTest {
                             .findFirst();
             assertTrue(optionalSinkVertex.isPresent());
 
-            List<Arc<ClassifierVertex>> arcs = optionalSinkVertex.get().getArcs();
+            Set<Arc<ClassifierVertex>> arcs = optionalSinkVertex.get().getArcs();
             assertEquals(createdDiagram.get(classifierVertex).size(), arcs.size());
             for (Arc<ClassifierVertex> arc : createdDiagram.get(classifierVertex)) {
                 assertTrue(

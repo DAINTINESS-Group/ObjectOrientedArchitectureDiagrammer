@@ -87,7 +87,7 @@ public class ASTInterpreter implements Interpreter {
             for (PackageNode subNode : packageNode.getSubNodes().values()) {
                 packageNodeVertexMap
                         .get(packageNode)
-                        .addNeighbourVertex(packageNodeVertexMap.get(subNode));
+                        .addNeighborVertex(packageNodeVertexMap.get(subNode));
             }
         }
     }

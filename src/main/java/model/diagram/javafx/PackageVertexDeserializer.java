@@ -83,7 +83,7 @@ public class PackageVertexDeserializer implements JsonDeserializer<PackageVertex
             String vertexType = vertexObject.get("vertexType").getAsString();
             String parentName = vertexObject.get("parentName").getAsString();
             Path path1 = Path.of(path);
-            packageVertex.addNeighbourVertex(
+            packageVertex.addNeighborVertex(
                     new PackageVertex.PackageVertexBuilder()
                             .withPath(path1)
                             .withVertexType(VertexType.get(vertexType))

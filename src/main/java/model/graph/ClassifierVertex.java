@@ -3,8 +3,10 @@ package model.graph;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import org.javatuples.Triplet;
 import proguard.classfile.Clazz;
 import proguard.classfile.ProgramClass;
@@ -19,28 +21,27 @@ public class ClassifierVertex {
     private final Path path;
     private final String name;
     private final VertexType vertexType;
-    private final List<Arc<ClassifierVertex>> arcs;
     private final List<Method> methods;
     private final List<Field> fields;
+
+    private final Set<Arc<ClassifierVertex>> arcs = new HashSet<>();
 
     private VertexCoordinate coordinate = DEFAULT_COORDINATE;
     private List<Triplet<String, String, String>> deserializedArcs;
 
     private ClassifierVertex(Path path, String name, VertexType vertexType) {
-        this(path, name, vertexType, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        this(path, name, vertexType, new ArrayList<>(), new ArrayList<>());
     }
 
     private ClassifierVertex(
             Path path,
             String name,
             VertexType vertexType,
-            List<Arc<ClassifierVertex>> arcs,
             List<Method> methods,
             List<Field> fields) {
         this.path = path;
         this.name = name;
         this.vertexType = vertexType;
-        this.arcs = arcs;
         this.methods = methods;
         this.fields = fields;
     }
@@ -55,7 +56,7 @@ public class ClassifierVertex {
     }
 
     public void addArc(Arc<ClassifierVertex> arc) {
-        this.arcs.add(arc);
+        arcs.add(arc);
     }
 
     public void addMethod(
@@ -79,7 +80,7 @@ public class ClassifierVertex {
         return vertexType;
     }
 
-    public List<Arc<ClassifierVertex>> getArcs() {
+    public Set<Arc<ClassifierVertex>> getArcs() {
         return arcs;
     }
 
@@ -149,8 +150,8 @@ public class ClassifierVertex {
             Method method = (Method) o;
             return Objects.equals(name, method.name)
                     && Objects.equals(returnType, method.returnType)
-                    && modifier == method.modifier
-                    && Objects.equals(parameters, method.parameters);
+                    && Objects.equals(parameters, method.parameters)
+                    && modifier == method.modifier;
         }
 
         @Override
@@ -227,8 +228,7 @@ public class ClassifierVertex {
 
         public ClassifierVertex build() {
             return (methods != null && fields != null)
-                    ? new ClassifierVertex(
-                            path, name, vertexType, new ArrayList<>(), methods, fields)
+                    ? new ClassifierVertex(path, name, vertexType, methods, fields)
                     : new ClassifierVertex(path, name, vertexType);
         }
     }

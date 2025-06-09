@@ -96,9 +96,8 @@ public class ClassFileRelationshipIdentifier
     public void visitProgramMethod(ProgramClass programClass, ProgramMethod programMethod) {
         // Collect all dependencies. First check the parameters and the return type of the method.
         programMethod.referencedClassesAccept(dependenciesCollector);
-        // Then, we need to check its local variables in the local variable table attribute, if
-        // present,
-        // and then go over the instructions of the program method that we are visiting.
+        // Then, we need to check its local variables in the local variable table attribute,
+        // if present, and then go over the instructions of the program method that we are visiting.
         programMethod.attributesAccept(programClass, this);
     }
 

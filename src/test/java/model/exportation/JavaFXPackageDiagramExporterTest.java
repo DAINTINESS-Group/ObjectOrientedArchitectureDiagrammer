@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import manager.PackageDiagramManager;
 import model.diagram.exportation.DiagramExporter;
@@ -75,14 +76,14 @@ public class JavaFXPackageDiagramExporterTest {
                     VertexType actualVertexType = packageVertex.getVertexType();
                     PackageVertex actualParent = packageVertex.getParentVertex();
 
-                    List<ClassifierVertex> packageVertexSinkVertices =
+                    Set<ClassifierVertex> packageVertexSinkVertices =
                             packageVertex.getSinkVertices();
                     List<String> sinkVerticesNames =
                             packageVertexSinkVertices.stream()
                                     .map(ClassifierVertex::getName)
                                     .collect(Collectors.toCollection(LinkedList::new));
 
-                    List<PackageVertex> neighbourVertices = packageVertex.getNeighbourVertices();
+                    Set<PackageVertex> neighbourVertices = packageVertex.getNeighborVertices();
                     List<String> packageVertexNames =
                             neighbourVertices.stream()
                                     .map(PackageVertex::getName)

@@ -10,6 +10,7 @@ import java.lang.reflect.Type;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import model.graph.Arc;
 import model.graph.ClassifierVertex;
 
@@ -75,7 +76,7 @@ public class ClassifierVertexSerializer implements JsonSerializer<ClassifierVert
     }
 
     private JsonArray serializeArcs(ClassifierVertex classifierVertex) {
-        List<Arc<ClassifierVertex>> arcs = classifierVertex.getArcs();
+        Set<Arc<ClassifierVertex>> arcs = classifierVertex.getArcs();
         JsonArray arcsArray = new JsonArray(arcs.size());
 
         for (Arc<ClassifierVertex> sinkVertexArc : arcs) {

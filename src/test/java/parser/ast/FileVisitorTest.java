@@ -7,7 +7,6 @@ import static parser.ast.tree.NodeType.INTERFACE;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -15,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import parser.ast.tree.LeafNode;
 import parser.ast.tree.NodeType;
 import parser.ast.tree.PackageNode;
+import utils.ListUtils;
 import utils.PathTemplate.LatexEditor;
 import utils.PathTemplate.ParserTesting;
 
@@ -31,12 +31,7 @@ public class FileVisitorTest {
         List<String> methodReturnTypesExpected = new ArrayList<>(List.of("Constructor", "void"));
         List<String> methodReturnTypesActual = addLatexCommand.getMethodReturnTypes();
 
-        Collections.sort(methodReturnTypesActual);
-        Collections.sort(methodReturnTypesExpected);
-
-        assertEquals(methodReturnTypesExpected.size(), methodReturnTypesActual.size());
-        assertTrue(methodReturnTypesExpected.containsAll(methodReturnTypesActual));
-        assertTrue(methodReturnTypesActual.containsAll(methodReturnTypesExpected));
+        ListUtils.assertListsEqual(methodReturnTypesActual, methodReturnTypesExpected);
     }
 
     @Test
@@ -50,12 +45,7 @@ public class FileVisitorTest {
         List<String> methodParameterTypes = new ArrayList<>(List.of("VersionsManager"));
         List<String> methodParameterTypesTest = addLatexCommand.getMethodParameterTypes();
 
-        Collections.sort(methodParameterTypesTest);
-        Collections.sort(methodParameterTypes);
-
-        assertEquals(methodParameterTypes.size(), methodParameterTypesTest.size());
-        assertTrue(methodParameterTypes.containsAll(methodParameterTypesTest));
-        assertTrue(methodParameterTypesTest.containsAll(methodParameterTypes));
+        ListUtils.assertListsEqual(methodParameterTypes, methodParameterTypesTest);
     }
 
     @Test
@@ -72,11 +62,7 @@ public class FileVisitorTest {
                         .sorted()
                         .collect(Collectors.toCollection(ArrayList::new));
 
-        Collections.sort(fieldTypes);
-
-        assertEquals(fieldTypes.size(), fieldTypesTest.size());
-        assertTrue(fieldTypes.containsAll(fieldTypesTest));
-        assertTrue(fieldTypesTest.containsAll(fieldTypes));
+        ListUtils.assertListsEqual(fieldTypes, fieldTypesTest);
     }
 
     @Test
@@ -91,12 +77,7 @@ public class FileVisitorTest {
         List<String> variablesTypesTest =
                 new ArrayList<>(latexEditorController.variables().values());
 
-        Collections.sort(variablesTypesTest);
-        Collections.sort(variablesTypes);
-
-        assertEquals(variablesTypes.size(), variablesTypesTest.size());
-        assertTrue(variablesTypes.containsAll(variablesTypesTest));
-        assertTrue(variablesTypesTest.containsAll(variablesTypes));
+        ListUtils.assertListsEqual(variablesTypes, variablesTypesTest);
     }
 
     @Test
@@ -116,12 +97,7 @@ public class FileVisitorTest {
                                 "HashMap[String,TestingInterface]"));
         List<String> objectsCreatedActual = objectCreationSample.createdObjects();
 
-        Collections.sort(objectsCreatedActual);
-        Collections.sort(objectsCreatedExpected);
-
-        assertEquals(objectsCreatedExpected.size(), objectsCreatedActual.size());
-        assertTrue(objectsCreatedExpected.containsAll(objectsCreatedActual));
-        assertTrue(objectsCreatedActual.containsAll(objectsCreatedExpected));
+        ListUtils.assertListsEqual(objectsCreatedExpected, objectsCreatedActual);
     }
 
     @Test

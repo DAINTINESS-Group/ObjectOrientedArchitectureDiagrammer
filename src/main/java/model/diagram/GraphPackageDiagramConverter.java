@@ -18,7 +18,7 @@ public class GraphPackageDiagramConverter {
 
     public Map<PackageVertex, Set<Arc<PackageVertex>>> convertGraphToPackageDiagram() {
         for (PackageVertex vertex : vertices) {
-            adjacencyList.put(vertex, new HashSet<>());
+            adjacencyList.putIfAbsent(vertex, new HashSet<>());
             for (Arc<PackageVertex> arc : vertex.getArcs()) {
                 if (vertices.contains(arc.targetVertex())) {
                     adjacencyList.get(arc.sourceVertex()).add(arc);

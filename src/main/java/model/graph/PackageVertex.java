@@ -1,29 +1,30 @@
 package model.graph;
 
 import java.nio.file.Path;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import org.javatuples.Triplet;
 
 public class PackageVertex {
     private static final ModifierType VERTEX_MODIFIER_TYPE = ModifierType.PACKAGE_PRIVATE;
     private static final VertexCoordinate DEFAULT_COORDINATE = new VertexCoordinate(0, 0);
 
-    private final List<Arc<PackageVertex>> arcs = new ArrayList<>();
-    private final List<PackageVertex> neighbourVertices = new ArrayList<>();
+    private final Set<Arc<PackageVertex>> arcs = new HashSet<>();
+    private final Set<PackageVertex> neighborVertices = new HashSet<>();
 
     private final Path path;
     private final VertexType vertexType;
     private final String name;
-    private final List<ClassifierVertex> sinkVertices;
+    private final Set<ClassifierVertex> sinkVertices;
 
     private VertexCoordinate coordinate = DEFAULT_COORDINATE;
     private List<Triplet<String, String, String>> deserializedArcs;
     private PackageVertex parentPackageVertex;
 
     private PackageVertex(
-            Path path, VertexType vertexType, String name, List<ClassifierVertex> sinkVertices) {
+            Path path, VertexType vertexType, String name, Set<ClassifierVertex> sinkVertices) {
         this.path = path;
         this.vertexType = vertexType;
         this.name = name;
@@ -46,8 +47,8 @@ public class PackageVertex {
         sinkVertices.add(classifierVertex);
     }
 
-    public void addNeighbourVertex(PackageVertex vertex) {
-        neighbourVertices.add(vertex);
+    public void addNeighborVertex(PackageVertex vertex) {
+        neighborVertices.add(vertex);
     }
 
     public void setParentNode(PackageVertex parentPackageVertex) {
@@ -62,16 +63,16 @@ public class PackageVertex {
         return deserializedArcs;
     }
 
-    public List<Arc<PackageVertex>> getArcs() {
+    public Set<Arc<PackageVertex>> getArcs() {
         return arcs;
     }
 
-    public List<ClassifierVertex> getSinkVertices() {
+    public Set<ClassifierVertex> getSinkVertices() {
         return sinkVertices;
     }
 
-    public List<PackageVertex> getNeighbourVertices() {
-        return neighbourVertices;
+    public Set<PackageVertex> getNeighborVertices() {
+        return neighborVertices;
     }
 
     public Path getPath() {
@@ -122,7 +123,7 @@ public class PackageVertex {
         private Path path;
         private VertexType vertexType = VertexType.PACKAGE;
         private String name;
-        private List<ClassifierVertex> sinkVertices = new ArrayList<>();
+        private Set<ClassifierVertex> sinkVertices = new HashSet<>();
 
         public PackageVertexBuilder withPath(Path path) {
             this.path = path;
@@ -139,7 +140,7 @@ public class PackageVertex {
             return this;
         }
 
-        public PackageVertexBuilder withSinkVertices(List<ClassifierVertex> sinkVertices) {
+        public PackageVertexBuilder withSinkVertices(Set<ClassifierVertex> sinkVertices) {
             this.sinkVertices = sinkVertices;
             return this;
         }

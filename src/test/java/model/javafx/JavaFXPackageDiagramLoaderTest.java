@@ -67,7 +67,7 @@ public class JavaFXPackageDiagramLoaderTest {
                             .findFirst();
             assertTrue(optionalVertex.isPresent());
 
-            List<Arc<PackageVertex>> arcs = optionalVertex.get().getArcs();
+            Set<Arc<PackageVertex>> arcs = optionalVertex.get().getArcs();
             assertEquals(createdDiagram.get(vertex).size(), arcs.size());
             for (Arc<PackageVertex> arc : createdDiagram.get(vertex)) {
                 arcs.stream()
@@ -84,7 +84,7 @@ public class JavaFXPackageDiagramLoaderTest {
                         .orElseGet(Assertions::fail);
             }
 
-            List<ClassifierVertex> sinkVertices = optionalVertex.get().getSinkVertices();
+            Set<ClassifierVertex> sinkVertices = optionalVertex.get().getSinkVertices();
             assertEquals(vertex.getSinkVertices().size(), sinkVertices.size());
             for (ClassifierVertex classifierVertex : vertex.getSinkVertices()) {
                 sinkVertices.stream()
@@ -97,9 +97,9 @@ public class JavaFXPackageDiagramLoaderTest {
                         .orElseGet(Assertions::fail);
             }
 
-            List<PackageVertex> neighbours = optionalVertex.get().getNeighbourVertices();
-            assertEquals(vertex.getNeighbourVertices().size(), neighbours.size());
-            for (PackageVertex neighbour : vertex.getNeighbourVertices()) {
+            Set<PackageVertex> neighbours = optionalVertex.get().getNeighborVertices();
+            assertEquals(vertex.getNeighborVertices().size(), neighbours.size());
+            for (PackageVertex neighbour : vertex.getNeighborVertices()) {
                 neighbours.stream()
                         .filter(
                                 it ->

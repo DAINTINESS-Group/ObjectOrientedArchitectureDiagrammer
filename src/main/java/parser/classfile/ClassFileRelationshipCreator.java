@@ -6,8 +6,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import model.graph.Arc;
 import model.graph.ArcType;
 import model.graph.ClassifierVertex;
@@ -68,7 +70,17 @@ public class ClassFileRelationshipCreator implements ClassVisitor {
             seenPackageVertices.put(packageName, packageVertex);
             packageVertices.add(packageVertex);
         }
-        createPackageVertexRelationships(programClass, packageVertex, children);
+
+        String parentPackageName = ClassUtil.internalPackageName(packageName);
+        if (!parentPackageName.isEmpty()) {
+            PackageVertex parentVertex = seenPackageVertices.get(parentPackageName);
+            // We only create package vertices for packages that contain class files.
+            if (parentVertex != null) {
+                packageVertex.addNeighborVertex(parentVertex);
+            }
+        }
+
+        createPackageVertexRelationships(packageVertex, children);
     }
 
     // Helper classes.
@@ -103,7 +115,6 @@ public class ClassFileRelationshipCreator implements ClassVisitor {
             ProgramClass programClass, ClassifierVertex sourceVertex) {
         ClassFileRelationshipIdentifier.MyProcessingInfo processingInfo =
                 (ClassFileRelationshipIdentifier.MyProcessingInfo) programClass.getProcessingInfo();
-
         createRelationship(
                 programClass,
                 sourceVertex,
@@ -131,10 +142,8 @@ public class ClassFileRelationshipCreator implements ClassVisitor {
         for (Clazz target : targets) {
             if (target instanceof ProgramClass && target != source) {
                 ClassifierVertex targetVertex = seenClassifierVertices.get(target.getName());
-                // Have we seen this vertex before?
                 if (targetVertex == null) {
                     targetVertex = createClassifierVertex((ProgramClass) target);
-
                     classifierVertices.add(targetVertex);
                     seenClassifierVertices.put(target.getName(), targetVertex);
                 }
@@ -144,27 +153,15 @@ public class ClassFileRelationshipCreator implements ClassVisitor {
     }
 
     private void createPackageVertexRelationships(
-            ProgramClass programClass, PackageVertex packageVertex, List<Clazz> children) {
+            PackageVertex packageVertex, List<Clazz> children) {
         for (Clazz clazz : children) {
             ClassFileRelationshipIdentifier.MyProcessingInfo processingInfo =
                     (ClassFileRelationshipIdentifier.MyProcessingInfo) clazz.getProcessingInfo();
-
-            createRelationship(
-                    programClass,
-                    packageVertex,
-                    Collections.singleton(processingInfo.superClass),
-                    ArcType.EXTENSION);
-            createRelationship(
-                    programClass, packageVertex, processingInfo.dependencies, ArcType.DEPENDENCY);
-            createRelationship(
-                    programClass, packageVertex, processingInfo.associations, ArcType.ASSOCIATION);
-            createRelationship(
-                    programClass, packageVertex, processingInfo.aggregations, ArcType.AGGREGATION);
-            createRelationship(
-                    programClass,
-                    packageVertex,
-                    processingInfo.implementations,
-                    ArcType.IMPLEMENTATION);
+            createRelationship(packageVertex, Collections.singleton(processingInfo.superClass));
+            createRelationship(packageVertex, processingInfo.dependencies);
+            createRelationship(packageVertex, processingInfo.associations);
+            createRelationship(packageVertex, processingInfo.aggregations);
+            createRelationship(packageVertex, processingInfo.implementations);
         }
     }
 
@@ -172,33 +169,33 @@ public class ClassFileRelationshipCreator implements ClassVisitor {
      * Creates a relationship of the given type from the given source vertex to all given targets,
      * but only if the target is not the source itself or a library class.
      */
-    private void createRelationship(
-            ProgramClass source,
-            PackageVertex sourceVertex,
-            Collection<Clazz> targets,
-            ArcType type) {
+    private void createRelationship(PackageVertex sourceVertex, Collection<Clazz> targets) {
         for (Clazz target : targets) {
-            if (target instanceof ProgramClass && target != source) {
+            if (target instanceof ProgramClass) {
                 PackageVertex targetVertex = seenPackageVertices.get(target.getName());
-                // Have we seen this vertex before?
                 if (targetVertex == null) {
+                    String packageName = ClassUtil.internalPackageName(target.getName());
+                    List<Clazz> children = requireNonNull(packages.get(packageName));
                     targetVertex =
                             new PackageVertex.PackageVertexBuilder()
-                                    .withName(target.getName())
+                                    .withSinkVertices(getOrCreateSinkVertices(children))
+                                    .withName(packageName)
                                     .withVertexType(VertexType.PACKAGE)
                                     .build();
-
                     packageVertices.add(targetVertex);
                     seenPackageVertices.put(target.getName(), targetVertex);
                 }
-                sourceVertex.addArc(new Arc<>(sourceVertex, targetVertex, type));
+
+                if (sourceVertex != targetVertex) {
+                    sourceVertex.addArc(new Arc<>(sourceVertex, targetVertex, ArcType.DEPENDENCY));
+                }
             }
         }
     }
 
     /** @return A list of classifier vertices for the given classes. */
-    private List<ClassifierVertex> getOrCreateSinkVertices(List<Clazz> children) {
-        List<ClassifierVertex> ret = new ArrayList<>();
+    private Set<ClassifierVertex> getOrCreateSinkVertices(List<Clazz> children) {
+        Set<ClassifierVertex> ret = new HashSet<>();
 
         for (Clazz child : children) {
             ClassifierVertex vertex = seenClassifierVertices.get(child.getName());

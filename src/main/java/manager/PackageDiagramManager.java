@@ -25,14 +25,10 @@ import org.javatuples.Pair;
 
 public class PackageDiagramManager implements DiagramManager {
 
-    private PackageDiagram packageDiagram;
+    private PackageDiagram packageDiagram = new PackageDiagram();
     private DiagramArrangementManager packageDiagramArrangement;
     private Collection<Vertex<String>> vertexCollection;
     private SmartGraphPanel<String, String> graphView;
-
-    public PackageDiagramManager() {
-        packageDiagram = new PackageDiagram();
-    }
 
     @Override
     public Project createSourceProject(Path sourcePackagePath) {

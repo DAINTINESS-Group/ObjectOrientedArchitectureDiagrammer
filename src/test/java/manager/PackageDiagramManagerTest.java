@@ -51,12 +51,12 @@ public class PackageDiagramManagerTest {
                             .orElseGet(Assertions::fail);
 
             assertEquals(
-                    vertexEntry.getNeighbourVertices().size(),
-                    optionalPackageVertex.getNeighbourVertices().size());
+                    vertexEntry.getNeighborVertices().size(),
+                    optionalPackageVertex.getNeighborVertices().size());
 
-            for (PackageVertex neighbourPackageVertex : vertexEntry.getNeighbourVertices()) {
+            for (PackageVertex neighbourPackageVertex : vertexEntry.getNeighborVertices()) {
                 assertTrue(
-                        optionalPackageVertex.getNeighbourVertices().stream()
+                        optionalPackageVertex.getNeighborVertices().stream()
                                 .anyMatch(
                                         it ->
                                                 it.getName()
