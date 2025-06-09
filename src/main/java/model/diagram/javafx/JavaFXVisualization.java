@@ -1,15 +1,14 @@
 package model.diagram.javafx;
 
-import java.util.Collection;
-
 import com.brunomnsilva.smartgraph.graph.Vertex;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
+import java.util.Collection;
 
-public interface JavaFXVisualization
-{
+public interface JavaFXVisualization {
 
     /**
-     * This method is responsible for create the GraphView object that will be rendered in the front-end.
+     * This method is responsible for create the GraphView object that will be rendered in the
+     * front-end.
      *
      * @return the {@link SmartGraphPanel} created
      */

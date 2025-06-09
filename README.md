@@ -119,6 +119,15 @@ Any contributions you make are **greatly appreciated**.
 If you want to contribute to the development of our tool, please fork the repo and create a pull request.<br>
 
 :heavy_exclamation_mark: **Please adhere to the current code style.**<br>
+We are using the [spotless](https://github.com/diffplug/spotless/tree/main/plugin-maven) maven plugin to format the code.
+You can check for violations via
+  ```shell
+  ./mvnw spotless:check
+  ```
+And to fix any potential violations
+  ```shell
+  ./mvnw spotless:apply
+  ```
 
 :star: **Don't forget to give the project a star!**
 

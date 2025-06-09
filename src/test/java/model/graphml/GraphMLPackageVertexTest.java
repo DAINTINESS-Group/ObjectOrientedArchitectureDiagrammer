@@ -1,47 +1,49 @@
 package model.graphml;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.List;
+import java.util.Map;
 import manager.PackageDiagramManager;
 import model.diagram.graphml.GraphMLPackageVertex;
 import model.graph.PackageVertex;
 import org.javatuples.Pair;
 import org.junit.jupiter.api.Test;
-import utils.PathConstructor;
-import utils.PathTemplate;
 import utils.PathTemplate.LatexEditor;
 
-import java.io.File;
-import java.nio.file.Paths;
-import java.util.List;
-import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-class GraphMLPackageVertexTest
-{
+class GraphMLPackageVertexTest {
 
     @Test
-    void convertVerticesToGraphMLTest()
-    {
+    void convertVerticesToGraphMLTest() {
         PackageDiagramManager packageDiagramManager = new PackageDiagramManager();
         packageDiagramManager.createSourceProject(LatexEditor.SRC.path);
-        packageDiagramManager.convertTreeToDiagram(List.of("src.view",
-                                                           "src.model",
-                                                           "src.model.strategies",
-                                                           "src.controller.commands",
-                                                           "src.controller"));
-        packageDiagramManager.getPackageDiagram().setGraphMLDiagramGeometry(Map.ofEntries(Map.entry(0, new Pair<>(10.0, 10.0)),
-                                                                                          Map.entry(1, new Pair<>(10.0, 10.0)),
-                                                                                          Map.entry(2, new Pair<>(10.0, 10.0)),
-                                                                                          Map.entry(3, new Pair<>(10.0, 10.0)),
-                                                                                          Map.entry(4, new Pair<>(10.0, 10.0)),
-                                                                                          Map.entry(5, new Pair<>(10.0, 10.0))));
+        packageDiagramManager.convertTreeToDiagram(
+                List.of(
+                        "src.view",
+                        "src.model",
+                        "src.model.strategies",
+                        "src.controller.commands",
+                        "src.controller"));
+        packageDiagramManager
+                .getPackageDiagram()
+                .setGraphMLDiagramGeometry(
+                        Map.ofEntries(
+                                Map.entry(0, new Pair<>(10.0, 10.0)),
+                                Map.entry(1, new Pair<>(10.0, 10.0)),
+                                Map.entry(2, new Pair<>(10.0, 10.0)),
+                                Map.entry(3, new Pair<>(10.0, 10.0)),
+                                Map.entry(4, new Pair<>(10.0, 10.0)),
+                                Map.entry(5, new Pair<>(10.0, 10.0))));
         GraphMLPackageVertex graphMLPackageVertex = new GraphMLPackageVertex();
-        StringBuilder        actual               = graphMLPackageVertex.convertVertex(packageDiagramManager.getPackageDiagram());
+        StringBuilder actual =
+                graphMLPackageVertex.convertVertex(packageDiagramManager.getPackageDiagram());
 
         StringBuilder expected = new StringBuilder();
-        for (PackageVertex packageNode : packageDiagramManager.getPackageDiagram().getGraphNodes().keySet())
-        {
-            expected.append(String.format("""
+        for (PackageVertex packageNode :
+                packageDiagramManager.getPackageDiagram().getGraphNodes().keySet()) {
+            expected.append(
+                    String.format(
+                            """
                                               <node id="n%s">
                                                 <data key="d4" xml:space="preserve"/>
                                                 <data key="d6">
@@ -54,12 +56,14 @@ class GraphMLPackageVertexTest
                                                 </data>
                                               </node>
                                           """,
-                                          packageDiagramManager.getPackageDiagram().getGraphNodes().get(packageNode),
-                                          10.0,
-                                          10.0,
-                                          packageNode.getName()));
+                            packageDiagramManager
+                                    .getPackageDiagram()
+                                    .getGraphNodes()
+                                    .get(packageNode),
+                            10.0,
+                            10.0,
+                            packageNode.getName()));
         }
         assertEquals(expected.toString(), actual.toString());
     }
-
 }

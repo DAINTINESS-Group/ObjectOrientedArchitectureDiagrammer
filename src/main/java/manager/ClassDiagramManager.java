@@ -2,6 +2,10 @@ package manager;
 
 import com.brunomnsilva.smartgraph.graph.Vertex;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
+import java.io.File;
+import java.nio.file.Path;
+import java.util.Collection;
+import java.util.List;
 import model.diagram.ClassDiagram;
 import model.diagram.ShadowCleaner;
 import model.diagram.arrangement.ClassDiagramArrangementManager;
@@ -19,120 +23,92 @@ import model.diagram.javafx.JavaFXVisualization;
 import model.diagram.svg.PlantUMLClassDiagram;
 import org.javatuples.Pair;
 
-import java.io.File;
-import java.nio.file.Path;
-import java.util.Collection;
-import java.util.List;
+public class ClassDiagramManager implements DiagramManager {
 
-public class ClassDiagramManager implements DiagramManager
-{
-
-    private ClassDiagram                    classDiagram;
-    private DiagramArrangementManager       classDiagramArrangement;
-    private Collection<Vertex<String>>      vertexCollection;
+    private ClassDiagram classDiagram;
+    private DiagramArrangementManager classDiagramArrangement;
+    private Collection<Vertex<String>> vertexCollection;
     private SmartGraphPanel<String, String> graphView;
 
-
-    public ClassDiagramManager()
-    {
+    public ClassDiagramManager() {
         classDiagram = new ClassDiagram();
     }
 
-
     @Override
-    public SourceProject createSourceProject(Path sourcePackagePath)
-    {
+    public SourceProject createSourceProject(Path sourcePackagePath) {
         SourceProject sourceProject = new SourceProject();
         sourceProject.createClassGraph(sourcePackagePath, classDiagram);
 
         return sourceProject;
     }
 
-
     @Override
-    public void convertTreeToDiagram(List<String> chosenFilesNames)
-    {
+    public void convertTreeToDiagram(List<String> chosenFilesNames) {
         classDiagram.createNewDiagram(chosenFilesNames);
         ShadowCleaner shadowCleaner = new ShadowCleaner(classDiagram);
         classDiagram.setDiagram(shadowCleaner.shadowWeakRelationships());
     }
 
-
     @Override
-    public DiagramGeometry arrangeDiagram()
-    {
-        classDiagramArrangement         = new ClassDiagramArrangementManager(classDiagram);
+    public DiagramGeometry arrangeDiagram() {
+        classDiagramArrangement = new ClassDiagramArrangementManager(classDiagram);
         DiagramGeometry diagramGeometry = classDiagramArrangement.arrangeDiagram();
         classDiagram.setDiagramGeometry(diagramGeometry);
 
         return diagramGeometry;
     }
 
-
     @Override
-    public SmartGraphPanel<String, String> visualizeJavaFXGraph()
-    {
+    public SmartGraphPanel<String, String> visualizeJavaFXGraph() {
         JavaFXVisualization javaFXVisualization = new JavaFXClassVisualization(classDiagram);
-        graphView                               = javaFXVisualization.createGraphView();
-        vertexCollection                        = javaFXVisualization.getVertexCollection();
-
-        return graphView;
-    }
-
-
-    @Override
-    public String visualizeSvgGraph(int dpi)
-    {
-        PlantUMLClassDiagram plantUMLClassDiagram = new PlantUMLClassDiagram(classDiagram);
-
-        return plantUMLClassDiagram.toSvg(dpi);
-    }
-
-
-    @Override
-    public SmartGraphPanel<String, String> visualizeLoadedJavaFXGraph()
-    {
-        JavaFXVisualization javaFXVisualization = new JavaFXClassVisualization(classDiagram);
-        javaFXVisualization.createGraphView();
-
-        graphView        = javaFXVisualization.getLoadedGraph();
+        graphView = javaFXVisualization.createGraphView();
         vertexCollection = javaFXVisualization.getVertexCollection();
 
         return graphView;
     }
 
+    @Override
+    public String visualizeSvgGraph(int dpi) {
+        PlantUMLClassDiagram plantUMLClassDiagram = new PlantUMLClassDiagram(classDiagram);
+
+        return plantUMLClassDiagram.toSvg(dpi);
+    }
 
     @Override
-    public File exportDiagramToGraphML(Path graphMLSavePath)
-    {
+    public SmartGraphPanel<String, String> visualizeLoadedJavaFXGraph() {
+        JavaFXVisualization javaFXVisualization = new JavaFXClassVisualization(classDiagram);
+        javaFXVisualization.createGraphView();
+
+        graphView = javaFXVisualization.getLoadedGraph();
+        vertexCollection = javaFXVisualization.getVertexCollection();
+
+        return graphView;
+    }
+
+    @Override
+    public File exportDiagramToGraphML(Path graphMLSavePath) {
         classDiagram.setGraphMLDiagramGeometry(classDiagramArrangement.arrangeGraphMLDiagram());
         DiagramExporter diagramExporter = new GraphMLClassDiagramExporter(classDiagram);
 
         return diagramExporter.exportDiagram(graphMLSavePath);
     }
 
-
     @Override
-    public File exportPlantUMLImage(Path plantUMLSavePath)
-    {
+    public File exportPlantUMLImage(Path plantUMLSavePath) {
         DiagramExporter diagramExporter = new PlantUMLClassDiagramImageExporter(classDiagram);
 
         return diagramExporter.exportDiagram(plantUMLSavePath);
     }
 
-
     @Override
-    public File exportPlantUMLText(Path textSavePath)
-    {
+    public File exportPlantUMLText(Path textSavePath) {
         DiagramExporter diagramExporter = new PlantUMLClassDiagramTextExporter(classDiagram);
 
         return diagramExporter.exportDiagram(textSavePath);
     }
 
-
     @Override
-    public File saveDiagram(Path graphSavePath)
-    {
+    public File saveDiagram(Path graphSavePath) {
         CoordinatesUpdater coordinatesUpdater = new CoordinatesUpdater(classDiagram);
         coordinatesUpdater.updateClassCoordinates(vertexCollection, graphView);
         DiagramExporter diagramExporter = new JavaFXClassDiagramExporter(classDiagram);
@@ -140,23 +116,18 @@ public class ClassDiagramManager implements DiagramManager
         return diagramExporter.exportDiagram(graphSavePath);
     }
 
-
     @Override
-    public void loadDiagram(Path graphSavePath)
-    {
+    public void loadDiagram(Path graphSavePath) {
         classDiagram = new ClassDiagram();
         classDiagram.createDiagram(JavaFXClassDiagramLoader.loadDiagram(graphSavePath));
         ShadowCleaner shadowCleaner = new ShadowCleaner(classDiagram);
         classDiagram.setDiagram(shadowCleaner.shadowWeakRelationships());
     }
 
-
     @Override
-    public SmartGraphPanel<String, String> applyLayout()
-    {
+    public SmartGraphPanel<String, String> applyLayout() {
         DiagramGeometry nodesGeometry = classDiagram.getDiagramGeometry();
-        for (Vertex<String> vertex : vertexCollection)
-        {
+        for (Vertex<String> vertex : vertexCollection) {
             if (!nodesGeometry.containsKey(vertex.element())) continue;
 
             Pair<Double, Double> coordinates = nodesGeometry.getVertexGeometry(vertex.element());
@@ -167,25 +138,19 @@ public class ClassDiagramManager implements DiagramManager
     }
 
     @Override
-    public SmartGraphPanel<String, String> applySpecificLayout(String choice)
-    {
+    public SmartGraphPanel<String, String> applySpecificLayout(String choice) {
         DiagramGeometry nodesGeometry = classDiagramArrangement.applyLayout(choice);
-        for (Vertex<String> vertex : vertexCollection)
-        {
+        for (Vertex<String> vertex : vertexCollection) {
             if (!nodesGeometry.containsKey(vertex.element())) continue;
 
             Pair<Double, Double> coordinates = nodesGeometry.getVertexGeometry(vertex.element());
-            graphView.setVertexPosition(vertex,
-                                        coordinates.getValue0(),
-                                        coordinates.getValue1());
+            graphView.setVertexPosition(vertex, coordinates.getValue0(), coordinates.getValue1());
         }
 
         return graphView;
     }
 
-    public ClassDiagram getClassDiagram()
-    {
+    public ClassDiagram getClassDiagram() {
         return classDiagram;
     }
-
 }

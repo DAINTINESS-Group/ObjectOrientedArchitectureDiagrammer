@@ -4,11 +4,10 @@ import com.brunomnsilva.smartgraph.graph.Graph;
 import com.brunomnsilva.smartgraph.graphview.SmartCircularSortedPlacementStrategy;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphProperties;
-import util.Resources;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Objects;
+import util.Resources;
 
 public class SmartGraphFactory {
 
@@ -17,20 +16,18 @@ public class SmartGraphFactory {
 
     /**
      * Factory for SmartGraphPanel object creation
+     *
      * @param graph
      * @return
      */
-    public static SmartGraphPanel<String, String> createGraphView(Graph<String, String> graph)
-    {
-        try
-        {
+    public static SmartGraphPanel<String, String> createGraphView(Graph<String, String> graph) {
+        try {
             SmartGraphProperties properties = getSmartgraphProperties();
             URI url = getSmartGraphStyleURI();
             URI cssFile = Objects.requireNonNull(url);
-            return new SmartGraphPanel<>(graph, properties, new SmartCircularSortedPlacementStrategy(), cssFile);
-        }
-        catch (URISyntaxException ignored)
-        {
+            return new SmartGraphPanel<>(
+                    graph, properties, new SmartCircularSortedPlacementStrategy(), cssFile);
+        } catch (URISyntaxException ignored) {
             // Fallback to default paths.
             return new SmartGraphPanel<>(graph, new SmartCircularSortedPlacementStrategy());
         }

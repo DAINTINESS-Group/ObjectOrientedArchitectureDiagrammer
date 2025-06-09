@@ -1,5 +1,14 @@
 package model.javafx;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.io.File;
+import java.nio.file.Path;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import manager.PackageDiagramManager;
 import model.diagram.exportation.DiagramExporter;
 import model.diagram.exportation.JavaFXPackageDiagramExporter;
@@ -12,83 +21,93 @@ import org.junit.jupiter.api.Test;
 import utils.PathConstructor;
 import utils.PathTemplate.LatexEditor;
 
-import java.io.File;
-import java.nio.file.Path;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-public class JavaFXPackageDiagramLoaderTest
-{
+public class JavaFXPackageDiagramLoaderTest {
 
     @Test
-    void loadDiagramTest()
-    {
+    void loadDiagramTest() {
         PackageDiagramManager packageDiagramManager = new PackageDiagramManager();
         packageDiagramManager.createSourceProject(LatexEditor.SRC.path);
-        packageDiagramManager.convertTreeToDiagram(List.of("src.view",
-                                                                           "src.model",
-                                                                           "src.model.strategies",
-                                                                           "src.controller.commands",
-                                                                           "src.controller"));
-        Map<PackageVertex, Set<Arc<PackageVertex>>> createdDiagram = packageDiagramManager.getPackageDiagram().getDiagram();
+        packageDiagramManager.convertTreeToDiagram(
+                List.of(
+                        "src.view",
+                        "src.model",
+                        "src.model.strategies",
+                        "src.controller.commands",
+                        "src.controller"));
+        Map<PackageVertex, Set<Arc<PackageVertex>>> createdDiagram =
+                packageDiagramManager.getPackageDiagram().getDiagram();
 
-        DiagramExporter javaFXExporter = new JavaFXPackageDiagramExporter(packageDiagramManager.getPackageDiagram());
-        File actualFile = javaFXExporter.exportDiagram(Path.of(String.format("%s%s%s",
-                                                                             PathConstructor.getCurrentPath(),
-                                                                             File.separator,
-                                                                             PathConstructor.constructPath("src",
-                                                                                                           "test",
-                                                                                                           "resources",
-                                                                                                           "testingExportedFile.txt"))));
+        DiagramExporter javaFXExporter =
+                new JavaFXPackageDiagramExporter(packageDiagramManager.getPackageDiagram());
+        File actualFile =
+                javaFXExporter.exportDiagram(
+                        Path.of(
+                                String.format(
+                                        "%s%s%s",
+                                        PathConstructor.getCurrentPath(),
+                                        File.separator,
+                                        PathConstructor.constructPath(
+                                                "src",
+                                                "test",
+                                                "resources",
+                                                "testingExportedFile.txt"))));
 
-        Set<PackageVertex> loadedDiagram = JavaFXPackageDiagramLoader.loadDiagram(actualFile.toPath());
+        Set<PackageVertex> loadedDiagram =
+                JavaFXPackageDiagramLoader.loadDiagram(actualFile.toPath());
         assertEquals(createdDiagram.size(), loadedDiagram.size());
 
-        for (PackageVertex vertex : createdDiagram.keySet())
-        {
-            Optional<PackageVertex> optionalVertex = loadedDiagram.stream()
-                .filter(it -> it.getName().equals(vertex.getName()) &&
-                              it.getVertexType().equals(vertex.getVertexType()))
-                .findFirst();
+        for (PackageVertex vertex : createdDiagram.keySet()) {
+            Optional<PackageVertex> optionalVertex =
+                    loadedDiagram.stream()
+                            .filter(
+                                    it ->
+                                            it.getName().equals(vertex.getName())
+                                                    && it.getVertexType()
+                                                            .equals(vertex.getVertexType()))
+                            .findFirst();
             assertTrue(optionalVertex.isPresent());
 
             List<Arc<PackageVertex>> arcs = optionalVertex.get().getArcs();
             assertEquals(createdDiagram.get(vertex).size(), arcs.size());
-            for (Arc<PackageVertex> arc : createdDiagram.get(vertex))
-            {
+            for (Arc<PackageVertex> arc : createdDiagram.get(vertex)) {
                 arcs.stream()
-                    .filter(it -> it.sourceVertex().getName().equals(arc.sourceVertex().getName()) &&
-                                  it.targetVertex().getName().equals(arc.targetVertex().getName()) &&
-                                  it.arcType().equals(arc.arcType()))
-                    .findFirst()
-                    .orElseGet(Assertions::fail);
+                        .filter(
+                                it ->
+                                        it.sourceVertex()
+                                                        .getName()
+                                                        .equals(arc.sourceVertex().getName())
+                                                && it.targetVertex()
+                                                        .getName()
+                                                        .equals(arc.targetVertex().getName())
+                                                && it.arcType().equals(arc.arcType()))
+                        .findFirst()
+                        .orElseGet(Assertions::fail);
             }
 
             List<ClassifierVertex> sinkVertices = optionalVertex.get().getSinkVertices();
             assertEquals(vertex.getSinkVertices().size(), sinkVertices.size());
-            for (ClassifierVertex classifierVertex : vertex.getSinkVertices())
-            {
+            for (ClassifierVertex classifierVertex : vertex.getSinkVertices()) {
                 sinkVertices.stream()
-                    .filter(it -> it.getName().equals(classifierVertex.getName()) &&
-                                  it.getVertexType().equals(classifierVertex.getVertexType()))
-                    .findFirst()
-                    .orElseGet(Assertions::fail);
+                        .filter(
+                                it ->
+                                        it.getName().equals(classifierVertex.getName())
+                                                && it.getVertexType()
+                                                        .equals(classifierVertex.getVertexType()))
+                        .findFirst()
+                        .orElseGet(Assertions::fail);
             }
 
             List<PackageVertex> neighbours = optionalVertex.get().getNeighbourVertices();
             assertEquals(vertex.getNeighbourVertices().size(), neighbours.size());
-            for (PackageVertex neighbour : vertex.getNeighbourVertices())
-            {
+            for (PackageVertex neighbour : vertex.getNeighbourVertices()) {
                 neighbours.stream()
-                    .filter(it -> it.getName().equals(neighbour.getName()) &&
-                                  it.getVertexType().equals(neighbour.getVertexType()))
-                    .findFirst()
-                    .orElseGet(Assertions::fail);
+                        .filter(
+                                it ->
+                                        it.getName().equals(neighbour.getName())
+                                                && it.getVertexType()
+                                                        .equals(neighbour.getVertexType()))
+                        .findFirst()
+                        .orElseGet(Assertions::fail);
             }
         }
     }

@@ -1,11 +1,8 @@
 package view;
 
-public class AppStarter
-{
+public class AppStarter {
 
-    public static void main(String... args)
-    {
+    public static void main(String... args) {
         AppStarterHelper.main(args);
     }
-
 }

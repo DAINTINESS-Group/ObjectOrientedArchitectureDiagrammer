@@ -5,46 +5,36 @@ import com.brunomnsilva.smartgraph.graph.DigraphEdgeList;
 import com.brunomnsilva.smartgraph.graph.Graph;
 import com.brunomnsilva.smartgraph.graph.Vertex;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
+import java.util.Collection;
+import java.util.Set;
 import model.diagram.ClassDiagram;
 import model.graph.Arc;
 import model.graph.ArcType;
 import model.graph.ClassifierVertex;
 import model.graph.VertexType;
 
-import java.util.Collection;
-import java.util.Set;
+public class JavaFXClassVisualization implements JavaFXVisualization {
 
-public class JavaFXClassVisualization implements JavaFXVisualization
-{
+    private final ClassDiagram classDiagram;
+    private SmartGraphPanel<String, String> graphView;
+    private Collection<Vertex<String>> vertexCollection;
 
-    private final  ClassDiagram                    classDiagram;
-    private        SmartGraphPanel<String, String> graphView;
-    private        Collection<Vertex<String>>      vertexCollection;
-
-    public JavaFXClassVisualization(ClassDiagram diagram)
-    {
+    public JavaFXClassVisualization(ClassDiagram diagram) {
         this.classDiagram = diagram;
     }
 
-
     @Override
-    public SmartGraphPanel<String, String> createGraphView()
-    {
+    public SmartGraphPanel<String, String> createGraphView() {
         Graph<String, String> graph = createGraph();
-        vertexCollection            = graph.vertices();
-        graphView                   = SmartGraphFactory.createGraphView(graph);
+        vertexCollection = graph.vertices();
+        graphView = SmartGraphFactory.createGraphView(graph);
         setSinkVertexCustomStyle();
         return graphView;
     }
 
-
-
-
-    private Graph<String, String> createGraph()
-    {
+    private Graph<String, String> createGraph() {
         Digraph<String, String> directedGraph = new DigraphEdgeList<>();
-        for (ClassifierVertex classifierVertex : classDiagram.getDiagram().keySet())
-        {
+        for (ClassifierVertex classifierVertex : classDiagram.getDiagram().keySet()) {
             directedGraph.insertVertex(classifierVertex.getName());
         }
         insertSinkVertexArcs(directedGraph);
@@ -52,66 +42,62 @@ public class JavaFXClassVisualization implements JavaFXVisualization
         return directedGraph;
     }
 
-    private void insertSinkVertexArcs(Digraph<String, String> directedGraph)
-    {
-        for (Set<Arc<ClassifierVertex>> arcs : classDiagram.getDiagram().values())
-        {
-            for (Arc<ClassifierVertex> arc : arcs)
-            {
-                if (arc.arcType().equals(ArcType.AGGREGATION))
-                {
-                    directedGraph.insertEdge(arc.targetVertex().getName(),
-                                             arc.sourceVertex().getName(),
-                                             arc.targetVertex().getName() + "_" + arc.sourceVertex().getName() + "_" + arc.arcType());
-                }
-                else
-                {
-                    directedGraph.insertEdge(arc.sourceVertex().getName(),
-                                             arc.targetVertex().getName(),
-                                             arc.sourceVertex().getName() + "_" + arc.targetVertex().getName() + "_" + arc.arcType());
+    private void insertSinkVertexArcs(Digraph<String, String> directedGraph) {
+        for (Set<Arc<ClassifierVertex>> arcs : classDiagram.getDiagram().values()) {
+            for (Arc<ClassifierVertex> arc : arcs) {
+                if (arc.arcType().equals(ArcType.AGGREGATION)) {
+                    directedGraph.insertEdge(
+                            arc.targetVertex().getName(),
+                            arc.sourceVertex().getName(),
+                            arc.targetVertex().getName()
+                                    + "_"
+                                    + arc.sourceVertex().getName()
+                                    + "_"
+                                    + arc.arcType());
+                } else {
+                    directedGraph.insertEdge(
+                            arc.sourceVertex().getName(),
+                            arc.targetVertex().getName(),
+                            arc.sourceVertex().getName()
+                                    + "_"
+                                    + arc.targetVertex().getName()
+                                    + "_"
+                                    + arc.arcType());
                 }
             }
         }
     }
 
-
-    private void setSinkVertexCustomStyle()
-    {
-        for (ClassifierVertex classifierVertex : classDiagram.getDiagram().keySet())
-        {
-            String styleClass = classifierVertex.getVertexType().equals(VertexType.INTERFACE) ?
-                "vertexInterface" :
-                "vertexPackage";
+    private void setSinkVertexCustomStyle() {
+        for (ClassifierVertex classifierVertex : classDiagram.getDiagram().keySet()) {
+            String styleClass =
+                    classifierVertex.getVertexType().equals(VertexType.INTERFACE)
+                            ? "vertexInterface"
+                            : "vertexPackage";
 
             graphView.getStylableVertex(classifierVertex.getName()).setStyleClass(styleClass);
         }
     }
 
-
     @Override
-    public Collection<Vertex<String>> getVertexCollection()
-    {
+    public Collection<Vertex<String>> getVertexCollection() {
         return vertexCollection;
     }
 
-
     @Override
-    public SmartGraphPanel<String, String> getLoadedGraph()
-    {
-        for (Vertex<String> vertex : vertexCollection)
-        {
-            for (ClassifierVertex classifierVertex : classDiagram.getDiagram().keySet())
-            {
+    public SmartGraphPanel<String, String> getLoadedGraph() {
+        for (Vertex<String> vertex : vertexCollection) {
+            for (ClassifierVertex classifierVertex : classDiagram.getDiagram().keySet()) {
                 if (!classifierVertex.getName().equals(vertex.element())) continue;
 
-                graphView.setVertexPosition(vertex,
-                                            classifierVertex.getCoordinate().x(),
-                                            classifierVertex.getCoordinate().y());
+                graphView.setVertexPosition(
+                        vertex,
+                        classifierVertex.getCoordinate().x(),
+                        classifierVertex.getCoordinate().y());
                 break;
             }
         }
 
         return graphView;
     }
-
 }
