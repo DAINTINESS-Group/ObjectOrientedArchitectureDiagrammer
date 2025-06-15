@@ -25,20 +25,18 @@ import org.javatuples.Pair;
 
 public class PackageDiagramManager implements DiagramManager {
 
-    private PackageDiagram packageDiagram;
+    private PackageDiagram packageDiagram = new PackageDiagram();
     private DiagramArrangementManager packageDiagramArrangement;
     private Collection<Vertex<String>> vertexCollection;
     private SmartGraphPanel<String, String> graphView;
 
-    public PackageDiagramManager() {
-        packageDiagram = new PackageDiagram();
-    }
-
     @Override
-    public SourceProject createSourceProject(Path sourcePackagePath) {
-        SourceProject sourceProject = new SourceProject();
-        sourceProject.createPackageGraph(sourcePackagePath, packageDiagram);
-        return sourceProject;
+    public Project createSourceProject(Path sourcePackagePath) {
+        Project project = new Project(sourcePackagePath);
+        project.initialize();
+        project.createPackageGraph(packageDiagram);
+
+        return project;
     }
 
     @Override
@@ -51,6 +49,7 @@ public class PackageDiagramManager implements DiagramManager {
         packageDiagramArrangement = new PackageDiagramArrangementManager(packageDiagram);
         DiagramGeometry diagramGeometry = packageDiagramArrangement.arrangeDiagram();
         packageDiagram.setDiagramGeometry(diagramGeometry);
+
         return diagramGeometry;
     }
 
@@ -60,12 +59,14 @@ public class PackageDiagramManager implements DiagramManager {
                 new JavaFXPackageVisualization(packageDiagram);
         graphView = javaFXPackageVisualization.createGraphView();
         vertexCollection = javaFXPackageVisualization.getVertexCollection();
+
         return graphView;
     }
 
     @Override
     public String visualizeSvgGraph(int dpi) {
         PlantUMLPackageDiagram plantUMLPackageDiagram = new PlantUMLPackageDiagram(packageDiagram);
+
         return plantUMLPackageDiagram.toSvg(dpi);
     }
 

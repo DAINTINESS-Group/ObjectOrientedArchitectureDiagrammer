@@ -1,24 +1,26 @@
 package model.diagram.plantuml;
 
-import java.util.Collection;
-import java.util.stream.Collectors;
+import java.util.Set;
 import model.diagram.ClassDiagram;
+import model.graph.Arc;
 import model.graph.ArcType;
+import model.graph.ClassifierVertex;
 
 public class PlantUMLClassifierVertexArc {
 
     public static StringBuilder convertSinkVertexArcs(ClassDiagram classDiagram) {
-        return new StringBuilder(
-                classDiagram.getDiagram().values().stream()
-                        .flatMap(Collection::stream)
-                        .map(
-                                it ->
-                                        String.join(
-                                                " ",
-                                                it.sourceVertex().getName(),
-                                                getRelationship(it.arcType()),
-                                                it.targetVertex().getName()))
-                        .collect(Collectors.joining("\n")));
+        StringBuilder ret = new StringBuilder();
+        for (Set<Arc<ClassifierVertex>> arcs : classDiagram.getDiagram().values()) {
+            for (Arc<ClassifierVertex> it : arcs) {
+                ret.append(it.sourceVertex().getName())
+                        .append(" ")
+                        .append(getRelationship(it.arcType()))
+                        .append(" ")
+                        .append(it.targetVertex().getName())
+                        .append(System.lineSeparator());
+            }
+        }
+        return ret;
     }
 
     private static String getRelationship(ArcType relationshipType) {
@@ -27,8 +29,7 @@ public class PlantUMLClassifierVertexArc {
             case AGGREGATION -> "o--";
             case DEPENDENCY -> "..>";
             case IMPLEMENTATION -> "..|>";
-                // ASSOCIATION.
-            default -> "-->";
+            case ASSOCIATION -> "-->";
         };
     }
 }

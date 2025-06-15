@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import manager.ClassDiagramManager;
 import model.diagram.exportation.DiagramExporter;
@@ -73,14 +74,14 @@ public class JavaFXClassDiagramExporterTest {
                     Path actualPath = classifierVertex.getPath();
                     VertexType actualVertexType = classifierVertex.getVertexType();
 
-                    List<ClassifierVertex.Method> classifierVertexMethods =
+                    Set<ClassifierVertex.Method> classifierVertexMethods =
                             classifierVertex.getMethods();
                     List<String> sinkVertexMethodNames =
                             classifierVertexMethods.stream()
                                     .map(ClassifierVertex.Method::name)
                                     .collect(Collectors.toCollection(LinkedList::new));
 
-                    List<ClassifierVertex.Field> classifierVertexFields =
+                    Set<ClassifierVertex.Field> classifierVertexFields =
                             classifierVertex.getFields();
                     List<String> sinkVertexFieldNames =
                             classifierVertexFields.stream()
@@ -100,38 +101,21 @@ public class JavaFXClassDiagramExporterTest {
                             assertEquals(actualVertexType, VertexType.CLASS);
 
                             assertListsEqual(
-                                    sinkVertexMethodNames,
                                     Arrays.asList(
                                             "MainWindow",
                                             "editContents",
                                             "actionPerformed",
-                                            "actionPerformed",
-                                            "actionPerformed",
-                                            "actionPerformed",
-                                            "actionPerformed",
-                                            "actionPerformed",
-                                            "actionPerformed",
-                                            "actionPerformed",
-                                            "actionPerformed",
-                                            "actionPerformed",
-                                            "actionPerformed",
-                                            "actionPerformed",
-                                            "actionPerformed",
-                                            "actionPerformed",
-                                            "actionPerformed",
-                                            "actionPerformed",
-                                            "initialize"));
+                                            "initialize"),
+                                    sinkVertexMethodNames);
 
                             assertListsEqual(
                                     sinkVertexFieldNames,
                                     Arrays.asList("frame", "editorPane", "latexEditorView"));
 
                             assertListsEqual(
-                                    targetArcVertex,
                                     Arrays.asList(
-                                            "LatexEditorView",
-                                            "LatexEditorView",
-                                            "ChooseTemplate"));
+                                            "LatexEditorView", "LatexEditorView", "ChooseTemplate"),
+                                    targetArcVertex);
 
                             break;
                         case "LatexEditorView":
@@ -139,7 +123,6 @@ public class JavaFXClassDiagramExporterTest {
                             assertEquals(actualVertexType, VertexType.CLASS);
 
                             assertListsEqual(
-                                    sinkVertexFieldNames,
                                     Arrays.asList(
                                             "controller",
                                             "currentDocument",
@@ -147,10 +130,10 @@ public class JavaFXClassDiagramExporterTest {
                                             "text",
                                             "filename",
                                             "strategy",
-                                            "versionsManager"));
+                                            "versionsManager"),
+                                    sinkVertexFieldNames);
 
                             assertListsEqual(
-                                    sinkVertexMethodNames,
                                     Arrays.asList(
                                             "getVersionsManager",
                                             "setVersionsManager",
@@ -168,17 +151,18 @@ public class JavaFXClassDiagramExporterTest {
                                             "saveToFile",
                                             "getFilename",
                                             "setFilename",
-                                            "loadFromFile"));
+                                            "loadFromFile"),
+                                    sinkVertexMethodNames);
 
                             assertListsEqual(
-                                    targetArcVertex,
                                     Arrays.asList(
                                             "VersionsManager",
                                             "Document",
                                             "VersionsManager",
                                             "LatexEditorController",
                                             "LatexEditorController",
-                                            "Document"));
+                                            "Document"),
+                                    targetArcVertex);
 
                             break;
 
@@ -186,30 +170,28 @@ public class JavaFXClassDiagramExporterTest {
                             assertEquals(LatexEditor.OPENING_WINDOW.path, actualPath);
                             assertEquals(actualVertexType, VertexType.CLASS);
 
-                            assertEquals(
-                                    sinkVertexFieldNames,
-                                    Arrays.asList("frame", "latexEditorView"));
+                            assertListsEqual(
+                                    Arrays.asList("frame", "latexEditorView"),
+                                    sinkVertexFieldNames);
 
                             assertListsEqual(
-                                    sinkVertexMethodNames,
                                     Arrays.asList(
                                             "OpeningWindow",
                                             "run",
                                             "main",
                                             "actionPerformed",
-                                            "actionPerformed",
-                                            "actionPerformed",
-                                            "initialize"));
+                                            "initialize"),
+                                    sinkVertexMethodNames);
 
                             assertListsEqual(
-                                    targetArcVertex,
                                     Arrays.asList(
                                             "VersionsStrategy",
                                             "ChooseTemplate",
                                             "VolatileVersionsStrategy",
                                             "VersionsManager",
                                             "LatexEditorController",
-                                            "LatexEditorView"));
+                                            "LatexEditorView"),
+                                    targetArcVertex);
 
                             break;
                         default:

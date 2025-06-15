@@ -13,9 +13,9 @@ public interface DiagramManager {
      * designer has loaded.
      *
      * @param sourcePackagePath the project's source package path
-     * @return the {@link SourceProject} created, representing the model of the tree
+     * @return the {@link Project} created, representing the model of the tree
      */
-    SourceProject createSourceProject(Path sourcePackagePath);
+    Project createSourceProject(Path sourcePackagePath);
 
     /**
      * This method converts the tree created by the Parser to a Diagram, based on the files(classes

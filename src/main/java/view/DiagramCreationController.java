@@ -69,7 +69,7 @@ public class DiagramCreationController {
     }
 
     public void setProject() {
-        this.projectTreeView = DiagramCreation.getInstance().getProjectTreeView();
+        projectTreeView = DiagramCreation.getInstance().getProjectTreeView();
         borderPane.setLeft(projectTreeView.treeView);
         DiagramCreation.getInstance().setMenuBar(menuBar);
     }

@@ -1,24 +1,26 @@
 package model.diagram.plantuml;
 
-import java.util.Collection;
-import java.util.stream.Collectors;
+import java.util.Set;
 import model.diagram.PackageDiagram;
+import model.graph.Arc;
 import model.graph.ArcType;
+import model.graph.PackageVertex;
 
 public class PlantUMLPackageVertexArc {
 
     public static StringBuilder convertVertexArcs(PackageDiagram packageDiagram) {
-        return new StringBuilder(
-                packageDiagram.getDiagram().values().stream()
-                        .flatMap(Collection::stream)
-                        .map(
-                                it ->
-                                        String.join(
-                                                " ",
-                                                it.sourceVertex().getName(),
-                                                getRelationship(it.arcType()),
-                                                it.targetVertex().getName()))
-                        .collect(Collectors.joining("\n")));
+        StringBuilder ret = new StringBuilder();
+        for (Set<Arc<PackageVertex>> arcs : packageDiagram.getDiagram().values()) {
+            for (Arc<PackageVertex> it : arcs) {
+                ret.append(it.sourceVertex().getName())
+                        .append(" ")
+                        .append(getRelationship(it.arcType()))
+                        .append(" ")
+                        .append(it.targetVertex().getName())
+                        .append(System.lineSeparator());
+            }
+        }
+        return ret;
     }
 
     private static String getRelationship(ArcType relationshipType) {
@@ -27,8 +29,7 @@ public class PlantUMLPackageVertexArc {
             case AGGREGATION -> "o--";
             case DEPENDENCY -> "..>";
             case IMPLEMENTATION -> "..|>";
-                // ASSOCIATION
-            default -> "-->";
+            case ASSOCIATION -> "-->";
         };
     }
 }

@@ -5,9 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +29,7 @@ import model.graph.ClassifierVertex;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import parser.Interpreter;
+import parser.ast.ASTInterpreter;
 import utils.PathConstructor;
 import utils.PathTemplate.LatexEditor;
 
@@ -40,21 +40,21 @@ public class ClassDiagramManagerTest {
         ClassDiagramManager classDiagramManager = new ClassDiagramManager();
         ClassDiagram classDiagram = classDiagramManager.getClassDiagram();
 
-        SourceProject sourceProject = new SourceProject();
-        Map<Path, ClassifierVertex> vertices =
-                sourceProject.createClassGraph(LatexEditor.SRC.path, classDiagram);
+        Project project = new Project(LatexEditor.SRC.path);
+        project.initialize();
+        Collection<ClassifierVertex> vertices = project.createClassGraph(classDiagram);
 
-        Interpreter interpreter = new Interpreter();
+        ASTInterpreter interpreter = new ASTInterpreter();
         interpreter.parseProject(LatexEditor.SRC.path);
-        interpreter.convertTreeToGraph();
+        interpreter.convertToGraph(Collections.emptyList(), Collections.emptyList());
 
-        Map<Path, ClassifierVertex> sinkVertices = interpreter.getSinkVertices();
-        ArrayList<ClassifierVertex> interpreterVertices = new ArrayList<>(sinkVertices.values());
+        Collection<ClassifierVertex> sinkVertices = interpreter.getSinkVertices();
+        ArrayList<ClassifierVertex> interpreterVertices = new ArrayList<>(sinkVertices);
         assertEquals(vertices.size(), interpreterVertices.size());
 
-        for (ClassifierVertex classifierVertex : sinkVertices.values()) {
+        for (ClassifierVertex classifierVertex : sinkVertices) {
             ClassifierVertex classifierVertexActual =
-                    vertices.values().stream()
+                    vertices.stream()
                             .filter(
                                     it ->
                                             it.getName().equals(classifierVertex.getName())
@@ -79,9 +79,9 @@ public class ClassDiagramManagerTest {
         ClassDiagramManager classDiagramManager = new ClassDiagramManager();
         ClassDiagram classDiagram = classDiagramManager.getClassDiagram();
 
-        SourceProject sourceProject = new SourceProject();
-        Map<Path, ClassifierVertex> sinkVertices =
-                sourceProject.createClassGraph(LatexEditor.SRC.path, classDiagram);
+        Project project = new Project(LatexEditor.SRC.path);
+        project.initialize();
+        Collection<ClassifierVertex> sinkVertices = project.createClassGraph(classDiagram);
 
         Set<String> chosenFilesNames =
                 Set.of(
@@ -102,7 +102,7 @@ public class ClassDiagramManagerTest {
         classDiagramManager.convertTreeToDiagram(new ArrayList<>(chosenFilesNames));
 
         List<String> l1 =
-                sinkVertices.values().stream()
+                sinkVertices.stream()
                         .map(ClassifierVertex::getName)
                         .filter(chosenFilesNames::contains)
                         .collect(Collectors.toCollection(ArrayList::new));

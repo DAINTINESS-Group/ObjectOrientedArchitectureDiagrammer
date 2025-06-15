@@ -1,34 +1,29 @@
-package parser;
+package parser.ast;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static parser.tree.NodeType.CLASS;
-import static parser.tree.NodeType.INTERFACE;
+import static parser.ast.tree.NodeType.CLASS;
+import static parser.ast.tree.NodeType.INTERFACE;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
-import parser.factory.Parser;
-import parser.factory.ParserType;
-import parser.factory.ProjectParserFactory;
-import parser.tree.LeafNode;
-import parser.tree.NodeType;
-import parser.tree.PackageNode;
+import parser.ast.tree.LeafNode;
+import parser.ast.tree.NodeType;
+import parser.ast.tree.PackageNode;
+import utils.ListUtils;
 import utils.PathTemplate.LatexEditor;
 import utils.PathTemplate.ParserTesting;
 
 public class FileVisitorTest {
 
-    ParserType parserType = ParserType.JAVAPARSER;
-
     @Test
     void methodReturnTypesTest() {
-        Parser parser = ProjectParserFactory.createProjectParser(parserType);
-        Map<Path, PackageNode> packages = parser.parseSourcePackage(LatexEditor.SRC.path);
+        ASTParser parser = new ASTParser();
+        Map<Path, PackageNode> packages = parser.parsePackage(LatexEditor.SRC.path);
 
         PackageNode commandPackage = packages.get(LatexEditor.COMMANDS.path);
 
@@ -36,38 +31,28 @@ public class FileVisitorTest {
         List<String> methodReturnTypesExpected = new ArrayList<>(List.of("Constructor", "void"));
         List<String> methodReturnTypesActual = addLatexCommand.getMethodReturnTypes();
 
-        Collections.sort(methodReturnTypesActual);
-        Collections.sort(methodReturnTypesExpected);
-
-        assertEquals(methodReturnTypesExpected.size(), methodReturnTypesActual.size());
-        assertTrue(methodReturnTypesExpected.containsAll(methodReturnTypesActual));
-        assertTrue(methodReturnTypesActual.containsAll(methodReturnTypesExpected));
+        ListUtils.assertListsEqual(methodReturnTypesActual, methodReturnTypesExpected);
     }
 
     @Test
     void methodParameterTypesTest() {
-        Parser parser = ProjectParserFactory.createProjectParser(parserType);
+        ASTParser parser = new ASTParser();
 
-        Map<Path, PackageNode> packages = parser.parseSourcePackage(LatexEditor.SRC.path);
+        Map<Path, PackageNode> packages = parser.parsePackage(LatexEditor.SRC.path);
         PackageNode commandPackage = packages.get(LatexEditor.COMMANDS.path);
 
         LeafNode addLatexCommand = commandPackage.getLeafNodes().get("AddLatexCommand");
         List<String> methodParameterTypes = new ArrayList<>(List.of("VersionsManager"));
         List<String> methodParameterTypesTest = addLatexCommand.getMethodParameterTypes();
 
-        Collections.sort(methodParameterTypesTest);
-        Collections.sort(methodParameterTypes);
-
-        assertEquals(methodParameterTypes.size(), methodParameterTypesTest.size());
-        assertTrue(methodParameterTypes.containsAll(methodParameterTypesTest));
-        assertTrue(methodParameterTypesTest.containsAll(methodParameterTypes));
+        ListUtils.assertListsEqual(methodParameterTypes, methodParameterTypesTest);
     }
 
     @Test
     void fieldTypesTest() {
-        Parser parser = ProjectParserFactory.createProjectParser(parserType);
+        ASTParser parser = new ASTParser();
 
-        Map<Path, PackageNode> packages = parser.parseSourcePackage(LatexEditor.SRC.path);
+        Map<Path, PackageNode> packages = parser.parsePackage(LatexEditor.SRC.path);
         PackageNode commandPackage = packages.get(LatexEditor.COMMANDS.path);
         LeafNode addLatexCommand = commandPackage.getLeafNodes().get("AddLatexCommand");
         List<String> fieldTypes = new ArrayList<>(List.of("VersionsManager"));
@@ -77,18 +62,14 @@ public class FileVisitorTest {
                         .sorted()
                         .collect(Collectors.toCollection(ArrayList::new));
 
-        Collections.sort(fieldTypes);
-
-        assertEquals(fieldTypes.size(), fieldTypesTest.size());
-        assertTrue(fieldTypes.containsAll(fieldTypesTest));
-        assertTrue(fieldTypesTest.containsAll(fieldTypes));
+        ListUtils.assertListsEqual(fieldTypes, fieldTypesTest);
     }
 
     @Test
     void variableTypesTest() {
-        Parser parser = ProjectParserFactory.createProjectParser(parserType);
+        ASTParser parser = new ASTParser();
 
-        Map<Path, PackageNode> packages = parser.parseSourcePackage(LatexEditor.SRC.path);
+        Map<Path, PackageNode> packages = parser.parsePackage(LatexEditor.SRC.path);
         PackageNode commandPackage = packages.get(LatexEditor.CONTROLLER.path);
 
         LeafNode latexEditorController = commandPackage.getLeafNodes().get("LatexEditorController");
@@ -96,19 +77,14 @@ public class FileVisitorTest {
         List<String> variablesTypesTest =
                 new ArrayList<>(latexEditorController.variables().values());
 
-        Collections.sort(variablesTypesTest);
-        Collections.sort(variablesTypes);
-
-        assertEquals(variablesTypes.size(), variablesTypesTest.size());
-        assertTrue(variablesTypes.containsAll(variablesTypesTest));
-        assertTrue(variablesTypesTest.containsAll(variablesTypes));
+        ListUtils.assertListsEqual(variablesTypes, variablesTypesTest);
     }
 
     @Test
     void objectCreationTest() {
-        Parser parser = ProjectParserFactory.createProjectParser(parserType);
+        ASTParser parser = new ASTParser();
 
-        Map<Path, PackageNode> packages = parser.parseSourcePackage(ParserTesting.SRC.path);
+        Map<Path, PackageNode> packages = parser.parsePackage(ParserTesting.SRC.path);
         PackageNode sourcePackage = packages.get(ParserTesting.SRC.path);
 
         LeafNode objectCreationSample = sourcePackage.getLeafNodes().get("ObjectCreationSample");
@@ -121,19 +97,14 @@ public class FileVisitorTest {
                                 "HashMap[String,TestingInterface]"));
         List<String> objectsCreatedActual = objectCreationSample.createdObjects();
 
-        Collections.sort(objectsCreatedActual);
-        Collections.sort(objectsCreatedExpected);
-
-        assertEquals(objectsCreatedExpected.size(), objectsCreatedActual.size());
-        assertTrue(objectsCreatedExpected.containsAll(objectsCreatedActual));
-        assertTrue(objectsCreatedActual.containsAll(objectsCreatedExpected));
+        ListUtils.assertListsEqual(objectsCreatedExpected, objectsCreatedActual);
     }
 
     @Test
     void leafNodeTypesTest() {
-        Parser parser = ProjectParserFactory.createProjectParser(parserType);
+        ASTParser parser = new ASTParser();
 
-        Map<Path, PackageNode> packages = parser.parseSourcePackage(ParserTesting.SRC.path);
+        Map<Path, PackageNode> packages = parser.parsePackage(ParserTesting.SRC.path);
         PackageNode inheritancePackage = packages.get(ParserTesting.SRC.path);
 
         List<LeafNode> classLeafs = new ArrayList<>();
@@ -161,9 +132,9 @@ public class FileVisitorTest {
 
     @Test
     void inheritanceTest() {
-        Parser parser = ProjectParserFactory.createProjectParser(parserType);
+        ASTParser parser = new ASTParser();
 
-        Map<Path, PackageNode> packages = parser.parseSourcePackage(ParserTesting.SRC.path);
+        Map<Path, PackageNode> packages = parser.parsePackage(ParserTesting.SRC.path);
         PackageNode inheritancePackage = packages.get(ParserTesting.SRC.path);
 
         LeafNode implementingClass = inheritancePackage.getLeafNodes().get("ImplementingClass");
@@ -176,9 +147,9 @@ public class FileVisitorTest {
 
     @Test
     void innerMembersTest() {
-        Parser parser = ProjectParserFactory.createProjectParser(parserType);
+        ASTParser parser = new ASTParser();
 
-        Map<Path, PackageNode> packages = parser.parseSourcePackage(ParserTesting.SRC.path);
+        Map<Path, PackageNode> packages = parser.parsePackage(ParserTesting.SRC.path);
         PackageNode sourcePackage = packages.get(ParserTesting.SRC.path);
 
         LeafNode innerClassSample = sourcePackage.getLeafNodes().get("InnerClassSample");
@@ -200,9 +171,9 @@ public class FileVisitorTest {
                         "model.strategies.VolatileVersionsStrategy",
                         "view.LatexEditorView");
 
-        Parser parser = ProjectParserFactory.createProjectParser(parserType);
+        ASTParser parser = new ASTParser();
 
-        Map<Path, PackageNode> packages = parser.parseSourcePackage(LatexEditor.SRC.path);
+        Map<Path, PackageNode> packages = parser.parsePackage(LatexEditor.SRC.path);
         PackageNode commandPackage = packages.get(LatexEditor.MODEL.path);
         LeafNode versionsManager = commandPackage.getLeafNodes().get("VersionsManager");
         List<String> imports = versionsManager.imports();

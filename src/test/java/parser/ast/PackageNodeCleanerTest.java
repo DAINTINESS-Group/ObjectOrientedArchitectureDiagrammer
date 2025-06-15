@@ -1,4 +1,4 @@
-package parser;
+package parser.ast;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.nio.file.Path;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
-import parser.tree.PackageNode;
+import parser.ast.tree.PackageNode;
 import utils.PathTemplate.BookstoreAdvanced;
 
 public class PackageNodeCleanerTest {
@@ -16,7 +16,7 @@ public class PackageNodeCleanerTest {
 
     @Test
     void removeNonPackageNodesTest() {
-        Interpreter interpreter = new Interpreter();
+        ASTInterpreter interpreter = new ASTInterpreter();
         interpreter.parseProject(BookstoreAdvanced.SRC_ROOT.path);
 
         Map<Path, PackageNode> packageNodes = interpreter.getPackageNodes();

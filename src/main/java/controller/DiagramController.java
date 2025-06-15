@@ -6,7 +6,7 @@ import java.nio.file.Path;
 import java.util.List;
 import manager.DiagramManager;
 import manager.DiagramManagerFactory;
-import manager.SourceProject;
+import manager.Project;
 
 public class DiagramController implements Controller {
 
@@ -17,7 +17,7 @@ public class DiagramController implements Controller {
     }
 
     @Override
-    public SourceProject createTree(Path sourcePackagePath) {
+    public Project createTree(Path sourcePackagePath) {
         return diagramManager.createSourceProject(sourcePackagePath);
     }
 

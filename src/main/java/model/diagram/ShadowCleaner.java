@@ -7,7 +7,7 @@ import model.graph.ClassifierVertex;
 
 public class ShadowCleaner {
 
-    // TODO Replace with the new ArcType Map.
+    // TODO: Replace with the new ArcType Map.
     private static final List<ArcType> strongerToWeakerArcTypes =
             List.of(
                     ArcType.EXTENSION,
@@ -33,10 +33,10 @@ public class ShadowCleaner {
                 if (!(arc.getValue().size() > 1)) continue;
 
                 for (ArcType arcType : strongerToWeakerArcTypes) {
-                    if (!doesStrongerRelationshipExist(arc.getValue(), arcType)) continue;
-
-                    removeWeakerRelationships(arcs, arc.getKey(), arcType);
-                    break;
+                    if (doesStrongerRelationshipExist(arc.getValue(), arcType)) {
+                        removeWeakerRelationships(arcs, arc.getKey(), arcType);
+                        break;
+                    }
                 }
             }
         }

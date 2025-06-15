@@ -25,21 +25,19 @@ import org.javatuples.Pair;
 
 public class ClassDiagramManager implements DiagramManager {
 
-    private ClassDiagram classDiagram;
+    private ClassDiagram classDiagram = new ClassDiagram();
+
     private DiagramArrangementManager classDiagramArrangement;
     private Collection<Vertex<String>> vertexCollection;
     private SmartGraphPanel<String, String> graphView;
 
-    public ClassDiagramManager() {
-        classDiagram = new ClassDiagram();
-    }
-
     @Override
-    public SourceProject createSourceProject(Path sourcePackagePath) {
-        SourceProject sourceProject = new SourceProject();
-        sourceProject.createClassGraph(sourcePackagePath, classDiagram);
+    public Project createSourceProject(Path sourcePackagePath) {
+        Project project = new Project(sourcePackagePath);
+        project.initialize();
+        project.createClassGraph(classDiagram);
 
-        return sourceProject;
+        return project;
     }
 
     @Override

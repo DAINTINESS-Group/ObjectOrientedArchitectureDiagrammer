@@ -22,7 +22,12 @@ public class PlantUMLPackageDiagramTextExporter implements DiagramExporter {
         StringBuilder plantUMLNodeBuffer = PlantUMLPackageVertex.convertVertices(diagram);
         StringBuilder plantUMLEdgeBuffer = PlantUMLPackageVertexArc.convertVertexArcs(diagram);
         bufferBody =
-                plantUMLNodeBuffer.append("\n\n").append(plantUMLEdgeBuffer).append("\n @enduml");
+                plantUMLNodeBuffer
+                        .append(System.lineSeparator())
+                        .append(System.lineSeparator())
+                        .append(System.lineSeparator())
+                        .append(plantUMLEdgeBuffer)
+                        .append(" @enduml");
     }
 
     @Override
@@ -30,6 +35,7 @@ public class PlantUMLPackageDiagramTextExporter implements DiagramExporter {
         File plantUMLFile = exportPath.toFile();
         String plantUMLCode = getPackageText() + bufferBody;
         writeFile(plantUMLFile, dotChanger(plantUMLCode));
+
         return plantUMLFile;
     }
 
@@ -60,7 +66,7 @@ public class PlantUMLPackageDiagramTextExporter implements DiagramExporter {
         return newString.toString();
     }
 
-    private String getPackageText() {
+    private static String getPackageText() {
         return """
             @startuml
             skinparam package {

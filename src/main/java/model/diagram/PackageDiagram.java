@@ -1,6 +1,5 @@
 package model.diagram;
 
-import java.nio.file.Path;
 import java.util.*;
 import model.diagram.arrangement.geometry.DiagramGeometry;
 import model.graph.Arc;
@@ -9,15 +8,11 @@ import org.javatuples.Pair;
 
 public class PackageDiagram {
 
-    private final Map<PackageVertex, Integer> graphNodes;
+    private final Map<PackageVertex, Integer> graphNodes = new HashMap<>();
     private Map<PackageVertex, Set<Arc<PackageVertex>>> diagram;
-    private Map<Path, PackageVertex> vertices;
+    private Collection<PackageVertex> vertices;
     private Map<Integer, Pair<Double, Double>> diagramGeometryGraphML;
     private DiagramGeometry diagramGeometry;
-
-    public PackageDiagram() {
-        this.graphNodes = new HashMap<>();
-    }
 
     public void createNewDiagram(List<String> chosenFileNames) {
         createGraphNodes(chosenFileNames);
@@ -41,16 +36,18 @@ public class PackageDiagram {
     public List<PackageVertex> getChosenNodes(List<String> chosenPackagesNames) {
         List<PackageVertex> chosenPackages = new ArrayList<>();
         for (String chosenPackage : chosenPackagesNames) {
-            vertices.values().stream()
-                    .filter(it -> it.getName().equals(chosenPackage))
-                    .findFirst()
-                    .ifPresent(chosenPackages::add);
+            for (PackageVertex it : vertices) {
+                if (it.getName().equals(chosenPackage)) {
+                    chosenPackages.add(it);
+                    break;
+                }
+            }
         }
 
         return chosenPackages;
     }
 
-    public void setVertices(Map<Path, PackageVertex> vertices) {
+    public void setVertices(Collection<PackageVertex> vertices) {
         this.vertices = vertices;
     }
 

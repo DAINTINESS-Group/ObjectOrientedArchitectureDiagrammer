@@ -1,4 +1,4 @@
-package parser.tree;
+package parser.ast.tree;
 
 import java.util.Collections;
 import java.util.HashMap;

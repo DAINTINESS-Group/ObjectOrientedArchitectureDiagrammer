@@ -19,7 +19,12 @@ public class PlantUMLClassDiagram {
         StringBuilder plantUMLEdgeBuffer =
                 PlantUMLClassifierVertexArc.convertSinkVertexArcs(diagram);
         bufferBody =
-                plantUMLNodeBuffer.append("\n\n").append(plantUMLEdgeBuffer).append("\n @enduml");
+                plantUMLNodeBuffer
+                        .append(System.lineSeparator())
+                        .append(System.lineSeparator())
+                        .append(plantUMLEdgeBuffer)
+                        .append(System.lineSeparator())
+                        .append(" @enduml");
     }
 
     public String toSvg(int dpi) {
@@ -35,18 +40,24 @@ public class PlantUMLClassDiagram {
     }
 
     private static String getClassText(int dpi) {
-        return "@startuml\n"
+        return "@startuml"
+                + System.lineSeparator()
                 + (dpi > 0 ? "skinparam dpi " + dpi : "")
-                + "\n"
+                + System.lineSeparator()
                 +
                 // TODO: Determine the best value for this.
                 "skinparam wrapWidth 10"
-                + "\n"
-                + "skinparam class {\n"
-                + "    BackgroundColor lightyellow\n"
-                + "    BorderColor black\n"
-                + "    ArrowColor black\n"
-                + "}\n"
-                + "\n";
+                + System.lineSeparator()
+                + "skinparam class {"
+                + System.lineSeparator()
+                + "    BackgroundColor lightyellow"
+                + System.lineSeparator()
+                + "    BorderColor black"
+                + System.lineSeparator()
+                + "    ArrowColor black"
+                + System.lineSeparator()
+                + "}"
+                + System.lineSeparator()
+                + System.lineSeparator();
     }
 }

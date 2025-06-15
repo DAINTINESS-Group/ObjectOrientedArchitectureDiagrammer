@@ -3,6 +3,7 @@ package model.graph;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
+import proguard.classfile.AccessConstants;
 
 public enum ModifierType {
     PRIVATE,
@@ -20,6 +21,22 @@ public enum ModifierType {
 
     public static ModifierType get(String modifier) {
         return MODIFIER_TYPE.get(modifier.toLowerCase().trim());
+    }
+
+    public static ModifierType from(int accessFlags) {
+        if ((AccessConstants.PUBLIC & accessFlags) != 0) {
+            return ModifierType.PUBLIC;
+        }
+
+        if ((AccessConstants.PRIVATE & accessFlags) != 0) {
+            return ModifierType.PRIVATE;
+        }
+
+        if ((AccessConstants.PROTECTED & accessFlags) != 0) {
+            return ModifierType.PROTECTED;
+        }
+
+        return ModifierType.PACKAGE_PRIVATE;
     }
 
     @Override

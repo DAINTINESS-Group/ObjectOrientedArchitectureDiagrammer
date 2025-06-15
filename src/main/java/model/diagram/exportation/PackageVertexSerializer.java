@@ -9,7 +9,7 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import java.lang.reflect.Type;
 import java.nio.file.Path;
-import java.util.List;
+import java.util.Set;
 import model.graph.Arc;
 import model.graph.ClassifierVertex;
 import model.graph.PackageVertex;
@@ -27,7 +27,7 @@ public class PackageVertexSerializer implements JsonSerializer<PackageVertex> {
         String vertexType = packageVertex.getVertexType().toString();
 
         jsonObject.addProperty("name", name);
-        jsonObject.addProperty("path", path.toString());
+        jsonObject.addProperty("path", (path != null ? path.toString() : null));
         jsonObject.addProperty("vertexType", vertexType);
         jsonObject.addProperty("coordinate_x", packageVertex.getCoordinate().x());
         jsonObject.addProperty("coordinate_y", packageVertex.getCoordinate().y());
@@ -40,7 +40,7 @@ public class PackageVertexSerializer implements JsonSerializer<PackageVertex> {
     }
 
     private JsonArray serializeSinkVertices(PackageVertex packageVertex) {
-        List<ClassifierVertex> sinkVertices = packageVertex.getSinkVertices();
+        Set<ClassifierVertex> sinkVertices = packageVertex.getSinkVertices();
         JsonArray sinkVerticesArray = new JsonArray(sinkVertices.size());
         for (ClassifierVertex classifierVertex : sinkVertices) {
             Gson gson =
@@ -69,7 +69,7 @@ public class PackageVertexSerializer implements JsonSerializer<PackageVertex> {
     }
 
     private JsonArray serializeNeighbourVertices(PackageVertex packageVertex) {
-        List<PackageVertex> neighbourVertices = packageVertex.getNeighbourVertices();
+        Set<PackageVertex> neighbourVertices = packageVertex.getNeighborVertices();
         JsonArray neighbourVerticesArray = new JsonArray(neighbourVertices.size());
 
         for (PackageVertex v : neighbourVertices) {
@@ -89,7 +89,7 @@ public class PackageVertexSerializer implements JsonSerializer<PackageVertex> {
     }
 
     private JsonArray serializeArcs(PackageVertex packageVertex) {
-        List<Arc<PackageVertex>> arcs = packageVertex.getArcs();
+        Set<Arc<PackageVertex>> arcs = packageVertex.getArcs();
         JsonArray arcsArray = new JsonArray(arcs.size());
 
         for (Arc<PackageVertex> vertexArc : arcs) {

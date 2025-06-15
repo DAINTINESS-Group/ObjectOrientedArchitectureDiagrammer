@@ -1,4 +1,6 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.daintiness-group</groupId>
     <artifactId>ObjectOrientedArchitectureDiagrammer</artifactId>
@@ -12,6 +14,16 @@
     <description>A tool for the reverse engineering of Java-oriented source code into UML diagrams</description>
 
     <repositories>
+        <repository>
+            <id>google</id>
+            <name>Google</name>
+            <url>https://maven.google.com</url>
+        </repository>
+        <repository>
+            <id>central</id>
+            <name>Maven Central</name>
+            <url>https://repo.maven.apache.org/maven2</url>
+        </repository>
         <repository>
             <id>JavaFXSmartGraph</id>
             <name>JavaFXSmartGraph</name>
@@ -75,24 +87,24 @@
             <artifactId>jung-visualization</artifactId>
             <version>2.1.1</version>
         </dependency>
-<!-- https://mvnrepository.com/artifact/org.openjfx/javafx-controls -->
-<dependency>
-    <groupId>org.openjfx</groupId>
-    <artifactId>javafx-controls</artifactId>
-    <version>22.0.2</version>
-</dependency>
-<!-- https://mvnrepository.com/artifact/org.openjfx/javafx-fxml -->
-<dependency>
-    <groupId>org.openjfx</groupId>
-    <artifactId>javafx-fxml</artifactId>
-    <version>22.0.2</version>
-</dependency>
-<!-- https://mvnrepository.com/artifact/org.openjfx/javafx-web -->
-<dependency>
-    <groupId>org.openjfx</groupId>
-    <artifactId>javafx-web</artifactId>
-    <version>22.0.2</version>
-</dependency>
+        <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-controls -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>22.0.2</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-fxml -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+            <version>22.0.2</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-web -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-web</artifactId>
+            <version>22.0.2</version>
+        </dependency>
         <dependency>
             <groupId>com.sirolf2009</groupId>
             <artifactId>fxgraph</artifactId>
@@ -147,6 +159,16 @@
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
             <version>2.17.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.guardsquare</groupId>
+            <artifactId>proguard-core</artifactId>
+            <version>9.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.guardsquare</groupId>
+            <artifactId>proguard-core-android</artifactId>
+            <version>9.1.1</version>
         </dependency>
     </dependencies>
     <build>
@@ -210,7 +232,7 @@
                 </configuration>
             </plugin>
             <plugin>
-            <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-maven-plugin -->
+                <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-maven-plugin -->
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.8</version>
@@ -231,10 +253,6 @@
                             </includes>
                             <trimTrailingWhitespace/>
                             <endWithNewline/>
-                            <indent>
-                                <tabs>true</tabs>
-                                <spacesPerTab>4</spacesPerTab>
-                            </indent>
                         </format>
                     </formats>
                     <java>
@@ -242,7 +260,7 @@
                             <include>src/main/java/**/*.java</include>
                             <include>src/test/java/**/*.java</include>
                         </includes>
-                        <!-- apply a specific flavor of google-java-format and reflow long strings -->
+                        <removeUnusedImports/>
                         <googleJavaFormat>
                             <version>1.10.0</version>
                             <style>AOSP</style>

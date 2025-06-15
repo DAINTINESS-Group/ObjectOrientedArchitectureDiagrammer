@@ -24,7 +24,12 @@ public class PlantUMLPackageDiagram {
                 PlantUMLPackageVertexArc.convertVertexArcs(packageDiagram);
 
         bufferBody =
-                plantUMLNodeBuffer.append("\n\n").append(plantUMLEdgeBuffer).append("\n @enduml");
+                plantUMLNodeBuffer
+                        .append(System.lineSeparator())
+                        .append(System.lineSeparator())
+                        .append(plantUMLEdgeBuffer)
+                        .append(System.lineSeparator())
+                        .append(" @enduml");
     }
 
     public String toSvg(int dpi) {
@@ -43,7 +48,7 @@ public class PlantUMLPackageDiagram {
 
     private static String replaceDots(String plantUMLCode) {
         StringBuilder newString = new StringBuilder();
-        String[] lines = plantUMLCode.split("\n");
+        String[] lines = plantUMLCode.split(System.lineSeparator());
         for (String line : lines) {
             String[] words = line.split(" ");
             for (String word : words) {
@@ -54,25 +59,32 @@ public class PlantUMLPackageDiagram {
                 }
                 newString.append(newWord).append(" ");
             }
-            newString.append("\n");
+            newString.append(System.lineSeparator());
         }
         return newString.toString();
     }
 
     private static String getPackageText(int dpi) {
-        return "@startuml\n"
+        return "@startuml"
+                + System.lineSeparator()
                 + (dpi > 0 ? "skinparam dpi " + dpi : "")
-                + "\n"
+                + System.lineSeparator()
                 +
                 // TODO: Determine the best value for this.
                 "skinparam wrapWidth 10"
-                + "\n"
-                + "skinparam package {\n"
-                + "    BackgroundColor lightyellow\n"
-                + "    BorderColor black\n"
-                + "    ArrowColor black\n"
-                + "    Shadowing true\n"
-                + "}\n"
-                + "\n";
+                + System.lineSeparator()
+                + "skinparam package {"
+                + System.lineSeparator()
+                + "    BackgroundColor lightyellow"
+                + System.lineSeparator()
+                + "    BorderColor black"
+                + System.lineSeparator()
+                + "    ArrowColor black"
+                + System.lineSeparator()
+                + "    Shadowing true"
+                + System.lineSeparator()
+                + "}"
+                + System.lineSeparator()
+                + System.lineSeparator();
     }
 }

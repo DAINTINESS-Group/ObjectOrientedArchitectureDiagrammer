@@ -1,7 +1,7 @@
 package view;
 
-import static view.FileType.PACKAGE;
-import static view.FileType.SOURCE;
+import static view.ProjectTreeView.FileType.PACKAGE;
+import static view.ProjectTreeView.FileType.SOURCE;
 
 import controller.Controller;
 import controller.ControllerFactory;
@@ -62,7 +62,7 @@ public class DiagramCreation {
                 break;
             default:
                 // Should not happen.
-                throw new IllegalArgumentException("Unsupported");
+                throw new IllegalArgumentException("Unsupported type: " + type);
         }
     }
 

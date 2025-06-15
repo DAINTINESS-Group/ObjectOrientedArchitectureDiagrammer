@@ -5,7 +5,7 @@ import java.io.File;
 import java.nio.file.Path;
 import java.util.List;
 import manager.DiagramManager;
-import manager.SourceProject;
+import manager.Project;
 
 public interface Controller {
 
@@ -14,9 +14,9 @@ public interface Controller {
      * DiagramManager#createSourceProject(Path)}.
      *
      * @param sourcePackagePath the project's source package path
-     * @return the {@link SourceProject} created.
+     * @return the {@link Project} created.
      */
-    SourceProject createTree(Path sourcePackagePath);
+    Project createTree(Path sourcePackagePath);
 
     /**
      * This method converts the created tree to a diagram, by calling {@link

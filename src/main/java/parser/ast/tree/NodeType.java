@@ -1,4 +1,4 @@
-package parser.tree;
+package parser.ast.tree;
 
 public enum NodeType {
     CLASS,

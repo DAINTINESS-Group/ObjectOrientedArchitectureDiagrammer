@@ -1,4 +1,4 @@
-package parser.tree;
+package parser.ast.tree;
 
 import java.nio.file.Path;
 import java.util.ArrayList;

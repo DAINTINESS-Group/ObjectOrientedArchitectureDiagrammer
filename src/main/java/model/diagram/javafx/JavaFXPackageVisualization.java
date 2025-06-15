@@ -41,9 +41,9 @@ public class JavaFXPackageVisualization implements JavaFXVisualization {
     private Graph<String, String> createGraph() {
         Digraph<String, String> directedGraph = new DigraphEdgeList<>();
         for (PackageVertex vertex : packageDiagram.getDiagram().keySet()) {
-            if (vertex.getSinkVertices().isEmpty()) continue;
-
-            directedGraph.insertVertex(vertex.getName());
+            if (!vertex.getSinkVertices().isEmpty()) {
+                directedGraph.insertVertex(vertex.getName());
+            }
         }
         insertVertexArcs(directedGraph);
 
@@ -80,9 +80,7 @@ public class JavaFXPackageVisualization implements JavaFXVisualization {
         for (PackageVertex vertex : packageDiagram.getDiagram().keySet()) {
             if (vertex.getVertexType().equals(VertexType.INTERFACE)) {
                 graphView.getStylableVertex(vertex.getName()).setStyleClass("vertexInterface");
-            } else {
-                if (vertex.getSinkVertices().isEmpty()) continue;
-
+            } else if (!vertex.getSinkVertices().isEmpty()) {
                 graphView.getStylableVertex(vertex.getName()).setStyleClass("vertexPackage");
             }
         }
@@ -92,13 +90,13 @@ public class JavaFXPackageVisualization implements JavaFXVisualization {
     public SmartGraphPanel<String, String> getLoadedGraph() {
         for (Vertex<String> vertex : vertexCollection) {
             for (PackageVertex packageVertex : packageDiagram.getDiagram().keySet()) {
-                if (!packageVertex.getName().equals(vertex.element())) continue;
-
-                graphView.setVertexPosition(
-                        vertex,
-                        packageVertex.getCoordinate().x(),
-                        packageVertex.getCoordinate().y());
-                break;
+                if (packageVertex.getName().equals(vertex.element())) {
+                    graphView.setVertexPosition(
+                            vertex,
+                            packageVertex.getCoordinate().x(),
+                            packageVertex.getCoordinate().y());
+                    break;
+                }
             }
         }
 

@@ -1,4 +1,4 @@
-package parser;
+package parser.ast;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -12,17 +12,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
-import parser.factory.Parser;
-import parser.factory.ParserType;
-import parser.factory.ProjectParserFactory;
-import parser.tree.LeafNode;
-import parser.tree.PackageNode;
+import parser.ast.tree.LeafNode;
+import parser.ast.tree.PackageNode;
 import utils.PathTemplate.LatexEditor;
 
-public class ProjectParserTest {
-
-    ParserType parserType = ParserType.JAVAPARSER;
-
+public class ASTParserTest {
     public static final List<Path> SOURCES_SUB_PACKAGES =
             new ArrayList<>(
                     List.of(
@@ -73,8 +67,8 @@ public class ProjectParserTest {
     @Test
     void parsingTest() {
 
-        Parser parser = ProjectParserFactory.createProjectParser(parserType);
-        Map<Path, PackageNode> packageNodes = parser.parseSourcePackage(LatexEditor.SRC.path);
+        ASTParser parser = new ASTParser();
+        Map<Path, PackageNode> packageNodes = parser.parsePackage(LatexEditor.SRC.path);
 
         PackageNode controllerPackage = packageNodes.get(LatexEditor.CONTROLLER.path);
         List<Path> testingLeafNodes = new ArrayList<>();
