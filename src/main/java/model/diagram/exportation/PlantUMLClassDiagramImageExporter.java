@@ -26,15 +26,20 @@ public class PlantUMLClassDiagramImageExporter implements DiagramExporter {
         StringBuilder plantUMLEdgeBuffer =
                 PlantUMLClassifierVertexArc.convertSinkVertexArcs(diagram);
         bufferBody =
-                plantUMLNodeBuffer.append("\n\n").append(plantUMLEdgeBuffer).append("\n @enduml");
+                plantUMLNodeBuffer
+                        .append(System.lineSeparator())
+                        .append(System.lineSeparator())
+                        .append(plantUMLEdgeBuffer)
+                        .append(System.lineSeparator())
+                        .append(" @enduml");
     }
 
     @Override
     public File exportDiagram(Path exportPath) {
         File plantUMLFile = exportPath.toFile();
-        String plantUMLCode = getClassText();
-        plantUMLCode += bufferBody;
+        String plantUMLCode = getClassText() + bufferBody;
         exportImage(plantUMLFile, plantUMLCode);
+
         return plantUMLFile;
     }
 
@@ -71,7 +76,7 @@ public class PlantUMLClassDiagramImageExporter implements DiagramExporter {
     private static String wrapWidthChanger(String plantCode, int wrapWidth) {
         String updatedString;
         // if (counter == 0) {
-        int indexOfNewLine = plantCode.indexOf("\n");
+        int indexOfNewLine = plantCode.indexOf(System.lineSeparator());
         String firstPart = plantCode.substring(0, indexOfNewLine + 1);
         String secondPart = plantCode.substring(indexOfNewLine + 1);
         updatedString =

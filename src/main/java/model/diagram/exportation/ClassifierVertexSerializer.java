@@ -9,7 +9,6 @@ import com.google.gson.JsonSerializer;
 import java.lang.reflect.Type;
 import java.nio.file.Path;
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 import model.graph.Arc;
 import model.graph.ClassifierVertex;
@@ -39,7 +38,7 @@ public class ClassifierVertexSerializer implements JsonSerializer<ClassifierVert
 
     private JsonArray serializeMethods(ClassifierVertex classifierVertex) {
         Gson gson = new Gson();
-        List<ClassifierVertex.Method> methods = classifierVertex.getMethods();
+        Set<ClassifierVertex.Method> methods = classifierVertex.getMethods();
         JsonArray methodsArray = new JsonArray(methods.size());
         for (ClassifierVertex.Method method : methods) {
             JsonObject methodObject = new JsonObject();
@@ -59,7 +58,7 @@ public class ClassifierVertexSerializer implements JsonSerializer<ClassifierVert
     }
 
     private JsonArray serializeFields(ClassifierVertex classifierVertex) {
-        List<ClassifierVertex.Field> fields = classifierVertex.getFields();
+        Set<ClassifierVertex.Field> fields = classifierVertex.getFields();
         JsonArray fieldsArray = new JsonArray(fields.size());
 
         for (ClassifierVertex.Field field : fields) {

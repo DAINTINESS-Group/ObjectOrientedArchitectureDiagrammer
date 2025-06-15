@@ -1,5 +1,7 @@
 package model.diagram.plantuml;
 
+import static proguard.classfile.ClassConstants.METHOD_NAME_INIT;
+
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -10,35 +12,32 @@ import model.graph.ModifierType;
 public class PlantUMLClassifierVertex {
 
     public static StringBuilder convertSinkVertices(ClassDiagram classDiagram) {
-        String sinkVertices =
-                classDiagram.getDiagram().keySet().stream()
-                        .map(
-                                it ->
-                                        String.format(
-                                                "%s %s {\n%s%s}",
-                                                it.getVertexType(),
-                                                it.getName(),
-                                                convertFields(it),
-                                                convertMethods(it)))
-                        .collect(
-                                Collectors.joining(
-                                        System.lineSeparator() + System.lineSeparator()));
+        StringBuilder ret = new StringBuilder();
+        for (ClassifierVertex it : classDiagram.getDiagram().keySet()) {
+            ret.append(it.getVertexType())
+                    .append(" ")
+                    .append(it.getName())
+                    .append(" {")
+                    .append(System.lineSeparator())
+                    .append(convertFields(it))
+                    .append(convertMethods(it))
+                    .append("}")
+                    .append(System.lineSeparator());
+        }
 
-        return new StringBuilder(sinkVertices);
+        return new StringBuilder(ret);
     }
 
     private static String convertFields(ClassifierVertex classifierVertex) {
-        return classifierVertex.getFields().isEmpty()
-                ? ""
-                : classifierVertex.getFields().stream()
-                                .map(
-                                        it ->
-                                                getVisibility(it.modifier())
-                                                        + it.name()
-                                                        + ": "
-                                                        + it.type())
-                                .collect(Collectors.joining(System.lineSeparator()))
-                        + System.lineSeparator();
+        StringBuilder ret = new StringBuilder();
+        for (ClassifierVertex.Field it : classifierVertex.getFields()) {
+            ret.append(getVisibility(it.modifier()))
+                    .append(it.name())
+                    .append(": ")
+                    .append(it.type())
+                    .append(System.lineSeparator());
+        }
+        return ret.toString();
     }
 
     private static String convertMethods(ClassifierVertex classifierVertex) {
@@ -46,7 +45,10 @@ public class PlantUMLClassifierVertex {
 
         List<ClassifierVertex.Method> constructors =
                 classifierVertex.getMethods().stream()
-                        .filter(it -> it.returnType().equals("Constructor"))
+                        .filter(
+                                it ->
+                                        it.returnType().equals("Constructor")
+                                                || it.name().equals(METHOD_NAME_INIT))
                         .sorted(Comparator.comparingInt(it -> it.parameters().size()))
                         .collect(Collectors.toList());
 
@@ -54,7 +56,10 @@ public class PlantUMLClassifierVertex {
 
         List<ClassifierVertex.Method> methods =
                 classifierVertex.getMethods().stream()
-                        .filter(it -> !it.returnType().equals("Constructor"))
+                        .filter(
+                                it ->
+                                        !it.returnType().equals("Constructor")
+                                                && !it.name().equals(METHOD_NAME_INIT))
                         .collect(Collectors.toList());
 
         convertMethod(plantUMLMethods, methods);

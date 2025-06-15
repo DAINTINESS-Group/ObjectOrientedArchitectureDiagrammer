@@ -11,6 +11,9 @@ import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import model.diagram.ClassDiagram;
 import model.diagram.PackageDiagram;
 import model.graph.ClassifierVertex;
@@ -78,8 +81,9 @@ public class Project {
                 ClassFileInterpreter interpreter = new ClassFileInterpreter();
                 interpreter.parseProject(path);
 
-                interpreter.convertToGraph();
-                Collection<ClassifierVertex> sinkVertices = interpreter.getSinkVertices();
+                Set<ClassifierVertex> sinkVertices = new LinkedHashSet<>();
+                Set<PackageVertex> packageVertices = new LinkedHashSet<>();
+                interpreter.convertToGraph(sinkVertices, packageVertices);
                 classDiagram.setSinkVertices(sinkVertices);
 
                 yield sinkVertices;
@@ -88,7 +92,7 @@ public class Project {
                 ASTInterpreter interpreter = new ASTInterpreter();
                 interpreter.parseProject(path);
 
-                interpreter.convertToGraph();
+                interpreter.convertToGraph(Collections.emptyList(), Collections.emptyList());
                 Collection<ClassifierVertex> sinkVertices = interpreter.getSinkVertices();
                 classDiagram.setSinkVertices(sinkVertices);
 
@@ -103,17 +107,18 @@ public class Project {
                 ClassFileInterpreter interpreter = new ClassFileInterpreter();
                 interpreter.parseProject(path);
 
-                interpreter.convertToGraph();
-                Collection<PackageVertex> vertices = interpreter.getVertices();
-                packageDiagram.setVertices(vertices);
+                Set<ClassifierVertex> sinkVertices = new LinkedHashSet<>();
+                Set<PackageVertex> packageVertices = new LinkedHashSet<>();
+                interpreter.convertToGraph(sinkVertices, packageVertices);
+                packageDiagram.setVertices(packageVertices);
 
-                yield vertices;
+                yield packageVertices;
             }
             case SOURCE_FILE -> {
                 ASTInterpreter interpreter = new ASTInterpreter();
                 interpreter.parseProject(path);
 
-                interpreter.convertToGraph();
+                interpreter.convertToGraph(Collections.emptyList(), Collections.emptyList());
                 Collection<PackageVertex> vertices = interpreter.getVertices();
                 packageDiagram.setVertices(vertices);
 

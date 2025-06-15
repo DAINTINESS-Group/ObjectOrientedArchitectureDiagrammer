@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.file.Path;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -25,7 +26,7 @@ public class ASTInterpreterTest {
     public void convertTreeToGraphTest() {
         ASTInterpreter interpreter = new ASTInterpreter();
         interpreter.parseProject(LatexEditor.SRC.path);
-        interpreter.convertToGraph();
+        interpreter.convertToGraph(Collections.emptyList(), Collections.emptyList());
         Map<Path, PackageNode> packageNodes = interpreter.getPackageNodes();
         List<PackageVertex> vertices = interpreter.getVertices();
         assertEquals(packageNodes.size(), vertices.size());
@@ -73,13 +74,13 @@ public class ASTInterpreterTest {
                                 .orElseGet(Assertions::fail);
 
                 List<LeafNode.Method> leafMethods = leafNodeEntry.getValue().methods();
-                List<ClassifierVertex.Method> vertexMethods = classifierVertex.getMethods();
+                Set<ClassifierVertex.Method> vertexMethods = classifierVertex.getMethods();
                 for (LeafNode.Method leafMethod : leafMethods) {
                     assertTrue(vertexMethods.stream().anyMatch(getMethodPredicate(leafMethod)));
                 }
 
                 List<LeafNode.Field> leafFields = leafNodeEntry.getValue().fields();
-                List<ClassifierVertex.Field> vertexFields = classifierVertex.getFields();
+                Set<ClassifierVertex.Field> vertexFields = classifierVertex.getFields();
                 for (LeafNode.Field leafField : leafFields) {
                     assertTrue(vertexFields.stream().anyMatch(getFieldPredicate(leafField)));
                 }

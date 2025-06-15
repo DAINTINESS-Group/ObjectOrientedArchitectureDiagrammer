@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -30,7 +31,7 @@ public class PackageDiagramManagerTest {
 
         ASTInterpreter interpreter = new ASTInterpreter();
         interpreter.parseProject(LatexEditor.SRC.path);
-        interpreter.convertToGraph();
+        interpreter.convertToGraph(Collections.emptyList(), Collections.emptyList());
 
         ArrayList<PackageVertex> interpreterVertices = new ArrayList<>(interpreter.getVertices());
         assertEquals(packageNodes.size(), interpreterVertices.size());

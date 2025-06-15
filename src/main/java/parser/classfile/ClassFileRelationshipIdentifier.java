@@ -1,8 +1,6 @@
 package parser.classfile;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import proguard.classfile.ClassPool;
@@ -42,12 +40,12 @@ public class ClassFileRelationshipIdentifier
                 MemberVisitor,
                 AttributeVisitor,
                 InstructionVisitor {
-    public final Map<String, List<Clazz>> packages;
+    public final Map<String, Set<Clazz>> packages;
 
     private MyProcessingInfo processingInfo;
     private ClassCollector dependenciesCollector;
 
-    public ClassFileRelationshipIdentifier(Map<String, List<Clazz>> packages) {
+    public ClassFileRelationshipIdentifier(Map<String, Set<Clazz>> packages) {
         this.packages = packages;
     }
 
@@ -67,8 +65,7 @@ public class ClassFileRelationshipIdentifier
     public void visitProgramClass(ProgramClass programClass) {
         // Remember the package name.
         packages.computeIfAbsent(
-                        ClassUtil.internalPackageName(programClass.getName()),
-                        k -> new ArrayList<>())
+                        ClassUtil.internalPackageName(programClass.getName()), k -> new HashSet<>())
                 .add(programClass);
 
         // Initialize and remember the processing info of the class that we are visiting.

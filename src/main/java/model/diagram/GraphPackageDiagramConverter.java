@@ -1,7 +1,7 @@
 package model.diagram;
 
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import model.graph.Arc;
@@ -18,7 +18,7 @@ public class GraphPackageDiagramConverter {
 
     public Map<PackageVertex, Set<Arc<PackageVertex>>> convertGraphToPackageDiagram() {
         for (PackageVertex vertex : vertices) {
-            adjacencyList.putIfAbsent(vertex, new HashSet<>());
+            adjacencyList.putIfAbsent(vertex, new LinkedHashSet<>());
             for (Arc<PackageVertex> arc : vertex.getArcs()) {
                 if (vertices.contains(arc.targetVertex())) {
                     adjacencyList.get(arc.sourceVertex()).add(arc);

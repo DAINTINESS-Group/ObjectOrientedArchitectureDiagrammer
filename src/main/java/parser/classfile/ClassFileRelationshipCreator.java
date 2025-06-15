@@ -2,12 +2,10 @@ package parser.classfile;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import model.graph.Arc;
@@ -15,6 +13,7 @@ import model.graph.ArcType;
 import model.graph.ClassifierVertex;
 import model.graph.PackageVertex;
 import model.graph.VertexType;
+import proguard.classfile.ClassPool;
 import proguard.classfile.Clazz;
 import proguard.classfile.Member;
 import proguard.classfile.ProgramClass;
@@ -22,25 +21,58 @@ import proguard.classfile.ProgramField;
 import proguard.classfile.ProgramMethod;
 import proguard.classfile.util.ClassUtil;
 import proguard.classfile.visitor.AllMemberVisitor;
+import proguard.classfile.visitor.ClassPoolVisitor;
 import proguard.classfile.visitor.ClassVisitor;
 import proguard.classfile.visitor.MemberVisitor;
 
 /** This {@link ClassVisitor} creates relationships */
-public class ClassFileRelationshipCreator implements ClassVisitor {
+public class ClassFileRelationshipCreator implements ClassPoolVisitor, ClassVisitor {
     private final Map<String, ClassifierVertex> seenClassifierVertices = new HashMap<>();
     private final Map<String, PackageVertex> seenPackageVertices = new HashMap<>();
 
-    private final List<ClassifierVertex> classifierVertices;
-    private final List<PackageVertex> packageVertices;
-    private final Map<String, List<Clazz>> packages;
+    private final Collection<ClassifierVertex> classifierVertices;
+    private final Collection<PackageVertex> packageVertices;
+    private final Map<String, Set<Clazz>> packages;
 
     public ClassFileRelationshipCreator(
-            List<ClassifierVertex> classifierVertices,
-            List<PackageVertex> packageVertices,
-            Map<String, List<Clazz>> packages) {
+            Collection<ClassifierVertex> classifierVertices,
+            Collection<PackageVertex> packageVertices,
+            Map<String, Set<Clazz>> packages) {
         this.classifierVertices = classifierVertices;
         this.packageVertices = packageVertices;
         this.packages = packages;
+    }
+
+    @Override
+    public void visitClassPool(ClassPool classPool) {
+        // Filter out classes that haven't been marked.
+        classPool.classesAccept(new MyProcessingInfoFilter(this));
+
+        for (String className : seenClassifierVertices.keySet()) {
+            String packageName = ClassUtil.internalPackageName(className);
+            Collection<Clazz> children = requireNonNull(packages.get(packageName));
+            PackageVertex packageVertex = seenPackageVertices.get(packageName);
+            if (packageVertex == null) {
+                packageVertex =
+                        new PackageVertex.PackageVertexBuilder()
+                                .withSinkVertices(getOrCreateSinkVertices(children))
+                                .withName(ClassUtil.externalClassName(packageName))
+                                .build();
+                seenPackageVertices.put(packageName, packageVertex);
+                packageVertices.add(packageVertex);
+            }
+
+            String parentPackageName = ClassUtil.internalPackageName(packageName);
+            if (!parentPackageName.isEmpty()) {
+                PackageVertex parentVertex = seenPackageVertices.get(parentPackageName);
+                // We only create package vertices for packages that contain class files.
+                if (parentVertex != null) {
+                    packageVertex.addNeighborVertex(parentVertex);
+                }
+            }
+
+            createPackageVertexRelationships(packageVertex, children);
+        }
     }
 
     // Implementations for ClassVisitor.
@@ -53,44 +85,22 @@ public class ClassFileRelationshipCreator implements ClassVisitor {
         ClassifierVertex sourceVertex = seenClassifierVertices.get(programClass.getName());
         if (sourceVertex == null) {
             sourceVertex = createClassifierVertex(programClass);
-            seenClassifierVertices.put(sourceVertex.getName(), sourceVertex);
+            seenClassifierVertices.put(
+                    ClassUtil.internalClassName(sourceVertex.getName()), sourceVertex);
             classifierVertices.add(sourceVertex);
         }
         createClassifierVertexRelationships(programClass, sourceVertex);
-
-        String packageName = ClassUtil.internalPackageName(programClass.getName());
-        List<Clazz> children = requireNonNull(packages.get(packageName));
-        PackageVertex packageVertex = seenPackageVertices.get(packageName);
-        if (packageVertex == null) {
-            packageVertex =
-                    new PackageVertex.PackageVertexBuilder()
-                            .withSinkVertices(getOrCreateSinkVertices(children))
-                            .withName(packageName)
-                            .build();
-            seenPackageVertices.put(packageName, packageVertex);
-            packageVertices.add(packageVertex);
-        }
-
-        String parentPackageName = ClassUtil.internalPackageName(packageName);
-        if (!parentPackageName.isEmpty()) {
-            PackageVertex parentVertex = seenPackageVertices.get(parentPackageName);
-            // We only create package vertices for packages that contain class files.
-            if (parentVertex != null) {
-                packageVertex.addNeighborVertex(parentVertex);
-            }
-        }
-
-        createPackageVertexRelationships(packageVertex, children);
     }
 
     // Helper classes.
 
     static class ClassifierVertexMemberCreator implements MemberVisitor {
-        private final List<ClassifierVertex.Method> methods;
-        private final List<ClassifierVertex.Field> fields;
+        private final Collection<ClassifierVertex.Method> methods;
+        private final Collection<ClassifierVertex.Field> fields;
 
         public ClassifierVertexMemberCreator(
-                List<ClassifierVertex.Method> methods, List<ClassifierVertex.Field> fields) {
+                Collection<ClassifierVertex.Method> methods,
+                Collection<ClassifierVertex.Field> fields) {
             this.methods = methods;
             this.fields = fields;
         }
@@ -106,6 +116,42 @@ public class ClassFileRelationshipCreator implements ClassVisitor {
         @Override
         public void visitProgramMethod(ProgramClass programClass, ProgramMethod programMethod) {
             methods.add(ClassifierVertex.Method.from(programClass, programMethod));
+        }
+    }
+
+    // Helper classes.
+
+    /**
+     * This {@link ClassVisitor} delegates all visits to the given class visitor, but only if the
+     * class that it visits has been marked with {@link
+     * ClassFileRelationshipIdentifier.MyProcessingInfo}.
+     */
+    static class MyProcessingInfoFilter implements ClassVisitor {
+        private final ClassVisitor acceptedVisitor;
+
+        public MyProcessingInfoFilter(ClassVisitor acceptedVisitor) {
+            this.acceptedVisitor = acceptedVisitor;
+        }
+
+        // Implementations for ClassVisitor.
+
+        @Override
+        public void visitAnyClass(Clazz clazz) {}
+
+        @Override
+        public void visitProgramClass(ProgramClass programClass) {
+            Object processingInfo = programClass.getProcessingInfo();
+            if (accepted(processingInfo)) {
+                programClass.accept(acceptedVisitor);
+            }
+        }
+
+        // Utility methods.
+
+        private static boolean accepted(Object processingInfo) {
+            return processingInfo instanceof ClassFileRelationshipIdentifier.MyProcessingInfo
+                    && (((ClassFileRelationshipIdentifier.MyProcessingInfo) processingInfo)
+                            .wasMarked());
         }
     }
 
@@ -145,7 +191,8 @@ public class ClassFileRelationshipCreator implements ClassVisitor {
                 if (targetVertex == null) {
                     targetVertex = createClassifierVertex((ProgramClass) target);
                     classifierVertices.add(targetVertex);
-                    seenClassifierVertices.put(target.getName(), targetVertex);
+                    seenClassifierVertices.put(
+                            ClassUtil.internalClassName(target.getName()), targetVertex);
                 }
                 sourceVertex.addArc(new Arc<>(sourceVertex, targetVertex, type));
             }
@@ -153,7 +200,7 @@ public class ClassFileRelationshipCreator implements ClassVisitor {
     }
 
     private void createPackageVertexRelationships(
-            PackageVertex packageVertex, List<Clazz> children) {
+            PackageVertex packageVertex, Collection<Clazz> children) {
         for (Clazz clazz : children) {
             ClassFileRelationshipIdentifier.MyProcessingInfo processingInfo =
                     (ClassFileRelationshipIdentifier.MyProcessingInfo) clazz.getProcessingInfo();
@@ -172,14 +219,14 @@ public class ClassFileRelationshipCreator implements ClassVisitor {
     private void createRelationship(PackageVertex sourceVertex, Collection<Clazz> targets) {
         for (Clazz target : targets) {
             if (target instanceof ProgramClass) {
-                PackageVertex targetVertex = seenPackageVertices.get(target.getName());
+                String targetPackageName = ClassUtil.internalPackageName(target.getName());
+                PackageVertex targetVertex = seenPackageVertices.get(targetPackageName);
                 if (targetVertex == null) {
-                    String packageName = ClassUtil.internalPackageName(target.getName());
-                    List<Clazz> children = requireNonNull(packages.get(packageName));
+                    Collection<Clazz> children = requireNonNull(packages.get(targetPackageName));
                     targetVertex =
                             new PackageVertex.PackageVertexBuilder()
                                     .withSinkVertices(getOrCreateSinkVertices(children))
-                                    .withName(packageName)
+                                    .withName(ClassUtil.externalClassName(targetPackageName))
                                     .withVertexType(VertexType.PACKAGE)
                                     .build();
                     packageVertices.add(targetVertex);
@@ -194,8 +241,8 @@ public class ClassFileRelationshipCreator implements ClassVisitor {
     }
 
     /** @return A list of classifier vertices for the given classes. */
-    private Set<ClassifierVertex> getOrCreateSinkVertices(List<Clazz> children) {
-        Set<ClassifierVertex> ret = new HashSet<>();
+    private Set<ClassifierVertex> getOrCreateSinkVertices(Collection<Clazz> children) {
+        Set<ClassifierVertex> ret = new LinkedHashSet<>();
 
         for (Clazz child : children) {
             ClassifierVertex vertex = seenClassifierVertices.get(child.getName());
@@ -213,13 +260,13 @@ public class ClassFileRelationshipCreator implements ClassVisitor {
     /** Creates a classifier vertex from the given program class. */
     private static ClassifierVertex createClassifierVertex(ProgramClass programClass) {
         // Create the members of the classifier vertex.
-        List<ClassifierVertex.Method> methods = new ArrayList<>();
-        List<ClassifierVertex.Field> fields = new ArrayList<>();
+        Set<ClassifierVertex.Method> methods = new LinkedHashSet<>();
+        Set<ClassifierVertex.Field> fields = new LinkedHashSet<>();
         programClass.accept(
                 new AllMemberVisitor(new ClassifierVertexMemberCreator(methods, fields)));
 
         return new ClassifierVertex.ClassifierVertexBuilder()
-                .withName(programClass.getName())
+                .withName(ClassUtil.externalClassName(programClass.getName()))
                 .withVertexType(programClass)
                 .withMethods(methods)
                 .withFields(fields)

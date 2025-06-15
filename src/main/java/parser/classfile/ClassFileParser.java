@@ -3,16 +3,16 @@ package parser.classfile;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.BiFunction;
 import model.graph.ClassifierVertex;
 import model.graph.PackageVertex;
 import proguard.classfile.ClassPool;
 import proguard.classfile.Clazz;
-import proguard.classfile.ProgramClass;
 import proguard.classfile.util.ClassInitializer;
 import proguard.classfile.visitor.AllClassVisitor;
 import proguard.classfile.visitor.ClassVisitor;
@@ -24,7 +24,7 @@ import proguard.io.util.IOUtil;
 
 public class ClassFileParser {
 
-    private final Map<String, List<Clazz>> packages = new HashMap<>();
+    private final Map<String, Set<Clazz>> packages = new HashMap<>();
 
     public ClassPool programClassPool;
     public ClassPool libraryClassPool;
@@ -82,48 +82,10 @@ public class ClassFileParser {
      * collections.
      */
     public void createRelationships(
-            List<ClassifierVertex> classifierVertices, List<PackageVertex> packageVertices) {
-        // Filter out classes that haven't been marked.
-        programClassPool.classesAccept(
-                new MyProcessingInfoFilter(
-                        new ClassFileRelationshipCreator(
-                                classifierVertices, packageVertices, packages)));
-    }
-
-    // Helper classes.
-
-    /**
-     * This {@link ClassVisitor} delegates all visits to the given class visitor, but only if the
-     * class that it visits has been marked with {@link
-     * ClassFileRelationshipIdentifier.MyProcessingInfo}.
-     */
-    static class MyProcessingInfoFilter implements ClassVisitor {
-        private final ClassVisitor acceptedVisitor;
-
-        public MyProcessingInfoFilter(ClassVisitor acceptedVisitor) {
-            this.acceptedVisitor = acceptedVisitor;
-        }
-
-        // Implementations for ClassVisitor.
-
-        @Override
-        public void visitAnyClass(Clazz clazz) {}
-
-        @Override
-        public void visitProgramClass(ProgramClass programClass) {
-            Object processingInfo = programClass.getProcessingInfo();
-            if (accepted(processingInfo)) {
-                programClass.accept(acceptedVisitor);
-            }
-        }
-
-        // Utility methods.
-
-        private static boolean accepted(Object processingInfo) {
-            return processingInfo instanceof ClassFileRelationshipIdentifier.MyProcessingInfo
-                    && (((ClassFileRelationshipIdentifier.MyProcessingInfo) processingInfo)
-                            .wasMarked());
-        }
+            Collection<ClassifierVertex> classifierVertices,
+            Collection<PackageVertex> packageVertices) {
+        programClassPool.accept(
+                new ClassFileRelationshipCreator(classifierVertices, packageVertices, packages));
     }
 
     /** For testing purposes only. */

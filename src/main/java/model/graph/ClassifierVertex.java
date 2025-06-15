@@ -21,8 +21,8 @@ public class ClassifierVertex {
     private final Path path;
     private final String name;
     private final VertexType vertexType;
-    private final List<Method> methods;
-    private final List<Field> fields;
+    private final Set<Method> methods;
+    private final Set<Field> fields;
 
     private final Set<Arc<ClassifierVertex>> arcs = new HashSet<>();
 
@@ -30,15 +30,11 @@ public class ClassifierVertex {
     private List<Triplet<String, String, String>> deserializedArcs;
 
     private ClassifierVertex(Path path, String name, VertexType vertexType) {
-        this(path, name, vertexType, new ArrayList<>(), new ArrayList<>());
+        this(path, name, vertexType, new HashSet<>(), new HashSet<>());
     }
 
     private ClassifierVertex(
-            Path path,
-            String name,
-            VertexType vertexType,
-            List<Method> methods,
-            List<Field> fields) {
+            Path path, String name, VertexType vertexType, Set<Method> methods, Set<Field> fields) {
         this.path = path;
         this.name = name;
         this.vertexType = vertexType;
@@ -92,11 +88,11 @@ public class ClassifierVertex {
         return name;
     }
 
-    public List<Method> getMethods() {
+    public Set<Method> getMethods() {
         return methods;
     }
 
-    public List<Field> getFields() {
+    public Set<Field> getFields() {
         return fields;
     }
 
@@ -133,12 +129,12 @@ public class ClassifierVertex {
             InternalTypeEnumeration typeEnumeration =
                     new InternalTypeEnumeration(programMethod.getDescriptor(programClass));
             while (typeEnumeration.hasMoreTypes()) {
-                types.add(ClassUtil.internalClassNameFromClassType(typeEnumeration.nextType()));
+                types.add(ClassUtil.externalType(typeEnumeration.nextType()));
             }
 
             return new ClassifierVertex.Method(
                     programMethod.getName(programClass),
-                    typeEnumeration.returnType(),
+                    ClassUtil.externalType(typeEnumeration.returnType()),
                     ModifierType.from(programMethod.u2accessFlags),
                     types);
         }
@@ -165,11 +161,10 @@ public class ClassifierVertex {
         public static Field from(ProgramClass programClass, ProgramField programField) {
             InternalTypeEnumeration typeEnumeration =
                     new InternalTypeEnumeration(programField.getDescriptor(programClass));
-            String type = ClassUtil.internalClassNameFromClassType(typeEnumeration.nextType());
 
             return new ClassifierVertex.Field(
                     programField.getName(programClass),
-                    type,
+                    ClassUtil.externalType(typeEnumeration.nextType()),
                     ModifierType.from(programField.getAccessFlags()));
         }
 
@@ -193,8 +188,8 @@ public class ClassifierVertex {
         private String name;
         private VertexType vertexType;
         private Path path;
-        private List<Method> methods;
-        private List<Field> fields;
+        private Set<Method> methods;
+        private Set<Field> fields;
 
         public ClassifierVertexBuilder withName(String name) {
             this.name = name;
@@ -216,12 +211,12 @@ public class ClassifierVertex {
             return this;
         }
 
-        public ClassifierVertexBuilder withMethods(List<Method> methods) {
+        public ClassifierVertexBuilder withMethods(Set<Method> methods) {
             this.methods = methods;
             return this;
         }
 
-        public ClassifierVertexBuilder withFields(List<Field> fields) {
+        public ClassifierVertexBuilder withFields(Set<Field> fields) {
             this.fields = fields;
             return this;
         }

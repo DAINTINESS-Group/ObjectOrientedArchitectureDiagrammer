@@ -1,22 +1,22 @@
 package model.diagram.plantuml;
 
-import java.util.stream.Collectors;
 import model.diagram.PackageDiagram;
+import model.graph.PackageVertex;
 
 public class PlantUMLPackageVertex {
 
     public static StringBuilder convertVertices(PackageDiagram packageDiagram) {
-        return new StringBuilder(
-                packageDiagram.getDiagram().keySet().stream()
-                        .map(
-                                it ->
-                                        it.getVertexType()
-                                                + " "
-                                                + it.getName()
-                                                + " {"
-                                                + System.lineSeparator()
-                                                + "}"
-                                                + System.lineSeparator())
-                        .collect(Collectors.joining(System.lineSeparator())));
+        StringBuilder ret = new StringBuilder();
+        for (PackageVertex it : packageDiagram.getDiagram().keySet()) {
+            ret.append(it.getVertexType())
+                    .append(" ")
+                    .append(it.getName())
+                    .append(" {")
+                    .append(System.lineSeparator())
+                    .append("}")
+                    .append(System.lineSeparator());
+        }
+
+        return ret;
     }
 }

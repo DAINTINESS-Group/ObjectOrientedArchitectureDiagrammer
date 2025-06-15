@@ -1,7 +1,7 @@
 package model.diagram;
 
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import model.graph.Arc;
@@ -18,7 +18,7 @@ public class GraphClassDiagramConverter {
 
     public Map<ClassifierVertex, Set<Arc<ClassifierVertex>>> convertGraphToClassDiagram() {
         for (ClassifierVertex classifierVertex : sinkVertices) {
-            adjacencyList.put(classifierVertex, new HashSet<>());
+            adjacencyList.put(classifierVertex, new LinkedHashSet<>());
             for (Arc<ClassifierVertex> arc : classifierVertex.getArcs()) {
                 if (sinkVertices.contains(arc.targetVertex())) {
                     adjacencyList.get(arc.sourceVertex()).add(arc);

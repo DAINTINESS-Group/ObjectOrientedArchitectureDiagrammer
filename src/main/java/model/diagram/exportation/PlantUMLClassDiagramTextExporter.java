@@ -23,7 +23,12 @@ public class PlantUMLClassDiagramTextExporter implements DiagramExporter {
         StringBuilder plantUMLEdgeBuffer =
                 PlantUMLClassifierVertexArc.convertSinkVertexArcs(classDiagram);
         bufferBody =
-                plantUMLNodeBuffer.append("\n\n").append(plantUMLEdgeBuffer).append("\n @enduml");
+                plantUMLNodeBuffer
+                        .append(System.lineSeparator())
+                        .append(System.lineSeparator())
+                        .append(plantUMLEdgeBuffer)
+                        .append(System.lineSeparator())
+                        .append(" @enduml");
     }
 
     @Override

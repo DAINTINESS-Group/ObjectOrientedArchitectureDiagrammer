@@ -12,17 +12,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import parser.classfile.ClassFileParserTest.ClassPoolBuilder.ClassPools;
 import proguard.classfile.ClassPool;
 import proguard.classfile.Clazz;
 import proguard.classfile.ProgramClass;
 import proguard.classfile.editor.ClassBuilder;
 import proguard.classfile.util.ClassInitializer;
 import proguard.classfile.util.ClassUtil;
-import proguard.classfile.visitor.AllClassVisitor;
-import proguard.classfile.visitor.MultiClassPoolVisitor;
 import utils.ListUtils;
 
 public class ClassFileParserTest {
@@ -129,28 +127,6 @@ public class ClassFileParserTest {
                 Collections.singletonList(programClass2), processingInfo.implementations);
     }
 
-    @Test
-    public void myTest() {
-        ProgramClass programClass =
-                new ClassBuilder(CLASS_VERSION_1_6, PUBLIC, "a", NAME_JAVA_LANG_OBJECT)
-                        .getProgramClass();
-        ProgramClass programClass1 =
-                new ClassBuilder(CLASS_VERSION_1_6, PUBLIC, "a/a", NAME_JAVA_LANG_OBJECT)
-                        .getProgramClass();
-        ProgramClass programClass2 =
-                new ClassBuilder(CLASS_VERSION_1_6, PUBLIC, "a/b", NAME_JAVA_LANG_OBJECT)
-                        .getProgramClass();
-        ClassPools classPools = ClassPoolBuilder.from(programClass, programClass1, programClass2);
-
-        HashMap<String, List<Clazz>> packages = new HashMap<>();
-        classPools.programClassPool.accept(
-                new MultiClassPoolVisitor(
-                        new ClassFileRelationshipIdentifier(packages),
-                        new AllClassVisitor(
-                                new ClassFileRelationshipCreator(
-                                        new ArrayList<>(), new ArrayList<>(), packages))));
-    }
-
     static class ClassPoolBuilder {
         static ClassPools from(Clazz... clazz) {
             parser.classfile.ClassPoolBuilder classPoolBuilder =
@@ -167,7 +143,7 @@ public class ClassFileParserTest {
 
             return new ClassPools(programClassPool, libraryClassPool);
         }
-    }
 
-    record ClassPools(ClassPool programClassPool, ClassPool libraryClassPool) {}
+        record ClassPools(ClassPool programClassPool, ClassPool libraryClassPool) {}
+    }
 }

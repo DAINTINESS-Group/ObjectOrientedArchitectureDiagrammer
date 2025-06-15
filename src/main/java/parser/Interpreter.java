@@ -1,6 +1,9 @@
 package parser;
 
 import java.nio.file.Path;
+import java.util.Collection;
+import model.graph.ClassifierVertex;
+import model.graph.PackageVertex;
 import parser.ast.ASTParser;
 import parser.classfile.ClassFileParser;
 
@@ -12,5 +15,6 @@ import parser.classfile.ClassFileParser;
 public interface Interpreter {
     void parseProject(Path sourcePackagePath);
 
-    void convertToGraph();
+    void convertToGraph(
+            Collection<ClassifierVertex> vertices, Collection<PackageVertex> packageVertices);
 }

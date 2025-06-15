@@ -46,7 +46,7 @@ public class ClassDiagramManagerTest {
 
         ASTInterpreter interpreter = new ASTInterpreter();
         interpreter.parseProject(LatexEditor.SRC.path);
-        interpreter.convertToGraph();
+        interpreter.convertToGraph(Collections.emptyList(), Collections.emptyList());
 
         Collection<ClassifierVertex> sinkVertices = interpreter.getSinkVertices();
         ArrayList<ClassifierVertex> interpreterVertices = new ArrayList<>(sinkVertices);

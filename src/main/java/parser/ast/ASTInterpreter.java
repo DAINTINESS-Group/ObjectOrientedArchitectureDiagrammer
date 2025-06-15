@@ -2,6 +2,7 @@ package parser.ast;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +37,8 @@ public class ASTInterpreter implements Interpreter {
     }
 
     @Override
-    public void convertToGraph() {
+    public void convertToGraph(
+            Collection<ClassifierVertex> vertices, Collection<PackageVertex> packageVertices) {
         packageNodes = PackageNodeCleaner.removeNonPackageNodes(packageNodes);
         populateVertexMaps(packageNodes);
         addVertexArcs(packageNodes);
