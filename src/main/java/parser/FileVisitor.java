@@ -267,10 +267,6 @@ public class FileVisitor {
                             ? PACKAGE_PRIVATE
                             : ModifierType.get(methodDeclaration.getModifiers().get(0).toString());
 
-            if (modifierType == null){
-                System.out.println(methodDeclaration.getNameAsString());
-            }
-
             Map<String, String> parameters =
                     methodDeclaration.getParameters().stream()
                             .collect(
