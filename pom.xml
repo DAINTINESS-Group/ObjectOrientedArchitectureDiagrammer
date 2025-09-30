@@ -15,16 +15,6 @@
     <description>A tool for the reverse engineering of Java-oriented source code into UML diagrams</description>
 
     <repositories>
-        <!--        <repository>-->
-        <!--            <id>JavaFXSmartGraph</id>-->
-        <!--            <name>JavaFXSmartGraph</name>-->
-        <!--            <url>file://${pom.basedir}/libs/JavaFXSmartGraph</url>-->
-        <!--        </repository>-->
-        <!--        <repository>-->
-        <!--            <id>PlantUML</id>-->
-        <!--            <name>PlantUML</name>-->
-        <!--            <url>file://${pom.basedir}/libs/PlantUML</url>-->
-        <!--        </repository>-->
         <repository>
             <id>ithaka</id>
             <url>http://beckchr.github.io/ithaka-maven/mvnrepo/</url>
@@ -117,16 +107,6 @@
             <artifactId>fxgraph</artifactId>
             <version>0.0.3</version>
         </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>JavaFXSmartGraph</groupId>-->
-        <!--            <artifactId>JavaFXSmartGraph</artifactId>-->
-        <!--            <version>0.1</version>-->
-        <!--        </dependency>-->
-        <!--        <dependency>-->
-        <!--            <groupId>PlantUML</groupId>-->
-        <!--            <artifactId>PlantUML</artifactId>-->
-        <!--            <version>1.2023.7</version>-->
-        <!--        </dependency>-->
         <dependency>
             <groupId>com.github.javaparser</groupId>
             <artifactId>javaparser-core</artifactId>
