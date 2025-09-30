@@ -8,6 +8,8 @@
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
+        <!-- Configure javafx version in a single location -->
+        <javafx.version>23</javafx.version>
     </properties>
     <name>ObjectOrientedArchitectureDiagrammer</name>
     <description>A tool for the reverse engineering of Java-oriented source code into UML diagrams</description>
@@ -30,11 +32,6 @@
     </repositories>
     <dependencies>
         <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-swing -->
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-swing</artifactId>
-            <version>11-ea+24</version>
-        </dependency>
         <dependency>
             <groupId>net.sourceforge.plantuml</groupId>
             <artifactId>plantuml</artifactId>
@@ -96,19 +93,24 @@
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
-            <version>22.0.2</version>
+            <version>${javafx.version}</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-fxml -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
-            <version>22.0.2</version>
+            <version>${javafx.version}</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-web -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-web</artifactId>
-            <version>22.0.2</version>
+            <version>${javafx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-swing</artifactId>
+            <version>${javafx.version}</version>
         </dependency>
         <dependency>
             <groupId>com.sirolf2009</groupId>
