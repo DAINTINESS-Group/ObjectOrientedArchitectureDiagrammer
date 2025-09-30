@@ -8,6 +8,7 @@ import com.github.javaparser.ParserConfiguration;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.ImportDeclaration;
+import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.ConstructorDeclaration;
 import com.github.javaparser.ast.body.EnumDeclaration;
@@ -33,6 +34,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import parser.ASTUtil;
 import parser.ast.tree.LeafNode;
 import parser.ast.tree.LeafNodeBuilder;
 import parser.ast.tree.ModifierType;
@@ -225,8 +227,11 @@ public class FileVisitor {
             super.visit(fieldDeclaration, arg);
 
             for (VariableDeclarator variable : fieldDeclaration.getVariables()) {
+
+                List<Modifier> visibilityModifiers = ASTUtil.filterVisibilityModifiers(fieldDeclaration.getModifiers());
+
                 ModifierType modifierType =
-                        fieldDeclaration.getModifiers().isEmpty()
+                        visibilityModifiers.isEmpty()
                                 ? PACKAGE_PRIVATE
                                 : ModifierType.get(
                                         fieldDeclaration.getModifiers().get(0).toString());
@@ -269,8 +274,10 @@ public class FileVisitor {
         public void visit(MethodDeclaration methodDeclaration, Void arg) {
             super.visit(methodDeclaration, arg);
 
+            List<Modifier> visibilityModifiers = ASTUtil.filterVisibilityModifiers(methodDeclaration.getModifiers());
+
             ModifierType modifierType =
-                    methodDeclaration.getModifiers().isEmpty()
+                    visibilityModifiers.isEmpty()
                             ? PACKAGE_PRIVATE
                             : ModifierType.get(methodDeclaration.getModifiers().get(0).toString());
 
