@@ -14,7 +14,6 @@ import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.eclipse.jdt.core.dom.AST;
 import parser.tree.*;
 
 import java.io.FileNotFoundException;
@@ -26,7 +25,6 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static parser.tree.ModifierType.PACKAGE_PRIVATE;
-import static parser.tree.ModifierType.PUBLIC;
 import static parser.tree.NodeType.ENUM;
 
 /**
@@ -268,10 +266,6 @@ public class FileVisitor {
                     visibilityModifiers.isEmpty()
                             ? PACKAGE_PRIVATE
                             : ModifierType.get(methodDeclaration.getModifiers().get(0).toString());
-
-            if (modifierType == null){
-                System.out.println(methodDeclaration.getNameAsString());
-            }
 
             Map<String, String> parameters =
                     methodDeclaration.getParameters().stream()
