@@ -1,43 +1,33 @@
 package parser;
 
-import static parser.tree.ModifierType.PACKAGE_PRIVATE;
-import static parser.tree.NodeType.ENUM;
-
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ParserConfiguration;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.ImportDeclaration;
-import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
-import com.github.javaparser.ast.body.ConstructorDeclaration;
-import com.github.javaparser.ast.body.EnumDeclaration;
-import com.github.javaparser.ast.body.FieldDeclaration;
-import com.github.javaparser.ast.body.MethodDeclaration;
-import com.github.javaparser.ast.body.RecordDeclaration;
-import com.github.javaparser.ast.body.VariableDeclarator;
+import com.github.javaparser.ast.Modifier;
+import com.github.javaparser.ast.body.*;
 import com.github.javaparser.ast.expr.ObjectCreationExpr;
 import com.github.javaparser.ast.expr.VariableDeclarationExpr;
 import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.eclipse.jdt.core.dom.AST;
+import parser.tree.*;
+
 import java.io.FileNotFoundException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import parser.tree.LeafNode;
-import parser.tree.LeafNodeBuilder;
-import parser.tree.ModifierType;
-import parser.tree.NodeType;
-import parser.tree.PackageNode;
+
+import static parser.tree.ModifierType.PACKAGE_PRIVATE;
+import static parser.tree.ModifierType.PUBLIC;
+import static parser.tree.NodeType.ENUM;
 
 /**
  * This class is responsible for the creation of the AST of a Java source file using {@link
@@ -225,8 +215,11 @@ public class FileVisitor {
             super.visit(fieldDeclaration, arg);
 
             for (VariableDeclarator variable : fieldDeclaration.getVariables()) {
+
+                List<Modifier> visibilityModifiers = ASTUtil.filterVisibilityModifiers(fieldDeclaration.getModifiers());
+
                 ModifierType modifierType =
-                        fieldDeclaration.getModifiers().isEmpty()
+                        visibilityModifiers.isEmpty()
                                 ? PACKAGE_PRIVATE
                                 : ModifierType.get(
                                         fieldDeclaration.getModifiers().get(0).toString());
@@ -269,10 +262,16 @@ public class FileVisitor {
         public void visit(MethodDeclaration methodDeclaration, Void arg) {
             super.visit(methodDeclaration, arg);
 
+            List<Modifier> visibilityModifiers = ASTUtil.filterVisibilityModifiers(methodDeclaration.getModifiers());
+
             ModifierType modifierType =
-                    methodDeclaration.getModifiers().isEmpty()
+                    visibilityModifiers.isEmpty()
                             ? PACKAGE_PRIVATE
                             : ModifierType.get(methodDeclaration.getModifiers().get(0).toString());
+
+            if (modifierType == null){
+                System.out.println(methodDeclaration.getNameAsString());
+            }
 
             Map<String, String> parameters =
                     methodDeclaration.getParameters().stream()
