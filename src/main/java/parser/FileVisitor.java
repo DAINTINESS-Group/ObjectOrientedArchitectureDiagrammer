@@ -1,5 +1,8 @@
 package parser;
 
+import static parser.tree.ModifierType.PACKAGE_PRIVATE;
+import static parser.tree.NodeType.ENUM;
+
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ParserConfiguration;
 import com.github.javaparser.StaticJavaParser;
@@ -12,10 +15,6 @@ import com.github.javaparser.ast.expr.VariableDeclarationExpr;
 import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import parser.tree.*;
-
 import java.io.FileNotFoundException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -23,9 +22,9 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-
-import static parser.tree.ModifierType.PACKAGE_PRIVATE;
-import static parser.tree.NodeType.ENUM;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import parser.tree.*;
 
 /**
  * This class is responsible for the creation of the AST of a Java source file using {@link
@@ -214,7 +213,8 @@ public class FileVisitor {
 
             for (VariableDeclarator variable : fieldDeclaration.getVariables()) {
 
-                List<Modifier> visibilityModifiers = ASTUtil.filterVisibilityModifiers(fieldDeclaration.getModifiers());
+                List<Modifier> visibilityModifiers =
+                        ASTUtil.filterVisibilityModifiers(fieldDeclaration.getModifiers());
 
                 ModifierType modifierType =
                         visibilityModifiers.isEmpty()
@@ -260,7 +260,8 @@ public class FileVisitor {
         public void visit(MethodDeclaration methodDeclaration, Void arg) {
             super.visit(methodDeclaration, arg);
 
-            List<Modifier> visibilityModifiers = ASTUtil.filterVisibilityModifiers(methodDeclaration.getModifiers());
+            List<Modifier> visibilityModifiers =
+                    ASTUtil.filterVisibilityModifiers(methodDeclaration.getModifiers());
 
             ModifierType modifierType =
                     visibilityModifiers.isEmpty()
