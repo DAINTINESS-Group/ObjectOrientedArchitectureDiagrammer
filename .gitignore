@@ -7,3 +7,4 @@
 /src/test/resources/**.png
 /src/test/resources/**.txt
 /src/test/resources/**.graphML
+dependency-reduced-pom.xml
