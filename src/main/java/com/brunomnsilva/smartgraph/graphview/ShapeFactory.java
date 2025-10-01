@@ -24,6 +24,8 @@
 
 package com.brunomnsilva.smartgraph.graphview;
 
+import gr.uoi.diantiness.smartgraph.graphview.ShapeUMLPackage;
+
 /**
  * A factory class for creating instances of shapes with a specified center coordinates and radius.
  *
@@ -55,7 +57,7 @@ public class ShapeFactory {
             case "star":
                 return new ShapeStar(x, y, radius);
             case "circle":
-                return new ShapeRegularPolygon(x, y, radius, 3);
+                return new ShapeUMLPackage(x, y, radius);
                 // return new ShapeCircle(x, y, radius);
             case "triangle":
                 return new ShapeRegularPolygon(x, y, radius, 3);
@@ -77,6 +79,8 @@ public class ShapeFactory {
                 return new ShapeRegularPolygon(x, y, radius, 11);
             case "dodecagon":
                 return new ShapeRegularPolygon(x, y, radius, 12);
+            case "package":
+                return new ShapeUMLPackage(x, y, radius);
 
             default:
                 throw new IllegalArgumentException(
