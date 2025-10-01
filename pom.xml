@@ -9,7 +9,7 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <!-- Configure javafx version in a single location -->
-        <javafx.version>23</javafx.version>
+        <javafx.version>22.0.2</javafx.version>
     </properties>
     <name>ObjectOrientedArchitectureDiagrammer</name>
     <description>A tool for the reverse engineering of Java-oriented source code into UML diagrams</description>
