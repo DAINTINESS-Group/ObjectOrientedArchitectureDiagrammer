@@ -5,13 +5,14 @@ import com.brunomnsilva.smartgraph.graph.DigraphEdgeList;
 import com.brunomnsilva.smartgraph.graph.Graph;
 import com.brunomnsilva.smartgraph.graph.Vertex;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
-import java.util.Collection;
-import java.util.Set;
 import model.diagram.PackageDiagram;
 import model.graph.Arc;
 import model.graph.ArcType;
 import model.graph.PackageVertex;
 import model.graph.VertexType;
+
+import java.util.Collection;
+import java.util.Set;
 
 public class JavaFXPackageVisualization implements JavaFXVisualization {
 
