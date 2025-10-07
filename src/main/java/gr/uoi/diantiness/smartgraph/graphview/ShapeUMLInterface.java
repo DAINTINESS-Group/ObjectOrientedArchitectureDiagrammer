@@ -36,7 +36,7 @@ import javafx.scene.shape.Shape;
  *
  * @author brunomnsilva
  */
-public class ShapeUMLPackage implements ShapeWithRadius<Polygon> {
+public class ShapeUMLInterface implements ShapeWithRadius<Polygon> {
     protected final DoubleProperty centerX, centerY;
     protected final DoubleProperty radius;
 
@@ -49,7 +49,7 @@ public class ShapeUMLPackage implements ShapeWithRadius<Polygon> {
      * @param y the y-center coordinate
      * @param radius the radius of the enclosed circle
      */
-    public ShapeUMLPackage(double x, double y, double radius) {
+    public ShapeUMLInterface(double x, double y, double radius) {
         Args.requireNonNegative(x, "x");
         Args.requireNonNegative(y, "y");
         Args.requireNonNegative(radius, "radius");

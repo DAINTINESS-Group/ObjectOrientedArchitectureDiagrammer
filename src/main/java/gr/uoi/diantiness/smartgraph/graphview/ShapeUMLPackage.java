@@ -25,7 +25,6 @@
 package gr.uoi.diantiness.smartgraph.graphview;
 
 import com.brunomnsilva.smartgraph.graphview.Args;
-import com.brunomnsilva.smartgraph.graphview.ShapeRegularPolygon;
 import com.brunomnsilva.smartgraph.graphview.ShapeWithRadius;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -42,8 +41,10 @@ public class ShapeUMLPackage implements ShapeWithRadius<Polygon> {
     protected final DoubleProperty radius;
 
     protected final Polygon surrogate;
+
     /**
      * Creates a new star package shape enclosed in a circle of <code>radius</code>.
+     *
      * @param x the x-center coordinate
      * @param y the y-center coordinate
      * @param radius the radius of the enclosed circle
@@ -61,7 +62,7 @@ public class ShapeUMLPackage implements ShapeWithRadius<Polygon> {
         this.centerX.addListener((observable, oldValue, newValue) -> updatePolygon());
         this.centerY.addListener((observable, oldValue, newValue) -> updatePolygon());
 
-        this.radius = new SimpleDoubleProperty( radius );
+        this.radius = new SimpleDoubleProperty(radius);
         this.radius.addListener((observable, oldValue, newValue) -> updatePolygon());
 
         updatePolygon();
@@ -75,16 +76,16 @@ public class ShapeUMLPackage implements ShapeWithRadius<Polygon> {
 
         double radius = getRadius();
 
-        double l = radius/2;
+        double l = radius / 2;
 
-        surrogate.getPoints().addAll(cx-2*l, cy-l);
-        surrogate.getPoints().addAll(cx+2*l, cy-l);
-        surrogate.getPoints().addAll(cx+2*l, cy+l);
-        surrogate.getPoints().addAll(cx-2*l, cy+l);
-        surrogate.getPoints().addAll(cx-2*l, cy+l/2);
-        surrogate.getPoints().addAll(cx-2*l, cy-3*l/2);
-        surrogate.getPoints().addAll(cx-2*l + 3*l/2, cy-3*l/2);
-        surrogate.getPoints().addAll(cx-2*l + 3*l/2, cy-l);
+        surrogate.getPoints().addAll(cx - 2 * l, cy - l);
+        surrogate.getPoints().addAll(cx + 2 * l, cy - l);
+        surrogate.getPoints().addAll(cx + 2 * l, cy + l);
+        surrogate.getPoints().addAll(cx - 2 * l, cy + l);
+        surrogate.getPoints().addAll(cx - 2 * l, cy + l / 2);
+        surrogate.getPoints().addAll(cx - 2 * l, cy - 3 * l / 2);
+        surrogate.getPoints().addAll(cx - 2 * l + 3 * l / 2, cy - 3 * l / 2);
+        surrogate.getPoints().addAll(cx - 2 * l + 3 * l / 2, cy - l);
     }
 
     @Override

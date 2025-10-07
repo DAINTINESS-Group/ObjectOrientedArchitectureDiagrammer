@@ -3,11 +3,11 @@ package gr.uoi.diantiness.smartgraph.graphview;
 import com.brunomnsilva.smartgraph.graphview.SmartLabelSource;
 import com.brunomnsilva.smartgraph.graphview.SmartShapeTypeSource;
 
-public class JavaFXPackageNode {
+public class JavaFXInterfaceNode {
 
     private String name;
 
-    public JavaFXPackageNode(String name) {
+    public JavaFXInterfaceNode(String name) {
         this.name = name;
     }
 

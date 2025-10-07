@@ -24,6 +24,8 @@
 
 package com.brunomnsilva.smartgraph.graphview;
 
+import gr.uoi.diantiness.smartgraph.graphview.ShapeUMLClass;
+import gr.uoi.diantiness.smartgraph.graphview.ShapeUMLInterface;
 import gr.uoi.diantiness.smartgraph.graphview.ShapeUMLPackage;
 
 /**
@@ -57,8 +59,7 @@ public class ShapeFactory {
             case "star":
                 return new ShapeStar(x, y, radius);
             case "circle":
-                return new ShapeUMLPackage(x, y, radius);
-                // return new ShapeCircle(x, y, radius);
+                return new ShapeCircle(x, y, radius);
             case "triangle":
                 return new ShapeRegularPolygon(x, y, radius, 3);
             case "square":
@@ -81,7 +82,10 @@ public class ShapeFactory {
                 return new ShapeRegularPolygon(x, y, radius, 12);
             case "package":
                 return new ShapeUMLPackage(x, y, radius);
-
+            case "class":
+                return new ShapeUMLClass(x, y, radius);
+            case "interface":
+                return new ShapeUMLInterface(x, y, radius);
             default:
                 throw new IllegalArgumentException(
                         "Invalid shape type. See javadoc for available shapes.");
