@@ -3,13 +3,11 @@ package gr.uoi.diantiness.smartgraph.graphview;
 import com.brunomnsilva.smartgraph.graphview.SmartLabelSource;
 import com.brunomnsilva.smartgraph.graphview.SmartShapeTypeSource;
 
-import java.util.Objects;
-
-public class PackageNode {
+public class JavaFXPackageNode {
 
     private String name;
 
-    public PackageNode(String name) {
+    public JavaFXPackageNode(String name) {
         this.name = name;
     }
 
@@ -20,6 +18,7 @@ public class PackageNode {
 
     /**
      * Setter for the name of the city.
+     *
      * @param name the name of the city
      */
     public void setName(String name) {
@@ -28,6 +27,7 @@ public class PackageNode {
 
     /**
      * Establishes the shape of the vertex to use when representing this city.
+     *
      * @return the name of the shape, see {@link com.brunomnsilva.smartgraph.graphview.ShapeFactory}
      */
     @SmartShapeTypeSource
