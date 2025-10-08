@@ -1,22 +1,18 @@
 package model.diagram.javafx;
 
-import com.brunomnsilva.smartgraph.graph.Graph;
 import com.brunomnsilva.smartgraph.graphview.*;
-import javafx.scene.control.Tooltip;
+import gr.uoi.diantiness.smartgraph.graphview.JavaFXUMLNode;
 import manager.ClassDiagramManager;
 import manager.SourceProject;
 import model.diagram.ClassDiagram;
 import model.graph.ClassifierVertex;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
-import org.mockito.verification.VerificationMode;
 import utils.PathTemplate;
 
-import javax.tools.Tool;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -78,16 +74,16 @@ class JavaFXClassVisualizationTest {
     }
 
     @Test
-    void createGraphView() {
+    void verifyCorrectShapeOfClassesInterfaces() {
         assertNotNull(theClassDiagram);
         assertEquals(3, theClassDiagram.getGraphNodes().keySet().size());
         JavaFXClassVisualization classVisualization = new JavaFXClassVisualization(theClassDiagram);
-        SmartGraphPanel<String, String> graphPanel = classVisualization.createGraphView();
+        SmartGraphPanel<JavaFXUMLNode, String> graphPanel = classVisualization.createGraphView();
         assertNotNull(graphPanel);
-        Collection<SmartGraphVertex<String>> smartVertices = graphPanel.getSmartVertices();
+        Collection<SmartGraphVertex<JavaFXUMLNode>> smartVertices = graphPanel.getSmartVertices();
         assertEquals(3, smartVertices.size());
         // verify that 3 circles are created
-        mockedShapeFactory.verify(() -> ShapeFactory.create(eq("circle"), anyDouble(), anyDouble(), anyDouble()),times(3));
+        mockedShapeFactory.verify(() -> ShapeFactory.create(eq("class"), anyDouble(), anyDouble(), anyDouble()),times(3));
     }
 
 }

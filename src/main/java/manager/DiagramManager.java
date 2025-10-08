@@ -4,6 +4,8 @@ import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.List;
+
+import gr.uoi.diantiness.smartgraph.graphview.JavaFXUMLNode;
 import model.diagram.arrangement.geometry.DiagramGeometry;
 
 public interface DiagramManager {
@@ -66,7 +68,7 @@ public interface DiagramManager {
      *
      * @return the created graphView {@link SmartGraphPanel}
      */
-    SmartGraphPanel<String, String> visualizeJavaFXGraph();
+    SmartGraphPanel<JavaFXUMLNode, String> visualizeJavaFXGraph();
 
     /**
      * TODO: Add Javadoc when this is done.
@@ -95,11 +97,11 @@ public interface DiagramManager {
     File exportPlantUMLText(Path textSavePath);
 
     // TODO JavaDoc
-    SmartGraphPanel<String, String> applyLayout();
+    SmartGraphPanel<JavaFXUMLNode, String> applyLayout();
 
     // TODO JavaDoc
-    SmartGraphPanel<String, String> applySpecificLayout(String algorithmType);
+    SmartGraphPanel<JavaFXUMLNode, String> applySpecificLayout(String algorithmType);
 
     // TODO JavaDoc
-    SmartGraphPanel<String, String> visualizeLoadedJavaFXGraph();
+    SmartGraphPanel<JavaFXUMLNode, String> visualizeLoadedJavaFXGraph();
 }

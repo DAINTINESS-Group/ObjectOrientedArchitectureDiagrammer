@@ -4,6 +4,8 @@ import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.List;
+
+import gr.uoi.diantiness.smartgraph.graphview.JavaFXUMLNode;
 import manager.DiagramManager;
 import manager.DiagramManagerFactory;
 import manager.SourceProject;
@@ -32,12 +34,12 @@ public class DiagramController implements Controller {
     }
 
     @Override
-    public SmartGraphPanel<String, String> applyLayout() {
+    public SmartGraphPanel<JavaFXUMLNode, String> applyLayout() {
         return diagramManager.applyLayout();
     }
 
     @Override
-    public SmartGraphPanel<String, String> applySpecificLayout(String choice) {
+    public SmartGraphPanel<JavaFXUMLNode, String> applySpecificLayout(String choice) {
         return diagramManager.applySpecificLayout(choice);
     }
 
@@ -57,7 +59,7 @@ public class DiagramController implements Controller {
     }
 
     @Override
-    public SmartGraphPanel<String, String> visualizeJavaFXGraph() {
+    public SmartGraphPanel<JavaFXUMLNode, String> visualizeJavaFXGraph() {
         return diagramManager.visualizeJavaFXGraph();
     }
 
@@ -67,7 +69,7 @@ public class DiagramController implements Controller {
     }
 
     @Override
-    public SmartGraphPanel<String, String> visualizeLoadedJavaFXGraph() {
+    public SmartGraphPanel<JavaFXUMLNode, String> visualizeLoadedJavaFXGraph() {
         return diagramManager.visualizeLoadedJavaFXGraph();
     }
 
