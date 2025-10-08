@@ -1,13 +1,12 @@
-package gr.uoi.diantiness.smartgraph.graphview;
+package model.diagram.javafx;
 
 import com.brunomnsilva.smartgraph.graphview.SmartShapeTypeSource;
 
 import java.util.Objects;
 
-public class JavaFXClassNode extends JavaFXUMLNode {
+public class JavaFXInterfaceNode extends JavaFXUMLNode {
 
-
-    public JavaFXClassNode(String name) {
+    public JavaFXInterfaceNode(String name) {
         super(name);
     }
 
@@ -19,13 +18,13 @@ public class JavaFXClassNode extends JavaFXUMLNode {
     @Override
     @SmartShapeTypeSource
     public String modelShape() {
-        return "class";
+        return "interface";
     }
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        JavaFXClassNode that = (JavaFXClassNode) o;
+        JavaFXInterfaceNode that = (JavaFXInterfaceNode) o;
         return Objects.equals(name, that.name);
     }
 

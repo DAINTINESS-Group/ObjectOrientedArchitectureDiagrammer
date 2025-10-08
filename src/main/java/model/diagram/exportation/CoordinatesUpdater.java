@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import gr.uoi.diantiness.smartgraph.graphview.JavaFXUMLNode;
+import model.diagram.javafx.JavaFXUMLNode;
 import model.diagram.ClassDiagram;
 import model.diagram.PackageDiagram;
 import model.graph.ClassifierVertex;

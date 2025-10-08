@@ -1,7 +1,6 @@
 package model.diagram.javafx;
 
 import com.brunomnsilva.smartgraph.graphview.*;
-import gr.uoi.diantiness.smartgraph.graphview.JavaFXUMLNode;
 import manager.ClassDiagramManager;
 import manager.SourceProject;
 import model.diagram.ClassDiagram;

@@ -8,8 +8,6 @@ import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import java.util.Collection;
 import java.util.Set;
 
-import gr.uoi.diantiness.smartgraph.graphview.JavaFXClassNode;
-import gr.uoi.diantiness.smartgraph.graphview.JavaFXUMLNode;
 import model.diagram.ClassDiagram;
 import model.graph.Arc;
 import model.graph.ArcType;

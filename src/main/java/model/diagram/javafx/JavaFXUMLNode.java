@@ -1,4 +1,4 @@
-package gr.uoi.diantiness.smartgraph.graphview;
+package model.diagram.javafx;
 
 import com.brunomnsilva.smartgraph.graphview.SmartLabelSource;
 import com.brunomnsilva.smartgraph.graphview.SmartShapeTypeSource;

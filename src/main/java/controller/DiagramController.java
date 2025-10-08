@@ -5,7 +5,7 @@ import java.io.File;
 import java.nio.file.Path;
 import java.util.List;
 
-import gr.uoi.diantiness.smartgraph.graphview.JavaFXUMLNode;
+import model.diagram.javafx.JavaFXUMLNode;
 import manager.DiagramManager;
 import manager.DiagramManagerFactory;
 import manager.SourceProject;

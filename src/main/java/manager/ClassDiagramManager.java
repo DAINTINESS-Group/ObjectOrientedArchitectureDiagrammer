@@ -7,7 +7,7 @@ import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
 
-import gr.uoi.diantiness.smartgraph.graphview.JavaFXUMLNode;
+import model.diagram.javafx.JavaFXUMLNode;
 import model.diagram.ClassDiagram;
 import model.diagram.ShadowCleaner;
 import model.diagram.arrangement.ClassDiagramArrangementManager;
