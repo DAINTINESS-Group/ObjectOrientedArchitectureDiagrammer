@@ -39,7 +39,7 @@ public class JavaFXInterfaceNode implements JavaFXUMLNode {
     @SmartLabelSource
     @Override
     public String getName() {
-        return name;
+        return "<<interface>>\n" + name;
     }
 
     /**

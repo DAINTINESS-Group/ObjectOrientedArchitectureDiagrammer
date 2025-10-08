@@ -6,15 +6,15 @@ STYLESHEET FOR JAVAFXGRAPH VISUALIZATION
     -fx-background-color: #F4FFFB;    
 }
 
-.vertex {
-    -fx-stroke-width: 4;
+.vertexClass {
+    -fx-stroke-width: 2;
     -fx-stroke: #000000;
     -fx-stroke-type: inside; /* you should keep this if using arrows */
-    -fx-fill: #FF9900;
+    -fx-fill: #FFFFFF;
 }
 
 .vertexPackage {
-    -fx-stroke-width: 4;
+    -fx-stroke-width: 2;
     -fx-stroke: #000000;
     -fx-stroke-type: inside; /* you should keep this if using arrows */
     -fx-fill: #FF9900;
@@ -23,7 +23,7 @@ STYLESHEET FOR JAVAFXGRAPH VISUALIZATION
 }
 
 .vertexInterface {
-    -fx-stroke-width: 4;
+    -fx-stroke-width: 2;
     -fx-stroke: #000000;
     -fx-stroke-type: inside; /* you should keep this if using arrows */
     -fx-fill: #B1DFF7;
