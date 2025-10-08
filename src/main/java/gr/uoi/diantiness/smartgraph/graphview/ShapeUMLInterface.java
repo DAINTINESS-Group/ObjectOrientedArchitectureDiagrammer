@@ -24,14 +24,6 @@
 
 package gr.uoi.diantiness.smartgraph.graphview;
 
-import com.brunomnsilva.smartgraph.graphview.Args;
-import com.brunomnsilva.smartgraph.graphview.ShapeCircle;
-import com.brunomnsilva.smartgraph.graphview.ShapeWithRadius;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.scene.shape.Polygon;
-import javafx.scene.shape.Shape;
-
 /**
  * This class represents a five-point star shape inscribed within a specified radius.
  *
@@ -49,5 +41,4 @@ public class ShapeUMLInterface extends ShapeUMLClass {
     public ShapeUMLInterface(double x, double y, double radius) {
         super(x, y, radius);
     }
-
 }

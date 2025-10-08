@@ -25,7 +25,6 @@
 package gr.uoi.diantiness.smartgraph.graphview;
 
 import com.brunomnsilva.smartgraph.graphview.Args;
-import com.brunomnsilva.smartgraph.graphview.ShapeRegularPolygon;
 import com.brunomnsilva.smartgraph.graphview.ShapeWithRadius;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -43,6 +42,7 @@ public class ShapeUMLClass implements ShapeWithRadius<Polygon> {
     protected final DoubleProperty radius;
 
     protected final Polygon surrogate;
+
     /**
      * Creates a new star package shape enclosed in a circle of <code>radius</code>.
      *
@@ -78,13 +78,12 @@ public class ShapeUMLClass implements ShapeWithRadius<Polygon> {
         double radius = getRadius();
 
         double l = radius;
-        double h = radius/3.0;
+        double h = radius / 3.0;
 
-        surrogate.getPoints().addAll(cx - l, cy - 2*h);
-        surrogate.getPoints().addAll(cx + l, cy - 2*h);
-        surrogate.getPoints().addAll(cx + l, cy + 2*h);
-        surrogate.getPoints().addAll(cx - l, cy + 2*h);
-
+        surrogate.getPoints().addAll(cx - l, cy - 2 * h);
+        surrogate.getPoints().addAll(cx + l, cy - 2 * h);
+        surrogate.getPoints().addAll(cx + l, cy + 2 * h);
+        surrogate.getPoints().addAll(cx - l, cy + 2 * h);
     }
 
     @Override

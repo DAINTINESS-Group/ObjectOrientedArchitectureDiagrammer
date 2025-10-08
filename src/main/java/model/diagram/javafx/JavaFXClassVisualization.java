@@ -47,9 +47,9 @@ public class JavaFXClassVisualization implements JavaFXVisualization {
         return directedGraph;
     }
 
-    private JavaFXUMLNode getJFXNode(ClassifierVertex cVertex){
+    private JavaFXUMLNode getJFXNode(ClassifierVertex cVertex) {
         JavaFXUMLNode node = vertexElementsMap.get(cVertex.getName());
-        if (node == null){
+        if (node == null) {
             node = JavaFXUMLNodeFactory.createClassifierNode(cVertex);
         }
         return node;
@@ -92,9 +92,7 @@ public class JavaFXClassVisualization implements JavaFXVisualization {
                             : "vertexClass";
 
             JavaFXUMLNode node = getJFXNode(classifierVertex);
-            graphView
-                    .getStylableVertex(node)
-                    .setStyleClass(styleClass);
+            graphView.getStylableVertex(node).setStyleClass(styleClass);
         }
     }
 

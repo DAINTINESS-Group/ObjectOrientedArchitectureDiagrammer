@@ -87,6 +87,5 @@ class JavaFXClassVisualizationTest {
         mockedShapeFactory.verify(
                 () -> ShapeFactory.create(eq("interface"), anyDouble(), anyDouble(), anyDouble()),
                 times(1));
-
     }
 }
