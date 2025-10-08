@@ -7,8 +7,6 @@ import java.io.File;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
-
-import model.diagram.javafx.JavaFXUMLNode;
 import model.diagram.PackageDiagram;
 import model.diagram.arrangement.DiagramArrangementManager;
 import model.diagram.arrangement.PackageDiagramArrangementManager;
@@ -21,6 +19,7 @@ import model.diagram.exportation.PlantUMLPackageDiagramImageExporter;
 import model.diagram.exportation.PlantUMLPackageDiagramTextExporter;
 import model.diagram.javafx.JavaFXPackageDiagramLoader;
 import model.diagram.javafx.JavaFXPackageVisualization;
+import model.diagram.javafx.JavaFXUMLNode;
 import model.diagram.javafx.JavaFXVisualization;
 import model.diagram.svg.PlantUMLPackageDiagram;
 import org.javatuples.Pair;
@@ -127,7 +126,8 @@ public class PackageDiagramManager implements DiagramManager {
         for (Vertex<JavaFXUMLNode> vertex : vertexCollection) {
             if (!nodesGeometry.containsKey(vertex.element().getName())) continue;
 
-            Pair<Double, Double> coordinates = nodesGeometry.getVertexGeometry(vertex.element().getName());
+            Pair<Double, Double> coordinates =
+                    nodesGeometry.getVertexGeometry(vertex.element().getName());
             graphView.setVertexPosition(vertex, coordinates.getValue0(), coordinates.getValue1());
         }
 
@@ -140,7 +140,8 @@ public class PackageDiagramManager implements DiagramManager {
         for (Vertex<JavaFXUMLNode> vertex : vertexCollection) {
             if (!nodesGeometry.containsKey(vertex.element().getName())) continue;
 
-            Pair<Double, Double> coordinates = nodesGeometry.getVertexGeometry(vertex.element().getName());
+            Pair<Double, Double> coordinates =
+                    nodesGeometry.getVertexGeometry(vertex.element().getName());
             graphView.setVertexPosition(vertex, coordinates.getValue0(), coordinates.getValue1());
         }
 

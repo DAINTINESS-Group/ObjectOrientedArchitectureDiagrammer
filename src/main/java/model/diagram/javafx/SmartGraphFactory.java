@@ -7,7 +7,6 @@ import com.brunomnsilva.smartgraph.graphview.SmartGraphProperties;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Objects;
-
 import util.Resources;
 
 public class SmartGraphFactory {
@@ -21,7 +20,8 @@ public class SmartGraphFactory {
      * @param graph
      * @return
      */
-    public static SmartGraphPanel<JavaFXUMLNode, String> createGraphView(Graph<JavaFXUMLNode, String> graph) {
+    public static SmartGraphPanel<JavaFXUMLNode, String> createGraphView(
+            Graph<JavaFXUMLNode, String> graph) {
         try {
             SmartGraphProperties properties = getSmartgraphProperties();
             URI url = getSmartGraphStyleURI();

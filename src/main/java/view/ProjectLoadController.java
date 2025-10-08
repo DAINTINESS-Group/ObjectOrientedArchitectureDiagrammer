@@ -5,8 +5,6 @@ import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import controller.Controller;
 import java.io.File;
 import java.io.IOException;
-
-import model.diagram.javafx.JavaFXUMLNode;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -20,6 +18,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javax.imageio.ImageIO;
+import model.diagram.javafx.JavaFXUMLNode;
 
 public class ProjectLoadController {
 

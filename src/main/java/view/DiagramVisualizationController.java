@@ -5,8 +5,6 @@ import controller.Controller;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-
-import model.diagram.javafx.JavaFXUMLNode;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,6 +16,7 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javax.imageio.ImageIO;
+import model.diagram.javafx.JavaFXUMLNode;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -158,7 +157,8 @@ public class DiagramVisualizationController {
     }
 
     public void applySpring() {
-        SmartGraphPanel<JavaFXUMLNode, String> graphView = diagramController.applySpecificLayout("Spring");
+        SmartGraphPanel<JavaFXUMLNode, String> graphView =
+                diagramController.applySpecificLayout("Spring");
         graphView.update();
     }
 

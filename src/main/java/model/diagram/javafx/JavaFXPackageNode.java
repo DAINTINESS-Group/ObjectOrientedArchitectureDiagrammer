@@ -1,7 +1,6 @@
 package model.diagram.javafx;
 
 import com.brunomnsilva.smartgraph.graphview.SmartShapeTypeSource;
-
 import java.util.Objects;
 
 public class JavaFXPackageNode extends JavaFXUMLNode {

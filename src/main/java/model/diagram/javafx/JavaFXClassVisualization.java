@@ -7,7 +7,6 @@ import com.brunomnsilva.smartgraph.graph.Vertex;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import java.util.Collection;
 import java.util.Set;
-
 import model.diagram.ClassDiagram;
 import model.graph.Arc;
 import model.graph.ArcType;
@@ -76,7 +75,9 @@ public class JavaFXClassVisualization implements JavaFXVisualization {
                             ? "vertexInterface"
                             : "vertexPackage";
 
-            graphView.getStylableVertex(new JavaFXClassNode(classifierVertex.getName())).setStyleClass(styleClass);
+            graphView
+                    .getStylableVertex(new JavaFXClassNode(classifierVertex.getName()))
+                    .setStyleClass(styleClass);
         }
     }
 

@@ -4,10 +4,9 @@ import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.List;
-
-import model.diagram.javafx.JavaFXUMLNode;
 import manager.DiagramManager;
 import manager.SourceProject;
+import model.diagram.javafx.JavaFXUMLNode;
 
 public interface Controller {
 

@@ -5,10 +5,9 @@ import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import model.diagram.javafx.JavaFXUMLNode;
 import model.diagram.ClassDiagram;
 import model.diagram.PackageDiagram;
+import model.diagram.javafx.JavaFXUMLNode;
 import model.graph.ClassifierVertex;
 import model.graph.PackageVertex;
 

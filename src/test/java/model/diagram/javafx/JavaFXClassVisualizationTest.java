@@ -1,6 +1,15 @@
 package model.diagram.javafx;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.times;
+
 import com.brunomnsilva.smartgraph.graphview.*;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
 import manager.ClassDiagramManager;
 import manager.SourceProject;
 import model.diagram.ClassDiagram;
@@ -12,16 +21,6 @@ import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import utils.PathTemplate;
 
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.times;
-
 class JavaFXClassVisualizationTest {
 
     ClassDiagram theClassDiagram;
@@ -29,18 +28,14 @@ class JavaFXClassVisualizationTest {
     MockedStatic<ShapeFactory> mockedShapeFactory;
 
     @BeforeEach
-    public void setup(){
+    public void setup() {
         ClassDiagramManager classDiagramManager = new ClassDiagramManager();
         ClassDiagram classDiagram = classDiagramManager.getClassDiagram();
 
         SourceProject sourceProject = new SourceProject();
         Map<Path, ClassifierVertex> vertices =
                 sourceProject.createClassGraph(PathTemplate.LatexEditor.SRC.path, classDiagram);
-        Set<String> chosenFilesNames =
-                Set.of(
-                        "AddLatexCommand",
-                        "Command",
-                        "VersionsManager");
+        Set<String> chosenFilesNames = Set.of("AddLatexCommand", "Command", "VersionsManager");
 
         Map<ClassifierVertex, Integer> graphNodes =
                 classDiagramManager.getClassDiagram().getGraphNodes();
@@ -56,18 +51,22 @@ class JavaFXClassVisualizationTest {
         Mockito.when(mockProperties.getUseEdgeTooltip()).thenReturn(false);
         Mockito.when(mockProperties.getUseVertexTooltip()).thenReturn(false);
         mockedStatic = Mockito.mockStatic(SmartGraphFactory.class);
-        mockedStatic.when(() -> SmartGraphFactory.createGraphView(Mockito.any())).thenCallRealMethod();
+        mockedStatic
+                .when(() -> SmartGraphFactory.createGraphView(Mockito.any()))
+                .thenCallRealMethod();
         mockedStatic.when(SmartGraphFactory::getSmartGraphStyleURI).thenCallRealMethod();
         mockedStatic.when(SmartGraphFactory::getSmartgraphProperties).thenReturn(mockProperties);
     }
 
-    private void mockShapeFactory(){
+    private void mockShapeFactory() {
         mockedShapeFactory = Mockito.mockStatic(ShapeFactory.class);
-        mockedShapeFactory.when(() -> ShapeFactory.create(anyString(), anyDouble(), anyDouble(), anyDouble())).thenCallRealMethod();
+        mockedShapeFactory
+                .when(() -> ShapeFactory.create(anyString(), anyDouble(), anyDouble(), anyDouble()))
+                .thenCallRealMethod();
     }
 
     @AfterEach
-    public void tearDown(){
+    public void tearDown() {
         mockedStatic.close();
         mockedShapeFactory.close();
     }
@@ -82,7 +81,8 @@ class JavaFXClassVisualizationTest {
         Collection<SmartGraphVertex<JavaFXUMLNode>> smartVertices = graphPanel.getSmartVertices();
         assertEquals(3, smartVertices.size());
         // verify that 3 circles are created
-        mockedShapeFactory.verify(() -> ShapeFactory.create(eq("class"), anyDouble(), anyDouble(), anyDouble()),times(3));
+        mockedShapeFactory.verify(
+                () -> ShapeFactory.create(eq("class"), anyDouble(), anyDouble(), anyDouble()),
+                times(3));
     }
-
 }

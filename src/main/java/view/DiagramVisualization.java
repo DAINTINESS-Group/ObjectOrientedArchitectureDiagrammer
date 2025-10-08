@@ -8,8 +8,6 @@ import java.awt.Toolkit;
 import java.io.IOException;
 import java.io.StringReader;
 import java.net.URL;
-
-import model.diagram.javafx.JavaFXUMLNode;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -20,6 +18,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.WindowConstants;
+import model.diagram.javafx.JavaFXUMLNode;
 import org.apache.batik.anim.dom.SAXSVGDocumentFactory;
 import org.apache.batik.swing.JSVGCanvas;
 import org.apache.batik.util.XMLResourceDescriptor;

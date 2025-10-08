@@ -7,7 +7,6 @@ import com.brunomnsilva.smartgraph.graph.Vertex;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import java.util.Collection;
 import java.util.Set;
-
 import model.diagram.PackageDiagram;
 import model.graph.Arc;
 import model.graph.ArcType;
@@ -80,11 +79,15 @@ public class JavaFXPackageVisualization implements JavaFXVisualization {
     private void setVertexCustomStyle() {
         for (PackageVertex vertex : packageDiagram.getDiagram().keySet()) {
             if (vertex.getVertexType().equals(VertexType.INTERFACE)) {
-                graphView.getStylableVertex(new JavaFXPackageNode(vertex.getName())).setStyleClass("vertexInterface");
+                graphView
+                        .getStylableVertex(new JavaFXPackageNode(vertex.getName()))
+                        .setStyleClass("vertexInterface");
             } else {
                 if (vertex.getSinkVertices().isEmpty()) continue;
 
-                graphView.getStylableVertex(new JavaFXPackageNode(vertex.getName())).setStyleClass("vertexPackage");
+                graphView
+                        .getStylableVertex(new JavaFXPackageNode(vertex.getName()))
+                        .setStyleClass("vertexPackage");
             }
         }
     }
