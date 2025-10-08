@@ -89,7 +89,7 @@ public class JavaFXClassVisualization implements JavaFXVisualization {
             String styleClass =
                     classifierVertex.getVertexType().equals(VertexType.INTERFACE)
                             ? "vertexInterface"
-                            : "vertexPackage";
+                            : "vertexClass";
 
             JavaFXUMLNode node = getJFXNode(classifierVertex);
             graphView

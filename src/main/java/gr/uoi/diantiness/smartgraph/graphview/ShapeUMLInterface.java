@@ -25,6 +25,7 @@
 package gr.uoi.diantiness.smartgraph.graphview;
 
 import com.brunomnsilva.smartgraph.graphview.Args;
+import com.brunomnsilva.smartgraph.graphview.ShapeCircle;
 import com.brunomnsilva.smartgraph.graphview.ShapeWithRadius;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -36,11 +37,7 @@ import javafx.scene.shape.Shape;
  *
  * @author brunomnsilva
  */
-public class ShapeUMLInterface implements ShapeWithRadius<Polygon> {
-    protected final DoubleProperty centerX, centerY;
-    protected final DoubleProperty radius;
-
-    protected final Polygon surrogate;
+public class ShapeUMLInterface extends ShapeUMLClass {
 
     /**
      * Creates a new star package shape enclosed in a circle of <code>radius</code>.
@@ -50,72 +47,7 @@ public class ShapeUMLInterface implements ShapeWithRadius<Polygon> {
      * @param radius the radius of the enclosed circle
      */
     public ShapeUMLInterface(double x, double y, double radius) {
-        Args.requireNonNegative(x, "x");
-        Args.requireNonNegative(y, "y");
-        Args.requireNonNegative(radius, "radius");
-
-        this.surrogate = new Polygon();
-
-        this.centerX = new SimpleDoubleProperty(x);
-        this.centerY = new SimpleDoubleProperty(y);
-
-        this.centerX.addListener((observable, oldValue, newValue) -> updatePolygon());
-        this.centerY.addListener((observable, oldValue, newValue) -> updatePolygon());
-
-        this.radius = new SimpleDoubleProperty(radius);
-        this.radius.addListener((observable, oldValue, newValue) -> updatePolygon());
-
-        updatePolygon();
+        super(x, y, radius);
     }
 
-    protected void updatePolygon() {
-        surrogate.getPoints().clear();
-
-        double cx = centerX.doubleValue();
-        double cy = centerY.doubleValue();
-
-        double radius = getRadius();
-
-        double l = radius / 2;
-
-        surrogate.getPoints().addAll(cx - 2 * l, cy - l);
-        surrogate.getPoints().addAll(cx + 2 * l, cy - l);
-        surrogate.getPoints().addAll(cx + 2 * l, cy + l);
-        surrogate.getPoints().addAll(cx - 2 * l, cy + l);
-        surrogate.getPoints().addAll(cx - 2 * l, cy + l / 2);
-        surrogate.getPoints().addAll(cx - 2 * l, cy - 3 * l / 2);
-        surrogate.getPoints().addAll(cx - 2 * l + 3 * l / 2, cy - 3 * l / 2);
-        surrogate.getPoints().addAll(cx - 2 * l + 3 * l / 2, cy - l);
-    }
-
-    @Override
-    public Shape getShape() {
-        return this.surrogate;
-    }
-
-    @Override
-    public DoubleProperty centerXProperty() {
-        return this.centerX;
-    }
-
-    @Override
-    public DoubleProperty centerYProperty() {
-        return this.centerY;
-    }
-
-    @Override
-    public DoubleProperty radiusProperty() {
-        return this.radius;
-    }
-
-    @Override
-    public double getRadius() {
-        return this.radius.doubleValue();
-    }
-
-    @Override
-    public void setRadius(double radius) {
-        Args.requireNonNegative(radius, "radius");
-        this.radius.set(radius);
-    }
 }
