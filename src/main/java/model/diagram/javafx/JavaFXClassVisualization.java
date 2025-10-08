@@ -6,6 +6,8 @@ import com.brunomnsilva.smartgraph.graph.Graph;
 import com.brunomnsilva.smartgraph.graph.Vertex;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import model.diagram.ClassDiagram;
 import model.graph.Arc;
@@ -18,6 +20,7 @@ public class JavaFXClassVisualization implements JavaFXVisualization {
     private final ClassDiagram classDiagram;
     private SmartGraphPanel<JavaFXUMLNode, String> graphView;
     private Collection<Vertex<JavaFXUMLNode>> vertexCollection;
+    private Map<String, JavaFXUMLNode> vertexElementsMap = new HashMap<>();
 
     public JavaFXClassVisualization(ClassDiagram diagram) {
         this.classDiagram = diagram;
@@ -35,20 +38,33 @@ public class JavaFXClassVisualization implements JavaFXVisualization {
     private Graph<JavaFXUMLNode, String> createGraph() {
         Digraph<JavaFXUMLNode, String> directedGraph = new DigraphEdgeList<>();
         for (ClassifierVertex classifierVertex : classDiagram.getDiagram().keySet()) {
-            directedGraph.insertVertex(new JavaFXClassNode(classifierVertex.getName()));
+            JavaFXUMLNode jfxNode = JavaFXUMLNodeFactory.createClassifierNode(classifierVertex);
+            vertexElementsMap.put(jfxNode.getName(), jfxNode);
+            directedGraph.insertVertex(jfxNode);
         }
         insertSinkVertexArcs(directedGraph);
 
         return directedGraph;
     }
 
+    private JavaFXUMLNode getJFXNode(ClassifierVertex cVertex){
+        JavaFXUMLNode node = vertexElementsMap.get(cVertex.getName());
+        if (node == null){
+            node = JavaFXUMLNodeFactory.createClassifierNode(cVertex);
+        }
+        return node;
+    }
+
     private void insertSinkVertexArcs(Digraph<JavaFXUMLNode, String> directedGraph) {
         for (Set<Arc<ClassifierVertex>> arcs : classDiagram.getDiagram().values()) {
             for (Arc<ClassifierVertex> arc : arcs) {
+                JavaFXUMLNode sourceNode = getJFXNode(arc.sourceVertex());
+                JavaFXUMLNode targetNode = getJFXNode(arc.targetVertex());
+
                 if (arc.arcType().equals(ArcType.AGGREGATION)) {
                     directedGraph.insertEdge(
-                            new JavaFXClassNode(arc.targetVertex().getName()),
-                            new JavaFXClassNode(arc.sourceVertex().getName()),
+                            sourceNode,
+                            targetNode,
                             arc.targetVertex().getName()
                                     + "_"
                                     + arc.sourceVertex().getName()
@@ -56,8 +72,8 @@ public class JavaFXClassVisualization implements JavaFXVisualization {
                                     + arc.arcType());
                 } else {
                     directedGraph.insertEdge(
-                            new JavaFXClassNode(arc.sourceVertex().getName()),
-                            new JavaFXClassNode(arc.targetVertex().getName()),
+                            sourceNode,
+                            targetNode,
                             arc.sourceVertex().getName()
                                     + "_"
                                     + arc.targetVertex().getName()
@@ -75,8 +91,9 @@ public class JavaFXClassVisualization implements JavaFXVisualization {
                             ? "vertexInterface"
                             : "vertexPackage";
 
+            JavaFXUMLNode node = getJFXNode(classifierVertex);
             graphView
-                    .getStylableVertex(new JavaFXClassNode(classifierVertex.getName()))
+                    .getStylableVertex(node)
                     .setStyleClass(styleClass);
         }
     }

@@ -83,6 +83,10 @@ class JavaFXClassVisualizationTest {
         // verify that 3 circles are created
         mockedShapeFactory.verify(
                 () -> ShapeFactory.create(eq("class"), anyDouble(), anyDouble(), anyDouble()),
-                times(3));
+                times(2));
+        mockedShapeFactory.verify(
+                () -> ShapeFactory.create(eq("interface"), anyDouble(), anyDouble(), anyDouble()),
+                times(1));
+
     }
 }
