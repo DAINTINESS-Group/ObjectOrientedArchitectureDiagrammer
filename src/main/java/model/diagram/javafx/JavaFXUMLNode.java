@@ -3,26 +3,10 @@ package model.diagram.javafx;
 import com.brunomnsilva.smartgraph.graphview.SmartLabelSource;
 import com.brunomnsilva.smartgraph.graphview.SmartShapeTypeSource;
 
-public abstract class JavaFXUMLNode {
-    protected String name;
-
-    public JavaFXUMLNode(String name) {
-        this.name = name;
-    }
+public interface JavaFXUMLNode {
 
     @SmartLabelSource
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * Setter for the name of the city.
-     *
-     * @param name the name of the city
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
+    public abstract String getName();
 
     @SmartShapeTypeSource
     public abstract String modelShape();

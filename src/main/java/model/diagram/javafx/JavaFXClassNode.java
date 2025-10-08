@@ -1,12 +1,15 @@
 package model.diagram.javafx;
 
+import com.brunomnsilva.smartgraph.graphview.SmartLabelSource;
 import com.brunomnsilva.smartgraph.graphview.SmartShapeTypeSource;
 import java.util.Objects;
 
-public class JavaFXClassNode extends JavaFXUMLNode {
+public class JavaFXClassNode implements JavaFXUMLNode {
+
+    protected String name;
 
     public JavaFXClassNode(String name) {
-        super(name);
+        this.name = name;
     }
 
     /**
@@ -30,5 +33,20 @@ public class JavaFXClassNode extends JavaFXUMLNode {
     @Override
     public int hashCode() {
         return Objects.hashCode(name);
+    }
+
+    @SmartLabelSource
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Setter for the name of the city.
+     *
+     * @param name the name of the city
+     */
+    public void setName(String name) {
+        this.name = name;
     }
 }
