@@ -1,4 +1,4 @@
-package gr.uoi.diantiness.smartgraph.graphview.arrow;
+package gr.uoi.smartgraph.graphview.arrow;
 
 import com.brunomnsilva.smartgraph.graphview.SmartArrow;
 

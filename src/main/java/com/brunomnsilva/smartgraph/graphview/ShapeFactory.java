@@ -24,9 +24,9 @@
 
 package com.brunomnsilva.smartgraph.graphview;
 
-import gr.uoi.diantiness.smartgraph.graphview.ShapeUMLClass;
-import gr.uoi.diantiness.smartgraph.graphview.ShapeUMLInterface;
-import gr.uoi.diantiness.smartgraph.graphview.ShapeUMLPackage;
+import gr.uoi.smartgraph.graphview.ShapeUMLClass;
+import gr.uoi.smartgraph.graphview.ShapeUMLInterface;
+import gr.uoi.smartgraph.graphview.ShapeUMLPackage;
 
 /**
  * A factory class for creating instances of shapes with a specified center coordinates and radius.
