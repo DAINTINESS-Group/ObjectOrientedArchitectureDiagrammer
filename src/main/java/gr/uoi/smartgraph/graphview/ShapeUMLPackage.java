@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-package gr.uoi.diantiness.smartgraph.graphview;
+package gr.uoi.smartgraph.graphview;
 
 import com.brunomnsilva.smartgraph.graphview.Args;
 import com.brunomnsilva.smartgraph.graphview.ShapeWithRadius;

@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-package gr.uoi.diantiness.smartgraph.graphview;
+package gr.uoi.smartgraph.graphview;
 
 /**
  * This class represents a five-point star shape inscribed within a specified radius.
