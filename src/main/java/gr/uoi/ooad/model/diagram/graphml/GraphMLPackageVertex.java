@@ -1,10 +1,10 @@
 package gr.uoi.ooad.model.diagram.graphml;
 
+import gr.uoi.ooad.model.diagram.PackageDiagram;
+import gr.uoi.ooad.model.graph.PackageVertex;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import gr.uoi.ooad.model.diagram.PackageDiagram;
-import gr.uoi.ooad.model.graph.PackageVertex;
 import org.javatuples.Pair;
 
 public class GraphMLPackageVertex {

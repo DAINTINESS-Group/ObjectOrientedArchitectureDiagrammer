@@ -3,18 +3,6 @@ package gr.uoi.ooad.manager;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import gr.uoi.ooad.model.diagram.ClassDiagram;
 import gr.uoi.ooad.model.diagram.GraphClassDiagramConverter;
 import gr.uoi.ooad.model.diagram.ShadowCleaner;
@@ -27,12 +15,23 @@ import gr.uoi.ooad.model.diagram.graphml.GraphMLClassifierVertex;
 import gr.uoi.ooad.model.diagram.graphml.GraphMLClassifierVertexArc;
 import gr.uoi.ooad.model.graph.Arc;
 import gr.uoi.ooad.model.graph.ClassifierVertex;
-import org.apache.commons.io.FileUtils;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import gr.uoi.ooad.parser.Interpreter;
 import gr.uoi.ooad.utils.PathConstructor;
 import gr.uoi.ooad.utils.PathTemplate.LatexEditor;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+import org.apache.commons.io.FileUtils;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class ClassDiagramManagerTest {
 

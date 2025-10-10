@@ -5,21 +5,21 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.times;
 
 import com.brunomnsilva.smartgraph.graphview.*;
+import gr.uoi.ooad.manager.ClassDiagramManager;
+import gr.uoi.ooad.manager.SourceProject;
+import gr.uoi.ooad.model.diagram.ClassDiagram;
+import gr.uoi.ooad.model.graph.ClassifierVertex;
+import gr.uoi.ooad.utils.PathTemplate;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
-import gr.uoi.ooad.manager.ClassDiagramManager;
-import gr.uoi.ooad.manager.SourceProject;
-import gr.uoi.ooad.model.diagram.ClassDiagram;
-import gr.uoi.ooad.model.graph.ClassifierVertex;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
-import gr.uoi.ooad.utils.PathTemplate;
 
 class JavaFXClassVisualizationTest {
 

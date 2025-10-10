@@ -4,10 +4,10 @@ import com.brunomnsilva.smartgraph.graph.Graph;
 import com.brunomnsilva.smartgraph.graphview.SmartCircularSortedPlacementStrategy;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphProperties;
+import gr.uoi.ooad.util.Resources;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Objects;
-import gr.uoi.ooad.util.Resources;
 
 public class SmartGraphFactory {
 

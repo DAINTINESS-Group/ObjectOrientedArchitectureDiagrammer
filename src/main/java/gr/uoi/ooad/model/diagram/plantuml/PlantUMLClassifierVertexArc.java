@@ -1,9 +1,9 @@
 package gr.uoi.ooad.model.diagram.plantuml;
 
-import java.util.Collection;
-import java.util.stream.Collectors;
 import gr.uoi.ooad.model.diagram.ClassDiagram;
 import gr.uoi.ooad.model.graph.ArcType;
+import java.util.Collection;
+import java.util.stream.Collectors;
 
 public class PlantUMLClassifierVertexArc {
 

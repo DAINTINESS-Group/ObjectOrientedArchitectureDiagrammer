@@ -1,13 +1,13 @@
 package gr.uoi.ooad.model.diagram.exportation;
 
+import gr.uoi.ooad.model.diagram.ClassDiagram;
+import gr.uoi.ooad.model.diagram.plantuml.PlantUMLClassifierVertex;
+import gr.uoi.ooad.model.diagram.plantuml.PlantUMLClassifierVertexArc;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
-import gr.uoi.ooad.model.diagram.ClassDiagram;
-import gr.uoi.ooad.model.diagram.plantuml.PlantUMLClassifierVertex;
-import gr.uoi.ooad.model.diagram.plantuml.PlantUMLClassifierVertexArc;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

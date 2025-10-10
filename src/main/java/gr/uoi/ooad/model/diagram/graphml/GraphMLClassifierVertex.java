@@ -1,12 +1,12 @@
 package gr.uoi.ooad.model.diagram.graphml;
 
+import gr.uoi.ooad.model.diagram.ClassDiagram;
+import gr.uoi.ooad.model.graph.ClassifierVertex;
+import gr.uoi.ooad.model.graph.VertexType;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import gr.uoi.ooad.model.diagram.ClassDiagram;
-import gr.uoi.ooad.model.graph.ClassifierVertex;
-import gr.uoi.ooad.model.graph.VertexType;
 import org.javatuples.Pair;
 
 public class GraphMLClassifierVertex {

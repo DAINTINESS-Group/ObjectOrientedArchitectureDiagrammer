@@ -1,5 +1,8 @@
 package gr.uoi.ooad.parser;
 
+import static gr.uoi.ooad.parser.tree.ModifierType.PACKAGE_PRIVATE;
+import static gr.uoi.ooad.parser.tree.NodeType.ENUM;
+
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ParserConfiguration;
 import com.github.javaparser.StaticJavaParser;
@@ -13,9 +16,6 @@ import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import gr.uoi.ooad.parser.tree.*;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.io.FileNotFoundException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -23,10 +23,8 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-
-import static gr.uoi.ooad.parser.tree.ModifierType.PACKAGE_PRIVATE;
-import static gr.uoi.ooad.parser.tree.NodeType.ENUM;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This class is responsible for the creation of the AST of a Java source file using {@link

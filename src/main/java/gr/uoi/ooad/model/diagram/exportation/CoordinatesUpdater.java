@@ -2,14 +2,14 @@ package gr.uoi.ooad.model.diagram.exportation;
 
 import com.brunomnsilva.smartgraph.graph.Vertex;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
-import java.util.Collection;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import gr.uoi.ooad.model.diagram.ClassDiagram;
 import gr.uoi.ooad.model.diagram.PackageDiagram;
 import gr.uoi.ooad.model.diagram.javafx.JavaFXUMLNode;
 import gr.uoi.ooad.model.graph.ClassifierVertex;
 import gr.uoi.ooad.model.graph.PackageVertex;
+import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class CoordinatesUpdater {
     private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);

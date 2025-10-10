@@ -1,12 +1,12 @@
 package gr.uoi.ooad.manager;
 
-import java.nio.file.Path;
-import java.util.Map;
 import gr.uoi.ooad.model.diagram.ClassDiagram;
 import gr.uoi.ooad.model.diagram.PackageDiagram;
 import gr.uoi.ooad.model.graph.ClassifierVertex;
 import gr.uoi.ooad.model.graph.PackageVertex;
 import gr.uoi.ooad.parser.Interpreter;
+import java.nio.file.Path;
+import java.util.Map;
 
 public class SourceProject {
 

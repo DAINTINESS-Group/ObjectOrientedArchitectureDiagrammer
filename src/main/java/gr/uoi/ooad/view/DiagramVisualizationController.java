@@ -2,6 +2,7 @@ package gr.uoi.ooad.view;
 
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import gr.uoi.ooad.controller.Controller;
+import gr.uoi.ooad.model.diagram.javafx.JavaFXUMLNode;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -16,7 +17,6 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javax.imageio.ImageIO;
-import gr.uoi.ooad.model.diagram.javafx.JavaFXUMLNode;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

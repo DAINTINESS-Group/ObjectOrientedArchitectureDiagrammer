@@ -1,5 +1,9 @@
 package gr.uoi.ooad.parser;
 
+import gr.uoi.ooad.parser.tree.LeafNode;
+import gr.uoi.ooad.parser.tree.PackageNode;
+import gr.uoi.ooad.parser.tree.Relationship;
+import gr.uoi.ooad.parser.tree.RelationshipType;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,10 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-import gr.uoi.ooad.parser.tree.LeafNode;
-import gr.uoi.ooad.parser.tree.PackageNode;
-import gr.uoi.ooad.parser.tree.Relationship;
-import gr.uoi.ooad.parser.tree.RelationshipType;
 
 public class RelationshipIdentifier implements IRelationshipIdentifier {
     private final Map<LeafNode, Set<Relationship<LeafNode>>> leafNodeRelationships;

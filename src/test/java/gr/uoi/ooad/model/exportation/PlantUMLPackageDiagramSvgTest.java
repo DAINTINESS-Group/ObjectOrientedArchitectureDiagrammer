@@ -2,13 +2,13 @@ package gr.uoi.ooad.model.exportation;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import gr.uoi.ooad.manager.PackageDiagramManager;
+import gr.uoi.ooad.model.diagram.svg.PlantUMLPackageDiagram;
+import gr.uoi.ooad.utils.PathConstructor;
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.List;
-import gr.uoi.ooad.manager.PackageDiagramManager;
-import gr.uoi.ooad.model.diagram.svg.PlantUMLPackageDiagram;
 import org.junit.jupiter.api.Test;
-import gr.uoi.ooad.utils.PathConstructor;
 
 public class PlantUMLPackageDiagramSvgTest {
 

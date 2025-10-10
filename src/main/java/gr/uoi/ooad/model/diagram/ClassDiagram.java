@@ -1,5 +1,8 @@
 package gr.uoi.ooad.model.diagram;
 
+import gr.uoi.ooad.model.diagram.arrangement.geometry.DiagramGeometry;
+import gr.uoi.ooad.model.graph.Arc;
+import gr.uoi.ooad.model.graph.ClassifierVertex;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,9 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import gr.uoi.ooad.model.diagram.arrangement.geometry.DiagramGeometry;
-import gr.uoi.ooad.model.graph.Arc;
-import gr.uoi.ooad.model.graph.ClassifierVertex;
 import org.javatuples.Pair;
 
 public class ClassDiagram {

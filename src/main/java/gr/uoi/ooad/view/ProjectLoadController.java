@@ -3,6 +3,7 @@ package gr.uoi.ooad.view;
 import com.brunomnsilva.smartgraph.containers.ContentZoomPane;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import gr.uoi.ooad.controller.Controller;
+import gr.uoi.ooad.model.diagram.javafx.JavaFXUMLNode;
 import java.io.File;
 import java.io.IOException;
 import javafx.embed.swing.SwingFXUtils;
@@ -18,7 +19,6 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javax.imageio.ImageIO;
-import gr.uoi.ooad.model.diagram.javafx.JavaFXUMLNode;
 
 public class ProjectLoadController {
 

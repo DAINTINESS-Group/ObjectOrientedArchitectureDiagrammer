@@ -1,12 +1,12 @@
 package gr.uoi.ooad.parser;
 
-import java.nio.file.Path;
-import java.util.Map;
-import java.util.Set;
 import gr.uoi.ooad.parser.factory.Parser;
 import gr.uoi.ooad.parser.tree.LeafNode;
 import gr.uoi.ooad.parser.tree.PackageNode;
 import gr.uoi.ooad.parser.tree.Relationship;
+import java.nio.file.Path;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * This class is responsible for the creation of the branches between the Java source files. The

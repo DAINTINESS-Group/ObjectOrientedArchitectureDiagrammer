@@ -6,12 +6,12 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
+import gr.uoi.ooad.model.graph.Arc;
+import gr.uoi.ooad.model.graph.ClassifierVertex;
 import java.lang.reflect.Type;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
-import gr.uoi.ooad.model.graph.Arc;
-import gr.uoi.ooad.model.graph.ClassifierVertex;
 
 public class ClassifierVertexSerializer implements JsonSerializer<ClassifierVertex> {
 

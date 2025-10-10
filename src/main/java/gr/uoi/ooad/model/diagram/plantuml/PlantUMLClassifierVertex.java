@@ -1,11 +1,11 @@
 package gr.uoi.ooad.model.diagram.plantuml;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
 import gr.uoi.ooad.model.diagram.ClassDiagram;
 import gr.uoi.ooad.model.graph.ClassifierVertex;
 import gr.uoi.ooad.model.graph.ModifierType;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class PlantUMLClassifierVertex {
 

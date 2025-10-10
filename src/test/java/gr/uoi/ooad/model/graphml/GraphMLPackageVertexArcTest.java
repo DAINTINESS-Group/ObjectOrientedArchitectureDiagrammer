@@ -2,16 +2,16 @@ package gr.uoi.ooad.model.graphml;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
 import gr.uoi.ooad.manager.PackageDiagramManager;
 import gr.uoi.ooad.model.diagram.graphml.GraphMLPackageVertexArc;
 import gr.uoi.ooad.model.graph.Arc;
 import gr.uoi.ooad.model.graph.PackageVertex;
-import org.junit.jupiter.api.Test;
 import gr.uoi.ooad.utils.PathTemplate.LatexEditor;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+import org.junit.jupiter.api.Test;
 
 public class GraphMLPackageVertexArcTest {
 

@@ -1,12 +1,20 @@
 package gr.uoi.ooad.model.exportation;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static gr.uoi.ooad.utils.JsonUtils.getVertices;
 import static gr.uoi.ooad.utils.ListUtils.assertListsEqual;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import gr.uoi.ooad.manager.ClassDiagramManager;
+import gr.uoi.ooad.model.diagram.exportation.DiagramExporter;
+import gr.uoi.ooad.model.diagram.exportation.JavaFXClassDiagramExporter;
+import gr.uoi.ooad.model.diagram.javafx.ClassifierVertexDeserializer;
+import gr.uoi.ooad.model.graph.ClassifierVertex;
+import gr.uoi.ooad.model.graph.VertexType;
+import gr.uoi.ooad.utils.PathConstructor;
+import gr.uoi.ooad.utils.PathTemplate.LatexEditor;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -18,17 +26,9 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
-import gr.uoi.ooad.manager.ClassDiagramManager;
-import gr.uoi.ooad.model.diagram.exportation.DiagramExporter;
-import gr.uoi.ooad.model.diagram.exportation.JavaFXClassDiagramExporter;
-import gr.uoi.ooad.model.diagram.javafx.ClassifierVertexDeserializer;
-import gr.uoi.ooad.model.graph.ClassifierVertex;
-import gr.uoi.ooad.model.graph.VertexType;
 import org.javatuples.Triplet;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import gr.uoi.ooad.utils.PathConstructor;
-import gr.uoi.ooad.utils.PathTemplate.LatexEditor;
 
 public class JavaFXClassDiagramExporterTest {
 

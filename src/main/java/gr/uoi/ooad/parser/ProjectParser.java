@@ -1,5 +1,9 @@
 package gr.uoi.ooad.parser;
 
+import gr.uoi.ooad.parser.factory.Parser;
+import gr.uoi.ooad.parser.tree.LeafNode;
+import gr.uoi.ooad.parser.tree.PackageNode;
+import gr.uoi.ooad.parser.tree.Relationship;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -8,10 +12,6 @@ import java.util.Map;
 import java.util.Set;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import gr.uoi.ooad.parser.factory.Parser;
-import gr.uoi.ooad.parser.tree.LeafNode;
-import gr.uoi.ooad.parser.tree.PackageNode;
-import gr.uoi.ooad.parser.tree.Relationship;
 
 public class ProjectParser implements Parser {
     private static final Logger logger = LogManager.getLogger(ProjectParser.class);

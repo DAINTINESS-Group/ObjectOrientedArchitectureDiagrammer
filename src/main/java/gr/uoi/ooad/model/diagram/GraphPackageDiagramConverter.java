@@ -1,11 +1,11 @@
 package gr.uoi.ooad.model.diagram;
 
+import gr.uoi.ooad.model.graph.Arc;
+import gr.uoi.ooad.model.graph.PackageVertex;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import gr.uoi.ooad.model.graph.Arc;
-import gr.uoi.ooad.model.graph.PackageVertex;
 
 public class GraphPackageDiagramConverter {
 

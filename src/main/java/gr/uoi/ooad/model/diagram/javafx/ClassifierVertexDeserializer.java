@@ -8,13 +8,13 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
+import gr.uoi.ooad.model.graph.ClassifierVertex;
+import gr.uoi.ooad.model.graph.ModifierType;
+import gr.uoi.ooad.model.graph.VertexType;
 import java.lang.reflect.Type;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import gr.uoi.ooad.model.graph.ClassifierVertex;
-import gr.uoi.ooad.model.graph.ModifierType;
-import gr.uoi.ooad.model.graph.VertexType;
 import org.javatuples.Triplet;
 
 public class ClassifierVertexDeserializer implements JsonDeserializer<ClassifierVertex> {

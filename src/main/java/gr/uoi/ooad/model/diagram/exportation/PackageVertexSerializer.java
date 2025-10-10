@@ -7,12 +7,12 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-import java.lang.reflect.Type;
-import java.nio.file.Path;
-import java.util.List;
 import gr.uoi.ooad.model.graph.Arc;
 import gr.uoi.ooad.model.graph.ClassifierVertex;
 import gr.uoi.ooad.model.graph.PackageVertex;
+import java.lang.reflect.Type;
+import java.nio.file.Path;
+import java.util.List;
 
 public class PackageVertexSerializer implements JsonSerializer<PackageVertex> {
 

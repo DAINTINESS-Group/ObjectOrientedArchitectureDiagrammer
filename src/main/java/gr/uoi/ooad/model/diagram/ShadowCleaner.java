@@ -1,9 +1,9 @@
 package gr.uoi.ooad.model.diagram;
 
-import java.util.*;
 import gr.uoi.ooad.model.graph.Arc;
 import gr.uoi.ooad.model.graph.ArcType;
 import gr.uoi.ooad.model.graph.ClassifierVertex;
+import java.util.*;
 
 public class ShadowCleaner {
 

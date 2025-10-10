@@ -7,6 +7,13 @@ import com.github.romankh3.image.comparison.ImageComparison;
 import com.github.romankh3.image.comparison.ImageComparisonUtil;
 import com.github.romankh3.image.comparison.model.ImageComparisonResult;
 import com.github.romankh3.image.comparison.model.ImageComparisonState;
+import gr.uoi.ooad.manager.ClassDiagramManager;
+import gr.uoi.ooad.model.diagram.exportation.DiagramExporter;
+import gr.uoi.ooad.model.diagram.exportation.PlantUMLClassDiagramImageExporter;
+import gr.uoi.ooad.model.diagram.plantuml.PlantUMLClassifierVertex;
+import gr.uoi.ooad.model.diagram.plantuml.PlantUMLClassifierVertexArc;
+import gr.uoi.ooad.utils.PathConstructor;
+import gr.uoi.ooad.utils.PathTemplate.LatexEditor;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -17,15 +24,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import javax.imageio.ImageIO;
-import gr.uoi.ooad.manager.ClassDiagramManager;
-import gr.uoi.ooad.model.diagram.exportation.DiagramExporter;
-import gr.uoi.ooad.model.diagram.exportation.PlantUMLClassDiagramImageExporter;
-import gr.uoi.ooad.model.diagram.plantuml.PlantUMLClassifierVertex;
-import gr.uoi.ooad.model.diagram.plantuml.PlantUMLClassifierVertexArc;
 import net.sourceforge.plantuml.SourceStringReader;
 import org.junit.jupiter.api.Test;
-import gr.uoi.ooad.utils.PathConstructor;
-import gr.uoi.ooad.utils.PathTemplate.LatexEditor;
 
 public class PlantUMLClassDiagramImageExporterTest {
 

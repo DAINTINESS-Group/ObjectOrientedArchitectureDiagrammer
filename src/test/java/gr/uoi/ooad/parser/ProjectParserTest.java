@@ -4,6 +4,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import gr.uoi.ooad.parser.factory.Parser;
+import gr.uoi.ooad.parser.factory.ParserType;
+import gr.uoi.ooad.parser.factory.ProjectParserFactory;
+import gr.uoi.ooad.parser.tree.LeafNode;
+import gr.uoi.ooad.parser.tree.PackageNode;
+import gr.uoi.ooad.utils.PathTemplate.LatexEditor;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -12,12 +18,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
-import gr.uoi.ooad.parser.factory.Parser;
-import gr.uoi.ooad.parser.factory.ParserType;
-import gr.uoi.ooad.parser.factory.ProjectParserFactory;
-import gr.uoi.ooad.parser.tree.LeafNode;
-import gr.uoi.ooad.parser.tree.PackageNode;
-import gr.uoi.ooad.utils.PathTemplate.LatexEditor;
 
 public class ProjectParserTest {
 

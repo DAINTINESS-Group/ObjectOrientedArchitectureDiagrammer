@@ -2,10 +2,6 @@ package gr.uoi.ooad.manager;
 
 import com.brunomnsilva.smartgraph.graph.Vertex;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
-import java.io.File;
-import java.nio.file.Path;
-import java.util.Collection;
-import java.util.List;
 import gr.uoi.ooad.model.diagram.ClassDiagram;
 import gr.uoi.ooad.model.diagram.ShadowCleaner;
 import gr.uoi.ooad.model.diagram.arrangement.ClassDiagramArrangementManager;
@@ -22,6 +18,10 @@ import gr.uoi.ooad.model.diagram.javafx.JavaFXClassVisualization;
 import gr.uoi.ooad.model.diagram.javafx.JavaFXUMLNode;
 import gr.uoi.ooad.model.diagram.javafx.JavaFXVisualization;
 import gr.uoi.ooad.model.diagram.svg.PlantUMLClassDiagram;
+import java.io.File;
+import java.nio.file.Path;
+import java.util.Collection;
+import java.util.List;
 import org.javatuples.Pair;
 
 public class ClassDiagramManager implements DiagramManager {

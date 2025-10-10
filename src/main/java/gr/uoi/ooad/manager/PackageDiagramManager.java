@@ -3,10 +3,6 @@ package gr.uoi.ooad.manager;
 import com.brunomnsilva.smartgraph.graph.Vertex;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import com.google.gson.JsonParseException;
-import java.io.File;
-import java.nio.file.Path;
-import java.util.Collection;
-import java.util.List;
 import gr.uoi.ooad.model.diagram.PackageDiagram;
 import gr.uoi.ooad.model.diagram.arrangement.DiagramArrangementManager;
 import gr.uoi.ooad.model.diagram.arrangement.PackageDiagramArrangementManager;
@@ -22,6 +18,10 @@ import gr.uoi.ooad.model.diagram.javafx.JavaFXPackageVisualization;
 import gr.uoi.ooad.model.diagram.javafx.JavaFXUMLNode;
 import gr.uoi.ooad.model.diagram.javafx.JavaFXVisualization;
 import gr.uoi.ooad.model.diagram.svg.PlantUMLPackageDiagram;
+import java.io.File;
+import java.nio.file.Path;
+import java.util.Collection;
+import java.util.List;
 import org.javatuples.Pair;
 
 public class PackageDiagramManager implements DiagramManager {

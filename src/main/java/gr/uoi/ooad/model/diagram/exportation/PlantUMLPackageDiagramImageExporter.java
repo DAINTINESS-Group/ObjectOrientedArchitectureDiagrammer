@@ -1,5 +1,8 @@
 package gr.uoi.ooad.model.diagram.exportation;
 
+import gr.uoi.ooad.model.diagram.PackageDiagram;
+import gr.uoi.ooad.model.diagram.plantuml.PlantUMLPackageVertex;
+import gr.uoi.ooad.model.diagram.plantuml.PlantUMLPackageVertexArc;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -8,9 +11,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 import javax.imageio.ImageIO;
-import gr.uoi.ooad.model.diagram.PackageDiagram;
-import gr.uoi.ooad.model.diagram.plantuml.PlantUMLPackageVertex;
-import gr.uoi.ooad.model.diagram.plantuml.PlantUMLPackageVertexArc;
 import net.sourceforge.plantuml.SourceStringReader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

@@ -1,11 +1,5 @@
 package gr.uoi.ooad.parser;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 import gr.uoi.ooad.model.graph.ArcType;
 import gr.uoi.ooad.model.graph.ClassifierVertex;
 import gr.uoi.ooad.model.graph.PackageVertex;
@@ -19,6 +13,12 @@ import gr.uoi.ooad.parser.tree.NodeType;
 import gr.uoi.ooad.parser.tree.PackageNode;
 import gr.uoi.ooad.parser.tree.Relationship;
 import gr.uoi.ooad.parser.tree.RelationshipType;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Interpreter {
 
@@ -186,7 +186,8 @@ public class Interpreter {
             };
         }
 
-        private static gr.uoi.ooad.model.graph.ModifierType convertModifierType(ModifierType modifierType) {
+        private static gr.uoi.ooad.model.graph.ModifierType convertModifierType(
+                ModifierType modifierType) {
             return switch (modifierType) {
                 case PRIVATE -> gr.uoi.ooad.model.graph.ModifierType.PRIVATE;
                 case PUBLIC -> gr.uoi.ooad.model.graph.ModifierType.PUBLIC;

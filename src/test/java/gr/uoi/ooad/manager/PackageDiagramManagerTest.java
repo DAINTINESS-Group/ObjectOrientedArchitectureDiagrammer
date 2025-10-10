@@ -3,20 +3,19 @@ package gr.uoi.ooad.manager;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import gr.uoi.ooad.model.diagram.PackageDiagram;
+import gr.uoi.ooad.model.graph.ClassifierVertex;
+import gr.uoi.ooad.model.graph.PackageVertex;
+import gr.uoi.ooad.parser.Interpreter;
+import gr.uoi.ooad.utils.PathTemplate.LatexEditor;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import gr.uoi.ooad.model.diagram.PackageDiagram;
-import gr.uoi.ooad.model.graph.ClassifierVertex;
-import gr.uoi.ooad.model.graph.PackageVertex;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import gr.uoi.ooad.parser.Interpreter;
-import gr.uoi.ooad.utils.PathTemplate.LatexEditor;
 
 public class PackageDiagramManagerTest {
 

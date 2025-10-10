@@ -3,9 +3,9 @@ package gr.uoi.ooad.model.diagram.arrangement.algorithms;
 import edu.uci.ics.jung.algorithms.layout.KKLayout;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
-import java.awt.*;
 import gr.uoi.ooad.model.diagram.arrangement.geometry.DiagramGeometry;
 import gr.uoi.ooad.model.diagram.arrangement.geometry.GeometryNode;
+import java.awt.*;
 
 public class KamadaKawai implements LayoutAlgorithm {
 

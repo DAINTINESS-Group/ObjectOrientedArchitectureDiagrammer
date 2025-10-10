@@ -3,19 +3,19 @@ package gr.uoi.ooad.parser;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.nio.file.Path;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import gr.uoi.ooad.model.graph.Arc;
 import gr.uoi.ooad.model.graph.ClassifierVertex;
 import gr.uoi.ooad.model.graph.PackageVertex;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import gr.uoi.ooad.parser.tree.LeafNode;
 import gr.uoi.ooad.parser.tree.PackageNode;
 import gr.uoi.ooad.parser.tree.Relationship;
 import gr.uoi.ooad.utils.PathTemplate.LatexEditor;
+import java.nio.file.Path;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class InterpreterTest {
 

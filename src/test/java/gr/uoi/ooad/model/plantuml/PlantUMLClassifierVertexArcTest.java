@@ -2,13 +2,13 @@ package gr.uoi.ooad.model.plantuml;
 
 import static gr.uoi.ooad.utils.ListUtils.assertListsEqual;
 
-import java.util.Arrays;
-import java.util.List;
 import gr.uoi.ooad.manager.ClassDiagramManager;
 import gr.uoi.ooad.model.diagram.ClassDiagram;
 import gr.uoi.ooad.model.diagram.plantuml.PlantUMLClassifierVertexArc;
-import org.junit.jupiter.api.Test;
 import gr.uoi.ooad.utils.PathTemplate.LatexEditor;
+import java.util.Arrays;
+import java.util.List;
+import org.junit.jupiter.api.Test;
 
 public class PlantUMLClassifierVertexArcTest {
 

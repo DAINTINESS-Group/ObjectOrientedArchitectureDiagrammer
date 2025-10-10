@@ -1,11 +1,11 @@
 package gr.uoi.ooad.parser.factory;
 
-import java.nio.file.Path;
-import java.util.Map;
-import java.util.Set;
 import gr.uoi.ooad.parser.tree.LeafNode;
 import gr.uoi.ooad.parser.tree.PackageNode;
 import gr.uoi.ooad.parser.tree.Relationship;
+import java.nio.file.Path;
+import java.util.Map;
+import java.util.Set;
 
 public interface Parser {
 

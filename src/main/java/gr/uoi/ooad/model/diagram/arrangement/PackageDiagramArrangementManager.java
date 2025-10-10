@@ -5,12 +5,6 @@ import edu.uci.ics.jung.algorithms.layout.SpringLayout;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.SparseGraph;
 import edu.uci.ics.jung.graph.util.EdgeType;
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 import gr.uoi.ooad.model.diagram.PackageDiagram;
 import gr.uoi.ooad.model.diagram.arrangement.algorithms.LayoutAlgorithm;
 import gr.uoi.ooad.model.diagram.arrangement.algorithms.LayoutAlgorithmFactory;
@@ -18,6 +12,12 @@ import gr.uoi.ooad.model.diagram.arrangement.algorithms.LayoutAlgorithmType;
 import gr.uoi.ooad.model.diagram.arrangement.geometry.DiagramGeometry;
 import gr.uoi.ooad.model.graph.Arc;
 import gr.uoi.ooad.model.graph.PackageVertex;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import org.javatuples.Pair;
 
 public class PackageDiagramArrangementManager implements DiagramArrangementManager {

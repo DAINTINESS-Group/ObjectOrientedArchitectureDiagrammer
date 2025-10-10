@@ -1,9 +1,9 @@
 package gr.uoi.ooad.parser;
 
+import gr.uoi.ooad.parser.tree.PackageNode;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
-import gr.uoi.ooad.parser.tree.PackageNode;
 
 public class PackageNodeCleaner {
 

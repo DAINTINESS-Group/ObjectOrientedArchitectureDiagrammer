@@ -4,20 +4,20 @@ import static gr.uoi.ooad.model.graph.ArcType.AGGREGATION;
 import static gr.uoi.ooad.model.graph.ArcType.ASSOCIATION;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import gr.uoi.ooad.manager.ClassDiagramManager;
+import gr.uoi.ooad.model.diagram.GraphClassDiagramConverter;
+import gr.uoi.ooad.model.diagram.ShadowCleaner;
+import gr.uoi.ooad.model.graph.Arc;
+import gr.uoi.ooad.model.graph.ClassifierVertex;
+import gr.uoi.ooad.utils.PathTemplate.LatexEditor;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-import gr.uoi.ooad.manager.ClassDiagramManager;
-import gr.uoi.ooad.model.diagram.GraphClassDiagramConverter;
-import gr.uoi.ooad.model.diagram.ShadowCleaner;
-import gr.uoi.ooad.model.graph.Arc;
-import gr.uoi.ooad.model.graph.ClassifierVertex;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import gr.uoi.ooad.utils.PathTemplate.LatexEditor;
 
 public class ShadowCleanerTest {
 

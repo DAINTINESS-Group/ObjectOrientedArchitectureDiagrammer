@@ -1,11 +1,11 @@
 package gr.uoi.ooad.manager;
 
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
+import gr.uoi.ooad.model.diagram.arrangement.geometry.DiagramGeometry;
+import gr.uoi.ooad.model.diagram.javafx.JavaFXUMLNode;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.List;
-import gr.uoi.ooad.model.diagram.arrangement.geometry.DiagramGeometry;
-import gr.uoi.ooad.model.diagram.javafx.JavaFXUMLNode;
 
 public interface DiagramManager {
 
