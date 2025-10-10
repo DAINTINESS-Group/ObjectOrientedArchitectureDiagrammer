@@ -267,7 +267,7 @@
                             </filters>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>view.AppStarter</mainClass>
+                                    <mainClass>gr.uoi.ooad.view.AppStarter</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>
