@@ -1,6 +1,8 @@
 package gr.uoi.smartgraph.graphview.arrow;
 
+import com.brunomnsilva.smartgraph.graph.Edge;
 import com.brunomnsilva.smartgraph.graphview.SmartArrow;
+import gr.uoi.ooad.model.diagram.javafx.JavaFXUMLNode;
 
 public class SmartArrowFactory {
 
@@ -60,6 +62,10 @@ public class SmartArrowFactory {
         }
 
              */
+        return null;
+    }
+
+    public static SmartArrow getSmartArrowFor(Edge<String, JavaFXUMLNode> edge){
         return null;
     }
 }

@@ -55,7 +55,7 @@ class JavaFXClassVisualizationTest {
                 .when(() -> SmartGraphFactory.createGraphView(Mockito.any()))
                 .thenCallRealMethod();
         mockedStatic.when(SmartGraphFactory::getSmartGraphStyleURI).thenCallRealMethod();
-        mockedStatic.when(SmartGraphFactory::getSmartgraphProperties).thenReturn(mockProperties);
+        mockedStatic.when(SmartGraphFactory::createSmartGraphProperties).thenReturn(mockProperties);
     }
 
     private void mockShapeFactory() {

@@ -1,9 +1,8 @@
 package gr.uoi.ooad.model.diagram.javafx;
 
-import com.brunomnsilva.smartgraph.graph.Digraph;
-import com.brunomnsilva.smartgraph.graph.DigraphEdgeList;
-import com.brunomnsilva.smartgraph.graph.Graph;
-import com.brunomnsilva.smartgraph.graph.Vertex;
+import com.brunomnsilva.smartgraph.graph.*;
+import com.brunomnsilva.smartgraph.graphview.SmartGraphEdge;
+import com.brunomnsilva.smartgraph.graphview.SmartGraphEdgeNode;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import gr.uoi.ooad.model.diagram.ClassDiagram;
 import gr.uoi.ooad.model.graph.Arc;
@@ -32,7 +31,22 @@ public class JavaFXClassVisualization implements JavaFXVisualization {
         vertexCollection = graph.vertices();
         graphView = SmartGraphFactory.createGraphView(graph);
         setSinkVertexCustomStyle();
+        setEdgeCustomStyle();
         return graphView;
+    }
+
+    private void setEdgeCustomStyle() {
+
+        Collection<SmartGraphEdge<String, JavaFXUMLNode>> smartEdges = graphView.getSmartEdges();
+        for(SmartGraphEdge<String, JavaFXUMLNode> smartEdge: smartEdges){
+            Edge<String, JavaFXUMLNode> edge = smartEdge.getUnderlyingEdge();
+//            if (edge.element().contains())
+            // TODO: Introduce UMLEdgeElement(source, target, type) class
+            // TODO: Rename JavaFXUMLNode to UMLNodeElement
+            String element = edge.element();
+
+        }
+
     }
 
     private Graph<JavaFXUMLNode, String> createGraph() {
