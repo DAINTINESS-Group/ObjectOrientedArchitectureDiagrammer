@@ -10,13 +10,12 @@ import gr.uoi.ooad.manager.SourceProject;
 import gr.uoi.ooad.model.diagram.ClassDiagram;
 import gr.uoi.ooad.model.graph.ClassifierVertex;
 import gr.uoi.ooad.utils.PathTemplate;
+import gr.uoi.smartgraph.graphview.element.UMLNodeElement;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
-
-import gr.uoi.smartgraph.graphview.element.JavaFXUMLNode;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -78,9 +77,9 @@ class JavaFXClassVisualizationTest {
         assertNotNull(theClassDiagram);
         assertEquals(3, theClassDiagram.getGraphNodes().keySet().size());
         JavaFXClassVisualization classVisualization = new JavaFXClassVisualization(theClassDiagram);
-        SmartGraphPanel<JavaFXUMLNode, String> graphPanel = classVisualization.createGraphView();
+        SmartGraphPanel<UMLNodeElement, String> graphPanel = classVisualization.createGraphView();
         assertNotNull(graphPanel);
-        Collection<SmartGraphVertex<JavaFXUMLNode>> smartVertices = graphPanel.getSmartVertices();
+        Collection<SmartGraphVertex<UMLNodeElement>> smartVertices = graphPanel.getSmartVertices();
         assertEquals(3, smartVertices.size());
         // verify that 3 circles are created
         mockedShapeFactory.verify(

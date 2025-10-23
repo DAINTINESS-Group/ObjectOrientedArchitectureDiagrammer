@@ -15,9 +15,9 @@ import gr.uoi.ooad.model.diagram.exportation.PlantUMLClassDiagramImageExporter;
 import gr.uoi.ooad.model.diagram.exportation.PlantUMLClassDiagramTextExporter;
 import gr.uoi.ooad.model.diagram.javafx.JavaFXClassDiagramLoader;
 import gr.uoi.ooad.model.diagram.javafx.JavaFXClassVisualization;
-import gr.uoi.smartgraph.graphview.element.JavaFXUMLNode;
 import gr.uoi.ooad.model.diagram.javafx.JavaFXVisualization;
 import gr.uoi.ooad.model.diagram.svg.PlantUMLClassDiagram;
+import gr.uoi.smartgraph.graphview.element.UMLNodeElement;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.Collection;
@@ -28,8 +28,8 @@ public class ClassDiagramManager implements DiagramManager {
 
     private ClassDiagram classDiagram;
     private DiagramArrangementManager classDiagramArrangement;
-    private Collection<Vertex<JavaFXUMLNode>> vertexCollection;
-    private SmartGraphPanel<JavaFXUMLNode, String> graphView;
+    private Collection<Vertex<UMLNodeElement>> vertexCollection;
+    private SmartGraphPanel<UMLNodeElement, String> graphView;
 
     public ClassDiagramManager() {
         classDiagram = new ClassDiagram();
@@ -60,7 +60,7 @@ public class ClassDiagramManager implements DiagramManager {
     }
 
     @Override
-    public SmartGraphPanel<JavaFXUMLNode, String> visualizeJavaFXGraph() {
+    public SmartGraphPanel<UMLNodeElement, String> visualizeJavaFXGraph() {
         JavaFXVisualization javaFXVisualization = new JavaFXClassVisualization(classDiagram);
         graphView = javaFXVisualization.createGraphView();
         vertexCollection = javaFXVisualization.getVertexCollection();
@@ -76,7 +76,7 @@ public class ClassDiagramManager implements DiagramManager {
     }
 
     @Override
-    public SmartGraphPanel<JavaFXUMLNode, String> visualizeLoadedJavaFXGraph() {
+    public SmartGraphPanel<UMLNodeElement, String> visualizeLoadedJavaFXGraph() {
         JavaFXVisualization javaFXVisualization = new JavaFXClassVisualization(classDiagram);
         javaFXVisualization.createGraphView();
 
@@ -126,9 +126,9 @@ public class ClassDiagramManager implements DiagramManager {
     }
 
     @Override
-    public SmartGraphPanel<JavaFXUMLNode, String> applyLayout() {
+    public SmartGraphPanel<UMLNodeElement, String> applyLayout() {
         DiagramGeometry nodesGeometry = classDiagram.getDiagramGeometry();
-        for (Vertex<JavaFXUMLNode> vertex : vertexCollection) {
+        for (Vertex<UMLNodeElement> vertex : vertexCollection) {
             if (!nodesGeometry.containsKey(vertex.element().getName())) continue;
 
             Pair<Double, Double> coordinates =
@@ -140,9 +140,9 @@ public class ClassDiagramManager implements DiagramManager {
     }
 
     @Override
-    public SmartGraphPanel<JavaFXUMLNode, String> applySpecificLayout(String choice) {
+    public SmartGraphPanel<UMLNodeElement, String> applySpecificLayout(String choice) {
         DiagramGeometry nodesGeometry = classDiagramArrangement.applyLayout(choice);
-        for (Vertex<JavaFXUMLNode> vertex : vertexCollection) {
+        for (Vertex<UMLNodeElement> vertex : vertexCollection) {
             if (!nodesGeometry.containsKey(vertex.element().getName())) continue;
 
             Pair<Double, Double> coordinates =

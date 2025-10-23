@@ -4,11 +4,11 @@ import com.brunomnsilva.smartgraph.graphview.SmartLabelSource;
 import com.brunomnsilva.smartgraph.graphview.SmartShapeTypeSource;
 import java.util.Objects;
 
-public class JavaFXPackageNode implements JavaFXUMLNode {
+public class InterfaceNodeElement implements UMLNodeElement {
 
     protected String name;
 
-    public JavaFXPackageNode(String name) {
+    public InterfaceNodeElement(String name) {
         this.name = name;
     }
 
@@ -17,16 +17,16 @@ public class JavaFXPackageNode implements JavaFXUMLNode {
      *
      * @return the name of the shape, see {@link com.brunomnsilva.smartgraph.graphview.ShapeFactory}
      */
-    @SmartShapeTypeSource
     @Override
+    @SmartShapeTypeSource
     public String modelShape() {
-        return "package";
+        return "interface";
     }
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        JavaFXPackageNode that = (JavaFXPackageNode) o;
+        InterfaceNodeElement that = (InterfaceNodeElement) o;
         return Objects.equals(name, that.name);
     }
 
@@ -38,7 +38,7 @@ public class JavaFXPackageNode implements JavaFXUMLNode {
     @SmartLabelSource
     @Override
     public String getName() {
-        return name;
+        return "<<interface>>\n" + name;
     }
 
     /**

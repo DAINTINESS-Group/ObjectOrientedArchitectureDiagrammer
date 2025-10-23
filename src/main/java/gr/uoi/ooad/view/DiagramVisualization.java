@@ -2,7 +2,7 @@ package gr.uoi.ooad.view;
 
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import gr.uoi.ooad.controller.Controller;
-import gr.uoi.smartgraph.graphview.element.JavaFXUMLNode;
+import gr.uoi.smartgraph.graphview.element.UMLNodeElement;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -39,7 +39,7 @@ public class DiagramVisualization {
 
     @FXML MenuBar menuBar;
 
-    private SmartGraphPanel<JavaFXUMLNode, String> graphView;
+    private SmartGraphPanel<UMLNodeElement, String> graphView;
     private ProjectTreeView projectTreeView;
     private Controller diagramController;
 
@@ -47,7 +47,7 @@ public class DiagramVisualization {
         this.menuBar = menuBar;
     }
 
-    public void loadDiagramVisualization(SmartGraphPanel<JavaFXUMLNode, String> graphView) {
+    public void loadDiagramVisualization(SmartGraphPanel<UMLNodeElement, String> graphView) {
         this.graphView = graphView;
         try {
             URL url = getClass().getResource(DIAGRAM_VISUALIZATION_VIEW);
@@ -117,7 +117,7 @@ public class DiagramVisualization {
         return diagonalInches > 30 ? 30 : (int) diagonalInches;
     }
 
-    public void loadLoadedDiagramVisualization(SmartGraphPanel<JavaFXUMLNode, String> graphView) {
+    public void loadLoadedDiagramVisualization(SmartGraphPanel<UMLNodeElement, String> graphView) {
         this.graphView = graphView;
         try {
             URL url = getClass().getResource(PROJECT_LOAD_VIEW);

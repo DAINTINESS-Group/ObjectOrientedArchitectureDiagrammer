@@ -10,25 +10,24 @@ import gr.uoi.ooad.model.graph.Arc;
 import gr.uoi.ooad.model.graph.ArcType;
 import gr.uoi.ooad.model.graph.PackageVertex;
 import gr.uoi.ooad.model.graph.VertexType;
-import gr.uoi.smartgraph.graphview.element.JavaFXPackageNode;
-import gr.uoi.smartgraph.graphview.element.JavaFXUMLNode;
-
+import gr.uoi.smartgraph.graphview.element.PackageNodeElement;
+import gr.uoi.smartgraph.graphview.element.UMLNodeElement;
 import java.util.Collection;
 import java.util.Set;
 
 public class JavaFXPackageVisualization implements JavaFXVisualization {
 
     private final PackageDiagram packageDiagram;
-    private SmartGraphPanel<JavaFXUMLNode, String> graphView;
-    private Collection<Vertex<JavaFXUMLNode>> vertexCollection;
+    private SmartGraphPanel<UMLNodeElement, String> graphView;
+    private Collection<Vertex<UMLNodeElement>> vertexCollection;
 
     public JavaFXPackageVisualization(PackageDiagram diagram) {
         this.packageDiagram = diagram;
     }
 
     @Override
-    public SmartGraphPanel<JavaFXUMLNode, String> createGraphView() {
-        Graph<JavaFXUMLNode, String> graph = createGraph();
+    public SmartGraphPanel<UMLNodeElement, String> createGraphView() {
+        Graph<UMLNodeElement, String> graph = createGraph();
         vertexCollection = graph.vertices();
         graphView = SmartGraphFactory.createGraphView(graph);
         setVertexCustomStyle();
@@ -37,29 +36,29 @@ public class JavaFXPackageVisualization implements JavaFXVisualization {
     }
 
     @Override
-    public Collection<Vertex<JavaFXUMLNode>> getVertexCollection() {
+    public Collection<Vertex<UMLNodeElement>> getVertexCollection() {
         return vertexCollection;
     }
 
-    private Graph<JavaFXUMLNode, String> createGraph() {
-        Digraph<JavaFXUMLNode, String> directedGraph = new DigraphEdgeList<>();
+    private Graph<UMLNodeElement, String> createGraph() {
+        Digraph<UMLNodeElement, String> directedGraph = new DigraphEdgeList<>();
         for (PackageVertex vertex : packageDiagram.getDiagram().keySet()) {
             if (vertex.getSinkVertices().isEmpty()) continue;
 
-            directedGraph.insertVertex(new JavaFXPackageNode(vertex.getName()));
+            directedGraph.insertVertex(new PackageNodeElement(vertex.getName()));
         }
         insertVertexArcs(directedGraph);
 
         return directedGraph;
     }
 
-    private void insertVertexArcs(Digraph<JavaFXUMLNode, String> directedGraph) {
+    private void insertVertexArcs(Digraph<UMLNodeElement, String> directedGraph) {
         for (Set<Arc<PackageVertex>> arcs : packageDiagram.getDiagram().values()) {
             for (Arc<PackageVertex> arc : arcs) {
                 if (arc.arcType().equals(ArcType.AGGREGATION)) {
                     directedGraph.insertEdge(
-                            new JavaFXPackageNode(arc.targetVertex().getName()),
-                            new JavaFXPackageNode(arc.sourceVertex().getName()),
+                            new PackageNodeElement(arc.targetVertex().getName()),
+                            new PackageNodeElement(arc.sourceVertex().getName()),
                             arc.targetVertex().getName()
                                     + "_"
                                     + arc.sourceVertex().getName()
@@ -67,8 +66,8 @@ public class JavaFXPackageVisualization implements JavaFXVisualization {
                                     + arc.arcType());
                 } else {
                     directedGraph.insertEdge(
-                            new JavaFXPackageNode(arc.sourceVertex().getName()),
-                            new JavaFXPackageNode(arc.targetVertex().getName()),
+                            new PackageNodeElement(arc.sourceVertex().getName()),
+                            new PackageNodeElement(arc.targetVertex().getName()),
                             arc.sourceVertex().getName()
                                     + "_"
                                     + arc.targetVertex().getName()
@@ -83,21 +82,21 @@ public class JavaFXPackageVisualization implements JavaFXVisualization {
         for (PackageVertex vertex : packageDiagram.getDiagram().keySet()) {
             if (vertex.getVertexType().equals(VertexType.INTERFACE)) {
                 graphView
-                        .getStylableVertex(new JavaFXPackageNode(vertex.getName()))
+                        .getStylableVertex(new PackageNodeElement(vertex.getName()))
                         .setStyleClass("vertexInterface");
             } else {
                 if (vertex.getSinkVertices().isEmpty()) continue;
 
                 graphView
-                        .getStylableVertex(new JavaFXPackageNode(vertex.getName()))
+                        .getStylableVertex(new PackageNodeElement(vertex.getName()))
                         .setStyleClass("vertexPackage");
             }
         }
     }
 
     @Override
-    public SmartGraphPanel<JavaFXUMLNode, String> getLoadedGraph() {
-        for (Vertex<JavaFXUMLNode> vertex : vertexCollection) {
+    public SmartGraphPanel<UMLNodeElement, String> getLoadedGraph() {
+        for (Vertex<UMLNodeElement> vertex : vertexCollection) {
             for (PackageVertex packageVertex : packageDiagram.getDiagram().keySet()) {
                 if (!packageVertex.getName().equals(vertex.element())) continue;
 

@@ -8,9 +8,8 @@ import gr.uoi.ooad.model.graph.Arc;
 import gr.uoi.ooad.model.graph.ArcType;
 import gr.uoi.ooad.model.graph.ClassifierVertex;
 import gr.uoi.ooad.model.graph.VertexType;
-import gr.uoi.smartgraph.graphview.element.JavaFXUMLNode;
-import gr.uoi.smartgraph.graphview.element.JavaFXUMLNodeFactory;
-
+import gr.uoi.smartgraph.graphview.element.UMLNodeElement;
+import gr.uoi.smartgraph.graphview.element.UMLNodeElementFactory;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,17 +18,17 @@ import java.util.Set;
 public class JavaFXClassVisualization implements JavaFXVisualization {
 
     private final ClassDiagram classDiagram;
-    private SmartGraphPanel<JavaFXUMLNode, String> graphView;
-    private Collection<Vertex<JavaFXUMLNode>> vertexCollection;
-    private Map<String, JavaFXUMLNode> vertexElementsMap = new HashMap<>();
+    private SmartGraphPanel<UMLNodeElement, String> graphView;
+    private Collection<Vertex<UMLNodeElement>> vertexCollection;
+    private Map<String, UMLNodeElement> vertexElementsMap = new HashMap<>();
 
     public JavaFXClassVisualization(ClassDiagram diagram) {
         this.classDiagram = diagram;
     }
 
     @Override
-    public SmartGraphPanel<JavaFXUMLNode, String> createGraphView() {
-        Graph<JavaFXUMLNode, String> graph = createGraph();
+    public SmartGraphPanel<UMLNodeElement, String> createGraphView() {
+        Graph<UMLNodeElement, String> graph = createGraph();
         vertexCollection = graph.vertices();
         graphView = SmartGraphFactory.createGraphView(graph);
         setSinkVertexCustomStyle();
@@ -39,22 +38,20 @@ public class JavaFXClassVisualization implements JavaFXVisualization {
 
     private void setEdgeCustomStyle() {
 
-        Collection<SmartGraphEdge<String, JavaFXUMLNode>> smartEdges = graphView.getSmartEdges();
-        for(SmartGraphEdge<String, JavaFXUMLNode> smartEdge: smartEdges){
-            Edge<String, JavaFXUMLNode> edge = smartEdge.getUnderlyingEdge();
-//            if (edge.element().contains())
+        Collection<SmartGraphEdge<String, UMLNodeElement>> smartEdges = graphView.getSmartEdges();
+        for (SmartGraphEdge<String, UMLNodeElement> smartEdge : smartEdges) {
+            Edge<String, UMLNodeElement> edge = smartEdge.getUnderlyingEdge();
+            //            if (edge.element().contains())
             // TODO: Introduce UMLEdgeElement(source, target, type) class
             // TODO: Rename JavaFXUMLNode to UMLNodeElement
             String element = edge.element();
-
         }
-
     }
 
-    private Graph<JavaFXUMLNode, String> createGraph() {
-        Digraph<JavaFXUMLNode, String> directedGraph = new DigraphEdgeList<>();
+    private Graph<UMLNodeElement, String> createGraph() {
+        Digraph<UMLNodeElement, String> directedGraph = new DigraphEdgeList<>();
         for (ClassifierVertex classifierVertex : classDiagram.getDiagram().keySet()) {
-            JavaFXUMLNode jfxNode = JavaFXUMLNodeFactory.createClassifierNode(classifierVertex);
+            UMLNodeElement jfxNode = UMLNodeElementFactory.createClassifierNode(classifierVertex);
             vertexElementsMap.put(jfxNode.getName(), jfxNode);
             directedGraph.insertVertex(jfxNode);
         }
@@ -63,19 +60,19 @@ public class JavaFXClassVisualization implements JavaFXVisualization {
         return directedGraph;
     }
 
-    private JavaFXUMLNode getJFXNode(ClassifierVertex cVertex) {
-        JavaFXUMLNode node = vertexElementsMap.get(cVertex.getName());
+    private UMLNodeElement getJFXNode(ClassifierVertex cVertex) {
+        UMLNodeElement node = vertexElementsMap.get(cVertex.getName());
         if (node == null) {
-            node = JavaFXUMLNodeFactory.createClassifierNode(cVertex);
+            node = UMLNodeElementFactory.createClassifierNode(cVertex);
         }
         return node;
     }
 
-    private void insertSinkVertexArcs(Digraph<JavaFXUMLNode, String> directedGraph) {
+    private void insertSinkVertexArcs(Digraph<UMLNodeElement, String> directedGraph) {
         for (Set<Arc<ClassifierVertex>> arcs : classDiagram.getDiagram().values()) {
             for (Arc<ClassifierVertex> arc : arcs) {
-                JavaFXUMLNode sourceNode = getJFXNode(arc.sourceVertex());
-                JavaFXUMLNode targetNode = getJFXNode(arc.targetVertex());
+                UMLNodeElement sourceNode = getJFXNode(arc.sourceVertex());
+                UMLNodeElement targetNode = getJFXNode(arc.targetVertex());
 
                 if (arc.arcType().equals(ArcType.AGGREGATION)) {
                     directedGraph.insertEdge(
@@ -107,19 +104,19 @@ public class JavaFXClassVisualization implements JavaFXVisualization {
                             ? "vertexInterface"
                             : "vertexClass";
 
-            JavaFXUMLNode node = getJFXNode(classifierVertex);
+            UMLNodeElement node = getJFXNode(classifierVertex);
             graphView.getStylableVertex(node).setStyleClass(styleClass);
         }
     }
 
     @Override
-    public Collection<Vertex<JavaFXUMLNode>> getVertexCollection() {
+    public Collection<Vertex<UMLNodeElement>> getVertexCollection() {
         return vertexCollection;
     }
 
     @Override
-    public SmartGraphPanel<JavaFXUMLNode, String> getLoadedGraph() {
-        for (Vertex<JavaFXUMLNode> vertex : vertexCollection) {
+    public SmartGraphPanel<UMLNodeElement, String> getLoadedGraph() {
+        for (Vertex<UMLNodeElement> vertex : vertexCollection) {
             for (ClassifierVertex classifierVertex : classDiagram.getDiagram().keySet()) {
                 if (!classifierVertex.getName().equals(vertex.element())) continue;
 

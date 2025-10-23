@@ -3,7 +3,10 @@ package gr.uoi.smartgraph.graphview.element;
 import com.brunomnsilva.smartgraph.graphview.SmartLabelSource;
 import com.brunomnsilva.smartgraph.graphview.SmartShapeTypeSource;
 
-public interface JavaFXUMLNode {
+/**
+ * Class for element objects that adorn each SmartGraph node
+ */
+public interface UMLNodeElement {
 
     @SmartLabelSource
     public abstract String getName();

@@ -4,11 +4,11 @@ import com.brunomnsilva.smartgraph.graphview.SmartLabelSource;
 import com.brunomnsilva.smartgraph.graphview.SmartShapeTypeSource;
 import java.util.Objects;
 
-public class JavaFXClassNode implements JavaFXUMLNode {
+public class ClassNodeElement implements UMLNodeElement {
 
     protected String name;
 
-    public JavaFXClassNode(String name) {
+    public ClassNodeElement(String name) {
         this.name = name;
     }
 
@@ -26,7 +26,7 @@ public class JavaFXClassNode implements JavaFXUMLNode {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        JavaFXClassNode that = (JavaFXClassNode) o;
+        ClassNodeElement that = (ClassNodeElement) o;
         return Objects.equals(name, that.name);
     }
 
