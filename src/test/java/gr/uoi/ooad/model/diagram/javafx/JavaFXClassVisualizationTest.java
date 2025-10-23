@@ -10,6 +10,7 @@ import gr.uoi.ooad.manager.SourceProject;
 import gr.uoi.ooad.model.diagram.ClassDiagram;
 import gr.uoi.ooad.model.graph.ClassifierVertex;
 import gr.uoi.ooad.utils.PathTemplate;
+import gr.uoi.smartgraph.graphview.element.UMLEdgeElement;
 import gr.uoi.smartgraph.graphview.element.UMLNodeElement;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -77,7 +78,8 @@ class JavaFXClassVisualizationTest {
         assertNotNull(theClassDiagram);
         assertEquals(3, theClassDiagram.getGraphNodes().keySet().size());
         JavaFXClassVisualization classVisualization = new JavaFXClassVisualization(theClassDiagram);
-        SmartGraphPanel<UMLNodeElement, String> graphPanel = classVisualization.createGraphView();
+        SmartGraphPanel<UMLNodeElement, UMLEdgeElement> graphPanel =
+                classVisualization.createGraphView();
         assertNotNull(graphPanel);
         Collection<SmartGraphVertex<UMLNodeElement>> smartVertices = graphPanel.getSmartVertices();
         assertEquals(3, smartVertices.size());

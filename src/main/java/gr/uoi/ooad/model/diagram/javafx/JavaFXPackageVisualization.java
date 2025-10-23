@@ -11,6 +11,8 @@ import gr.uoi.ooad.model.graph.ArcType;
 import gr.uoi.ooad.model.graph.PackageVertex;
 import gr.uoi.ooad.model.graph.VertexType;
 import gr.uoi.smartgraph.graphview.element.PackageNodeElement;
+import gr.uoi.smartgraph.graphview.element.UMLEdgeElement;
+import gr.uoi.smartgraph.graphview.element.UMLEdgeElementFactory;
 import gr.uoi.smartgraph.graphview.element.UMLNodeElement;
 import java.util.Collection;
 import java.util.Set;
@@ -18,7 +20,7 @@ import java.util.Set;
 public class JavaFXPackageVisualization implements JavaFXVisualization {
 
     private final PackageDiagram packageDiagram;
-    private SmartGraphPanel<UMLNodeElement, String> graphView;
+    private SmartGraphPanel<UMLNodeElement, UMLEdgeElement> graphView;
     private Collection<Vertex<UMLNodeElement>> vertexCollection;
 
     public JavaFXPackageVisualization(PackageDiagram diagram) {
@@ -26,8 +28,8 @@ public class JavaFXPackageVisualization implements JavaFXVisualization {
     }
 
     @Override
-    public SmartGraphPanel<UMLNodeElement, String> createGraphView() {
-        Graph<UMLNodeElement, String> graph = createGraph();
+    public SmartGraphPanel<UMLNodeElement, UMLEdgeElement> createGraphView() {
+        Graph<UMLNodeElement, UMLEdgeElement> graph = createGraph();
         vertexCollection = graph.vertices();
         graphView = SmartGraphFactory.createGraphView(graph);
         setVertexCustomStyle();
@@ -40,8 +42,8 @@ public class JavaFXPackageVisualization implements JavaFXVisualization {
         return vertexCollection;
     }
 
-    private Graph<UMLNodeElement, String> createGraph() {
-        Digraph<UMLNodeElement, String> directedGraph = new DigraphEdgeList<>();
+    private Graph<UMLNodeElement, UMLEdgeElement> createGraph() {
+        Digraph<UMLNodeElement, UMLEdgeElement> directedGraph = new DigraphEdgeList<>();
         for (PackageVertex vertex : packageDiagram.getDiagram().keySet()) {
             if (vertex.getSinkVertices().isEmpty()) continue;
 
@@ -52,27 +54,19 @@ public class JavaFXPackageVisualization implements JavaFXVisualization {
         return directedGraph;
     }
 
-    private void insertVertexArcs(Digraph<UMLNodeElement, String> directedGraph) {
+    private void insertVertexArcs(Digraph<UMLNodeElement, UMLEdgeElement> directedGraph) {
         for (Set<Arc<PackageVertex>> arcs : packageDiagram.getDiagram().values()) {
             for (Arc<PackageVertex> arc : arcs) {
                 if (arc.arcType().equals(ArcType.AGGREGATION)) {
                     directedGraph.insertEdge(
                             new PackageNodeElement(arc.targetVertex().getName()),
                             new PackageNodeElement(arc.sourceVertex().getName()),
-                            arc.targetVertex().getName()
-                                    + "_"
-                                    + arc.sourceVertex().getName()
-                                    + "_"
-                                    + arc.arcType());
+                            UMLEdgeElementFactory.createFromPackageArc(arc));
                 } else {
                     directedGraph.insertEdge(
                             new PackageNodeElement(arc.sourceVertex().getName()),
                             new PackageNodeElement(arc.targetVertex().getName()),
-                            arc.sourceVertex().getName()
-                                    + "_"
-                                    + arc.targetVertex().getName()
-                                    + "_"
-                                    + arc.arcType());
+                            UMLEdgeElementFactory.createFromPackageArc(arc));
                 }
             }
         }
@@ -95,7 +89,7 @@ public class JavaFXPackageVisualization implements JavaFXVisualization {
     }
 
     @Override
-    public SmartGraphPanel<UMLNodeElement, String> getLoadedGraph() {
+    public SmartGraphPanel<UMLNodeElement, UMLEdgeElement> getLoadedGraph() {
         for (Vertex<UMLNodeElement> vertex : vertexCollection) {
             for (PackageVertex packageVertex : packageDiagram.getDiagram().keySet()) {
                 if (!packageVertex.getName().equals(vertex.element())) continue;

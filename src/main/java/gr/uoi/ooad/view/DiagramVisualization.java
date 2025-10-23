@@ -2,6 +2,7 @@ package gr.uoi.ooad.view;
 
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import gr.uoi.ooad.controller.Controller;
+import gr.uoi.smartgraph.graphview.element.UMLEdgeElement;
 import gr.uoi.smartgraph.graphview.element.UMLNodeElement;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -39,7 +40,7 @@ public class DiagramVisualization {
 
     @FXML MenuBar menuBar;
 
-    private SmartGraphPanel<UMLNodeElement, String> graphView;
+    private SmartGraphPanel<UMLNodeElement, UMLEdgeElement> graphView;
     private ProjectTreeView projectTreeView;
     private Controller diagramController;
 
@@ -47,7 +48,8 @@ public class DiagramVisualization {
         this.menuBar = menuBar;
     }
 
-    public void loadDiagramVisualization(SmartGraphPanel<UMLNodeElement, String> graphView) {
+    public void loadDiagramVisualization(
+            SmartGraphPanel<UMLNodeElement, UMLEdgeElement> graphView) {
         this.graphView = graphView;
         try {
             URL url = getClass().getResource(DIAGRAM_VISUALIZATION_VIEW);
@@ -117,7 +119,8 @@ public class DiagramVisualization {
         return diagonalInches > 30 ? 30 : (int) diagonalInches;
     }
 
-    public void loadLoadedDiagramVisualization(SmartGraphPanel<UMLNodeElement, String> graphView) {
+    public void loadLoadedDiagramVisualization(
+            SmartGraphPanel<UMLNodeElement, UMLEdgeElement> graphView) {
         this.graphView = graphView;
         try {
             URL url = getClass().getResource(PROJECT_LOAD_VIEW);
@@ -170,12 +173,14 @@ public class DiagramVisualization {
                                                 "Edge starting node: %s",
                                                 it.getUnderlyingEdge()
                                                         .element()
+                                                        .toString()
                                                         .split("_")[EDGE_STARTING_NODE])
                                         + "\n"
                                         + String.format(
                                                 "Edge ending node: %s",
                                                 it.getUnderlyingEdge()
                                                         .element()
+                                                        .toString()
                                                         .split("_")[EDGE_ENDING_NODE])
                                         + "\n"
                                         + String.format(
@@ -183,10 +188,12 @@ public class DiagramVisualization {
                                                 Character.toUpperCase(
                                                                 it.getUnderlyingEdge()
                                                                         .element()
+                                                                        .toString()
                                                                         .split("_")[EDGE_TYPE]
                                                                         .charAt(0))
                                                         + it.getUnderlyingEdge()
                                                                 .element()
+                                                                .toString()
                                                                 .split("_")[EDGE_TYPE]
                                                                 .substring(1)),
                                 "Edge Information"));

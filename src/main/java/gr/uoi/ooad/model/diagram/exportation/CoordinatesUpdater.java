@@ -6,6 +6,7 @@ import gr.uoi.ooad.model.diagram.ClassDiagram;
 import gr.uoi.ooad.model.diagram.PackageDiagram;
 import gr.uoi.ooad.model.graph.ClassifierVertex;
 import gr.uoi.ooad.model.graph.PackageVertex;
+import gr.uoi.smartgraph.graphview.element.UMLEdgeElement;
 import gr.uoi.smartgraph.graphview.element.UMLNodeElement;
 import java.util.Collection;
 import java.util.logging.Level;
@@ -27,7 +28,7 @@ public class CoordinatesUpdater {
 
     public void updatePackageCoordinates(
             Collection<Vertex<UMLNodeElement>> vertexCollection,
-            SmartGraphPanel<UMLNodeElement, String> graphView) {
+            SmartGraphPanel<UMLNodeElement, UMLEdgeElement> graphView) {
         if (vertexCollection == null) {
             logger.log(
                     Level.WARNING,
@@ -49,7 +50,7 @@ public class CoordinatesUpdater {
 
     public void updateClassCoordinates(
             Collection<Vertex<UMLNodeElement>> vertexCollection,
-            SmartGraphPanel<UMLNodeElement, String> graphView) {
+            SmartGraphPanel<UMLNodeElement, UMLEdgeElement> graphView) {
         if (vertexCollection == null) {
             logger.log(
                     Level.WARNING,

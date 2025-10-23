@@ -3,6 +3,7 @@ package gr.uoi.ooad.view;
 import com.brunomnsilva.smartgraph.containers.ContentZoomPane;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import gr.uoi.ooad.controller.Controller;
+import gr.uoi.smartgraph.graphview.element.UMLEdgeElement;
 import gr.uoi.smartgraph.graphview.element.UMLNodeElement;
 import java.io.File;
 import java.io.IOException;
@@ -26,7 +27,7 @@ public class ProjectLoadController {
     @FXML BorderPane borderPane;
     @FXML Menu exportMenu;
 
-    private SmartGraphPanel<UMLNodeElement, String> graphView;
+    private SmartGraphPanel<UMLNodeElement, UMLEdgeElement> graphView;
     private double graphViewNormalScaleX;
     private double graphViewNormalScaleY;
     private Controller diagramController;
@@ -51,7 +52,7 @@ public class ProjectLoadController {
         FileUtility.setLoadedDiagramName(MenuUtility.loadDiagram(menuBar, event));
     }
 
-    public void visualizeGraph(SmartGraphPanel<UMLNodeElement, String> graphView) {
+    public void visualizeGraph(SmartGraphPanel<UMLNodeElement, UMLEdgeElement> graphView) {
         this.graphView = graphView;
         ContentZoomPane zoomPane = new ContentZoomPane(graphView);
         ScrollPane scrollPane = new ScrollPane(zoomPane);

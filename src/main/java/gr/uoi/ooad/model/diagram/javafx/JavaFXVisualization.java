@@ -2,6 +2,7 @@ package gr.uoi.ooad.model.diagram.javafx;
 
 import com.brunomnsilva.smartgraph.graph.Vertex;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
+import gr.uoi.smartgraph.graphview.element.UMLEdgeElement;
 import gr.uoi.smartgraph.graphview.element.UMLNodeElement;
 import java.util.Collection;
 
@@ -13,11 +14,11 @@ public interface JavaFXVisualization {
      *
      * @return the {@link SmartGraphPanel} created
      */
-    SmartGraphPanel<UMLNodeElement, String> createGraphView();
+    SmartGraphPanel<UMLNodeElement, UMLEdgeElement> createGraphView();
 
     // TODO Add Javadoc
     Collection<Vertex<UMLNodeElement>> getVertexCollection();
 
     // TODO Add Javadoc
-    SmartGraphPanel<UMLNodeElement, String> getLoadedGraph();
+    SmartGraphPanel<UMLNodeElement, UMLEdgeElement> getLoadedGraph();
 }
