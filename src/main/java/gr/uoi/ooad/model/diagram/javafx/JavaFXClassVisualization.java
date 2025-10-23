@@ -1,13 +1,16 @@
 package gr.uoi.ooad.model.diagram.javafx;
 
 import com.brunomnsilva.smartgraph.graph.*;
+import com.brunomnsilva.smartgraph.graphview.SmartArrow;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphEdge;
+import com.brunomnsilva.smartgraph.graphview.SmartGraphEdgeNode;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import gr.uoi.ooad.model.diagram.ClassDiagram;
 import gr.uoi.ooad.model.graph.Arc;
 import gr.uoi.ooad.model.graph.ArcType;
 import gr.uoi.ooad.model.graph.ClassifierVertex;
 import gr.uoi.ooad.model.graph.VertexType;
+import gr.uoi.smartgraph.graphview.arrow.SmartArrowFactory;
 import gr.uoi.smartgraph.graphview.element.UMLEdgeElement;
 import gr.uoi.smartgraph.graphview.element.UMLEdgeElementFactory;
 import gr.uoi.smartgraph.graphview.element.UMLNodeElement;
@@ -44,10 +47,19 @@ public class JavaFXClassVisualization implements JavaFXVisualization {
                 graphView.getSmartEdges();
         for (SmartGraphEdge<UMLEdgeElement, UMLNodeElement> smartEdge : smartEdges) {
             Edge<UMLEdgeElement, UMLNodeElement> edge = smartEdge.getUnderlyingEdge();
-            //            if (edge.element().contains())
-            // TODO: Introduce UMLEdgeElement(source, target, type) class
-            // TODO: Rename JavaFXUMLNode to UMLNodeElement
-            UMLEdgeElement element = edge.element();
+
+            SmartArrow smartArrow = SmartArrowFactory.createForEdge(edge.element());
+            // FIXME: type check before casting
+            ((SmartGraphEdgeNode<UMLEdgeElement, UMLNodeElement>) smartEdge)
+                    .attachArrow(smartArrow);
+            this.graphView.getChildren().add(1, smartArrow);
+
+            ArcType arcType = edge.element().getArcType();
+            if (arcType.equals(ArcType.ASSOCIATION)
+                    || arcType.equals(ArcType.EXTENSION)
+                    || arcType.equals(ArcType.AGGREGATION)) {
+                smartEdge.setStyleClass("edgeNonDashed");
+            }
         }
     }
 

@@ -1,5 +1,6 @@
 package gr.uoi.smartgraph.graphview.element;
 
+import com.brunomnsilva.smartgraph.graphview.SmartLabelSource;
 import gr.uoi.ooad.model.graph.ArcType;
 import java.util.Objects;
 
@@ -18,6 +19,23 @@ public class UMLEdgeElement {
     @Override
     public String toString() {
         return sourceVertexName + "_" + targetVertexName + "_" + arcType;
+    }
+
+    @SmartLabelSource
+    public String info() {
+        return toString();
+    }
+
+    public String getSourceVertexName() {
+        return sourceVertexName;
+    }
+
+    public String getTargetVertexName() {
+        return targetVertexName;
+    }
+
+    public ArcType getArcType() {
+        return arcType;
     }
 
     @Override
