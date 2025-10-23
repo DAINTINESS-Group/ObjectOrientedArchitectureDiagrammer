@@ -2,13 +2,15 @@ package gr.uoi.ooad.model.diagram.javafx;
 
 import com.brunomnsilva.smartgraph.graph.*;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphEdge;
-import com.brunomnsilva.smartgraph.graphview.SmartGraphEdgeNode;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import gr.uoi.ooad.model.diagram.ClassDiagram;
 import gr.uoi.ooad.model.graph.Arc;
 import gr.uoi.ooad.model.graph.ArcType;
 import gr.uoi.ooad.model.graph.ClassifierVertex;
 import gr.uoi.ooad.model.graph.VertexType;
+import gr.uoi.smartgraph.graphview.element.JavaFXUMLNode;
+import gr.uoi.smartgraph.graphview.element.JavaFXUMLNodeFactory;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;

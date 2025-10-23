@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
+
+import gr.uoi.smartgraph.graphview.element.JavaFXUMLNode;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -55,7 +57,7 @@ class JavaFXClassVisualizationTest {
                 .when(() -> SmartGraphFactory.createGraphView(Mockito.any()))
                 .thenCallRealMethod();
         mockedStatic.when(SmartGraphFactory::getSmartGraphStyleURI).thenCallRealMethod();
-        mockedStatic.when(SmartGraphFactory::createSmartGraphProperties).thenReturn(mockProperties);
+        mockedStatic.when(SmartGraphFactory::getSmartGraphProperties).thenReturn(mockProperties);
     }
 
     private void mockShapeFactory() {

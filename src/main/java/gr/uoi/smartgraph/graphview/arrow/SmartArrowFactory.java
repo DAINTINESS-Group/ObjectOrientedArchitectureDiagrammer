@@ -2,7 +2,7 @@ package gr.uoi.smartgraph.graphview.arrow;
 
 import com.brunomnsilva.smartgraph.graph.Edge;
 import com.brunomnsilva.smartgraph.graphview.SmartArrow;
-import gr.uoi.ooad.model.diagram.javafx.JavaFXUMLNode;
+import gr.uoi.smartgraph.graphview.element.JavaFXUMLNode;
 
 public class SmartArrowFactory {
 

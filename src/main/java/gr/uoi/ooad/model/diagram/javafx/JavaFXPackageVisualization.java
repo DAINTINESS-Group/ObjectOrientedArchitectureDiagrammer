@@ -10,6 +10,9 @@ import gr.uoi.ooad.model.graph.Arc;
 import gr.uoi.ooad.model.graph.ArcType;
 import gr.uoi.ooad.model.graph.PackageVertex;
 import gr.uoi.ooad.model.graph.VertexType;
+import gr.uoi.smartgraph.graphview.element.JavaFXPackageNode;
+import gr.uoi.smartgraph.graphview.element.JavaFXUMLNode;
+
 import java.util.Collection;
 import java.util.Set;
 

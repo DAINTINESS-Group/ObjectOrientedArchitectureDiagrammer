@@ -1,14 +1,14 @@
-package gr.uoi.ooad.model.diagram.javafx;
+package gr.uoi.smartgraph.graphview.element;
 
 import com.brunomnsilva.smartgraph.graphview.SmartLabelSource;
 import com.brunomnsilva.smartgraph.graphview.SmartShapeTypeSource;
 import java.util.Objects;
 
-public class JavaFXInterfaceNode implements JavaFXUMLNode {
+public class JavaFXPackageNode implements JavaFXUMLNode {
 
     protected String name;
 
-    public JavaFXInterfaceNode(String name) {
+    public JavaFXPackageNode(String name) {
         this.name = name;
     }
 
@@ -17,16 +17,16 @@ public class JavaFXInterfaceNode implements JavaFXUMLNode {
      *
      * @return the name of the shape, see {@link com.brunomnsilva.smartgraph.graphview.ShapeFactory}
      */
-    @Override
     @SmartShapeTypeSource
+    @Override
     public String modelShape() {
-        return "interface";
+        return "package";
     }
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        JavaFXInterfaceNode that = (JavaFXInterfaceNode) o;
+        JavaFXPackageNode that = (JavaFXPackageNode) o;
         return Objects.equals(name, that.name);
     }
 
@@ -38,7 +38,7 @@ public class JavaFXInterfaceNode implements JavaFXUMLNode {
     @SmartLabelSource
     @Override
     public String getName() {
-        return "<<interface>>\n" + name;
+        return name;
     }
 
     /**

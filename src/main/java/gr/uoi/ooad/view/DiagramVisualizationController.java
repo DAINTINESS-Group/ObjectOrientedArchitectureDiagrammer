@@ -2,7 +2,7 @@ package gr.uoi.ooad.view;
 
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import gr.uoi.ooad.controller.Controller;
-import gr.uoi.ooad.model.diagram.javafx.JavaFXUMLNode;
+import gr.uoi.smartgraph.graphview.element.JavaFXUMLNode;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;

@@ -5,6 +5,8 @@ import com.brunomnsilva.smartgraph.graphview.SmartCircularSortedPlacementStrateg
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphProperties;
 import gr.uoi.ooad.util.Resources;
+import gr.uoi.smartgraph.graphview.element.JavaFXUMLNode;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Objects;

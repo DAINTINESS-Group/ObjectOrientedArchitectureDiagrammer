@@ -1,4 +1,4 @@
-package gr.uoi.ooad.model.diagram.javafx;
+package gr.uoi.smartgraph.graphview.element;
 
 import com.brunomnsilva.smartgraph.graphview.SmartLabelSource;
 import com.brunomnsilva.smartgraph.graphview.SmartShapeTypeSource;

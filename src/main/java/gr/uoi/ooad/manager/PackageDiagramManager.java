@@ -15,7 +15,7 @@ import gr.uoi.ooad.model.diagram.exportation.PlantUMLPackageDiagramImageExporter
 import gr.uoi.ooad.model.diagram.exportation.PlantUMLPackageDiagramTextExporter;
 import gr.uoi.ooad.model.diagram.javafx.JavaFXPackageDiagramLoader;
 import gr.uoi.ooad.model.diagram.javafx.JavaFXPackageVisualization;
-import gr.uoi.ooad.model.diagram.javafx.JavaFXUMLNode;
+import gr.uoi.smartgraph.graphview.element.JavaFXUMLNode;
 import gr.uoi.ooad.model.diagram.javafx.JavaFXVisualization;
 import gr.uoi.ooad.model.diagram.svg.PlantUMLPackageDiagram;
 import java.io.File;
