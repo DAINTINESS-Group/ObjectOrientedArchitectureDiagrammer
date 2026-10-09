@@ -17,6 +17,7 @@ import model.diagram.plantuml.PlantUMLClassifierVertexArc;
 import org.junit.jupiter.api.Test;
 import utils.PathConstructor;
 import utils.PathTemplate.LatexEditor;
+import utils.TestUtils;
 
 public class PlantUMLClassDiagramTextExporterTest {
 
@@ -58,7 +59,8 @@ public class PlantUMLClassDiagramTextExporterTest {
                                                     "resources",
                                                     "testingExportedFile.txt"))));
             Stream<String> lines = Files.lines(exportedFile.toPath());
-            String actualFileContents = lines.collect(Collectors.joining("\n"));
+            String actualFileContents = lines
+                    .collect(Collectors.joining("\n"));
             lines.close();
 
             String expectedFileContents =
@@ -73,9 +75,11 @@ public class PlantUMLClassDiagramTextExporterTest {
                 """;
 
             expectedFileContents += sinkVertexBuffer + "\n\n" + sinkVertexArcBuffer + "\n @enduml";
-            assertEquals(expectedFileContents, actualFileContents);
+            expectedFileContents = expectedFileContents.replace("\r", "");
+            assertEquals(TestUtils.escape(expectedFileContents), TestUtils.escape(actualFileContents));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 }

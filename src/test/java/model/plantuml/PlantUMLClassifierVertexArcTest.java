@@ -5,6 +5,8 @@ import static utils.ListUtils.assertListsEqual;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import manager.ClassDiagramManager;
 import model.diagram.ClassDiagram;
 import model.diagram.plantuml.PlantUMLClassifierVertexArc;
@@ -36,10 +38,13 @@ public class PlantUMLClassifierVertexArcTest {
         String actualBuffer =
                 PlantUMLClassifierVertexArc.convertSinkVertexArcs(classDiagram).toString();
         List<String> actualRelationships =
-                Arrays.asList(actualBuffer.split(System.lineSeparator()));
+                Arrays.asList(actualBuffer.split(System.lineSeparator()))
+                        .stream()
+                        .map(line -> line.replace("\r", ""))
+                        .collect(Collectors.toList());
 
         List<String> expectedRelationships =
-                Arrays.asList(EXPECTED_BUFFER_SOURCE_FILE.split(System.lineSeparator()));
+                Arrays.asList(EXPECTED_BUFFER_SOURCE_FILE.split("\n"));
 
         assertListsEqual(expectedRelationships, actualRelationships);
     }
@@ -65,10 +70,13 @@ public class PlantUMLClassifierVertexArcTest {
                                 classDiagramManager.getClassDiagram())
                         .toString();
         List<String> actualRelationships =
-                Arrays.asList(actualBuffer.split(System.lineSeparator()));
+                Arrays.asList(actualBuffer.split(System.lineSeparator()))
+                        .stream()
+                        .map(line -> line.replace("\r", ""))
+                        .collect(Collectors.toList());
 
         List<String> expectedRelationships =
-                Arrays.asList(EXPECTED_BUFFER_CLASS_FILE.split(System.lineSeparator()));
+                Arrays.asList(EXPECTED_BUFFER_CLASS_FILE.split("\n"));
 
         assertListsEqual(expectedRelationships, actualRelationships);
     }

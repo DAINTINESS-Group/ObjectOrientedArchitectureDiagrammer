@@ -82,7 +82,9 @@ public class GraphMLSinkPackageVertexTest {
                             getNodesFields(leafNode),
                             getNodesMethods(leafNode)));
         }
-        assertEquals(expected.toString(), actual.toString());
+        String expectedResult = expected.toString().replace("\r", "");
+        String actualResult = actual.toString().replace("\r", "");
+        assertEquals(expectedResult, actualResult);
     }
 
     private String getNodesFields(ClassifierVertex l) {

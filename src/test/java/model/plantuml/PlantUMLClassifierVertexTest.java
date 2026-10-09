@@ -5,6 +5,8 @@ import static utils.ListUtils.assertListsEqual;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import manager.ClassDiagramManager;
 import model.diagram.plantuml.PlantUMLClassifierVertex;
 import org.junit.jupiter.api.Test;
@@ -34,8 +36,12 @@ public class PlantUMLClassifierVertexTest {
                 PlantUMLClassifierVertex.convertSinkVertices(classDiagramManager.getClassDiagram())
                         .toString();
         List<String> expected =
-                Arrays.asList(EXPECTED_BUFFER_SOURCE_FILE.split(System.lineSeparator()));
-        List<String> actual = Arrays.asList(actualBuffer.split(System.lineSeparator()));
+                Arrays.asList(EXPECTED_BUFFER_SOURCE_FILE.split("\n"));
+
+        List<String> actual = Arrays.asList(actualBuffer.split(System.lineSeparator()))
+                .stream()
+                .map(line -> line.replace("\r", ""))
+                .collect(Collectors.toList());
 
         assertListsEqual(expected, actual);
     }
@@ -60,9 +66,14 @@ public class PlantUMLClassifierVertexTest {
                 PlantUMLClassifierVertex.convertSinkVertices(classDiagramManager.getClassDiagram())
                         .toString();
         List<String> actualRelationships =
-                Arrays.asList(actualBuffer.split("}" + System.lineSeparator()));
+                Arrays.asList(actualBuffer.split("}" + System.lineSeparator()))
+                        .stream()
+                        .map(line -> line.replace("\r", ""))
+                        .collect(Collectors.toList());
+
+
         List<String> expectedRelationships =
-                Arrays.asList(EXPECTED_BUFFER_CLASS_FILE.split("}" + System.lineSeparator()));
+                Arrays.asList(EXPECTED_BUFFER_CLASS_FILE.split("}\n"));
 
         assertListsEqual(expectedRelationships, actualRelationships);
     }

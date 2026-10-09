@@ -32,7 +32,7 @@ class PlantUMLPackageVertexArcTest {
         PackageDiagram packageDiagram = packageDiagramManager.getPackageDiagram();
         String actualBuffer = PlantUMLPackageVertexArc.convertVertexArcs(packageDiagram).toString();
         List<String> expectedRelationship =
-                Arrays.asList(EXPECTED_BUFFER_SOURCE_FILE.split(System.lineSeparator()));
+                Arrays.asList(EXPECTED_BUFFER_SOURCE_FILE.split("\n"));
         List<String> actualRelationship = Arrays.asList(actualBuffer.split(System.lineSeparator()));
 
         assertListsEqual(expectedRelationship, actualRelationship);
@@ -51,8 +51,9 @@ class PlantUMLPackageVertexArcTest {
         String actualBuffer = PlantUMLPackageVertexArc.convertVertexArcs(packageDiagram).toString();
         List<String> actualRelationship = Arrays.asList(actualBuffer.split(System.lineSeparator()));
 
+        // multiline strings do not use \r
         List<String> expectedRelationship =
-                Arrays.asList(EXPECTED_BUFFER_CLASS_FILE.split(System.lineSeparator()));
+                Arrays.asList(EXPECTED_BUFFER_CLASS_FILE.split("\n"));
 
         assertListsEqual(expectedRelationship, actualRelationship);
     }

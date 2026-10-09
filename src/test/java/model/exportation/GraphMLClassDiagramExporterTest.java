@@ -59,7 +59,8 @@ public class GraphMLClassDiagramExporterTest {
             String actualFileContents = lines.collect(Collectors.joining("\n")) + "\n";
             lines.close();
 
-            String expectedFileContents = getExpectedFileContents(classDiagramManager);
+            String expectedFileContents = getExpectedFileContents(classDiagramManager).replace("\r", "");
+
             assertEquals(expectedFileContents, actualFileContents);
 
         } catch (IOException e) {
