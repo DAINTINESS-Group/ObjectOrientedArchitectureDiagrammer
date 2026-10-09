@@ -60,9 +60,9 @@ STYLESHEET FOR JAVAFXGRAPH VISUALIZATION
 }
 
 .arrowClosed {
-    -fx-stroke-width: 2;
+    -fx-stroke-width: 10;
     -fx-stroke: #FF6D66;
-    -fx-opacity: 1;
+    -fx-opacity: 0;
     -fx-fill: #FFFFFF;
 }
 
