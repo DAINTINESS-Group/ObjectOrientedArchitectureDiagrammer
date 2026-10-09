@@ -1,6 +1,9 @@
 package model.diagram.javafx;
 
-import com.brunomnsilva.smartgraph.graphview.*;
+import com.brunomnsilva.smartgraph.graphview.ShapeFactory;
+import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
+import com.brunomnsilva.smartgraph.graphview.SmartGraphProperties;
+import com.brunomnsilva.smartgraph.graphview.SmartGraphVertex;
 import manager.ClassDiagramManager;
 import manager.Project;
 import model.diagram.ClassDiagram;
@@ -12,7 +15,6 @@ import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import utils.PathTemplate;
 
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
@@ -65,7 +67,9 @@ class JavaFXClassVisualizationTest {
 
     private void mockShapeFactory(){
         mockedShapeFactory = Mockito.mockStatic(ShapeFactory.class);
-        mockedShapeFactory.when(() -> ShapeFactory.create(anyString(), anyDouble(), anyDouble(), anyDouble())).thenCallRealMethod();
+        mockedShapeFactory
+                .when(() -> ShapeFactory.create(anyString(), anyDouble(), anyDouble(), anyDouble()))
+                .thenCallRealMethod();
     }
 
     @AfterEach
@@ -84,7 +88,12 @@ class JavaFXClassVisualizationTest {
         Collection<SmartGraphVertex<JavaFXUMLNode>> smartVertices = graphPanel.getSmartVertices();
         assertEquals(3, smartVertices.size());
         // verify that 3 circles are created
-        mockedShapeFactory.verify(() -> ShapeFactory.create(eq("class"), anyDouble(), anyDouble(), anyDouble()),times(3));
-    }
+        mockedShapeFactory.verify(
+                () -> ShapeFactory.create(eq("class"), anyDouble(), anyDouble(), anyDouble()),
+                times(2));
+        mockedShapeFactory.verify(
+                () -> ShapeFactory.create(eq("interface"), anyDouble(), anyDouble(), anyDouble()),
+                times(1));
 
+    }
 }
