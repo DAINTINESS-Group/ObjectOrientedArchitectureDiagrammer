@@ -41,4 +41,9 @@ public record LeafNode(
             Map<String, String> parameters) {}
 
     public record Field(String name, String fieldType, ModifierType modifierType) {}
+
+    @Override
+    public String toString() {
+        return nodeName;
+    }
 }

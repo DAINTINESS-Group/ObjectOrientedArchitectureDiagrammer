@@ -97,7 +97,7 @@ public class Interpreter {
     private void addVertexArcs(Map<Path, PackageNode> packageNodes) {
         for (PackageNode packageNode : packageNodes.values()) {
             if (!packageNodeRelationships.containsKey(packageNode)) continue;
-
+            // FIXME: if no package relationships (just default package) then sink vertex arcs not identified (class/interface relationships)
             PackageVertex vertex = packageNodeVertexMap.get(packageNode);
             for (Relationship<PackageNode> relationship :
                     packageNodeRelationships.get(packageNode)) {
