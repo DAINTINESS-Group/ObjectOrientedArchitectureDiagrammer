@@ -8,7 +8,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Objects;
 
-import gr.uoi.diantiness.smartgraph.graphview.JavaFXUMLNode;
 import util.Resources;
 
 public class SmartGraphFactory {

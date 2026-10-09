@@ -1,13 +1,16 @@
-package gr.uoi.diantiness.smartgraph.graphview;
+package model.diagram.javafx;
 
+import com.brunomnsilva.smartgraph.graphview.SmartLabelSource;
 import com.brunomnsilva.smartgraph.graphview.SmartShapeTypeSource;
 
 import java.util.Objects;
 
-public class JavaFXPackageNode extends JavaFXUMLNode {
+public class JavaFXPackageNode implements JavaFXUMLNode {
+
+    protected String name;
 
     public JavaFXPackageNode(String name) {
-        super(name);
+        this.name = name;
     }
 
     /**
@@ -31,5 +34,20 @@ public class JavaFXPackageNode extends JavaFXUMLNode {
     @Override
     public int hashCode() {
         return Objects.hashCode(name);
+    }
+
+    @SmartLabelSource
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Setter for the name of the city.
+     *
+     * @param name the name of the city
+     */
+    public void setName(String name) {
+        this.name = name;
     }
 }

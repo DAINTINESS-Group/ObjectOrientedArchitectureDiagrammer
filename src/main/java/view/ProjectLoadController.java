@@ -6,7 +6,7 @@ import controller.Controller;
 import java.io.File;
 import java.io.IOException;
 
-import gr.uoi.diantiness.smartgraph.graphview.JavaFXUMLNode;
+import model.diagram.javafx.JavaFXUMLNode;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

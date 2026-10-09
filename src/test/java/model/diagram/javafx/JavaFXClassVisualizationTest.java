@@ -1,10 +1,6 @@
 package model.diagram.javafx;
 
-import com.brunomnsilva.smartgraph.graphview.ShapeFactory;
-import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
-import com.brunomnsilva.smartgraph.graphview.SmartGraphProperties;
-import com.brunomnsilva.smartgraph.graphview.SmartGraphVertex;
-import gr.uoi.diantiness.smartgraph.graphview.JavaFXUMLNode;
+import com.brunomnsilva.smartgraph.graphview.*;
 import manager.ClassDiagramManager;
 import manager.Project;
 import model.diagram.ClassDiagram;
@@ -16,6 +12,7 @@ import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import utils.PathTemplate;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;

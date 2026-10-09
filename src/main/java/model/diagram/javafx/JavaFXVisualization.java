@@ -2,7 +2,6 @@ package model.diagram.javafx;
 
 import com.brunomnsilva.smartgraph.graph.Vertex;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
-import gr.uoi.diantiness.smartgraph.graphview.JavaFXUMLNode;
 
 import java.util.Collection;
 
