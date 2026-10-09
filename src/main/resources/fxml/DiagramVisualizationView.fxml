@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="650.0" prefWidth="900.0" stylesheets="@../styles/modena_dark.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.DiagramVisualizationController">
+<VBox prefHeight="650.0" prefWidth="900.0" stylesheets="@../styles/modena_dark.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gr.uoi.ooad.view.DiagramVisualizationController">
     <children>
         <MenuBar fx:id="menuBar">
             <menus>
