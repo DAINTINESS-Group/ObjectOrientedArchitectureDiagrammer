@@ -23,6 +23,12 @@ import gr.uoi.ooad.model.diagram.javafx.JavaFXPackageDiagramLoader;
 import gr.uoi.ooad.model.diagram.javafx.JavaFXPackageVisualization;
 import gr.uoi.ooad.model.diagram.javafx.JavaFXVisualization;
 import gr.uoi.ooad.model.diagram.svg.PlantUMLPackageDiagram;
+import gr.uoi.smartgraph.graphview.element.UMLEdgeElement;
+import gr.uoi.smartgraph.graphview.element.UMLNodeElement;
+import java.io.File;
+import java.nio.file.Path;
+import java.util.Collection;
+import java.util.List;
 import org.javatuples.Pair;
 
 public class PackageDiagramManager implements DiagramManager {
@@ -30,7 +36,11 @@ public class PackageDiagramManager implements DiagramManager {
     private PackageDiagram packageDiagram = new PackageDiagram();
     private DiagramArrangementManager packageDiagramArrangement;
     private Collection<Vertex<UMLNodeElement>> vertexCollection;
-    private SmartGraphPanel<UMLNodeElement, String> graphView;
+    private SmartGraphPanel<UMLNodeElement, UMLEdgeElement> graphView;
+
+    public PackageDiagramManager() {
+        packageDiagram = new PackageDiagram();
+    }
 
     @Override
     public Project createSourceProject(Path sourcePackagePath) {
@@ -51,29 +61,26 @@ public class PackageDiagramManager implements DiagramManager {
         packageDiagramArrangement = new PackageDiagramArrangementManager(packageDiagram);
         DiagramGeometry diagramGeometry = packageDiagramArrangement.arrangeDiagram();
         packageDiagram.setDiagramGeometry(diagramGeometry);
-
         return diagramGeometry;
     }
 
     @Override
-    public SmartGraphPanel<UMLNodeElement, String> visualizeJavaFXGraph() {
+    public SmartGraphPanel<UMLNodeElement, UMLEdgeElement> visualizeJavaFXGraph() {
         JavaFXVisualization javaFXPackageVisualization =
                 new JavaFXPackageVisualization(packageDiagram);
         graphView = javaFXPackageVisualization.createGraphView();
         vertexCollection = javaFXPackageVisualization.getVertexCollection();
-
         return graphView;
     }
 
     @Override
     public String visualizeSvgGraph(int dpi) {
         PlantUMLPackageDiagram plantUMLPackageDiagram = new PlantUMLPackageDiagram(packageDiagram);
-
         return plantUMLPackageDiagram.toSvg(dpi);
     }
 
     @Override
-    public SmartGraphPanel<UMLNodeElement, String> visualizeLoadedJavaFXGraph() {
+    public SmartGraphPanel<UMLNodeElement, UMLEdgeElement> visualizeLoadedJavaFXGraph() {
         JavaFXVisualization javaFXPackageVisualization =
                 new JavaFXPackageVisualization(packageDiagram);
         javaFXPackageVisualization.createGraphView();
@@ -123,7 +130,7 @@ public class PackageDiagramManager implements DiagramManager {
     }
 
     @Override
-    public SmartGraphPanel<UMLNodeElement, String> applyLayout() {
+    public SmartGraphPanel<UMLNodeElement, UMLEdgeElement> applyLayout() {
         DiagramGeometry nodesGeometry = packageDiagram.getDiagramGeometry();
         for (Vertex<UMLNodeElement> vertex : vertexCollection) {
             if (!nodesGeometry.containsKey(vertex.element().getName())) continue;
@@ -136,7 +143,7 @@ public class PackageDiagramManager implements DiagramManager {
     }
 
     @Override
-    public SmartGraphPanel<UMLNodeElement, String> applySpecificLayout(String choice) {
+    public SmartGraphPanel<UMLNodeElement, UMLEdgeElement> applySpecificLayout(String choice) {
         DiagramGeometry nodesGeometry = packageDiagramArrangement.applyLayout(choice);
         for (Vertex<UMLNodeElement> vertex : vertexCollection) {
             if (!nodesGeometry.containsKey(vertex.element().getName())) continue;

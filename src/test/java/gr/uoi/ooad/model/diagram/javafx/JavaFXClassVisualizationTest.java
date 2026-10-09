@@ -8,13 +8,14 @@ import gr.uoi.ooad.manager.ClassDiagramManager;
 import gr.uoi.ooad.manager.Project;
 import gr.uoi.ooad.model.diagram.ClassDiagram;
 import gr.uoi.ooad.model.graph.ClassifierVertex;
+import gr.uoi.ooad.utils.PathTemplate;
+import gr.uoi.smartgraph.graphview.element.UMLEdgeElement;
 import gr.uoi.smartgraph.graphview.element.UMLNodeElement;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
-import gr.uoi.ooad.utils.PathTemplate;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -84,7 +85,8 @@ class JavaFXClassVisualizationTest {
         assertNotNull(theClassDiagram);
         assertEquals(3, theClassDiagram.getGraphNodes().keySet().size());
         JavaFXClassVisualization classVisualization = new JavaFXClassVisualization(theClassDiagram);
-        SmartGraphPanel<UMLNodeElement, String> graphPanel = classVisualization.createGraphView();
+        SmartGraphPanel<UMLNodeElement, UMLEdgeElement> graphPanel =
+                classVisualization.createGraphView();
         assertNotNull(graphPanel);
         Collection<SmartGraphVertex<UMLNodeElement>> smartVertices = graphPanel.getSmartVertices();
         assertEquals(3, smartVertices.size());

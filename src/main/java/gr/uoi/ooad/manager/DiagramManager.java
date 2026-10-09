@@ -1,6 +1,9 @@
 package gr.uoi.ooad.manager;
 
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
+import gr.uoi.ooad.model.diagram.arrangement.geometry.DiagramGeometry;
+import gr.uoi.smartgraph.graphview.element.UMLEdgeElement;
+import gr.uoi.smartgraph.graphview.element.UMLNodeElement;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.List;
@@ -68,7 +71,7 @@ public interface DiagramManager {
      *
      * @return the created graphView {@link SmartGraphPanel}
      */
-    SmartGraphPanel<UMLNodeElement, String> visualizeJavaFXGraph();
+    SmartGraphPanel<UMLNodeElement, UMLEdgeElement> visualizeJavaFXGraph();
 
     /**
      * TODO: Add Javadoc when this is done.
@@ -97,11 +100,11 @@ public interface DiagramManager {
     File exportPlantUMLText(Path textSavePath);
 
     // TODO JavaDoc
-    SmartGraphPanel<UMLNodeElement, String> applyLayout();
+    SmartGraphPanel<UMLNodeElement, UMLEdgeElement> applyLayout();
 
     // TODO JavaDoc
-    SmartGraphPanel<UMLNodeElement, String> applySpecificLayout(String algorithmType);
+    SmartGraphPanel<UMLNodeElement, UMLEdgeElement> applySpecificLayout(String algorithmType);
 
     // TODO JavaDoc
-    SmartGraphPanel<UMLNodeElement, String> visualizeLoadedJavaFXGraph();
+    SmartGraphPanel<UMLNodeElement, UMLEdgeElement> visualizeLoadedJavaFXGraph();
 }

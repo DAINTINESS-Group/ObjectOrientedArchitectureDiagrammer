@@ -1,13 +1,14 @@
 package gr.uoi.ooad.controller;
 
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
+import gr.uoi.ooad.manager.DiagramManager;
+import gr.uoi.ooad.manager.Project;
+import gr.uoi.smartgraph.graphview.element.UMLEdgeElement;
+import gr.uoi.smartgraph.graphview.element.UMLNodeElement;
+
 import java.io.File;
 import java.nio.file.Path;
 import java.util.List;
-
-import gr.uoi.smartgraph.graphview.element.UMLNodeElement;
-import gr.uoi.ooad.manager.DiagramManager;
-import gr.uoi.ooad.manager.Project;
 
 public interface Controller {
 
@@ -33,10 +34,10 @@ public interface Controller {
     void arrangeDiagram();
 
     // TODO JavaDoc
-    SmartGraphPanel<UMLNodeElement, String> applyLayout();
+    SmartGraphPanel<UMLNodeElement, UMLEdgeElement> applyLayout();
 
     // TODO JavaDoc
-    SmartGraphPanel<UMLNodeElement, String> applySpecificLayout(String choice);
+    SmartGraphPanel<UMLNodeElement, UMLEdgeElement> applySpecificLayout(String choice);
 
     /**
      * This method exports the diagram to a GraphML file by calling {@link
@@ -70,7 +71,7 @@ public interface Controller {
      *
      * @return the created graphView {@link SmartGraphPanel}.
      */
-    SmartGraphPanel<UMLNodeElement, String> visualizeJavaFXGraph();
+    SmartGraphPanel<UMLNodeElement, UMLEdgeElement> visualizeJavaFXGraph();
 
     /**
      * // TODO: Write a Javadoc when this is done.
@@ -86,7 +87,7 @@ public interface Controller {
      *
      * @return the created {@link SmartGraphPanel}.
      */
-    SmartGraphPanel<UMLNodeElement, String> visualizeLoadedJavaFXGraph();
+    SmartGraphPanel<UMLNodeElement, UMLEdgeElement> visualizeLoadedJavaFXGraph();
 
     /**
      * This method exports the diagram as an image with the help of PlantUML by calling {@link

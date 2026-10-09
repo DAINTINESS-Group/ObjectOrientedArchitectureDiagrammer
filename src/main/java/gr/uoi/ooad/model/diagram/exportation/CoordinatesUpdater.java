@@ -2,15 +2,15 @@ package gr.uoi.ooad.model.diagram.exportation;
 
 import com.brunomnsilva.smartgraph.graph.Vertex;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
-import java.util.Collection;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import gr.uoi.smartgraph.graphview.element.UMLNodeElement;
 import gr.uoi.ooad.model.diagram.ClassDiagram;
 import gr.uoi.ooad.model.diagram.PackageDiagram;
 import gr.uoi.ooad.model.graph.ClassifierVertex;
 import gr.uoi.ooad.model.graph.PackageVertex;
+import gr.uoi.smartgraph.graphview.element.UMLEdgeElement;
+import gr.uoi.smartgraph.graphview.element.UMLNodeElement;
+import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class CoordinatesUpdater {
     private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -28,7 +28,7 @@ public class CoordinatesUpdater {
 
     public void updatePackageCoordinates(
             Collection<Vertex<UMLNodeElement>> vertexCollection,
-            SmartGraphPanel<UMLNodeElement, String> graphView) {
+            SmartGraphPanel<UMLNodeElement, UMLEdgeElement> graphView) {
         if (vertexCollection == null) {
             logger.log(
                     Level.WARNING,
@@ -50,7 +50,7 @@ public class CoordinatesUpdater {
 
     public void updateClassCoordinates(
             Collection<Vertex<UMLNodeElement>> vertexCollection,
-            SmartGraphPanel<UMLNodeElement, String> graphView) {
+            SmartGraphPanel<UMLNodeElement, UMLEdgeElement> graphView) {
         if (vertexCollection == null) {
             logger.log(
                     Level.WARNING,

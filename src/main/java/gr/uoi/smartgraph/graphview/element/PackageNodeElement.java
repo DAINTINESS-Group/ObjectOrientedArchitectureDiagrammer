@@ -1,16 +1,15 @@
-package gr.uoi.ooad.model.diagram.javafx;
+package gr.uoi.smartgraph.graphview.element;
 
 import com.brunomnsilva.smartgraph.graphview.SmartLabelSource;
 import com.brunomnsilva.smartgraph.graphview.SmartShapeTypeSource;
-import gr.uoi.smartgraph.graphview.element.UMLNodeElement;
 
 import java.util.Objects;
 
-public class JavaFXPackageNode implements UMLNodeElement {
+public class PackageNodeElement implements UMLNodeElement {
 
     protected String name;
 
-    public JavaFXPackageNode(String name) {
+    public PackageNodeElement(String name) {
         this.name = name;
     }
 
@@ -28,7 +27,7 @@ public class JavaFXPackageNode implements UMLNodeElement {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        JavaFXPackageNode that = (JavaFXPackageNode) o;
+        PackageNodeElement that = (PackageNodeElement) o;
         return Objects.equals(name, that.name);
     }
 

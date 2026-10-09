@@ -1,7 +1,6 @@
 package gr.uoi.smartgraph.graphview.element;
 
 import gr.uoi.ooad.model.graph.ArcType;
-
 import java.util.Objects;
 
 public class UMLEdgeElement {
@@ -25,7 +24,9 @@ public class UMLEdgeElement {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         UMLEdgeElement that = (UMLEdgeElement) o;
-        return Objects.equals(sourceVertexName, that.sourceVertexName) && Objects.equals(targetVertexName, that.targetVertexName) && arcType == that.arcType;
+        return Objects.equals(sourceVertexName, that.sourceVertexName)
+                && Objects.equals(targetVertexName, that.targetVertexName)
+                && arcType == that.arcType;
     }
 
     @Override

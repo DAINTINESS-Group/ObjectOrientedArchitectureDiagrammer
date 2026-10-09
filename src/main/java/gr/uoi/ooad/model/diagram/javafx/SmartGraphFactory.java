@@ -4,6 +4,9 @@ import com.brunomnsilva.smartgraph.graph.Graph;
 import com.brunomnsilva.smartgraph.graphview.SmartCircularSortedPlacementStrategy;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphProperties;
+import gr.uoi.ooad.util.Resources;
+import gr.uoi.smartgraph.graphview.element.UMLEdgeElement;
+import gr.uoi.smartgraph.graphview.element.UMLNodeElement;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Objects;
@@ -16,13 +19,15 @@ public class SmartGraphFactory {
     public static final String DEFAULT_PROPERTIES_PATH = "styles/smartgraph.properties";
     public static final String DEFAULT_STYLE_PATH = "styles/smartgraph.css";
     private static SmartGraphProperties smartGraphProperties = null;
+
     /**
      * Factory for SmartGraphPanel object creation
      *
      * @param graph
      * @return
      */
-    public static SmartGraphPanel<UMLNodeElement, String> createGraphView(Graph<UMLNodeElement, String> graph) {
+    public static SmartGraphPanel<UMLNodeElement, UMLEdgeElement> createGraphView(
+            Graph<UMLNodeElement, UMLEdgeElement> graph) {
         try {
             smartGraphProperties = getSmartGraphProperties();
             URI url = getSmartGraphStyleURI();
