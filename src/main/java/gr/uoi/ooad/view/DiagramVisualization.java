@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.net.URL;
 
-import gr.uoi.ooad.model.diagram.javafx.JavaFXUMLNode;
+import gr.uoi.smartgraph.graphview.element.JavaFXUMLNode;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

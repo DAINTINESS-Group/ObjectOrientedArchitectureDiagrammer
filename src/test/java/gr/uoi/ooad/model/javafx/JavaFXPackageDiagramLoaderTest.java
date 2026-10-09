@@ -12,7 +12,7 @@ import java.util.Set;
 import gr.uoi.ooad.manager.PackageDiagramManager;
 import gr.uoi.ooad.model.diagram.exportation.DiagramExporter;
 import gr.uoi.ooad.model.diagram.exportation.JavaFXPackageDiagramExporter;
-import gr.uoi.ooad.model.diagram.javafx.JavaFXPackageDiagramLoader;
+import gr.uoi.smartgraph.graphview.element.JavaFXPackageDiagramLoader;
 import gr.uoi.ooad.model.graph.Arc;
 import gr.uoi.ooad.model.graph.ClassifierVertex;
 import gr.uoi.ooad.model.graph.PackageVertex;

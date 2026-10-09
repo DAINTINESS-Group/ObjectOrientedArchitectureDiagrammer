@@ -5,7 +5,7 @@ import java.io.File;
 import java.nio.file.Path;
 import java.util.List;
 
-import gr.uoi.ooad.model.diagram.javafx.JavaFXUMLNode;
+import gr.uoi.smartgraph.graphview.element.JavaFXUMLNode;
 import gr.uoi.ooad.model.diagram.arrangement.geometry.DiagramGeometry;
 
 public interface DiagramManager {

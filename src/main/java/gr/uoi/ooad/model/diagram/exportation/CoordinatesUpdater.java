@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import gr.uoi.ooad.model.diagram.javafx.JavaFXUMLNode;
+import gr.uoi.smartgraph.graphview.element.JavaFXUMLNode;
 import gr.uoi.ooad.model.diagram.ClassDiagram;
 import gr.uoi.ooad.model.diagram.PackageDiagram;
 import gr.uoi.ooad.model.graph.ClassifierVertex;

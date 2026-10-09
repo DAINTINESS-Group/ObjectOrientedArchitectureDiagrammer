@@ -1,5 +1,6 @@
-package gr.uoi.ooad.model.diagram.javafx;
+package gr.uoi.smartgraph.graphview.element;
 
+import gr.uoi.ooad.model.diagram.javafx.JavaFXPackageNode;
 import gr.uoi.ooad.model.graph.ClassifierVertex;
 import gr.uoi.ooad.model.graph.PackageVertex;
 import gr.uoi.ooad.model.graph.VertexType;

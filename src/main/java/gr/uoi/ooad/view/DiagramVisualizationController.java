@@ -6,7 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
-import gr.uoi.ooad.model.diagram.javafx.JavaFXUMLNode;
+import gr.uoi.smartgraph.graphview.element.JavaFXUMLNode;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

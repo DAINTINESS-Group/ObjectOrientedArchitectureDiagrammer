@@ -13,6 +13,7 @@ import gr.uoi.ooad.model.graph.Arc;
 import gr.uoi.ooad.model.graph.ArcType;
 import gr.uoi.ooad.model.graph.PackageVertex;
 import gr.uoi.ooad.model.graph.VertexType;
+import gr.uoi.smartgraph.graphview.element.JavaFXUMLNode;
 
 public class JavaFXPackageVisualization implements JavaFXVisualization {
 

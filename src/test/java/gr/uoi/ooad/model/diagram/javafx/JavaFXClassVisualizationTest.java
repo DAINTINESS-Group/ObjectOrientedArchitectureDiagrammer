@@ -8,6 +8,7 @@ import gr.uoi.ooad.manager.ClassDiagramManager;
 import gr.uoi.ooad.manager.Project;
 import gr.uoi.ooad.model.diagram.ClassDiagram;
 import gr.uoi.ooad.model.graph.ClassifierVertex;
+import gr.uoi.smartgraph.graphview.element.JavaFXUMLNode;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -62,7 +63,7 @@ class JavaFXClassVisualizationTest {
         mockedStatic = Mockito.mockStatic(SmartGraphFactory.class);
         mockedStatic.when(() -> SmartGraphFactory.createGraphView(Mockito.any())).thenCallRealMethod();
         mockedStatic.when(SmartGraphFactory::getSmartGraphStyleURI).thenCallRealMethod();
-        mockedStatic.when(SmartGraphFactory::getSmartgraphProperties).thenReturn(mockProperties);
+        mockedStatic.when(SmartGraphFactory::createSmartGraphProperties).thenReturn(mockProperties);
     }
 
     private void mockShapeFactory(){

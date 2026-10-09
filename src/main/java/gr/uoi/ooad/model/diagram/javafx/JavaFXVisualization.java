@@ -2,6 +2,7 @@ package gr.uoi.ooad.model.diagram.javafx;
 
 import com.brunomnsilva.smartgraph.graph.Vertex;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
+import gr.uoi.smartgraph.graphview.element.JavaFXUMLNode;
 
 import java.util.Collection;
 

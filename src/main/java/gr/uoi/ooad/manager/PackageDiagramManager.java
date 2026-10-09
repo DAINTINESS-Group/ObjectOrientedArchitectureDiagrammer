@@ -8,7 +8,7 @@ import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
 
-import gr.uoi.ooad.model.diagram.javafx.JavaFXUMLNode;
+import gr.uoi.smartgraph.graphview.element.JavaFXUMLNode;
 import gr.uoi.ooad.model.diagram.PackageDiagram;
 import gr.uoi.ooad.model.diagram.arrangement.DiagramArrangementManager;
 import gr.uoi.ooad.model.diagram.arrangement.PackageDiagramArrangementManager;
@@ -19,7 +19,7 @@ import gr.uoi.ooad.model.diagram.exportation.GraphMLPackageDiagramExporter;
 import gr.uoi.ooad.model.diagram.exportation.JavaFXPackageDiagramExporter;
 import gr.uoi.ooad.model.diagram.exportation.PlantUMLPackageDiagramImageExporter;
 import gr.uoi.ooad.model.diagram.exportation.PlantUMLPackageDiagramTextExporter;
-import gr.uoi.ooad.model.diagram.javafx.JavaFXPackageDiagramLoader;
+import gr.uoi.smartgraph.graphview.element.JavaFXPackageDiagramLoader;
 import gr.uoi.ooad.model.diagram.javafx.JavaFXPackageVisualization;
 import gr.uoi.ooad.model.diagram.javafx.JavaFXVisualization;
 import gr.uoi.ooad.model.diagram.svg.PlantUMLPackageDiagram;

@@ -1,4 +1,4 @@
-package gr.uoi.ooad.model.diagram.javafx;
+package gr.uoi.smartgraph.graphview.element;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -12,6 +12,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+
+import gr.uoi.ooad.model.diagram.javafx.PackageVertexDeserializer;
 import gr.uoi.ooad.model.graph.ArcType;
 import gr.uoi.ooad.model.graph.PackageVertex;
 import org.apache.logging.log4j.LogManager;

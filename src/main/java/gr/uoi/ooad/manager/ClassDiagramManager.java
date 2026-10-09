@@ -7,7 +7,7 @@ import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
 
-import gr.uoi.ooad.model.diagram.javafx.JavaFXUMLNode;
+import gr.uoi.smartgraph.graphview.element.JavaFXUMLNode;
 import gr.uoi.ooad.model.diagram.ClassDiagram;
 import gr.uoi.ooad.model.diagram.ShadowCleaner;
 import gr.uoi.ooad.model.diagram.arrangement.ClassDiagramArrangementManager;
