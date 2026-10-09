@@ -8,6 +8,8 @@ import java.awt.Toolkit;
 import java.io.IOException;
 import java.io.StringReader;
 import java.net.URL;
+
+import gr.uoi.diantiness.smartgraph.graphview.JavaFXUMLNode;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -38,7 +40,7 @@ public class DiagramVisualization {
 
     @FXML MenuBar menuBar;
 
-    private SmartGraphPanel<String, String> graphView;
+    private SmartGraphPanel<JavaFXUMLNode, String> graphView;
     private ProjectTreeView projectTreeView;
     private Controller diagramController;
 
@@ -46,7 +48,7 @@ public class DiagramVisualization {
         this.menuBar = menuBar;
     }
 
-    public void loadDiagramVisualization(SmartGraphPanel<String, String> graphView) {
+    public void loadDiagramVisualization(SmartGraphPanel<JavaFXUMLNode, String> graphView) {
         this.graphView = graphView;
         try {
             URL url = getClass().getResource(DIAGRAM_VISUALIZATION_VIEW);
@@ -116,7 +118,7 @@ public class DiagramVisualization {
         return diagonalInches > 30 ? 30 : (int) diagonalInches;
     }
 
-    public void loadLoadedDiagramVisualization(SmartGraphPanel<String, String> graphView) {
+    public void loadLoadedDiagramVisualization(SmartGraphPanel<JavaFXUMLNode, String> graphView) {
         this.graphView = graphView;
         try {
             URL url = getClass().getResource(PROJECT_LOAD_VIEW);

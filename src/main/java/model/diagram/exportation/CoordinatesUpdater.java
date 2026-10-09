@@ -5,6 +5,8 @@ import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import gr.uoi.diantiness.smartgraph.graphview.JavaFXUMLNode;
 import model.diagram.ClassDiagram;
 import model.diagram.PackageDiagram;
 import model.graph.ClassifierVertex;
@@ -25,8 +27,8 @@ public class CoordinatesUpdater {
     }
 
     public void updatePackageCoordinates(
-            Collection<Vertex<String>> vertexCollection,
-            SmartGraphPanel<String, String> graphView) {
+            Collection<Vertex<JavaFXUMLNode>> vertexCollection,
+            SmartGraphPanel<JavaFXUMLNode, String> graphView) {
         if (vertexCollection == null) {
             logger.log(
                     Level.WARNING,
@@ -35,7 +37,7 @@ public class CoordinatesUpdater {
             return;
         }
 
-        for (Vertex<String> vertex : vertexCollection) {
+        for (Vertex<JavaFXUMLNode> vertex : vertexCollection) {
             double x = graphView.getVertexPositionX(vertex);
             double y = graphView.getVertexPositionY(vertex);
             for (PackageVertex packageVertex : packageDiagram.getGraphNodes().keySet()) {
@@ -47,8 +49,8 @@ public class CoordinatesUpdater {
     }
 
     public void updateClassCoordinates(
-            Collection<Vertex<String>> vertexCollection,
-            SmartGraphPanel<String, String> graphView) {
+            Collection<Vertex<JavaFXUMLNode>> vertexCollection,
+            SmartGraphPanel<JavaFXUMLNode, String> graphView) {
         if (vertexCollection == null) {
             logger.log(
                     Level.WARNING,
@@ -57,7 +59,7 @@ public class CoordinatesUpdater {
             return;
         }
 
-        for (Vertex<String> vertex : vertexCollection) {
+        for (Vertex<JavaFXUMLNode> vertex : vertexCollection) {
             double x = graphView.getVertexPositionX(vertex);
             double y = graphView.getVertexPositionY(vertex);
             for (ClassifierVertex classifierVertex : classDiagram.getGraphNodes().keySet()) {

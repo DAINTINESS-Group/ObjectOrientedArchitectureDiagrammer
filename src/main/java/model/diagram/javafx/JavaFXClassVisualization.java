@@ -7,6 +7,9 @@ import com.brunomnsilva.smartgraph.graph.Vertex;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import java.util.Collection;
 import java.util.Set;
+
+import gr.uoi.diantiness.smartgraph.graphview.JavaFXClassNode;
+import gr.uoi.diantiness.smartgraph.graphview.JavaFXUMLNode;
 import model.diagram.ClassDiagram;
 import model.graph.Arc;
 import model.graph.ArcType;
@@ -16,39 +19,39 @@ import model.graph.VertexType;
 public class JavaFXClassVisualization implements JavaFXVisualization {
 
     private final ClassDiagram classDiagram;
-    private SmartGraphPanel<String, String> graphView;
-    private Collection<Vertex<String>> vertexCollection;
+    private SmartGraphPanel<JavaFXUMLNode, String> graphView;
+    private Collection<Vertex<JavaFXUMLNode>> vertexCollection;
 
     public JavaFXClassVisualization(ClassDiagram diagram) {
         this.classDiagram = diagram;
     }
 
     @Override
-    public SmartGraphPanel<String, String> createGraphView() {
-        Graph<String, String> graph = createGraph();
+    public SmartGraphPanel<JavaFXUMLNode, String> createGraphView() {
+        Graph<JavaFXUMLNode, String> graph = createGraph();
         vertexCollection = graph.vertices();
         graphView = SmartGraphFactory.createGraphView(graph);
         setSinkVertexCustomStyle();
         return graphView;
     }
 
-    private Graph<String, String> createGraph() {
-        Digraph<String, String> directedGraph = new DigraphEdgeList<>();
+    private Graph<JavaFXUMLNode, String> createGraph() {
+        Digraph<JavaFXUMLNode, String> directedGraph = new DigraphEdgeList<>();
         for (ClassifierVertex classifierVertex : classDiagram.getDiagram().keySet()) {
-            directedGraph.insertVertex(classifierVertex.getName());
+            directedGraph.insertVertex(new JavaFXClassNode(classifierVertex.getName()));
         }
         insertSinkVertexArcs(directedGraph);
 
         return directedGraph;
     }
 
-    private void insertSinkVertexArcs(Digraph<String, String> directedGraph) {
+    private void insertSinkVertexArcs(Digraph<JavaFXUMLNode, String> directedGraph) {
         for (Set<Arc<ClassifierVertex>> arcs : classDiagram.getDiagram().values()) {
             for (Arc<ClassifierVertex> arc : arcs) {
                 if (arc.arcType().equals(ArcType.AGGREGATION)) {
                     directedGraph.insertEdge(
-                            arc.targetVertex().getName(),
-                            arc.sourceVertex().getName(),
+                            new JavaFXClassNode(arc.targetVertex().getName()),
+                            new JavaFXClassNode(arc.sourceVertex().getName()),
                             arc.targetVertex().getName()
                                     + "_"
                                     + arc.sourceVertex().getName()
@@ -56,8 +59,8 @@ public class JavaFXClassVisualization implements JavaFXVisualization {
                                     + arc.arcType());
                 } else {
                     directedGraph.insertEdge(
-                            arc.sourceVertex().getName(),
-                            arc.targetVertex().getName(),
+                            new JavaFXClassNode(arc.sourceVertex().getName()),
+                            new JavaFXClassNode(arc.targetVertex().getName()),
                             arc.sourceVertex().getName()
                                     + "_"
                                     + arc.targetVertex().getName()
@@ -75,18 +78,18 @@ public class JavaFXClassVisualization implements JavaFXVisualization {
                             ? "vertexInterface"
                             : "vertexPackage";
 
-            graphView.getStylableVertex(classifierVertex.getName()).setStyleClass(styleClass);
+            graphView.getStylableVertex(new JavaFXClassNode(classifierVertex.getName())).setStyleClass(styleClass);
         }
     }
 
     @Override
-    public Collection<Vertex<String>> getVertexCollection() {
+    public Collection<Vertex<JavaFXUMLNode>> getVertexCollection() {
         return vertexCollection;
     }
 
     @Override
-    public SmartGraphPanel<String, String> getLoadedGraph() {
-        for (Vertex<String> vertex : vertexCollection) {
+    public SmartGraphPanel<JavaFXUMLNode, String> getLoadedGraph() {
+        for (Vertex<JavaFXUMLNode> vertex : vertexCollection) {
             for (ClassifierVertex classifierVertex : classDiagram.getDiagram().keySet()) {
                 if (!classifierVertex.getName().equals(vertex.element())) continue;
 

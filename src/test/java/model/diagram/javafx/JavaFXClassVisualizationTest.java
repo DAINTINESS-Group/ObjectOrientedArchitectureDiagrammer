@@ -4,6 +4,7 @@ import com.brunomnsilva.smartgraph.graphview.ShapeFactory;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphProperties;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphVertex;
+import gr.uoi.diantiness.smartgraph.graphview.JavaFXUMLNode;
 import manager.ClassDiagramManager;
 import manager.Project;
 import model.diagram.ClassDiagram;
@@ -77,16 +78,16 @@ class JavaFXClassVisualizationTest {
     }
 
     @Test
-    void createGraphView() {
+    void verifyCorrectShapeOfClassesInterfaces() {
         assertNotNull(theClassDiagram);
         assertEquals(3, theClassDiagram.getGraphNodes().keySet().size());
         JavaFXClassVisualization classVisualization = new JavaFXClassVisualization(theClassDiagram);
-        SmartGraphPanel<String, String> graphPanel = classVisualization.createGraphView();
+        SmartGraphPanel<JavaFXUMLNode, String> graphPanel = classVisualization.createGraphView();
         assertNotNull(graphPanel);
-        Collection<SmartGraphVertex<String>> smartVertices = graphPanel.getSmartVertices();
+        Collection<SmartGraphVertex<JavaFXUMLNode>> smartVertices = graphPanel.getSmartVertices();
         assertEquals(3, smartVertices.size());
         // verify that 3 circles are created
-        mockedShapeFactory.verify(() -> ShapeFactory.create(eq("circle"), anyDouble(), anyDouble(), anyDouble()),times(3));
+        mockedShapeFactory.verify(() -> ShapeFactory.create(eq("class"), anyDouble(), anyDouble(), anyDouble()),times(3));
     }
 
 }

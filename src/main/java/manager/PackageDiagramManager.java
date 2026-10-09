@@ -7,6 +7,8 @@ import java.io.File;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
+
+import gr.uoi.diantiness.smartgraph.graphview.JavaFXUMLNode;
 import model.diagram.PackageDiagram;
 import model.diagram.arrangement.DiagramArrangementManager;
 import model.diagram.arrangement.PackageDiagramArrangementManager;
@@ -27,8 +29,8 @@ public class PackageDiagramManager implements DiagramManager {
 
     private PackageDiagram packageDiagram = new PackageDiagram();
     private DiagramArrangementManager packageDiagramArrangement;
-    private Collection<Vertex<String>> vertexCollection;
-    private SmartGraphPanel<String, String> graphView;
+    private Collection<Vertex<JavaFXUMLNode>> vertexCollection;
+    private SmartGraphPanel<JavaFXUMLNode, String> graphView;
 
     @Override
     public Project createSourceProject(Path sourcePackagePath) {
@@ -54,7 +56,7 @@ public class PackageDiagramManager implements DiagramManager {
     }
 
     @Override
-    public SmartGraphPanel<String, String> visualizeJavaFXGraph() {
+    public SmartGraphPanel<JavaFXUMLNode, String> visualizeJavaFXGraph() {
         JavaFXVisualization javaFXPackageVisualization =
                 new JavaFXPackageVisualization(packageDiagram);
         graphView = javaFXPackageVisualization.createGraphView();
@@ -71,7 +73,7 @@ public class PackageDiagramManager implements DiagramManager {
     }
 
     @Override
-    public SmartGraphPanel<String, String> visualizeLoadedJavaFXGraph() {
+    public SmartGraphPanel<JavaFXUMLNode, String> visualizeLoadedJavaFXGraph() {
         JavaFXVisualization javaFXPackageVisualization =
                 new JavaFXPackageVisualization(packageDiagram);
         javaFXPackageVisualization.createGraphView();
@@ -121,12 +123,12 @@ public class PackageDiagramManager implements DiagramManager {
     }
 
     @Override
-    public SmartGraphPanel<String, String> applyLayout() {
+    public SmartGraphPanel<JavaFXUMLNode, String> applyLayout() {
         DiagramGeometry nodesGeometry = packageDiagram.getDiagramGeometry();
-        for (Vertex<String> vertex : vertexCollection) {
-            if (!nodesGeometry.containsKey(vertex.element())) continue;
+        for (Vertex<JavaFXUMLNode> vertex : vertexCollection) {
+            if (!nodesGeometry.containsKey(vertex.element().getName())) continue;
 
-            Pair<Double, Double> coordinates = nodesGeometry.getVertexGeometry(vertex.element());
+            Pair<Double, Double> coordinates = nodesGeometry.getVertexGeometry(vertex.element().getName());
             graphView.setVertexPosition(vertex, coordinates.getValue0(), coordinates.getValue1());
         }
 
@@ -134,12 +136,12 @@ public class PackageDiagramManager implements DiagramManager {
     }
 
     @Override
-    public SmartGraphPanel<String, String> applySpecificLayout(String choice) {
+    public SmartGraphPanel<JavaFXUMLNode, String> applySpecificLayout(String choice) {
         DiagramGeometry nodesGeometry = packageDiagramArrangement.applyLayout(choice);
-        for (Vertex<String> vertex : vertexCollection) {
-            if (!nodesGeometry.containsKey(vertex.element())) continue;
+        for (Vertex<JavaFXUMLNode> vertex : vertexCollection) {
+            if (!nodesGeometry.containsKey(vertex.element().getName())) continue;
 
-            Pair<Double, Double> coordinates = nodesGeometry.getVertexGeometry(vertex.element());
+            Pair<Double, Double> coordinates = nodesGeometry.getVertexGeometry(vertex.element().getName());
             graphView.setVertexPosition(vertex, coordinates.getValue0(), coordinates.getValue1());
         }
 
