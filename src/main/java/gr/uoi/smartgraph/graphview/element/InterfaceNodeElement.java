@@ -5,11 +5,11 @@ import com.brunomnsilva.smartgraph.graphview.SmartShapeTypeSource;
 
 import java.util.Objects;
 
-public class JavaFXInterfaceNode implements JavaFXUMLNode {
+public class InterfaceNodeElement implements UMLNodeElement {
 
     protected String name;
 
-    public JavaFXInterfaceNode(String name) {
+    public InterfaceNodeElement(String name) {
         this.name = name;
     }
 
@@ -27,7 +27,7 @@ public class JavaFXInterfaceNode implements JavaFXUMLNode {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        JavaFXInterfaceNode that = (JavaFXInterfaceNode) o;
+        InterfaceNodeElement that = (InterfaceNodeElement) o;
         return Objects.equals(name, that.name);
     }
 

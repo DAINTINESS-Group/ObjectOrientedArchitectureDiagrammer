@@ -6,7 +6,7 @@ import gr.uoi.ooad.controller.Controller;
 import java.io.File;
 import java.io.IOException;
 
-import gr.uoi.smartgraph.graphview.element.JavaFXUMLNode;
+import gr.uoi.smartgraph.graphview.element.UMLNodeElement;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -29,7 +29,7 @@ public class ProjectLoadController {
     @FXML BorderPane borderPane;
     @FXML Menu exportMenu;
 
-    private SmartGraphPanel<JavaFXUMLNode, String> graphView;
+    private SmartGraphPanel<UMLNodeElement, String> graphView;
     private double graphViewNormalScaleX;
     private double graphViewNormalScaleY;
     private Controller diagramController;
@@ -54,7 +54,7 @@ public class ProjectLoadController {
         FileUtility.setLoadedDiagramName(MenuUtility.loadDiagram(menuBar, event));
     }
 
-    public void visualizeGraph(SmartGraphPanel<JavaFXUMLNode, String> graphView) {
+    public void visualizeGraph(SmartGraphPanel<UMLNodeElement, String> graphView) {
         this.graphView = graphView;
         ContentZoomPane zoomPane = new ContentZoomPane(graphView);
         ScrollPane scrollPane = new ScrollPane(zoomPane);

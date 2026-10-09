@@ -5,7 +5,7 @@ import java.io.File;
 import java.nio.file.Path;
 import java.util.List;
 
-import gr.uoi.smartgraph.graphview.element.JavaFXUMLNode;
+import gr.uoi.smartgraph.graphview.element.UMLNodeElement;
 import gr.uoi.ooad.manager.DiagramManager;
 import gr.uoi.ooad.manager.Project;
 
@@ -33,10 +33,10 @@ public interface Controller {
     void arrangeDiagram();
 
     // TODO JavaDoc
-    SmartGraphPanel<JavaFXUMLNode, String> applyLayout();
+    SmartGraphPanel<UMLNodeElement, String> applyLayout();
 
     // TODO JavaDoc
-    SmartGraphPanel<JavaFXUMLNode, String> applySpecificLayout(String choice);
+    SmartGraphPanel<UMLNodeElement, String> applySpecificLayout(String choice);
 
     /**
      * This method exports the diagram to a GraphML file by calling {@link
@@ -70,7 +70,7 @@ public interface Controller {
      *
      * @return the created graphView {@link SmartGraphPanel}.
      */
-    SmartGraphPanel<JavaFXUMLNode, String> visualizeJavaFXGraph();
+    SmartGraphPanel<UMLNodeElement, String> visualizeJavaFXGraph();
 
     /**
      * // TODO: Write a Javadoc when this is done.
@@ -86,7 +86,7 @@ public interface Controller {
      *
      * @return the created {@link SmartGraphPanel}.
      */
-    SmartGraphPanel<JavaFXUMLNode, String> visualizeLoadedJavaFXGraph();
+    SmartGraphPanel<UMLNodeElement, String> visualizeLoadedJavaFXGraph();
 
     /**
      * This method exports the diagram as an image with the help of PlantUML by calling {@link

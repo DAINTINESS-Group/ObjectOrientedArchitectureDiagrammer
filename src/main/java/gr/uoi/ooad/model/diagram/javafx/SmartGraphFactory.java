@@ -9,7 +9,7 @@ import java.net.URISyntaxException;
 import java.util.Objects;
 
 import gr.uoi.ooad.util.Resources;
-import gr.uoi.smartgraph.graphview.element.JavaFXUMLNode;
+import gr.uoi.smartgraph.graphview.element.UMLNodeElement;
 
 public class SmartGraphFactory {
 
@@ -22,7 +22,7 @@ public class SmartGraphFactory {
      * @param graph
      * @return
      */
-    public static SmartGraphPanel<JavaFXUMLNode, String> createGraphView(Graph<JavaFXUMLNode, String> graph) {
+    public static SmartGraphPanel<UMLNodeElement, String> createGraphView(Graph<UMLNodeElement, String> graph) {
         try {
             smartGraphProperties = getSmartGraphProperties();
             URI url = getSmartGraphStyleURI();

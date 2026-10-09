@@ -2,11 +2,11 @@ package gr.uoi.ooad.model.diagram.javafx;
 
 import com.brunomnsilva.smartgraph.graphview.SmartLabelSource;
 import com.brunomnsilva.smartgraph.graphview.SmartShapeTypeSource;
-import gr.uoi.smartgraph.graphview.element.JavaFXUMLNode;
+import gr.uoi.smartgraph.graphview.element.UMLNodeElement;
 
 import java.util.Objects;
 
-public class JavaFXPackageNode implements JavaFXUMLNode {
+public class JavaFXPackageNode implements UMLNodeElement {
 
     protected String name;
 

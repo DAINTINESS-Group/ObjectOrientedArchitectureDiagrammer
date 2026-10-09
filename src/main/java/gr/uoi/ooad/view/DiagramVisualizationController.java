@@ -6,7 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
-import gr.uoi.smartgraph.graphview.element.JavaFXUMLNode;
+import gr.uoi.smartgraph.graphview.element.UMLNodeElement;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -31,13 +31,13 @@ public class DiagramVisualizationController {
     @FXML BorderPane borderPane;
     @FXML MenuBar menuBar;
 
-    private SmartGraphPanel<JavaFXUMLNode, String> graphView;
+    private SmartGraphPanel<UMLNodeElement, String> graphView;
     private Controller diagramController;
     private ProjectTreeView projectTreeView;
     private double graphViewNormalScaleX;
     private double graphViewNormalScaleY;
 
-    public void visualizeGraph(SmartGraphPanel<JavaFXUMLNode, String> graphView) {
+    public void visualizeGraph(SmartGraphPanel<UMLNodeElement, String> graphView) {
         this.graphView = graphView;
 
         ZoomablePane zoomablePane = new ZoomablePane(graphView);
@@ -135,41 +135,41 @@ public class DiagramVisualizationController {
         borderPane.setLeft(projectTreeView.treeView);
     }
 
-    public SmartGraphPanel<JavaFXUMLNode, String> applyLayout() {
+    public SmartGraphPanel<UMLNodeElement, String> applyLayout() {
         return diagramController.applyLayout();
     }
 
     public void applySugiyama() {
-        SmartGraphPanel<JavaFXUMLNode, String> graphView =
+        SmartGraphPanel<UMLNodeElement, String> graphView =
                 diagramController.applySpecificLayout("Sugiyama");
         graphView.update();
     }
 
     public void applyFruchtermanReingold() {
-        SmartGraphPanel<JavaFXUMLNode, String> graphView =
+        SmartGraphPanel<UMLNodeElement, String> graphView =
                 diagramController.applySpecificLayout("Fruchterman_Reingold");
         graphView.update();
     }
 
     public void applyAdvancedFruchtermanReingold() {
-        SmartGraphPanel<JavaFXUMLNode, String> graphView =
+        SmartGraphPanel<UMLNodeElement, String> graphView =
                 diagramController.applySpecificLayout("Advanced_Fruchterman_Reingold");
         graphView.update();
     }
 
     public void applySpring() {
-        SmartGraphPanel<JavaFXUMLNode, String> graphView = diagramController.applySpecificLayout("Spring");
+        SmartGraphPanel<UMLNodeElement, String> graphView = diagramController.applySpecificLayout("Spring");
         graphView.update();
     }
 
     public void applyAdvancedSpring() {
-        SmartGraphPanel<JavaFXUMLNode, String> graphView =
+        SmartGraphPanel<UMLNodeElement, String> graphView =
                 diagramController.applySpecificLayout("Advanced_Spring");
         graphView.update();
     }
 
     public void applyKamadaKawai() {
-        SmartGraphPanel<JavaFXUMLNode, String> graphView =
+        SmartGraphPanel<UMLNodeElement, String> graphView =
                 diagramController.applySpecificLayout("Kamada_Kawai");
         graphView.update();
     }

@@ -5,7 +5,7 @@ import java.io.File;
 import java.nio.file.Path;
 import java.util.List;
 
-import gr.uoi.smartgraph.graphview.element.JavaFXUMLNode;
+import gr.uoi.smartgraph.graphview.element.UMLNodeElement;
 import gr.uoi.ooad.manager.DiagramManager;
 import gr.uoi.ooad.manager.DiagramManagerFactory;
 import gr.uoi.ooad.manager.Project;
@@ -34,12 +34,12 @@ public class DiagramController implements Controller {
     }
 
     @Override
-    public SmartGraphPanel<JavaFXUMLNode, String> applyLayout() {
+    public SmartGraphPanel<UMLNodeElement, String> applyLayout() {
         return diagramManager.applyLayout();
     }
 
     @Override
-    public SmartGraphPanel<JavaFXUMLNode, String> applySpecificLayout(String choice) {
+    public SmartGraphPanel<UMLNodeElement, String> applySpecificLayout(String choice) {
         return diagramManager.applySpecificLayout(choice);
     }
 
@@ -59,7 +59,7 @@ public class DiagramController implements Controller {
     }
 
     @Override
-    public SmartGraphPanel<JavaFXUMLNode, String> visualizeJavaFXGraph() {
+    public SmartGraphPanel<UMLNodeElement, String> visualizeJavaFXGraph() {
         return diagramManager.visualizeJavaFXGraph();
     }
 
@@ -69,7 +69,7 @@ public class DiagramController implements Controller {
     }
 
     @Override
-    public SmartGraphPanel<JavaFXUMLNode, String> visualizeLoadedJavaFXGraph() {
+    public SmartGraphPanel<UMLNodeElement, String> visualizeLoadedJavaFXGraph() {
         return diagramManager.visualizeLoadedJavaFXGraph();
     }
 

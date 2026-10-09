@@ -5,17 +5,17 @@ import gr.uoi.ooad.model.graph.ClassifierVertex;
 import gr.uoi.ooad.model.graph.PackageVertex;
 import gr.uoi.ooad.model.graph.VertexType;
 
-public class JavaFXUMLNodeFactory {
+public class UMLNodeElementFactory {
 
-    public static JavaFXUMLNode createClassifierNode(ClassifierVertex cVertex){
+    public static UMLNodeElement createClassifierNode(ClassifierVertex cVertex){
         if (cVertex.getVertexType().equals(VertexType.INTERFACE)){
-            return new JavaFXInterfaceNode(cVertex.getName());
+            return new InterfaceNodeElement(cVertex.getName());
         }
         // FIXME: Discriminate a case for Enum
-        return new JavaFXClassNode(cVertex.getName());
+        return new ClassNodeElement(cVertex.getName());
     }
 
-    public static JavaFXUMLNode createPackageNode(PackageVertex pVertex){
+    public static UMLNodeElement createPackageNode(PackageVertex pVertex){
         return new JavaFXPackageNode(pVertex.getName());
     }
 }

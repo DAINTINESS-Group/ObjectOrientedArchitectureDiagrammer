@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import gr.uoi.smartgraph.graphview.element.JavaFXUMLNode;
+import gr.uoi.smartgraph.graphview.element.UMLNodeElement;
 import gr.uoi.ooad.model.diagram.ClassDiagram;
 import gr.uoi.ooad.model.diagram.PackageDiagram;
 import gr.uoi.ooad.model.graph.ClassifierVertex;
@@ -27,8 +27,8 @@ public class CoordinatesUpdater {
     }
 
     public void updatePackageCoordinates(
-            Collection<Vertex<JavaFXUMLNode>> vertexCollection,
-            SmartGraphPanel<JavaFXUMLNode, String> graphView) {
+            Collection<Vertex<UMLNodeElement>> vertexCollection,
+            SmartGraphPanel<UMLNodeElement, String> graphView) {
         if (vertexCollection == null) {
             logger.log(
                     Level.WARNING,
@@ -37,7 +37,7 @@ public class CoordinatesUpdater {
             return;
         }
 
-        for (Vertex<JavaFXUMLNode> vertex : vertexCollection) {
+        for (Vertex<UMLNodeElement> vertex : vertexCollection) {
             double x = graphView.getVertexPositionX(vertex);
             double y = graphView.getVertexPositionY(vertex);
             for (PackageVertex packageVertex : packageDiagram.getGraphNodes().keySet()) {
@@ -49,8 +49,8 @@ public class CoordinatesUpdater {
     }
 
     public void updateClassCoordinates(
-            Collection<Vertex<JavaFXUMLNode>> vertexCollection,
-            SmartGraphPanel<JavaFXUMLNode, String> graphView) {
+            Collection<Vertex<UMLNodeElement>> vertexCollection,
+            SmartGraphPanel<UMLNodeElement, String> graphView) {
         if (vertexCollection == null) {
             logger.log(
                     Level.WARNING,
@@ -59,7 +59,7 @@ public class CoordinatesUpdater {
             return;
         }
 
-        for (Vertex<JavaFXUMLNode> vertex : vertexCollection) {
+        for (Vertex<UMLNodeElement> vertex : vertexCollection) {
             double x = graphView.getVertexPositionX(vertex);
             double y = graphView.getVertexPositionY(vertex);
             for (ClassifierVertex classifierVertex : classDiagram.getGraphNodes().keySet()) {
