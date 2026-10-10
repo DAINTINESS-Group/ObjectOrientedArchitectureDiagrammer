@@ -177,4 +177,28 @@ public class ASTInterpreterTest {
 
         assertTrue(hasExtensionArc);
     }
+
+    @Test
+    void implementationArcsArePresentForDefaultPackageTest() {
+        ASTInterpreter interpreter = new ASTInterpreter();
+        interpreter.parseProject(PathTemplate.ParserTesting.SRC.path);
+        interpreter.convertToGraph(Collections.emptyList(), Collections.emptyList());
+
+        List<ClassifierVertex> sinkVertices = interpreter.getSinkVertices();
+
+        ClassifierVertex implementingClassVertex =
+                sinkVertices.stream()
+                        .filter(it -> it.getName().equals("ImplementingClass"))
+                        .findFirst()
+                        .orElseGet(Assertions::fail);
+
+        boolean hasImplementationArc =
+                implementingClassVertex.getArcs().stream()
+                        .anyMatch(
+                                arc ->
+                                        arc.targetVertex().getName().equals("TestingInterface")
+                                                && arc.arcType().equals(ArcType.IMPLEMENTATION));
+
+        assertTrue(hasImplementationArc);
+    }
 }
