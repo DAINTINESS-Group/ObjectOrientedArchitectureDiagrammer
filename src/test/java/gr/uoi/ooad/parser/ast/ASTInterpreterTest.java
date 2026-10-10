@@ -3,22 +3,24 @@ package gr.uoi.ooad.parser.ast;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import gr.uoi.ooad.model.graph.Arc;
+import gr.uoi.ooad.model.graph.ArcType;
+import gr.uoi.ooad.model.graph.ClassifierVertex;
+import gr.uoi.ooad.model.graph.PackageVertex;
+import gr.uoi.ooad.parser.ast.tree.LeafNode;
+import gr.uoi.ooad.parser.ast.tree.PackageNode;
+import gr.uoi.ooad.parser.ast.tree.Relationship;
+import gr.uoi.ooad.utils.PathTemplate;
+import gr.uoi.ooad.utils.PathTemplate.LatexEditor;
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
-import gr.uoi.ooad.model.graph.Arc;
-import gr.uoi.ooad.model.graph.ClassifierVertex;
-import gr.uoi.ooad.model.graph.PackageVertex;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import gr.uoi.ooad.parser.ast.tree.LeafNode;
-import gr.uoi.ooad.parser.ast.tree.PackageNode;
-import gr.uoi.ooad.parser.ast.tree.Relationship;
-import gr.uoi.ooad.utils.PathTemplate.LatexEditor;
 
 public class ASTInterpreterTest {
 
@@ -150,5 +152,29 @@ public class ASTInterpreterTest {
                         && leafMethod.parameters().values().containsAll(it.parameters())
                         && it.returnType().equals(leafMethod.returnType())
                         && it.modifier().toString().equals(leafMethod.modifierType().toString());
+    }
+
+    @Test
+    void inheritanceArcsArePresentForDefaultPackageTest() {
+        ASTInterpreter interpreter = new ASTInterpreter();
+        interpreter.parseProject(PathTemplate.ParserTesting.SRC.path);
+        interpreter.convertToGraph(Collections.emptyList(), Collections.emptyList());
+
+        List<ClassifierVertex> sinkVertices = interpreter.getSinkVertices();
+
+        ClassifierVertex implementingClassVertex =
+                sinkVertices.stream()
+                        .filter(it -> it.getName().equals("ImplementingClass"))
+                        .findFirst()
+                        .orElseGet(Assertions::fail);
+
+        boolean hasExtensionArc =
+                implementingClassVertex.getArcs().stream()
+                        .anyMatch(
+                                arc ->
+                                        arc.targetVertex().getName().equals("ExtensionClass")
+                                                && arc.arcType().equals(ArcType.EXTENSION));
+
+        assertTrue(hasExtensionArc);
     }
 }
