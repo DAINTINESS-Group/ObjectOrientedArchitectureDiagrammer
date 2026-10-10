@@ -1,12 +1,5 @@
 package gr.uoi.ooad.parser.ast;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import gr.uoi.ooad.model.graph.ArcType;
 import gr.uoi.ooad.model.graph.ClassifierVertex;
 import gr.uoi.ooad.model.graph.PackageVertex;
@@ -18,6 +11,13 @@ import gr.uoi.ooad.parser.ast.tree.NodeType;
 import gr.uoi.ooad.parser.ast.tree.PackageNode;
 import gr.uoi.ooad.parser.ast.tree.Relationship;
 import gr.uoi.ooad.parser.ast.tree.RelationshipType;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class ASTInterpreter implements Interpreter {
 
@@ -96,15 +96,15 @@ public class ASTInterpreter implements Interpreter {
 
     private void addVertexArcs(Map<Path, PackageNode> packageNodes) {
         for (PackageNode packageNode : packageNodes.values()) {
-            if (!packageNodeRelationships.containsKey(packageNode)) continue;
-            // FIXME: if no package relationships (just default package) then sink vertex arcs not identified (class/interface relationships)
-            PackageVertex vertex = packageNodeVertexMap.get(packageNode);
-            for (Relationship<PackageNode> relationship :
-                    packageNodeRelationships.get(packageNode)) {
-                vertex.addArc(
-                        vertex,
-                        packageNodeVertexMap.get(relationship.endingNode()),
-                        TypeConverter.convertRelationshipType(relationship.relationshipType()));
+            if (packageNodeRelationships.containsKey(packageNode)) {
+                PackageVertex vertex = packageNodeVertexMap.get(packageNode);
+                for (Relationship<PackageNode> relationship :
+                        packageNodeRelationships.get(packageNode)) {
+                    vertex.addArc(
+                            vertex,
+                            packageNodeVertexMap.get(relationship.endingNode()),
+                            TypeConverter.convertRelationshipType(relationship.relationshipType()));
+                }
             }
             addSinkVertexArcs(packageNode);
         }
@@ -187,7 +187,8 @@ public class ASTInterpreter implements Interpreter {
             };
         }
 
-        private static gr.uoi.ooad.model.graph.ModifierType convertModifierType(ModifierType modifierType) {
+        private static gr.uoi.ooad.model.graph.ModifierType convertModifierType(
+                ModifierType modifierType) {
             return switch (modifierType) {
                 case PRIVATE -> gr.uoi.ooad.model.graph.ModifierType.PRIVATE;
                 case PUBLIC -> gr.uoi.ooad.model.graph.ModifierType.PUBLIC;
