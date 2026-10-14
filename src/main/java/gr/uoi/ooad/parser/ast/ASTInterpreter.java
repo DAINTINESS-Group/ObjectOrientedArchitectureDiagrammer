@@ -28,9 +28,19 @@ public class ASTInterpreter implements Interpreter {
     private Map<PackageNode, Set<Relationship<PackageNode>>> packageNodeRelationships;
     private Map<LeafNode, Set<Relationship<LeafNode>>> leafNodeRelationships;
     private Map<Path, PackageNode> packageNodes;
+    private Path sourcePackagePath;
+
+    public Path getSourcePackagePath() {
+        return sourcePackagePath;
+    }
+
+    public boolean hasSourcePackagePath(Path sourcePackagePath){
+        return this.sourcePackagePath.equals(sourcePackagePath);
+    }
 
     @Override
     public void parseProject(Path sourcePackagePath) {
+        this.sourcePackagePath = sourcePackagePath;
         packageNodes = parser.parsePackage(sourcePackagePath);
         leafNodeRelationships = parser.createRelationships(packageNodes);
         packageNodeRelationships = parser.identifyPackageNodeRelationships(leafNodeRelationships);
