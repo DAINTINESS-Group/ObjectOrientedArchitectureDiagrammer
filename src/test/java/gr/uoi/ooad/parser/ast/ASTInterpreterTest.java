@@ -234,6 +234,37 @@ public class ASTInterpreterTest {
                 .hasAssociationTo("ShoppingCart");
     }
 
+    @Test
+    void bookstoreDependenciesTest(){
+        ASTInterpreter interpreter = new ASTInterpreter();
+        interpreter.parseProject(PathTemplate.BookstoreAdvanced.SRC.path);
+        interpreter.convertToGraph(Collections.emptyList(), Collections.emptyList());
+
+        given(interpreter)
+                .assertThatClass("ItemFactory")
+                .hasDependencyTo("Book")
+                .and()
+                .hasDependencyTo("CD")
+                .also()
+                .assertThatClass("CartViewer")
+                .hasDependencyTo("ShoppingCart")
+                .and()
+                .hasDependencyTo("CartController");
+    }
+
+    @Test
+    void bookstorePackageDependenciesTest(){
+        ASTInterpreter interpreter = new ASTInterpreter();
+        interpreter.parseProject(PathTemplate.BookstoreAdvanced.SRC.path);
+        interpreter.convertToGraph(Collections.emptyList(), Collections.emptyList());
+
+        given(interpreter)
+                .assertThatPackage("src.gui")
+                .hasDependencyTo("src.bookstore");
+    }
+
+
+
 //    @Test
 //    void associationArcsArePresentForDefaultPackageTest() {
 //        ASTInterpreter interpreter = new ASTInterpreter();
