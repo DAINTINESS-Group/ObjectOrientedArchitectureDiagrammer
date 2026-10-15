@@ -38,7 +38,7 @@ public class UMLModelAssertions {
                 sinkVertices.stream()
                         .filter(it -> it.getName().equals(className)
                             && it.getVertexType().equals(VertexType.CLASS))
-                        .findFirst().orElseGet(Assertions::fail);
+                        .findFirst().orElseGet(() -> Assertions.fail("Class: " + className + " not found in the model."));
 
         return ClassifierAssertionsFactory.assertionsForClass(this, classifierVertex);
 
@@ -53,7 +53,7 @@ public class UMLModelAssertions {
                 sinkVertices.stream()
                         .filter(it -> it.getName().equals(interfaceName)
                                 && it.getVertexType().equals(VertexType.INTERFACE))
-                        .findFirst().orElseGet(Assertions::fail);
+                        .findFirst().orElseGet(() -> Assertions.fail("Interface: " + interfaceName + " not found in the model."));
 
         return ClassifierAssertionsFactory.assertionsForClass(this, classifierVertex);
 
@@ -68,7 +68,7 @@ public class UMLModelAssertions {
                 packageVertices.stream()
                         .filter(it -> it.getName().equals(packageName)
                         && it.getVertexType().equals(VertexType.PACKAGE))
-                        .findFirst().orElseGet(Assertions::fail);
+                        .findFirst().orElseGet(() -> Assertions.fail("Package: " + packageName + " not found in the model."));
 
         return ClassifierAssertionsFactory.assertionsForPackage(this, packageVertex);
 
