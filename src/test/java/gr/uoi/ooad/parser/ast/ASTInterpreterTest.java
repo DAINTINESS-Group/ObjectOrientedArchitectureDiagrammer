@@ -201,6 +201,20 @@ public class ASTInterpreterTest {
 
     }
 
+    @Test
+    void bookstoreInheritanceTest(){
+        ASTInterpreter interpreter = new ASTInterpreter();
+        interpreter.parseProject(PathTemplate.BookstoreAdvanced.SRC.path);
+        interpreter.convertToGraph(Collections.emptyList(), Collections.emptyList());
+
+        given(interpreter)
+                .assertThatClass("Book")
+                .extendsClass("Item")
+                .also()
+                .assertThatClass("CD")
+                .extendsClass("Item");
+    }
+
 //    @Test
 //    void associationArcsArePresentForDefaultPackageTest() {
 //        ASTInterpreter interpreter = new ASTInterpreter();
