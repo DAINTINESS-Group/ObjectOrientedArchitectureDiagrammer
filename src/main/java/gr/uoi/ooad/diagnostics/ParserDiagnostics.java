@@ -57,9 +57,30 @@ public class ParserDiagnostics {
             System.out.println("- " + sinkVertex.getName());
         }
 
+
+        printArcs(sinkVertices);
+        Map<ArcType, Integer> arcCounts = countArcs(sinkVertices);
+
+
+        for (ArcType type : ArcType.values()) {
+            int count = arcCounts.getOrDefault(type, 0);
+            System.out.printf("%-15s %d%n", type, count);
+        }
+    }
+
+    private static Map<ArcType, Integer> countArcs(List<ClassifierVertex> sinkVertices){
         Map<ArcType, Integer> arcCounts = new EnumMap<>(ArcType.class);
 
         for (ClassifierVertex sinkVertex : sinkVertices) {
+            for (Arc<ClassifierVertex> arc : sinkVertex.getArcs()) {
+                arcCounts.merge(arc.arcType(), 1, Integer::sum);
+            }
+        }
+        return arcCounts;
+    }
+
+    private static void printArcs(List<ClassifierVertex> sinkVertices){
+        for (ClassifierVertex sinkVertex: sinkVertices) {
             for (Arc<ClassifierVertex> arc : sinkVertex.getArcs()) {
                 System.out.println(
                         arc.sourceVertex().getName()
@@ -67,12 +88,9 @@ public class ParserDiagnostics {
                                 + arc.arcType()
                                 + " -> "
                                 + arc.targetVertex().getName());
-                arcCounts.merge(arc.arcType(), 1, Integer::sum);
+
             }
         }
-        for (ArcType type : ArcType.values()) {
-            int count = arcCounts.getOrDefault(type, 0);
-            System.out.printf("%-15s %d%n", type, count);
-        }
     }
+
 }
