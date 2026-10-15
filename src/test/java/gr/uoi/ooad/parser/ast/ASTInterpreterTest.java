@@ -176,6 +176,26 @@ public class ASTInterpreterTest {
                 .hasDependencyTo("src.model");
     }
 
+    @Test
+    void latexEditorImplementationsTest(){
+        ASTInterpreter interpreter = new ASTInterpreter();
+        interpreter.parseProject(PathTemplate.LatexEditor.SRC.path);
+        interpreter.convertToGraph(Collections.emptyList(), Collections.emptyList());
+
+        given(interpreter)
+                .assertThatInterface("Command") // checks if Command is Interface
+                .also()
+                .assertThatInterface("VersionsStrategy") // checks if VersionsStrategy is Interface
+                .also()
+                .assertThatClass("AddLatexCommand")
+                .implementsInterface("Command")
+                .also()
+                .assertThatClass("StableVersionsStrategy")
+                .implementsInterface("VersionsStrategy");
+
+
+    }
+
 
     @Test
     void classRelationshipArcsArePresentForDefaultPackageTest() {
