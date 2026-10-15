@@ -24,6 +24,7 @@ import java.util.function.Predicate;
 import gr.uoi.ooad.utils.assertions.UMLModelAssertions;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class ASTInterpreterTest {
@@ -261,6 +262,20 @@ public class ASTInterpreterTest {
         given(interpreter)
                 .assertThatPackage("src.gui")
                 .hasDependencyTo("src.bookstore");
+    }
+
+
+    @Disabled("Parser limitation: FileVisitor.VariableVisitor records a local variable "
+    + "only when it is initialized with 'new' (see Gui.java:23)")
+    @Test
+    void bookstoreLocalVariableDependencyTest(){
+        ASTInterpreter interpreter = new ASTInterpreter();
+        interpreter.parseProject(PathTemplate.BookstoreAdvanced.SRC.path);
+        interpreter.convertToGraph(Collections.emptyList(), Collections.emptyList());
+
+        given(interpreter)
+                .assertThatClass("Gui")
+                .hasDependencyTo("Item");
     }
 
 
