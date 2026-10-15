@@ -31,9 +31,7 @@ public class ASTInterpreterTest {
 
     @Test
     public void convertTreeToGraphTest() {
-        ASTInterpreter interpreter = new ASTInterpreter();
-        interpreter.parseProject(LatexEditor.SRC.path);
-        interpreter.convertToGraph(Collections.emptyList(), Collections.emptyList());
+        ASTInterpreter interpreter = interpreterFor(PathTemplate.LatexEditor.SRC.path);
         Map<Path, PackageNode> packageNodes = interpreter.getPackageNodes();
         List<PackageVertex> vertices = interpreter.getVertices();
         assertEquals(packageNodes.size(), vertices.size());
@@ -159,14 +157,23 @@ public class ASTInterpreterTest {
                         && it.modifier().toString().equals(leafMethod.modifierType().toString());
     }
 
-    @Test
-    void packageDependenciesForLatexEditor() {
-
+    /**
+     * Creates a new interpreter, parses the given project and converts it to a graph.
+     *
+     * @param projectPath the source folder of the project to parse
+     * @return the interpreter, ready to be passed to {@code given(...)}
+     */
+    private static ASTInterpreter interpreterFor(Path projectPath) {
         ASTInterpreter interpreter = new ASTInterpreter();
-        interpreter.parseProject(PathTemplate.LatexEditor.SRC.path);
+        interpreter.parseProject(projectPath);
         interpreter.convertToGraph(Collections.emptyList(), Collections.emptyList());
 
-        given(interpreter)
+        return interpreter;
+    }
+
+    @Test
+    void packageDependenciesForLatexEditor() {
+        given(interpreterFor(LatexEditor.SRC.path))
                 .assertThatPackage("src.controller")
                 .hasDependencyTo("src.model")
                 .also()
@@ -178,11 +185,7 @@ public class ASTInterpreterTest {
 
     @Test
     void latexEditorImplementationsTest(){
-        ASTInterpreter interpreter = new ASTInterpreter();
-        interpreter.parseProject(PathTemplate.LatexEditor.SRC.path);
-        interpreter.convertToGraph(Collections.emptyList(), Collections.emptyList());
-
-        given(interpreter)
+        given(interpreterFor(PathTemplate.LatexEditor.SRC.path))
                 .assertThatInterface("Command") // checks if Command is Interface
                 .also()
                 .assertThatInterface("VersionsStrategy") // checks if VersionsStrategy is Interface
@@ -192,16 +195,12 @@ public class ASTInterpreterTest {
                 .also()
                 .assertThatClass("StableVersionsStrategy")
                 .implementsInterface("VersionsStrategy");
-
-
     }
 
 
     @Test
     void classRelationshipArcsArePresentForDefaultPackageTest() {
-        ASTInterpreter interpreter = new ASTInterpreter();
-        interpreter.parseProject(PathTemplate.ParserTesting.SRC.path);
-        interpreter.convertToGraph(Collections.emptyList(), Collections.emptyList());
+        ASTInterpreter interpreter = interpreterFor(PathTemplate.ParserTesting.SRC.path);
 
         given(interpreter)
                 .assertThatClass("ImplementingClass")
@@ -224,11 +223,7 @@ public class ASTInterpreterTest {
 
     @Test
     void bookstoreInheritanceTest(){
-        ASTInterpreter interpreter = new ASTInterpreter();
-        interpreter.parseProject(PathTemplate.BookstoreAdvanced.SRC.path);
-        interpreter.convertToGraph(Collections.emptyList(), Collections.emptyList());
-
-        given(interpreter)
+        given(interpreterFor(PathTemplate.BookstoreAdvanced.SRC.path))
                 .assertThatClass("Book")
                 .extendsClass("Item")
                 .also()
@@ -238,11 +233,7 @@ public class ASTInterpreterTest {
 
     @Test
     void bookstoreAssociationsTest(){
-        ASTInterpreter interpreter = new ASTInterpreter();
-        interpreter.parseProject(PathTemplate.BookstoreAdvanced.SRC.path);
-        interpreter.convertToGraph(Collections.emptyList(), Collections.emptyList());
-
-        given(interpreter)
+        given(interpreterFor(PathTemplate.BookstoreAdvanced.SRC.path))
                 .assertThatClass("Gui")
                 .hasAssociationTo("ItemManager")
                 .and()
@@ -257,11 +248,7 @@ public class ASTInterpreterTest {
 
     @Test
     void bookstoreDependenciesTest(){
-        ASTInterpreter interpreter = new ASTInterpreter();
-        interpreter.parseProject(PathTemplate.BookstoreAdvanced.SRC.path);
-        interpreter.convertToGraph(Collections.emptyList(), Collections.emptyList());
-
-        given(interpreter)
+        given(interpreterFor(PathTemplate.BookstoreAdvanced.SRC.path))
                 .assertThatClass("ItemFactory")
                 .hasDependencyTo("Book")
                 .and()
@@ -275,25 +262,17 @@ public class ASTInterpreterTest {
 
     @Test
     void bookstorePackageDependenciesTest(){
-        ASTInterpreter interpreter = new ASTInterpreter();
-        interpreter.parseProject(PathTemplate.BookstoreAdvanced.SRC.path);
-        interpreter.convertToGraph(Collections.emptyList(), Collections.emptyList());
-
-        given(interpreter)
+        given(interpreterFor(PathTemplate.BookstoreAdvanced.SRC.path))
                 .assertThatPackage("src.gui")
                 .hasDependencyTo("src.bookstore");
     }
 
 
     @Disabled("Parser limitation: FileVisitor.VariableVisitor records a local variable "
-    + "only when it is initialized with 'new' (see Gui.java:23)")
+    + "only when it is initialized with 'new' (see BookstoreAdvancedV01.src.gui.Gui.java:23)")
     @Test
     void bookstoreLocalVariableDependencyTest(){
-        ASTInterpreter interpreter = new ASTInterpreter();
-        interpreter.parseProject(PathTemplate.BookstoreAdvanced.SRC.path);
-        interpreter.convertToGraph(Collections.emptyList(), Collections.emptyList());
-
-        given(interpreter)
+        given(interpreterFor(PathTemplate.BookstoreAdvanced.SRC.path))
                 .assertThatClass("Gui")
                 .hasDependencyTo("Item");
     }
