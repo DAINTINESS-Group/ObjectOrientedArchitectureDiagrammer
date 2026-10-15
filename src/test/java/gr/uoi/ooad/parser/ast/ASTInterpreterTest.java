@@ -215,6 +215,25 @@ public class ASTInterpreterTest {
                 .extendsClass("Item");
     }
 
+    @Test
+    void bookstoreAssociationsTest(){
+        ASTInterpreter interpreter = new ASTInterpreter();
+        interpreter.parseProject(PathTemplate.BookstoreAdvanced.SRC.path);
+        interpreter.convertToGraph(Collections.emptyList(), Collections.emptyList());
+
+        given(interpreter)
+                .assertThatClass("Gui")
+                .hasAssociationTo("ItemManager")
+                .and()
+                .hasAssociationTo("ItemFactory")
+                .also()
+                .assertThatClass("CartController")
+                .hasAssociationTo("ShoppingCart")
+                .also()
+                .assertThatClass("GuiEventHandler")
+                .hasAssociationTo("ShoppingCart");
+    }
+
 //    @Test
 //    void associationArcsArePresentForDefaultPackageTest() {
 //        ASTInterpreter interpreter = new ASTInterpreter();
