@@ -1,12 +1,15 @@
 package gr.uoi.ooad.utils.assertions;
 
-public class ClassStructureAssertion {
+public interface ClassStructureAssertion {
+    ClassStructureAssertion extendsClass(String extendedClass);
 
-    private String className;
+    ClassStructureAssertion and();
 
-    public ClassStructureAssertion(String className) {
-        this.className = className;
-    }
+    ClassStructureAssertion implementsInterface(String interfaceName);
 
+    ClassStructureAssertion hasDependencyTo(String classifierName);
 
+    ClassStructureAssertion hasAssociationTo(String classifierName);
+
+    UMLModelAssertions also();
 }

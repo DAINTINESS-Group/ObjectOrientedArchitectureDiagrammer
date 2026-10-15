@@ -1,5 +1,6 @@
 package gr.uoi.ooad.parser.ast;
 
+import static gr.uoi.ooad.utils.assertions.UMLModelAssertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -12,12 +13,15 @@ import gr.uoi.ooad.parser.ast.tree.PackageNode;
 import gr.uoi.ooad.parser.ast.tree.Relationship;
 import gr.uoi.ooad.utils.PathTemplate;
 import gr.uoi.ooad.utils.PathTemplate.LatexEditor;
+
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
+
+import gr.uoi.ooad.utils.assertions.UMLModelAssertions;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -112,8 +116,8 @@ public class ASTInterpreterTest {
                 it.getPath().toString().equals(subNode.getKey().toString())
                         && it.getName().equals(subNode.getValue().getNodeName())
                         && it.getVertexType()
-                                .toString()
-                                .equals(subNode.getValue().getNodeType().toString());
+                        .toString()
+                        .equals(subNode.getValue().getNodeType().toString());
     }
 
     @NotNull
@@ -155,50 +159,57 @@ public class ASTInterpreterTest {
     }
 
     @Test
-    void inheritanceArcsArePresentForDefaultPackageTest() {
+    void packageDependenciesForLatexEditor() {
+
         ASTInterpreter interpreter = new ASTInterpreter();
-        interpreter.parseProject(PathTemplate.ParserTesting.SRC.path);
+        interpreter.parseProject(PathTemplate.LatexEditor.SRC.path);
         interpreter.convertToGraph(Collections.emptyList(), Collections.emptyList());
 
-        List<ClassifierVertex> sinkVertices = interpreter.getSinkVertices();
-
-        ClassifierVertex implementingClassVertex =
-                sinkVertices.stream()
-                        .filter(it -> it.getName().equals("ImplementingClass"))
-                        .findFirst()
-                        .orElseGet(Assertions::fail);
-
-        boolean hasExtensionArc =
-                implementingClassVertex.getArcs().stream()
-                        .anyMatch(
-                                arc ->
-                                        arc.targetVertex().getName().equals("ExtensionClass")
-                                                && arc.arcType().equals(ArcType.EXTENSION));
-
-        assertTrue(hasExtensionArc);
+        given(interpreter)
+                .assertThatPackage("src.controller")
+                .hasDependencyTo("src.model")
+                .also()
+                .assertThatPackage("src.view")
+                .hasDependencyTo("src.controller")
+                .and()
+                .hasDependencyTo("src.model");
     }
+
 
     @Test
-    void implementationArcsArePresentForDefaultPackageTest() {
+    void classRelationshipArcsArePresentForDefaultPackageTest() {
         ASTInterpreter interpreter = new ASTInterpreter();
         interpreter.parseProject(PathTemplate.ParserTesting.SRC.path);
         interpreter.convertToGraph(Collections.emptyList(), Collections.emptyList());
 
-        List<ClassifierVertex> sinkVertices = interpreter.getSinkVertices();
+        given(interpreter)
+                .assertThatClass("ImplementingClass")
+                .extendsClass("ExtensionClass")
+                .and()
+                .implementsInterface("TestingInterface")
+                .and()
+                .implementsInterface("TestingInterface2");
 
-        ClassifierVertex implementingClassVertex =
-                sinkVertices.stream()
-                        .filter(it -> it.getName().equals("ImplementingClass"))
-                        .findFirst()
-                        .orElseGet(Assertions::fail);
 
-        boolean hasImplementationArc =
-                implementingClassVertex.getArcs().stream()
-                        .anyMatch(
-                                arc ->
-                                        arc.targetVertex().getName().equals("TestingInterface")
-                                                && arc.arcType().equals(ArcType.IMPLEMENTATION));
+        given(interpreter)
+                .assertThatClass("ObjectCreationSample")
+                .hasAssociationTo("ExtensionClass")
+                .and()
+                .hasDependencyTo("TestingInterface")
+                .and()
+                .hasDependencyTo("ImplementingClass");
 
-        assertTrue(hasImplementationArc);
     }
+
+//    @Test
+//    void associationArcsArePresentForDefaultPackageTest() {
+//        ASTInterpreter interpreter = new ASTInterpreter();
+//        interpreter.parseProject(PathTemplate.ParserTesting.SRC.path);
+//        interpreter.convertToGraph(Collections.emptyList(), Collections.emptyList());
+//
+//        given(interpreter)
+//                .assertThatClass("ImplementingClass")
+//                .implementsInterface("TestingInterface");
+//
+//    }
 }
