@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import gr.uoi.ooad.model.graph.Arc;
-import gr.uoi.ooad.model.graph.ArcType;
 import gr.uoi.ooad.model.graph.ClassifierVertex;
 import gr.uoi.ooad.model.graph.PackageVertex;
 import gr.uoi.ooad.parser.ast.tree.LeafNode;
@@ -21,7 +20,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
 
-import gr.uoi.ooad.utils.assertions.UMLModelAssertions;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -232,6 +230,25 @@ public class ASTInterpreterTest {
     }
 
     @Test
+    void bookstoreNoFalseInheritanceTest() {
+        given(interpreterFor(PathTemplate.BookstoreAdvanced.SRC.path))
+                .assertThatClass("Item")
+                .doesNotExtendClass("Book")
+                .also()
+                .assertThatClass("Book")
+                .doesNotExtendClass("CD");
+    }
+
+    @Disabled("Parser limitation: ASTRelationshipIdentifier.isExtension attributes the extends of inner class to outer class"
+    + " (see ParserTesting/InnerClassSample.java:5)")
+    @Test
+    void parserTestingInnerClassExtensionTest() {
+        given(interpreterFor(PathTemplate.ParserTesting.SRC.path))
+                .assertThatClass("InnerClassSample")
+                .doesNotExtendClass("ObjectCreationSample");
+    }
+
+    @Test
     void bookstoreAssociationsTest(){
         given(interpreterFor(PathTemplate.BookstoreAdvanced.SRC.path))
                 .assertThatClass("Gui")
@@ -266,7 +283,6 @@ public class ASTInterpreterTest {
                 .assertThatPackage("src.gui")
                 .hasDependencyTo("src.bookstore");
     }
-
 
     @Disabled("Parser limitation: FileVisitor.VariableVisitor records a local variable "
     + "only when it is initialized with 'new' (see BookstoreAdvancedV01.src.gui.Gui.java:23)")
