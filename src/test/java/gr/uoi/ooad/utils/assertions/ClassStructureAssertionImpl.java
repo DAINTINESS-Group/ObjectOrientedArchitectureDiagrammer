@@ -3,6 +3,7 @@ package gr.uoi.ooad.utils.assertions;
 import gr.uoi.ooad.model.graph.ArcType;
 import gr.uoi.ooad.model.graph.ClassifierVertex;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ClassStructureAssertionImpl implements ClassStructureAssertion {
@@ -21,6 +22,15 @@ public class ClassStructureAssertionImpl implements ClassStructureAssertion {
 
         boolean hasExtensionArc = matchRelationship(targetClass, extendedClass, ArcType.EXTENSION);
         assertTrue(hasExtensionArc, targetClass.getName() + " expected to EXTEND " + extendedClass);
+        return this;
+    }
+
+    @Override
+    public ClassStructureAssertion doesNotExtendClass(String className) {
+        parent.assertThatClass(className);
+        boolean hasExtensionArc = matchRelationship(targetClass, className, ArcType.EXTENSION);
+
+        assertFalse(hasExtensionArc, targetClass.getName() + " expected NOT to EXTEND " + className);
         return this;
     }
 

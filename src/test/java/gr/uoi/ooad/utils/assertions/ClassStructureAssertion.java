@@ -3,6 +3,8 @@ package gr.uoi.ooad.utils.assertions;
 public interface ClassStructureAssertion {
     ClassStructureAssertion extendsClass(String extendedClass);
 
+    ClassStructureAssertion doesNotExtendClass(String className);
+
     ClassStructureAssertion and();
 
     ClassStructureAssertion implementsInterface(String interfaceName);
