@@ -48,6 +48,15 @@ public class ClassStructureAssertionImpl implements ClassStructureAssertion {
     }
 
     @Override
+    public ClassStructureAssertion doesNotImplementInterface(String interfaceName) {
+        parent.assertThatInterface(interfaceName);
+        boolean hasImplementationArc = matchRelationship(targetClass, interfaceName, ArcType.IMPLEMENTATION);
+
+        assertFalse(hasImplementationArc, targetClass.getName() + " expected NOT to IMPLEMENT " + interfaceName);
+        return this;
+    }
+
+    @Override
     public ClassStructureAssertion hasDependencyTo(String classifierName){
         boolean hasImplementationArc = matchRelationship(targetClass, classifierName, ArcType.DEPENDENCY);
 

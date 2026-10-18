@@ -9,6 +9,8 @@ public interface ClassStructureAssertion {
 
     ClassStructureAssertion implementsInterface(String interfaceName);
 
+    ClassStructureAssertion doesNotImplementInterface(String interfaceName);
+
     ClassStructureAssertion hasDependencyTo(String classifierName);
 
     ClassStructureAssertion hasAssociationTo(String classifierName);
