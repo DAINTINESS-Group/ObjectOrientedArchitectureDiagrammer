@@ -195,6 +195,15 @@ public class ASTInterpreterTest {
                 .implementsInterface("VersionsStrategy");
     }
 
+    @Test
+    void latexEditorNoFalseImplementationsTest() {
+        given(interpreterFor(PathTemplate.LatexEditor.SRC.path))
+                .assertThatClass("AddLatexCommand")
+                .doesNotImplementInterface("VersionsStrategy")
+                .also()
+                .assertThatClass("StableVersionsStrategy")
+                .doesNotImplementInterface("Command");
+    }
 
     @Test
     void classRelationshipArcsArePresentForDefaultPackageTest() {
@@ -246,6 +255,15 @@ public class ASTInterpreterTest {
         given(interpreterFor(PathTemplate.ParserTesting.SRC.path))
                 .assertThatClass("InnerClassSample")
                 .doesNotExtendClass("ObjectCreationSample");
+    }
+
+    @Disabled("Parser limitation: ASTRelationshipIdentifier.isImplementation attributes the implements of inner class to outer class"
+    + " (see ParserTesting/InnerClassSample.java:5)")
+    @Test
+    void parserTestingInnerClassImplementationTest() {
+        given(interpreterFor(PathTemplate.ParserTesting.SRC.path))
+                .assertThatClass("InnerClassSample")
+                .doesNotImplementInterface("TestingInterface");
     }
 
     @Test
