@@ -58,9 +58,9 @@ public class ClassStructureAssertionImpl implements ClassStructureAssertion {
 
     @Override
     public ClassStructureAssertion hasDependencyTo(String classifierName){
-        boolean hasImplementationArc = matchRelationship(targetClass, classifierName, ArcType.DEPENDENCY);
+        boolean hasDependencyArc = matchRelationship(targetClass, classifierName, ArcType.DEPENDENCY);
 
-        assertTrue(hasImplementationArc, targetClass.getName() + " expected to DEPEND TO " + classifierName);
+        assertTrue(hasDependencyArc, targetClass.getName() + " expected to DEPEND TO " + classifierName);
         return this;
     }
 
@@ -75,9 +75,9 @@ public class ClassStructureAssertionImpl implements ClassStructureAssertion {
 
     @Override
     public ClassStructureAssertion hasAssociationTo(String classifierName){
-        boolean hasImplementationArc = matchRelationship(targetClass, classifierName, ArcType.ASSOCIATION);
+        boolean hasAssociationArc = matchRelationship(targetClass, classifierName, ArcType.ASSOCIATION);
 
-        assertTrue(hasImplementationArc, targetClass.getName() + " expected to HAS ASSOCIATION TO " + classifierName);
+        assertTrue(hasAssociationArc, targetClass.getName() + " expected to HAS ASSOCIATION TO " + classifierName);
         return this;
     }
 
