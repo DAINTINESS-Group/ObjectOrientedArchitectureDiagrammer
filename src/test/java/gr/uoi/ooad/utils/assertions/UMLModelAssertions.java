@@ -1,5 +1,6 @@
 package gr.uoi.ooad.utils.assertions;
 
+import gr.uoi.ooad.model.graph.ArcType;
 import gr.uoi.ooad.model.graph.ClassifierVertex;
 import gr.uoi.ooad.model.graph.PackageVertex;
 import gr.uoi.ooad.model.graph.VertexType;
@@ -86,4 +87,16 @@ public class UMLModelAssertions {
 
     }
 
+    public UMLModelAssertions everyClassExtendsAtMostOneClass() {
+        List<String> violators = interpreter.getSinkVertices().stream()
+                .filter(v -> v.getVertexType().equals(VertexType.CLASS))
+                .filter(v -> v.getArcs().stream()
+                        .filter(a -> a.arcType().equals(ArcType.EXTENSION))
+                        .count() > 1)
+                .map(ClassifierVertex::getName)
+                .toList();
+
+        Assertions.assertTrue(violators.isEmpty(), "Classes that extend more than one class: " + violators);
+        return this;
+    }
 }
