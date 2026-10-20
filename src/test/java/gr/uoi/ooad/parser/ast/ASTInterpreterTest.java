@@ -182,6 +182,16 @@ public class ASTInterpreterTest {
     }
 
     @Test
+    void latexEditorNoReversePackageDependenciesTest() {
+        given(interpreterFor(PathTemplate.LatexEditor.SRC.path))
+                .assertThatPackage("src.model")
+                .hasNoDependencyTo("src.controller")
+                .also()
+                .assertThatPackage("src.controller")
+                .hasNoDependencyTo("src.view");
+    }
+
+    @Test
     void latexEditorImplementationsTest(){
         given(interpreterFor(PathTemplate.LatexEditor.SRC.path))
                 .assertThatInterface("Command") // checks if Command is Interface
@@ -327,6 +337,13 @@ public class ASTInterpreterTest {
         given(interpreterFor(PathTemplate.BookstoreAdvanced.SRC.path))
                 .assertThatPackage("src.gui")
                 .hasDependencyTo("src.bookstore");
+    }
+
+    @Test
+    void bookstoreNoReversePackageDependenciesTest() {
+        given(interpreterFor(PathTemplate.BookstoreAdvanced.SRC.path))
+                .assertThatPackage("src.bookstore")
+                .hasNoDependencyTo("src.gui");
     }
 
     @Disabled("Parser limitation: FileVisitor.VariableVisitor records a local variable "
