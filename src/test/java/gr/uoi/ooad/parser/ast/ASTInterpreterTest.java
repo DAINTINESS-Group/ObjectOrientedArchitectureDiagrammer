@@ -355,6 +355,32 @@ public class ASTInterpreterTest {
                 .hasDependencyTo("Item");
     }
 
+    @Test
+    void bookstoreAggregationsTest() {
+        given(interpreterFor(PathTemplate.BookstoreAdvanced.SRC.path))
+                .assertThatClass("ShoppingCart")
+                .hasAggregationTo("Item")
+                .also()
+                .assertThatClass("ItemManager")
+                .hasAggregationTo("Item");
+    }
+
+    @Test
+    void bookstoreNoFalseAggregationsTest() {
+        given(interpreterFor(PathTemplate.BookstoreAdvanced.SRC.path))
+                .assertThatClass("GuiEventHandler")
+                .hasNoAggregationTo("ShoppingCart");
+    }
+
+    @Test
+    void latexEditorAggregationsTest() {
+        given(interpreterFor(PathTemplate.LatexEditor.SRC.path))
+                .assertThatClass("DocumentManager")
+                .hasAggregationTo("Document")
+                .also()
+                .assertThatClass("LatexEditorController")
+                .hasAggregationTo("Command");
+    }
 
 
 //    @Test
