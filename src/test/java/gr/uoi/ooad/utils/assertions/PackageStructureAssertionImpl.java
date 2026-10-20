@@ -1,7 +1,6 @@
 package gr.uoi.ooad.utils.assertions;
 
 import gr.uoi.ooad.model.graph.ArcType;
-import gr.uoi.ooad.model.graph.ClassifierVertex;
 import gr.uoi.ooad.model.graph.PackageVertex;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -9,13 +8,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PackageStructureAssertionImpl implements PackageStructureAssertion {
 
-    private PackageVertex targetClass;
+    private PackageVertex targetPackage;
     private UMLModelAssertions parent;
 
     public PackageStructureAssertionImpl(UMLModelAssertions parent,
-                                         PackageVertex className) {
+                                         PackageVertex targetPackage) {
         this.parent = parent;
-        this.targetClass = className;
+        this.targetPackage = targetPackage;
     }
 
 
@@ -28,9 +27,9 @@ public class PackageStructureAssertionImpl implements PackageStructureAssertion 
 
     @Override
     public PackageStructureAssertion hasDependencyTo(String packageName){
-        boolean hasImplementationArc = matchRelationship(targetClass, packageName, ArcType.DEPENDENCY);
+        boolean hasDependencyArc = matchRelationship(targetPackage, packageName, ArcType.DEPENDENCY);
 
-        assertTrue(hasImplementationArc, targetClass.getName() + " expected to DEPEND TO " + packageName);
+        assertTrue(hasDependencyArc, targetPackage.getName() + " expected to DEPEND TO " + packageName);
         return this;
     }
 
@@ -38,9 +37,9 @@ public class PackageStructureAssertionImpl implements PackageStructureAssertion 
     public PackageStructureAssertion hasNoDependencyTo(String packageName) {
         parent.assertThatPackage(packageName);
 
-        boolean hasDependencyArc = matchRelationship(targetClass, packageName, ArcType.DEPENDENCY);
+        boolean hasDependencyArc = matchRelationship(targetPackage, packageName, ArcType.DEPENDENCY);
 
-        assertFalse(hasDependencyArc, targetClass.getName() + " expected NOT to DEPEND TO " + packageName);
+        assertFalse(hasDependencyArc, targetPackage.getName() + " expected NOT to DEPEND TO " + packageName);
         return this;
     }
 
