@@ -91,6 +91,22 @@ public class ClassStructureAssertionImpl implements ClassStructureAssertion {
     }
 
     @Override
+    public ClassStructureAssertion hasAggregationTo(String classifierName) {
+        boolean hasAggregationArc = matchRelationship(targetClass, classifierName, ArcType.AGGREGATION);
+        assertTrue(hasAggregationArc, targetClass.getName() + " expected to AGGREGATE TO " + classifierName);
+        return this;
+    }
+
+    @Override
+    public ClassStructureAssertion hasNoAggregationTo(String classifierName) {
+        parent.assertThatClassifier(classifierName);
+        boolean hasAggregationArc = matchRelationship(targetClass, classifierName, ArcType.AGGREGATION);
+
+        assertFalse(hasAggregationArc, targetClass.getName() + " expected NOT to AGGREGATE TO " + classifierName);
+        return this;
+    }
+
+    @Override
     public UMLModelAssertions also() {
         return parent;
     }
