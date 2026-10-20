@@ -82,6 +82,15 @@ public class ClassStructureAssertionImpl implements ClassStructureAssertion {
     }
 
     @Override
+    public ClassStructureAssertion hasNoAssociationTo(String classifierName) {
+        parent.assertThatClassifier(classifierName);
+        boolean hasAssociationArc = matchRelationship(targetClass, classifierName, ArcType.ASSOCIATION);
+
+        assertFalse(hasAssociationArc, targetClass.getName() + " expected NOT to ASSOCIATE TO " + classifierName);
+        return this;
+    }
+
+    @Override
     public UMLModelAssertions also() {
         return parent;
     }

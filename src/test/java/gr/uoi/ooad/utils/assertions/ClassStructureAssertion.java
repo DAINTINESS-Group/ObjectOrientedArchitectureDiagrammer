@@ -17,5 +17,7 @@ public interface ClassStructureAssertion {
 
     ClassStructureAssertion hasAssociationTo(String classifierName);
 
+    ClassStructureAssertion hasNoAssociationTo(String classifierName);
+
     UMLModelAssertions also();
 }
