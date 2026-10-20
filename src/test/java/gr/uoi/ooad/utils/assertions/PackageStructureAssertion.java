@@ -6,6 +6,8 @@ public interface PackageStructureAssertion {
 
     PackageStructureAssertion hasDependencyTo(String classifierName);
 
+    PackageStructureAssertion hasNoDependencyTo(String packageName);
+
     UMLModelAssertions also();
 
 }

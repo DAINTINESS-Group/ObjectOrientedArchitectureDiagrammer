@@ -4,6 +4,7 @@ import gr.uoi.ooad.model.graph.ArcType;
 import gr.uoi.ooad.model.graph.ClassifierVertex;
 import gr.uoi.ooad.model.graph.PackageVertex;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PackageStructureAssertionImpl implements PackageStructureAssertion {
@@ -30,6 +31,16 @@ public class PackageStructureAssertionImpl implements PackageStructureAssertion 
         boolean hasImplementationArc = matchRelationship(targetClass, packageName, ArcType.DEPENDENCY);
 
         assertTrue(hasImplementationArc, targetClass.getName() + " expected to DEPEND TO " + packageName);
+        return this;
+    }
+
+    @Override
+    public PackageStructureAssertion hasNoDependencyTo(String packageName) {
+        parent.assertThatPackage(packageName);
+
+        boolean hasDependencyArc = matchRelationship(targetClass, packageName, ArcType.DEPENDENCY);
+
+        assertFalse(hasDependencyArc, targetClass.getName() + " expected NOT to DEPEND TO " + packageName);
         return this;
     }
 
