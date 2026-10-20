@@ -282,6 +282,16 @@ public class ASTInterpreterTest {
     }
 
     @Test
+    void bookstoreNoReverseAssociationsTest() {
+        given(interpreterFor(PathTemplate.BookstoreAdvanced.SRC.path))
+                .assertThatClass("ItemManager")
+                .hasNoAssociationTo("Gui")
+                .also()
+                .assertThatClass("ShoppingCart")
+                .hasNoAssociationTo("CartController");
+    }
+
+    @Test
     void bookstoreDependenciesTest(){
         given(interpreterFor(PathTemplate.BookstoreAdvanced.SRC.path))
                 .assertThatClass("ItemFactory")
