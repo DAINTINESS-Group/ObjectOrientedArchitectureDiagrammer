@@ -296,6 +296,23 @@ public class ASTInterpreterTest {
     }
 
     @Test
+    void bookstoreNoReverseDependenciesTest() {
+        given(interpreterFor(PathTemplate.BookstoreAdvanced.SRC.path))
+                .assertThatClassifier("Book")
+                .hasNoDependencyTo("ItemFactory")
+                .also()
+                .assertThatClassifier("ShoppingCart")
+                .hasNoDependencyTo("CartViewer");
+    }
+
+    @Test
+    void latexEditorNoFalseDependenciesTest() {
+        given(interpreterFor(PathTemplate.LatexEditor.SRC.path))
+                .assertThatClass("AddLatexCommand")
+                .hasNoDependencyTo("VersionsStrategy");
+    }
+
+    @Test
     void bookstorePackageDependenciesTest(){
         given(interpreterFor(PathTemplate.BookstoreAdvanced.SRC.path))
                 .assertThatPackage("src.gui")
