@@ -60,6 +60,18 @@ public class UMLModelAssertions {
 
     }
 
+    public ClassStructureAssertion assertThatClassifier(String classifierName){
+
+        List<ClassifierVertex> sinkVertices = interpreter.getSinkVertices();
+
+        ClassifierVertex classifierVertex =
+                sinkVertices.stream()
+                        .filter(it -> it.getName().equals(classifierName))
+                        .findFirst().orElseGet(() -> Assertions.fail("Classifier: " + classifierName + " not found in the model."));
+
+        return ClassifierAssertionsFactory.assertionsForClass(this, classifierVertex);
+    }
+
     public PackageStructureAssertion assertThatPackage(String packageName){
 
         List<PackageVertex> packageVertices = interpreter.getVertices();
