@@ -382,6 +382,61 @@ public class ASTInterpreterTest {
                 .hasAggregationTo("Command");
     }
 
+    @Test
+    void collectionSamplesAggregationsTest() {
+        given(interpreterFor(PathTemplate.CollectionSamples.SRC.path))
+                .assertThatClass("ListOwner")
+                .hasAggregationTo("Apple")
+                .also()
+                .assertThatClass("ArrayOwner")
+                .hasAggregationTo("Apple");
+    }
+
+    @Disabled("Parser limitation: ASTRelationshipIdentifier.isFieldOfTypeCollection does not recognize Set as a collection"
+            + " (see CollectionSamples/SetOwner.java)")
+    @Test
+    void collectionSamplesSetAggregationTest() {
+        given(interpreterFor(PathTemplate.CollectionSamples.SRC.path))
+                .assertThatClass("SetOwner")
+                .hasAggregationTo("Apple");
+    }
+
+    @Disabled("Parser limitation: ASTRelationshipIdentifier.isFieldOfTypeCollection checks the type prefix, so TreeMap is not recognized"
+            + " (see CollectionSamples/TreeMapOwner.java)")
+    @Test
+    void collectionSamplesTreeMapAggregationTest() {
+        given(interpreterFor(PathTemplate.CollectionSamples.SRC.path))
+                .assertThatClass("TreeMapOwner")
+                .hasAggregationTo("Apple");
+    }
+
+    @Disabled("Parser limitation: ASTRelationshipIdentifier.isFieldOfTypeCollection does not recognize the fully qualified java.util.List"
+            + " (see CollectionSamples/FqnOwner.java)")
+    @Test
+    void collectionSamplesQualifiedListAggregationTest() {
+        given(interpreterFor(PathTemplate.CollectionSamples.SRC.path))
+                .assertThatClass("FqnOwner")
+                .hasAggregationTo("Apple");
+    }
+
+    @Disabled("Parser limitation: ASTRelationshipIdentifier.isFieldOfTypeCollection treats every type starting with List as a collection"
+            + " (see CollectionSamples/ListenerOwner.java)")
+    @Test
+    void collectionSamplesListenerNoAggregationTest() {
+        given(interpreterFor(PathTemplate.CollectionSamples.SRC.path))
+                .assertThatClass("ListenerOwner")
+                .hasNoAggregationTo("Listener");
+    }
+
+    @Disabled("Parser limitation: FileVisitor.getType turns < into [, so a generic Box<Apple> field is treated as an array"
+            + " (see CollectionSamples/BoxOwner.java)")
+    @Test
+    void collectionSamplesGenericClassNoAggregationTest() {
+        given(interpreterFor(PathTemplate.CollectionSamples.SRC.path))
+                .assertThatClass("BoxOwner")
+                .hasNoAggregationTo("Box");
+    }
+
 
 //    @Test
 //    void associationArcsArePresentForDefaultPackageTest() {
