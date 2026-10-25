@@ -277,6 +277,15 @@ public class ASTInterpreterTest {
     }
 
     @Test
+    void parserTestingInnerClassOwnVertexTest() {
+        given(interpreterFor(PathTemplate.ParserTesting.SRC.path))
+                .assertThatClass("InnerClassSample::InnerClass")
+                .extendsClass("ObjectCreationSample")
+                .and()
+                .implementsInterface("TestingInterface");
+    }
+
+    @Test
     void bookstoreAssociationsTest(){
         given(interpreterFor(PathTemplate.BookstoreAdvanced.SRC.path))
                 .assertThatClass("Gui")
