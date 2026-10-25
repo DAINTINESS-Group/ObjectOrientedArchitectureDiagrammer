@@ -23,7 +23,6 @@ import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import java.io.FileNotFoundException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -66,6 +65,8 @@ public class FileVisitor {
     private final List<LeafNode.Field> fields;
     private final List<LeafNode> innerClasses;
     private final Path path;
+    private final PackageNode parentNode;
+    private final List<ClassOrInterfaceDeclaration> innerClassDeclarations;
     private final List<String> imports;
     private final List<String> createdObjects;
     private final List<String> unassignedObjects;
@@ -84,6 +85,8 @@ public class FileVisitor {
      */
     public FileVisitor(PackageNode parentNode, Path path) {
         this.path = path;
+        this.parentNode = parentNode;
+        innerClassDeclarations = new ArrayList<>();
         leafNodeBuilder = new LeafNodeBuilder(parentNode, path);
         createdObjects = new ArrayList<>();
         unassignedObjects = new ArrayList<>();
@@ -123,6 +126,9 @@ public class FileVisitor {
                 compilationUnit.accept(objectCreationVisitor, null);
                 unassignedObjects.addAll(populateCreatedObjects());
             }
+            for (ClassOrInterfaceDeclaration innerClassDeclaration : innerClassDeclarations) {
+                innerClasses.add(createInnerClass(innerClassDeclaration));
+            }
         } catch (FileNotFoundException e) {
             logger.debug("File with path: {} not found", path);
             throw new RuntimeException(e);
@@ -144,6 +150,27 @@ public class FileVisitor {
                 .build();
     }
 
+    private LeafNode createInnerClass(ClassOrInterfaceDeclaration innerClassDeclaration) {
+        String innerBaseClass = "";
+        if (!innerClassDeclaration.getExtendedTypes().isEmpty()) {
+            innerBaseClass = innerClassDeclaration.getExtendedTypes().get(0).getNameAsString();
+        }
+
+        List<String> innerImplementedInterfaces = new ArrayList<>();
+        for (ClassOrInterfaceType c : innerClassDeclaration.getImplementedTypes()) {
+            innerImplementedInterfaces.add(c.getNameAsString());
+        }
+
+        return new LeafNodeBuilder(parentNode, path)
+                .setNodeName(nodeName + "::" + innerClassDeclaration.getNameAsString())
+                .setNodeType(
+                        innerClassDeclaration.isInterface() ? NodeType.INTERFACE : NodeType.CLASS)
+                .setBaseClass(innerBaseClass)
+                .setImplementedInterface(innerImplementedInterfaces)
+                .setImports(imports)
+                .build();
+    }
+
     private class InheritanceVisitor extends VoidVisitorAdapter<Void> {
 
         @Override
@@ -153,26 +180,7 @@ public class FileVisitor {
 
             // Inner Class case.
             if (!path.endsWith(classOrInterfaceDeclaration.getNameAsString() + ".java")) {
-                String innerBaseClass = "";
-                if (!classOrInterfaceDeclaration.getExtendedTypes().isEmpty()) {
-                    innerBaseClass =
-                            classOrInterfaceDeclaration.getExtendedTypes().get(0).getNameAsString();
-                }
-
-                List<String> innerImplementedInterfaces = new ArrayList<>();
-                for (ClassOrInterfaceType c : classOrInterfaceDeclaration.getImplementedTypes()) {
-                    innerImplementedInterfaces.add(c.getNameAsString());
-                }
-                // Create the leaf node for the inner class.
-                LeafNodeBuilder innerLeafNodeBuilder = new LeafNodeBuilder(null, Paths.get(""));
-                LeafNode innerClass =
-                        innerLeafNodeBuilder
-                                .setNodeName(classOrInterfaceDeclaration.getNameAsString())
-                                .setBaseClass(innerBaseClass)
-                                .setImplementedInterface(innerImplementedInterfaces)
-                                .build();
-                innerClasses.add(innerClass);
-
+                innerClassDeclarations.add(classOrInterfaceDeclaration);
                 return;
             }
 

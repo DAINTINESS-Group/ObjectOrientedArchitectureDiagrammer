@@ -156,7 +156,8 @@ public class FileVisitorTest {
         LeafNode innerClassSample = sourcePackage.getLeafNodes().get("InnerClassSample");
 
         assertEquals(innerClassSample.innerClasses().size(), 1);
-        assertEquals("InnerClass", innerClassSample.innerClasses().get(0).nodeName());
+        assertEquals("InnerClassSample::InnerClass",
+                innerClassSample.innerClasses().get(0).nodeName());
 
         assertEquals(innerClassSample.records().size(), 1);
         assertEquals("RecordSample", innerClassSample.records().get(0));

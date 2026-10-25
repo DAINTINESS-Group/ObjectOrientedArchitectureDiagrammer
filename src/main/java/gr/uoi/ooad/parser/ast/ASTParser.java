@@ -57,6 +57,9 @@ public class ASTParser {
                     FileVisitor fileVisitor = new FileVisitor(currentNode, path);
                     LeafNode leafNode = fileVisitor.createAST();
                     currentNode.getLeafNodes().put(leafNode.nodeName(), leafNode);
+                    for (LeafNode innerClass : leafNode.innerClasses()) {
+                        currentNode.getLeafNodes().put(innerClass.nodeName(), innerClass);
+                    }
                 }
             }
         } catch (Exception e) {
