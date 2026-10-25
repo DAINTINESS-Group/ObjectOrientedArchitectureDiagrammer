@@ -120,17 +120,6 @@ public class ASTRelationshipIdentifier {
     }
 
     private boolean isExtension(int i, int j) {
-        // First check if any of the inner classes of i extends j.
-        List<LeafNode> innerClassesI = leafNodes.get(i).innerClasses();
-        boolean anyInnerClassExtendJ =
-                innerClassesI.stream()
-                        .anyMatch(
-                                leafNode ->
-                                        leafNode.baseClass().equals(leafNodes.get(j).nodeName()));
-        if (anyInnerClassExtendJ) {
-            return true;
-        }
-
         if (leafNodes.get(i).baseClass().isEmpty()) {
             return false;
         }
@@ -138,12 +127,6 @@ public class ASTRelationshipIdentifier {
     }
 
     private boolean isImplementation(int i, int j) {
-        // First check if any of the inner classes of i implements j.
-        List<LeafNode> innerClassesI = leafNodes.get(i).innerClasses();
-        if (anyInnerClassImplementJ(j, innerClassesI)) {
-            return true;
-        }
-
         if (leafNodes.get(i).implementedInterfaces().isEmpty()) {
             return false;
         }
@@ -197,14 +180,6 @@ public class ASTRelationshipIdentifier {
                 || s.startsWith("LinkedHashMap")
                 || s.startsWith("PriorityQueue")
                 || s.startsWith("Queue");
-    }
-
-    private boolean anyInnerClassImplementJ(int j, List<LeafNode> innerClassesI) {
-        return innerClassesI.stream()
-                .anyMatch(
-                        leafNode ->
-                                leafNode.implementedInterfaces()
-                                        .contains(leafNodes.get(j).nodeName()));
     }
 
     private boolean isImported(int j, List<String> imports) {

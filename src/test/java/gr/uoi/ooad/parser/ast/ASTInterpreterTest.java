@@ -258,8 +258,6 @@ public class ASTInterpreterTest {
                 .doesNotExtendClass("CD");
     }
 
-    @Disabled("Parser limitation: ASTRelationshipIdentifier.isExtension attributes the extends of inner class to outer class"
-    + " (see ParserTesting/InnerClassSample.java:5)")
     @Test
     void parserTestingInnerClassExtensionTest() {
         given(interpreterFor(PathTemplate.ParserTesting.SRC.path))
@@ -267,8 +265,6 @@ public class ASTInterpreterTest {
                 .doesNotExtendClass("ObjectCreationSample");
     }
 
-    @Disabled("Parser limitation: ASTRelationshipIdentifier.isImplementation attributes the implements of inner class to outer class"
-    + " (see ParserTesting/InnerClassSample.java:5)")
     @Test
     void parserTestingInnerClassImplementationTest() {
         given(interpreterFor(PathTemplate.ParserTesting.SRC.path))
@@ -456,8 +452,6 @@ public class ASTInterpreterTest {
         given(interpreterFor(PathTemplate.LatexEditor.SRC.path)).everyClassExtendsAtMostOneClass();
     }
 
-    @Disabled("Parser limitation: ASTRelationshipIdentifier.isExtension attributes the extends of inner class to outer class,"
-            + " so a class gets two superclasses (see ParserTesting/InnerClassSample.java:5)")
     @Test
     void parserTestingSingleInheritanceTest() {
         given(interpreterFor(PathTemplate.ParserTesting.SRC.path)).everyClassExtendsAtMostOneClass();
