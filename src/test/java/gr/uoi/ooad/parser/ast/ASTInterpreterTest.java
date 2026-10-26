@@ -296,6 +296,15 @@ public class ASTInterpreterTest {
     }
 
     @Test
+    void parserTestingInnerClassOwnDependencyTest() {
+        given(interpreterFor(PathTemplate.ParserTesting.SRC.path))
+                .assertThatClass("InnerClassSample::InnerClass")
+                .hasDependencyTo("ImplementingClass")
+                .and()
+                .hasDependencyTo("TestingInterface2");
+    }
+
+    @Test
     void bookstoreAssociationsTest(){
         given(interpreterFor(PathTemplate.BookstoreAdvanced.SRC.path))
                 .assertThatClass("Gui")
