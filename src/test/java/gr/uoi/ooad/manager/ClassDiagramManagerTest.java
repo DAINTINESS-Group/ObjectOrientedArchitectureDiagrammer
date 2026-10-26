@@ -33,6 +33,7 @@ import org.junit.jupiter.api.Test;
 import gr.uoi.ooad.parser.ast.ASTInterpreter;
 import gr.uoi.ooad.utils.PathConstructor;
 import gr.uoi.ooad.utils.PathTemplate.LatexEditor;
+import gr.uoi.ooad.utils.PathTemplate.ParserTesting;
 
 public class ClassDiagramManagerTest {
 
@@ -144,6 +145,20 @@ public class ClassDiagramManagerTest {
                 shadowCleaner.shadowWeakRelationships();
 
         assertEquals(adjacencyList, testingCreatedDiagram);
+    }
+
+    @Test
+    void innerClassIsChosenWithItsOuterClassTest() {
+        ClassDiagramManager classDiagramManager = new ClassDiagramManager();
+
+        classDiagramManager.createSourceProject(ParserTesting.SRC.path);
+        classDiagramManager.convertTreeToDiagram(List.of("InnerClassSample"));
+        Set<String> chosenNames =
+                classDiagramManager.getClassDiagram().getGraphNodes().keySet().stream()
+                        .map(ClassifierVertex::getName)
+                        .collect(Collectors.toSet());
+
+        assertEquals(Set.of("InnerClassSample", "InnerClassSample::InnerClass"), chosenNames);
     }
 
     @Test
