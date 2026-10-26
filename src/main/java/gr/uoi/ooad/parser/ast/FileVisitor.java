@@ -171,6 +171,28 @@ public class FileVisitor {
                 .build();
     }
 
+    private List<LeafNode.Field> createFields(FieldDeclaration fieldDeclaration) {
+
+        List<LeafNode.Field> createdFields = new ArrayList<>();
+        for (VariableDeclarator variable : fieldDeclaration.getVariables()) {
+
+            List<Modifier> visibilityModifiers = ASTUtil.filterVisibilityModifiers(fieldDeclaration.getModifiers());
+
+            ModifierType modifierType =
+                    visibilityModifiers.isEmpty()
+                            ? PACKAGE_PRIVATE
+                            : ModifierType.get(
+                            fieldDeclaration.getModifiers().get(0).toString());
+
+            createdFields.add(
+                    new LeafNode.Field(
+                            variable.getNameAsString(),
+                            getType(variable.getTypeAsString()),
+                            modifierType));
+        }
+        return createdFields;
+    }
+
     private class InheritanceVisitor extends VoidVisitorAdapter<Void> {
 
         @Override
@@ -247,23 +269,6 @@ public class FileVisitor {
         @Override
         public void visit(FieldDeclaration fieldDeclaration, Void arg) {
             super.visit(fieldDeclaration, arg);
-
-            for (VariableDeclarator variable : fieldDeclaration.getVariables()) {
-
-                List<Modifier> visibilityModifiers = ASTUtil.filterVisibilityModifiers(fieldDeclaration.getModifiers());
-
-                ModifierType modifierType =
-                        visibilityModifiers.isEmpty()
-                                ? PACKAGE_PRIVATE
-                                : ModifierType.get(
-                                        fieldDeclaration.getModifiers().get(0).toString());
-
-                fields.add(
-                        new LeafNode.Field(
-                                variable.getNameAsString(),
-                                getType(variable.getTypeAsString()),
-                                modifierType));
-            }
         }
     }
 
