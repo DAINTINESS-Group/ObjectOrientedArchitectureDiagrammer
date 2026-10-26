@@ -289,6 +289,13 @@ public class ASTInterpreterTest {
     }
 
     @Test
+    void parserTestingInnerClassOwnAssociationTest() {
+        given(interpreterFor(PathTemplate.ParserTesting.SRC.path))
+                .assertThatClass("InnerClassSample::InnerClass")
+                .hasAssociationTo("ObjectCreationSample");
+    }
+
+    @Test
     void bookstoreAssociationsTest(){
         given(interpreterFor(PathTemplate.BookstoreAdvanced.SRC.path))
                 .assertThatClass("Gui")
