@@ -161,12 +161,18 @@ public class FileVisitor {
             innerImplementedInterfaces.add(c.getNameAsString());
         }
 
+        List<LeafNode.Field> innerFields = new ArrayList<>();
+        for (FieldDeclaration fieldDeclaration : innerClassDeclaration.getFields()) {
+            innerFields.addAll(createFields(fieldDeclaration));
+        }
+
         return new LeafNodeBuilder(parentNode, path)
                 .setNodeName(nodeName + "::" + innerClassDeclaration.getNameAsString())
                 .setNodeType(
                         innerClassDeclaration.isInterface() ? NodeType.INTERFACE : NodeType.CLASS)
                 .setBaseClass(innerBaseClass)
                 .setImplementedInterface(innerImplementedInterfaces)
+                .setFields(innerFields)
                 .setImports(imports)
                 .build();
     }
@@ -269,6 +275,8 @@ public class FileVisitor {
         @Override
         public void visit(FieldDeclaration fieldDeclaration, Void arg) {
             super.visit(fieldDeclaration, arg);
+
+            fields.addAll(createFields(fieldDeclaration));
         }
     }
 
