@@ -199,6 +199,50 @@ public class FileVisitor {
         return createdFields;
     }
 
+    private LeafNode.Method createConstructor(ConstructorDeclaration constructorDeclaration) {
+
+        ModifierType modifierType =
+                constructorDeclaration.getModifiers().isEmpty()
+                        ? PACKAGE_PRIVATE
+                        : ModifierType.get(
+                        constructorDeclaration.getModifiers().get(0).toString());
+
+        Map<String, String> parameters =
+                constructorDeclaration.getParameters().stream()
+                        .collect(
+                                Collectors.toMap(
+                                        NodeWithSimpleName::getNameAsString,
+                                        parameter -> getType(parameter.getTypeAsString())));
+
+
+        return new LeafNode.Method(
+                constructorDeclaration.getNameAsString(),
+                "Constructor",
+                modifierType,
+                parameters);
+    }
+
+    private LeafNode.Method createMethod(MethodDeclaration methodDeclaration) {
+        List<Modifier> visibilityModifiers = ASTUtil.filterVisibilityModifiers(methodDeclaration.getModifiers());
+
+        ModifierType modifierType =
+                visibilityModifiers.isEmpty()
+                        ? PACKAGE_PRIVATE
+                        : ModifierType.get(methodDeclaration.getModifiers().get(0).toString());
+
+        Map<String, String> parameters =
+                methodDeclaration.getParameters().stream()
+                        .collect(
+                                Collectors.toMap(
+                                        NodeWithSimpleName::getNameAsString,
+                                        parameter -> getType(parameter.getTypeAsString())));
+        return new LeafNode.Method(
+                methodDeclaration.getNameAsString(),
+                getType(methodDeclaration.getTypeAsString()),
+                modifierType,
+                parameters);
+    }
+
     private class InheritanceVisitor extends VoidVisitorAdapter<Void> {
 
         @Override
@@ -248,25 +292,7 @@ public class FileVisitor {
         public void visit(ConstructorDeclaration constructorDeclaration, Void arg) {
             super.visit(constructorDeclaration, arg);
 
-            ModifierType modifierType =
-                    constructorDeclaration.getModifiers().isEmpty()
-                            ? PACKAGE_PRIVATE
-                            : ModifierType.get(
-                                    constructorDeclaration.getModifiers().get(0).toString());
-
-            Map<String, String> parameters =
-                    constructorDeclaration.getParameters().stream()
-                            .collect(
-                                    Collectors.toMap(
-                                            NodeWithSimpleName::getNameAsString,
-                                            parameter -> getType(parameter.getTypeAsString())));
-
-            methods.add(
-                    new LeafNode.Method(
-                            constructorDeclaration.getNameAsString(),
-                            "Constructor",
-                            modifierType,
-                            parameters));
+            methods.add(createConstructor(constructorDeclaration));
         }
     }
 
@@ -309,25 +335,7 @@ public class FileVisitor {
         public void visit(MethodDeclaration methodDeclaration, Void arg) {
             super.visit(methodDeclaration, arg);
 
-            List<Modifier> visibilityModifiers = ASTUtil.filterVisibilityModifiers(methodDeclaration.getModifiers());
-
-            ModifierType modifierType =
-                    visibilityModifiers.isEmpty()
-                            ? PACKAGE_PRIVATE
-                            : ModifierType.get(methodDeclaration.getModifiers().get(0).toString());
-
-            Map<String, String> parameters =
-                    methodDeclaration.getParameters().stream()
-                            .collect(
-                                    Collectors.toMap(
-                                            NodeWithSimpleName::getNameAsString,
-                                            parameter -> getType(parameter.getTypeAsString())));
-            methods.add(
-                    new LeafNode.Method(
-                            methodDeclaration.getNameAsString(),
-                            getType(methodDeclaration.getTypeAsString()),
-                            modifierType,
-                            parameters));
+            methods.add(createMethod(methodDeclaration));
         }
     }
 
