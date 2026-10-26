@@ -166,6 +166,15 @@ public class FileVisitor {
             innerFields.addAll(createFields(fieldDeclaration));
         }
 
+        List<LeafNode.Method> innerMethods = new ArrayList<>();
+        for (ConstructorDeclaration constructorDeclaration : innerClassDeclaration.getConstructors()) {
+            innerMethods.add(createConstructor(constructorDeclaration));
+        }
+
+        for (MethodDeclaration methodDeclaration : innerClassDeclaration.getMethods()) {
+            innerMethods.add(createMethod(methodDeclaration));
+        }
+
         return new LeafNodeBuilder(parentNode, path)
                 .setNodeName(nodeName + "::" + innerClassDeclaration.getNameAsString())
                 .setNodeType(
@@ -173,6 +182,7 @@ public class FileVisitor {
                 .setBaseClass(innerBaseClass)
                 .setImplementedInterface(innerImplementedInterfaces)
                 .setFields(innerFields)
+                .setMethods(innerMethods)
                 .setImports(imports)
                 .build();
     }
