@@ -47,6 +47,12 @@ public class ClassDiagram {
                     break;
                 }
             }
+            // The inner classes of a chosen class are chosen with it.
+            for (ClassifierVertex it : sinkVertices) {
+                if (it.getName().startsWith(chosenClass + "::")) {
+                    chosenClasses.add(it);
+                }
+            }
         }
 
         return chosenClasses;
