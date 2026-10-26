@@ -200,7 +200,21 @@ public class FileVisitor {
         }
     }
 
-    private class ConstructorVisitor extends VoidVisitorAdapter<Void> {
+    private class OuterClassVisitor extends VoidVisitorAdapter<Void> {
+
+        @Override
+        public void visit(ClassOrInterfaceDeclaration
+                          classOrInterfaceDeclaration, Void arg) {
+            // the members of an inner class are not members of the outer class.
+            if (!path.endsWith(classOrInterfaceDeclaration.getNameAsString() + ".java")) {
+                return;
+            }
+
+            super.visit(classOrInterfaceDeclaration, arg);
+        }
+    }
+
+    private class ConstructorVisitor extends OuterClassVisitor {
 
         @Override
         public void visit(ConstructorDeclaration constructorDeclaration, Void arg) {
@@ -228,7 +242,7 @@ public class FileVisitor {
         }
     }
 
-    private class FieldVisitor extends VoidVisitorAdapter<Void> {
+    private class FieldVisitor extends OuterClassVisitor {
 
         @Override
         public void visit(FieldDeclaration fieldDeclaration, Void arg) {
@@ -253,7 +267,7 @@ public class FileVisitor {
         }
     }
 
-    private class VariableVisitor extends VoidVisitorAdapter<Void> {
+    private class VariableVisitor extends OuterClassVisitor {
 
         @Override
         public void visit(VariableDeclarationExpr variableDeclarationExpr, Void arg) {
@@ -276,7 +290,7 @@ public class FileVisitor {
         }
     }
 
-    private class MethodVisitor extends VoidVisitorAdapter<Void> {
+    private class MethodVisitor extends OuterClassVisitor {
 
         @Override
         public void visit(MethodDeclaration methodDeclaration, Void arg) {
@@ -304,7 +318,7 @@ public class FileVisitor {
         }
     }
 
-    private class ObjectCreationVisitor extends VoidVisitorAdapter<Void> {
+    private class ObjectCreationVisitor extends OuterClassVisitor {
 
         @Override
         public void visit(ObjectCreationExpr objectCreationExpr, Void arg) {
@@ -326,7 +340,7 @@ public class FileVisitor {
         }
     }
 
-    private class MemberVisitor extends VoidVisitorAdapter<Void> {
+    private class MemberVisitor extends OuterClassVisitor {
 
         @Override
         public void visit(EnumDeclaration enumDeclaration, Void arg) {
