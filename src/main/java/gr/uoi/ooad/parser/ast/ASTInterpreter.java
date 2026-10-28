@@ -194,6 +194,7 @@ public class ASTInterpreter implements Interpreter {
                 case AGGREGATION -> ArcType.AGGREGATION;
                 case IMPLEMENTATION -> ArcType.IMPLEMENTATION;
                 case EXTENSION -> ArcType.EXTENSION;
+                case NESTING -> ArcType.NESTING;
             };
         }
 

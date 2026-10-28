@@ -87,6 +87,9 @@ public class ASTRelationshipIdentifier {
         if (isImplementation(i, j)) {
             createRelationship(i, j, RelationshipType.IMPLEMENTATION);
         }
+        if (isNesting(i, j)) {
+            createRelationship(i, j, RelationshipType.NESTING);
+        }
     }
 
     private boolean isAssociation(int i, int j) {
@@ -133,6 +136,19 @@ public class ASTRelationshipIdentifier {
 
         for (String implementedInterface : leafNodes.get(i).implementedInterfaces()) {
             if (implementedInterface.equals(leafNodes.get(j).nodeName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isNesting(int i, int j) {
+        if (leafNodes.get(i).innerClasses().isEmpty()) {
+            return false;
+        }
+
+        for (LeafNode nestedClass : leafNodes.get(i).innerClasses()) {
+            if(nestedClass.nodeName().equals(leafNodes.get(j).nodeName())) {
                 return true;
             }
         }
