@@ -26,6 +26,7 @@ public class SmartArrowFactory {
                 smartArrow.setStyleClass("arrowClosed");
             case ASSOCIATION:
             case DEPENDENCY:
+            case NESTING:
                 smartArrow = new SmartArrow(smartGraphProperties.getEdgeArrowSize());
                 break;
             default:

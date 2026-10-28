@@ -30,6 +30,7 @@ public class PlantUMLClassifierVertexArc {
             case DEPENDENCY -> "..>";
             case IMPLEMENTATION -> "..|>";
             case ASSOCIATION -> "-->";
+            case NESTING -> "+--";
         };
     }
 }
