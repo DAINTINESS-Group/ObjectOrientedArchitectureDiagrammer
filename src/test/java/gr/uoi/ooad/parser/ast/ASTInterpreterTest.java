@@ -305,6 +305,13 @@ public class ASTInterpreterTest {
     }
 
     @Test
+    void parserTestingInnerClassNestingTest() {
+        given(interpreterFor(PathTemplate.ParserTesting.SRC.path))
+                .assertThatClass("InnerClassSample")
+                .hasNestedClass("InnerClassSample::InnerClass");
+    }
+
+    @Test
     void bookstoreAssociationsTest(){
         given(interpreterFor(PathTemplate.BookstoreAdvanced.SRC.path))
                 .assertThatClass("Gui")
