@@ -5,7 +5,8 @@ public enum RelationshipType {
     AGGREGATION,
     ASSOCIATION,
     EXTENSION,
-    IMPLEMENTATION;
+    IMPLEMENTATION,
+    NESTING;
 
     @Override
     public String toString() {

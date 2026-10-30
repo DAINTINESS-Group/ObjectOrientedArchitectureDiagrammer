@@ -107,6 +107,14 @@ public class ClassStructureAssertionImpl implements ClassStructureAssertion {
     }
 
     @Override
+    public ClassStructureAssertion hasNestedClass(String className) {
+        boolean hasNestingArc = matchRelationship(targetClass, className, ArcType.NESTING);
+
+        assertTrue(hasNestingArc, targetClass.getName() + " expected to HAVE NESTED CLASS " + className);
+        return this;
+    }
+
+    @Override
     public UMLModelAssertions also() {
         return parent;
     }

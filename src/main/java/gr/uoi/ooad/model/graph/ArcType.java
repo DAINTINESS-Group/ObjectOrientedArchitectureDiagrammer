@@ -10,7 +10,8 @@ public enum ArcType implements Comparator<ArcType> {
     EXTENSION(1),
     IMPLEMENTATION(2),
     AGGREGATION(3),
-    ASSOCIATION(4);
+    ASSOCIATION(4),
+    NESTING(5);
 
     private static final Map<String, ArcType> DEGREE_MAP;
 

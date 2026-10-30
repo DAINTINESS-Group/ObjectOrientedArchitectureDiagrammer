@@ -23,5 +23,7 @@ public interface ClassStructureAssertion {
 
     ClassStructureAssertion hasNoAggregationTo(String classifierName);
 
+    ClassStructureAssertion hasNestedClass(String className);
+
     UMLModelAssertions also();
 }

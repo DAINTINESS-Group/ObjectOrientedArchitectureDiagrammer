@@ -23,7 +23,6 @@ import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import java.io.FileNotFoundException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -66,6 +65,8 @@ public class FileVisitor {
     private final List<LeafNode.Field> fields;
     private final List<LeafNode> innerClasses;
     private final Path path;
+    private final PackageNode parentNode;
+    private final List<ClassOrInterfaceDeclaration> innerClassDeclarations;
     private final List<String> imports;
     private final List<String> createdObjects;
     private final List<String> unassignedObjects;
@@ -84,6 +85,8 @@ public class FileVisitor {
      */
     public FileVisitor(PackageNode parentNode, Path path) {
         this.path = path;
+        this.parentNode = parentNode;
+        innerClassDeclarations = new ArrayList<>();
         leafNodeBuilder = new LeafNodeBuilder(parentNode, path);
         createdObjects = new ArrayList<>();
         unassignedObjects = new ArrayList<>();
@@ -123,6 +126,9 @@ public class FileVisitor {
                 compilationUnit.accept(objectCreationVisitor, null);
                 unassignedObjects.addAll(populateCreatedObjects());
             }
+            for (ClassOrInterfaceDeclaration innerClassDeclaration : innerClassDeclarations) {
+                innerClasses.add(createInnerClass(innerClassDeclaration));
+            }
         } catch (FileNotFoundException e) {
             logger.debug("File with path: {} not found", path);
             throw new RuntimeException(e);
@@ -144,6 +150,109 @@ public class FileVisitor {
                 .build();
     }
 
+    private LeafNode createInnerClass(ClassOrInterfaceDeclaration innerClassDeclaration) {
+        String innerBaseClass = "";
+        if (!innerClassDeclaration.getExtendedTypes().isEmpty()) {
+            innerBaseClass = innerClassDeclaration.getExtendedTypes().get(0).getNameAsString();
+        }
+
+        List<String> innerImplementedInterfaces = new ArrayList<>();
+        for (ClassOrInterfaceType c : innerClassDeclaration.getImplementedTypes()) {
+            innerImplementedInterfaces.add(c.getNameAsString());
+        }
+
+        List<LeafNode.Field> innerFields = new ArrayList<>();
+        for (FieldDeclaration fieldDeclaration : innerClassDeclaration.getFields()) {
+            innerFields.addAll(createFields(fieldDeclaration));
+        }
+
+        List<LeafNode.Method> innerMethods = new ArrayList<>();
+        for (ConstructorDeclaration constructorDeclaration : innerClassDeclaration.getConstructors()) {
+            innerMethods.add(createConstructor(constructorDeclaration));
+        }
+
+        for (MethodDeclaration methodDeclaration : innerClassDeclaration.getMethods()) {
+            innerMethods.add(createMethod(methodDeclaration));
+        }
+
+        return new LeafNodeBuilder(parentNode, path)
+                .setNodeName(nodeName + "::" + innerClassDeclaration.getNameAsString())
+                .setNodeType(
+                        innerClassDeclaration.isInterface() ? NodeType.INTERFACE : NodeType.CLASS)
+                .setBaseClass(innerBaseClass)
+                .setImplementedInterface(innerImplementedInterfaces)
+                .setFields(innerFields)
+                .setMethods(innerMethods)
+                .setImports(imports)
+                .build();
+    }
+
+    private List<LeafNode.Field> createFields(FieldDeclaration fieldDeclaration) {
+
+        List<LeafNode.Field> createdFields = new ArrayList<>();
+        for (VariableDeclarator variable : fieldDeclaration.getVariables()) {
+
+            List<Modifier> visibilityModifiers = ASTUtil.filterVisibilityModifiers(fieldDeclaration.getModifiers());
+
+            ModifierType modifierType =
+                    visibilityModifiers.isEmpty()
+                            ? PACKAGE_PRIVATE
+                            : ModifierType.get(
+                            fieldDeclaration.getModifiers().get(0).toString());
+
+            createdFields.add(
+                    new LeafNode.Field(
+                            variable.getNameAsString(),
+                            getType(variable.getTypeAsString()),
+                            modifierType));
+        }
+        return createdFields;
+    }
+
+    private LeafNode.Method createConstructor(ConstructorDeclaration constructorDeclaration) {
+
+        ModifierType modifierType =
+                constructorDeclaration.getModifiers().isEmpty()
+                        ? PACKAGE_PRIVATE
+                        : ModifierType.get(
+                        constructorDeclaration.getModifiers().get(0).toString());
+
+        Map<String, String> parameters =
+                constructorDeclaration.getParameters().stream()
+                        .collect(
+                                Collectors.toMap(
+                                        NodeWithSimpleName::getNameAsString,
+                                        parameter -> getType(parameter.getTypeAsString())));
+
+
+        return new LeafNode.Method(
+                constructorDeclaration.getNameAsString(),
+                "Constructor",
+                modifierType,
+                parameters);
+    }
+
+    private LeafNode.Method createMethod(MethodDeclaration methodDeclaration) {
+        List<Modifier> visibilityModifiers = ASTUtil.filterVisibilityModifiers(methodDeclaration.getModifiers());
+
+        ModifierType modifierType =
+                visibilityModifiers.isEmpty()
+                        ? PACKAGE_PRIVATE
+                        : ModifierType.get(methodDeclaration.getModifiers().get(0).toString());
+
+        Map<String, String> parameters =
+                methodDeclaration.getParameters().stream()
+                        .collect(
+                                Collectors.toMap(
+                                        NodeWithSimpleName::getNameAsString,
+                                        parameter -> getType(parameter.getTypeAsString())));
+        return new LeafNode.Method(
+                methodDeclaration.getNameAsString(),
+                getType(methodDeclaration.getTypeAsString()),
+                modifierType,
+                parameters);
+    }
+
     private class InheritanceVisitor extends VoidVisitorAdapter<Void> {
 
         @Override
@@ -153,26 +262,7 @@ public class FileVisitor {
 
             // Inner Class case.
             if (!path.endsWith(classOrInterfaceDeclaration.getNameAsString() + ".java")) {
-                String innerBaseClass = "";
-                if (!classOrInterfaceDeclaration.getExtendedTypes().isEmpty()) {
-                    innerBaseClass =
-                            classOrInterfaceDeclaration.getExtendedTypes().get(0).getNameAsString();
-                }
-
-                List<String> innerImplementedInterfaces = new ArrayList<>();
-                for (ClassOrInterfaceType c : classOrInterfaceDeclaration.getImplementedTypes()) {
-                    innerImplementedInterfaces.add(c.getNameAsString());
-                }
-                // Create the leaf node for the inner class.
-                LeafNodeBuilder innerLeafNodeBuilder = new LeafNodeBuilder(null, Paths.get(""));
-                LeafNode innerClass =
-                        innerLeafNodeBuilder
-                                .setNodeName(classOrInterfaceDeclaration.getNameAsString())
-                                .setBaseClass(innerBaseClass)
-                                .setImplementedInterface(innerImplementedInterfaces)
-                                .build();
-                innerClasses.add(innerClass);
-
+                innerClassDeclarations.add(classOrInterfaceDeclaration);
                 return;
             }
 
@@ -192,60 +282,41 @@ public class FileVisitor {
         }
     }
 
-    private class ConstructorVisitor extends VoidVisitorAdapter<Void> {
+    private class OuterClassVisitor extends VoidVisitorAdapter<Void> {
+
+        @Override
+        public void visit(ClassOrInterfaceDeclaration
+                          classOrInterfaceDeclaration, Void arg) {
+            // the members of an inner class are not members of the outer class.
+            if (!path.endsWith(classOrInterfaceDeclaration.getNameAsString() + ".java")) {
+                return;
+            }
+
+            super.visit(classOrInterfaceDeclaration, arg);
+        }
+    }
+
+    private class ConstructorVisitor extends OuterClassVisitor {
 
         @Override
         public void visit(ConstructorDeclaration constructorDeclaration, Void arg) {
             super.visit(constructorDeclaration, arg);
 
-            ModifierType modifierType =
-                    constructorDeclaration.getModifiers().isEmpty()
-                            ? PACKAGE_PRIVATE
-                            : ModifierType.get(
-                                    constructorDeclaration.getModifiers().get(0).toString());
-
-            Map<String, String> parameters =
-                    constructorDeclaration.getParameters().stream()
-                            .collect(
-                                    Collectors.toMap(
-                                            NodeWithSimpleName::getNameAsString,
-                                            parameter -> getType(parameter.getTypeAsString())));
-
-            methods.add(
-                    new LeafNode.Method(
-                            constructorDeclaration.getNameAsString(),
-                            "Constructor",
-                            modifierType,
-                            parameters));
+            methods.add(createConstructor(constructorDeclaration));
         }
     }
 
-    private class FieldVisitor extends VoidVisitorAdapter<Void> {
+    private class FieldVisitor extends OuterClassVisitor {
 
         @Override
         public void visit(FieldDeclaration fieldDeclaration, Void arg) {
             super.visit(fieldDeclaration, arg);
 
-            for (VariableDeclarator variable : fieldDeclaration.getVariables()) {
-
-                List<Modifier> visibilityModifiers = ASTUtil.filterVisibilityModifiers(fieldDeclaration.getModifiers());
-
-                ModifierType modifierType =
-                        visibilityModifiers.isEmpty()
-                                ? PACKAGE_PRIVATE
-                                : ModifierType.get(
-                                        fieldDeclaration.getModifiers().get(0).toString());
-
-                fields.add(
-                        new LeafNode.Field(
-                                variable.getNameAsString(),
-                                getType(variable.getTypeAsString()),
-                                modifierType));
-            }
+            fields.addAll(createFields(fieldDeclaration));
         }
     }
 
-    private class VariableVisitor extends VoidVisitorAdapter<Void> {
+    private class VariableVisitor extends OuterClassVisitor {
 
         @Override
         public void visit(VariableDeclarationExpr variableDeclarationExpr, Void arg) {
@@ -268,35 +339,17 @@ public class FileVisitor {
         }
     }
 
-    private class MethodVisitor extends VoidVisitorAdapter<Void> {
+    private class MethodVisitor extends OuterClassVisitor {
 
         @Override
         public void visit(MethodDeclaration methodDeclaration, Void arg) {
             super.visit(methodDeclaration, arg);
 
-            List<Modifier> visibilityModifiers = ASTUtil.filterVisibilityModifiers(methodDeclaration.getModifiers());
-
-            ModifierType modifierType =
-                    visibilityModifiers.isEmpty()
-                            ? PACKAGE_PRIVATE
-                            : ModifierType.get(methodDeclaration.getModifiers().get(0).toString());
-
-            Map<String, String> parameters =
-                    methodDeclaration.getParameters().stream()
-                            .collect(
-                                    Collectors.toMap(
-                                            NodeWithSimpleName::getNameAsString,
-                                            parameter -> getType(parameter.getTypeAsString())));
-            methods.add(
-                    new LeafNode.Method(
-                            methodDeclaration.getNameAsString(),
-                            getType(methodDeclaration.getTypeAsString()),
-                            modifierType,
-                            parameters));
+            methods.add(createMethod(methodDeclaration));
         }
     }
 
-    private class ObjectCreationVisitor extends VoidVisitorAdapter<Void> {
+    private class ObjectCreationVisitor extends OuterClassVisitor {
 
         @Override
         public void visit(ObjectCreationExpr objectCreationExpr, Void arg) {
@@ -318,7 +371,7 @@ public class FileVisitor {
         }
     }
 
-    private class MemberVisitor extends VoidVisitorAdapter<Void> {
+    private class MemberVisitor extends OuterClassVisitor {
 
         @Override
         public void visit(EnumDeclaration enumDeclaration, Void arg) {

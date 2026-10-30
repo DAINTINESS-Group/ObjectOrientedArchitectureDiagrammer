@@ -258,8 +258,6 @@ public class ASTInterpreterTest {
                 .doesNotExtendClass("CD");
     }
 
-    @Disabled("Parser limitation: ASTRelationshipIdentifier.isExtension attributes the extends of inner class to outer class"
-    + " (see ParserTesting/InnerClassSample.java:5)")
     @Test
     void parserTestingInnerClassExtensionTest() {
         given(interpreterFor(PathTemplate.ParserTesting.SRC.path))
@@ -267,13 +265,50 @@ public class ASTInterpreterTest {
                 .doesNotExtendClass("ObjectCreationSample");
     }
 
-    @Disabled("Parser limitation: ASTRelationshipIdentifier.isImplementation attributes the implements of inner class to outer class"
-    + " (see ParserTesting/InnerClassSample.java:5)")
     @Test
     void parserTestingInnerClassImplementationTest() {
         given(interpreterFor(PathTemplate.ParserTesting.SRC.path))
                 .assertThatClass("InnerClassSample")
                 .doesNotImplementInterface("TestingInterface");
+    }
+
+    @Test
+    void parserTestingInnerClassOwnVertexTest() {
+        given(interpreterFor(PathTemplate.ParserTesting.SRC.path))
+                .assertThatClass("InnerClassSample::InnerClass")
+                .extendsClass("ObjectCreationSample")
+                .and()
+                .implementsInterface("TestingInterface");
+    }
+
+    @Test
+    void parserTestingInnerClassAssociationTest() {
+        given(interpreterFor(PathTemplate.ParserTesting.SRC.path))
+                .assertThatClass("InnerClassSample")
+                .hasNoAssociationTo("ObjectCreationSample");
+    }
+
+    @Test
+    void parserTestingInnerClassOwnAssociationTest() {
+        given(interpreterFor(PathTemplate.ParserTesting.SRC.path))
+                .assertThatClass("InnerClassSample::InnerClass")
+                .hasAssociationTo("ObjectCreationSample");
+    }
+
+    @Test
+    void parserTestingInnerClassOwnDependencyTest() {
+        given(interpreterFor(PathTemplate.ParserTesting.SRC.path))
+                .assertThatClass("InnerClassSample::InnerClass")
+                .hasDependencyTo("ImplementingClass")
+                .and()
+                .hasDependencyTo("TestingInterface2");
+    }
+
+    @Test
+    void parserTestingInnerClassNestingTest() {
+        given(interpreterFor(PathTemplate.ParserTesting.SRC.path))
+                .assertThatClass("InnerClassSample")
+                .hasNestedClass("InnerClassSample::InnerClass");
     }
 
     @Test
@@ -447,8 +482,6 @@ public class ASTInterpreterTest {
         given(interpreterFor(PathTemplate.LatexEditor.SRC.path)).everyClassExtendsAtMostOneClass();
     }
 
-    @Disabled("Parser limitation: ASTRelationshipIdentifier.isExtension attributes the extends of inner class to outer class,"
-            + " so a class gets two superclasses (see ParserTesting/InnerClassSample.java:5)")
     @Test
     void parserTestingSingleInheritanceTest() {
         given(interpreterFor(PathTemplate.ParserTesting.SRC.path)).everyClassExtendsAtMostOneClass();
