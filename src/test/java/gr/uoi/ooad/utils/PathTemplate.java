@@ -387,6 +387,23 @@ public class PathTemplate {
         }
     }
 
+    public enum InvalidFileSamples {
+        SRC(
+                Paths.get(
+                        String.format(
+                                "%s%s%s",
+                                PathConstructor.getCurrentPath(),
+                                File.separator,
+                                PathConstructor.constructPath(
+                                        "src", "test", "resources", "InvalidFileSamples"))));
+
+        public final Path path;
+
+        InvalidFileSamples(Path path) {
+            this.path = path;
+        }
+    }
+
     public enum BookstoreAdvanced {
         SRC_ROOT(
                 Paths.get(

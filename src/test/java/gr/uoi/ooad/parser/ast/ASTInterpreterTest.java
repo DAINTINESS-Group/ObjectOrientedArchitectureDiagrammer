@@ -487,6 +487,11 @@ public class ASTInterpreterTest {
         given(interpreterFor(PathTemplate.ParserTesting.SRC.path)).everyClassExtendsAtMostOneClass();
     }
 
+    @Test
+    void invalidFileDoesNotStopParsingTest() {
+        given(interpreterFor(PathTemplate.InvalidFileSamples.SRC.path))
+                .assertThatClass("ValidClass");
+    }
 
 //    @Test
 //    void associationArcsArePresentForDefaultPackageTest() {

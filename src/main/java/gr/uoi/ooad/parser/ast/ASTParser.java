@@ -2,6 +2,7 @@ package gr.uoi.ooad.parser.ast;
 
 import static proguard.classfile.JavaConstants.JAVA_FILE_EXTENSION;
 
+import com.github.javaparser.ParseProblemException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -54,11 +55,15 @@ public class ASTParser {
                     currentNode.getSubNodes().put(subNode.getPath(), subNode);
                     parseFolder(subNode);
                 } else if (isJavaSourceFile(path)) {
-                    FileVisitor fileVisitor = new FileVisitor(currentNode, path);
-                    LeafNode leafNode = fileVisitor.createAST();
-                    currentNode.getLeafNodes().put(leafNode.nodeName(), leafNode);
-                    for (LeafNode innerClass : leafNode.innerClasses()) {
-                        currentNode.getLeafNodes().put(innerClass.nodeName(), innerClass);
+                    try {
+                        FileVisitor fileVisitor = new FileVisitor(currentNode, path);
+                        LeafNode leafNode = fileVisitor.createAST();
+                        currentNode.getLeafNodes().put(leafNode.nodeName(), leafNode);
+                        for (LeafNode innerClass : leafNode.innerClasses()) {
+                            currentNode.getLeafNodes().put(innerClass.nodeName(), innerClass);
+                        }
+                    } catch (ParseProblemException e) {
+                        logger.warn("Skipped file that is not valid Java: {}", path);
                     }
                 }
             }
