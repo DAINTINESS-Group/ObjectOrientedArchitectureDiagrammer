@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import gr.uoi.ooad.model.graph.Arc;
-import gr.uoi.ooad.model.graph.ArcType;
 import gr.uoi.ooad.model.graph.ClassifierVertex;
 import gr.uoi.ooad.model.graph.PackageVertex;
 import gr.uoi.ooad.parser.ast.tree.LeafNode;
@@ -21,18 +20,16 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
 
-import gr.uoi.ooad.utils.assertions.UMLModelAssertions;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class ASTInterpreterTest {
 
     @Test
     public void convertTreeToGraphTest() {
-        ASTInterpreter interpreter = new ASTInterpreter();
-        interpreter.parseProject(LatexEditor.SRC.path);
-        interpreter.convertToGraph(Collections.emptyList(), Collections.emptyList());
+        ASTInterpreter interpreter = interpreterFor(PathTemplate.LatexEditor.SRC.path);
         Map<Path, PackageNode> packageNodes = interpreter.getPackageNodes();
         List<PackageVertex> vertices = interpreter.getVertices();
         assertEquals(packageNodes.size(), vertices.size());
@@ -158,14 +155,23 @@ public class ASTInterpreterTest {
                         && it.modifier().toString().equals(leafMethod.modifierType().toString());
     }
 
-    @Test
-    void packageDependenciesForLatexEditor() {
-
+    /**
+     * Creates a new interpreter, parses the given project and converts it to a graph.
+     *
+     * @param projectPath the source folder of the project to parse
+     * @return the interpreter, ready to be passed to {@code given(...)}
+     */
+    private static ASTInterpreter interpreterFor(Path projectPath) {
         ASTInterpreter interpreter = new ASTInterpreter();
-        interpreter.parseProject(PathTemplate.LatexEditor.SRC.path);
+        interpreter.parseProject(projectPath);
         interpreter.convertToGraph(Collections.emptyList(), Collections.emptyList());
 
-        given(interpreter)
+        return interpreter;
+    }
+
+    @Test
+    void packageDependenciesForLatexEditor() {
+        given(interpreterFor(LatexEditor.SRC.path))
                 .assertThatPackage("src.controller")
                 .hasDependencyTo("src.model")
                 .also()
@@ -175,12 +181,43 @@ public class ASTInterpreterTest {
                 .hasDependencyTo("src.model");
     }
 
+    @Test
+    void latexEditorNoReversePackageDependenciesTest() {
+        given(interpreterFor(PathTemplate.LatexEditor.SRC.path))
+                .assertThatPackage("src.model")
+                .hasNoDependencyTo("src.controller")
+                .also()
+                .assertThatPackage("src.controller")
+                .hasNoDependencyTo("src.view");
+    }
+
+    @Test
+    void latexEditorImplementationsTest(){
+        given(interpreterFor(PathTemplate.LatexEditor.SRC.path))
+                .assertThatInterface("Command") // checks if Command is Interface
+                .also()
+                .assertThatInterface("VersionsStrategy") // checks if VersionsStrategy is Interface
+                .also()
+                .assertThatClass("AddLatexCommand")
+                .implementsInterface("Command")
+                .also()
+                .assertThatClass("StableVersionsStrategy")
+                .implementsInterface("VersionsStrategy");
+    }
+
+    @Test
+    void latexEditorNoFalseImplementationsTest() {
+        given(interpreterFor(PathTemplate.LatexEditor.SRC.path))
+                .assertThatClass("AddLatexCommand")
+                .doesNotImplementInterface("VersionsStrategy")
+                .also()
+                .assertThatClass("StableVersionsStrategy")
+                .doesNotImplementInterface("Command");
+    }
 
     @Test
     void classRelationshipArcsArePresentForDefaultPackageTest() {
-        ASTInterpreter interpreter = new ASTInterpreter();
-        interpreter.parseProject(PathTemplate.ParserTesting.SRC.path);
-        interpreter.convertToGraph(Collections.emptyList(), Collections.emptyList());
+        ASTInterpreter interpreter = interpreterFor(PathTemplate.ParserTesting.SRC.path);
 
         given(interpreter)
                 .assertThatClass("ImplementingClass")
@@ -200,6 +237,223 @@ public class ASTInterpreterTest {
                 .hasDependencyTo("ImplementingClass");
 
     }
+
+    @Test
+    void bookstoreInheritanceTest(){
+        given(interpreterFor(PathTemplate.BookstoreAdvanced.SRC.path))
+                .assertThatClass("Book")
+                .extendsClass("Item")
+                .also()
+                .assertThatClass("CD")
+                .extendsClass("Item");
+    }
+
+    @Test
+    void bookstoreNoFalseInheritanceTest() {
+        given(interpreterFor(PathTemplate.BookstoreAdvanced.SRC.path))
+                .assertThatClass("Item")
+                .doesNotExtendClass("Book")
+                .also()
+                .assertThatClass("Book")
+                .doesNotExtendClass("CD");
+    }
+
+    @Disabled("Parser limitation: ASTRelationshipIdentifier.isExtension attributes the extends of inner class to outer class"
+    + " (see ParserTesting/InnerClassSample.java:5)")
+    @Test
+    void parserTestingInnerClassExtensionTest() {
+        given(interpreterFor(PathTemplate.ParserTesting.SRC.path))
+                .assertThatClass("InnerClassSample")
+                .doesNotExtendClass("ObjectCreationSample");
+    }
+
+    @Disabled("Parser limitation: ASTRelationshipIdentifier.isImplementation attributes the implements of inner class to outer class"
+    + " (see ParserTesting/InnerClassSample.java:5)")
+    @Test
+    void parserTestingInnerClassImplementationTest() {
+        given(interpreterFor(PathTemplate.ParserTesting.SRC.path))
+                .assertThatClass("InnerClassSample")
+                .doesNotImplementInterface("TestingInterface");
+    }
+
+    @Test
+    void bookstoreAssociationsTest(){
+        given(interpreterFor(PathTemplate.BookstoreAdvanced.SRC.path))
+                .assertThatClass("Gui")
+                .hasAssociationTo("ItemManager")
+                .and()
+                .hasAssociationTo("ItemFactory")
+                .also()
+                .assertThatClass("CartController")
+                .hasAssociationTo("ShoppingCart")
+                .also()
+                .assertThatClass("GuiEventHandler")
+                .hasAssociationTo("ShoppingCart");
+    }
+
+    @Test
+    void bookstoreNoReverseAssociationsTest() {
+        given(interpreterFor(PathTemplate.BookstoreAdvanced.SRC.path))
+                .assertThatClass("ItemManager")
+                .hasNoAssociationTo("Gui")
+                .also()
+                .assertThatClass("ShoppingCart")
+                .hasNoAssociationTo("CartController");
+    }
+
+    @Test
+    void bookstoreDependenciesTest(){
+        given(interpreterFor(PathTemplate.BookstoreAdvanced.SRC.path))
+                .assertThatClass("ItemFactory")
+                .hasDependencyTo("Book")
+                .and()
+                .hasDependencyTo("CD")
+                .also()
+                .assertThatClass("CartViewer")
+                .hasDependencyTo("ShoppingCart")
+                .and()
+                .hasDependencyTo("CartController");
+    }
+
+    @Test
+    void bookstoreNoReverseDependenciesTest() {
+        given(interpreterFor(PathTemplate.BookstoreAdvanced.SRC.path))
+                .assertThatClassifier("Book")
+                .hasNoDependencyTo("ItemFactory")
+                .also()
+                .assertThatClassifier("ShoppingCart")
+                .hasNoDependencyTo("CartViewer");
+    }
+
+    @Test
+    void latexEditorNoFalseDependenciesTest() {
+        given(interpreterFor(PathTemplate.LatexEditor.SRC.path))
+                .assertThatClass("AddLatexCommand")
+                .hasNoDependencyTo("VersionsStrategy");
+    }
+
+    @Test
+    void bookstorePackageDependenciesTest(){
+        given(interpreterFor(PathTemplate.BookstoreAdvanced.SRC.path))
+                .assertThatPackage("src.gui")
+                .hasDependencyTo("src.bookstore");
+    }
+
+    @Test
+    void bookstoreNoReversePackageDependenciesTest() {
+        given(interpreterFor(PathTemplate.BookstoreAdvanced.SRC.path))
+                .assertThatPackage("src.bookstore")
+                .hasNoDependencyTo("src.gui");
+    }
+
+    @Disabled("Parser limitation: FileVisitor.VariableVisitor records a local variable "
+    + "only when it is initialized with 'new' (see BookstoreAdvancedV01.src.gui.Gui.java:23)")
+    @Test
+    void bookstoreLocalVariableDependencyTest(){
+        given(interpreterFor(PathTemplate.BookstoreAdvanced.SRC.path))
+                .assertThatClass("Gui")
+                .hasDependencyTo("Item");
+    }
+
+    @Test
+    void bookstoreAggregationsTest() {
+        given(interpreterFor(PathTemplate.BookstoreAdvanced.SRC.path))
+                .assertThatClass("ShoppingCart")
+                .hasAggregationTo("Item")
+                .also()
+                .assertThatClass("ItemManager")
+                .hasAggregationTo("Item");
+    }
+
+    @Test
+    void bookstoreNoFalseAggregationsTest() {
+        given(interpreterFor(PathTemplate.BookstoreAdvanced.SRC.path))
+                .assertThatClass("GuiEventHandler")
+                .hasNoAggregationTo("ShoppingCart");
+    }
+
+    @Test
+    void latexEditorAggregationsTest() {
+        given(interpreterFor(PathTemplate.LatexEditor.SRC.path))
+                .assertThatClass("DocumentManager")
+                .hasAggregationTo("Document")
+                .also()
+                .assertThatClass("LatexEditorController")
+                .hasAggregationTo("Command");
+    }
+
+    @Test
+    void collectionSamplesAggregationsTest() {
+        given(interpreterFor(PathTemplate.CollectionSamples.SRC.path))
+                .assertThatClass("ListOwner")
+                .hasAggregationTo("Apple")
+                .also()
+                .assertThatClass("ArrayOwner")
+                .hasAggregationTo("Apple");
+    }
+
+    @Disabled("Parser limitation: ASTRelationshipIdentifier.isFieldOfTypeCollection does not recognize Set as a collection"
+            + " (see CollectionSamples/SetOwner.java)")
+    @Test
+    void collectionSamplesSetAggregationTest() {
+        given(interpreterFor(PathTemplate.CollectionSamples.SRC.path))
+                .assertThatClass("SetOwner")
+                .hasAggregationTo("Apple");
+    }
+
+    @Disabled("Parser limitation: ASTRelationshipIdentifier.isFieldOfTypeCollection checks the type prefix, so TreeMap is not recognized"
+            + " (see CollectionSamples/TreeMapOwner.java)")
+    @Test
+    void collectionSamplesTreeMapAggregationTest() {
+        given(interpreterFor(PathTemplate.CollectionSamples.SRC.path))
+                .assertThatClass("TreeMapOwner")
+                .hasAggregationTo("Apple");
+    }
+
+    @Disabled("Parser limitation: ASTRelationshipIdentifier.isFieldOfTypeCollection does not recognize the fully qualified java.util.List"
+            + " (see CollectionSamples/FqnOwner.java)")
+    @Test
+    void collectionSamplesQualifiedListAggregationTest() {
+        given(interpreterFor(PathTemplate.CollectionSamples.SRC.path))
+                .assertThatClass("FqnOwner")
+                .hasAggregationTo("Apple");
+    }
+
+    @Disabled("Parser limitation: ASTRelationshipIdentifier.isFieldOfTypeCollection treats every type starting with List as a collection"
+            + " (see CollectionSamples/ListenerOwner.java)")
+    @Test
+    void collectionSamplesListenerNoAggregationTest() {
+        given(interpreterFor(PathTemplate.CollectionSamples.SRC.path))
+                .assertThatClass("ListenerOwner")
+                .hasNoAggregationTo("Listener");
+    }
+
+    @Disabled("Parser limitation: FileVisitor.getType turns < into [, so a generic Box<Apple> field is treated as an array"
+            + " (see CollectionSamples/BoxOwner.java)")
+    @Test
+    void collectionSamplesGenericClassNoAggregationTest() {
+        given(interpreterFor(PathTemplate.CollectionSamples.SRC.path))
+                .assertThatClass("BoxOwner")
+                .hasNoAggregationTo("Box");
+    }
+
+    @Test
+    void bookstoreSingleInheritanceTest() {
+        given(interpreterFor(PathTemplate.BookstoreAdvanced.SRC.path)).everyClassExtendsAtMostOneClass();
+    }
+
+    @Test
+    void latexEditorSingleInheritanceTest() {
+        given(interpreterFor(PathTemplate.LatexEditor.SRC.path)).everyClassExtendsAtMostOneClass();
+    }
+
+    @Disabled("Parser limitation: ASTRelationshipIdentifier.isExtension attributes the extends of inner class to outer class,"
+            + " so a class gets two superclasses (see ParserTesting/InnerClassSample.java:5)")
+    @Test
+    void parserTestingSingleInheritanceTest() {
+        given(interpreterFor(PathTemplate.ParserTesting.SRC.path)).everyClassExtendsAtMostOneClass();
+    }
+
 
 //    @Test
 //    void associationArcsArePresentForDefaultPackageTest() {

@@ -3,6 +3,7 @@ package gr.uoi.ooad.utils.assertions;
 import gr.uoi.ooad.model.graph.ArcType;
 import gr.uoi.ooad.model.graph.ClassifierVertex;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ClassStructureAssertionImpl implements ClassStructureAssertion {
@@ -25,6 +26,15 @@ public class ClassStructureAssertionImpl implements ClassStructureAssertion {
     }
 
     @Override
+    public ClassStructureAssertion doesNotExtendClass(String className) {
+        parent.assertThatClass(className);
+        boolean hasExtensionArc = matchRelationship(targetClass, className, ArcType.EXTENSION);
+
+        assertFalse(hasExtensionArc, targetClass.getName() + " expected NOT to EXTEND " + className);
+        return this;
+    }
+
+    @Override
     public ClassStructureAssertion and(){
         return this;
     }
@@ -38,18 +48,61 @@ public class ClassStructureAssertionImpl implements ClassStructureAssertion {
     }
 
     @Override
-    public ClassStructureAssertion hasDependencyTo(String classifierName){
-        boolean hasImplementationArc = matchRelationship(targetClass, classifierName, ArcType.DEPENDENCY);
+    public ClassStructureAssertion doesNotImplementInterface(String interfaceName) {
+        parent.assertThatInterface(interfaceName);
+        boolean hasImplementationArc = matchRelationship(targetClass, interfaceName, ArcType.IMPLEMENTATION);
 
-        assertTrue(hasImplementationArc, targetClass.getName() + " expected to DEPEND TO " + classifierName);
+        assertFalse(hasImplementationArc, targetClass.getName() + " expected NOT to IMPLEMENT " + interfaceName);
+        return this;
+    }
+
+    @Override
+    public ClassStructureAssertion hasDependencyTo(String classifierName){
+        boolean hasDependencyArc = matchRelationship(targetClass, classifierName, ArcType.DEPENDENCY);
+
+        assertTrue(hasDependencyArc, targetClass.getName() + " expected to DEPEND TO " + classifierName);
+        return this;
+    }
+
+    @Override
+    public ClassStructureAssertion hasNoDependencyTo(String classifierName) {
+        parent.assertThatClassifier(classifierName);
+        boolean hasDependencyArc = matchRelationship(targetClass, classifierName, ArcType.DEPENDENCY);
+
+        assertFalse(hasDependencyArc, targetClass.getName() + " expected NOT to DEPEND TO " + classifierName);
         return this;
     }
 
     @Override
     public ClassStructureAssertion hasAssociationTo(String classifierName){
-        boolean hasImplementationArc = matchRelationship(targetClass, classifierName, ArcType.ASSOCIATION);
+        boolean hasAssociationArc = matchRelationship(targetClass, classifierName, ArcType.ASSOCIATION);
 
-        assertTrue(hasImplementationArc, targetClass.getName() + " expected to HAS ASSOCIATION TO " + classifierName);
+        assertTrue(hasAssociationArc, targetClass.getName() + " expected to HAS ASSOCIATION TO " + classifierName);
+        return this;
+    }
+
+    @Override
+    public ClassStructureAssertion hasNoAssociationTo(String classifierName) {
+        parent.assertThatClassifier(classifierName);
+        boolean hasAssociationArc = matchRelationship(targetClass, classifierName, ArcType.ASSOCIATION);
+
+        assertFalse(hasAssociationArc, targetClass.getName() + " expected NOT to ASSOCIATE TO " + classifierName);
+        return this;
+    }
+
+    @Override
+    public ClassStructureAssertion hasAggregationTo(String classifierName) {
+        boolean hasAggregationArc = matchRelationship(targetClass, classifierName, ArcType.AGGREGATION);
+        assertTrue(hasAggregationArc, targetClass.getName() + " expected to AGGREGATE TO " + classifierName);
+        return this;
+    }
+
+    @Override
+    public ClassStructureAssertion hasNoAggregationTo(String classifierName) {
+        parent.assertThatClassifier(classifierName);
+        boolean hasAggregationArc = matchRelationship(targetClass, classifierName, ArcType.AGGREGATION);
+
+        assertFalse(hasAggregationArc, targetClass.getName() + " expected NOT to AGGREGATE TO " + classifierName);
         return this;
     }
 
