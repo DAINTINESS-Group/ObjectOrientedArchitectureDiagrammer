@@ -26,8 +26,11 @@ public class SmartArrowFactory {
                 smartArrow.setStyleClass("arrowClosed");
             case ASSOCIATION:
             case DEPENDENCY:
-            case NESTING:
                 smartArrow = new SmartArrow(smartGraphProperties.getEdgeArrowSize());
+                break;
+            case NESTING:
+                smartArrow = new SmartNestingArrow(smartGraphProperties.getEdgeArrowSize());
+                smartArrow.setStyleClass("arrowClosed");
                 break;
             default:
                 throw new RuntimeException("Unsupported arc type" + arcType);
