@@ -55,6 +55,7 @@ public class GraphMLClassifierVertexArc {
             case AGGREGATION -> Arrays.asList("line", "white_diamond", "none");
             case ASSOCIATION -> Arrays.asList("line", "none", "standard");
             case EXTENSION -> Arrays.asList("line", "none", "white_delta");
+            case NESTING -> Arrays.asList("line", "transparent_circle", "none");
             default -> Arrays.asList("dashed", "none", "white_delta");
         };
     }

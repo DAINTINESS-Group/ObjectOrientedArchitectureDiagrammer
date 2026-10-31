@@ -2,19 +2,24 @@ package gr.uoi.ooad.model;
 
 import static gr.uoi.ooad.model.graph.ArcType.AGGREGATION;
 import static gr.uoi.ooad.model.graph.ArcType.ASSOCIATION;
+import static gr.uoi.ooad.model.graph.ArcType.NESTING;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import gr.uoi.ooad.manager.ClassDiagramManager;
+import gr.uoi.ooad.model.diagram.ClassDiagram;
 import gr.uoi.ooad.model.diagram.GraphClassDiagramConverter;
 import gr.uoi.ooad.model.diagram.ShadowCleaner;
 import gr.uoi.ooad.model.graph.Arc;
 import gr.uoi.ooad.model.graph.ClassifierVertex;
+import gr.uoi.ooad.model.graph.VertexType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import gr.uoi.ooad.utils.PathTemplate.LatexEditor;
@@ -142,5 +147,34 @@ public class ShadowCleanerTest {
 
         assertEquals(1, documentManagerDocumentArc.size());
         assertEquals(AGGREGATION, documentManagerDocumentArc.get(0).arcType());
+    }
+
+    @Test
+    void nestingShadowsAssociationTest() {
+        ClassifierVertex outer =
+                new ClassifierVertex.ClassifierVertexBuilder()
+                        .withName("Outer")
+                        .withVertexType(VertexType.CLASS)
+                        .build();
+        ClassifierVertex inner =
+                new ClassifierVertex.ClassifierVertexBuilder()
+                        .withName("Outer::Inner")
+                        .withVertexType(VertexType.CLASS)
+                        .build();
+
+        Set<Arc<ClassifierVertex>> outerArcs = new HashSet<>();
+        outerArcs.add(new Arc<>(outer, inner, NESTING));
+        outerArcs.add(new Arc<>(outer, inner, ASSOCIATION));
+        Map<ClassifierVertex, Set<Arc<ClassifierVertex>>> diagram = new HashMap<>();
+        diagram.put(outer, outerArcs);
+        ClassDiagram classDiagram = new ClassDiagram();
+        classDiagram.setDiagram(diagram);
+
+        ShadowCleaner shadowCleaner = new ShadowCleaner(classDiagram);
+        Set<Arc<ClassifierVertex>> cleanedArcs =
+                shadowCleaner.shadowWeakRelationships().get(outer);
+
+        assertEquals(1, cleanedArcs.size());
+        assertEquals(NESTING, cleanedArcs.iterator().next().arcType());
     }
 }

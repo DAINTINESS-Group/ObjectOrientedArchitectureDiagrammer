@@ -1,6 +1,7 @@
 package gr.uoi.ooad.model.graphml;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +11,7 @@ import gr.uoi.ooad.model.diagram.graphml.GraphMLClassifierVertexArc;
 import gr.uoi.ooad.model.graph.Arc;
 import gr.uoi.ooad.model.graph.ClassifierVertex;
 import org.junit.jupiter.api.Test;
+import gr.uoi.ooad.utils.PathTemplate.ParserTesting;
 import gr.uoi.ooad.utils.PathTemplate.LatexEditor;
 
 public class GraphMLSinkPackageVertexArcTest {
@@ -91,5 +93,22 @@ public class GraphMLSinkPackageVertexArcTest {
             case EXTENSION -> List.of("line", "none", "white_delta");
             default -> List.of("dashed", "none", "white_delta");
         };
+    }
+
+    @Test
+    void nestingArcIsExportedWithACircleAtTheOuterClassTest() {
+        ClassDiagramManager classDiagramManager = new ClassDiagramManager();
+        classDiagramManager.createSourceProject(ParserTesting.SRC.path);
+        classDiagramManager.convertTreeToDiagram(List.of("InnerClassSample"));
+
+        GraphMLClassifierVertexArc graphMLClassifierVertexArc = new GraphMLClassifierVertexArc();
+        String actual =
+                graphMLClassifierVertexArc
+                        .convertSinkVertexArc(classDiagramManager.getClassDiagram())
+                        .toString();
+
+        String expectedArrows = "<y:Arrows source=\"transparent_circle\" target=\"none\"/>";
+        assertTrue(actual.contains("type=\"line\""), actual);
+        assertTrue(actual.contains(expectedArrows), actual);
     }
 }
