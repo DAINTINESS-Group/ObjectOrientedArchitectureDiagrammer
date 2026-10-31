@@ -10,6 +10,7 @@ public class ShadowCleaner {
     // TODO: Replace with the new ArcType Map.
     private static final List<ArcType> strongerToWeakerArcTypes =
             List.of(
+                    ArcType.NESTING,
                     ArcType.EXTENSION,
                     ArcType.IMPLEMENTATION,
                     ArcType.AGGREGATION,
