@@ -61,7 +61,8 @@ public class JavaFXClassVisualization implements JavaFXVisualization {
             ArcType arcType = edge.element().getArcType();
             if (arcType.equals(ArcType.ASSOCIATION)
                     || arcType.equals(ArcType.EXTENSION)
-                    || arcType.equals(ArcType.AGGREGATION)) {
+                    || arcType.equals(ArcType.AGGREGATION)
+                    || arcType.equals(ArcType.NESTING)) {
                 smartEdge.setStyleClass("edgeNonDashed");
             }
         }
@@ -97,6 +98,12 @@ public class JavaFXClassVisualization implements JavaFXVisualization {
                     directedGraph.insertEdge(
                             sourceNode,
                             targetNode,
+                            UMLEdgeElementFactory.createFromClassifierArc(arc));
+                } else if (arc.arcType().equals(ArcType.NESTING)) {
+                    // Reversed: the arrow goes at the end, and the circle is on the outer class
+                    directedGraph.insertEdge(
+                            targetNode,
+                            sourceNode,
                             UMLEdgeElementFactory.createFromClassifierArc(arc));
                 } else {
                     directedGraph.insertEdge(
