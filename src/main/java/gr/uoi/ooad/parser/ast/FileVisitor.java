@@ -280,6 +280,20 @@ public class FileVisitor {
                             .collect(Collectors.toCollection(ArrayList::new));
             implementedInterfaces.addAll(implementedTypes);
         }
+
+        @Override
+        public void visit(RecordDeclaration recordDeclaration, Void arg) {
+            super.visit(recordDeclaration, arg);
+
+            // Nested record case
+            if (!path.endsWith(recordDeclaration.getNameAsString() + ".java")) {
+                return;
+            }
+
+            isClassOrInterface = true;
+            nodeName = recordDeclaration.getNameAsString();
+            nodeType = NodeType.CLASS;
+        }
     }
 
     private class OuterClassVisitor extends VoidVisitorAdapter<Void> {
