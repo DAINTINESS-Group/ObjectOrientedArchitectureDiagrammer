@@ -404,6 +404,23 @@ public class PathTemplate {
         }
     }
 
+    public enum RecordSamples {
+        SRC(
+                Paths.get(
+                        String.format(
+                                "%s%s%s",
+                                PathConstructor.getCurrentPath(),
+                                File.separator,
+                                PathConstructor.constructPath(
+                                        "src", "test", "resources", "RecordSamples"))));
+
+        public final Path path;
+
+        RecordSamples(Path path) {
+            this.path = path;
+        }
+    }
+
     public enum BookstoreAdvanced {
         SRC_ROOT(
                 Paths.get(
