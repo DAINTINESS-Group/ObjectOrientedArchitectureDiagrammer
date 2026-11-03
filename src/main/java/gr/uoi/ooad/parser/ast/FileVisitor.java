@@ -293,6 +293,12 @@ public class FileVisitor {
             isClassOrInterface = true;
             nodeName = recordDeclaration.getNameAsString();
             nodeType = NodeType.CLASS;
+
+            List<String> implementedTypes =
+                    recordDeclaration.getImplementedTypes().stream()
+                            .map(NodeWithSimpleName::getNameAsString)
+                            .collect(Collectors.toCollection(ArrayList::new));
+            implementedInterfaces.addAll(implementedTypes);
         }
     }
 
