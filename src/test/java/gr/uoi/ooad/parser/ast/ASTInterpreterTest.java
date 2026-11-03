@@ -502,6 +502,13 @@ public class ASTInterpreterTest {
                 .hasAssociationTo("Point");
     }
 
+    @Test
+    void recordImplementsInterfaceTest() {
+        given(interpreterFor(PathTemplate.RecordSamples.SRC.path))
+                .assertThatClass("Point")
+                .implementsInterface("Drawable");
+    }
+
 //    @Test
 //    void associationArcsArePresentForDefaultPackageTest() {
 //        ASTInterpreter interpreter = new ASTInterpreter();
