@@ -14,6 +14,7 @@ import com.github.javaparser.ast.body.ConstructorDeclaration;
 import com.github.javaparser.ast.body.EnumDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.RecordDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.expr.ObjectCreationExpr;
@@ -280,6 +281,26 @@ public class FileVisitor {
                             .collect(Collectors.toCollection(ArrayList::new));
             implementedInterfaces.addAll(implementedTypes);
         }
+
+        @Override
+        public void visit(RecordDeclaration recordDeclaration, Void arg) {
+            super.visit(recordDeclaration, arg);
+
+            // Nested record case
+            if (!path.endsWith(recordDeclaration.getNameAsString() + ".java")) {
+                return;
+            }
+
+            isClassOrInterface = true;
+            nodeName = recordDeclaration.getNameAsString();
+            nodeType = NodeType.CLASS;
+
+            List<String> implementedTypes =
+                    recordDeclaration.getImplementedTypes().stream()
+                            .map(NodeWithSimpleName::getNameAsString)
+                            .collect(Collectors.toCollection(ArrayList::new));
+            implementedInterfaces.addAll(implementedTypes);
+        }
     }
 
     private class OuterClassVisitor extends VoidVisitorAdapter<Void> {
@@ -313,6 +334,24 @@ public class FileVisitor {
             super.visit(fieldDeclaration, arg);
 
             fields.addAll(createFields(fieldDeclaration));
+        }
+
+        @Override
+        public void visit(RecordDeclaration recordDeclaration, Void arg) {
+            super.visit(recordDeclaration, arg);
+
+            // Nested record case
+            if (!path.endsWith(recordDeclaration.getNameAsString() + ".java")) {
+                return;
+            }
+
+            for (Parameter parameter : recordDeclaration.getParameters()) {
+                fields.add(
+                        new LeafNode.Field(
+                                parameter.getNameAsString(),
+                                getType(parameter.getTypeAsString()),
+                                ModifierType.PRIVATE));
+            }
         }
     }
 

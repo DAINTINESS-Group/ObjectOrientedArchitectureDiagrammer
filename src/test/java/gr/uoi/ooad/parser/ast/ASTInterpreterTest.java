@@ -493,6 +493,29 @@ public class ASTInterpreterTest {
                 .assertThatClass("ValidClass");
     }
 
+    @Test
+    void recordIsParsedAsAClassTest() {
+        given(interpreterFor(PathTemplate.RecordSamples.SRC.path))
+                .assertThatClass("Point")
+                .also()
+                .assertThatClass("Shape")
+                .hasAssociationTo("Point");
+    }
+
+    @Test
+    void recordImplementsInterfaceTest() {
+        given(interpreterFor(PathTemplate.RecordSamples.SRC.path))
+                .assertThatClass("Point")
+                .implementsInterface("Drawable");
+    }
+
+    @Test
+    void recordComponentIsAFieldTest() {
+        given(interpreterFor(PathTemplate.RecordSamples.SRC.path))
+                .assertThatClass("Circle")
+                .hasAssociationTo("Point");
+    }
+
 //    @Test
 //    void associationArcsArePresentForDefaultPackageTest() {
 //        ASTInterpreter interpreter = new ASTInterpreter();
