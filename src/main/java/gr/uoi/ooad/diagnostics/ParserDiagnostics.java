@@ -6,6 +6,7 @@ import gr.uoi.ooad.model.graph.ClassifierVertex;
 import gr.uoi.ooad.parser.ast.ASTInterpreter;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
@@ -93,4 +94,7 @@ public class ParserDiagnostics {
         }
     }
 
+    static List<String> foundLines(List<ClassifierVertex> sinkVertices) {
+        return new ArrayList<>();
+    }
 }
