@@ -59,7 +59,9 @@ public class ParserDiagnostics {
         }
 
 
-        printArcs(sinkVertices);
+        for (String line : foundLines(sinkVertices)) {
+            System.out.println(line);
+        }
         Map<ArcType, Integer> arcCounts = countArcs(sinkVertices);
 
 
@@ -80,21 +82,19 @@ public class ParserDiagnostics {
         return arcCounts;
     }
 
-    private static void printArcs(List<ClassifierVertex> sinkVertices){
-        for (ClassifierVertex sinkVertex: sinkVertices) {
+    static List<String> foundLines(List<ClassifierVertex> sinkVertices) {
+        List<String> lines = new ArrayList<>();
+        for (ClassifierVertex sinkVertex : sinkVertices) {
             for (Arc<ClassifierVertex> arc : sinkVertex.getArcs()) {
-                System.out.println(
-                        arc.sourceVertex().getName()
-                                + " - "
+                lines.add(
+                        "FOUND "
                                 + arc.arcType()
+                                + " "
+                                + arc.sourceVertex().getName()
                                 + " -> "
                                 + arc.targetVertex().getName());
-
             }
         }
-    }
-
-    static List<String> foundLines(List<ClassifierVertex> sinkVertices) {
-        return new ArrayList<>();
+        return lines;
     }
 }
