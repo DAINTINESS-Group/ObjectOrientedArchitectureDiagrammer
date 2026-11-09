@@ -97,4 +97,8 @@ public class ParserDiagnostics {
         }
         return lines;
     }
+
+    static List<String> unresolvedLines(ASTInterpreter interpreter) {
+        return new ArrayList<>();
+    }
 }

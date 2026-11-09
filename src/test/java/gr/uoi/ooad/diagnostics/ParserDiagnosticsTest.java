@@ -1,5 +1,6 @@
 package gr.uoi.ooad.diagnostics;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import gr.uoi.ooad.parser.ast.ASTInterpreter;
@@ -25,5 +26,16 @@ public class ParserDiagnosticsTest {
         assertTrue(
                 lines.contains("FOUND nesting InnerClassSample -> InnerClassSample::InnerClass"),
                 "No FOUND line for the nesting of InnerClassSample");
+    }
+
+    @Test
+    void parentOutsideTheProjectIsExternalTest() {
+        ASTInterpreter interpreter = new ASTInterpreter();
+        interpreter.parseProject(PathTemplate.BookstoreAdvanced.SRC.path);
+        interpreter.convertToGraph(Collections.emptyList(), Collections.emptyList());
+
+        List<String> lines = ParserDiagnostics.unresolvedLines(interpreter);
+
+        assertEquals(List.of("EXTERNAL extension Gui -> Application"), lines);
     }
 }
