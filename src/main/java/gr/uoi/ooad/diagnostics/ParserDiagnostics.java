@@ -4,6 +4,8 @@ import gr.uoi.ooad.model.graph.Arc;
 import gr.uoi.ooad.model.graph.ArcType;
 import gr.uoi.ooad.model.graph.ClassifierVertex;
 import gr.uoi.ooad.parser.ast.ASTInterpreter;
+import gr.uoi.ooad.parser.ast.tree.LeafNode;
+import gr.uoi.ooad.parser.ast.tree.PackageNode;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -62,6 +64,11 @@ public class ParserDiagnostics {
         for (String line : foundLines(sinkVertices)) {
             System.out.println(line);
         }
+
+        for (String line : unresolvedLines(interpreter)) {
+            System.out.println(line);
+        }
+
         Map<ArcType, Integer> arcCounts = countArcs(sinkVertices);
 
 
@@ -99,6 +106,34 @@ public class ParserDiagnostics {
     }
 
     static List<String> unresolvedLines(ASTInterpreter interpreter) {
-        return new ArrayList<>();
+        List<String> foundLines = foundLines(interpreter.getSinkVertices());
+        List<String> lines = new ArrayList<>();
+
+        for (PackageNode packageNode : interpreter.getPackageNodes().values()) {
+            for (LeafNode leafNode : packageNode.getLeafNodes().values()) {
+                for (Parent parent : parentsOf(leafNode)) {
+                    String relation =
+                            parent.type() + " " + leafNode.nodeName() + " -> " + parent.name();
+                    if (!foundLines.contains("FOUND " + relation)) {
+                        lines.add("EXTERNAL " + relation);
+                    }
+                }
+            }
+        }
+        return lines;
     }
+
+    private static List<Parent> parentsOf(LeafNode leafNode) {
+        List<Parent> parents = new ArrayList<>();
+        if (!leafNode.baseClass().isEmpty()) {
+            parents.add(new Parent(ArcType.EXTENSION, leafNode.baseClass()));
+        }
+
+        for (String implementedInterface : leafNode.implementedInterfaces()) {
+            parents.add(new Parent(ArcType.IMPLEMENTATION, implementedInterface));
+        }
+        return parents;
+    }
+
+    private record Parent(ArcType type, String name) {}
 }
