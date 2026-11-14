@@ -38,4 +38,15 @@ public class ParserDiagnosticsTest {
 
         assertEquals(List.of("EXTERNAL extension Gui -> Application"), lines);
     }
+
+    @Test
+    void parentInsideTheProjectWithoutArcIsMissedTest() {
+        ASTInterpreter interpreter = new ASTInterpreter();
+        interpreter.parseProject(PathTemplate.InnerInheritanceSamples.SRC.path);
+        interpreter.convertToGraph(Collections.emptyList(), Collections.emptyList());
+
+        List<String> lines = ParserDiagnostics.unresolvedLines(interpreter);
+
+        assertEquals(List.of("MISSED extension Outer::Derived -> Outer::Base"), lines);
+    }
 }

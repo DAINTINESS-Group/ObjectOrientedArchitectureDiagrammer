@@ -421,6 +421,23 @@ public class PathTemplate {
         }
     }
 
+    public enum InnerInheritanceSamples {
+        SRC(
+                Paths.get(
+                        String.format(
+                                "%s%s%s",
+                                PathConstructor.getCurrentPath(),
+                                File.separator,
+                                PathConstructor.constructPath(
+                                        "src", "test", "resources", "InnerInheritanceSamples"))));
+
+        public final Path path;
+
+        InnerInheritanceSamples(Path path) {
+            this.path = path;
+        }
+    }
+
     public enum BookstoreAdvanced {
         SRC_ROOT(
                 Paths.get(
