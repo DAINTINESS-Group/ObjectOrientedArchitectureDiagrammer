@@ -107,20 +107,36 @@ public class ParserDiagnostics {
 
     static List<String> unresolvedLines(ASTInterpreter interpreter) {
         List<String> foundLines = foundLines(interpreter.getSinkVertices());
+        List<String> classNames = new ArrayList<>();
+        for (ClassifierVertex sinkVertex : interpreter.getSinkVertices()) {
+            classNames.add(sinkVertex.getName());
+        }
         List<String> lines = new ArrayList<>();
 
         for (PackageNode packageNode : interpreter.getPackageNodes().values()) {
             for (LeafNode leafNode : packageNode.getLeafNodes().values()) {
                 for (Parent parent : parentsOf(leafNode)) {
-                    String relation =
-                            parent.type() + " " + leafNode.nodeName() + " -> " + parent.name();
+                    String target = targetName(leafNode.nodeName(), parent.name(), classNames);
+                    String relation = parent.type() + " " + leafNode.nodeName() + " -> " + target;
                     if (!foundLines.contains("FOUND " + relation)) {
-                        lines.add("EXTERNAL " + relation);
+                        if (classNames.contains(target)) {
+                            lines.add("MISSED " + relation);
+                        } else {
+                            lines.add("EXTERNAL " + relation);
+                        }
                     }
                 }
             }
         }
         return lines;
+    }
+
+    private static String targetName(String source, String parent, List<String> classNames) {
+        String innerName = source.split("::")[0] + "::" + parent;
+        if (classNames.contains(innerName)) {
+            return innerName;
+        }
+        return parent;
     }
 
     private static List<Parent> parentsOf(LeafNode leafNode) {
