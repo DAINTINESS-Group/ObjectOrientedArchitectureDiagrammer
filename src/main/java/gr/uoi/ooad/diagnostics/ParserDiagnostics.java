@@ -6,6 +6,8 @@ import gr.uoi.ooad.model.graph.ClassifierVertex;
 import gr.uoi.ooad.parser.ast.ASTInterpreter;
 import gr.uoi.ooad.parser.ast.tree.LeafNode;
 import gr.uoi.ooad.parser.ast.tree.PackageNode;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -26,6 +28,7 @@ import java.util.Map;
  */
 public class ParserDiagnostics {
 
+    private static final Logger logger = LogManager.getLogger(ParserDiagnostics.class);
     /**
      * Runs the diagnostics on the project given as the first argument.
      *
@@ -60,14 +63,7 @@ public class ParserDiagnostics {
             System.out.println("- " + sinkVertex.getName());
         }
 
-
-        for (String line : foundLines(sinkVertices)) {
-            System.out.println(line);
-        }
-
-        for (String line : unresolvedLines(interpreter)) {
-            System.out.println(line);
-        }
+        logLines(interpreter);
 
         Map<ArcType, Integer> arcCounts = countArcs(sinkVertices);
 
@@ -149,6 +145,21 @@ public class ParserDiagnostics {
             parents.add(new Parent(ArcType.IMPLEMENTATION, implementedInterface));
         }
         return parents;
+    }
+
+    public static void logLines(ASTInterpreter interpreter) {
+        List<ClassifierVertex> sinkVertices = interpreter.getSinkVertices();
+        for (String line : foundLines(sinkVertices)) {
+            logger.info(line);
+        }
+
+        for (String line : unresolvedLines(interpreter)) {
+            if (line.startsWith("MISSED")) {
+                logger.warn(line);
+            } else {
+                logger.info(line);
+            }
+        }
     }
 
     private record Parent(ArcType type, String name) {}
