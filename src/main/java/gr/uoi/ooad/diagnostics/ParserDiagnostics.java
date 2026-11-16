@@ -162,5 +162,13 @@ public class ParserDiagnostics {
         }
     }
 
+    public static List<String> allLines(ASTInterpreter interpreter) {
+        return new ArrayList<>();
+    }
+
+    static List<String> chosenLines(List<String> lines, List<String> classNames) {
+        return new ArrayList<>();
+    }
+
     private record Parent(ArcType type, String name) {}
 }

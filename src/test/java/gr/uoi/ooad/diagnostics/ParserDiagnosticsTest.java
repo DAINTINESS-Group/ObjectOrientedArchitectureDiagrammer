@@ -49,4 +49,18 @@ public class ParserDiagnosticsTest {
 
         assertEquals(List.of("MISSED extension Outer::Derived -> Outer::Base"), lines);
     }
+
+    @Test
+    void onlyTheLinesOfTheChosenClassesAreKeptTest() {
+        ASTInterpreter interpreter = new ASTInterpreter();
+        interpreter.parseProject(PathTemplate.BookstoreAdvanced.SRC.path);
+        interpreter.convertToGraph(Collections.emptyList(), Collections.emptyList());
+
+        List<String> lines = ParserDiagnostics.chosenLines(
+                ParserDiagnostics.allLines(interpreter), List.of("Book", "Item", "Gui"));
+
+        assertEquals(
+                List.of("FOUND extension Book -> Item", "EXTERNAL extension Gui -> Application")
+                ,lines);
+    }
 }
