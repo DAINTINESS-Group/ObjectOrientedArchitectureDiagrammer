@@ -63,7 +63,7 @@ public class ASTParser {
                             currentNode.getLeafNodes().put(innerClass.nodeName(), innerClass);
                         }
                     } catch (ParseProblemException e) {
-                        logger.warn("Skipped file that is not valid Java: {}", path);
+                        logger.warn("SKIPPED {}", path);
                     }
                 }
             }
