@@ -14,6 +14,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
+
+import gr.uoi.ooad.diagnostics.ParserDiagnostics;
 import gr.uoi.ooad.model.diagram.ClassDiagram;
 import gr.uoi.ooad.model.diagram.PackageDiagram;
 import gr.uoi.ooad.model.graph.ClassifierVertex;
@@ -95,6 +97,7 @@ public class Project {
                 interpreter.convertToGraph(Collections.emptyList(), Collections.emptyList());
                 Collection<ClassifierVertex> sinkVertices = interpreter.getSinkVertices();
                 classDiagram.setSinkVertices(sinkVertices);
+                classDiagram.setDiagnosticLines(ParserDiagnostics.allLines(interpreter));
 
                 yield sinkVertices;
             }

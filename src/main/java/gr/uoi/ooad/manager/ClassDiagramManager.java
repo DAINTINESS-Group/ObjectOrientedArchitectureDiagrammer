@@ -2,6 +2,7 @@ package gr.uoi.ooad.manager;
 
 import com.brunomnsilva.smartgraph.graph.Vertex;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
+import gr.uoi.ooad.diagnostics.ParserDiagnostics;
 import gr.uoi.ooad.model.diagram.ClassDiagram;
 import gr.uoi.ooad.model.diagram.ShadowCleaner;
 import gr.uoi.ooad.model.diagram.arrangement.ClassDiagramArrangementManager;
@@ -51,6 +52,8 @@ public class ClassDiagramManager implements DiagramManager {
         classDiagram.createNewDiagram(chosenFilesNames);
         ShadowCleaner shadowCleaner = new ShadowCleaner(classDiagram);
         classDiagram.setDiagram(shadowCleaner.shadowWeakRelationships());
+
+        ParserDiagnostics.logDiagram(classDiagram);
     }
 
     @Override

@@ -63,13 +63,13 @@ public class ASTParser {
                             currentNode.getLeafNodes().put(innerClass.nodeName(), innerClass);
                         }
                     } catch (ParseProblemException e) {
-                        logger.warn("Skipped file that is not valid Java: {}", path);
+                        logger.warn("SKIPPED {}", path);
                     }
                 }
             }
         } catch (Exception e) {
             logger.error(
-                    "Failed to open a directory stream for path: {}",
+                    "Failed to parse the folder: {}",
                     currentNode.getPath().toAbsolutePath());
             throw new RuntimeException(e);
         }

@@ -18,6 +18,7 @@ public class ClassDiagram {
     private Collection<ClassifierVertex> sinkVertices;
     private Map<Integer, Pair<Double, Double>> diagramGeometryGraphML;
     private DiagramGeometry diagramGeometry;
+    private List<String> diagnosticLines = new ArrayList<>();
 
     public void createNewDiagram(List<String> chosenFilesNames) {
         createGraphNodes(chosenFilesNames);
@@ -89,5 +90,13 @@ public class ClassDiagram {
 
     public DiagramGeometry getDiagramGeometry() {
         return diagramGeometry;
+    }
+
+    public List<String> getDiagnosticLines() {
+        return diagnosticLines;
+    }
+
+    public void setDiagnosticLines(List<String> diagnosticLines) {
+        this.diagnosticLines = diagnosticLines;
     }
 }
