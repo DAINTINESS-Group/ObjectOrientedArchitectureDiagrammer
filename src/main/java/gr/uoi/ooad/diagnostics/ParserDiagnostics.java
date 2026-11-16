@@ -1,5 +1,6 @@
 package gr.uoi.ooad.diagnostics;
 
+import gr.uoi.ooad.model.diagram.ClassDiagram;
 import gr.uoi.ooad.model.graph.Arc;
 import gr.uoi.ooad.model.graph.ArcType;
 import gr.uoi.ooad.model.graph.ClassifierVertex;
@@ -63,7 +64,7 @@ public class ParserDiagnostics {
             System.out.println("- " + sinkVertex.getName());
         }
 
-        logLines(interpreter);
+        logLines(allLines(interpreter));
 
         Map<ArcType, Integer> arcCounts = countArcs(sinkVertices);
 
@@ -147,13 +148,19 @@ public class ParserDiagnostics {
         return parents;
     }
 
-    public static void logLines(ASTInterpreter interpreter) {
-        List<ClassifierVertex> sinkVertices = interpreter.getSinkVertices();
-        for (String line : foundLines(sinkVertices)) {
-            logger.info(line);
+    public static void logDiagram(ClassDiagram classDiagram) {
+        List<String> classNames = new ArrayList<>();
+        for (ClassifierVertex vertex : classDiagram.getGraphNodes().keySet()) {
+            classNames.add(vertex.getName());
         }
+        Collections.sort(classNames);
 
-        for (String line : unresolvedLines(interpreter)) {
+        logger.info("DIAGRAM " + String.join(", ", classNames));
+        logLines(chosenLines(classDiagram.getDiagnosticLines(), classNames));
+    }
+
+    private static void logLines(List<String> lines) {
+        for (String line : lines) {
             if (line.startsWith("MISSED")) {
                 logger.warn(line);
             } else {
