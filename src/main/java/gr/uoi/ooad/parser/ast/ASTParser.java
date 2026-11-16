@@ -69,7 +69,7 @@ public class ASTParser {
             }
         } catch (Exception e) {
             logger.error(
-                    "Failed to open a directory stream for path: {}",
+                    "Failed to parse the folder: {}",
                     currentNode.getPath().toAbsolutePath());
             throw new RuntimeException(e);
         }
