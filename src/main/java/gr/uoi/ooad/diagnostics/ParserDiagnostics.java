@@ -163,11 +163,26 @@ public class ParserDiagnostics {
     }
 
     public static List<String> allLines(ASTInterpreter interpreter) {
-        return new ArrayList<>();
+        List<String> lines = foundLines(interpreter.getSinkVertices());
+        lines.addAll(unresolvedLines(interpreter));
+        return lines;
     }
 
     static List<String> chosenLines(List<String> lines, List<String> classNames) {
-        return new ArrayList<>();
+        List<String> chosenLines = new ArrayList<>();
+        for (String line : lines) {
+            String[] words = line.split(" ");
+            String source = words[2];
+            String target = words[4];
+            if (line.startsWith("FOUND")) {
+                if (classNames.contains(source) && classNames.contains(target)) {
+                    chosenLines.add(line);
+                }
+            } else if (classNames.contains(source)) {
+                chosenLines.add(line);
+            }
+        }
+        return chosenLines;
     }
 
     private record Parent(ArcType type, String name) {}
