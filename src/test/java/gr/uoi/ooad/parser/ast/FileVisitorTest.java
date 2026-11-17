@@ -18,8 +18,20 @@ import gr.uoi.ooad.parser.ast.tree.PackageNode;
 import gr.uoi.ooad.utils.ListUtils;
 import gr.uoi.ooad.utils.PathTemplate.LatexEditor;
 import gr.uoi.ooad.utils.PathTemplate.ParserTesting;
+import gr.uoi.ooad.utils.PathTemplate.BookstoreAdvanced;
+
 
 public class FileVisitorTest {
+
+    @Test
+    void classKnowsItsDeclaredPackageTest() {
+        ASTParser parser = new ASTParser();
+        Map<Path, PackageNode> packages = parser.parsePackage(BookstoreAdvanced.SRC.path);
+
+        LeafNode book = packages.get(BookstoreAdvanced.BOOKSTORE.path).getLeafNodes().get("Book");
+
+        assertEquals("bookstore", book.packageName());
+    }
 
     @Test
     void methodReturnTypesTest() {

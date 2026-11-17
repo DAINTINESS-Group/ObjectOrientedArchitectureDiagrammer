@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 public record LeafNode(
         Path path,
         String nodeName,
+        String packageName,
         NodeType nodeType,
         String baseClass,
         PackageNode parentNode,
