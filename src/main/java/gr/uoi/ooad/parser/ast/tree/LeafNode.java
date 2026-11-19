@@ -35,6 +35,10 @@ public record LeafNode(
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
+    public String fullName() {
+        return "";
+    }
+
     public record Method(
             String name,
             String returnType,

@@ -34,6 +34,26 @@ public class FileVisitorTest {
     }
 
     @Test
+    void fullNameStartsWithThePackageTest() {
+        ASTParser parser = new ASTParser();
+        Map<Path, PackageNode> packages = parser.parsePackage(BookstoreAdvanced.SRC.path);
+
+        LeafNode book = packages.get(BookstoreAdvanced.BOOKSTORE.path).getLeafNodes().get("Book");
+
+        assertEquals("bookstore.Book", book.fullName());
+    }
+
+    @Test
+    void fullNameWithoutPackageIsTheClassNameTest() {
+        ASTParser parser = new ASTParser();
+        Map<Path, PackageNode> packages = parser.parsePackage(ParserTesting.SRC.path);
+
+        LeafNode implementingClass = packages.get(ParserTesting.SRC.path).getLeafNodes().get("ImplementingClass");
+
+        assertEquals("ImplementingClass", implementingClass.fullName());
+    }
+
+    @Test
     void methodReturnTypesTest() {
         ASTParser parser = new ASTParser();
         Map<Path, PackageNode> packages = parser.parsePackage(LatexEditor.SRC.path);
