@@ -36,7 +36,10 @@ public record LeafNode(
     }
 
     public String fullName() {
-        return "";
+        if (packageName.isEmpty()) {
+            return nodeName;
+        }
+        return packageName + "." + nodeName;
     }
 
     public record Method(
