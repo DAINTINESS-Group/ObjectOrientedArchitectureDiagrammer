@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import gr.uoi.ooad.parser.ast.tree.LeafNode;
 import gr.uoi.ooad.parser.ast.tree.PackageNode;
 import gr.uoi.ooad.utils.PathTemplate.LatexEditor;
+import gr.uoi.ooad.utils.PathTemplate.BookstoreAdvanced;
 
 public class ASTParserTest {
     public static final List<Path> SOURCES_SUB_PACKAGES =
@@ -194,5 +195,16 @@ public class ASTParserTest {
         assertTrue(SOURCES_SUB_PACKAGES.containsAll(testingSubPackages));
         assertTrue(testingSubPackages.containsAll(SOURCES_SUB_PACKAGES));
         assertEquals(0, sourcePackage.getLeafNodes().size());
+    }
+
+    @Test
+    void everyClassIsMappedToItsPackageTest() {
+        ASTParser parser = new ASTParser();
+        Map<Path, PackageNode> packages = parser.parsePackage(BookstoreAdvanced.SRC.path);
+
+        Map<String, String> classPackages = parser.createClassPackages(packages);
+
+        assertEquals("bookstore", classPackages.get("bookstore.Book"));
+        assertEquals("gui", classPackages.get("gui.Gui"));
     }
 }

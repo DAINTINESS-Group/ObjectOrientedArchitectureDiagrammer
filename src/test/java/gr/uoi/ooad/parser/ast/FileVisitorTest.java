@@ -18,8 +18,40 @@ import gr.uoi.ooad.parser.ast.tree.PackageNode;
 import gr.uoi.ooad.utils.ListUtils;
 import gr.uoi.ooad.utils.PathTemplate.LatexEditor;
 import gr.uoi.ooad.utils.PathTemplate.ParserTesting;
+import gr.uoi.ooad.utils.PathTemplate.BookstoreAdvanced;
+
 
 public class FileVisitorTest {
+
+    @Test
+    void classKnowsItsDeclaredPackageTest() {
+        ASTParser parser = new ASTParser();
+        Map<Path, PackageNode> packages = parser.parsePackage(BookstoreAdvanced.SRC.path);
+
+        LeafNode book = packages.get(BookstoreAdvanced.BOOKSTORE.path).getLeafNodes().get("Book");
+
+        assertEquals("bookstore", book.packageName());
+    }
+
+    @Test
+    void fullNameStartsWithThePackageTest() {
+        ASTParser parser = new ASTParser();
+        Map<Path, PackageNode> packages = parser.parsePackage(BookstoreAdvanced.SRC.path);
+
+        LeafNode book = packages.get(BookstoreAdvanced.BOOKSTORE.path).getLeafNodes().get("Book");
+
+        assertEquals("bookstore.Book", book.fullName());
+    }
+
+    @Test
+    void fullNameWithoutPackageIsTheClassNameTest() {
+        ASTParser parser = new ASTParser();
+        Map<Path, PackageNode> packages = parser.parsePackage(ParserTesting.SRC.path);
+
+        LeafNode implementingClass = packages.get(ParserTesting.SRC.path).getLeafNodes().get("ImplementingClass");
+
+        assertEquals("ImplementingClass", implementingClass.fullName());
+    }
 
     @Test
     void methodReturnTypesTest() {

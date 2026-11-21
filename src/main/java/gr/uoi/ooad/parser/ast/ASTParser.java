@@ -46,6 +46,18 @@ public class ASTParser {
         return relationshipIdentifier.identifyPackageNodeRelationships(leafNodeRelationships);
     }
 
+    public Map<String, String> createClassPackages(Map<Path, PackageNode> packageNodes) {
+        Map<String, String> classPackages = new HashMap<>();
+
+        for (PackageNode packageNode : packageNodes.values()) {
+            for (LeafNode leafNode : packageNode.getLeafNodes().values()) {
+                classPackages.put(leafNode.fullName(), leafNode.packageName());
+            }
+        }
+
+        return classPackages;
+    }
+
     private void parseFolder(PackageNode currentNode) {
         try (DirectoryStream<Path> filesStream = Files.newDirectoryStream(currentNode.getPath())) {
             for (Path path : filesStream) {

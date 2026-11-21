@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 public record LeafNode(
         Path path,
         String nodeName,
+        String packageName,
         NodeType nodeType,
         String baseClass,
         PackageNode parentNode,
@@ -32,6 +33,13 @@ public record LeafNode(
         return methods.stream()
                 .flatMap(it -> it.parameters().values().stream())
                 .collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    public String fullName() {
+        if (packageName.isEmpty()) {
+            return nodeName;
+        }
+        return packageName + "." + nodeName;
     }
 
     public record Method(

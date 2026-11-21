@@ -19,6 +19,7 @@ public class LeafNodeBuilder {
     private final PackageNode parentNode;
     private final Path path;
     private String nodeName;
+    private String packageName;
     private String baseClass;
     private NodeType nodeType;
 
@@ -37,6 +38,7 @@ public class LeafNodeBuilder {
         nodeType = null;
         baseClass = "";
         nodeName = "";
+        packageName = "";
     }
 
     public LeafNodeBuilder setVariables(Map<String, String> variables) {
@@ -56,6 +58,11 @@ public class LeafNodeBuilder {
 
     public LeafNodeBuilder setNodeName(String nodeName) {
         this.nodeName = nodeName;
+        return this;
+    }
+
+    public LeafNodeBuilder setPackageName(String packageName) {
+        this.packageName = packageName;
         return this;
     }
 
@@ -103,6 +110,7 @@ public class LeafNodeBuilder {
         return new LeafNode(
                 path,
                 nodeName,
+                packageName,
                 nodeType,
                 baseClass,
                 parentNode,

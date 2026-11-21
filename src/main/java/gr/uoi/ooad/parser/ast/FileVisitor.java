@@ -78,6 +78,7 @@ public class FileVisitor {
     private boolean isClassOrInterface;
     private String baseClass;
     private String nodeName;
+    private String packageName;
 
     /**
      * The FileVisitor's default constructor.
@@ -103,6 +104,7 @@ public class FileVisitor {
         baseClass = "";
         nodeName = "";
         nodeType = null;
+        packageName = "";
     }
 
     /** This method is responsible for the creation of the AST. */
@@ -111,6 +113,10 @@ public class FileVisitor {
             StaticJavaParser.getParserConfiguration()
                     .setLanguageLevel(ParserConfiguration.LanguageLevel.JAVA_17);
             CompilationUnit compilationUnit = StaticJavaParser.parse(path.toFile());
+
+            if (compilationUnit.getPackageDeclaration().isPresent()) {
+                packageName = compilationUnit.getPackageDeclaration().get().getNameAsString();
+            }
 
             isClassOrInterface = false;
             compilationUnit.accept(inheritanceVisitor, null);
@@ -142,6 +148,7 @@ public class FileVisitor {
                 .setCreatedObjects(unassignedObjects)
                 .setMethods(methods)
                 .setNodeName(nodeName)
+                .setPackageName(packageName)
                 .setVariables(variablesMap)
                 .setImports(imports)
                 .setRecords(records)
@@ -178,6 +185,7 @@ public class FileVisitor {
 
         return new LeafNodeBuilder(parentNode, path)
                 .setNodeName(nodeName + "::" + innerClassDeclaration.getNameAsString())
+                .setPackageName(packageName)
                 .setNodeType(
                         innerClassDeclaration.isInterface() ? NodeType.INTERFACE : NodeType.CLASS)
                 .setBaseClass(innerBaseClass)
