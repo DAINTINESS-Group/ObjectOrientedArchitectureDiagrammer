@@ -5,6 +5,14 @@ import static gr.uoi.ooad.model.graph.ArcType.ASSOCIATION;
 import static gr.uoi.ooad.model.graph.ArcType.NESTING;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import gr.uoi.ooad.manager.ClassDiagramManager;
+import gr.uoi.ooad.model.diagram.ClassDiagram;
+import gr.uoi.ooad.model.diagram.GraphClassDiagramConverter;
+import gr.uoi.ooad.model.diagram.ShadowCleaner;
+import gr.uoi.ooad.model.graph.Arc;
+import gr.uoi.ooad.model.graph.ClassifierVertex;
+import gr.uoi.ooad.model.graph.VertexType;
+import gr.uoi.ooad.utils.PathTemplate.LatexEditor;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -13,16 +21,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-import gr.uoi.ooad.manager.ClassDiagramManager;
-import gr.uoi.ooad.model.diagram.ClassDiagram;
-import gr.uoi.ooad.model.diagram.GraphClassDiagramConverter;
-import gr.uoi.ooad.model.diagram.ShadowCleaner;
-import gr.uoi.ooad.model.graph.Arc;
-import gr.uoi.ooad.model.graph.ClassifierVertex;
-import gr.uoi.ooad.model.graph.VertexType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import gr.uoi.ooad.utils.PathTemplate.LatexEditor;
 
 public class ShadowCleanerTest {
 
@@ -171,8 +171,7 @@ public class ShadowCleanerTest {
         classDiagram.setDiagram(diagram);
 
         ShadowCleaner shadowCleaner = new ShadowCleaner(classDiagram);
-        Set<Arc<ClassifierVertex>> cleanedArcs =
-                shadowCleaner.shadowWeakRelationships().get(outer);
+        Set<Arc<ClassifierVertex>> cleanedArcs = shadowCleaner.shadowWeakRelationships().get(outer);
 
         assertEquals(1, cleanedArcs.size());
         assertEquals(NESTING, cleanedArcs.iterator().next().arcType());

@@ -3,6 +3,9 @@ package gr.uoi.ooad.parser.ast;
 import static proguard.classfile.JavaConstants.JAVA_FILE_EXTENSION;
 
 import com.github.javaparser.ParseProblemException;
+import gr.uoi.ooad.parser.ast.tree.LeafNode;
+import gr.uoi.ooad.parser.ast.tree.PackageNode;
+import gr.uoi.ooad.parser.ast.tree.Relationship;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -11,9 +14,6 @@ import java.util.Map;
 import java.util.Set;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import gr.uoi.ooad.parser.ast.tree.LeafNode;
-import gr.uoi.ooad.parser.ast.tree.PackageNode;
-import gr.uoi.ooad.parser.ast.tree.Relationship;
 
 /**
  * This parser is responsible for creating the AST of the given source files and identifying the
@@ -80,9 +80,7 @@ public class ASTParser {
                 }
             }
         } catch (Exception e) {
-            logger.error(
-                    "Failed to parse the folder: {}",
-                    currentNode.getPath().toAbsolutePath());
+            logger.error("Failed to parse the folder: {}", currentNode.getPath().toAbsolutePath());
             throw new RuntimeException(e);
         }
     }

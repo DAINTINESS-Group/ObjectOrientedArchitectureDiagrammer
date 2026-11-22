@@ -12,14 +12,12 @@ import gr.uoi.ooad.parser.ast.tree.PackageNode;
 import gr.uoi.ooad.parser.ast.tree.Relationship;
 import gr.uoi.ooad.utils.PathTemplate;
 import gr.uoi.ooad.utils.PathTemplate.LatexEditor;
-
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
-
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -113,8 +111,8 @@ public class ASTInterpreterTest {
                 it.getPath().toString().equals(subNode.getKey().toString())
                         && it.getName().equals(subNode.getValue().getNodeName())
                         && it.getVertexType()
-                        .toString()
-                        .equals(subNode.getValue().getNodeType().toString());
+                                .toString()
+                                .equals(subNode.getValue().getNodeType().toString());
     }
 
     @NotNull
@@ -192,7 +190,7 @@ public class ASTInterpreterTest {
     }
 
     @Test
-    void latexEditorImplementationsTest(){
+    void latexEditorImplementationsTest() {
         given(interpreterFor(PathTemplate.LatexEditor.SRC.path))
                 .assertThatInterface("Command") // checks if Command is Interface
                 .also()
@@ -227,7 +225,6 @@ public class ASTInterpreterTest {
                 .and()
                 .implementsInterface("TestingInterface2");
 
-
         given(interpreter)
                 .assertThatClass("ObjectCreationSample")
                 .hasAssociationTo("ExtensionClass")
@@ -235,11 +232,10 @@ public class ASTInterpreterTest {
                 .hasDependencyTo("TestingInterface")
                 .and()
                 .hasDependencyTo("ImplementingClass");
-
     }
 
     @Test
-    void bookstoreInheritanceTest(){
+    void bookstoreInheritanceTest() {
         given(interpreterFor(PathTemplate.BookstoreAdvanced.SRC.path))
                 .assertThatClass("Book")
                 .extendsClass("Item")
@@ -312,7 +308,7 @@ public class ASTInterpreterTest {
     }
 
     @Test
-    void bookstoreAssociationsTest(){
+    void bookstoreAssociationsTest() {
         given(interpreterFor(PathTemplate.BookstoreAdvanced.SRC.path))
                 .assertThatClass("Gui")
                 .hasAssociationTo("ItemManager")
@@ -337,7 +333,7 @@ public class ASTInterpreterTest {
     }
 
     @Test
-    void bookstoreDependenciesTest(){
+    void bookstoreDependenciesTest() {
         given(interpreterFor(PathTemplate.BookstoreAdvanced.SRC.path))
                 .assertThatClass("ItemFactory")
                 .hasDependencyTo("Book")
@@ -368,7 +364,7 @@ public class ASTInterpreterTest {
     }
 
     @Test
-    void bookstorePackageDependenciesTest(){
+    void bookstorePackageDependenciesTest() {
         given(interpreterFor(PathTemplate.BookstoreAdvanced.SRC.path))
                 .assertThatPackage("src.gui")
                 .hasDependencyTo("src.bookstore");
@@ -381,10 +377,11 @@ public class ASTInterpreterTest {
                 .hasNoDependencyTo("src.gui");
     }
 
-    @Disabled("Parser limitation: FileVisitor.VariableVisitor records a local variable "
-    + "only when it is initialized with 'new' (see BookstoreAdvancedV01.src.gui.Gui.java:23)")
+    @Disabled(
+            "Parser limitation: FileVisitor.VariableVisitor records a local variable only when it"
+                    + " is initialized with 'new' (see BookstoreAdvancedV01.src.gui.Gui.java:23)")
     @Test
-    void bookstoreLocalVariableDependencyTest(){
+    void bookstoreLocalVariableDependencyTest() {
         given(interpreterFor(PathTemplate.BookstoreAdvanced.SRC.path))
                 .assertThatClass("Gui")
                 .hasDependencyTo("Item");
@@ -427,8 +424,9 @@ public class ASTInterpreterTest {
                 .hasAggregationTo("Apple");
     }
 
-    @Disabled("Parser limitation: ASTRelationshipIdentifier.isFieldOfTypeCollection does not recognize Set as a collection"
-            + " (see CollectionSamples/SetOwner.java)")
+    @Disabled(
+            "Parser limitation: ASTRelationshipIdentifier.isFieldOfTypeCollection does not"
+                    + " recognize Set as a collection (see CollectionSamples/SetOwner.java)")
     @Test
     void collectionSamplesSetAggregationTest() {
         given(interpreterFor(PathTemplate.CollectionSamples.SRC.path))
@@ -436,8 +434,9 @@ public class ASTInterpreterTest {
                 .hasAggregationTo("Apple");
     }
 
-    @Disabled("Parser limitation: ASTRelationshipIdentifier.isFieldOfTypeCollection checks the type prefix, so TreeMap is not recognized"
-            + " (see CollectionSamples/TreeMapOwner.java)")
+    @Disabled(
+            "Parser limitation: ASTRelationshipIdentifier.isFieldOfTypeCollection checks the type"
+                + " prefix, so TreeMap is not recognized (see CollectionSamples/TreeMapOwner.java)")
     @Test
     void collectionSamplesTreeMapAggregationTest() {
         given(interpreterFor(PathTemplate.CollectionSamples.SRC.path))
@@ -445,8 +444,10 @@ public class ASTInterpreterTest {
                 .hasAggregationTo("Apple");
     }
 
-    @Disabled("Parser limitation: ASTRelationshipIdentifier.isFieldOfTypeCollection does not recognize the fully qualified java.util.List"
-            + " (see CollectionSamples/FqnOwner.java)")
+    @Disabled(
+            "Parser limitation: ASTRelationshipIdentifier.isFieldOfTypeCollection does not"
+                    + " recognize the fully qualified java.util.List (see"
+                    + " CollectionSamples/FqnOwner.java)")
     @Test
     void collectionSamplesQualifiedListAggregationTest() {
         given(interpreterFor(PathTemplate.CollectionSamples.SRC.path))
@@ -454,8 +455,9 @@ public class ASTInterpreterTest {
                 .hasAggregationTo("Apple");
     }
 
-    @Disabled("Parser limitation: ASTRelationshipIdentifier.isFieldOfTypeCollection treats every type starting with List as a collection"
-            + " (see CollectionSamples/ListenerOwner.java)")
+    @Disabled(
+            "Parser limitation: ASTRelationshipIdentifier.isFieldOfTypeCollection treats every type"
+                + " starting with List as a collection (see CollectionSamples/ListenerOwner.java)")
     @Test
     void collectionSamplesListenerNoAggregationTest() {
         given(interpreterFor(PathTemplate.CollectionSamples.SRC.path))
@@ -463,8 +465,9 @@ public class ASTInterpreterTest {
                 .hasNoAggregationTo("Listener");
     }
 
-    @Disabled("Parser limitation: FileVisitor.getType turns < into [, so a generic Box<Apple> field is treated as an array"
-            + " (see CollectionSamples/BoxOwner.java)")
+    @Disabled(
+            "Parser limitation: FileVisitor.getType turns < into [, so a generic Box<Apple> field"
+                    + " is treated as an array (see CollectionSamples/BoxOwner.java)")
     @Test
     void collectionSamplesGenericClassNoAggregationTest() {
         given(interpreterFor(PathTemplate.CollectionSamples.SRC.path))
@@ -474,7 +477,8 @@ public class ASTInterpreterTest {
 
     @Test
     void bookstoreSingleInheritanceTest() {
-        given(interpreterFor(PathTemplate.BookstoreAdvanced.SRC.path)).everyClassExtendsAtMostOneClass();
+        given(interpreterFor(PathTemplate.BookstoreAdvanced.SRC.path))
+                .everyClassExtendsAtMostOneClass();
     }
 
     @Test
@@ -484,7 +488,8 @@ public class ASTInterpreterTest {
 
     @Test
     void parserTestingSingleInheritanceTest() {
-        given(interpreterFor(PathTemplate.ParserTesting.SRC.path)).everyClassExtendsAtMostOneClass();
+        given(interpreterFor(PathTemplate.ParserTesting.SRC.path))
+                .everyClassExtendsAtMostOneClass();
     }
 
     @Test
@@ -516,15 +521,15 @@ public class ASTInterpreterTest {
                 .hasAssociationTo("Point");
     }
 
-//    @Test
-//    void associationArcsArePresentForDefaultPackageTest() {
-//        ASTInterpreter interpreter = new ASTInterpreter();
-//        interpreter.parseProject(PathTemplate.ParserTesting.SRC.path);
-//        interpreter.convertToGraph(Collections.emptyList(), Collections.emptyList());
-//
-//        given(interpreter)
-//                .assertThatClass("ImplementingClass")
-//                .implementsInterface("TestingInterface");
-//
-//    }
+    //    @Test
+    //    void associationArcsArePresentForDefaultPackageTest() {
+    //        ASTInterpreter interpreter = new ASTInterpreter();
+    //        interpreter.parseProject(PathTemplate.ParserTesting.SRC.path);
+    //        interpreter.convertToGraph(Collections.emptyList(), Collections.emptyList());
+    //
+    //        given(interpreter)
+    //                .assertThatClass("ImplementingClass")
+    //                .implementsInterface("TestingInterface");
+    //
+    //    }
 }

@@ -1,25 +1,23 @@
 package gr.uoi.ooad.parser.ast;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static gr.uoi.ooad.parser.ast.tree.NodeType.CLASS;
 import static gr.uoi.ooad.parser.ast.tree.NodeType.INTERFACE;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import gr.uoi.ooad.parser.ast.tree.LeafNode;
+import gr.uoi.ooad.parser.ast.tree.NodeType;
+import gr.uoi.ooad.parser.ast.tree.PackageNode;
+import gr.uoi.ooad.utils.ListUtils;
+import gr.uoi.ooad.utils.PathTemplate.BookstoreAdvanced;
+import gr.uoi.ooad.utils.PathTemplate.LatexEditor;
+import gr.uoi.ooad.utils.PathTemplate.ParserTesting;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
 import org.junit.jupiter.api.Test;
-import gr.uoi.ooad.parser.ast.tree.LeafNode;
-import gr.uoi.ooad.parser.ast.tree.NodeType;
-import gr.uoi.ooad.parser.ast.tree.PackageNode;
-import gr.uoi.ooad.utils.ListUtils;
-import gr.uoi.ooad.utils.PathTemplate.LatexEditor;
-import gr.uoi.ooad.utils.PathTemplate.ParserTesting;
-import gr.uoi.ooad.utils.PathTemplate.BookstoreAdvanced;
-
 
 public class FileVisitorTest {
 
@@ -48,7 +46,8 @@ public class FileVisitorTest {
         ASTParser parser = new ASTParser();
         Map<Path, PackageNode> packages = parser.parsePackage(ParserTesting.SRC.path);
 
-        LeafNode implementingClass = packages.get(ParserTesting.SRC.path).getLeafNodes().get("ImplementingClass");
+        LeafNode implementingClass =
+                packages.get(ParserTesting.SRC.path).getLeafNodes().get("ImplementingClass");
 
         assertEquals("ImplementingClass", implementingClass.fullName());
     }
@@ -188,8 +187,8 @@ public class FileVisitorTest {
         LeafNode innerClassSample = sourcePackage.getLeafNodes().get("InnerClassSample");
 
         assertEquals(innerClassSample.innerClasses().size(), 1);
-        assertEquals("InnerClassSample::InnerClass",
-                innerClassSample.innerClasses().get(0).nodeName());
+        assertEquals(
+                "InnerClassSample::InnerClass", innerClassSample.innerClasses().get(0).nodeName());
 
         assertEquals(innerClassSample.records().size(), 1);
         assertEquals("RecordSample", innerClassSample.records().get(0));

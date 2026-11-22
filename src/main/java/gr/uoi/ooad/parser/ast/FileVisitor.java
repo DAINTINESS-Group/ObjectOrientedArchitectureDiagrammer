@@ -22,6 +22,12 @@ import com.github.javaparser.ast.expr.VariableDeclarationExpr;
 import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
+import gr.uoi.ooad.parser.ASTUtil;
+import gr.uoi.ooad.parser.ast.tree.LeafNode;
+import gr.uoi.ooad.parser.ast.tree.LeafNodeBuilder;
+import gr.uoi.ooad.parser.ast.tree.ModifierType;
+import gr.uoi.ooad.parser.ast.tree.NodeType;
+import gr.uoi.ooad.parser.ast.tree.PackageNode;
 import java.io.FileNotFoundException;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -34,12 +40,6 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import gr.uoi.ooad.parser.ASTUtil;
-import gr.uoi.ooad.parser.ast.tree.LeafNode;
-import gr.uoi.ooad.parser.ast.tree.LeafNodeBuilder;
-import gr.uoi.ooad.parser.ast.tree.ModifierType;
-import gr.uoi.ooad.parser.ast.tree.NodeType;
-import gr.uoi.ooad.parser.ast.tree.PackageNode;
 
 /**
  * This class is responsible for the creation of the AST of a Java source file using {@link
@@ -175,7 +175,8 @@ public class FileVisitor {
         }
 
         List<LeafNode.Method> innerMethods = new ArrayList<>();
-        for (ConstructorDeclaration constructorDeclaration : innerClassDeclaration.getConstructors()) {
+        for (ConstructorDeclaration constructorDeclaration :
+                innerClassDeclaration.getConstructors()) {
             innerMethods.add(createConstructor(constructorDeclaration));
         }
 
@@ -201,13 +202,13 @@ public class FileVisitor {
         List<LeafNode.Field> createdFields = new ArrayList<>();
         for (VariableDeclarator variable : fieldDeclaration.getVariables()) {
 
-            List<Modifier> visibilityModifiers = ASTUtil.filterVisibilityModifiers(fieldDeclaration.getModifiers());
+            List<Modifier> visibilityModifiers =
+                    ASTUtil.filterVisibilityModifiers(fieldDeclaration.getModifiers());
 
             ModifierType modifierType =
                     visibilityModifiers.isEmpty()
                             ? PACKAGE_PRIVATE
-                            : ModifierType.get(
-                            fieldDeclaration.getModifiers().get(0).toString());
+                            : ModifierType.get(fieldDeclaration.getModifiers().get(0).toString());
 
             createdFields.add(
                     new LeafNode.Field(
@@ -223,8 +224,7 @@ public class FileVisitor {
         ModifierType modifierType =
                 constructorDeclaration.getModifiers().isEmpty()
                         ? PACKAGE_PRIVATE
-                        : ModifierType.get(
-                        constructorDeclaration.getModifiers().get(0).toString());
+                        : ModifierType.get(constructorDeclaration.getModifiers().get(0).toString());
 
         Map<String, String> parameters =
                 constructorDeclaration.getParameters().stream()
@@ -233,16 +233,13 @@ public class FileVisitor {
                                         NodeWithSimpleName::getNameAsString,
                                         parameter -> getType(parameter.getTypeAsString())));
 
-
         return new LeafNode.Method(
-                constructorDeclaration.getNameAsString(),
-                "Constructor",
-                modifierType,
-                parameters);
+                constructorDeclaration.getNameAsString(), "Constructor", modifierType, parameters);
     }
 
     private LeafNode.Method createMethod(MethodDeclaration methodDeclaration) {
-        List<Modifier> visibilityModifiers = ASTUtil.filterVisibilityModifiers(methodDeclaration.getModifiers());
+        List<Modifier> visibilityModifiers =
+                ASTUtil.filterVisibilityModifiers(methodDeclaration.getModifiers());
 
         ModifierType modifierType =
                 visibilityModifiers.isEmpty()
@@ -314,8 +311,7 @@ public class FileVisitor {
     private class OuterClassVisitor extends VoidVisitorAdapter<Void> {
 
         @Override
-        public void visit(ClassOrInterfaceDeclaration
-                          classOrInterfaceDeclaration, Void arg) {
+        public void visit(ClassOrInterfaceDeclaration classOrInterfaceDeclaration, Void arg) {
             // the members of an inner class are not members of the outer class.
             if (!path.endsWith(classOrInterfaceDeclaration.getNameAsString() + ".java")) {
                 return;

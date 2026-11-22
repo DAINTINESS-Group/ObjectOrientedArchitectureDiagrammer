@@ -3,16 +3,16 @@ package gr.uoi.ooad.model.graphml;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 import gr.uoi.ooad.manager.ClassDiagramManager;
 import gr.uoi.ooad.model.diagram.graphml.GraphMLClassifierVertexArc;
 import gr.uoi.ooad.model.graph.Arc;
 import gr.uoi.ooad.model.graph.ClassifierVertex;
-import org.junit.jupiter.api.Test;
-import gr.uoi.ooad.utils.PathTemplate.ParserTesting;
 import gr.uoi.ooad.utils.PathTemplate.LatexEditor;
+import gr.uoi.ooad.utils.PathTemplate.ParserTesting;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import org.junit.jupiter.api.Test;
 
 public class GraphMLSinkPackageVertexArcTest {
 

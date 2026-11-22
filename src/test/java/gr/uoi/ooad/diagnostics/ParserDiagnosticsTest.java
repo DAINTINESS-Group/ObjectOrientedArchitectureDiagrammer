@@ -56,11 +56,12 @@ public class ParserDiagnosticsTest {
         interpreter.parseProject(PathTemplate.BookstoreAdvanced.SRC.path);
         interpreter.convertToGraph(Collections.emptyList(), Collections.emptyList());
 
-        List<String> lines = ParserDiagnostics.chosenLines(
-                ParserDiagnostics.allLines(interpreter), List.of("Book", "Item", "Gui"));
+        List<String> lines =
+                ParserDiagnostics.chosenLines(
+                        ParserDiagnostics.allLines(interpreter), List.of("Book", "Item", "Gui"));
 
         assertEquals(
-                List.of("FOUND extension Book -> Item", "EXTERNAL extension Gui -> Application")
-                ,lines);
+                List.of("FOUND extension Book -> Item", "EXTERNAL extension Gui -> Application"),
+                lines);
     }
 }

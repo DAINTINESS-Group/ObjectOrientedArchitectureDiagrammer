@@ -2,14 +2,14 @@ package gr.uoi.ooad.model.graphml;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.util.List;
-import java.util.Map;
 import gr.uoi.ooad.manager.PackageDiagramManager;
 import gr.uoi.ooad.model.diagram.graphml.GraphMLPackageVertex;
 import gr.uoi.ooad.model.graph.PackageVertex;
+import gr.uoi.ooad.utils.PathTemplate.LatexEditor;
+import java.util.List;
+import java.util.Map;
 import org.javatuples.Pair;
 import org.junit.jupiter.api.Test;
-import gr.uoi.ooad.utils.PathTemplate.LatexEditor;
 
 class GraphMLPackageVertexTest {
 

@@ -137,7 +137,8 @@ public class ClassDiagramManager implements DiagramManager {
         for (Vertex<UMLNodeElement> vertex : vertexCollection) {
             if (!nodesGeometry.containsKey(vertex.element().getName())) continue;
 
-            Pair<Double, Double> coordinates = nodesGeometry.getVertexGeometry(vertex.element().getName());
+            Pair<Double, Double> coordinates =
+                    nodesGeometry.getVertexGeometry(vertex.element().getName());
             graphView.setVertexPosition(vertex, coordinates.getValue0(), coordinates.getValue1());
         }
 
@@ -150,7 +151,8 @@ public class ClassDiagramManager implements DiagramManager {
         for (Vertex<UMLNodeElement> vertex : vertexCollection) {
             if (!nodesGeometry.containsKey(vertex.element().getName())) continue;
 
-            Pair<Double, Double> coordinates = nodesGeometry.getVertexGeometry(vertex.element().getName());
+            Pair<Double, Double> coordinates =
+                    nodesGeometry.getVertexGeometry(vertex.element().getName());
             graphView.setVertexPosition(vertex, coordinates.getValue0(), coordinates.getValue1());
         }
 

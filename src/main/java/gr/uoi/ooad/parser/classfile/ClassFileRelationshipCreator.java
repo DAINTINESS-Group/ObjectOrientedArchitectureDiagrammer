@@ -2,17 +2,17 @@ package gr.uoi.ooad.parser.classfile;
 
 import static java.util.Objects.requireNonNull;
 
+import gr.uoi.ooad.model.graph.Arc;
+import gr.uoi.ooad.model.graph.ArcType;
+import gr.uoi.ooad.model.graph.ClassifierVertex;
+import gr.uoi.ooad.model.graph.PackageVertex;
+import gr.uoi.ooad.model.graph.VertexType;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
-import gr.uoi.ooad.model.graph.Arc;
-import gr.uoi.ooad.model.graph.ArcType;
-import gr.uoi.ooad.model.graph.ClassifierVertex;
-import gr.uoi.ooad.model.graph.PackageVertex;
-import gr.uoi.ooad.model.graph.VertexType;
 import proguard.classfile.ClassPool;
 import proguard.classfile.Clazz;
 import proguard.classfile.Member;
@@ -240,7 +240,9 @@ public class ClassFileRelationshipCreator implements ClassPoolVisitor, ClassVisi
         }
     }
 
-    /** @return A list of classifier vertices for the given classes. */
+    /**
+     * @return A list of classifier vertices for the given classes.
+     */
     private Set<ClassifierVertex> getOrCreateSinkVertices(Collection<Clazz> children) {
         Set<ClassifierVertex> ret = new LinkedHashSet<>();
 

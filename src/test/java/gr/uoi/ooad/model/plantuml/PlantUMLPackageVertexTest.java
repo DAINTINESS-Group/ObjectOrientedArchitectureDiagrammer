@@ -2,18 +2,17 @@ package gr.uoi.ooad.model.plantuml;
 
 import static gr.uoi.ooad.utils.ListUtils.assertListsEqual;
 
+import gr.uoi.ooad.manager.PackageDiagramManager;
+import gr.uoi.ooad.model.diagram.PackageDiagram;
+import gr.uoi.ooad.model.diagram.plantuml.PlantUMLPackageVertex;
+import gr.uoi.ooad.utils.Compiler;
+import gr.uoi.ooad.utils.PathTemplate.LatexEditor;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import gr.uoi.ooad.manager.PackageDiagramManager;
-import gr.uoi.ooad.model.diagram.PackageDiagram;
-import gr.uoi.ooad.model.diagram.plantuml.PlantUMLPackageVertex;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
-import gr.uoi.ooad.utils.Compiler;
-import gr.uoi.ooad.utils.PathTemplate.LatexEditor;
 
 public class PlantUMLPackageVertexTest {
 
@@ -36,8 +35,7 @@ public class PlantUMLPackageVertexTest {
         PackageDiagram packageDiagram = packageDiagramManager.getPackageDiagram();
         String actualBuffer = PlantUMLPackageVertex.convertVertices(packageDiagram).toString();
         List<String> actualRelationships =
-                Arrays.asList(actualBuffer.split("}" + System.lineSeparator()))
-                        .stream()
+                Arrays.asList(actualBuffer.split("}" + System.lineSeparator())).stream()
                         .map(line -> line.replace("\r", ""))
                         .collect(Collectors.toList());
 
@@ -59,13 +57,11 @@ public class PlantUMLPackageVertexTest {
         PackageDiagram packageDiagram = packageDiagramManager.getPackageDiagram();
         String actualBuffer = PlantUMLPackageVertex.convertVertices(packageDiagram).toString();
         List<String> actualRelationships =
-                Arrays.asList(actualBuffer.split("}" + System.lineSeparator()))
-                        .stream()
+                Arrays.asList(actualBuffer.split("}" + System.lineSeparator())).stream()
                         .map(line -> line.replace("\r", ""))
                         .collect(Collectors.toList());
 
-        List<String> expectedRelationships =
-                Arrays.asList(EXPECTED_BUFFER_CLASS_FILE.split("}\n"));
+        List<String> expectedRelationships = Arrays.asList(EXPECTED_BUFFER_CLASS_FILE.split("}\n"));
 
         assertListsEqual(expectedRelationships, actualRelationships);
     }

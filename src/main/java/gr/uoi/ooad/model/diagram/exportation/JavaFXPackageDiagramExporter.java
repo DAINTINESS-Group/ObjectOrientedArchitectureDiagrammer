@@ -2,12 +2,12 @@ package gr.uoi.ooad.model.diagram.exportation;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import gr.uoi.ooad.model.diagram.PackageDiagram;
+import gr.uoi.ooad.model.graph.PackageVertex;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
-import gr.uoi.ooad.model.diagram.PackageDiagram;
-import gr.uoi.ooad.model.graph.PackageVertex;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

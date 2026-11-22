@@ -1,11 +1,11 @@
 package gr.uoi.ooad.model.diagram.svg;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import gr.uoi.ooad.model.diagram.PackageDiagram;
 import gr.uoi.ooad.model.diagram.plantuml.PlantUMLPackageVertex;
 import gr.uoi.ooad.model.diagram.plantuml.PlantUMLPackageVertexArc;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.SourceStringReader;

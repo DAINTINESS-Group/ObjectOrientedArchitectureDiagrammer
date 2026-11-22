@@ -2,15 +2,15 @@ package gr.uoi.ooad.model.graphml;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.util.List;
-import java.util.Map;
 import gr.uoi.ooad.manager.ClassDiagramManager;
 import gr.uoi.ooad.model.diagram.graphml.GraphMLClassifierVertex;
 import gr.uoi.ooad.model.graph.ClassifierVertex;
 import gr.uoi.ooad.model.graph.VertexType;
+import gr.uoi.ooad.utils.PathTemplate.LatexEditor;
+import java.util.List;
+import java.util.Map;
 import org.javatuples.Pair;
 import org.junit.jupiter.api.Test;
-import gr.uoi.ooad.utils.PathTemplate.LatexEditor;
 
 public class GraphMLSinkPackageVertexTest {
 

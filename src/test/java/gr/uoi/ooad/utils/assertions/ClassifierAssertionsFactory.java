@@ -5,14 +5,13 @@ import gr.uoi.ooad.model.graph.PackageVertex;
 
 public class ClassifierAssertionsFactory {
 
-    public static ClassStructureAssertion assertionsForClass(UMLModelAssertions umlModelAssertions,
-                                                             ClassifierVertex targetClass){
+    public static ClassStructureAssertion assertionsForClass(
+            UMLModelAssertions umlModelAssertions, ClassifierVertex targetClass) {
         return new ClassStructureAssertionImpl(umlModelAssertions, targetClass);
     }
 
-    public static PackageStructureAssertion assertionsForPackage(UMLModelAssertions umlModelAssertions,
-                                                             PackageVertex targetPackage){
+    public static PackageStructureAssertion assertionsForPackage(
+            UMLModelAssertions umlModelAssertions, PackageVertex targetPackage) {
         return new PackageStructureAssertionImpl(umlModelAssertions, targetPackage);
     }
-
 }

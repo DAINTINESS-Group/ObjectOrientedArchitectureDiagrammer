@@ -3,12 +3,6 @@ package gr.uoi.ooad.manager;
 import com.brunomnsilva.smartgraph.graph.Vertex;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import com.google.gson.JsonParseException;
-import java.io.File;
-import java.nio.file.Path;
-import java.util.Collection;
-import java.util.List;
-
-import gr.uoi.smartgraph.graphview.element.UMLNodeElement;
 import gr.uoi.ooad.model.diagram.PackageDiagram;
 import gr.uoi.ooad.model.diagram.arrangement.DiagramArrangementManager;
 import gr.uoi.ooad.model.diagram.arrangement.PackageDiagramArrangementManager;
@@ -135,7 +129,8 @@ public class PackageDiagramManager implements DiagramManager {
         for (Vertex<UMLNodeElement> vertex : vertexCollection) {
             if (!nodesGeometry.containsKey(vertex.element().getName())) continue;
 
-            Pair<Double, Double> coordinates = nodesGeometry.getVertexGeometry(vertex.element().getName());
+            Pair<Double, Double> coordinates =
+                    nodesGeometry.getVertexGeometry(vertex.element().getName());
             graphView.setVertexPosition(vertex, coordinates.getValue0(), coordinates.getValue1());
         }
 
@@ -148,7 +143,8 @@ public class PackageDiagramManager implements DiagramManager {
         for (Vertex<UMLNodeElement> vertex : vertexCollection) {
             if (!nodesGeometry.containsKey(vertex.element().getName())) continue;
 
-            Pair<Double, Double> coordinates = nodesGeometry.getVertexGeometry(vertex.element().getName());
+            Pair<Double, Double> coordinates =
+                    nodesGeometry.getVertexGeometry(vertex.element().getName());
             graphView.setVertexPosition(vertex, coordinates.getValue0(), coordinates.getValue1());
         }
 

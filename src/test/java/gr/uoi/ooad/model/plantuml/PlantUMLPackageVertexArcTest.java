@@ -2,16 +2,16 @@ package gr.uoi.ooad.model.plantuml;
 
 import static gr.uoi.ooad.utils.ListUtils.assertListsEqual;
 
-import java.io.File;
-import java.util.Arrays;
-import java.util.List;
 import gr.uoi.ooad.manager.PackageDiagramManager;
 import gr.uoi.ooad.model.diagram.PackageDiagram;
 import gr.uoi.ooad.model.diagram.plantuml.PlantUMLPackageVertexArc;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
 import gr.uoi.ooad.utils.Compiler;
 import gr.uoi.ooad.utils.PathTemplate;
+import java.io.File;
+import java.util.Arrays;
+import java.util.List;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 class PlantUMLPackageVertexArcTest {
 
@@ -31,8 +31,7 @@ class PlantUMLPackageVertexArcTest {
 
         PackageDiagram packageDiagram = packageDiagramManager.getPackageDiagram();
         String actualBuffer = PlantUMLPackageVertexArc.convertVertexArcs(packageDiagram).toString();
-        List<String> expectedRelationship =
-                Arrays.asList(EXPECTED_BUFFER_SOURCE_FILE.split("\n"));
+        List<String> expectedRelationship = Arrays.asList(EXPECTED_BUFFER_SOURCE_FILE.split("\n"));
         List<String> actualRelationship = Arrays.asList(actualBuffer.split(System.lineSeparator()));
 
         assertListsEqual(expectedRelationship, actualRelationship);
@@ -52,8 +51,7 @@ class PlantUMLPackageVertexArcTest {
         List<String> actualRelationship = Arrays.asList(actualBuffer.split(System.lineSeparator()));
 
         // multiline strings do not use \r
-        List<String> expectedRelationship =
-                Arrays.asList(EXPECTED_BUFFER_CLASS_FILE.split("\n"));
+        List<String> expectedRelationship = Arrays.asList(EXPECTED_BUFFER_CLASS_FILE.split("\n"));
 
         assertListsEqual(expectedRelationship, actualRelationship);
     }

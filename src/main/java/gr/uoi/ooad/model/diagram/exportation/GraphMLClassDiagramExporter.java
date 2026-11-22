@@ -1,10 +1,10 @@
 package gr.uoi.ooad.model.diagram.exportation;
 
-import java.io.File;
-import java.nio.file.Path;
 import gr.uoi.ooad.model.diagram.ClassDiagram;
 import gr.uoi.ooad.model.diagram.graphml.GraphMLClassifierVertex;
 import gr.uoi.ooad.model.diagram.graphml.GraphMLClassifierVertexArc;
+import java.io.File;
+import java.nio.file.Path;
 
 public class GraphMLClassDiagramExporter implements DiagramExporter {
 

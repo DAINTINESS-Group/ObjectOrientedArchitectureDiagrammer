@@ -2,7 +2,6 @@ package gr.uoi.smartgraph.graphview.element;
 
 import com.brunomnsilva.smartgraph.graphview.SmartLabelSource;
 import com.brunomnsilva.smartgraph.graphview.SmartShapeTypeSource;
-
 import java.util.Objects;
 
 public class InterfaceNodeElement implements UMLNodeElement {

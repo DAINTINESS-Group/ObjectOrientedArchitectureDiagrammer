@@ -2,6 +2,14 @@ package gr.uoi.ooad.model.exportation;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import gr.uoi.ooad.manager.ClassDiagramManager;
+import gr.uoi.ooad.model.diagram.exportation.DiagramExporter;
+import gr.uoi.ooad.model.diagram.exportation.PlantUMLClassDiagramTextExporter;
+import gr.uoi.ooad.model.diagram.plantuml.PlantUMLClassifierVertex;
+import gr.uoi.ooad.model.diagram.plantuml.PlantUMLClassifierVertexArc;
+import gr.uoi.ooad.utils.PathConstructor;
+import gr.uoi.ooad.utils.PathTemplate.LatexEditor;
+import gr.uoi.ooad.utils.TestUtils;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -9,15 +17,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import gr.uoi.ooad.manager.ClassDiagramManager;
-import gr.uoi.ooad.model.diagram.exportation.DiagramExporter;
-import gr.uoi.ooad.model.diagram.exportation.PlantUMLClassDiagramTextExporter;
-import gr.uoi.ooad.model.diagram.plantuml.PlantUMLClassifierVertex;
-import gr.uoi.ooad.model.diagram.plantuml.PlantUMLClassifierVertexArc;
 import org.junit.jupiter.api.Test;
-import gr.uoi.ooad.utils.PathConstructor;
-import gr.uoi.ooad.utils.PathTemplate.LatexEditor;
-import gr.uoi.ooad.utils.TestUtils;
 
 public class PlantUMLClassDiagramTextExporterTest {
 
@@ -59,8 +59,7 @@ public class PlantUMLClassDiagramTextExporterTest {
                                                     "resources",
                                                     "testingExportedFile.txt"))));
             Stream<String> lines = Files.lines(exportedFile.toPath());
-            String actualFileContents = lines
-                    .collect(Collectors.joining("\n"));
+            String actualFileContents = lines.collect(Collectors.joining("\n"));
             lines.close();
 
             String expectedFileContents =
@@ -76,10 +75,10 @@ public class PlantUMLClassDiagramTextExporterTest {
 
             expectedFileContents += sinkVertexBuffer + "\n\n" + sinkVertexArcBuffer + "\n @enduml";
             expectedFileContents = expectedFileContents.replace("\r", "");
-            assertEquals(TestUtils.escape(expectedFileContents), TestUtils.escape(actualFileContents));
+            assertEquals(
+                    TestUtils.escape(expectedFileContents), TestUtils.escape(actualFileContents));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
 }

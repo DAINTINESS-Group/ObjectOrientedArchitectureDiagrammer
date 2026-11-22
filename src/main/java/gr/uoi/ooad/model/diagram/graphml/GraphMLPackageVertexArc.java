@@ -1,13 +1,13 @@
 package gr.uoi.ooad.model.diagram.graphml;
 
+import gr.uoi.ooad.model.diagram.PackageDiagram;
+import gr.uoi.ooad.model.graph.Arc;
+import gr.uoi.ooad.model.graph.PackageVertex;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
-import gr.uoi.ooad.model.diagram.PackageDiagram;
-import gr.uoi.ooad.model.graph.Arc;
-import gr.uoi.ooad.model.graph.PackageVertex;
 
 public class GraphMLPackageVertexArc {
     private final StringBuilder graphMLBuffer;

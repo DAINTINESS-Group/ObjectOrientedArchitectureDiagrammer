@@ -1,10 +1,10 @@
 package gr.uoi.ooad.parser.classfile;
 
-import java.nio.file.Path;
-import java.util.Collection;
 import gr.uoi.ooad.model.graph.ClassifierVertex;
 import gr.uoi.ooad.model.graph.PackageVertex;
 import gr.uoi.ooad.parser.Interpreter;
+import java.nio.file.Path;
+import java.util.Collection;
 
 public class ClassFileInterpreter implements Interpreter {
     private final ClassFileParser parser = new ClassFileParser();

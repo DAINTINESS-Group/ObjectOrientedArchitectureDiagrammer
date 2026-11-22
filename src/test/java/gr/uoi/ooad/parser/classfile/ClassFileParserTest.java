@@ -7,22 +7,21 @@ import static proguard.classfile.ClassConstants.NAME_JAVA_LANG_OBJECT;
 import static proguard.classfile.ClassConstants.NAME_JAVA_UTIL_LIST;
 import static proguard.classfile.VersionConstants.CLASS_VERSION_1_6;
 
+import gr.uoi.ooad.parser.classfile.ClassFileParserTest.ClassPoolBuilder.ClassPools;
+import gr.uoi.ooad.utils.ListUtils;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import gr.uoi.ooad.parser.classfile.ClassFileParserTest.ClassPoolBuilder.ClassPools;
 import proguard.classfile.ClassPool;
 import proguard.classfile.Clazz;
 import proguard.classfile.ProgramClass;
 import proguard.classfile.editor.ClassBuilder;
 import proguard.classfile.util.ClassInitializer;
 import proguard.classfile.util.ClassUtil;
-import gr.uoi.ooad.utils.ListUtils;
 
 public class ClassFileParserTest {
 

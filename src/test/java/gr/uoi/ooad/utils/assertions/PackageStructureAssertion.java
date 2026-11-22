@@ -9,5 +9,4 @@ public interface PackageStructureAssertion {
     PackageStructureAssertion hasNoDependencyTo(String packageName);
 
     UMLModelAssertions also();
-
 }

@@ -34,7 +34,7 @@ public class ASTInterpreter implements Interpreter {
         return sourcePackagePath;
     }
 
-    public boolean hasSourcePackagePath(Path sourcePackagePath){
+    public boolean hasSourcePackagePath(Path sourcePackagePath) {
         return this.sourcePackagePath.equals(sourcePackagePath);
     }
 

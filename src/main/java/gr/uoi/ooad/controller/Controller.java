@@ -5,7 +5,6 @@ import gr.uoi.ooad.manager.DiagramManager;
 import gr.uoi.ooad.manager.Project;
 import gr.uoi.smartgraph.graphview.element.UMLEdgeElement;
 import gr.uoi.smartgraph.graphview.element.UMLNodeElement;
-
 import java.io.File;
 import java.nio.file.Path;
 import java.util.List;

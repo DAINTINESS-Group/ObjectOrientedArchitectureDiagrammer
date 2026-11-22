@@ -8,9 +8,6 @@ import java.io.File;
 import java.nio.file.Path;
 import java.util.List;
 
-import gr.uoi.smartgraph.graphview.element.UMLNodeElement;
-import gr.uoi.ooad.model.diagram.arrangement.geometry.DiagramGeometry;
-
 public interface DiagramManager {
 
     /**
