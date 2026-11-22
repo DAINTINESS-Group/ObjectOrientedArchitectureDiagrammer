@@ -7,8 +7,6 @@ import gr.uoi.smartgraph.graphview.element.UMLEdgeElement;
 import gr.uoi.smartgraph.graphview.element.UMLNodeElement;
 import java.io.File;
 import java.io.IOException;
-
-import gr.uoi.smartgraph.graphview.element.UMLNodeElement;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

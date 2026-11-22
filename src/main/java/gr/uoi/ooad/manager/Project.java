@@ -3,6 +3,13 @@ package gr.uoi.ooad.manager;
 import static proguard.classfile.ClassConstants.CLASS_FILE_EXTENSION;
 import static proguard.classfile.JavaConstants.JAVA_FILE_EXTENSION;
 
+import gr.uoi.ooad.diagnostics.ParserDiagnostics;
+import gr.uoi.ooad.model.diagram.ClassDiagram;
+import gr.uoi.ooad.model.diagram.PackageDiagram;
+import gr.uoi.ooad.model.graph.ClassifierVertex;
+import gr.uoi.ooad.model.graph.PackageVertex;
+import gr.uoi.ooad.parser.ast.ASTInterpreter;
+import gr.uoi.ooad.parser.classfile.ClassFileInterpreter;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
@@ -14,14 +21,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
-
-import gr.uoi.ooad.diagnostics.ParserDiagnostics;
-import gr.uoi.ooad.model.diagram.ClassDiagram;
-import gr.uoi.ooad.model.diagram.PackageDiagram;
-import gr.uoi.ooad.model.graph.ClassifierVertex;
-import gr.uoi.ooad.model.graph.PackageVertex;
-import gr.uoi.ooad.parser.ast.ASTInterpreter;
-import gr.uoi.ooad.parser.classfile.ClassFileInterpreter;
 import proguard.io.ClassPathEntry;
 
 public class Project {

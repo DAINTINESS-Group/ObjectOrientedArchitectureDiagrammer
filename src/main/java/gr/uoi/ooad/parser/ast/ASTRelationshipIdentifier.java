@@ -1,5 +1,9 @@
 package gr.uoi.ooad.parser.ast;
 
+import gr.uoi.ooad.parser.ast.tree.LeafNode;
+import gr.uoi.ooad.parser.ast.tree.PackageNode;
+import gr.uoi.ooad.parser.ast.tree.Relationship;
+import gr.uoi.ooad.parser.ast.tree.RelationshipType;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,10 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-import gr.uoi.ooad.parser.ast.tree.LeafNode;
-import gr.uoi.ooad.parser.ast.tree.PackageNode;
-import gr.uoi.ooad.parser.ast.tree.Relationship;
-import gr.uoi.ooad.parser.ast.tree.RelationshipType;
 
 public class ASTRelationshipIdentifier {
     private final Map<LeafNode, Set<Relationship<LeafNode>>> leafNodeRelationships =
@@ -148,7 +148,7 @@ public class ASTRelationshipIdentifier {
         }
 
         for (LeafNode nestedClass : leafNodes.get(i).innerClasses()) {
-            if(nestedClass.nodeName().equals(leafNodes.get(j).nodeName())) {
+            if (nestedClass.nodeName().equals(leafNodes.get(j).nodeName())) {
                 return true;
             }
         }

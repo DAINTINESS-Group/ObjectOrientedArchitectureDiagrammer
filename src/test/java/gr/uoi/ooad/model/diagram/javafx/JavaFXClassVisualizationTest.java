@@ -1,5 +1,10 @@
 package gr.uoi.ooad.model.diagram.javafx;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.times;
+
 import com.brunomnsilva.smartgraph.graphview.ShapeFactory;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphProperties;
@@ -11,21 +16,15 @@ import gr.uoi.ooad.model.graph.ClassifierVertex;
 import gr.uoi.ooad.utils.PathTemplate;
 import gr.uoi.smartgraph.graphview.element.UMLEdgeElement;
 import gr.uoi.smartgraph.graphview.element.UMLNodeElement;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.times;
 
 class JavaFXClassVisualizationTest {
 
@@ -34,7 +33,7 @@ class JavaFXClassVisualizationTest {
     MockedStatic<ShapeFactory> mockedShapeFactory;
 
     @BeforeEach
-    public void setup(){
+    public void setup() {
 
         mockJavaFXCalls();
         mockShapeFactory();
@@ -44,20 +43,13 @@ class JavaFXClassVisualizationTest {
 
         Project sourceProject = new Project(PathTemplate.LatexEditor.SRC.path);
         sourceProject.initialize();
-        Collection<ClassifierVertex> vertices =
-                sourceProject.createClassGraph(classDiagram);
-        Set<String> chosenFilesNames =
-                Set.of(
-                        "AddLatexCommand",
-                        "Command",
-                        "VersionsManager");
+        Collection<ClassifierVertex> vertices = sourceProject.createClassGraph(classDiagram);
+        Set<String> chosenFilesNames = Set.of("AddLatexCommand", "Command", "VersionsManager");
 
         Map<ClassifierVertex, Integer> graphNodes =
                 classDiagramManager.getClassDiagram().getGraphNodes();
         classDiagramManager.convertTreeToDiagram(new ArrayList<>(chosenFilesNames));
         theClassDiagram = classDiagramManager.getClassDiagram();
-
-
     }
 
     private void mockJavaFXCalls() {
@@ -65,12 +57,18 @@ class JavaFXClassVisualizationTest {
         Mockito.when(mockProperties.getUseEdgeTooltip()).thenReturn(false);
         Mockito.when(mockProperties.getUseVertexTooltip()).thenReturn(false);
         mockedStaticSmartGraphFactory = Mockito.mockStatic(SmartGraphFactory.class);
-        mockedStaticSmartGraphFactory.when(() -> SmartGraphFactory.createGraphView(Mockito.any())).thenCallRealMethod();
-        mockedStaticSmartGraphFactory.when(SmartGraphFactory::getSmartGraphStyleURI).thenCallRealMethod();
-        mockedStaticSmartGraphFactory.when(SmartGraphFactory::getSmartGraphProperties).thenReturn(mockProperties);
+        mockedStaticSmartGraphFactory
+                .when(() -> SmartGraphFactory.createGraphView(Mockito.any()))
+                .thenCallRealMethod();
+        mockedStaticSmartGraphFactory
+                .when(SmartGraphFactory::getSmartGraphStyleURI)
+                .thenCallRealMethod();
+        mockedStaticSmartGraphFactory
+                .when(SmartGraphFactory::getSmartGraphProperties)
+                .thenReturn(mockProperties);
     }
 
-    private void mockShapeFactory(){
+    private void mockShapeFactory() {
         mockedShapeFactory = Mockito.mockStatic(ShapeFactory.class);
         mockedShapeFactory
                 .when(() -> ShapeFactory.create(anyString(), anyDouble(), anyDouble(), anyDouble()))
@@ -78,7 +76,7 @@ class JavaFXClassVisualizationTest {
     }
 
     @AfterEach
-    public void tearDown(){
+    public void tearDown() {
         mockedStaticSmartGraphFactory.close();
         mockedShapeFactory.close();
     }
@@ -103,6 +101,5 @@ class JavaFXClassVisualizationTest {
         mockedShapeFactory.verify(
                 () -> ShapeFactory.create(eq("interface"), anyDouble(), anyDouble(), anyDouble()),
                 times(1));
-
     }
 }

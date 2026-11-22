@@ -5,10 +5,6 @@ import com.brunomnsilva.smartgraph.graphview.SmartArrow;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphEdge;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphEdgeNode;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 import gr.uoi.ooad.model.diagram.ClassDiagram;
 import gr.uoi.ooad.model.graph.Arc;
 import gr.uoi.ooad.model.graph.ArcType;
@@ -123,9 +119,7 @@ public class JavaFXClassVisualization implements JavaFXVisualization {
                             : "vertexClass";
 
             UMLNodeElement node = getJFXNode(classifierVertex);
-            graphView
-                    .getStylableVertex(node)
-                    .setStyleClass(styleClass);
+            graphView.getStylableVertex(node).setStyleClass(styleClass);
         }
     }
 

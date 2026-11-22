@@ -1,7 +1,6 @@
 package gr.uoi.smartgraph.graphview.arrow;
 
 import com.brunomnsilva.smartgraph.graphview.SmartArrow;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 
@@ -15,6 +14,6 @@ public class SmartClosedArrow extends SmartArrow {
         this.getElements().add(new LineTo(-size, -size));
         this.getElements().add(new LineTo((double) 0.0F, (double) 0.0F));
 
-        //this.setFill(Color.WHITE);
+        // this.setFill(Color.WHITE);
     }
 }

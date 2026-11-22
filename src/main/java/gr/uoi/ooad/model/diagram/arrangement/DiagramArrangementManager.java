@@ -1,9 +1,9 @@
 package gr.uoi.ooad.model.diagram.arrangement;
 
 import edu.uci.ics.jung.graph.Graph;
-import java.util.Map;
 import gr.uoi.ooad.model.diagram.arrangement.algorithms.LayoutAlgorithmType;
 import gr.uoi.ooad.model.diagram.arrangement.geometry.DiagramGeometry;
+import java.util.Map;
 import org.javatuples.Pair;
 
 public interface DiagramArrangementManager {

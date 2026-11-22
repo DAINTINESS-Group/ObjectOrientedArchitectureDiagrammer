@@ -14,7 +14,6 @@ import gr.uoi.smartgraph.graphview.element.PackageNodeElement;
 import gr.uoi.smartgraph.graphview.element.UMLEdgeElement;
 import gr.uoi.smartgraph.graphview.element.UMLEdgeElementFactory;
 import gr.uoi.smartgraph.graphview.element.UMLNodeElement;
-
 import java.util.Collection;
 import java.util.Set;
 

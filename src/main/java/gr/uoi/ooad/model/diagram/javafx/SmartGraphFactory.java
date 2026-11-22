@@ -11,9 +11,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Objects;
 
-import gr.uoi.ooad.util.Resources;
-import gr.uoi.smartgraph.graphview.element.UMLNodeElement;
-
 public class SmartGraphFactory {
 
     public static final String DEFAULT_PROPERTIES_PATH = "styles/smartgraph.properties";
@@ -33,7 +30,10 @@ public class SmartGraphFactory {
             URI url = getSmartGraphStyleURI();
             URI cssFile = Objects.requireNonNull(url);
             return new SmartGraphPanel<>(
-                    graph, smartGraphProperties, new SmartCircularSortedPlacementStrategy(), cssFile);
+                    graph,
+                    smartGraphProperties,
+                    new SmartCircularSortedPlacementStrategy(),
+                    cssFile);
         } catch (URISyntaxException ignored) {
             // Fallback to default paths.
             return new SmartGraphPanel<>(graph, new SmartCircularSortedPlacementStrategy());
@@ -41,7 +41,7 @@ public class SmartGraphFactory {
     }
 
     public static SmartGraphProperties getSmartGraphProperties() {
-        if (smartGraphProperties == null){
+        if (smartGraphProperties == null) {
             return createSmartGraphProperties();
         }
         return smartGraphProperties;

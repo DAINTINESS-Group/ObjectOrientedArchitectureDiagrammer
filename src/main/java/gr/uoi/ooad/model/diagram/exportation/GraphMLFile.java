@@ -1,10 +1,10 @@
 package gr.uoi.ooad.model.diagram.exportation;
 
+import gr.uoi.ooad.model.diagram.graphml.GraphMLSyntax;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
-import gr.uoi.ooad.model.diagram.graphml.GraphMLSyntax;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

@@ -9,10 +9,10 @@ import de.odysseus.ithaka.digraph.layout.DigraphLayoutNode;
 import de.odysseus.ithaka.digraph.layout.DigrpahLayoutBuilder;
 import de.odysseus.ithaka.digraph.layout.sugiyama.SugiyamaBuilder;
 import edu.uci.ics.jung.graph.Graph;
-import java.util.HashMap;
-import java.util.Map;
 import gr.uoi.ooad.model.diagram.arrangement.geometry.DiagramGeometry;
 import gr.uoi.ooad.model.diagram.arrangement.geometry.GeometryNode;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Sugiyama implements LayoutAlgorithm {
     private static final int MIN_X_WINDOW_VALUE = 25;

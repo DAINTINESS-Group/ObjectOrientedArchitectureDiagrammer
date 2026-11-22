@@ -7,8 +7,6 @@ import gr.uoi.ooad.model.graph.ClassifierVertex;
 import gr.uoi.ooad.parser.ast.ASTInterpreter;
 import gr.uoi.ooad.parser.ast.tree.LeafNode;
 import gr.uoi.ooad.parser.ast.tree.PackageNode;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -16,6 +14,8 @@ import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Prints a diagnostic report of the class graph that the AST parser produces for a Java project.
@@ -30,6 +30,7 @@ import java.util.Map;
 public class ParserDiagnostics {
 
     private static final Logger logger = LogManager.getLogger(ParserDiagnostics.class);
+
     /**
      * Runs the diagnostics on the project given as the first argument.
      *
@@ -68,14 +69,13 @@ public class ParserDiagnostics {
 
         Map<ArcType, Integer> arcCounts = countArcs(sinkVertices);
 
-
         for (ArcType type : ArcType.values()) {
             int count = arcCounts.getOrDefault(type, 0);
             System.out.printf("%-15s %d%n", type, count);
         }
     }
 
-    private static Map<ArcType, Integer> countArcs(List<ClassifierVertex> sinkVertices){
+    private static Map<ArcType, Integer> countArcs(List<ClassifierVertex> sinkVertices) {
         Map<ArcType, Integer> arcCounts = new EnumMap<>(ArcType.class);
 
         for (ClassifierVertex sinkVertex : sinkVertices) {

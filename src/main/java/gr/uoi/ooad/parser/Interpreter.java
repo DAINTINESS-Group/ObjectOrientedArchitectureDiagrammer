@@ -1,11 +1,11 @@
 package gr.uoi.ooad.parser;
 
-import java.nio.file.Path;
-import java.util.Collection;
 import gr.uoi.ooad.model.graph.ClassifierVertex;
 import gr.uoi.ooad.model.graph.PackageVertex;
 import gr.uoi.ooad.parser.ast.ASTParser;
 import gr.uoi.ooad.parser.classfile.ClassFileParser;
+import java.nio.file.Path;
+import java.util.Collection;
 
 /**
  * The interpreter is responsible for transforming the given project to a graph. The implementations

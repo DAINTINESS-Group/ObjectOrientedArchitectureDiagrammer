@@ -1,9 +1,9 @@
 package gr.uoi.ooad.view;
 
+import static gr.uoi.ooad.view.ProjectTreeView.FileType.PACKAGE;
 import static proguard.classfile.ClassConstants.CLASS_FILE_EXTENSION;
 import static proguard.classfile.JavaConstants.JAVA_FILE_EXTENSION;
 import static proguard.classfile.JavaTypeConstants.PACKAGE_SEPARATOR;
-import static gr.uoi.ooad.view.ProjectTreeView.FileType.PACKAGE;
 
 import java.io.IOException;
 import java.nio.file.DirectoryStream;

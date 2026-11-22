@@ -1,18 +1,17 @@
 package gr.uoi.ooad.utils.assertions;
 
-import gr.uoi.ooad.model.graph.ArcType;
-import gr.uoi.ooad.model.graph.ClassifierVertex;
-
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import gr.uoi.ooad.model.graph.ArcType;
+import gr.uoi.ooad.model.graph.ClassifierVertex;
 
 public class ClassStructureAssertionImpl implements ClassStructureAssertion {
 
     private ClassifierVertex targetClass;
     private UMLModelAssertions parent;
 
-    public ClassStructureAssertionImpl(UMLModelAssertions parent,
-                                       ClassifierVertex className) {
+    public ClassStructureAssertionImpl(UMLModelAssertions parent, ClassifierVertex className) {
         this.parent = parent;
         this.targetClass = className;
     }
@@ -30,79 +29,104 @@ public class ClassStructureAssertionImpl implements ClassStructureAssertion {
         parent.assertThatClass(className);
         boolean hasExtensionArc = matchRelationship(targetClass, className, ArcType.EXTENSION);
 
-        assertFalse(hasExtensionArc, targetClass.getName() + " expected NOT to EXTEND " + className);
+        assertFalse(
+                hasExtensionArc, targetClass.getName() + " expected NOT to EXTEND " + className);
         return this;
     }
 
     @Override
-    public ClassStructureAssertion and(){
+    public ClassStructureAssertion and() {
         return this;
     }
 
     @Override
-    public ClassStructureAssertion implementsInterface(String interfaceName){
-        boolean hasImplementationArc = matchRelationship(targetClass, interfaceName, ArcType.IMPLEMENTATION);
+    public ClassStructureAssertion implementsInterface(String interfaceName) {
+        boolean hasImplementationArc =
+                matchRelationship(targetClass, interfaceName, ArcType.IMPLEMENTATION);
 
-        assertTrue(hasImplementationArc, targetClass.getName() + " expected to IMPLEMENT " + interfaceName);
+        assertTrue(
+                hasImplementationArc,
+                targetClass.getName() + " expected to IMPLEMENT " + interfaceName);
         return this;
     }
 
     @Override
     public ClassStructureAssertion doesNotImplementInterface(String interfaceName) {
         parent.assertThatInterface(interfaceName);
-        boolean hasImplementationArc = matchRelationship(targetClass, interfaceName, ArcType.IMPLEMENTATION);
+        boolean hasImplementationArc =
+                matchRelationship(targetClass, interfaceName, ArcType.IMPLEMENTATION);
 
-        assertFalse(hasImplementationArc, targetClass.getName() + " expected NOT to IMPLEMENT " + interfaceName);
+        assertFalse(
+                hasImplementationArc,
+                targetClass.getName() + " expected NOT to IMPLEMENT " + interfaceName);
         return this;
     }
 
     @Override
-    public ClassStructureAssertion hasDependencyTo(String classifierName){
-        boolean hasDependencyArc = matchRelationship(targetClass, classifierName, ArcType.DEPENDENCY);
+    public ClassStructureAssertion hasDependencyTo(String classifierName) {
+        boolean hasDependencyArc =
+                matchRelationship(targetClass, classifierName, ArcType.DEPENDENCY);
 
-        assertTrue(hasDependencyArc, targetClass.getName() + " expected to DEPEND TO " + classifierName);
+        assertTrue(
+                hasDependencyArc,
+                targetClass.getName() + " expected to DEPEND TO " + classifierName);
         return this;
     }
 
     @Override
     public ClassStructureAssertion hasNoDependencyTo(String classifierName) {
         parent.assertThatClassifier(classifierName);
-        boolean hasDependencyArc = matchRelationship(targetClass, classifierName, ArcType.DEPENDENCY);
+        boolean hasDependencyArc =
+                matchRelationship(targetClass, classifierName, ArcType.DEPENDENCY);
 
-        assertFalse(hasDependencyArc, targetClass.getName() + " expected NOT to DEPEND TO " + classifierName);
+        assertFalse(
+                hasDependencyArc,
+                targetClass.getName() + " expected NOT to DEPEND TO " + classifierName);
         return this;
     }
 
     @Override
-    public ClassStructureAssertion hasAssociationTo(String classifierName){
-        boolean hasAssociationArc = matchRelationship(targetClass, classifierName, ArcType.ASSOCIATION);
+    public ClassStructureAssertion hasAssociationTo(String classifierName) {
+        boolean hasAssociationArc =
+                matchRelationship(targetClass, classifierName, ArcType.ASSOCIATION);
 
-        assertTrue(hasAssociationArc, targetClass.getName() + " expected to HAS ASSOCIATION TO " + classifierName);
+        assertTrue(
+                hasAssociationArc,
+                targetClass.getName() + " expected to HAS ASSOCIATION TO " + classifierName);
         return this;
     }
 
     @Override
     public ClassStructureAssertion hasNoAssociationTo(String classifierName) {
         parent.assertThatClassifier(classifierName);
-        boolean hasAssociationArc = matchRelationship(targetClass, classifierName, ArcType.ASSOCIATION);
+        boolean hasAssociationArc =
+                matchRelationship(targetClass, classifierName, ArcType.ASSOCIATION);
 
-        assertFalse(hasAssociationArc, targetClass.getName() + " expected NOT to ASSOCIATE TO " + classifierName);
+        assertFalse(
+                hasAssociationArc,
+                targetClass.getName() + " expected NOT to ASSOCIATE TO " + classifierName);
         return this;
     }
 
     @Override
     public ClassStructureAssertion hasAggregationTo(String classifierName) {
-        boolean hasAggregationArc = matchRelationship(targetClass, classifierName, ArcType.AGGREGATION);
-        assertTrue(hasAggregationArc, targetClass.getName() + " expected to AGGREGATE TO " + classifierName);
+        boolean hasAggregationArc =
+                matchRelationship(targetClass, classifierName, ArcType.AGGREGATION);
+        assertTrue(
+                hasAggregationArc,
+                targetClass.getName() + " expected to AGGREGATE TO " + classifierName);
         return this;
     }
 
     @Override
     public ClassStructureAssertion hasNoAggregationTo(String classifierName) {
         parent.assertThatClassifier(classifierName);
-        boolean hasAggregationArc = matchRelationship(targetClass, classifierName, ArcType.AGGREGATION);
+        boolean hasAggregationArc =
+                matchRelationship(targetClass, classifierName, ArcType.AGGREGATION);
 
-        assertFalse(hasAggregationArc, targetClass.getName() + " expected NOT to AGGREGATE TO " + classifierName);
+        assertFalse(
+                hasAggregationArc,
+                targetClass.getName() + " expected NOT to AGGREGATE TO " + classifierName);
         return this;
     }
 
@@ -110,7 +134,9 @@ public class ClassStructureAssertionImpl implements ClassStructureAssertion {
     public ClassStructureAssertion hasNestedClass(String className) {
         boolean hasNestingArc = matchRelationship(targetClass, className, ArcType.NESTING);
 
-        assertTrue(hasNestingArc, targetClass.getName() + " expected to HAVE NESTED CLASS " + className);
+        assertTrue(
+                hasNestingArc,
+                targetClass.getName() + " expected to HAVE NESTED CLASS " + className);
         return this;
     }
 
@@ -119,8 +145,8 @@ public class ClassStructureAssertionImpl implements ClassStructureAssertion {
         return parent;
     }
 
-
-    private static boolean matchRelationship(ClassifierVertex source, String targetName, ArcType type){
+    private static boolean matchRelationship(
+            ClassifierVertex source, String targetName, ArcType type) {
         return source.getArcs().stream()
                 .anyMatch(
                         arc ->

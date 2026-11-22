@@ -1,6 +1,5 @@
 package gr.uoi.smartgraph.graphview.arrow;
 
-import com.brunomnsilva.smartgraph.graph.Edge;
 import com.brunomnsilva.smartgraph.graphview.SmartArrow;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphProperties;
 import gr.uoi.ooad.model.diagram.javafx.SmartGraphFactory;

@@ -1,5 +1,7 @@
 package gr.uoi.ooad.parser.classfile;
 
+import gr.uoi.ooad.model.graph.ClassifierVertex;
+import gr.uoi.ooad.model.graph.PackageVertex;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -9,8 +11,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.BiFunction;
-import gr.uoi.ooad.model.graph.ClassifierVertex;
-import gr.uoi.ooad.model.graph.PackageVertex;
 import proguard.classfile.ClassPool;
 import proguard.classfile.Clazz;
 import proguard.classfile.util.ClassInitializer;

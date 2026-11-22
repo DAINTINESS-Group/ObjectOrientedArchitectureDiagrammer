@@ -1,10 +1,10 @@
 package gr.uoi.ooad.model.diagram.plantuml;
 
-import java.util.Set;
 import gr.uoi.ooad.model.diagram.ClassDiagram;
 import gr.uoi.ooad.model.graph.Arc;
 import gr.uoi.ooad.model.graph.ArcType;
 import gr.uoi.ooad.model.graph.ClassifierVertex;
+import java.util.Set;
 
 public class PlantUMLClassifierVertexArc {
 

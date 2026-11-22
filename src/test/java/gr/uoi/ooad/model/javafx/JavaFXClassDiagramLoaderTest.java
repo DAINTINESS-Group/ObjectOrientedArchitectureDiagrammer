@@ -3,12 +3,6 @@ package gr.uoi.ooad.model.javafx;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.io.File;
-import java.nio.file.Path;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.Predicate;
 import gr.uoi.ooad.manager.ClassDiagramManager;
 import gr.uoi.ooad.model.diagram.GraphClassDiagramConverter;
 import gr.uoi.ooad.model.diagram.exportation.DiagramExporter;
@@ -16,12 +10,18 @@ import gr.uoi.ooad.model.diagram.exportation.JavaFXClassDiagramExporter;
 import gr.uoi.ooad.model.diagram.javafx.JavaFXClassDiagramLoader;
 import gr.uoi.ooad.model.graph.Arc;
 import gr.uoi.ooad.model.graph.ClassifierVertex;
+import gr.uoi.ooad.utils.PathConstructor;
+import gr.uoi.ooad.utils.PathTemplate.LatexEditor;
+import java.io.File;
+import java.nio.file.Path;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Predicate;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import gr.uoi.ooad.utils.PathConstructor;
-import gr.uoi.ooad.utils.PathTemplate.LatexEditor;
 
 public class JavaFXClassDiagramLoaderTest {
 

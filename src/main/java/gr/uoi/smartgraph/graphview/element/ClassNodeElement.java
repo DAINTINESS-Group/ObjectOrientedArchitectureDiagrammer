@@ -2,13 +2,11 @@ package gr.uoi.smartgraph.graphview.element;
 
 import com.brunomnsilva.smartgraph.graphview.SmartLabelSource;
 import com.brunomnsilva.smartgraph.graphview.SmartShapeTypeSource;
-
 import java.util.Objects;
 
 public class ClassNodeElement implements UMLNodeElement {
 
     protected String name;
-
 
     public ClassNodeElement(String name) {
         this.name = name;

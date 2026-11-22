@@ -1,9 +1,9 @@
 package gr.uoi.ooad.model.diagram;
 
-import java.util.*;
 import gr.uoi.ooad.model.diagram.arrangement.geometry.DiagramGeometry;
 import gr.uoi.ooad.model.graph.Arc;
 import gr.uoi.ooad.model.graph.PackageVertex;
+import java.util.*;
 import org.javatuples.Pair;
 
 public class PackageDiagram {
